@@ -1,0 +1,24 @@
+{
+  "googletrends": [
+    "https://trends.google.com"
+  ],
+  "twittertrends": [
+    "https://twitter.com/explore"
+  ],
+  "additionaltrends": [
+    "https://trends24.in/"
+  ],
+  "mediaurls": [
+    "http://www.xinhuanet.com/english/",
+    "https://www.tagesschau.de/",
+    "https://www.zeit.de/index",
+    "https://www.sueddeutsche.de/",
+    "https://www.ndr.de/",
+    "https://www.berliner-zeitung.de/",
+    "https://www.n-tv.de/",
+    "https://orf.at/",
+    "https://edition.cnn.com/",
+    "https://www.foxnews.com/",
+    "https://abcnews.go.com/"
+  ]
+}
