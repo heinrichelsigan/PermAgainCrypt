@@ -21,5 +21,5 @@ Test Projects inside
 
 ### Encryption Statistics
 <img width="798"  alt="image" src="https://github.com/user-attachments/assets/50ce5739-5ece-4e8a-b4d6-d0a65a2eb71e" />
+<img width="281" height="746" alt="image" src="https://github.com/user-attachments/assets/e9af4985-cffa-4f37-a07c-e3948610ef78" />
 
-<img width="910" height="774" alt="image" src="https://github.com/user-attachments/assets/31e00065-bba8-4412-b00c-80c64d25e3c9" />
