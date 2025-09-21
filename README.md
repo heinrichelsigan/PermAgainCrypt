@@ -17,3 +17,9 @@ Test Projects inside
 
 ## Console Application:
 <img width="1411" height="799" alt="image" src="https://github.com/user-attachments/assets/fbc719c8-6cd0-4afe-b070-c836672329b7" />
+
+
+### Encryption Statistics
+<img width="798"  alt="image" src="https://github.com/user-attachments/assets/50ce5739-5ece-4e8a-b4d6-d0a65a2eb71e" />
+<img width="281" height="746" alt="image" src="https://github.com/user-attachments/assets/e9af4985-cffa-4f37-a07c-e3948610ef78" />
+
