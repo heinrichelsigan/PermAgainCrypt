@@ -322,7 +322,7 @@ namespace Area23.At.WinForm.CryptFormCore
                 return;
             }
 
-            Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.PathSeparator + Constants.AppLogFile);
+            Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.DirectorySeparatorChar + Constants.AppLogFile);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);

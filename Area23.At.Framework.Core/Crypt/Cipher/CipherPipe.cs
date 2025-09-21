@@ -360,7 +360,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (zipBefore != ZipType.None)
             {
                 encryptedBytes = zipBefore.Zip(inBytes);
-                inBytes = encryptedBytes;
+                inBytes = new byte[encryptedBytes.Length];
+                Array.Copy(encryptedBytes, 0, inBytes, 0, encryptedBytes.Length);
             }
 
             foreach (CipherEnum cipher in InPipe)
