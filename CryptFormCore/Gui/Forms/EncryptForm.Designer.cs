@@ -482,7 +482,7 @@
             textBoxKey.Name = "textBoxKey";
             textBoxKey.Size = new Size(606, 28);
             textBoxKey.TabIndex = 3;
-            textBoxKey.Text = "ftp@cdrom.com";
+            textBoxKey.Text = "anonymous@ftp.cdrom.com";
             // 
             // pictureBoxKey
             // 

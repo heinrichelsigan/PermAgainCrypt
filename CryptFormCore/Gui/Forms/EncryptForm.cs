@@ -56,12 +56,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
-
             this.comboBoxAlgo.Items.Clear();
             foreach (var item in Enum.GetValues(typeof(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum)))
             {
                 this.comboBoxAlgo.Items.Add(item.ToString());
             }
+            this.textBoxKey.Text = GetEmailFromRegistry();
         }
 
 
@@ -302,6 +302,32 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                 }
             }
+        }
+
+        public string GetEmailFromRegistry()
+        {
+            string userEmail = "anonymous@ftp.cdrom.com";
+            try
+            {
+                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser, "Software\\Microsoft\\OneDrive\\Accounts\\Personal", "UserEmail");
+                if (userEmail.Contains('@') && userEmail.Contains('.'))
+                    return userEmail;
+            } 
+            catch (Exception)
+            {
+            }
+            try
+            {
+                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
+                    "Software\\Microsoft\\VSCommon\\ConnectedUser\\IdeUserV4\\Cache", "EmailAddress");
+                if (userEmail.Contains("@") && userEmail.Contains("."))
+                    return userEmail;
+            }
+            catch (Exception)
+            {
+            }
+            userEmail = "anonymous@ftp.cdrom.com";
+            return userEmail;
         }
 
         #endregion EncryptDecrypt_Click
@@ -633,7 +659,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (Exception exSound)
                     {
-                        Area23Log.LogOriginMsgEx("BaseChatForm", $"PlaySoundFromResource(string soundName = {soundName})", exSound);
+                        Area23Log.LogOriginMsgEx("EncryptForm", $"PlaySoundFromResource(string soundName = {soundName})", exSound);
                         played = false;
                     }
                     //fixed (byte* bufferPtr = &bytes[0])

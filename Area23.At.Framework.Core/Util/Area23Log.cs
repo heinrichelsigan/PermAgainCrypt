@@ -76,6 +76,24 @@ namespace Area23.At.Framework.Core.Util
                 LogFile = LibPaths.LogFileSystemPath;
         }
 
+        public static void SetLogFile(string logFilePath, bool createDirectory = false)
+        {
+            if (string.IsNullOrEmpty(logFilePath))
+                return;
+
+            string dirName = Path.GetDirectoryName(logFilePath);
+            if (!Directory.Exists(dirName) && createDirectory)
+                Directory.CreateDirectory(dirName);
+
+            if (!Directory.Exists(dirName))
+                return;
+
+            if (!File.Exists(logFilePath))
+                File.Create(logFilePath);
+
+            LogFile = logFilePath;
+        }
+
         public static void SetLogFileByAppName(string appName = "")
         {
             LogFile = (!string.IsNullOrEmpty(appName)) ? LibPaths.GetLogFilePath(appName) : LibPaths.LogFileSystemPath;

@@ -1,4 +1,5 @@
 #define CLR2COMPATIBILITY
+using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Gui.Forms;
 using Microsoft.Win32.SafeHandles;
 using System.Diagnostics;
@@ -321,6 +322,7 @@ namespace Area23.At.WinForm.CryptFormCore
                 return;
             }
 
+            Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.PathSeparator + Constants.AppLogFile);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
