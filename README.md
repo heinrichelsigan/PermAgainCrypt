@@ -13,7 +13,7 @@ Great Thanx to https://www.bouncycastle.org/download/bouncy-castle-c/
 
 Test Projects inside
 ## WinFormCore:
-<img width="793" height="691" alt="image" src="https://github.com/user-attachments/assets/47763f63-9287-4e36-a2ad-0d60162b5850" />
+<img width="798" height="707" alt="image" src="https://github.com/user-attachments/assets/f0a6fb52-66b5-42be-8817-18827a41a015" />
 
 ## Console Application:
 <img width="1411" height="799" alt="image" src="https://github.com/user-attachments/assets/fbc719c8-6cd0-4afe-b070-c836672329b7" />
