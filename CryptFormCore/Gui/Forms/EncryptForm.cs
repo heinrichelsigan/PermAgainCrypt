@@ -230,7 +230,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.textBoxOut.Text = encrypted;
                 }
-                else if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+                if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
                     foreach (string file in HashFiles)
                     {
@@ -277,7 +277,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.textBoxOut.Text = decrypted;
                 }
-                else if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+                if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
                     foreach (string file in HashFiles)
                     {
