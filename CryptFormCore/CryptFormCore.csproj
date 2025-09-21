@@ -7,7 +7,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Area23.At.WinForm.CryptFormCore</RootNamespace>
-    <Copyright>Copyleft ©  2000 - 2032</Copyright>
+    <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/area23.at</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/</PackageProjectUrl>
     <AssemblyVersion>2.25.921</AssemblyVersion>
@@ -24,6 +24,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="res\text\**" />
+    <EmbeddedResource Remove="res\text\**" />
+    <None Remove="res\text\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Program.cs.txt" />
@@ -51,7 +57,6 @@
 	<ItemGroup>
 	  <Folder Include="res\bin\" />
 	  <Folder Include="res\out\" />
-	  <Folder Include="res\text\" />
 	</ItemGroup>
     
 	<ItemGroup>
