@@ -1,6 +1,6 @@
 # PermAgainCrypt
 
-A based on DES,3DES with P-Box S-Box meta encryption üipeline for advanced encryption standard.
+A based on DES,3DES with P-Box S-Box meta encryption pipeline for advanced encryption standard.
 <ing src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xor_Encrypt_Xor.svg/237px-Xor_Encrypt_Xor.svg.png" />
 
 See details:
