@@ -1,6 +1,6 @@
 #PermAgainCrypt
 
-A based DES,3DES with P-Box S-Box meta encryption for advanced encryption standard.
+A based on DES,3DES with P-Box S-Box meta encryption for advanced encryption standard.
 <ing src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Xor_Encrypt_Xor.svg/237px-Xor_Encrypt_Xor.svg.png" />
 
 See details:
@@ -8,6 +8,8 @@ https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html
 
 Webtest Url:
 https://area23.at/net/Crypt/CoolCrypt.aspx
+
+Great Thanx to https://www.bouncycastle.org/download/bouncy-castle-c/
 
 <img width="793" height="691" alt="image" src="https://github.com/user-attachments/assets/47763f63-9287-4e36-a2ad-0d60162b5850" />
 
