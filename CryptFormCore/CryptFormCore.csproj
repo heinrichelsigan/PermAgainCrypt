@@ -8,10 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Area23.At.WinForm.CryptFormCore</RootNamespace>
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
-    <RepositoryUrl>https://github.com/heinrichelsigan/area23.at</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/heinrichelsigan/</PackageProjectUrl>
-    <AssemblyVersion>2.25.921</AssemblyVersion>
-    <FileVersion>2.25.921</FileVersion>
+    <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
+    <AssemblyVersion>2.25.928</AssemblyVersion>
+    <FileVersion>2.25.928</FileVersion>
     <Description>area23.at Heinrich Elsigan</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
     <Title>Transparent Form .NetCore</Title>

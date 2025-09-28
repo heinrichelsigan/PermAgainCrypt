@@ -30,8 +30,7 @@
 
         public bool IsValid(string encodedStr) => Base64.IsValidBase64(encodedStr, out _);
 
-        public bool IsValidShowError(string encodedString, out string error) => Base64.IsValidBase64(encodedString, out error);
-        
+        public bool IsValidShowError(string encodedString, out string error) => Base64.IsValidBase64(encodedString, out error);               
 
         #endregion common interface, interfaces for static members appear in C# 7.3 or later
 
@@ -44,7 +43,27 @@
 
         public static byte[] FromBase64(string inString)
         {
-            byte[] outBytes = Convert.FromBase64String(inString);
+            bool valid = true;
+            string parsedString = "", error = "";
+            foreach (char ch in inString)
+            {
+                if (!ValidCharList.Contains(ch))
+                {
+                    error += ch;
+                    valid = false;
+                }
+                else 
+                    parsedString += ch;
+            }
+            byte[] outBytes = new byte[0];
+            try
+            {
+                outBytes = Convert.FromBase64String(inString);
+            } 
+            catch(Exception ex)
+            {
+                outBytes = Convert.FromBase64String(parsedString);
+            }
             return outBytes;
         }
 

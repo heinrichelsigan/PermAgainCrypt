@@ -10,10 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="2025-09-22_Stats.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Area23.At.Framework.Core\Area23.At.Framework.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="2025-09-23_Stats.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Identity3W.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

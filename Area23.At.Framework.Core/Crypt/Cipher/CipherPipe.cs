@@ -111,7 +111,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             HashSet<string> hashBytes = new HashSet<string>();
             foreach (byte bb in keyBytes)
             {
-                byte cb = (byte)((int)((int)bb % 21));
+                byte cb = (byte)((int)((int)bb % 0x19));
                 hexString = string.Format("{0:x2}", cb);
                 if (hexString.Length > 0 && !hashBytes.Contains(hexString))
                     hashBytes.Add(hexString);
@@ -199,12 +199,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    Serpent.SerpentGenWithKey(secretKey, hash, true);
                 //    encryptBytes = Serpent.Encrypt(inBytes);
                 //    break;
-                //case CipherEnum.ZenMatrix:
-                //    encryptBytes = (new ZenMatrix(secretKey, hash, true)).Encrypt(inBytes);
-                //    break;
-                //case CipherEnum.ZenMatrix2:
-                //    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-                //    break;
+                case CipherEnum.ZenMatrix:
+                    encryptBytes = (new ZenMatrix(secretKey, hash, true)).Encrypt(inBytes);
+                    break;
+                case CipherEnum.ZenMatrix2:
+                    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+                    break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -232,8 +232,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Tea:
                 case CipherEnum.Tnepres:
                 case CipherEnum.XTea:
-                case CipherEnum.ZenMatrix:
-                case CipherEnum.ZenMatrix2:
+                // case CipherEnum.ZenMatrix:
+                // case CipherEnum.ZenMatrix2:
                 default:
                     CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
@@ -284,9 +284,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    string privKey = keyPair.Private.ToString();
                 //    decryptBytes = Asymmetric.Rsa.Decrypt(cipherBytes);
                 //    break;
-                //case CipherEnum.ZenMatrix2:
-                //    decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-                //    break;
+                case CipherEnum.ZenMatrix:
+                    decryptBytes = (new ZenMatrix(secretKey, hash, false)).Decrypt(cipherBytes);
+                    break;
+                case CipherEnum.ZenMatrix2:
+                    decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
+                    break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -314,8 +317,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Tea:
                 case CipherEnum.Tnepres:
                 case CipherEnum.XTea:
-                case CipherEnum.ZenMatrix:
-                case CipherEnum.ZenMatrix2:
+                // case CipherEnum.ZenMatrix:
+                // case CipherEnum.ZenMatrix2:
                 default:
                     CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
@@ -360,8 +363,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (zipBefore != ZipType.None)
             {
                 encryptedBytes = zipBefore.Zip(inBytes);
-                inBytes = new byte[encryptedBytes.Length];
-                Array.Copy(encryptedBytes, 0, inBytes, 0, encryptedBytes.Length);
+                inBytes = encryptedBytes;
             }
 
             foreach (CipherEnum cipher in InPipe)
@@ -493,8 +495,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             EncodingType decoding = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None,
             KeyHash keyHash = KeyHash.Hex)
-        {
-            // get bytes from encrypted encoded string dependent on the encoding type(uu, base64, base32,..)
+        {            
             byte[] cipherBytes = decoding.GetEnCoder().Decode(cryptedEncodedMsg);
 
             // perform multi crypt pipe stages
@@ -658,7 +659,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
         public static string DecrpytBytesToString(byte[] cipherBytes, string cryptKey,
             EncodingType decoding = EncodingType.Base64,
-            ZipType unzipAfter =ZipType.None,
+            ZipType unzipAfter = ZipType.None,
             KeyHash keyHash = KeyHash.Hex)
         {
             // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param

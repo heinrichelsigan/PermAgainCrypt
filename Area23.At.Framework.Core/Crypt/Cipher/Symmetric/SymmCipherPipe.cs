@@ -165,11 +165,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
 
             switch (cipherAlgo)
-            {
-                case SymmCipherEnum.Serpent:
-                    Serpent.SerpentGenWithKey(secretKey, hash, true);
-                    encryptBytes = Serpent.Encrypt(inBytes);
-                    break;                                    
+            {                                  
                 case SymmCipherEnum.Aes:
                 case SymmCipherEnum.BlowFish:
                 case SymmCipherEnum.Fish2:
@@ -181,10 +177,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 case SymmCipherEnum.Gost28147:
                 case SymmCipherEnum.Idea:
                 case SymmCipherEnum.Seed:
+                case SymmCipherEnum.Serpent:
+                case SymmCipherEnum.SM4:
                 case SymmCipherEnum.SkipJack:
                 case SymmCipherEnum.Tea:
-                case SymmCipherEnum.XTea:
-                case SymmCipherEnum.ZenMatrix:
+                case SymmCipherEnum.XTea:                
                 default:
                     CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hash);
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
@@ -212,10 +209,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
             switch (cipherAlgo)
             {
-                case SymmCipherEnum.Serpent:
-                    sameKey = Serpent.SerpentGenWithKey(secretKey, hash, true);
-                    decryptBytes = Serpent.Decrypt(cipherBytes);
-                    break;
                 case SymmCipherEnum.Aes:
                 case SymmCipherEnum.BlowFish:
                 case SymmCipherEnum.Fish2:
@@ -227,16 +220,17 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 case SymmCipherEnum.Idea:
                 case SymmCipherEnum.RC532:
                 case SymmCipherEnum.Seed:
+                case SymmCipherEnum.Serpent:
+                case SymmCipherEnum.SM4: 
                 case SymmCipherEnum.SkipJack:
                 case SymmCipherEnum.Tea:
                 case SymmCipherEnum.XTea:
-                case SymmCipherEnum.ZenMatrix:
                 default:
                     CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hash, fishOnAesEngine);
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
                     break;
-            }
+                }
 
             return EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
         }

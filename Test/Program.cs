@@ -14,17 +14,17 @@ namespace Test
             Console.WriteLine("Cipher,ZipType,OpTime,FullName,MB/s,Size KB");
             DateTime startOp = DateTime.Now;
             TimeSpan opTime = TimeSpan.Zero;
-            string fileName = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "Identity3W.gif";
+            string fileName = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
             if (args.Length > 0 && !string.IsNullOrEmpty(args[0]) && File.Exists(args[0]))
                 fileName = args[0];
 
             foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
             {
-                if (cipher == CipherEnum.ZenMatrix || cipher == CipherEnum.ZenMatrix2)
-                    continue;
+                //if (cipher != CipherEnum.ZenMatrix || cipher != CipherEnum.ZenMatrix2)
+                //    continue;
 
                 CipherEnum[] cipherEnums = new CipherEnum[] { cipher };
-                ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.GZip, ZipType.BZip2 };
+                ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.GZip, ZipType.BZip2, ZipType.Zip };
                 CipherPipe pipe = new CipherPipe(cipherEnums);
                 byte[] plainBytes = File.ReadAllBytes(fileName);
                 foreach (ZipType zType in zTypes)

@@ -34,12 +34,12 @@ namespace EU.CqrXs.Console.Core
     /// EU.CqrXs.Console.Program 
     /// -i | --inFile= | --inText={string|EnviromentVariable} | --inStd    
     /// -o | --outFile= | --outText=EnviromentVariable | --outStd
-    /// -u | --unzip={gzip|bzip2}
-    /// -z | --zip={gzip|bzip2}
+    /// -u | --unzip={gzip|bzip2|zip}
+    /// -z | --zip={gzip|bzip2|zip}
     /// -d | --decode={raw|hex16|hex32|base32|base64|uu}
     /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
-    /// -C | --crypt={[des3,fish2,fish3]|key}
-    /// -D | --decrypt={[des3,fish2,fish3]|key}
+    /// -C | --crypt={[aes,des3,blowfish,fish2,fish3]|key}
+    /// -D | --decrypt={[aes,des3,blowfish,fish2,fish3]|key}
     /// -s | --hashSum={md5|sha256|sha512} 
     /// -h | --help 
     /// </summary>

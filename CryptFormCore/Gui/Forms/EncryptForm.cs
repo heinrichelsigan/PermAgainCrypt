@@ -172,12 +172,23 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region ButtonPictureBoxClickEvents
 
+        private void pictureBoxKey_Click(object sender, EventArgs e)
+        {
+            this.textBoxKey.Text = GetEmailFromRegistry();
+        }
+
         private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
                 this.textBoxPipe.Text += cipherEnum.ToString() + ";";
             }
+        }
+
+
+        private void pictureBoxDelete_Click(object sender, EventArgs e)
+        {
+            this.textBoxPipe.Text = "";
         }
 
         private void Clear_Click(object sender, EventArgs e)
@@ -187,6 +198,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.textBoxPipe.Text = string.Empty;
             this.textBoxSrc.Text = string.Empty;
             this.textBoxOut.Text = string.Empty;
+            this.labelOutputFile.Text = string.Empty;
+            this.labelOutputFile.Visible = false;
+            this.pictureBoxOutFile.Tag = null;
+            this.pictureBoxOutFile.Visible = false;
+            this.labelFileIn.Text = "[no file selected]";
+            this.pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.file;
         }
 
         private void Hash_Click(object sender, EventArgs e)
@@ -219,16 +236,25 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e"></param>
         private void Encrypt_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.textBoxPipe.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
+            if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
+                CipherEnum[] pipeAlgos = CipherEnumExtensions.FromString(this.textBoxKey.Text);
+                CipherPipe cPipe = new CipherPipe(pipeAlgos);
+
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
-                    if (menuItemNone.Checked)
-                        SetEncoding(menuBase64);
+                    try
+                    {
+                        if (menuItemNone.Checked)
+                            SetEncoding(menuBase64);
 
-                    CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.textBoxOut.Text = encrypted;
+                        string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                        this.textBoxOut.Text = encrypted;
+                    }
+                    catch (Exception ex)
+                    {
+                        Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
+                    }
                 }
                 if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
@@ -238,7 +264,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             if (Path.GetFileName(file) == labelFileIn.Text)
                             {
-                                CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+                                // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                                 string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + "." + GetHash());
@@ -266,16 +292,27 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e"></param>
         private void Decrypt_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(this.textBoxPipe.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
+            if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
+
+                CipherEnum[] pipeAlgos = CipherEnumExtensions.FromString(this.textBoxKey.Text);
+                CipherPipe cPipe = new CipherPipe(pipeAlgos);
+
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
-                    if (menuItemNone.Checked)
-                        SetEncoding(menuBase64);
+                    try
+                    {
+                        if (menuItemNone.Checked)
+                            SetEncoding(menuBase64);
 
-                    CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.textBoxOut.Text = decrypted;
+                        // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+                        string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                        this.textBoxOut.Text = decrypted;
+                    } 
+                    catch (Exception ex)
+                    {
+                        Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
+                    }
                 }
                 if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
@@ -285,7 +322,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             if (Path.GetFileName(file) == labelFileIn.Text)
                             {
-                                CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+                                // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                                 string outFileDecrypt = file.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + "." + GetHash(), "");
@@ -312,7 +349,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser, "Software\\Microsoft\\OneDrive\\Accounts\\Personal", "UserEmail");
                 if (userEmail.Contains('@') && userEmail.Contains('.'))
                     return userEmail;
-            } 
+            }
             catch (Exception)
             {
             }
@@ -691,6 +728,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #endregion Media Methods
+
 
 
 

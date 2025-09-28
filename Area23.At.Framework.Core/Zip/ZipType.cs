@@ -52,7 +52,7 @@ namespace Area23.At.Framework.Core.Zip
                     case ZipType.Zip: return ".zip";
                     case ZipType.GZip: return ".gz";
                     case ZipType.BZip2: return ".bz2";
-                    case ZipType.Z7: return ".7z";
+                    case ZipType.Z7: // return ".7z";
                     case ZipType.None:
                     default: break;
                 }
