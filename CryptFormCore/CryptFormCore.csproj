@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Area23.At.WinForm.CryptFormCore</RootNamespace>
+    <Copyright>Copyleft ©  2000 - 2040</Copyright>
+    <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
+    <AssemblyVersion>2.25.928</AssemblyVersion>
+    <FileVersion>2.25.928</FileVersion>
+    <Description>area23.at Heinrich Elsigan</Description>
+    <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
+    <Title>Transparent Form .NetCore</Title>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="res\text\**" />
+    <EmbeddedResource Remove="res\text\**" />
+    <None Remove="res\text\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Program.cs.txt" />
+  </ItemGroup>
+    
+	<ItemGroup>
+        <Compile Update="Gui\Forms\EncryptForm.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="UI\Forms\TransparentBadge.cs" />
+    </ItemGroup>
+    
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <Folder Include="res\bin\" />
+	  <Folder Include="res\out\" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <ProjectReference Include="..\Area23.At.Framework.Core\Area23.At.Framework.Core.csproj" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <None Update="log\XMLFile1.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>
