@@ -10,8 +10,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.928</AssemblyVersion>
-    <FileVersion>2.25.928</FileVersion>
+    <AssemblyVersion>2.25.1009</AssemblyVersion>
+    <FileVersion>2.25.1009</FileVersion>
     <Description>area23.at Heinrich Elsigan</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
     <Title>Transparent Form .NetCore</Title>
