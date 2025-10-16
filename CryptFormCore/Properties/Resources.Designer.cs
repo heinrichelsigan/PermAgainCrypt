@@ -293,6 +293,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon icon_sandclock {
+            get {
+                object obj = ResourceManager.GetObject("icon_sandclock", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon icon_warning {
             get {
                 object obj = ResourceManager.GetObject("icon_warning", resourceCulture);

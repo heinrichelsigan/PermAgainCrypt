@@ -318,14 +318,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Encrypt_Click(object sender, EventArgs e)
-        {
+        {            
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
+                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
+                    this.textBoxOut.Text = "";                    
+                    Cursor.Current = new Cursor(iconSandClock.Handle);
                     try
                     {
                         if (menuItemNone.Checked)
@@ -333,6 +336,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
                         string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                         this.textBoxOut.Text = encrypted;
+                        Cursor.Current = DefaultCursor;
                     }
                     catch (Exception ex)
                     {
@@ -347,6 +351,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             if (Path.GetFileName(file) == labelFileIn.Text)
                             {
+                                Cursor.Current = new Cursor(iconSandClock.Handle);
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
@@ -359,6 +364,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 labelOutputFile.Visible = true;
                                 HashFiles.Add(outFilePath);
 
+                                Cursor.Current = DefaultCursor;
                                 break;
                             }
                         }
@@ -377,12 +383,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
+                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
 
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
+                    this.textBoxOut.Text = "";                    
+                    Cursor.Current = new Cursor(iconSandClock.Handle);
+
+                    this.textBoxOut.Text = "";                    
                     try
                     {
                         if (menuItemNone.Checked)
@@ -391,6 +402,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                         string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                         this.textBoxOut.Text = decrypted;
+                        Cursor.Current = DefaultCursor;
                     } 
                     catch (Exception ex)
                     {
@@ -405,6 +417,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             if (Path.GetFileName(file) == labelFileIn.Text)
                             {
+                                Cursor.Current = new Cursor(iconSandClock.Handle);
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
@@ -416,6 +429,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 pictureBoxOutFile.Tag = outFileDecrypt;
                                 labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
                                 labelOutputFile.Visible = true;
+
+                                Cursor.Current = DefaultCursor;
                                 break;
                             }
                         }

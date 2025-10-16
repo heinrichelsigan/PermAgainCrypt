@@ -627,6 +627,7 @@
             textBoxSrc.Font = new Font("Lucida Sans Unicode", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxSrc.Location = new Point(10, 350);
             textBoxSrc.Margin = new Padding(2);
+            textBoxSrc.MaxLength = 524288;
             textBoxSrc.Multiline = true;
             textBoxSrc.Name = "textBoxSrc";
             textBoxSrc.ScrollBars = ScrollBars.Vertical;
@@ -639,6 +640,7 @@
             textBoxOut.Font = new Font("Lucida Sans Unicode", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxOut.Location = new Point(394, 350);
             textBoxOut.Margin = new Padding(2);
+            textBoxOut.MaxLength = 524288;
             textBoxOut.Multiline = true;
             textBoxOut.Name = "textBoxOut";
             textBoxOut.ReadOnly = true;
