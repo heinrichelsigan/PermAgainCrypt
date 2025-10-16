@@ -13,6 +13,7 @@ Great Thanx to https://www.bouncycastle.org/ https://github.com/bcgit
 
 Test Projects inside
 ## WinFormCore:
+https://youtu.be/5J3R1gg-jjA
 <img width="788" height="698" alt="image" src="https://github.com/user-attachments/assets/6c9cc075-d8f5-4dbe-ac8b-af9684d964bd" />
 
 ## Console Application:
