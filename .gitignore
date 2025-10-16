@@ -409,3 +409,5 @@ FodyWeavers.xsd
 /www/mono/res/out/*.fish3
 
 /WinForm/SecureChat/AttachFiles
+/Deploy
+/Deploy/CryptFormCore_x86.exe
