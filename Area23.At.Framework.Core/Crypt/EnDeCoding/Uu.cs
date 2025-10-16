@@ -246,7 +246,6 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
                 memStream.Position = 0;
                 plainBytes = memStream.ToByteArray();
                 Area23Log.LogOriginMsg("Uu", $"FromUu: read {plainBytes.Length} bytes from MemoryStream.");
-                memStream.Close();
             }
             catch
             {
