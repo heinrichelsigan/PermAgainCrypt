@@ -36,6 +36,9 @@
   </ItemGroup>
     
 	<ItemGroup>
+        <Compile Update="Gui\Forms\EncryptSimpleForm.cs">
+          <SubType>Form</SubType>
+        </Compile>
         <Compile Update="Gui\Forms\EncryptForm.cs">
           <SubType>Form</SubType>
         </Compile>

@@ -101,10 +101,9 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         public static string EncodeBytes(byte[] inBytes, EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)
         {
             Area23Log.LogOriginMsg("EnDeCodeHelper", 
-                "EncodeEncryptedBytes(byte[] inBytes.[Length=" + inBytes.Length + "], EncodingType encodingType =  "
-                + encodingType.ToString() + ", bool fromPlain = " + fromPlain + ", bool fromFile = " + fromFile + ")");
+                "EncodeEncryptedBytes(byte[] inBytes.[Length=" + inBytes.Length + "], EncodingType encodingType =  " + encodingType.ToString() + ")");
 
-            string encryptedText = EnDeCodeHelper.Encode(inBytes, encodingType, fromPlain, fromFile);
+            string encryptedText = EnDeCodeHelper.Encode(inBytes, encodingType);
 
             return encryptedText;
         }
@@ -349,11 +348,9 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         }
 
 
-        public static string Encode(byte[] inBytes, EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)
+        public static string Encode(byte[] inBytes, EncodingType encodingType = EncodingType.Base64)
         {
-            IDecodable enc = encodingType.GetEnCoder();
-            if (encodingType == EncodingType.Uu)
-                return Uu.Encode(inBytes, fromPlain, fromFile);
+            IDecodable enc = encodingType.GetEnCoder();            
             return enc.Encode(inBytes);
 
         }

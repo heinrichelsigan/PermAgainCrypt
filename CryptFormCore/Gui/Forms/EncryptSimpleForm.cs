@@ -10,7 +10,7 @@ using System.Media;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
-    public partial class EncryptForm : System.Windows.Forms.Form
+    public partial class EncryptSimpleForm : System.Windows.Forms.Form
     {
 
         Cursor NormalCursor, NoDropCursor;
@@ -22,7 +22,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
         internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
 
-        public EncryptForm()
+        public EncryptSimpleForm()
         {
             InitializeComponent();
         }
@@ -146,10 +146,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHex32.Checked = false;
             menuBase64.Checked = false;
             menuUu.Checked = false;
-            menuXx.Checked = false;
 
             if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("menuBase") || mi.Name.StartsWith("menuHex") || mi.Name.StartsWith("menuUu") || mi.Name.StartsWith("menuXx")))
+                (mi.Name.StartsWith("menuBase") || mi.Name.StartsWith("menuHex") || mi.Name.StartsWith("menuUu")))
             {
                 mi.Checked = true;
             }
@@ -164,7 +163,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (menuBase32.Checked) return EncodingType.Base32;
             if (menuHex32.Checked) return EncodingType.Hex32;
             if (menuUu.Checked) return EncodingType.Uu;
-            if (menuXx.Checked) return EncodingType.Xx;
+            // if (menuBase64.Checked) return EncodingType.Base64;
             menuBase64.Checked = true;
             return EncodingType.Base64;
 
