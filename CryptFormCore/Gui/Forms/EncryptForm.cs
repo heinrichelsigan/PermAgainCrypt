@@ -244,7 +244,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                CipherEnum[] pipeAlgos = CipherEnumExtensions.FromString(this.textBoxKey.Text);
+                CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
@@ -301,7 +301,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
 
-                CipherEnum[] pipeAlgos = CipherEnumExtensions.FromString(this.textBoxKey.Text);
+                CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
