@@ -203,6 +203,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blowfish {
+            get {
+                object obj = ResourceManager.GetObject("blowfish", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close_delete {
             get {
                 object obj = ResourceManager.GetObject("close_delete", resourceCulture);
@@ -226,6 +236,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap decrypted {
             get {
                 object obj = ResourceManager.GetObject("decrypted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Des {
+            get {
+                object obj = ResourceManager.GetObject("Des", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -271,6 +291,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon_warning {
+            get {
+                object obj = ResourceManager.GetObject("icon_warning", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap key_ring {
@@ -306,6 +336,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap MenuImageOld {
             get {
                 object obj = ResourceManager.GetObject("MenuImageOld", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Serpent {
+            get {
+                object obj = ResourceManager.GetObject("Serpent", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -367,6 +407,26 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Tea {
+            get {
+                object obj = ResourceManager.GetObject("Tea", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ThreeFish {
+            get {
+                object obj = ResourceManager.GetObject("ThreeFish", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap TransparentMenuImage {
             get {
                 object obj = ResourceManager.GetObject("TransparentMenuImage", resourceCulture);
@@ -387,9 +447,39 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap TripleDes {
+            get {
+                object obj = ResourceManager.GetObject("TripleDes", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TwoFish {
+            get {
+                object obj = ResourceManager.GetObject("TwoFish", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap WinFormAboutDialog {
             get {
                 object obj = ResourceManager.GetObject("WinFormAboutDialog", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap XTea {
+            get {
+                object obj = ResourceManager.GetObject("XTea", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

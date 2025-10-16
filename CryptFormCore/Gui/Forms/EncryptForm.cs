@@ -20,6 +20,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal static HashSet<string> HashFiles = new HashSet<string>();
         internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
+        internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
 
         public EncryptForm()
         {
@@ -67,6 +68,40 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
+        internal virtual void SetPictureBoxImage(PictureBox pictBox, Image image, bool visible = true)
+        {
+            if (pictBox != null && image != null)
+            {
+                if (InvokeRequired)
+                {
+                    SetPictureBoxCallback setPictureBoxDelegate = delegate (PictureBox pBox, Image img, bool showing)
+                    {
+                        if (pBox != null && img != null)
+                        {
+                            pBox.Image = img;
+                            pBox.Visible = showing;
+                        }
+                            
+                    };
+                    try
+                    {
+                        Invoke(setPictureBoxDelegate, new object[] { pictBox, image, visible });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\".\n");
+                    }
+                }
+                else
+                {
+                    if (this != null && this.Name != null && image != null)
+                    {
+                        pictBox.Image = image;
+                        pictBox.Visible = visible;
+                    }
+                }
+            }
+        }
 
 
         #region MenuCompressionEncodingZipHash
@@ -185,9 +220,51 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
+            CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
-                this.textBoxPipe.Text += cipherEnum.ToString() + ";";
+                if (cipherAlgors.Length <= 8)                
+                {
+                    switch (cipherEnum)
+                    {
+                        case CipherEnum.BlowFish:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.blowfish, true);
+                            break;
+                        case CipherEnum.Fish2:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TwoFish, true);
+                            break;
+                        case CipherEnum.Fish3:
+                        case CipherEnum.ThreeFish256:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, true);
+                            break;
+                        case CipherEnum.Serpent:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Serpent, true);
+                            break;
+                        case CipherEnum.XTea:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.XTea, true);
+                            break;
+                        case CipherEnum.Tea:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Tea, true);
+                            break;
+                        case CipherEnum.Des:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Des, true);
+                            break;
+                        case CipherEnum.Des3:
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TripleDes, true);
+                            break;
+                        default:
+                            break;
+                    }                    
+                    this.textBoxPipe.Text += cipherEnum.ToString() + ";";
+                    resetPictureBoxFiles(sender, e);
+                }
+                else
+                {
+                    notifyIcon1.Text = "Max 8 algorithms in pipe reached!";
+                    notifyIcon1.Icon = Properties.Resources.icon_warning;
+                    notifyIcon1.BalloonTipTitle = "Warning";
+                    notifyIcon1.ShowBalloonTip(3600, "Warning", "Max 8 algorithms in pipe reached!", ToolTipIcon.Warning);
+                }
             }
         }
 
@@ -717,8 +794,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return played;
         }
 
-
-
         protected virtual async Task<bool> PlaySoundFromResourcesAsync(string soundName)
         {
             return await Task.Run(() => PlaySoundFromResource(soundName));
@@ -731,6 +806,21 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             {
                 ProcessCmd.Execute("explorer", pictureBoxOutFile.Tag.ToString());
             }
+        }
+
+        protected void resetPictureBoxFiles(object sender, EventArgs e)
+        {
+            System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 2225 };
+            resetPictureBoxFileTimer.Elapsed += (s, en) =>
+            {
+                Task.Run(new System.Action(() =>
+                {
+                    SetPictureBoxImage(this.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, true);
+                    SetPictureBoxImage(this.pictureBoxOutFile, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, false);
+                }));
+                resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
+            };
+            resetPictureBoxFileTimer.Start();
         }
 
         #endregion Media Methods
