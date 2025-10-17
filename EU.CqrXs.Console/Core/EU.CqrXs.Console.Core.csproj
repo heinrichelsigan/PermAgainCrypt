@@ -18,8 +18,8 @@
     <Copyright>Copyright © 2000-2040 Copyleft https://cqrxs.eu</Copyright>
     <PackageProjectUrl>https://cqrxs.eu/download/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/heinrichelsigan/chat-ipv6</RepositoryUrl>
-    <AssemblyVersion>2.25.1016</AssemblyVersion>
-    <FileVersion>2.25.1016</FileVersion>
+    <AssemblyVersion>2.25.1017</AssemblyVersion>
+    <FileVersion>2.25.1017</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
