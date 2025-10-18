@@ -161,6 +161,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         break;
                 }
             }
+            notifyIcon1.Icon = ToolTipIcon.Info;
+            notifyIcon1.Text = $"ZipType {zipType.ToString()} set.";
             notifyIcon1.Visible = true;
             notifyIcon1.ShowBalloonTip(1250, "Info", $"ZipType {zipType.ToString()} set.", ToolTipIcon.Info);
         }
@@ -233,6 +235,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     default: menuBase64.Checked = true; break;
                 }
             }
+            notifyIcon1.Icon = ToolTipIcon.Info;
+            notifyIcon1.Text = $"Encoding {encodingType.ToString()} set.";
             notifyIcon1.Visible = true;
             notifyIcon1.ShowBalloonTip(1000, "Info", $"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info);
         }
@@ -275,7 +279,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
 
                 Hash_Click(this, new EventArgs());
-                notifyIcon1.ShowBalloonTip(1000, "Info", $"Hash {GetHash().ToString()} set.", ToolTipIcon.Info);
+                notifyIcon1.Icon = ToolTipIcon.Info;
+                notifyIcon1.Text = $"{GetHash().ToString()} hashed."
+                notifyIcon1.ShowBalloonTip(1000, "Info", $"{GetHash().ToString()} hashed.", ToolTipIcon.Info);
             }
         }
 
