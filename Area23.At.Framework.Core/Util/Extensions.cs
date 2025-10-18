@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Area23.At.Framework.Core.Util
@@ -138,7 +139,8 @@ namespace Area23.At.Framework.Core.Util
         {
             using (MemoryStream ms = new MemoryStream(bytes))
             {
-                using (Image img = Image.FromStream(ms))
+                // using (System.Net.Mime.MediaTypeNames.Image img = System.Net.Mime.MediaTypeNames.Image.FromStream(ms))
+                using (System.Drawing.Image img = System.Drawing.Image.FromStream(ms))
                 {
                     return ImageCodecInfo.GetImageEncoders().First(codec => codec.FormatID == img.RawFormat.Guid).MimeType;
                 }
@@ -446,7 +448,7 @@ namespace Area23.At.Framework.Core.Util
         /// </summary>
         /// <param name="base64">base64 encoded string</param>
         /// <returns>Image?</returns>
-        public static Image? Base64ToImage(this string base64)
+        public static System.Drawing.Image? Base64ToImage(this string base64)
         {
             Bitmap? bitmap = null;
             try
@@ -694,7 +696,7 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="imageFormat"><see cref="ImageFormat"/></param>
         /// <param name="g"><see cref="Guid">out Guid g</see></param>
         /// <returns><see cref="MemoryStream"/></returns>
-        public static MemoryStream SaveRawToMemoryStream(this Image img, ImageFormat imageFormat, out Guid? g)
+        public static MemoryStream SaveRawToMemoryStream(this System.Drawing.Image img, ImageFormat imageFormat, out Guid? g)
         {
             imageFormat = imageFormat ?? img.RawFormat;
             g = imageFormat.Guid;
@@ -710,7 +712,7 @@ namespace Area23.At.Framework.Core.Util
         /// </summary>
         /// <param name="img">this <see cref="Image"/></param>
         /// <returns><see cref="byte[]?"/> array</returns>
-        public static byte[] ToByteArray(this Image img)
+        public static byte[] ToByteArray(this System.Drawing.Image img)
         {
             byte[] bytes;
             MemoryStream ms = new MemoryStream();
@@ -773,7 +775,7 @@ namespace Area23.At.Framework.Core.Util
         /// </summary>
         /// <param name="img">this <see cref="Image"/></param>
         /// <returns>base64 encoded <see cref="string?"/></returns>
-        public static string? ToBase64(this Image img)
+        public static string? ToBase64(this System.Drawing.Image img)
         {
             string? base64 = null;
             byte[] bytes;

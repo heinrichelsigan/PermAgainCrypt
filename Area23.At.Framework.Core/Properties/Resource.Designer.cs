@@ -109,6 +109,24 @@ namespace Area23.At.Framework.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to %
+        ///There was once a programmer who was attached to the court of the
+        ///warlord of Wu.  The warlord asked the programmer: &quot;Which is easier to design:
+        ///an accounting package or an operating system?&quot;
+        ///&quot;An operating system,&quot; replied the programmer.
+        ///The warlord uttered an exclamation of disbelief.  &quot;Surely an
+        ///accounting package is trivial next to the complexity of an operating
+        ///system,&quot; he said.
+        ///&quot;Not so,&quot; said the programmer, &quot;when designing an accounting package,
+        ///the programmer operates as a mediator between  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string fortune_u8 {
+            get {
+                return ResourceManager.GetString("fortune_u8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
         /// </summary>
         internal static string github_uri {
@@ -209,98 +227,6 @@ namespace Area23.At.Framework.Core.Properties {
             get {
                 object obj = ResourceManager.GetObject("ImageHash", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ImageKey {
-            get {
-                object obj = ResourceManager.GetObject("ImageKey", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ImageSkull {
-            get {
-                object obj = ResourceManager.GetObject("ImageSkull", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to fcKZpNSKLTs=.
-        /// </summary>
-        internal static string M0Rlc0l2 {
-            get {
-                return ResourceManager.GetString("M0Rlc0l2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUwQkE=.
-        /// </summary>
-        internal static string Q0FTVExF {
-            get {
-                return ResourceManager.GetString("Q0FTVExF", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to GvJd0SRyg3AcTF4Sidyrn/nJM1BNUJqKms19FZKx1Z4=.
-        /// </summary>
-        internal static string Qk9VTkNF {
-            get {
-                return ResourceManager.GetString("Qk9VTkNF", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0ersgfaO/uP7+HrpTwZjU9VoyobLofw7KvwCAcOVMRc=.
-        /// </summary>
-        internal static string QWVzS2V5 {
-            get {
-                return ResourceManager.GetString("QWVzS2V5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 6pU0BotI3zzF0cWKz56bkQ==.
-        /// </summary>
-        internal static string QWVzSXY0 {
-            get {
-                return ResourceManager.GetString("QWVzSXY0", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to C6S5DegwbQopnitJnAu/g4BXa0M32ZGZ.
-        /// </summary>
-        internal static string RGVzS2V5 {
-            get {
-                return ResourceManager.GetString("RGVzS2V5", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to v2.25.426.
-        /// </summary>
-        internal static string version_name {
-            get {
-                return ResourceManager.GetString("version_name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
-        /// </summary>
-        internal static string wiki_uri {
-            get {
-                return ResourceManager.GetString("wiki_uri", resourceCulture);
             }
         }
     }

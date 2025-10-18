@@ -26,23 +26,23 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
         public string PipeString { get => pipeString; }
 
-#if DEBUG
-        public Dictionary<CipherEnum, byte[]> stageDictionary = new Dictionary<CipherEnum, byte[]>();
+//#if DEBUG
+//        public Dictionary<CipherEnum, byte[]> stageDictionary = new Dictionary<CipherEnum, byte[]>();
 
-        public string HexStages
-        {
-            get
-            {
-                string hexOut = string.Empty;
-                foreach (var stage in stageDictionary)
-                {
-                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
-                }
+//        public string HexStages
+//        {
+//            get
+//            {
+//                string hexOut = string.Empty;
+//                foreach (var stage in stageDictionary)
+//                {
+//                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
+//                }
 
-                return hexOut;
-            }
-        }
-#endif
+//                return hexOut;
+//            }
+//        }
+//#endif
 
         #endregion fields and properties
 
@@ -356,10 +356,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
             byte[] encryptedBytes = new byte[inBytes.Length];
             Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
-#if DEBUG
-            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
-#endif
+//#if DEBUG
+//            stageDictionary = new Dictionary<CipherEnum, byte[]>();
+//            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
+//#endif
             if (zipBefore != ZipType.None)
             {
                 encryptedBytes = zipBefore.Zip(inBytes);
@@ -370,9 +370,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             {
                 encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
                 inBytes = encryptedBytes;
-#if DEBUG
-                stageDictionary.Add(cipher, encryptedBytes);
-#endif
+//#if DEBUG
+//                stageDictionary.Add(cipher, encryptedBytes);
+//#endif
             }
 
             return encryptedBytes;
@@ -400,10 +400,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             cipherHash = hash;
 
             byte[] decryptedBytes = new byte[cipherBytes.Length];
-#if DEBUG
-            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
-#endif 
+//#if DEBUG
+//            stageDictionary = new Dictionary<CipherEnum, byte[]>();
+//            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
+//#endif 
             if (OutPipe == null || OutPipe.Length == 0)
                 Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
             else
@@ -411,9 +411,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 {
                     decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
                     cipherBytes = decryptedBytes;
-#if DEBUG
-                    stageDictionary.Add(cipher, cipherBytes);
-#endif
+//#if DEBUG
+//                    stageDictionary.Add(cipher, cipherBytes);
+//#endif
                 }
 
             if (unzipAfter != ZipType.None)

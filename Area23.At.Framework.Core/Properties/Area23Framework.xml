@@ -2015,6 +2015,20 @@
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.fortune_u8">
+             <summary>
+               Looks up a localized string similar to %
+            There was once a programmer who was attached to the court of the
+            warlord of Wu.  The warlord asked the programmer: &quot;Which is easier to design:
+            an accounting package or an operating system?&quot;
+            &quot;An operating system,&quot; replied the programmer.
+            The warlord uttered an exclamation of disbelief.  &quot;Surely an
+            accounting package is trivial next to the complexity of an operating
+            system,&quot; he said.
+            &quot;Not so,&quot; said the programmer, &quot;when designing an accounting package,
+            the programmer operates as a mediator between  [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.github_uri">
             <summary>
               Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
@@ -2069,56 +2083,6 @@
         <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageHash">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageKey">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageSkull">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.M0Rlc0l2">
-            <summary>
-              Looks up a localized string similar to fcKZpNSKLTs=.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.Q0FTVExF">
-            <summary>
-              Looks up a localized string similar to MEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUwQkE=.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.Qk9VTkNF">
-            <summary>
-              Looks up a localized string similar to GvJd0SRyg3AcTF4Sidyrn/nJM1BNUJqKms19FZKx1Z4=.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.QWVzS2V5">
-            <summary>
-              Looks up a localized string similar to 0ersgfaO/uP7+HrpTwZjU9VoyobLofw7KvwCAcOVMRc=.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.QWVzSXY0">
-            <summary>
-              Looks up a localized string similar to 6pU0BotI3zzF0cWKz56bkQ==.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.RGVzS2V5">
-            <summary>
-              Looks up a localized string similar to C6S5DegwbQopnitJnAu/g4BXa0M32ZGZ.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.version_name">
-            <summary>
-              Looks up a localized string similar to v2.25.426.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.wiki_uri">
-            <summary>
-              Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
             </summary>
         </member>
         <member name="T:Area23.At.Framework.Core.Util.Area23EventArgs`1">
@@ -2775,6 +2739,12 @@
             <param name="ci">CultureInfo for currently used language</param>
             <param name="args">object[] arguments needed for <see cref="M:System.String.Format(System.String,System.Object[])"/></param>
             <returns>string in local language fetched from resource file</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.ResReader.GetFortunes">
+            <summary>
+            GetFortunes from ressource file
+            </summary>
+            <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Util.SLog" -->
         <member name="P:Area23.At.Framework.Core.Util.SLog.LogFile">

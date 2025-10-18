@@ -7,6 +7,7 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
 using System.Media;
+using System.Net.NetworkInformation;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
@@ -110,25 +111,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         private void SetCompression(ToolStripMenuItem mi)
         {
-            menu7z.Checked = false;
-            menuBZip2.Checked = false;
-            menuGzip.Checked = false;
-            menuZip.Checked = false;
-            menuCompressionNone.Checked = false;
-
-            if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("menu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
+            if (!mi.Checked)
             {
-                mi.Checked = true;
+                menu7z.Checked = false;
+                menuBZip2.Checked = false;
+                menuGZip.Checked = false;
+                menuZip.Checked = false;
+                menuCompressionNone.Checked = false;
+
+                if (mi != null && mi.Name != null &&
+                    (mi.Name.StartsWith("menu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("GZip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
+                {
+                    mi.Checked = true;
+                }
+                ZipType zipType = ZipTypeExtensions.GetZipType(mi.Name);
+                notifyIcon1.ShowBalloonTip(1000, "Info", $"{zipType.ToString()} set.", ToolTipIcon.Info);
             }
-            ZipType zipType = ZipTypeExtensions.GetZipType(mi.Name);
         }
 
         protected ZipType GetZip()
         {
             if (menu7z.Checked) return ZipType.Z7;
             if (menuBZip2.Checked) return ZipType.BZip2;
-            if (menuGzip.Checked) return ZipType.GZip;
+            if (menuGZip.Checked) return ZipType.GZip;
             if (menuZip.Checked) return ZipType.Zip;
             // if (menuCompressionNone.Checked) return ZipType.None;
             menuCompressionNone.Checked = true;
@@ -359,7 +364,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + "." + GetHash());
                                 SaveBytesDialog(outBytes, ref outFilePath);
                                 pictureBoxOutFile.Visible = true;
-                                pictureBoxOutFile.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.encrypted;
+                                pictureBoxOutFile.Image = outFilePath.GetImageThumbnailFromFile();
                                 string outFileName = Path.GetFileName(outFilePath);
                                 labelOutputFile.Text = outFileName;
                                 labelOutputFile.Visible = true;
@@ -426,7 +431,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 SaveBytesDialog(outBytes, ref outFileDecrypt);
                                 HashFiles.Add(outFileDecrypt);
                                 pictureBoxOutFile.Visible = true;
-                                pictureBoxOutFile.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.decrypted;
+                                pictureBoxOutFile.Image = outFileDecrypt.GetImageThumbnailFromFile();
                                 pictureBoxOutFile.Tag = outFileDecrypt;
                                 labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
                                 labelOutputFile.Visible = true;
@@ -596,10 +601,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             this.textBoxSrc.Text = string.Empty;
                             this.textBoxOut.Text = string.Empty;
-                            if (Path.GetExtension(file).Length > 7)
-                                pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.encrypted;
-                            else
-                                pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.file;
+                            pictureBoxFileIn.Image = file.GetImageThumbnailFromFile();                            
                             this.labelFileIn.Text = Path.GetFileName(file);
                             Task.Run(() => PlaySoundFromResource("sound_arrow"));
                             // HashFiles = new HashSet<string>();
@@ -636,11 +638,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK && !string.IsNullOrEmpty(dialog.FileName) && System.IO.File.Exists(dialog.FileName))
             {
-                if (Path.GetExtension(dialog.FileName).Length > 7)
-                    pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.encrypted;
-                else
-                    pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.file;
-
+                pictureBoxFileIn.Image = dialog.FileName.GetImageThumbnailFromFile();
                 this.labelFileIn.Text = Path.GetFileName(dialog.FileName);
                 HashFiles = new HashSet<string>();
                 HashFiles.Add(dialog.FileName);

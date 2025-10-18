@@ -23,23 +23,23 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
         public string PipeString { get => pipeString; }
 
-#if DEBUG
-        public Dictionary<SymmCipherEnum, byte[]> stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+//#if DEBUG
+//        public Dictionary<SymmCipherEnum, byte[]> stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
 
-        public string HexStages
-        {
-            get
-            {
-                string hexOut = string.Empty;
-                foreach (var stage in stageDictionary)
-                {
-                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
-                }
+//        public string HexStages
+//        {
+//            get
+//            {
+//                string hexOut = string.Empty;
+//                foreach (var stage in stageDictionary)
+//                {
+//                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
+//                }
 
-                return hexOut;
-            }
-        }
-#endif
+//                return hexOut;
+//            }
+//        }
+//#endif
 
         #region ctor SymmCipherPipe
 
@@ -258,10 +258,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
             byte[] encryptedBytes = new byte[inBytes.Length];
             Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
-#if DEBUG
-            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
-            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, inBytes);
-#endif
+//#if DEBUG
+//            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+//            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, inBytes);
+//#endif
             if (zipBefore != ZipType.None)
             {
                 encryptedBytes = zipBefore.Zip(inBytes);
@@ -272,9 +272,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             {
                 encryptedBytes = EncryptBytesFast(inBytes, symmCipher, secretKey, hashIv);
                 inBytes = encryptedBytes;
-#if DEBUG
-                stageDictionary.Add(symmCipher, encryptedBytes);
-#endif
+//#if DEBUG
+//                stageDictionary.Add(symmCipher, encryptedBytes);
+//#endif
             }
 
             return encryptedBytes;
@@ -303,10 +303,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
             long outByteLen = (OutPipe == null || OutPipe.Length == 0) ? cipherBytes.Length : ((cipherBytes.Length * 3) + 1);
             byte[] decryptedBytes = new byte[outByteLen];
-#if DEBUG
-            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
-            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, cipherBytes);
-#endif 
+//#if DEBUG
+//            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+//            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, cipherBytes);
+//#endif 
             if (OutPipe == null || OutPipe.Length == 0)
                 Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
             else
@@ -314,9 +314,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 {
                     decryptedBytes = DecryptBytesFast(cipherBytes, symmCipher, secretKey, hashIv);
                     cipherBytes = decryptedBytes;
-#if DEBUG
-                    stageDictionary.Add(symmCipher, cipherBytes);
-#endif
+//#if DEBUG
+//                    stageDictionary.Add(symmCipher, cipherBytes);
+//#endif
                 }
 
             if (unzipAfter != ZipType.None)

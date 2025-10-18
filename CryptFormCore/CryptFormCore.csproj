@@ -10,11 +10,11 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.1017</AssemblyVersion>
-    <FileVersion>2.25.1017</FileVersion>
+    <AssemblyVersion>2.25.1018</AssemblyVersion>
+    <FileVersion>2.25.1018</FileVersion>
     <Description>area23.at Heinrich Elsigan</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
-    <Title>Transparent Form .NetCore</Title>
+    <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,7 +36,7 @@
   </ItemGroup>
     
 	<ItemGroup>
-        <Compile Update="Gui\Forms\EncryptSimpleForm.cs">
+        <Compile Update="Gui\Forms\EncryptFormSimple.cs">
           <SubType>Form</SubType>
         </Compile>
         <Compile Update="Gui\Forms\EncryptForm.cs">
@@ -67,9 +67,11 @@
 	</ItemGroup>
     
 	<ItemGroup>
-	  <None Update="log\XMLFile1.xml">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
+		<Compile Remove="res\text\**" />
+        <EmbeddedResource Remove="res\text\**" />
+		<None Update="log\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

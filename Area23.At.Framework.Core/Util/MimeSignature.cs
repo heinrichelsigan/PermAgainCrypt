@@ -270,6 +270,9 @@ namespace Area23.At.Framework.Core.Util
             new MimeTypeExtSig(".heifs", "image/heif-sequence", MimeSignature._HEIF),
             new MimeTypeExtSig(".tif", "image/tiff", MimeSignature._TIF),
             new MimeTypeExtSig(".tiff", "image/tiff", MimeSignature._TIF),
+            new MimeTypeExtSig(".png", "image/png", MimeSignature._PNG),
+            new MimeTypeExtSig(".pnz", "image/png", MimeSignature._PNG), 
+
             new MimeTypeExtSig(".wav", "audio/wav", MimeSignature._WAV),
             new MimeTypeExtSig(".mp3", "audio/mpeg", MimeSignature._MP3),
             new MimeTypeExtSig(".wave", "audio/wav", MimeSignature._WAV),
@@ -341,6 +344,7 @@ namespace Area23.At.Framework.Core.Util
             new MimeTypeExtSig(".vst", "application/vnd.visio", MimeSignature._VSDX),
 
             new MimeTypeExtSig(".pdf", "application/pdf", MimeSignature._PDF),
+
             new MimeTypeExtSig(".xrm-ms", "text/xml", MimeSignature._XML),
             new MimeTypeExtSig(".xsc", "application/xml", MimeSignature._XML),
             new MimeTypeExtSig(".xsd", "text/xml", MimeSignature._XML),
@@ -1444,12 +1448,11 @@ namespace Area23.At.Framework.Core.Util
             new MimeTypeExtSig(".pmc", "application/x-perfmon" },
             new MimeTypeExtSig(".pml", "application/x-perfmon" },
             new MimeTypeExtSig(".pmr", "application/x-perfmon" },
-            new MimeTypeExtSig(".pmw", "application/x-perfmon" },
-            new MimeTypeExtSig(".png", "image/png" },
+            new MimeTypeExtSig(".pmw", "application/x-perfmon" },            
             new MimeTypeExtSig(".pnm", "image/x-portable-anymap" },
             new MimeTypeExtSig(".pnt", "image/x-macpaint" },
             new MimeTypeExtSig(".pntg", "image/x-macpaint" },
-            new MimeTypeExtSig(".pnz", "image/png" },
+            
 
             
             new MimeTypeExtSig(".portpkg",   "application/vnd.macports.portpkg" },

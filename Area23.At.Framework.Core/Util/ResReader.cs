@@ -94,6 +94,17 @@ namespace Area23.At.Framework.Core.Util
             return key.Replace("_", " ");
         }
 
+        /// <summary>
+        /// GetFortunes from ressource file
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetFortunes()
+        {
+            string fortunetar = Properties.Resource.fortune_u8;
+            return fortunetar.Split("%", StringSplitOptions.RemoveEmptyEntries);            
+        }
+
+
     }
 
 

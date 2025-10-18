@@ -44,6 +44,14 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             return EncodingType.None;
         }
 
+        public static EncodingType GetEncodingTypeFromString(string svalue)
+        {
+            EncodingType encodingType = EncodingType.None;
+            if (!Enum.TryParse<EncodingType>(svalue, out encodingType))
+                return EncodingType.Base64;
+            return encodingType;
+        }
+
         public static IDecodable GetEnCoder(this EncodingType type)
         {
             switch (type)

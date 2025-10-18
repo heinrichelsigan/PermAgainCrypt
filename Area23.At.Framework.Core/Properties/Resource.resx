@@ -120,9 +120,6 @@
   <data name="app_name" xml:space="preserve">
     <value>Area23.At.Framework.Library</value>
   </data>
-  <data name="wiki_uri" xml:space="preserve">
-    <value>https://github.com/heinrichelsigan/area23.at/</value>
-  </data>
   <data name="build_with" xml:space="preserve">
     <value>VisualStudio 2022 C# 9.0</value>
   </data>
@@ -137,27 +134,6 @@ by Heinrich Elsigan (&lt;a href="mailto:he@area23.at"&gt;heinrich.elsigan@area23
 &lt;hr /&gt;
 Code is open source under GPL 3 and publicly accessible via &lt;a href="https://github.com/" target="_blank"&gt;GitHub&lt;/a&gt; repository &lt;a href="https://github.com/heinrichelsigan/area23.at/" target="_blank"&gt;github.com/heinrichelsigan/area23.at&lt;/a&gt;.
 &lt;br /&gt;</value>
-  </data>
-  <data name="M0Rlc0l2" xml:space="preserve">
-    <value>fcKZpNSKLTs=</value>
-  </data>
-  <data name="Q0FTVExF" xml:space="preserve">
-    <value>MEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUxMEJBQjUwQkE=</value>
-  </data>
-  <data name="Qk9VTkNF" xml:space="preserve">
-    <value>GvJd0SRyg3AcTF4Sidyrn/nJM1BNUJqKms19FZKx1Z4=</value>
-  </data>
-  <data name="QWVzS2V5" xml:space="preserve">
-    <value>0ersgfaO/uP7+HrpTwZjU9VoyobLofw7KvwCAcOVMRc=</value>
-  </data>
-  <data name="QWVzSXY0" xml:space="preserve">
-    <value>6pU0BotI3zzF0cWKz56bkQ==</value>
-  </data>
-  <data name="RGVzS2V5" xml:space="preserve">
-    <value>C6S5DegwbQopnitJnAu/g4BXa0M32ZGZ</value>
-  </data>
-  <data name="version_name" xml:space="preserve">
-    <value>v2.25.426</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ImageAesArrow" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -292,7 +268,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         Fnhm2Mim54nDxGKpi+UuZmVDJZ4hjiiqRvlCzmWF8xZntVpn7XvyFwYL2kqG6zRHkcASkkhBhIw6KqjC
         QpRWjRQTadqP9/CPOP4UuWRyVcDIsYAaVEiOH/wPfndrFqen3KRgHPC/2PbHGBDYBVoN2/4+tu3WCeB9
         Bq60jr/WBOY+SW90tMgRMLANXFx3NHkPuNwBhp90yZAcyUtTKBaB9zP6pjwweAv0r7m9tfdx+gBkqavl
-        G+DgEBgvUfZ6j3f3dff255l2fz+g/XK5F4GT1wAAAAlwSFlzAAAOvgAADr4B6kKxwAAAAAd0SU1FB+gF
+        G+DgEBgvUfZ6j3f3dff255l2fz+g/XK5F4GT1wAAAAlwSFlzAAAOvAAADrwBlbxySQAAAAd0SU1FB+gF
         BA01C0x6owUAAASzSURBVHhe7ZhJiCRFFIbTBdfuynx/dk3TTMOAisicFFxBHRHBi6CgF8XloMdBHRj1
         4BxEXGaUgTkoepAZHOagiIgLiHgUF0REwQVbms4XVeMybrjhNGqnvKjIIutFQGFVlz1lxuGHzj+iI//3
         ZWRURiRlWSZRZeIZTZVnNFWe0VR5RlPlGZXWaoJBOc1aK0tRvx5da2NAiNYVRN2bFoWy61ojiAjCl2dE
@@ -325,7 +301,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         Z01lBt1oeFQ4KKwny9gsY2vFtYX7hTvitiP5WqzAccUbiu1U1ireU70wsOzMRpQus50JJplmBh2TLKuk
         yNAjqyOKR1j2QxX8bXn/jLhMca1iiWOMNWyMvB/1B7+79RJ9vYWkQAhqn33/vRPqtuE75/tfR77/fQzV
         T3DplPxrhzD0IXqupHUcQNMmnF+VNHMHLrag9TFtuEZeqpapJRLwdirfNActN9CwUOituM/JPUSlq6lr
-        2NuHrqRkL1Z4d315b3+eKfb3Ayfgcu+l9ilhAAAACXBIWXMAAA6+AAAOvgHqQrHAAAAAB3RJTUUH6AwS
+        2NuHrqRkL1Z4d315b3+eKfb3Ayfgcu+l9ilhAAAACXBIWXMAAA68AAAOvAGVvHJJAAAAB3RJTUUH6AwS
         Ax8nYzVE9gAABlVJREFUeF7tmk1sG0UUx90SKCDUwi6tkAqioiCQeuGOEAJuICpxAA5wgiv0wKEXOCAh
         tRwqgYQqUQRFUBXRQGezTvO1mzofzVcT2sRq2qZxnNpep3GaNGnj2Gtn3Qwae6edPO/GY3uyJa1/0pO9
         b97+/Z+Xnd2xFZ+vRo0aNWqI4YPdAbyRA86nYqDwRgw4p4oQKuYxQr0LFfMYod6FinmMUO9CxTxGqHcn
@@ -365,7 +341,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         Z01lBt1oeFQ4KKwny9gsY2vFtYX7hTvitiP5WqzAccUbiu1U1ireU70wsOzMRpQus50JJplmBh2TLKuk
         yNAjqyOKR1j2QxX8bXn/jLhMca1iiWOMNWyMvB/1B7+79RJ9vYWkQAhqn33/vRPqtuE75/tfR77/fQzV
         T3DplPxrhzD0IXqupHUcQNMmnF+VNHMHLrag9TFtuEZeqpapJRLwdirfNActN9CwUOituM/JPUSlq6lr
-        2NuHrqRkL1Z4d315b3+eKfb3Ayfgcu+l9ilhAAAACXBIWXMAAA6+AAAOvgHqQrHAAAAAB3RJTUUH6AwS
+        2NuHrqRkL1Z4d315b3+eKfb3Ayfgcu+l9ilhAAAACXBIWXMAAA68AAAOvAGVvHJJAAAAB3RJTUUH6AwS
         AyE2SEB/eQAAAulJREFUeF7tlz2IE0EUx1cRFBTOzOQQP0DFawULCyvPRsxlJtpZWQqCoI1YiEIaQRux
         sRRERRHBXN5EDkXlsBQbwdJGECwEO8UPwq3MJqvr/43ZoBF2s6/4QXhv5937/7JJ9qI4jiMhjlihqrBC
         VWGFqsIKVYUVUlYyPNu2Py4z2SwezFoZEZ6JikCzZSC0O2YVESKCwwoiQkTwoogQEZy8YWUhtDtmFREi
@@ -390,7 +366,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         sMAzw0Y2PU8cJhZLXSx3MSsbKvEMcURRNcoXci4rnLc4q9U6a9+TvzBQ0FYyXKc5igSWkEQKImTUUUEV
         FqK0aqSYSNN+vId/xPGnyCWTqwJGjgXUoEJy/OB/8Ltbszg95SYF4kD/i21/jAG+XaDVsO3vY9tunQDe
         Z+BK6/hrTWDuk/RGR4scAYPbwMV1R5P3gMsdYPhJlwzJkbw0hWIReD+jb8oDoVvAv+b21t7H6QOQpa6W
-        b4CDQ2C8RNnrPd490N3bn2fa/f0AxBlyx6anE1cAAAAJcEhZcwAADr4AAA6+AepCscAAAAAHdElNRQfo
+        b4CDQ2C8RNnrPd490N3bn2fa/f0AxBlyx6anE1cAAAAJcEhZcwAADrwAAA68AZW8ckkAAAAHdElNRQfo
         Cg0TKRW54pUaAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAuVJREFUSEullk1I
         VFEUx8fvnliO57yZ1DZSRkrkoqgggjYazpwzYOVGIrBWLQIhiKCNi6CoIGoTQlAbEUtq3jkjBcmjTUGL
         KGibEo61VRCLCsq4M+/Zm+fHjM4fDrx77j3n/u659/JuJGu5y1nL/Z613JmAzWUtd75E++3lKGY/AzF/
@@ -416,7 +392,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         NZUZcuPREeGQsJ4uY7OMrSXXFh4Q7kjajuRriQInFa8rtjOrVvGe6oXBRWc6pnSZbUQYZ5IpdExWWSZD
         jl5ZHVE8orIfruBvzfunxGWKaxlLHKOsYGPk/ag/+N2tl+rvKyQFw1Dz7PvvnVC7Dd9bvv915PvfxxB4
         gkun5F85hKEP0bdKWscBNG7A+VVJM3fgYhNaHrOGa+SlgEwtlYK3U/mmGWi6gfq5Qm/FfU7uIS5dTVzD
-        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAAHdElNRQfpAhcM
+        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAHdElNRQfpAhcM
         MiSS+JVoAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAlg5JREFUeF7t3Qmymzy3
         RuHM6Z9T5vTdMWVOuUUURZsl0dl0gvVWPSE2xg0GsffBPufHD2OMMb3nN6/Ykt+/f29afuvtmQ6WX5o/
         m8b9jy4vzT86vxYev/H8jDHGGGOMMUekVXz/va66Pqe1TMzcfN43L7fmxftr3P7H//73v+byfy40bt94
@@ -1061,33 +1037,6 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         D8qVMKEY+ZnlAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="ImageKey" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        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
-</value>
-  </data>
   <data name="F40" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAA3wAAAN8CAYAAAADFKgiAAAABGdBTUEAALGPC/xhBQAAAYFpQ0NQSUND
@@ -1097,7 +1046,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         NZUZcuPREeGQsJ4uY7OMrSXXFh4Q7kjajuRriQInFa8rtjOrVvGe6oXBRWc6pnSZbUQYZ5IpdExWWSZD
         jl5ZHVE8orIfruBvzfunxGWKaxlLHKOsYGPk/ag/+N2tl+rvKyQFw1Dz7PvvnVC7Dd9bvv915PvfxxB4
         gkun5F85hKEP0bdKWscBNG7A+VVJM3fgYhNaHrOGa+SlgEwtlYK3U/mmGWi6gfq5Qm/FfU7uIS5dTVzD
-        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAAHdElNRQfpAhcM
+        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAHdElNRQfpAhcM
         MjcWRtS2AAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAApkVJREFUeF7t/V/ILF12
         33me65Gnh7kxg8HQIGho6JvmoEvR4EH0hfvGYzCDLgbDwGtdTV8MbhBiDKYGGg1upg1GsCWQkaaQQcgy
         tloj5FZLtCULG73GYqZld1utRlVjq1wqWSpV1Vv11lvnHA375LNPrPitFf8yIyL33vFd8CGe3Dsj/0RG
@@ -1811,21 +1760,6 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         sZuPYf4ROgC8+P8DCf6kwFKf5MsAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="ImageSkull" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABcAAAAUCAYAAABmvqYOAAAABGdBTUEAALGPC/xhBQAAAYJpQ0NQSUND
-        IHByb2ZpbGUAACjPlZE5SANBGIU/V0WRiKApRCy2UCttVFSsJIoiKEgSIR6FuxsThewadhNsLAXbgIVH
-        41XYWGtrYSsIggeItYWVoo3I+k8SSBAiODDMx5t5j5k3oB2mLNurGQHbybjhiZAem5vX614I0IzGMIOG
-        5aWnI+NRKo7PO6rUetujsvjfaIwvexZU6cIjVtrNCC8JD6xn0op3hYPWihEXPhPuduWCwg9KNwv8qjiZ
-        Z01lBt1oeFQ4KKwny9gsY2vFtYX7hTvitiP5WqzAccUbiu1U1ireU70wsOzMRpQus50JJplmBh2TLKuk
-        yNAjqyOKR1j2QxX8bXn/jLhMca1iiWOMNWyMvB/1B7+79RJ9vYWkQAhqn33/vRPqtuE75/tfR77/fQzV
-        T3DplPxrhzD0IXqupHUcQNMmnF+VNHMHLrag9TFtuEZeqpapJRLwdirfNActN9CwUOituM/JPUSlq6lr
-        2NuHrqRkL1Z4d315b3+eKfb3Ayfgcu+l9ilhAAAACXBIWXMAAAsOAAALDgFAvuFBAAAAB3RJTUUH6AwS
-        AwsDcZh3cgAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAABKSURBVEhLY2AgDP6j
-        C0ABLvFhDEj1Mqnq6QCMjY2xugqXODGAVI2kqsfUgMO12MSIAoQ0EpInCHAZgEucNIAeHOj8UTAKRgGN
-        AADHIRPthF+DzgAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="BitmapAbout" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAHgAAAEGCAYAAACuO1HXAAAABGdBTUEAALGPC/xhBQAAAYRpQ0NQSUND
@@ -1835,7 +1769,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         YYFnBo10cp44SCwW2lhuY1Y0VOIZ4pCiapQvZFxWOG9xVstV1rwnf6E/p62kuE5zFDEsIY4ERMioooQy
         LIRp1UgxkaT9aAf/iONPkEsmVwmMHAuoQIXk+MH/4He3Zn56yk3yR4HuF9v+GAN8u0CjZtvfx7bdOAG8
         z8CV1vJX6sDcJ+m1lhY6Aga2gYvrlibvAZc7wPCTLhmSI3lpCvk88H5G35QFArdA35rbW3Mfpw9Amrpa
-        vgEODoHxAmWvd3h3T3tvf55p9vcD3TNy0RSUAugAAAAJcEhZcwAACw4AAAsOAUC+4UEAAAAHdElNRQfo
+        vgEODoHxAmWvd3h3T3tvf55p9vcD3TNy0RSUAugAAAAJcEhZcwAACwwAAAsMAT9AIsgAAAAHdElNRQfo
         CRgCDgQ0FBO3AABiVklEQVR4Xu29B1RVZ7r/71r/+7szmURFpZze6L0cDr2LomJXLCj23hURxYoUAQvS
         lSqgYMGCvfcWY6LpvU5iTJ+ZO3dy751kvv/1vHtv2GwOqImaZHKetb4LggQO+3O+z/O8Zb+7i6JcAWWF
         EspKJVTVKqhr1dDUa6Bp0EC7Rwv9fj30h/QwHDPAcMoA+7P2sL9gD4dLDnC4zIs+P+8Ah7MOsD9lD/vj
@@ -2258,5 +2192,9 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         +G5xsMXBlvglQnCuxcEWB1vitxgWB1scbInfclgcbHGwJX7LYXGwxcGW+A3H/w8uIPt+FF+SdgAAAABJ
         RU5ErkJggg==
 </value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

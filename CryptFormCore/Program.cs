@@ -301,17 +301,24 @@ namespace Area23.At.WinForm.CryptFormCore
         internal static List<System.Windows.Forms.Form> tFormsNew = new List<System.Windows.Forms.Form>();
         internal static string progName = string.Empty;
         public static Mutex? mutex;
-       
+
 
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
+        /// <param name="args">arguments</param>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-
+            bool oldFlag = false;
             progName = System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
             mutex = new Mutex(false, progName);
+
+            foreach (string arg in args)
+            {
+                if (arg.ToLower().Contains("old") || arg.ToLower().Contains("classic"))
+                    oldFlag = true;
+            }
 
             if (!mutex.WaitOne(1000, false))
             {
@@ -328,7 +335,11 @@ namespace Area23.At.WinForm.CryptFormCore
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             // MessageBox.Show("ScreenCapture", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);            
-            Application.Run(new EncryptForm());
+            System.Windows.Forms.Form encryptForm = new EncryptFormSimple(); 
+            if (oldFlag)
+                encryptForm = new EncryptForm();
+
+            Application.Run(encryptForm);
 
             ReleaseCloseDisposeMutex();
         }
