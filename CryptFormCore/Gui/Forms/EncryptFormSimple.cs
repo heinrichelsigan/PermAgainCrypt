@@ -160,11 +160,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         comboBoxCompression.SelectedItem = ZipType.None.ToString();
                         break;
                 }
-            }
-            notifyIcon1.Icon = ToolTipIcon.Info;
-            notifyIcon1.Text = $"ZipType {zipType.ToString()} set.";
-            notifyIcon1.Visible = true;
+            }            
             notifyIcon1.ShowBalloonTip(1250, "Info", $"ZipType {zipType.ToString()} set.", ToolTipIcon.Info);
+            notifyIcon1.Visible = true;
         }
 
         protected ZipType GetZip()
@@ -235,7 +233,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     default: menuBase64.Checked = true; break;
                 }
             }
-            notifyIcon1.Icon = ToolTipIcon.Info;
             notifyIcon1.Text = $"Encoding {encodingType.ToString()} set.";
             notifyIcon1.Visible = true;
             notifyIcon1.ShowBalloonTip(1000, "Info", $"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info);
@@ -279,8 +276,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
 
                 Hash_Click(this, new EventArgs());
-                notifyIcon1.Icon = ToolTipIcon.Info;
-                notifyIcon1.Text = $"{GetHash().ToString()} hashed."
+                notifyIcon1.Text = $"{GetHash().ToString()} hashed.";
                 notifyIcon1.ShowBalloonTip(1000, "Info", $"{GetHash().ToString()} hashed.", ToolTipIcon.Info);
             }
         }
@@ -350,12 +346,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     resetPictureBoxFiles(sender, e);
                 }
                 else
-                {
-                    notifyIcon1.Text = "Max 8 algorithms in pipe reached!";
-                    notifyIcon1.Icon = Properties.Resources.icon_warning;
-                    notifyIcon1.BalloonTipTitle = "Warning";
-                    notifyIcon1.Visible = true;
+                {                                        
                     notifyIcon1.ShowBalloonTip(3600, "Warning", "Max 8 algorithms in pipe reached!", ToolTipIcon.Warning);
+                    notifyIcon1.Visible = true;
                 }
             }
         }
@@ -391,9 +384,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void Hash_Pipe_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {
-                notifyIcon1.Visible = true;
+            {                
                 notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
+                notifyIcon1.Visible = true;
                 return;
             }
 
@@ -412,9 +405,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void SetPipeline_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {
-                notifyIcon1.Visible = true;
+            {                
                 notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
+                notifyIcon1.Visible = true;
                 return;
             }
 
@@ -456,7 +449,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
                 notifyIcon1.Text = "Key is empty!";
-                notifyIcon1.Icon = Properties.Resources.icon_warning;
                 notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(3000, "Warning", "Key is empty!", ToolTipIcon.Warning);
                 return;
@@ -527,11 +519,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void Decrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {
-                notifyIcon1.Visible = true;
-                notifyIcon1.Text = "Key is empty!";
-                notifyIcon1.Icon = Properties.Resources.icon_warning;
+            {                                
                 notifyIcon1.ShowBalloonTip(3000, "Warning", "Key is empty!", ToolTipIcon.Warning);
+                notifyIcon1.Visible = true;
                 return;
             }
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
