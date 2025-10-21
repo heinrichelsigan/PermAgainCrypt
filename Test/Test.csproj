@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <AssemblyVersion>2.25.1021</AssemblyVersion>
-    <FileVersion>2.25.1021</FileVersion>
+    <AssemblyVersion>2.25.1022</AssemblyVersion>
+    <FileVersion>2.25.1022</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
