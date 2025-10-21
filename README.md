@@ -6,10 +6,13 @@ A based on DES,3DES with P-Box S-Box meta encryption pipeline for advanced encry
 See details:
 https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html
 
+Video walk through: https://youtu.be/GX9q1sRx3nE
+
 Webtest Url:
 https://area23.at/net/Crypt/CoolCrypt.aspx
 
 Great Thanx to https://www.bouncycastle.org/ https://github.com/bcgit
+
 
 Test Projects inside
 ## WinFormCore:
