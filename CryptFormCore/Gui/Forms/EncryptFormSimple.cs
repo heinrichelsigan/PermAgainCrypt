@@ -4,8 +4,10 @@ using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Static;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using Org.BouncyCastle.Crypto.Generators;
 using System.Media;
 using System.Windows.Forms;
 
@@ -17,7 +19,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
     /// </summary>
     public partial class EncryptFormSimple : EncryptFormBase
     {
-       
+
         public EncryptFormSimple()
         {
             InitializeComponent();
@@ -26,14 +28,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
-            this.comboBoxAlgo.Items.Clear();            
+            this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
                 this.comboBoxAlgo.Items.Add(cipher);
 
+            this.textBoxKey.Text = GetEmailFromRegistry();
+
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
-
-            this.textBoxKey.Text = GetEmailFromRegistry();
+            radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
+            Hash_Click(sender, e);            
         }
 
         #region MenuCompressionEncodingZipHash
@@ -89,7 +93,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         comboBoxCompression.SelectedItem = ZipType.None.ToString();
                         break;
                 }
-            }            
+            }
             notifyIcon1.ShowBalloonTip(1250, "Info", $"ZipType {zipType.ToString()} set.", ToolTipIcon.Info);
             notifyIcon1.Visible = true;
         }
@@ -182,32 +186,66 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        private void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender);
+        private void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, null);
 
-        protected void SetHash(ToolStripMenuItem mi)
+
+        private void RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => SetHash(null, (RadioButtonList)sender);
+
+
+        protected void SetHash(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
+
         {
             KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
-            if (!mi.Checked)
+            KeyHash aKeyHash = KeyHash.Hex;
+
+            menuHashBCrypt.Checked = false;
+            menuHashHex.Checked = false;
+            menuHashMD5.Checked = false;
+            menuHashOpenBsd.Checked = false;
+            menuHashSCrypt.Checked = false;
+            menuHashSha1.Checked = false;
+            menuHashSha256.Checked = false;
+            menuHashSha512.Checked = false;
+
+            string hashPattern = "Hex";
+            if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
             {
-                menuHashBCrypt.Checked = false;
-                menuHashHex.Checked = false;
-                menuHashMD5.Checked = false;
-                menuHashOpenBsd.Checked = false;
-                menuHashSCrypt.Checked = false;
-                menuHashSha1.Checked = false;
-                menuHashSha256.Checked = false;
-                menuHashSha512.Checked = false;
-
-
-                if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
+                mi.Checked = true;
+                hashPattern = mi.Name.Replace("menuHash", "");
+                if (hashPattern.Equals("OpenBSD", StringComparison.CurrentCultureIgnoreCase))
+                    hashPattern = "OpenBSDCrypt";
+                try
                 {
-                    mi.Checked = true;
+                    if (radioButtonList != null)
+                        radioButtonList.SelectedItem = hashPattern;
                 }
-
-                Hash_Click(this, new EventArgs());
-                notifyIcon1.Text = $"{GetHash().ToString()} hashed.";
-                notifyIcon1.ShowBalloonTip(1000, "Info", $"{GetHash().ToString()} hashed.", ToolTipIcon.Info);
+                catch (Exception exRadio)
+                {
+                    Area23Log.LogOriginEx("EncryptFormSimple Hash", exRadio);
+                }
             }
+
+            if (radioButtonList != null && radioButtonList.SelectedItem != null)
+            {
+                aKeyHash = KeyHash_Extensions.GetKeyHashFromString(radioButtonList.SelectedItem.ToString());
+                switch (aKeyHash)
+                {
+                    case KeyHash.BCrypt: menuHashBCrypt.Checked = true; break;
+                    case KeyHash.MD5: menuHashMD5.Checked = true; break;
+                    case KeyHash.OpenBSDCrypt: menuHashOpenBsd.Checked = true; break;
+                    case KeyHash.SCrypt: menuHashSCrypt.Checked = true; break;
+                    case KeyHash.Sha1: menuHashSha1.Checked = true; break;
+                    case KeyHash.Sha256: menuHashSha256.Checked = true; break;
+                    case KeyHash.Sha512: menuHashSha512.Checked = true; break;
+                    case KeyHash.Hex:
+                    default: menuHashHex.Checked = true; break;
+                }
+            }
+
+            Hash_Click(this, new EventArgs());
+            notifyIcon1.Text = $"{GetHash().ToString()} hashed.";
+            notifyIcon1.ShowBalloonTip(1000, "Info", $"{GetHash().ToString()} hashed.", ToolTipIcon.Info);
+
         }
 
         protected KeyHash GetHash()
@@ -275,7 +313,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     resetPictureBoxFiles(sender, e);
                 }
                 else
-                {                                        
+                {
                     notifyIcon1.ShowBalloonTip(3600, "Warning", "Max 8 algorithms in pipe reached!", ToolTipIcon.Warning);
                     notifyIcon1.Visible = true;
                 }
@@ -313,7 +351,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void Hash_Pipe_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {                
+            {
                 notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
                 notifyIcon1.Visible = true;
                 return;
@@ -323,7 +361,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+            CipherPipe cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text);
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -334,7 +372,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void SetPipeline_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {                
+            {
                 notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
                 notifyIcon1.Visible = true;
                 return;
@@ -448,7 +486,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void Decrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
-            {                                
+            {
                 notifyIcon1.ShowBalloonTip(3000, "Warning", "Key is empty!", ToolTipIcon.Warning);
                 notifyIcon1.Visible = true;
                 return;
@@ -514,7 +552,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        
+
         #endregion EncryptDecrypt_Click
 
 
@@ -540,7 +578,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        
+
         public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
@@ -579,7 +617,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;
             }
         }
-        
+
 
         internal void Drag_Leave(object sender, EventArgs e)
         {

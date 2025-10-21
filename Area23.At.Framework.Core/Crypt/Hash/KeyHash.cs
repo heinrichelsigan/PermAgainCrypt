@@ -40,6 +40,15 @@ namespace Area23.At.Framework.Core.Crypt.Hash
             return (KeyHash)Enum.Parse(typeof(KeyHash), typeString);
         }
 
+        public static KeyHash GetKeyHashFromString(string svalue)
+        {
+            KeyHash aKeyHash = KeyHash.Hex;
+            bool parsed = Enum.TryParse<KeyHash>(svalue, out aKeyHash);
+            if (!parsed)
+                aKeyHash = KeyHash.Hex;
+
+            return aKeyHash;
+        }
 
         public static KeyHash GetKeyHashFromValue(short kValue)
         {
