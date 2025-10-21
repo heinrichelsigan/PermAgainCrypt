@@ -10,8 +10,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.1018</AssemblyVersion>
-    <FileVersion>2.25.1018</FileVersion>
+    <AssemblyVersion>2.25.1021</AssemblyVersion>
+    <FileVersion>2.25.1021</FileVersion>
     <Description>area23.at Heinrich Elsigan</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
@@ -69,6 +69,7 @@
 	<ItemGroup>
 		<Compile Remove="res\text\**" />
         <EmbeddedResource Remove="res\text\**" />
+        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<None Update="log\**">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>

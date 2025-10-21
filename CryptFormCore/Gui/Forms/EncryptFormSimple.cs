@@ -11,18 +11,13 @@ using System.Windows.Forms;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
-    public partial class EncryptFormSimple : System.Windows.Forms.Form
+
+    /// <summary>
+    /// EncryptFormSimple
+    /// </summary>
+    public partial class EncryptFormSimple : EncryptFormBase
     {
-
-        Cursor NormalCursor, NoDropCursor;
-        internal System.Windows.Forms.DragDropEffects _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
-        private bool isDragMode = false;
-        private readonly Lock _Lock = new Lock();
-
-        internal static HashSet<string> HashFiles = new HashSet<string>();
-        internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
-        internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
-
+       
         public EncryptFormSimple()
         {
             InitializeComponent();
@@ -31,12 +26,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
-            this.comboBoxAlgo.Items.Clear();
-            List<string> cipherEnums = new List<string>();
-            foreach (object item in Enum.GetValues(typeof(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum)))
-                cipherEnums.Add(item.ToString());
-            cipherEnums.Sort();
-            foreach (string cipher in cipherEnums)
+            this.comboBoxAlgo.Items.Clear();            
+            foreach (string cipher in GetCipherEnums())
                 this.comboBoxAlgo.Items.Add(cipher);
 
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
@@ -44,68 +35,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             this.textBoxKey.Text = GetEmailFromRegistry();
         }
-
-        internal virtual void SetGBoxText(string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (InvokeRequired)
-            {
-                SetGroupBoxTextCallback setGroupBoxText = delegate (GroupBox gBox, string hText)
-                {
-                    if (gBox != null && gBox.Name != null && !string.IsNullOrEmpty(hText))
-                        gBox.Text = hText;
-                };
-                try
-                {
-                    Invoke(setGroupBoxText, new object[] { groupBoxFiles, textToSet });
-                }
-                catch (System.Exception exDelegate)
-                {
-                    Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n");
-                }
-            }
-            else
-            {
-                if (this != null && this.Name != null && textToSet != null)
-                    groupBoxFiles.Text = textToSet;
-            }
-        }
-
-        internal virtual void SetPictureBoxImage(PictureBox pictBox, Image image, bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (InvokeRequired)
-                {
-                    SetPictureBoxCallback setPictureBoxDelegate = delegate (PictureBox pBox, Image img, bool showing)
-                    {
-                        if (pBox != null && img != null)
-                        {
-                            pBox.Image = img;
-                            pBox.Visible = showing;
-                        }
-
-                    };
-                    try
-                    {
-                        Invoke(setPictureBoxDelegate, new object[] { pictBox, image, visible });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\".\n");
-                    }
-                }
-                else
-                {
-                    if (this != null && this.Name != null && image != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
-        }
-
 
         #region MenuCompressionEncodingZipHash
 
@@ -585,32 +514,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        public string GetEmailFromRegistry()
-        {
-            string userEmail = "anonymous@ftp.cdrom.com";
-            try
-            {
-                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser, "Software\\Microsoft\\OneDrive\\Accounts\\Personal", "UserEmail");
-                if (userEmail.Contains('@') && userEmail.Contains('.'))
-                    return userEmail;
-            }
-            catch (Exception)
-            {
-            }
-            try
-            {
-                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
-                    "Software\\Microsoft\\VSCommon\\ConnectedUser\\IdeUserV4\\Cache", "EmailAddress");
-                if (userEmail.Contains("@") && userEmail.Contains("."))
-                    return userEmail;
-            }
-            catch (Exception)
-            {
-            }
-            userEmail = "anonymous@ftp.cdrom.com";
-            return userEmail;
-        }
-
+        
         #endregion EncryptDecrypt_Click
 
 
@@ -636,22 +540,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
-        internal void Drag_Over(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            string[] files = new string[1];
-
-            if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) || e.Data.GetDataPresent(typeof(string[]))))
-            {
-                if (((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null) && files.Length > 0)
-                {
-                    DragEnterOver(files, DragNDropState.DragOver, e);
-                }
-            }
-        }
-
-
-        public virtual void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
+        
+        public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
             {
@@ -675,7 +565,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     string textSet = Path.GetFileName(files[0]) ?? files[0] ?? "";
                     textSet += dragNDropState.ToString() + ": " + _dragDropEffect;
-                    SetGBoxText(textSet);
+                    SetGBoxText(this.groupBoxFiles, textSet);
                 }
 
                 if (NormalCursor == null || NoDropCursor == null)
@@ -689,32 +579,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;
             }
         }
-
-
-        internal void Give_FeedBack(object sender, System.Windows.Forms.GiveFeedbackEventArgs e)
-        {
-            if (e != null)
-            {
-                // Sets the custom cursor based upon the effect.
-                e.UseDefaultCursors = false;
-                _dragDropEffect = e.Effect;
-                NormalCursor = new Cursor(Properties.Resources.icon_file_warning.Handle);
-                NoDropCursor = new Cursor(Properties.Resources.icon_file_working.Handle);
-                Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;
-                // HOTFIX: no drop cursor
-                // Cursor.Current = (!firstLeavedDropTarget) ? MyNormalCursor : MyNoDropCursor;
-            }
-        }
+        
 
         internal void Drag_Leave(object sender, EventArgs e)
         {
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
-            SetGBoxText("Files Group Box");
+            SetGBoxText(this.groupBoxFiles, "Files Group Box");
         }
-
-
 
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
@@ -752,7 +625,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             // HashFiles = new HashSet<string>();
                             _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
                             isDragMode = false;
-                            SetGBoxText("Files Group Box");
+                            SetGBoxText(this.groupBoxFiles, "Files Group Box");
                             break;
                         }
                     }
@@ -865,51 +738,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        #endregion OpenSave
-
-
-        #region AboutHelpExitClose
-
-        private void menuAbout_Click(object sender, EventArgs e)
-        {
-            TransparentDialog transparentDialog = new TransparentDialog();
-            transparentDialog.ShowDialog(this);
-        }
-
-
-        private void menuFileExit_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Program.ReleaseCloseDisposeMutex();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-            try
-            {
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-
-            Application.ExitThread();
-            Dispose();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        private void menuFileExit_Close(object sender, FormClosedEventArgs e)
-        {
-            Application.ExitThread();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        #endregion AboutHelpExitClose
+        #endregion OpenSave    
 
 
         #region Media Methods

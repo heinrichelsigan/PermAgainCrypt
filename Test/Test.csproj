@@ -7,12 +7,16 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <AssemblyVersion>2.25.1017</AssemblyVersion>
-    <FileVersion>2.25.1017</FileVersion>
+    <AssemblyVersion>2.25.1021</AssemblyVersion>
+    <FileVersion>2.25.1021</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="2025-09-22_Stats.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>

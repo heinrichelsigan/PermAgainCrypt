@@ -11,18 +11,10 @@ using System.Net.NetworkInformation;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
-    public partial class EncryptForm : System.Windows.Forms.Form
+    public partial class EncryptForm : EncryptFormBase
     {
 
-        Cursor NormalCursor, NoDropCursor;
-        internal System.Windows.Forms.DragDropEffects _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
-        private bool isDragMode = false;
-        private readonly Lock _Lock = new Lock();
-
-        internal static HashSet<string> HashFiles = new HashSet<string>();
-        internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
-        internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
-
+        
         public EncryptForm()
         {
             InitializeComponent();
@@ -32,84 +24,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
             this.comboBoxAlgo.Items.Clear();
-            List<string> cipherEnums = new List<string>();            
-            foreach (object item in Enum.GetValues(typeof(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum)))
-                cipherEnums.Add(item.ToString());
-            cipherEnums.Sort();
-            foreach (string cipher in cipherEnums) 
+            foreach (string cipher in GetCipherEnums())
                 this.comboBoxAlgo.Items.Add(cipher);
-
+            
             this.textBoxKey.Text = GetEmailFromRegistry();
-        }
-
-
-        internal virtual void SetGBoxText(string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (InvokeRequired)
-            {
-                SetGroupBoxTextCallback setGroupBoxText = delegate (GroupBox gBox, string hText)
-                {
-                    if (gBox != null && gBox.Name != null && !string.IsNullOrEmpty(hText))
-                        gBox.Text = hText;
-                };
-                try
-                {
-                    Invoke(setGroupBoxText, new object[] { groupBoxFiles, textToSet });
-                }
-                catch (System.Exception exDelegate)
-                {
-                    Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n");
-                }
-            }
-            else
-            {
-                if (this != null && this.Name != null && textToSet != null)
-                    groupBoxFiles.Text = textToSet;
-            }
-        }
-
-        internal virtual void SetPictureBoxImage(PictureBox pictBox, Image image, bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (InvokeRequired)
-                {
-                    SetPictureBoxCallback setPictureBoxDelegate = delegate (PictureBox pBox, Image img, bool showing)
-                    {
-                        if (pBox != null && img != null)
-                        {
-                            pBox.Image = img;
-                            pBox.Visible = showing;
-                        }
-                            
-                    };
-                    try
-                    {
-                        Invoke(setPictureBoxDelegate, new object[] { pictBox, image, visible });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\".\n");
-                    }
-                }
-                else
-                {
-                    if (this != null && this.Name != null && image != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
         }
 
 
         #region MenuCompressionEncodingZipHash
 
-        private void menuCompression_Click(object sender, EventArgs e) => SetCompression((ToolStripMenuItem)sender);
+        protected internal void menuCompression_Click(object sender, EventArgs e) => SetCompression((ToolStripMenuItem)sender);
 
-        private void SetCompression(ToolStripMenuItem mi)
+        protected internal void SetCompression(ToolStripMenuItem mi)
         {
             if (!mi.Checked)
             {
@@ -140,7 +66,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return ZipType.None;
         }
 
-        private void menuEncodingKind_Click(object sender, EventArgs e) => SetEncoding((ToolStripMenuItem)sender);
+        protected internal void menuEncodingKind_Click(object sender, EventArgs e) => SetEncoding((ToolStripMenuItem)sender);
 
         protected void SetEncoding(ToolStripMenuItem mi)
         {
@@ -175,7 +101,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        private void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender);
+        protected internal void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender);
 
         protected void SetHash(ToolStripMenuItem mi)
         {
@@ -200,7 +126,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        protected KeyHash GetHash()
+        protected internal KeyHash GetHash()
         {
             if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
             if (menuHashHex.Checked) return KeyHash.Hex;
@@ -219,12 +145,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region ButtonPictureBoxClickEvents
 
-        private void pictureBoxKey_Click(object sender, EventArgs e)
+        protected internal void pictureBoxKey_Click(object sender, EventArgs e)
         {
             this.textBoxKey.Text = GetEmailFromRegistry();
         }
 
-        private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
+        protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
             CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
@@ -274,13 +200,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
-        private void pictureBoxDelete_Click(object sender, EventArgs e)
+        protected internal void pictureBoxDelete_Click(object sender, EventArgs e)
         {
             this.textBoxPipe.Text = "";
         }
 
-        private void Clear_Click(object sender, EventArgs e)
+        protected internal void Clear_Click(object sender, EventArgs e)
         {
             this.textBoxHash.Text = string.Empty;
             this.textBoxKey.Text = string.Empty;
@@ -294,8 +219,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.labelFileIn.Text = "[no file selected]";
             this.pictureBoxFileIn.Image = Area23.At.WinForm.CryptFormCore.Properties.Resources.file;
         }
-
-        private void Hash_Click(object sender, EventArgs e)
+        protected internal void Hash_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -303,7 +227,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        private void SetPipeline_Click(object sender, EventArgs e)
+        protected internal void SetPipeline_Click(object sender, EventArgs e)
         {
             this.textBoxPipe.Text = string.Empty;
             CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
@@ -323,7 +247,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Encrypt_Click(object sender, EventArgs e)
+        protected internal void Encrypt_Click(object sender, EventArgs e)
         {            
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -385,7 +309,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Decrypt_Click(object sender, EventArgs e)
+        protected internal void Decrypt_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(this.textBoxHash.Text) && !string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -443,33 +367,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                 }
             }
-        }
-
-        public string GetEmailFromRegistry()
-        {
-            string userEmail = "anonymous@ftp.cdrom.com";
-            try
-            {
-                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser, "Software\\Microsoft\\OneDrive\\Accounts\\Personal", "UserEmail");
-                if (userEmail.Contains('@') && userEmail.Contains('.'))
-                    return userEmail;
-            }
-            catch (Exception)
-            {
-            }
-            try
-            {
-                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
-                    "Software\\Microsoft\\VSCommon\\ConnectedUser\\IdeUserV4\\Cache", "EmailAddress");
-                if (userEmail.Contains("@") && userEmail.Contains("."))
-                    return userEmail;
-            }
-            catch (Exception)
-            {
-            }
-            userEmail = "anonymous@ftp.cdrom.com";
-            return userEmail;
-        }
+        }      
 
         #endregion EncryptDecrypt_Click
 
@@ -495,23 +393,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
             }
         }
-
-
-        internal void Drag_Over(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            string[] files = new string[1];
-
-            if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) || e.Data.GetDataPresent(typeof(string[]))))
-            {
-                if (((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null) && files.Length > 0)
-                {
-                    DragEnterOver(files, DragNDropState.DragOver, e);
-                }
-            }
-        }
-
-
-        public virtual void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
+     
+        public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
             {
@@ -535,7 +418,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     string textSet = Path.GetFileName(files[0]) ?? files[0] ?? "";
                     textSet += dragNDropState.ToString() + ": " + _dragDropEffect;
-                    SetGBoxText(textSet);
+                    SetGBoxText(this.groupBoxFiles, textSet);
                 }
 
                 if (NormalCursor == null || NoDropCursor == null)
@@ -550,31 +433,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
-        internal void Give_FeedBack(object sender, System.Windows.Forms.GiveFeedbackEventArgs e)
-        {
-            if (e != null)
-            {
-                // Sets the custom cursor based upon the effect.
-                e.UseDefaultCursors = false;
-                _dragDropEffect = e.Effect;
-                NormalCursor = new Cursor(Properties.Resources.icon_file_warning.Handle);
-                NoDropCursor = new Cursor(Properties.Resources.icon_file_working.Handle);
-                Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;
-                // HOTFIX: no drop cursor
-                // Cursor.Current = (!firstLeavedDropTarget) ? MyNormalCursor : MyNoDropCursor;
-            }
-        }
-
         internal void Drag_Leave(object sender, EventArgs e)
         {
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
-            SetGBoxText("Files Group Box");
+            SetGBoxText(this.groupBoxFiles, "Files Group Box");
         }
-
-
 
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
@@ -607,7 +472,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             // HashFiles = new HashSet<string>();
                             _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
                             isDragMode = false;
-                            SetGBoxText("Files Group Box");
+                            SetGBoxText(this.groupBoxFiles, "Files Group Box");
                             break;
                         }
                     }
@@ -721,99 +586,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #endregion OpenSave
-
-
-        #region AboutHelpExitClose
-
-        private void menuAbout_Click(object sender, EventArgs e)
-        {
-            TransparentDialog transparentDialog = new TransparentDialog();
-            transparentDialog.ShowDialog(this);
-        }
-
-
-        private void menuFileExit_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Program.ReleaseCloseDisposeMutex();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-            try
-            {
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-
-            Application.ExitThread();
-            Dispose();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        private void menuFileExit_Close(object sender, FormClosedEventArgs e)
-        {
-            Application.ExitThread();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        #endregion AboutHelpExitClose
-
+       
 
         #region Media Methods
 
-        /// <summary>
-        /// PlaySoundFromResource - plays a sound embedded in application ressource file
-        /// </summary>
-        /// <param name="soundName">unique qualified name for sound</param>
-        protected static bool PlaySoundFromResource(string soundName)
-        {
-            bool played = false;
-            if (true)
-            {
-                UnmanagedMemoryStream stream = (UnmanagedMemoryStream)Resources.ResourceManager.GetStream(soundName);
-
-
-                if (stream != null)
-                {
-                    try
-                    {
-                        // Construct the sound player
-                        SoundPlayer player = new SoundPlayer(stream);
-                        player.Play();
-                        played = true;
-                        stream.Close();
-                    }
-                    catch (Exception exSound)
-                    {
-                        Area23Log.LogOriginMsgEx("EncryptForm", $"PlaySoundFromResource(string soundName = {soundName})", exSound);
-                        played = false;
-                    }
-                    //fixed (byte* bufferPtr = &bytes[0])
-                    //{
-                    //    System.IO.UnmanagedMemoryStream ums = new UnmanagedMemoryStream(bufferPtr, bytes.Length);
-                    //    SoundPlayer player = new SoundPlayer(ums);                        
-                    //    player.Play();
-                    //}
-                }
-            }
-
-            return played;
-        }
-
-        protected virtual async Task<bool> PlaySoundFromResourcesAsync(string soundName)
-        {
-            return await Task.Run(() => PlaySoundFromResource(soundName));
-        }
-
-        private void pictureOutBoxFile_Click(object sender, EventArgs e)
+        protected internal virtual void pictureOutBoxFile_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(pictureBoxOutFile.Tag.ToString()) && pictureBoxOutFile.Visible &&
                 File.Exists(pictureBoxOutFile.Tag.ToString()))
@@ -822,7 +599,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        protected void resetPictureBoxFiles(object sender, EventArgs e)
+        protected internal virtual void resetPictureBoxFiles(object sender, EventArgs e)
         {
             System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 2225 };
             resetPictureBoxFileTimer.Elapsed += (s, en) =>
@@ -838,9 +615,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #endregion Media Methods
-
-
-
 
     }
 }
