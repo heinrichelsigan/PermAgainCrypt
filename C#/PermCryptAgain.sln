@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.Console.Core", "EU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Area23.At.Test", "Area23.At.Test\Area23.At.Test.csproj", "{0004DE90-18B6-43A4-9568-D10DF1303D24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Area23.At.PermAgainCrypt.Test", "Area23.At.PermAgainCrypt.Test\Area23.At.PermAgainCrypt.Test.csproj", "{BAE4ED2E-077E-44DB-8F31-FEDA98D8C062}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{0004DE90-18B6-43A4-9568-D10DF1303D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0004DE90-18B6-43A4-9568-D10DF1303D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0004DE90-18B6-43A4-9568-D10DF1303D24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAE4ED2E-077E-44DB-8F31-FEDA98D8C062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAE4ED2E-077E-44DB-8F31-FEDA98D8C062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAE4ED2E-077E-44DB-8F31-FEDA98D8C062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAE4ED2E-077E-44DB-8F31-FEDA98D8C062}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
