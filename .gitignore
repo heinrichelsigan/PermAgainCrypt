@@ -264,6 +264,8 @@ ClientBin/
 *.pfx
 *.publishsettings
 orleans.codegen.cs
+*.7z
+*.exe 
 
 # Including strong name files can present a security risk
 # (https://github.com/github/gitignore/pull/2483#issue-259490424)
@@ -386,28 +388,27 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/deploy/www/mono
-/www/mono/res/tmp/20241222_102414_58.txt
+/C#/Deploy
 
 /www/mono/res/tmp/*.7z
-/www/mono/res/tmp/*.bz2
-/www/mono/res/tmp/*.gz
-/www/mono/res/tmp/*.zip
-/www/mono/res/tmp/*.txt
-/www/mono/res/tmp/*.asc
-/www/Area23.At.Www.S/Qr/*.png
-/www/Area23.At.Www.S/Qr/*.gif
-/www/mono/res/out/*.hex
-/www/mono/res/out/*.base64
-/www/mono/res/out/*.uu
-/www/mono/res/out/*.hex16
-/www/mono/res/out/*.base16
-/www/mono/res/out/*.base32
-/www/mono/res/out/*.base32hex
-/www/mono/res/out/*.3fish
-/www/mono/res/out/*.fish2
-/www/mono/res/out/*.fish3
+*.bz2
+*.gz
+*.hex
+*.base64
+*.uu
+*.hex16
+*.base16
+*.base32
+*.base32hex
+*.3fish
+*.fish2
+*.fish3
 
-/WinForm/SecureChat/AttachFiles
-/Deploy
-/Deploy/CryptFormCore_x86.exe
+/C#/Deploy
+/C#/Deploy/2025-10-22_PermAgainCrypt_x86/ 
+/C#/Deploy/2025-10-22_PermAgainCrypt_x86/CryptFormCore.exe 
+/C#/Deploy/2025-10-22_PermAgainCrypt_x64/CryptFormCore.exe 
+/C#/Deploy/2025-10-22_PermAgainCrypt_x64/
+/C#/Deploy/20251022_ConsoleCrypt_x86.7z
+/C#/Deploy/20251022_PermAgainCrypt_x64.7z
+/C#/Deploy/20251022_PermAgainCrypt_x86.7z

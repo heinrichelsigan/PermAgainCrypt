@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CryptFormCore": {
+      "commandName": "Project",
+      "commandLineArgs": "simple"
+    }
+  }
+}
