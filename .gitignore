@@ -386,11 +386,13 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# java classes
+*.class
+
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/C#/Deploy
 
-/www/mono/res/tmp/*.7z
+*.7z
 *.bz2
 *.gz
 *.hex
@@ -404,6 +406,7 @@ FodyWeavers.xsd
 *.fish2
 *.fish3
 
+/C#/.vs/
 /C#/Deploy
 /C#/Deploy/2025-10-22_PermAgainCrypt_x86/ 
 /C#/Deploy/2025-10-22_PermAgainCrypt_x86/CryptFormCore.exe 

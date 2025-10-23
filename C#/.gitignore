@@ -380,11 +380,12 @@ FodyWeavers.xsd
 *.fish2
 *.fish3
 
-/Deploy
-/Deploy/2025-10-22_PermAgainCrypt_x86/ 
-/Deploy/2025-10-22_PermAgainCrypt_x86/CryptFormCore.exe 
-/Deploy/2025-10-22_PermAgainCrypt_x64/CryptFormCore.exe 
-/Deploy/2025-10-22_PermAgainCrypt_x64/
-/Deploy/20251022_ConsoleCrypt_x86.7z
-/Deploy/20251022_PermAgainCrypt_x64.7z
-/Deploy/20251022_PermAgainCrypt_x86.7z
+.vs/
+Deploy
+Deploy/2025-10-22_PermAgainCrypt_x86/ 
+Deploy/2025-10-22_PermAgainCrypt_x86/CryptFormCore.exe 
+Deploy/2025-10-22_PermAgainCrypt_x64/CryptFormCore.exe 
+Deploy/2025-10-22_PermAgainCrypt_x64/
+Deploy/20251022_ConsoleCrypt_x86.7z
+Deploy/20251022_PermAgainCrypt_x64.7z
+Deploy/20251022_PermAgainCrypt_x86.7z
