@@ -60,7 +60,7 @@ namespace Area23.At.PermAgainCrypt.Test
                         byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                                 encType, zType, kHash);
                         Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 &&
-                            ((plainBytes.Length == deCodedBytes.Length) || Math.Abs(deCodedBytes.Length - plainBytes.Length) <= 16));
+                            (Math.Abs(deCodedBytes.Length - plainBytes.Length) <= 16));
                         
                         endOp = DateTime.Now;
                         decOpTime = endOp.Subtract(midOp);
