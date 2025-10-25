@@ -639,7 +639,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
 
             forEncryption = true;
-            byte[] obytes = PadBuffer(pdata, true);
+            byte[] obytes = PadBuffer(pdata, false);
 
             List<byte> encryptedBytes = new List<byte>();
             for (int i = 0; i < obytes.Length; i += 0x10)
@@ -675,7 +675,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 }
             }
 
-            byte[] outBytes = PadBuffer(decBytes.ToArray(), true);
+            byte[] outBytes = PadBuffer(decBytes.ToArray(), false);
 
             return outBytes;
         }

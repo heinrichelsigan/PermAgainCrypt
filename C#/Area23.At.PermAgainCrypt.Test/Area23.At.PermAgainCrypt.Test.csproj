@@ -10,6 +10,25 @@
       For more information, visit https://learn.microsoft.com/dotnet/core/testing/unit-testing-platform-integration-dotnet-test#show-failure-per-test
       -->
     <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+    <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
+    <Copyright>Copyleft © 2000-2040</Copyright>
+    <Title>Area23.At.PermAgainCrypt.Test</Title>
+    <Description>Area23.At.PermAgainCrypt.Test  integration tests project
+for CipherEnum CipherPipe en-/decryption
+for EncodingType CipherPipe en-/decoding
+for ZipType CipherPipe un-/zipping
+</Description>
+    <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
+    <AssemblyVersion>2.25.1026</AssemblyVersion>
+    <FileVersion>2.25.1026</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

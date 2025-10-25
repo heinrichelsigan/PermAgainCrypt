@@ -17,9 +17,9 @@ namespace Area23.At.PermAgainCrypt.Test
         [TestMethod]
         public void TestAllCompression()
         {
-            Console.WriteLine("Cipher,ZipType,OpTime,FullName,MB/s,Size KB");
-            DateTime startOp = DateTime.Now;
-            TimeSpan opTime = TimeSpan.Zero;
+            Console.WriteLine("TestCompression.TestAllCompression() \t[started]");
+            DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
+            TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
             string fileByesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
 
@@ -40,22 +40,28 @@ namespace Area23.At.PermAgainCrypt.Test
                     string cipherText = pipe.EncrpytTextGoRounds(plainText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                                 encType, zType, kHash);
                     Assert.IsNotNull(cipherText);
-                    opTime = DateTime.Now.Subtract(startOp);
+                    
+                    midOp = DateTime.Now;
+                    encOpTime = midOp.Subtract(startOp);
                     string deCodedText = pipe.DecryptTextRoundsGo(cipherText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                             encType, zType, kHash);
-
                     Assert.AreEqual<string>(deCodedText, plainText);
+                    
+                    endOp = DateTime.Now;
+                    decOpTime = endOp.Subtract(midOp);
+                    allOpTime = endOp.Subtract(startOp);
 
                     if (string.IsNullOrEmpty(deCodedText) || !deCodedText.Equals(plainText, StringComparison.Ordinal))
                     {
-                        Console.WriteLine(zType.ToString() + " test failed.");
+                        Console.WriteLine($"{zType} \tzipped in {encOpTime} \tunzipped in {decOpTime} \ttotal {allOpTime} [failed]");
+                        Console.WriteLine($"          \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
                         Assert.Fail();
                     }
-                    Console.WriteLine(zType.ToString() + " \ttest \t[passed]");
+                    Console.WriteLine($"{zType} \tzipped in {encOpTime} \tunzipped in {decOpTime} \ttotal {allOpTime} [passed]");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(zType.ToString() + " \tException: " + e.GetType() + " \t" + e.Message);
+                    Console.WriteLine($"{zType} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }
 
             }

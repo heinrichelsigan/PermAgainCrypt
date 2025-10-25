@@ -3,6 +3,9 @@ using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using Org.BouncyCastle.Crypto;
+using System.Configuration;
+using System.Xml.Linq;
 
 namespace Area23.At.PermAgainCrypt.Test
 {
@@ -16,13 +19,18 @@ namespace Area23.At.PermAgainCrypt.Test
         // TODO: Fix ZenMatrix in Test
 
         [TestMethod]
-        public void TestEncryptionAllSingleAlgo()
+        public void TestAllEncryptionSingleAlgo()
         {
-            Console.WriteLine("Cipher,ZipType,OpTime,FullName,MB/s,Size KB");
-            DateTime startOp = DateTime.Now;
-            TimeSpan opTime = TimeSpan.Zero;
+            Console.WriteLine("TestEncryptionSingleAlgo.TestAllEncryptionSingleAlgo() \t[started]");
+            DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
+            TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
             string fileBytesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+            string dirCsvOut = "";
+            string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats.csv";
+            if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut)) 
+                fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats.csv";            
+            File.WriteAllText(fileCsvOut, "FullName,Size[KB],Cipher,EncOpTime,DecOptTime,AllOpTime");
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes();
@@ -43,23 +51,34 @@ namespace Area23.At.PermAgainCrypt.Test
                     byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                                 encType, zType, kHash);
                     Assert.IsNotNull(cipherBytes);
-                    opTime = DateTime.Now.Subtract(startOp);
+                    
+                    midOp = DateTime.Now;
+                    encOpTime = midOp.Subtract(startOp);
                     byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                             encType, zType, kHash);
-
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null &&  deCodedBytes.Length > 0 && plainBytes.Length == deCodedBytes.Length);
+                    
+                    endOp = DateTime.Now;
+                    decOpTime = endOp.Subtract(midOp);
+                    allOpTime = endOp.Subtract(startOp);
 
                     if (deCodedBytes == null || deCodedBytes.Length < 1 || deCodedBytes.Length != plainBytes.Length)
                     {
-                        Console.WriteLine(cipherEnum.ToString() + " test compating plain bytes with decrypted(encrypted(plainBytes)) failed.");
+                        Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime} \tdecrypt in {decOpTime} \ttotal {allOpTime} [failed]");
+                        Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                         Assert.Fail();
                     }
-                    Console.WriteLine(cipherEnum.ToString() + " \ttest \t[passed]");
+                    Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'fff")} \tdecrypt in {decOpTime.ToString("ss'.'fff")} \ttotal {allOpTime.ToString("mm':'ss'.'fff")} [passed]");
+                    double size = deCodedBytes.Length / (1024);
+                    File.WriteAllText(fileCsvOut, 
+                        $"{Path.GetFileName(fileBytesTest)},{size},{cipherEnum},{encOpTime.ToString("ss'.'fff")},{decOpTime.ToString("ss'.'fff")},{allOpTime.ToString("mm':'ss'.'fff")}");
+                    
+
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(cipherEnum.ToString() + " \tException: " + e.GetType() + " \t" + e.Message);
-                }
+                    Console.WriteLine($"{cipherEnum} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                }                
 
             }
             return;

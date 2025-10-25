@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <AssemblyVersion>2.25.1025</AssemblyVersion>
-    <FileVersion>2.25.1025</FileVersion>
+    <AssemblyVersion>2.25.1026</AssemblyVersion>
+    <FileVersion>2.25.1026</FileVersion>
     <StartupObject>Area23.At.Test.Program</StartupObject>
 	<RootNamespace>Area23.At.Test</RootNamespace>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
