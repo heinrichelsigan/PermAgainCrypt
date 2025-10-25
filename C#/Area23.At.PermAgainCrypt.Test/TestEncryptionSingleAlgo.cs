@@ -72,7 +72,7 @@ namespace Area23.At.PermAgainCrypt.Test
                     }
                     Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
-                    File.WriteAllText(fileCsvOut, 
+                    File.AppendAllText(fileCsvOut, 
                         $"{Path.GetFileName(fileBytesTest)},{size},{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}");
                     
 
