@@ -67,14 +67,14 @@ namespace Area23.At.PermAgainCrypt.Test
 
                         if (deCodedBytes == null || deCodedBytes.Length < 1 || deCodedBytes.Length != plainBytes.Length)                        
                         {
-                            Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime} \tdecrypt in {decOpTime} \ttotal {allOpTime} [failed]");
+                            Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
-                        Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime} \tdecrypt in {decOpTime} \ttotal {allOpTime} [passed]");
+                        Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                         double size = deCodedBytes.Length / (1024);
                         File.WriteAllText(fileCsvOut,
-                            $"{Path.GetFileName(fileBytesTest)},{size},{cipherType}=>{cipherEnum},{encOpTime.ToString("mm':'ss':'fff")},{decOpTime.ToString("mm':'ss':'fff")},{allOpTime.ToString("mm':'ss':'fff")}");
+                            $"{Path.GetFileName(fileBytesTest)},{size},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}");
                     }
                     catch (Exception e)
                     {

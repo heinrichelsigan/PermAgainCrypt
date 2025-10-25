@@ -50,7 +50,7 @@ namespace Area23.At.PermAgainCrypt.Test
                     startOp = DateTime.Now;
                     byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
                                                 encType, zType, kHash);
-                    Assert.IsNotNull(cipherBytes);
+                   Assert.IsNotNull(cipherBytes);
                     
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
@@ -64,14 +64,14 @@ namespace Area23.At.PermAgainCrypt.Test
 
                     if (deCodedBytes == null || deCodedBytes.Length < 1 || deCodedBytes.Length != plainBytes.Length)
                     {
-                        Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime} \tdecrypt in {decOpTime} \ttotal {allOpTime} [failed]");
+                        Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                         Assert.Fail();
                     }
-                    Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'fff")} \tdecrypt in {decOpTime.ToString("ss'.'fff")} \ttotal {allOpTime.ToString("mm':'ss'.'fff")} [passed]");
+                    Console.WriteLine($"{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
                     File.WriteAllText(fileCsvOut, 
-                        $"{Path.GetFileName(fileBytesTest)},{size},{cipherEnum},{encOpTime.ToString("ss'.'fff")},{decOpTime.ToString("ss'.'fff")},{allOpTime.ToString("mm':'ss'.'fff")}");
+                        $"{Path.GetFileName(fileBytesTest)},{size},{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}");
                     
 
                 }

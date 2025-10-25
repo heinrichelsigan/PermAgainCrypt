@@ -53,11 +53,11 @@ namespace Area23.At.PermAgainCrypt.Test
 
                     if (string.IsNullOrEmpty(deCodedText) || !deCodedText.Equals(plainText, StringComparison.Ordinal))
                     {
-                        Console.WriteLine($"{zType} \tzipped in {encOpTime} \tunzipped in {decOpTime} \ttotal {allOpTime} [failed]");
+                        Console.WriteLine($"{zType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
                         Assert.Fail();
                     }
-                    Console.WriteLine($"{zType} \tzipped in {encOpTime} \tunzipped in {decOpTime} \ttotal {allOpTime} [passed]");
+                    Console.WriteLine($"{zType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                 }
                 catch (Exception e)
                 {

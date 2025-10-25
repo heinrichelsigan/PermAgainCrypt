@@ -51,11 +51,11 @@ namespace Area23.At.PermAgainCrypt.Test
 
                     if (string.IsNullOrEmpty(deCodedText) || plainText.Length != deCodedText.Length || !deCodedText.Equals(plainText, StringComparison.Ordinal))
                     {
-                        Console.WriteLine($"{encType} \tencoded {encOpTime} \tdecoded in {decOpTime} \ttotal {allOpTime} [failed]");
+                        Console.WriteLine($"{encType} \tencoded {encOpTime.ToString("ss'.'ffff")} \tdecoded in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
                         Assert.Fail();
                     }
-                    Console.WriteLine($"{encType} \tencoded in {encOpTime} \tdecoded in {decOpTime} \ttotal {allOpTime} [passed]");                    
+                    Console.WriteLine($"{encType} \tencoded in {encOpTime.ToString("ss'.'ffff")} \tdecoded in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");                    
                 }
                 catch (Exception e)
                 {
