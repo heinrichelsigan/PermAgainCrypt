@@ -288,7 +288,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// public constructor
         /// </summary>
-        public ZenMatrix(int bs = 256)
+        public ZenMatrix(int bs = 16)
         {
             for (int i = 0; i < BLOCK_SIZES.Length; i++)
             {
@@ -306,7 +306,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
         }
 
-        public ZenMatrix(string secretKey = "", KeyHash keyHash = KeyHash.Hex, bool fullSymmetric = false) : this(256)
+        public ZenMatrix(string secretKey = "", KeyHash keyHash = KeyHash.Hex, bool fullSymmetric = false) : this(16)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("secretKey");
@@ -327,7 +327,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// fullSymmetric means that zen matrix is it's inverse element 
         /// and decrypts back to plain text, when encrypting twice or ²</param>       
         /// <exception cref="ApplicationException"></exception>
-        public ZenMatrix(string secretKey = "", string hashIV = "", bool fullSymmetric = false, KeyHash keyHash = KeyHash.Hex) : this(256)
+        public ZenMatrix(string secretKey = "", string hashIV = "", bool fullSymmetric = false, KeyHash keyHash = KeyHash.Hex) : this(16)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("secretKey");
@@ -346,7 +346,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="fullSymmetric">
         /// fullSymmetric means that zen matrix is it's inverse element 
         /// and decrypts back to plain text, when encrypting twice or ²</param> 
-        public ZenMatrix(byte[] keyBytes, bool fullSymmetric = false) : this(256)
+        public ZenMatrix(byte[] keyBytes, bool fullSymmetric = false) : this(16)
         {
             ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
         }

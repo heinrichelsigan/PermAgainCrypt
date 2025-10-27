@@ -1,5 +1,6 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher.Symmetric;
 using Area23.At.Framework.Core.Crypt.Hash;
+using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 
@@ -205,12 +206,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     BlockCipher = new Org.BouncyCastle.Crypto.Engines.XteaEngine();
                     break;
                 case CipherEnum.ZenMatrix:
-                    Size = 256;
+                    Size = 16;
                     KeyLen = 16;
                     BlockCipher = new ZenMatrix(Size);
                     break;
                 case CipherEnum.ZenMatrix2:
-                    Size = 256;
+                    Size = 32;
                     KeyLen = 32;
                     BlockCipher = new ZenMatrix2(Size);
                     break;

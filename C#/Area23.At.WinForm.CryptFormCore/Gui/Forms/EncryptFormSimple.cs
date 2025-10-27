@@ -30,8 +30,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
-                this.comboBoxAlgo.Items.Add(cipher);
-
+            {
+                if (cipher.StartsWith(CipherEnum.ZenMatrix2.ToString(), StringComparison.OrdinalIgnoreCase))
+                    continue;
+                else
+                    this.comboBoxAlgo.Items.Add(cipher);
+            }
+                
             this.textBoxKey.Text = GetEmailFromRegistry();
 
             comboBoxCompression.SelectedItem = ZipType.None.ToString();

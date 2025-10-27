@@ -200,11 +200,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    encryptBytes = Serpent.Encrypt(inBytes);
                 //    break;
                 case CipherEnum.ZenMatrix:
-                    encryptBytes = (new ZenMatrix(secretKey, hash, true)).Encrypt(inBytes);
-                    break;
                 case CipherEnum.ZenMatrix2:
-                    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+                    encryptBytes = (new ZenMatrix(secretKey, hash, false)).Encrypt(inBytes);
                     break;
+                //case CipherEnum.ZenMatrix2:
+                //    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+                //    break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -285,11 +286,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    decryptBytes = Asymmetric.Rsa.Decrypt(cipherBytes);
                 //    break;
                 case CipherEnum.ZenMatrix:
+                case CipherEnum.ZenMatrix2:
                     decryptBytes = (new ZenMatrix(secretKey, hash, false)).Decrypt(cipherBytes);
                     break;
-                case CipherEnum.ZenMatrix2:
-                    decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-                    break;
+                // case CipherEnum.ZenMatrix2:
+                //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
+                // break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -338,7 +340,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <summary>
         /// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
         /// </summary>
-        /// <param name="inBytes">plain <see cref="byte[]"/ to encrypt></param>
+        /// <param name="inBytes">plain <see cref="byte[]"/> to encrypt</param>
         /// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
         /// <param name="hashIv">hash key iv relational to secret key</param>
         /// <param name="zipBefore"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
@@ -460,7 +462,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="hashIv">private key hash for encryption</param>
         /// <param name="zipBefore"><see cref="ZipType"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/></param>
-        /// <returns><binary data/returns>
+        /// <returns>binary data</returns>
         public byte[] EncrpytFileBytesGoRounds(
             byte[] inBytes,
             string cryptKey,
@@ -554,7 +556,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="inString">string to encrypt multiple times</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="encType"><see cref="EncodingType"/ type for encoding encrypted bytes back in plain text></param>
+        /// <param name="encType"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text</param>
         /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
         /// <returns>encrypted string</returns>        

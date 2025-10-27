@@ -9,7 +9,7 @@ namespace Area23.At.Framework.Core.Net.WebHttp
     /// <summary>
     /// WebClientRequest implements a static WebClient Request via <see cref="WebClient"/>
     /// and maily provides
-    /// <see cref="DownloadString(string, string, string, Encoding?)"
+    /// <see cref="DownloadString(string, string, string, Encoding?)"/>
     /// <see cref="PostMessage(string, string, string, string, Encoding?)"/>
     /// funtionality.
     /// </summary>

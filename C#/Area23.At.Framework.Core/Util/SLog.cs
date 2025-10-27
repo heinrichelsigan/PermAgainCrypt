@@ -163,7 +163,7 @@ namespace Area23.At.Framework.Core.Util
         }
 
         /// <summary>
-        /// static log with <see cref="string">string prefix</see>, downcasted generic <see cref="Exception/">Exception xZpd</see> 
+        /// static log with <see cref="string">string prefix</see>, downcasted generic <see cref="Exception">Exception xZpd</see> 
         /// and <see cref="string">string appName</see>
         /// </summary>
         /// <param name="prefix"><see cref="string"/> prefix</param>

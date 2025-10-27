@@ -6,7 +6,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 {
     /// <summary>
     /// AesNet native .Net Aes RijndaelManaged without bouncy castle
-    /// <see cref="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
     /// </summary>
     public class AesNet
     {

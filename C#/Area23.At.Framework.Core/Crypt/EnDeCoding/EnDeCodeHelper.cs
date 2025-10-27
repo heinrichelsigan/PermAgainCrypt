@@ -30,7 +30,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// KeyBytesToHex transforms keyBytes to a hex string
         /// </summary>
         /// <param name="keyBytes"><see cref="byte[]"/> keyBytes to transform</param>
-        /// <returns><see cref="string">hexString</see>< of keyBytes/returns>
+        /// <returns><see cref="string">hexString</see> of keyBytes</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static string KeyBytesToHex(byte[] keyBytes)
         {

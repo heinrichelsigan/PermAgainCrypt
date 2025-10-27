@@ -6,8 +6,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 {
     /// <summary>
     /// Des3Net native .Net triple des without bouncy castle
-    /// <see cref="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
-    /// <seealso cref="https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/ "/>
+    /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
+    /// <seealso cref="https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
     /// </summary>
     public class Des3Net
     {

@@ -6,7 +6,6 @@ using System.Globalization;
 namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 {
 
-
     /// <summary>
     /// In  <see cref="ZenMatrix2"/> each half byte in block of 16 bytes is shifted 
     /// least significant bit is mapped via  <see cref="MatrixPermutationKey"/> a 0x10 hex mapping <see cref="PermutationKeyHash"/>for encryption 
@@ -104,50 +103,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
             if (inOff < inBuf.Length && inOff + BLOCK_SIZE <= inBuf.Length && outOff < outBuf.Length && outOff + BLOCK_SIZE <= outBuf.Length)
             {
-                int numberOfTasks = (int)BLOCK_SIZE / ZEN_SIZE;                                 
-                Task[] taskArray = new Task[numberOfTasks];
-                for (int i = 0; i < numberOfTasks; i++)
-                {
-                    taskArray[i] = Task.Factory.StartNew(() =>
-                    {
-                        byte[] inOffBuf = new byte[(inBuf.Length - inOff >= ZEN_SIZE) ? ZEN_SIZE : inBuf.Length - inOff];
-                        byte[] inInBuf = new byte[inOffBuf.Length];
-                        Array.Copy(inBuf, inOff + numberOfTasks * ZEN_SIZE, inInBuf, 0, inInBuf.Length);
-                        Array.Copy(inBuf, inOff + numberOfTasks * ZEN_SIZE, inOffBuf, 0, inOffBuf.Length);
-                        byte[] processed = ProcessBlock16(inBuf, outBuf);
-                        Array.Copy(processed, inOff + numberOfTasks * ZEN_SIZE, outBuf, outOff + numberOfTasks * ZEN_SIZE, processed.Length);
-                    });
-                }
-
-                Task.WaitAll(taskArray);
-                
-                // Array.Copy(processed, 0, outBuf, outOff, BLOCK_SIZE);
-
-                return BLOCK_SIZE;
-            }
-
-            return 0;
-        }
-
-
-        public byte[] ProcessBlock16(byte[] inBuf, byte[] outBuf)
-        {
-            int inOff = 0, outOff = 0;
-            if (privateBytes == null)
-                throw new InvalidOperationException($"{SYMM_CIPHER_ALGO_NAME} engine not initialised");
-
-            // int len = BLOCK_SIZE;
-            int aCnt = 0, bCnt = 0;
-
-            if (inOff >= inBuf.Length || ZEN_SIZE > inBuf.Length)
-                throw new InvalidDataException($"Cannot process next {ZEN_SIZE} bytes, because inOff ({inOff}) + BLOCK_SIZE ({ZEN_SIZE}) > inBuf.Length ({inBuf.Length})");
-            if (outOff >= outBuf.Length || outOff + ZEN_SIZE > outBuf.Length)
-                throw new InvalidDataException($"Cannot process next {ZEN_SIZE} bytes, because inOff ({outOff}) + BLOCK_SIZE ({ZEN_SIZE}) > outBuf.Length ({outBuf.Length})");
-
-            if (inOff < inBuf.Length && ZEN_SIZE <= inBuf.Length && outOff < outBuf.Length && ZEN_SIZE <= outBuf.Length)
-            {
                 byte[] inOffBuf = new byte[inBuf.Length - inOff];
-                Array.Copy(inBuf, 0, inOffBuf, 0, inOffBuf.Length);
+                Array.Copy(inBuf, inOff, inOffBuf, 0, inOffBuf.Length);
 
                 if (forEncryption)
                 {
@@ -155,13 +112,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                     inOffBuf = padBytes;
                 }
 
-                if (ZEN_SIZE > inOffBuf.Length)
-                    throw new InvalidOperationException($"{ZEN_SIZE} > inOffBuf.Length = {inOffBuf.Length}");
+                if (BLOCK_SIZE > inOffBuf.Length)
+                    throw new InvalidOperationException($"{BLOCK_SIZE} > inOffBuf.Length = {inOffBuf.Length}");
 
-                byte[] processed = new byte[ZEN_SIZE];
+                byte[] processed = new byte[BLOCK_SIZE];
                 string shifted = "";
 
-                for (bCnt = 0; bCnt < ZEN_SIZE; bCnt++)
+                for (bCnt = 0; bCnt < BLOCK_SIZE; bCnt++)
                 {
                     byte b = inOffBuf[bCnt];
                     MapByteValue(ref b, out byte mappedByte, forEncryption);
@@ -170,7 +127,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 }
 
                 char[] swapped = shifted.ToCharArray();
-                for (bCnt = 0; bCnt < (2 * ZEN_SIZE); bCnt++)
+                for (bCnt = 0; bCnt < (2 * BLOCK_SIZE); bCnt++)
                 {
                     char chA = shifted[bCnt];
                     int posA = (forEncryption) ? MatrixPermutationKey2[bCnt % 0x20] : InverseMatrix2[bCnt % 0x20];
@@ -192,19 +149,62 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 //    outBytes = PadBuffer(processed);
                 //}
 
-                return processed;
+                Array.Copy(processed, 0, outBuf, outOff, BLOCK_SIZE);
+
+                return BLOCK_SIZE;
             }
 
-            return new byte[0];
+            return 0;
         }
 
         public new int ProcessBlock(ReadOnlySpan<byte> input, Span<byte> output)
         {
-            byte[] inBuf = input.ToArray();
-            byte[] outBuf = new byte[inBuf.Length];
-            ProcessBlock(inBuf, 0, outBuf, 0);
-            
-            output = new Span<byte>(outBuf);
+            int aCnt = 0, bCnt = 0;
+            byte[] buffer = input.ToArray();
+            if (forEncryption)                                  // add padding buffer to match BLOCK_SIZE
+            {
+                byte[] padBytes = PadBuffer(input.ToArray());
+                buffer = padBytes;
+            }
+
+            if (BLOCK_SIZE > buffer.Length)
+                throw new InvalidOperationException($"{BLOCK_SIZE} > buffer.Length = {buffer.Length}");
+
+            byte[] processed = new byte[BLOCK_SIZE];
+            string shifted = "";
+
+            for (bCnt = 0; bCnt < BLOCK_SIZE; bCnt++)
+            {
+                byte b = buffer[bCnt];
+                MapByteValue(ref b, out byte mappedByte, forEncryption);
+                processed[bCnt] = mappedByte;
+                shifted += mappedByte.ToString("x2");
+            }
+
+            char[] swapped = shifted.ToCharArray();
+            for (bCnt = 0; bCnt < (2 * BLOCK_SIZE); bCnt++)
+            {
+                char chA = shifted[bCnt];
+                int posA = (forEncryption) ? MatrixPermutationKey2[bCnt % 0x20] : InverseMatrix2[bCnt % 0x20];
+                swapped[posA] = chA;
+            }
+            for (aCnt = 0, bCnt = 0; bCnt < swapped.Length; aCnt++, bCnt += 2)
+            {
+                string toByte = string.Concat(swapped[bCnt].ToString(), swapped[bCnt + 1].ToString());
+                byte forProcessed;
+                IFormatProvider provider = new NumberFormatInfo();
+                if (!Byte.TryParse(toByte, System.Globalization.NumberStyles.HexNumber, provider, out forProcessed))
+                    forProcessed = (byte)0x0;
+                processed[aCnt] = forProcessed;
+            }
+
+            // byte[] outBytes = processed;
+            //if (!forEncryption)                             // trim padding buffer from decrypted output
+            //{
+            //    outBytes = PadBuffer(processed);
+            //}
+
+            output = new Span<byte>(processed);
 
             return BLOCK_SIZE;
         }
@@ -216,7 +216,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// public constructor
         /// </summary>
-        public ZenMatrix2(int bs = 256) : base(bs)
+        public ZenMatrix2(int bs = 32) : base(bs)
         {
             sbyte sbcnt2 = 0x0;
             MatrixPermutationKey2 = new sbyte[0x20];
@@ -238,7 +238,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// fullSymmetric means that zen matrix is it's inverse element 
         /// and decrypts back to plain text, when encrypting twice or ²</param>       
         /// <exception cref="ApplicationException"></exception>
-        public ZenMatrix2(string secretKey = "", string hashIV = "", bool fullSymmetric = false) : this(256)
+        public ZenMatrix2(string secretKey = "", string hashIV = "", bool fullSymmetric = false) : this(32)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("secretKey");
@@ -258,7 +258,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="fullSymmetric">
         /// fullSymmetric means that zen matrix is it's inverse element 
         /// and decrypts back to plain text, when encrypting twice or ²</param> 
-        public ZenMatrix2(byte[] keyBytes, bool fullSymmetric = false) : this(256)
+        public ZenMatrix2(byte[] keyBytes, bool fullSymmetric = false) : this(32)
         {
             ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
         }
@@ -579,7 +579,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
 
             forEncryption = true;
-            byte[] obytes = PadBuffer(pdata, false);
+            byte[] obytes = PadBuffer(pdata, true);
 
             List<byte> encryptedBytes = new List<byte>();
             for (int i = 0; i < obytes.Length; i += 0x10)
@@ -615,7 +615,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 }
             }
 
-            byte[] outBytes = PadBuffer(decBytes.ToArray(), false);
+            byte[] outBytes = PadBuffer(decBytes.ToArray(), true);
 
             return outBytes;
         }
@@ -685,6 +685,5 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
 
     }
-
 
 }

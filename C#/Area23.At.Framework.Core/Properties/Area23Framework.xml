@@ -134,7 +134,16 @@
             <param name="keyIv">key's iv</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
+            <summary>
+            MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
+            </summary>
+            <param name="inBytes">plain <see cref="!:byte[]"/> to encrypt</param>
+            <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
+            <param name="hashIv">hash key iv relational to secret key</param>
+            <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
+            <returns>encrypted byte[]</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
@@ -158,7 +167,17 @@
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
             <returns>UTF9 emcoded encrypted string without binary data</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncrpytFileBytesGoRounds(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncrpytFileBytesGoRounds(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
+            <summary>
+            Encrypt nomary data byte[]
+            </summary>
+            <param name="inBytes">binary data</param>
+            <param name="cryptKey">prviate key for encryption</param>
+            <param name="hashIv">private key hash for encryption</param>
+            <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
+            <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
+            <returns>binary data</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecryptTextRoundsGo(System.String,System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             decrypt encoded encrypted text
@@ -182,7 +201,18 @@
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
             <returns>plain data byte[]</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncrpytToString(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncrpytToString(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
+            <summary>
+            EncrpytToStringd
+            </summary>
+            <param name="inString">string to encrypt multiple times</param>
+            <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+            and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+            <param name="encType"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text</param>
+            <param name="zipBefore">Zip bytes with <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> before passing them in encrypted stage pipeline. <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
+            <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
+            <returns>encrypted string</returns>        
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecrpytToString(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             DecrpytToString
@@ -286,7 +316,7 @@
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes">
             <summary>
-            <see cref="!:https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.#cctor">
@@ -336,7 +366,7 @@
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet">
             <summary>
             AesNet native .Net Aes RijndaelManaged without bouncy castle
-            <see cref="!:https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.Encrypt(System.Byte[])">
@@ -523,7 +553,7 @@
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3">
             <summary>
             static Des3 encryption helper
-            <see cref="!:https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
             <seealso cref="!:https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
             </summary>
         </member>
@@ -572,7 +602,7 @@
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net">
             <summary>
             Des3Net native .Net triple des without bouncy castle
-            <see cref="!:https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
             <seealso cref="!:https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
             </summary>
         </member>
@@ -804,7 +834,16 @@
             <param name="keyIv">key's iv</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
+            <summary>
+            MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
+            </summary>
+            <param name="inBytes">plain <see cref="!:byte[]"/> to encrypt</param>
+            <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
+            <param name="hashIv">hash key iv relational to secret key</param>
+            <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
+            <returns>encrypted byte[]</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
@@ -1265,7 +1304,14 @@
             <returns>hex string of bytes</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyBytesToHex(System.Byte[])" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyBytesToHex(System.Byte[])">
+            <summary>
+            KeyBytesToHex transforms keyBytes to a hex string
+            </summary>
+            <param name="keyBytes"><see cref="!:byte[]"/> keyBytes to transform</param>
+            <returns><see cref="T:System.String">hexString</see> of keyBytes</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyToHexBytesSalt(System.String,System.Int32)">
             <summary>
             KeyToHexBytes
@@ -1659,7 +1705,14 @@
             <param name="fileName">optional fileName to end</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.Sha512Sum.Hash(System.IO.Stream,System.String)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.Sha512Sum.Hash(System.IO.Stream,System.String)">
+            <summary>
+            Hashes a stream
+            </summary>
+            <param name="stream">stream strm</param>
+            <param name="fileName">optional filename to add after hash</param>
+            <returns>Sha512 hash with optional fileName</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CContact.#ctor">
             <summary>
             Parameterless default constructor
@@ -1948,7 +2001,15 @@
             <param name="serverPort">server port (default 80)</param>
             <returns><see cref="!:Task&lt;object&gt;"/></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest" -->
+        <member name="T:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest">
+            <summary>
+            WebClientRequest implements a static WebClient Request via <see cref="T:System.Net.WebClient"/>
+            and maily provides
+            <see cref="M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)"/>
+            <see cref="M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)"/>
+            funtionality.
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.#cctor">
             <summary>
             static constructor

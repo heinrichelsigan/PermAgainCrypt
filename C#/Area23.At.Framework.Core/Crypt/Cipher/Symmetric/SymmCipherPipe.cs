@@ -242,7 +242,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 		/// <summary>
 		/// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
 		/// </summary>
-		/// <param name="inBytes">plain <see cref="byte[]"/ to encrypt></param>
+		/// <param name="inBytes">plain <see cref="byte[]"/> to encrypt</param>
 		/// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
 		/// <param name="hashIv">hash key iv relational to secret key</param>
 		/// <param name="zipBefore"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
