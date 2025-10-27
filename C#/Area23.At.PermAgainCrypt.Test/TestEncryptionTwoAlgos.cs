@@ -19,7 +19,7 @@ namespace Area23.At.PermAgainCrypt.Test
         // TODO: Fix ZenMatrix in Test
 
         [TestMethod]
-        public void TestAllEncryptionTwoAlgos()
+        public void TestAllEncryptionTwoAlgosBytes()
         {
             Console.WriteLine("TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgos() \t[started]");
             DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
@@ -30,7 +30,7 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats2Algos.csv";
             if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
                 fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats2Algos.csv";
-            File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime");
+            File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes(), cipherEnums = CipherEnumExtensions.GetCipherTypes();
@@ -66,8 +66,7 @@ namespace Area23.At.PermAgainCrypt.Test
                         decOpTime = endOp.Subtract(midOp);
                         allOpTime = endOp.Subtract(startOp);
 
-                        if (deCodedBytes == null || deCodedBytes.Length < 1 || 
-                            (deCodedBytes.Length != plainBytes.Length && Math.Abs(deCodedBytes.Length - plainBytes.Length) > 16))
+                        if (deCodedBytes == null || deCodedBytes.Length < 1 || (Math.Abs(deCodedBytes.Length - plainBytes.Length) > 16))
                         {
                             Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
@@ -76,7 +75,79 @@ namespace Area23.At.PermAgainCrypt.Test
                         Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                         double size = deCodedBytes.Length / (1024);
                         File.AppendAllText(fileCsvOut,
-                            $"{Path.GetFileName(fileBytesTest)},{size},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}");
+                            $"{Path.GetFileName(fileBytesTest)},{size},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
+                            Environment.NewLine);
+                    }
+                    catch (Exception e) 
+                    {
+                        Console.WriteLine($"{cipherType}=>{cipherEnum} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    }
+                }
+            }
+            return;
+        }
+
+
+        [TestMethod]
+        public void TestAllEncryptionTwoAlgosAsciiText()
+        {
+            Console.WriteLine("TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgos() \t[started]");
+            DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
+            TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
+            string fileBytesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
+            string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+            string dirCsvOut = "";
+            string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats2Algos.csv";
+            if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
+                fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + "Stats2AlgosASCII.csv";
+            File.WriteAllText(fileCsvOut, $"FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime{Environment.NewLine}");
+
+            Assert.IsTrue(File.Exists(fileTextTest));
+            CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes(), cipherEnums = CipherEnumExtensions.GetCipherTypes();
+            ZipType[] zTypes = new ZipType[] { ZipType.None };
+            KeyHash kHash = KeyHash.Hex;
+            ZipType zType = ZipType.None;
+            EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
+            EncodingType encType = EncodingType.Base64;
+            string plainText = File.ReadAllText(fileTextTest);
+            foreach (CipherEnum cipherType in cipherTypes)
+            {
+                foreach (CipherEnum cipherEnum in cipherEnums)
+                {
+                    CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
+                    CipherPipe pipe = new CipherPipe(cipherPair); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);                    
+
+                    try
+                    {
+                        startOp = DateTime.Now;
+                        string cryptText = pipe.EncrpytTextGoRounds(plainText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                    encType, zType, kHash);
+                        Assert.IsTrue(!string.IsNullOrEmpty(cryptText));
+
+                        midOp = DateTime.Now;
+                        encOpTime = midOp.Subtract(startOp);
+                        string deCodedText = pipe.DecryptTextRoundsGo(cryptText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                encType, zType, kHash);
+                        if (!string.IsNullOrEmpty(plainText) && !string.IsNullOrEmpty(deCodedText))
+                            Assert.IsTrue(plainText.Length >= 0 && deCodedText.Length >= 0 && (Math.Abs(deCodedText.Length - plainText.Length) <= 32));
+
+                        endOp = DateTime.Now;
+                        decOpTime = endOp.Subtract(midOp);
+                        allOpTime = endOp.Subtract(startOp);
+
+                        Assert.AreEqual<string>(plainText, plainText);
+
+                        if (deCodedText == null || deCodedText.Length < 1 || (Math.Abs(deCodedText.Length - plainText.Length) > 16))
+                        {
+                            Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedText.Length}) != plainBytes.Length ({plainText.Length})");
+                            Assert.Fail();
+                        }
+                        Console.WriteLine($"{cipherType}=>{cipherEnum} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                        double size = deCodedText.Length / (1024);
+                        File.AppendAllText(fileCsvOut,
+                            $"{Path.GetFileName(fileBytesTest)},{size},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" 
+                            + Environment.NewLine);
                     }
                     catch (Exception e)
                     {

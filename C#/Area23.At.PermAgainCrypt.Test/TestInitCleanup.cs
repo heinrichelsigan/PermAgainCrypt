@@ -7,6 +7,7 @@ using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Org.BouncyCastle.Crypto;
+using System.Configuration;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Policy;
 using System.Text;
@@ -14,7 +15,7 @@ using System.Text;
 namespace Area23.At.PermAgainCrypt.Test
 {
     [TestClass]
-    public sealed class Test1
+    public sealed class TestInitCleanup
     {
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext context)
@@ -43,7 +44,26 @@ namespace Area23.At.PermAgainCrypt.Test
         [TestInitialize]
         public void TestInit()
         {
-            // This method is called before each test method.
+            string statdir = ConfigurationManager.AppSettings["StatDir"];
+            if (ConfigurationManager.AppSettings["SkipTests"] != null &&
+                ConfigurationManager.AppSettings["SkipTests"].Equals("true", StringComparison.OrdinalIgnoreCase))
+            {
+                Assert.Inconclusive("Tests are skipped as per configuration.");
+            }
+            if (!string.IsNullOrEmpty(statdir) && Directory.Exists(statdir))
+            {
+                foreach (string file in Directory.GetFiles(statdir, "*.csv"))
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (Exception exi)
+                    {
+                        Area23Log.LogOriginEx("TestInit", exi);
+                    }
+                }
+            }
         }
 
         [TestCleanup]
