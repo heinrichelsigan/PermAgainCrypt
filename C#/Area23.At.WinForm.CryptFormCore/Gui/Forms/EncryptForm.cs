@@ -8,7 +8,6 @@ using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
 using System.Media;
-using System.Net.NetworkInformation;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {

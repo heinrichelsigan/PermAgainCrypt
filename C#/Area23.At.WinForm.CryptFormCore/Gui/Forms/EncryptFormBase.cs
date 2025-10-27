@@ -1,14 +1,8 @@
 ﻿using Area23.At.Framework.Core.Crypt;
-using Area23.At.Framework.Core.Static;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {

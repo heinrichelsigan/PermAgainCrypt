@@ -1,16 +1,4 @@
 ﻿using Area23.At.Framework.Core.Util;
-using Area23.At.Framework.Core.Static;
-using Area23.At.WinForm.CryptFormCore.Gui.Forms;
-using Area23.At.WinForm.CryptFormCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {

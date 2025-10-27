@@ -7,9 +7,7 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using Org.BouncyCastle.Crypto.Generators;
 using System.Media;
-using System.Windows.Forms;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
