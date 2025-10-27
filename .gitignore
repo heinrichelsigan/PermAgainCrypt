@@ -415,3 +415,5 @@ FodyWeavers.xsd
 /C#/Deploy/20251022_ConsoleCrypt_x86.7z
 /C#/Deploy/20251022_PermAgainCrypt_x64.7z
 /C#/Deploy/20251022_PermAgainCrypt_x86.7z
+/Deploy/console/README_MD.txt
+/Deploy/console/TestCryptConsole.bat
