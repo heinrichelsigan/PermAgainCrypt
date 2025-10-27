@@ -97,6 +97,7 @@
             buttonDecrypt = new Button();
             cipherEnumBindingSource1 = new BindingSource(components);
             groupBoxFiles = new GroupBox();
+            pictureBoxRunningPipe = new PictureBox();
             pictureBoxDelete = new PictureBox();
             notifyIcon1 = new NotifyIcon(components);
             comboBoxCompression = new ComboBox();
@@ -115,6 +116,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cipherEnumBindingSource1).BeginInit();
             groupBoxFiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             SuspendLayout();
             // 
@@ -589,7 +591,7 @@
             // 
             pictureBoxFileIn.Image = Properties.Resources.image_file;
             pictureBoxFileIn.InitialImage = Properties.Resources.img_success;
-            pictureBoxFileIn.Location = new Point(18, 38);
+            pictureBoxFileIn.Location = new Point(12, 38);
             pictureBoxFileIn.Margin = new Padding(2);
             pictureBoxFileIn.Name = "pictureBoxFileIn";
             pictureBoxFileIn.Size = new Size(64, 64);
@@ -622,7 +624,7 @@
             // 
             // labelFileIn
             // 
-            labelFileIn.Location = new Point(18, 111);
+            labelFileIn.Location = new Point(12, 111);
             labelFileIn.Margin = new Padding(2, 0, 2, 0);
             labelFileIn.Name = "labelFileIn";
             labelFileIn.Size = new Size(360, 24);
@@ -631,7 +633,7 @@
             // 
             // labelOutputFile
             // 
-            labelOutputFile.Location = new Point(386, 111);
+            labelOutputFile.Location = new Point(397, 111);
             labelOutputFile.Margin = new Padding(2, 0, 2, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
@@ -643,7 +645,7 @@
             // pictureBoxOutFile
             // 
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(679, 38);
+            pictureBoxOutFile.Location = new Point(691, 38);
             pictureBoxOutFile.Margin = new Padding(2);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
             pictureBoxOutFile.Size = new Size(58, 69);
@@ -697,7 +699,7 @@
             // 
             buttonDecrypt.BackColor = SystemColors.ControlLight;
             buttonDecrypt.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonDecrypt.Location = new Point(394, 334);
+            buttonDecrypt.Location = new Point(137, 334);
             buttonDecrypt.Margin = new Padding(1);
             buttonDecrypt.Name = "buttonDecrypt";
             buttonDecrypt.Size = new Size(120, 29);
@@ -710,6 +712,7 @@
             // 
             groupBoxFiles.AllowDrop = true;
             groupBoxFiles.BackColor = SystemColors.ControlDark;
+            groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
             groupBoxFiles.Controls.Add(pictureBoxFileIn);
             groupBoxFiles.Controls.Add(labelFileIn);
             groupBoxFiles.Controls.Add(pictureBoxOutFile);
@@ -728,6 +731,15 @@
             groupBoxFiles.DragOver += Drag_Over;
             groupBoxFiles.DragLeave += Drag_Leave;
             groupBoxFiles.GiveFeedback += Give_FeedBack;
+            // 
+            // pictureBoxRunningPipe
+            // 
+            pictureBoxRunningPipe.Image = Properties.Resources.EnCryptPipe1;
+            pictureBoxRunningPipe.Location = new Point(129, 12);
+            pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
+            pictureBoxRunningPipe.Size = new Size(522, 126);
+            pictureBoxRunningPipe.TabIndex = 16;
+            pictureBoxRunningPipe.TabStop = false;
             // 
             // pictureBoxDelete
             // 
@@ -867,6 +879,7 @@
             ((System.ComponentModel.ISupportInitialize)cipherEnumBindingSource1).EndInit();
             groupBoxFiles.ResumeLayout(false);
             groupBoxFiles.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -949,5 +962,6 @@
         private Button buttonHashPipe;
         private ToolStripMenuItem menuMainHashPipe;
         private Controls.RadioButtonList radioButtonListHash;
+        private PictureBox pictureBoxRunningPipe;
     }
 }

@@ -34,7 +34,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 else
                     this.comboBoxAlgo.Items.Add(cipher);
             }
-                
+
+            this.pictureBoxRunningPipe.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
 
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
@@ -50,7 +51,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => SetCompression(null, comboBoxCompression.SelectedItem);
 
         private void SetCompression(ToolStripMenuItem? mi = null, object? comboItem = null)
-        {
+        {            
             ZipType zipType = (mi != null) ? ZipTypeExtensions.GetZipType(mi.Name ?? "None") :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None") :
                     ZipType.None;
@@ -102,7 +103,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         protected ZipType GetZip()
-        {
+        {            
             if (menu7z.Checked) return ZipType.Z7;
             if (menuBZip2.Checked) return ZipType.BZip2;
             if (menuGZip.Checked) return ZipType.GZip;
@@ -196,7 +197,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
 
         protected void SetHash(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
-
         {
             KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash aKeyHash = KeyHash.Hex;
@@ -276,7 +276,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
-        {
+        {            
             CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
@@ -428,12 +428,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.textBoxHash.Text))
             {
+                this.pictureBoxRunningPipe.Visible = true;
                 Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
+                    // this.pictureBoxRunningPipe.Visible = true;
                     this.textBoxOut.Text = "";
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     try
@@ -452,6 +454,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
                 if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
+                    // this.pictureBoxRunningPipe.Visible = true;
                     foreach (string file in HashFiles)
                     {
                         if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
@@ -563,6 +566,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
+            this.pictureBoxRunningPipe.Visible = false;
             string[] files = new string[1];
 
             if (e != null && e.Data != null)
@@ -689,6 +693,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
+            this.pictureBoxRunningPipe.Visible = false;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;
@@ -713,6 +718,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <returns>true if saved, false if not saved</returns>
         internal bool SaveBytesDialog(byte[] fileBytes, ref string outFilePath)
         {
+            this.pictureBoxRunningPipe.Visible = false;
             SaveFileDialog dialog = new SaveFileDialog();
             outFilePath = outFilePath ?? string.Empty;
             if (fileBytes != null && fileBytes.Length > 0)
@@ -749,6 +755,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuMainSave_Click(object sender, EventArgs e)
         {
+            this.pictureBoxRunningPipe.Visible = false;
             if (this.pictureBoxOutFile.Visible || labelOutputFile.Visible)
             {
                 byte[] fileBytes = new byte[0];

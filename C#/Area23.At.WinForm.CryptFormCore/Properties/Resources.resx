@@ -131,6 +131,9 @@
   <data name="img_word" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_word.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="EnCryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnCryptPipe1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="AddAesArrowHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AddAesArrowHover1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -140,11 +143,11 @@
   <data name="a_hash" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TransparentMenuImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TransparentMenuImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="a_right_key2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_right_key2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TripleDes" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TripleDes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_sandclock" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_sandclock.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -173,6 +176,10 @@
   <data name="a_hash2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icon_file_working" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\file_working.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>file_working</comment>
+  </data>
   <data name="img_visio" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_visio.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -182,9 +189,6 @@
   </data>
   <data name="img_excel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_excel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TransparentMenuImage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TransparentMenuImage.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="a_hash1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -198,12 +202,11 @@
   <data name="MenuImageInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MenuImageInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="a_hash4a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="blowfish" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blowfish.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="sound_push" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_push.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    <comment>sound_push</comment>
   </data>
   <data name="a_hash6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_hash1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -211,9 +214,8 @@
   <data name="encrypted" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\encrypted1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icon_file_working" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\file_working.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>file_working</comment>
+  <data name="EnCryptPipeline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnCryptPipeline1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="img_success" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_success.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -221,8 +223,9 @@
   <data name="img_success1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\img_success.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="img_windows_start" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\img_windows_start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="sound_push" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Audio\sound_push.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_push</comment>
   </data>
   <data name="MenuImageDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MenuImageDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -244,6 +247,9 @@
   <data name="TwoFish" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TwoFish.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="img_windows_start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\img_windows_start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Serpent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Serpent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -256,8 +262,11 @@
   <data name="a_right_key" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_right_key.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TripleDes" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\TripleDes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="image_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\image_file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TransparentMenuImage1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TransparentMenuImage.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Des" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Des.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -279,8 +288,8 @@
   <data name="MenuImageOld" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MenuImageOld.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="a_hash4a" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="TransparentMenuImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TransparentMenuImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="a_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\a_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -288,7 +297,7 @@
   <data name="icon_warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_warning.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="image_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\image_file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="EnCryptPipe1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnCryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
