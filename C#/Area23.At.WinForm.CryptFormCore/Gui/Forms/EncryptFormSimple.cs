@@ -35,7 +35,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     this.comboBoxAlgo.Items.Add(cipher);
             }
 
-            this.pictureBoxRunningPipe.Visible = false;
+            this.pictureBoxRunningPipe.Visible = true;
             this.textBoxKey.Text = GetEmailFromRegistry();
 
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
@@ -566,7 +566,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            this.pictureBoxRunningPipe.Visible = false;
+            // this.pictureBoxRunningPipe.Visible = false;
             string[] files = new string[1];
 
             if (e != null && e.Data != null)
@@ -693,7 +693,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Visible = false;
+            // this.pictureBoxRunningPipe.Visible = false;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;
@@ -718,7 +718,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <returns>true if saved, false if not saved</returns>
         internal bool SaveBytesDialog(byte[] fileBytes, ref string outFilePath)
         {
-            this.pictureBoxRunningPipe.Visible = false;
+            // this.pictureBoxRunningPipe.Visible = false;
             SaveFileDialog dialog = new SaveFileDialog();
             outFilePath = outFilePath ?? string.Empty;
             if (fileBytes != null && fileBytes.Length > 0)
@@ -755,7 +755,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuMainSave_Click(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Visible = false;
+            // this.pictureBoxRunningPipe.Visible = false;
             if (this.pictureBoxOutFile.Visible || labelOutputFile.Visible)
             {
                 byte[] fileBytes = new byte[0];

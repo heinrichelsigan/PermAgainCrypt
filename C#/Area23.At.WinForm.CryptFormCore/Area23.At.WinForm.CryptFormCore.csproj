@@ -10,8 +10,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.1930</AssemblyVersion>
-    <FileVersion>2.25.1030</FileVersion>
+    <AssemblyVersion>2.25.1101</AssemblyVersion>
+    <FileVersion>2.25.1101</FileVersion>
     <Description>Symmetric Crypt Pipe WinForm  Heinrich Elsigan
 he@area23.at</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>

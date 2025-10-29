@@ -711,7 +711,7 @@
             // groupBoxFiles
             // 
             groupBoxFiles.AllowDrop = true;
-            groupBoxFiles.BackColor = SystemColors.ControlDark;
+            groupBoxFiles.BackColor = SystemColors.ControlLight;
             groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
             groupBoxFiles.Controls.Add(pictureBoxFileIn);
             groupBoxFiles.Controls.Add(labelFileIn);
@@ -734,7 +734,7 @@
             // 
             // pictureBoxRunningPipe
             // 
-            pictureBoxRunningPipe.Image = Properties.Resources.EnCryptPipe1;
+            pictureBoxRunningPipe.Image = Properties.Resources.EnCryptPipe2;
             pictureBoxRunningPipe.Location = new Point(129, 12);
             pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
             pictureBoxRunningPipe.Size = new Size(522, 126);
@@ -814,7 +814,7 @@
             // 
             // radioButtonListHash
             // 
-            radioButtonListHash.BackColor = SystemColors.ControlDark;
+            radioButtonListHash.BackColor = SystemColors.ControlLight;
             radioButtonListHash.Font = new Font("Lucida Sans Unicode", 10F);
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
