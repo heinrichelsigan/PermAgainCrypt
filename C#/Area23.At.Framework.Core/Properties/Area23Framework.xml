@@ -1042,37 +1042,32 @@
         <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)" -->
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2">
             <summary>
-            In  <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2"/> each half byte in block of 16 bytes is shifted 
-            least significant bit is mapped via  <see cref="!:MatrixPermutationKey"/> a 0x10 hex mapping <see cref="!:PermutationKeyHash"/>for encryption 
-                and <see cref="!:InverseMatrix" /> for decryption,
-            while most significant bit is mapped via <see cref="!:InverseMatrix">_inverseMatrix for encryption</see>(!!!) 
-                and <see cref="!:MatrixPermutationKey">MatrixPermutationKey for decryption</see>(!!!)
-              
-            positions of shifted bytes are swapped in a block of 32 hex = 16 <see cref="T:System.Byte"/>  via a 2nd 0x20 long <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/> (32 hex)
-            and repositioned via <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2"/> in case of decryption
-            
-            I have further the idea to use normal or inverse operation, depending on secret key bytes (dynamically.
+            More complex sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
+            position swaps and byte mappings are seperated in 2 matrizes 
+            and maybe I will add ZenMatrix3 l8r, to multiply and divide byte values with a 3rd matrix 
+            for mapping sbyte[1] => byte[1] 0xf => 0xab and generate 
             
             maybe this encryption is already invented, but created at Git by zen@area23.at (Heinrich Elsigan)
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2">
+            <summary>
+            abstraction of a 0x10 => 0x10 matrix, for example
+            <see cref="!:MatrixPermutationKey"/> 
+            </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2">
             <summary>
-            Inverse ZenMatrix2 
+            Inverse Matrix 2 
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessBlock(System.Byte[],System.Int32,System.Byte[],System.Int32)">
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.PermutationKeyHash2">
             <summary>
-            Processes one BLOCK with BLOCK_SIZE <see cref="!:BLOCK_SIZE"/>
+            PermutationKeyHash is same as <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/>
+            Advantage of <see cref="!:HashSet&lt;sbyte&gt;"/> is, that no duplicated values can be inside
             </summary>
-            <param name="inBuf"></param>
-            <param name="inOff"></param>
-            <param name="outBuf"></param>
-            <param name="outOff"></param>
-            <returns></returns>
-            <exception cref="T:System.IO.InvalidDataException"></exception>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor(System.Int32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor">
             <summary>
             public constructor
             </summary>
@@ -1097,12 +1092,12 @@
             fullSymmetric means that zen matrix is it's inverse element 
             and decrypts back to plain text, when encrypting twice or ²</param> 
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InitMatrixSymChiffer">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InitMatrixSymChiffer2">
             <summary>
             InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ZenMatrixGenWithBytes(System.Byte[],System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ZenMatrixGenWithBytes2(System.Byte[],System.Boolean)">
             <summary>
             Generates ZenMatrix with key bytes
             </summary>
@@ -1115,29 +1110,23 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessBytes(System.Byte[],System.Int32,System.Int32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessEncryptBytes2(System.Byte[],System.Int32,System.Int32)">
             <summary>
-            ProcessBytes processes bytes for encryption or decryption depending on <see cref="!:forEncryption"/>
-                processes the next len=16 bytes to encrypt, starting at offSet
-                or processes the next len=16 bytes to decrypt, starting at offSet
+            ProcessEncryptBytes2, processes the next len=16 bytes to encrypt, starting at offSet
             </summary>
-            <param name="inBytes">in bytes array to encrypt</param>
+            <param name="inBytesPadding">in bytes array to encrypt</param>
             <param name="offSet">starting offSet</param>
             <param name="len">len of byte block (default 16)</param>
             <returns>byte[len] (default: 16) segment of encrypted bytes</returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.PadBuffer(System.Byte[],System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessDecryptBytes2(System.Byte[],System.Int32,System.Int32)">
             <summary>
-            in case of encryption, 
-                pads 0 or random buffer at end of inBytes,
-                so that inBytes % BLOCK_SIZE == 0 
-            in case of decryption,
-                trims remaining padding buffer from inBytes
-            encryption or decryption are triggered via <see cref="!:forEncryption"/>
+            ProcessDecryptBytes  processes the next len=16 bytes to decrypt, starting at offSet
             </summary>
-            <param name="inBytes">input bytes to pad </param>
-            <param name="useRandom">use random padding</param>
-            <returns>padded or unpadded out bytes</returns>
+            <param name="inBytesEncrypted">encrypted bytes array to deccrypt</param>
+            <param name="offSet">starting offSet</param>
+            <param name="len">len of byte block (default 16)</param>
+            <returns>byte[len] (default: 16) segment of decrypted bytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.Encrypt(System.Byte[])">
             <summary>
@@ -1155,12 +1144,12 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.SByte[],System.Int32)">
             <summary>
-            BuildInverseMatrix2, builds the determinant decryption matrix for sbyte[32] encryption matrix
+            BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
             </summary>
             <param name="matrix">sbyte[16] encryption matrix</param>
             <returns><see cref="!:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue(System.Byte@,System.Byte@,System.Boolean)" -->
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)" -->
         <member name="M:Area23.At.Framework.Core.Crypt.CryptSettings.#ctor">
             <summary>
             CryptSettings constructor maybe needed public for NewTonSoftJson serializing object
@@ -2770,6 +2759,12 @@
             <typeparam name="TResult"></typeparam>
             <param name="task"></param>
             <returns><see cref="T:System.Threading.Tasks.Task`1"/></returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.RegistryAccessor.GetEmailFromRegistry">
+            <summary>
+            GetEmailFromRegistry reads user email address from registry database
+            </summary>
+            <returns>user email adddress or anonymous ftp.cdrom.com</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Util.ResReader">
             <summary>

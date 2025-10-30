@@ -98,6 +98,7 @@
             buttonDecrypt = new Button();
             cipherEnumBindingSource1 = new BindingSource(components);
             groupBoxFiles = new GroupBox();
+            pictureBoxRunningPipe = new PictureBox();
             pictureBoxDelete = new PictureBox();
             notifyIcon1 = new NotifyIcon(components);
             comboBoxCompression = new ComboBox();
@@ -116,6 +117,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cipherEnumBindingSource1).BeginInit();
             groupBoxFiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             SuspendLayout();
             // 
@@ -457,7 +459,7 @@
             menuJson.Enabled = false;
             menuJson.Name = "menuJson";
             menuJson.ShortcutKeys = Keys.Control | Keys.J;
-            menuJson.Size = new Size(143, 22);
+            menuJson.Size = new Size(180, 22);
             menuJson.Text = "Json";
             // 
             // menuXml
@@ -466,7 +468,7 @@
             menuXml.Enabled = false;
             menuXml.Name = "menuXml";
             menuXml.ShortcutKeys = Keys.Control | Keys.X;
-            menuXml.Size = new Size(143, 22);
+            menuXml.Size = new Size(180, 22);
             menuXml.Text = "Xml";
             // 
             // menuRaw
@@ -475,7 +477,7 @@
             menuRaw.Enabled = false;
             menuRaw.Name = "menuRaw";
             menuRaw.ShortcutKeys = Keys.Control | Keys.R;
-            menuRaw.Size = new Size(143, 22);
+            menuRaw.Size = new Size(180, 22);
             menuRaw.Text = "Raw";
             // 
             // menuHelp
@@ -490,7 +492,7 @@
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(147, 22);
+            menuAbout.Size = new Size(180, 22);
             menuAbout.Text = "About";
             menuAbout.Click += menuAbout_Click;
             // 
@@ -499,8 +501,9 @@
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(147, 22);
+            menuHelpHelp.Size = new Size(180, 22);
             menuHelpHelp.Text = "Help";
+            menuHelpHelp.Click += menuHelp_Click;
             // 
             // comboBoxAlgo
             // 
@@ -590,7 +593,7 @@
             // 
             pictureBoxFileIn.Image = Properties.Resources.image_file;
             pictureBoxFileIn.InitialImage = Properties.Resources.img_success;
-            pictureBoxFileIn.Location = new Point(18, 38);
+            pictureBoxFileIn.Location = new Point(12, 38);
             pictureBoxFileIn.Margin = new Padding(2);
             pictureBoxFileIn.Name = "pictureBoxFileIn";
             pictureBoxFileIn.Size = new Size(64, 64);
@@ -623,7 +626,7 @@
             // 
             // labelFileIn
             // 
-            labelFileIn.Location = new Point(18, 111);
+            labelFileIn.Location = new Point(12, 111);
             labelFileIn.Margin = new Padding(2, 0, 2, 0);
             labelFileIn.Name = "labelFileIn";
             labelFileIn.Size = new Size(360, 24);
@@ -632,7 +635,7 @@
             // 
             // labelOutputFile
             // 
-            labelOutputFile.Location = new Point(386, 111);
+            labelOutputFile.Location = new Point(397, 111);
             labelOutputFile.Margin = new Padding(2, 0, 2, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
@@ -644,7 +647,7 @@
             // pictureBoxOutFile
             // 
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(679, 38);
+            pictureBoxOutFile.Location = new Point(691, 36);
             pictureBoxOutFile.Margin = new Padding(2);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
             pictureBoxOutFile.Size = new Size(58, 69);
@@ -698,7 +701,7 @@
             // 
             buttonDecrypt.BackColor = SystemColors.ControlLight;
             buttonDecrypt.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonDecrypt.Location = new Point(394, 334);
+            buttonDecrypt.Location = new Point(137, 334);
             buttonDecrypt.Margin = new Padding(1);
             buttonDecrypt.Name = "buttonDecrypt";
             buttonDecrypt.Size = new Size(120, 29);
@@ -710,7 +713,8 @@
             // groupBoxFiles
             // 
             groupBoxFiles.AllowDrop = true;
-            groupBoxFiles.BackColor = SystemColors.ControlDark;
+            groupBoxFiles.BackColor = SystemColors.ControlLight;
+            groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
             groupBoxFiles.Controls.Add(pictureBoxFileIn);
             groupBoxFiles.Controls.Add(labelFileIn);
             groupBoxFiles.Controls.Add(pictureBoxOutFile);
@@ -729,6 +733,15 @@
             groupBoxFiles.DragOver += Drag_Over;
             groupBoxFiles.DragLeave += Drag_Leave;
             groupBoxFiles.GiveFeedback += Give_FeedBack;
+            // 
+            // pictureBoxRunningPipe
+            // 
+            pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
+            pictureBoxRunningPipe.Location = new Point(139, 24);
+            pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
+            pictureBoxRunningPipe.Size = new Size(502, 90);
+            pictureBoxRunningPipe.TabIndex = 16;
+            pictureBoxRunningPipe.TabStop = false;
             // 
             // pictureBoxDelete
             // 
@@ -803,7 +816,7 @@
             // 
             // radioButtonListHash
             // 
-            radioButtonListHash.BackColor = SystemColors.ControlDark;
+            radioButtonListHash.BackColor = SystemColors.ControlLight;
             radioButtonListHash.Font = new Font("Lucida Sans Unicode", 10F);
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
@@ -868,6 +881,7 @@
             ((System.ComponentModel.ISupportInitialize)cipherEnumBindingSource1).EndInit();
             groupBoxFiles.ResumeLayout(false);
             groupBoxFiles.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -950,5 +964,7 @@
         private Button buttonHashPipe;
         private ToolStripMenuItem menuMainHashPipe;
         private Controls.RadioButtonList radioButtonListHash;
+        private PictureBox pictureBoxRunningPipe;
     }
+
 }

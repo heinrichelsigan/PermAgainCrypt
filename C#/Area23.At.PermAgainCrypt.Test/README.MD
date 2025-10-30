@@ -1,39 +1,158 @@
-﻿https://cqrxs.eu/download/EU.CqrXs.Console/README.MD
+﻿# Area23.At.PermAgainCrypt.Test
 
-# Area23.At.WinForm.CryptFormCore
+Test project for the [Area23.At.Framework.Core](hhttps://github.com/heinrichelsigan/PermAgainCrypt/tree/main/C%23/Area23.At.Framework.Core) library.
 
-CryptFormCore.exe 
+## Integation tests of Area23.At.Framework.Core.Crypt namespace, especially the symmetric encryption algorithms, also in comninations twice or more.
 
-# EU.CqrXs.Console.Core
+### 2025-10-30_23:01:47 	TestCompression.TestAllCompression() 	[started]
+GZip 	zipped in 00.0422 	unzipped in 00.0541 	total 00.0964 [passed]
+BZip2 	zipped in 00.0992 	unzipped in 00.0281 	total 00.1273 [passed]
+Zip 	zipped in 00.0563 	unzipped in 00.0482 	total 00.1046 [passed]
+2025-10-30_23:01:47 	TestCompression.TestAllCompression() 	[finished]
 
-EU.CqrXs.Console.exe 
+### 2025-10-30_22:56:54 	TestEncodings.TestAllEncodings() 	[started]
+Base16 	encoded in 11.0743 	decoded in 00.0444 	total 11.1187 [passed]
+Hex16 	encoded in 08.1038 	decoded in 00.0242 	total 08.1281 [passed]
+Base32 	encoded in 00.0127 	decoded in 00.0108 	total 00.0235 [passed]
+Hex32 	encoded in 00.0059 	decoded in 00.0107 	total 00.0167 [passed]
+Base64 	encoded in 00.0030 	decoded in 08.4277 	total 08.4308 [passed]
+Uu 	encoded in 00.0094 	decoded in 00.0115 	total 00.0210 [passed]
+Xx 	encoded in 00.0159 	decoded in 00.0123 	total 00.0283 [passed]
+2025-10-30_22:57:22 	TestEncodings.TestAllEncodings() 	[finished]
 
->EU.CqrXs.Console.exe --help
-Usage:  EU.CqrXs.Console.exe
-    -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
-    -o | --outFile= | --outText=EnviromentVariable | --outStd
-    -u | --unzip={gzip|bzip2}
-    -z | --zip={gzip|bzip2}
-    -d | --decode={raw|hex16|hex32|base32|base64|uu}
-    -e | --encode={raw|hex16|hex32|base32|base64|uu}
-    -c | --crypt={algo1,algo2,...}
-        -k | --key={secret_key}
-         algo:
-            Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
-            Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,ThreeFish256,
-            Gost28147,Idea,Noekeon,
-            RC2,RC532,RC564,RC6,
-            Seed,SkipJack,Serpent,SM4,
-            Tea,Tnepres,XTea,
-            ZenMatrix,ZenMatrix2
-    -D | --decrypt={algo1,algo2,...}
-        -k | --key={secret_key}
-    -s | --Sum={md5|sha256|sha512}
-    -h | --help
+### 2025-10-30_22:56:54 	TestEncryptionSingleAlgo.TestAllEncryptionSingleAlgo() 	[started]
+Aes 	encrypt in 00.2473 	decrypt in 00.3577 	total 00.6050 [passed]
+BlowFish 	encrypt in 00.1584 	decrypt in 00.1637 	total 00.3221 [passed]
+Camellia 	encrypt in 00.3616 	decrypt in 00.2376 	total 00.5993 [passed]
+Cast6 	encrypt in 00.1105 	decrypt in 00.0846 	total 00.1952 [passed]
+Des3 	encrypt in 00.2109 	decrypt in 00.1614 	total 00.3724 [passed]
+Fish2 	encrypt in 00.0855 	decrypt in 00.0865 	total 00.1720 [passed]
+Fish3 	encrypt in 00.0869 	decrypt in 00.0741 	total 00.1610 [passed]
+Gost28147 	encrypt in 00.2413 	decrypt in 00.3107 	total 00.5520 [passed]
+Idea 	encrypt in 00.1780 	decrypt in 00.1446 	total 00.3227 [passed]
+RC532 	encrypt in 00.0731 	decrypt in 00.0774 	total 00.1506 [passed]
+Seed 	encrypt in 00.1040 	decrypt in 00.0944 	total 00.1984 [passed]
+SkipJack 	encrypt in 00.3388 	decrypt in 00.2677 	total 00.6065 [passed]
+Serpent 	encrypt in 00.1689 	decrypt in 00.1532 	total 00.3221 [passed]
+Tea 	encrypt in 00.1311 	decrypt in 00.1096 	total 00.2407 [passed]
+XTea 	encrypt in 00.1441 	decrypt in 00.1474 	total 00.2916 [passed]
+SM4 	encrypt in 00.1894 	decrypt in 00.0595 	total 00.2490 [passed]
+Cast5 	encrypt in 00.1146 	decrypt in 00.1032 	total 00.2178 [passed]
+Rijndael 	encrypt in 00.5268 	decrypt in 00.3760 	total 00.9028 [passed]
+Noekeon 	encrypt in 00.0992 	decrypt in 00.1108 	total 00.2100 [passed]
+RC2 	encrypt in 00.1632 	decrypt in 00.1131 	total 00.2764 [passed]
+RC564 	encrypt in 00.1480 	decrypt in 00.0257 	total 00.1737 [passed]
+RC6 	encrypt in 00.0709 	decrypt in 00.0887 	total 00.1596 [passed]
+Tnepres 	encrypt in 00.2473 	decrypt in 00.1185 	total 00.3658 [passed]
+Des 	encrypt in 00.0889 	decrypt in 00.0927 	total 00.1817 [passed]
+Aria 	encrypt in 00.3118 	decrypt in 00.1136 	total 00.4254 [passed]
+CamelliaLight 	encrypt in 00.0739 	decrypt in 00.0685 	total 00.1425 [passed]
+Dstu7624 	encrypt in 00.1592 	decrypt in 00.2400 	total 00.3992 [passed]
+AesLight 	encrypt in 00.2408 	decrypt in 00.2273 	total 00.4682 [passed]
+ThreeFish256 	encrypt in 00.0174 	decrypt in 00.0257 	total 00.0431 [passed]
+Des3Net 	encrypt in 00.1663 	decrypt in 00.1435 	total 00.3098 [passed]
+AesNet 	encrypt in 00.0088 	decrypt in 00.0035 	total 00.0124 [passed]
+ZenMatrix 	encrypt in 00.8729 	decrypt in 00.4381 	total 01.3110 [passed]
+ZenMatrix2 	encrypt in 00.4607 	decrypt in 00.3474 	total 00.8082 [passed]
+2025-10-30_22:57:06 	TestEncryptionSingleAlgo.TestAllEncryptionSingleAlgo() 	[finished]
 
-Examples:
-    EU.CqrXs.Console.exe -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32
-    EU.CqrXs.Console.exe -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg 
-    EU.CqrXs.Console.exe -i=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MyKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64 
-    EU.CqrXs.Console.exe -i=test.jpg.gz.aeslight.fish3.base64 -d=base64 -D=AesLight,Fish3 -k=MyKey -e=base64 --unzip=gzip -o=test2.jpg
+### 2025-10-30_23:14:18 	TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgosAsciiText() 	[started]
+Aes=>BlowFish 	encrypt in 00.0417 	decrypt in 00.0742 	total 00.1160 [passed]
+BlowFish=>Camellia 	encrypt in 00.0095 	decrypt in 00.0366 	total 00.0461 [passed]
+Camellia=>Cast6 	encrypt in 00.0045 	decrypt in 00.0454 	total 00.0499 [passed]
+Cast6=>Des3 	encrypt in 00.0072 	decrypt in 00.0415 	total 00.0487 [passed]
+Des3=>Fish2 	encrypt in 00.0061 	decrypt in 00.0478 	total 00.0540 [passed]
+Fish2=>Fish3 	encrypt in 00.0085 	decrypt in 00.0380 	total 00.0466 [passed]
+Fish3=>Gost28147 	encrypt in 00.0040 	decrypt in 00.0352 	total 00.0392 [passed]
+Gost28147=>Idea 	encrypt in 00.0045 	decrypt in 00.0350 	total 00.0395 [passed]
+Idea=>RC532 	encrypt in 00.0025 	decrypt in 00.0323 	total 00.0348 [passed]
+RC532=>Seed 	encrypt in 00.0026 	decrypt in 00.0354 	total 00.0381 [passed]
+Seed=>SkipJack 	encrypt in 00.0036 	decrypt in 00.0303 	total 00.0339 [passed]
+SkipJack=>Serpent 	encrypt in 00.0064 	decrypt in 00.0325 	total 00.0390 [passed]
+Serpent=>Tea 	encrypt in 00.0028 	decrypt in 00.0271 	total 00.0299 [passed]
+Tea=>XTea 	encrypt in 00.0025 	decrypt in 00.0254 	total 00.0279 [passed]
+XTea=>SM4 	encrypt in 00.0025 	decrypt in 00.0222 	total 00.0247 [passed]
+SM4=>Cast5 	encrypt in 00.0040 	decrypt in 00.0312 	total 00.0353 [passed]
+Cast5=>Rijndael 	encrypt in 00.0071 	decrypt in 00.0312 	total 00.0383 [passed]
+Rijndael=>Noekeon 	encrypt in 00.0067 	decrypt in 00.0335 	total 00.0403 [passed]
+Noekeon=>RC2 	encrypt in 00.0033 	decrypt in 00.0303 	total 00.0336 [passed]
+RC2=>RC564 	encrypt in 00.0458 	decrypt in 00.0236 	total 00.0694 [passed]
+RC564=>RC6 	encrypt in 00.0020 	decrypt in 00.0294 	total 00.0314 [passed]
+RC6=>Tnepres 	encrypt in 00.0037 	decrypt in 00.0288 	total 00.0325 [passed]
+Tnepres=>Des 	encrypt in 00.0018 	decrypt in 00.0246 	total 00.0265 [passed]
+Des=>Aria 	encrypt in 00.0060 	decrypt in 00.0274 	total 00.0334 [passed]
+Aria=>CamelliaLight 	encrypt in 00.0030 	decrypt in 00.0265 	total 00.0296 [passed]
+CamelliaLight=>Dstu7624 	encrypt in 00.0049 	decrypt in 00.0241 	total 00.0291 [passed]
+Dstu7624=>AesLight 	encrypt in 00.0036 	decrypt in 00.0268 	total 00.0304 [passed]
+AesLight=>ThreeFish256 	encrypt in 00.0007 	decrypt in 00.0242 	total 00.0250 [passed]
+ThreeFish256=>Des3Net 	encrypt in 00.0046 	decrypt in 00.0371 	total 00.0417 [passed]
+Des3Net=>AesNet 	encrypt in 00.0037 	decrypt in 00.0324 	total 00.0361 [passed]
+AesNet=>ZenMatrix 	encrypt in 00.0373 	decrypt in 00.0360 	total 00.0734 [passed]
+ZenMatrix=>ZenMatrix2 	encrypt in 00.0120 	decrypt in 00.0381 	total 00.0501 [passed]
+ZenMatrix2=>Aes 	encrypt in 00.0023 	decrypt in 00.0432 	total 00.0456 [passed]
+2025-10-30_23:14:19 	TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgosAsciiText() 	[finished]
+
+### 2025-10-30_23:15:51 	TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgosBytes() 	[started]
+Aes=>BlowFish 	encrypt in 00.1862 	decrypt in 00.1444 	total 00.3307 [passed]
+Camellia=>Cast6 	encrypt in 00.2078 	decrypt in 00.2142 	total 00.4221 [passed]
+Des3=>Fish2 	encrypt in 00.2338 	decrypt in 00.2170 	total 00.4509 [passed]
+Fish3=>Gost28147 	encrypt in 00.1953 	decrypt in 00.1652 	total 00.3606 [passed]
+Idea=>RC532 	encrypt in 00.1463 	decrypt in 00.1750 	total 00.3214 [passed]
+Seed=>SkipJack 	encrypt in 00.2384 	decrypt in 00.2352 	total 00.4737 [passed]
+Serpent=>Tea 	encrypt in 00.2742 	decrypt in 00.2394 	total 00.5137 [passed]
+XTea=>SM4 	encrypt in 00.1929 	decrypt in 00.1845 	total 00.3775 [passed]
+Cast5=>Rijndael 	encrypt in 00.3535 	decrypt in 00.3684 	total 00.7220 [passed]
+Noekeon=>RC2 	encrypt in 00.2410 	decrypt in 00.2141 	total 00.4551 [passed]
+RC564=>RC6 	encrypt in 00.0974 	decrypt in 00.0646 	total 00.1620 [passed]
+Tnepres=>Des 	encrypt in 00.1451 	decrypt in 00.1567 	total 00.3018 [passed]
+Aria=>CamelliaLight 	encrypt in 00.3452 	decrypt in 00.1081 	total 00.4534 [passed]
+Dstu7624=>AesLight 	encrypt in 00.1923 	decrypt in 00.2676 	total 00.4599 [passed]
+ThreeFish256=>Des3Net 	encrypt in 00.1322 	decrypt in 00.1263 	total 00.2585 [passed]
+AesNet=>ZenMatrix 	encrypt in 00.1899 	decrypt in 00.1657 	total 00.3557 [passed]
+ZenMatrix2=>Aes 	encrypt in 00.2482 	decrypt in 00.1738 	total 00.4221 [passed]
+2025-10-30_23:15:58 	TestEncryptionTwoAlgos.TestAllEncryptionTwoAlgosBytes() 	[finished]
+
+
+### 2025-10-30_22:56:54 	TestEncryptionIVAlgos.TestPartiallyEncryptionIVAlgosBytes() 	[started]
+Aes=>BlowFish=>Camellia=>Cast6 	encrypt in 01.2533 	decrypt in 00.5535 	total 01.8068 [passed]
+BlowFish=>Camellia=>Cast6=>Des3 	encrypt in 00.3611 	decrypt in 00.3642 	total 00.7254 [passed]
+Camellia=>Cast6=>Des3=>Fish2 	encrypt in 00.4524 	decrypt in 00.4175 	total 00.8699 [passed]
+Cast6=>Des3=>Fish2=>Fish3 	encrypt in 00.4215 	decrypt in 00.3892 	total 00.8107 [passed]
+Des3=>Fish2=>Fish3=>Gost28147 	encrypt in 00.3680 	decrypt in 00.3656 	total 00.7336 [passed]
+Fish2=>Fish3=>Gost28147=>Idea 	encrypt in 00.2792 	decrypt in 00.2493 	total 00.5285 [passed]
+Fish3=>Gost28147=>Idea=>RC532 	encrypt in 00.3080 	decrypt in 00.3837 	total 00.6918 [passed]
+Gost28147=>Idea=>RC532=>Seed 	encrypt in 00.2825 	decrypt in 00.2585 	total 00.5411 [passed]
+Idea=>RC532=>Seed=>SkipJack 	encrypt in 00.2377 	decrypt in 00.3094 	total 00.5472 [passed]
+RC532=>Seed=>SkipJack=>Serpent 	encrypt in 00.3658 	decrypt in 00.3368 	total 00.7027 [passed]
+Seed=>SkipJack=>Serpent=>Tea 	encrypt in 00.3726 	decrypt in 00.3183 	total 00.6909 [passed]
+SkipJack=>Serpent=>Tea=>XTea 	encrypt in 00.4365 	decrypt in 00.4237 	total 00.8602 [passed]
+Serpent=>Tea=>XTea=>SM4 	encrypt in 00.3386 	decrypt in 00.3494 	total 00.6880 [passed]
+Tea=>XTea=>SM4=>Cast5 	encrypt in 00.3225 	decrypt in 00.3350 	total 00.6576 [passed]
+XTea=>SM4=>Cast5=>Rijndael 	encrypt in 00.4568 	decrypt in 00.4548 	total 00.9117 [passed]
+SM4=>Cast5=>Rijndael=>Noekeon 	encrypt in 00.3115 	decrypt in 00.6619 	total 00.9735 [passed]
+Cast5=>Rijndael=>Noekeon=>RC2 	encrypt in 00.4132 	decrypt in 00.3763 	total 00.7896 [passed]
+Rijndael=>Noekeon=>RC2=>RC564 	encrypt in 00.3239 	decrypt in 00.3426 	total 00.6666 [passed]
+Noekeon=>RC2=>RC564=>RC6 	encrypt in 00.1740 	decrypt in 00.1396 	total 00.3136 [passed]
+RC2=>RC564=>RC6=>Tnepres 	encrypt in 00.2119 	decrypt in 00.1426 	total 00.3546 [passed]
+RC564=>RC6=>Tnepres=>Des 	encrypt in 00.1469 	decrypt in 00.1629 	total 00.3098 [passed]
+RC6=>Tnepres=>Des=>Aria 	encrypt in 00.3136 	decrypt in 00.3701 	total 00.6837 [passed]
+Tnepres=>Des=>Aria=>CamelliaLight 	encrypt in 00.3233 	decrypt in 00.3921 	total 00.7155 [passed]
+Des=>Aria=>CamelliaLight=>Dstu7624 	encrypt in 00.3788 	decrypt in 00.3620 	total 00.7408 [passed]
+Aria=>CamelliaLight=>Dstu7624=>AesLight 	encrypt in 00.3631 	decrypt in 00.6100 	total 00.9732 [passed]
+CamelliaLight=>Dstu7624=>AesLight=>ThreeFish256 	encrypt in 00.3054 	decrypt in 00.3332 	total 00.6387 [passed]
+Dstu7624=>AesLight=>ThreeFish256=>Des3Net 	encrypt in 00.2806 	decrypt in 00.3660 	total 00.6467 [passed]
+AesLight=>ThreeFish256=>Des3Net=>AesNet 	encrypt in 00.2098 	decrypt in 00.2511 	total 00.4610 [passed]
+ThreeFish256=>Des3Net=>AesNet=>ZenMatrix 	encrypt in 00.6287 	decrypt in 00.6239 	total 01.2526 [passed]
+Des3Net=>AesNet=>ZenMatrix=>ZenMatrix2 	encrypt in 00.9436 	decrypt in 01.2869 	total 02.2305 [passed]
+2025-10-30_22:57:18 	TestEncryptionIVAlgos.TestPartiallyEncryptionIVAlgosBytes() 	[finished]
+
+### 2025-10-30_23:39:30 	TestEncryptionMaxAlgos.TestPartiallyEncryptionMaxAlgorithmsBytes() 	[started]
+Des3→BlowFish→XTea→Tnepres→Aes→RC6→Cast5→Fish3→ 	encrypt in 02.8584 	decrypt in 01.0274 	total 03.8859 [passed]
+Tnepres→BlowFish→Seed→XTea→Aes→RC6→Cast5→Fish2→ 	encrypt in 00.4867 	decrypt in 00.4302 	total 00.9169 [passed]
+Des3→BlowFish→Idea→SM4→Fish2→Cast6→Tnepres→Seed→ 	encrypt in 02.4869 	decrypt in 00.3866 	total 02.8735 [passed]
+Des3→BlowFish→Fish2→Seed→XTea→Aria→RC6→Idea→ 	encrypt in 00.5688 	decrypt in 00.4488 	total 01.0177 [passed]
+Des3→BlowFish→Fish2→Seed→XTea→Aria→RC6→Idea→ 	encrypt in 00.5911 	decrypt in 01.9626 	total 02.5538 [passed]
+SkipJack→Camellia→Fish2→Aria→BlowFish→RC6→Tnepres→XTea→ 	encrypt in 00.6901 	decrypt in 00.7814 	total 01.4716 [passed]
+Des3→BlowFish→Fish2→Seed→XTea→Aria→RC6→Idea→ 	encrypt in 00.4555 	decrypt in 00.4757 	total 00.9312 [passed]
+Des3→BlowFish→Fish2→Seed→XTea→Aria→RC6→Idea→ 	encrypt in 00.7251 	decrypt in 00.3443 	total 01.0695 [passed]
+2025-10-30_23:39:45 	TestEncryptionMaxAlgos.TestPartiallyEncryptionMaxAlgorithmsBytes() 	[finished]

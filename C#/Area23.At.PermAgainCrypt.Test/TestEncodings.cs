@@ -3,6 +3,7 @@ using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using System.Reflection;
 
 namespace Area23.At.PermAgainCrypt.Test
 {
@@ -17,7 +18,20 @@ namespace Area23.At.PermAgainCrypt.Test
         [TestMethod]
         public void TestAllEncodings()
         {
-            Console.WriteLine("TestEncodings.TestAllEncodings() \t[started]");  
+            string className = "TestEncodings";
+            string methodBase = "TestAllEncodings";
+            try
+            {
+                className = MethodBase.GetCurrentMethod().DeclaringType.Name;
+                methodBase = MethodBase.GetCurrentMethod().Name;
+            }
+            catch
+            {
+                className = this.GetType().BaseType.Name;
+                methodBase = "TestAllEncodings";
+            }
+            Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[started]");
+
             DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
             TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
             string fileByesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
@@ -63,6 +77,8 @@ namespace Area23.At.PermAgainCrypt.Test
                 }
 
             }
+
+            Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
             return;
         }
 

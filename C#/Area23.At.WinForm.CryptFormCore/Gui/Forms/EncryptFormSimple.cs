@@ -29,9 +29,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
             {
-                if (cipher.StartsWith(CipherEnum.ZenMatrix2.ToString(), StringComparison.OrdinalIgnoreCase))
-                    continue;
-                else
+                //if (cipher.StartsWith(CipherEnum.ZenMatrix2.ToString(), StringComparison.OrdinalIgnoreCase))
+                //    continue;
+                //else
                     this.comboBoxAlgo.Items.Add(cipher);
             }
 

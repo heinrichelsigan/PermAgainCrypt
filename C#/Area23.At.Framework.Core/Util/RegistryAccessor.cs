@@ -282,6 +282,39 @@ namespace Area23.At.Framework.Core.Util
         }
 
 
+        /// <summary>
+        /// GetEmailFromRegistry reads user email address from registry database
+        /// </summary>
+        /// <returns>user email adddress or anonymous ftp.cdrom.com</returns>
+        public static string GetEmailFromRegistry()
+        {
+            string userEmail = "anonymous@ftp.cdrom.com";
+            try
+            {
+                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
+                    "Software\\Microsoft\\OneDrive\\Accounts\\Personal", "UserEmail");
+                if (userEmail.Contains('@') && userEmail.Contains('.'))
+                    return userEmail;
+            }
+            catch (Exception exUserEmail)
+            {
+                CException.SetLastException(exUserEmail);
+            }
+            try
+            {
+                userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
+                    "Software\\Microsoft\\VSCommon\\ConnectedUser\\IdeUserV4\\Cache", "EmailAddress");
+                if (userEmail.Contains("@") && userEmail.Contains("."))
+                    return userEmail;
+            }
+            catch (Exception exEmailAddress)
+            {
+                CException.SetLastException(exEmailAddress);
+            }
+            userEmail = "anonymous@ftp.cdrom.com";
+            return userEmail;
+        }
+
     }
 
 }

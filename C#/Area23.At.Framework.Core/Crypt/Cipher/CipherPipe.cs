@@ -199,13 +199,12 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    Serpent.SerpentGenWithKey(secretKey, hash, true);
                 //    encryptBytes = Serpent.Encrypt(inBytes);
                 //    break;
-                case CipherEnum.ZenMatrix:
-                case CipherEnum.ZenMatrix2:
+                case CipherEnum.ZenMatrix:                
                     encryptBytes = (new ZenMatrix(secretKey, hash, false)).Encrypt(inBytes);
                     break;
-                //case CipherEnum.ZenMatrix2:
-                //    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-                //    break;
+                case CipherEnum.ZenMatrix2:
+                    encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+                    break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -286,12 +285,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    decryptBytes = Asymmetric.Rsa.Decrypt(cipherBytes);
                 //    break;
                 case CipherEnum.ZenMatrix:
-                case CipherEnum.ZenMatrix2:
                     decryptBytes = (new ZenMatrix(secretKey, hash, false)).Decrypt(cipherBytes);
                     break;
-                // case CipherEnum.ZenMatrix2:
-                //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-                // break;
+                case CipherEnum.ZenMatrix2:
+                     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
+                     break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
