@@ -189,6 +189,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
 
+        protected internal virtual void menuHelp_Click(object sender, EventArgs e)
+        {
+            // System.Windows.Forms.Help.ShowHelp(this, Resources.HelpUrl);
+            System.Windows.Forms.Help.ShowHelp(this, Resources.HelpUrl, HelpNavigator.TableOfContents, "area23.at");
+        }
+
         protected internal virtual void menuFileExit_Click(object sender, EventArgs e)
         {
             try

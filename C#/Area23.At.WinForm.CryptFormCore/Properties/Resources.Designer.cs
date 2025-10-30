@@ -233,6 +233,26 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CryptPipe {
+            get {
+                object obj = ResourceManager.GetObject("CryptPipe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CryptPipe1 {
+            get {
+                object obj = ResourceManager.GetObject("CryptPipe1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap decrypted {
             get {
                 object obj = ResourceManager.GetObject("decrypted", resourceCulture);
@@ -307,6 +327,15 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
             get {
                 object obj = ResourceManager.GetObject("file", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://github.com/heinrichelsigan/PermAgainCrypt.
+        /// </summary>
+        internal static string HelpUrl {
+            get {
+                return ResourceManager.GetString("HelpUrl", resourceCulture);
             }
         }
         

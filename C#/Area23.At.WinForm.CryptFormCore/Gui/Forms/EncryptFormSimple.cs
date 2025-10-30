@@ -35,13 +35,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     this.comboBoxAlgo.Items.Add(cipher);
             }
 
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             this.pictureBoxRunningPipe.Visible = true;
             this.textBoxKey.Text = GetEmailFromRegistry();
 
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
-            Hash_Click(sender, e);            
+            Hash_Click(sender, e);
         }
 
         #region MenuCompressionEncodingZipHash
@@ -51,7 +52,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => SetCompression(null, comboBoxCompression.SelectedItem);
 
         private void SetCompression(ToolStripMenuItem? mi = null, object? comboItem = null)
-        {            
+        {
             ZipType zipType = (mi != null) ? ZipTypeExtensions.GetZipType(mi.Name ?? "None") :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None") :
                     ZipType.None;
@@ -103,7 +104,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         protected ZipType GetZip()
-        {            
+        {
             if (menu7z.Checked) return ZipType.Z7;
             if (menuBZip2.Checked) return ZipType.BZip2;
             if (menuGZip.Checked) return ZipType.GZip;
@@ -276,7 +277,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
-        {            
+        {
             CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
@@ -428,7 +429,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.textBoxHash.Text))
             {
-                this.pictureBoxRunningPipe.Visible = true;
+                this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe;
                 Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
@@ -566,7 +567,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            // this.pictureBoxRunningPipe.Visible = false;
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
 
             if (e != null && e.Data != null)
@@ -628,6 +629,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drag_Leave(object sender, EventArgs e)
         {
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
@@ -636,6 +638,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
 
             if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) ||
@@ -649,6 +652,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         internal void Drop_Files(string[] files)
         {
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string ext = null;
             if (isDragMode && files != null && files.Length > 0)
             {
@@ -686,6 +690,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region OpenSave
 
+        protected internal override void menuHelp_Click(object sender, EventArgs e)
+        {
+            base.menuHelp_Click(sender, e);
+        }
+
         /// <summary>
         /// menuFileOpen_Click opens a file dialog to select a file to encrypt/decrypt
         /// </summary>
@@ -693,7 +702,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
-            // this.pictureBoxRunningPipe.Visible = false;
+            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;
@@ -861,5 +870,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion Media Methods
 
+        
     }
 }
