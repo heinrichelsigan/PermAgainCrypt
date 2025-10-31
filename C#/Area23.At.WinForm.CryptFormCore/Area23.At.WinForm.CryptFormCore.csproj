@@ -28,9 +28,9 @@ he@area23.at</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="res\text\**" />
-    <EmbeddedResource Remove="res\text\**" />
-    <None Remove="res\text\**" />
+    <Compile Remove="res\**" />
+    <EmbeddedResource Remove="res\**" />
+    <None Remove="res\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,17 +60,10 @@ he@area23.at</Description>
 	</ItemGroup>
     
 	<ItemGroup>
-	  <Folder Include="res\bin\" />
-	  <Folder Include="res\out\" />
-	</ItemGroup>
-    
-	<ItemGroup>
 	  <ProjectReference Include="..\Area23.At.Framework.Core\Area23.At.Framework.Core.csproj" />
 	</ItemGroup>
     
 	<ItemGroup>
-		<Compile Remove="res\text\**" />
-        <EmbeddedResource Remove="res\text\**" />
         <None Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\CryptPenacle.png">
           <Pack>True</Pack>
           <PackagePath>\</PackagePath>
