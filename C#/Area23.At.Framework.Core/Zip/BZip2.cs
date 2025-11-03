@@ -6,6 +6,7 @@ using ICSharpCode.SharpZipLib.Core;
 namespace Area23.At.Framework.Core.Zip
 {
 
+
     /// <summary>
     /// static class BZip2 provides bzip2 and bunzip2 functionality
     /// </summary>
@@ -34,7 +35,7 @@ namespace Area23.At.Framework.Core.Zip
                 msOut.Flush();
                 zipBytes = msOut.ToByteArray();
             }
-                
+
             return zipBytes;
         }
 
@@ -137,7 +138,7 @@ namespace Area23.At.Framework.Core.Zip
             {
                 ICSharpCode.SharpZipLib.BZip2.BZip2.Decompress(msIn, msOut, true);
                 msOut.Flush();
-                unZipBytes = msOut.ToByteArray();                                    
+                unZipBytes = msOut.ToByteArray();
             }
 
             return unZipBytes;
@@ -230,7 +231,7 @@ namespace Area23.At.Framework.Core.Zip
 
             byte[] inBytes = File.ReadAllBytes(inFile);
             byte[]? outBytes = zip ? BZip2Bytes(inBytes, 9) : BUnZip2Bytes(inBytes);
-            
+
             if (string.IsNullOrEmpty(outFile))
                 outFile = zip ? inFile + ".bz2" : inFile.EndsWith(".bz2") ?
                     inFile.Replace(".bz2", "").Replace(".bz", "") : DateTime.Now.ToString("yy-MM-dd_") + inFile;
@@ -242,7 +243,7 @@ namespace Area23.At.Framework.Core.Zip
                 outMessage += $"created file {fi.Name} length={fi.Length} at {fi.CreationTime.ToShortDateString()} {fi.CreationTime.ToShortTimeString()}\nin directory {fi.DirectoryName}";
                 return true;
             }
-                
+
             else outMessage += $"=> file {outFile} NOT created; something went wrong!";
 
             return false;

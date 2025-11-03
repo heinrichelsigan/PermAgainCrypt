@@ -8,6 +8,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
     /// <summary>
     /// CipherEnum maps BlockCipher algorithms <see cref="Org.BouncyCastle.Crypto.IBlockCipher"/>
     /// </summary>
+    [Serializable]
     [DefaultValue("Aes")]
     public enum CipherEnum : byte
     {
@@ -28,8 +29,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         Tea = 0xd,
         XTea = 0xe,
         SM4 = 0xf,
-
-
 
 
         Cast5 = 0x10,

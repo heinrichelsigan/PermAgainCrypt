@@ -105,8 +105,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         {
             CryptoBlockCipher = (cparams.BlockCipher == null) ? new AesEngine() : cparams.BlockCipher;
             if ((CryptoBlockCipher.AlgorithmName == "RC564"))
-                CryptoBlockCipherPadding = new ISO7816d4Padding();
-            else CryptoBlockCipherPadding = new ZeroBytePadding();
+                CryptoBlockCipher = new RC564Engine();
+            CryptoBlockCipherPadding = new Org.BouncyCastle.Crypto.Paddings.ZeroBytePadding();
             KeyLen = cparams.KeyLen;
             Size = Math.Min(cparams.Size, CryptoBlockCipher.GetBlockSize());
             Mode = cparams.Mode;
@@ -177,7 +177,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <returns>encrypted data <see cref="byte[]">bytes</see></returns>
         public byte[] Encrypt(byte[] plainData)
         {
-            // var cipher = CryptoBlockCipher;
+            var cipher = CryptoBlockCipher;
+            // plainData = (CryptoBlockCipher.AlgorithmName == "RC564") ? EnDeCodeHelper.GetBytesFromBytes(plainData) : plainData;
             PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CbcBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);
 
             switch (Mode)
@@ -211,25 +212,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                     break;
             }
 
-            if (CryptoBlockCipher.AlgorithmName == "RC564")
-            {
-                RC5Parameters rc5Params = new RC5Parameters(Key, 1);
-                Org.BouncyCastle.Crypto.Engines.RC564Engine rc564 = new RC564Engine();
-                cipherMode.Init(true, rc5Params);
-            }
-            else
-            {
+            KeyParameter keyParam = (CryptoBlockCipher.AlgorithmName == "RC564") ?
+                new Org.BouncyCastle.Crypto.Parameters.RC5Parameters(Key, 2) :
+                new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
+            ICipherParameters keyParamIV = new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(keyParam, Iv);
 
-                KeyParameter keyParam = new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
-                ICipherParameters keyParamIV = new ParametersWithIV(keyParam, Iv);
-
-                cipherMode.Init(true, keyParam);
-            }
             // if (Mode == "ECB")
-            //     cipherMode.Init(true, keyParam);
+            cipherMode.Init(true, keyParam);
             // else
-            //      cipherMode.Init(true, keyParamIV);
-
+            // cipherMode.Init(true, keyParamIV);
 
             if (PadBufBChipger == null && cipherMode != null)
                 PadBufBChipger = cipherMode;
@@ -252,7 +243,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <returns>decrypted plain byte[] data</returns>
         public byte[] Decrypt(byte[] cipherData)
         {
-            // var cipher = CryptoBlockCipher;
+            var cipher = CryptoBlockCipher;
             PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CbcBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);
 
             switch (Mode)
@@ -287,13 +278,16 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             }
             // cipherMode.Reset()                
 
-            KeyParameter keyParam = new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
+            
+            KeyParameter keyParam = (CryptoBlockCipher.AlgorithmName == "RC564") ? 
+                                        new Org.BouncyCastle.Crypto.Parameters.RC5Parameters(Key, 2) :
+                                        new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
             ICipherParameters keyParamIV = new ParametersWithIV(keyParam, Iv);
 
+
             // Decrypt
-            cipherMode.Init(false, keyParam);
             //if (Mode == "ECB")
-            //    cipherMode.Init(false, keyParam);
+            cipherMode.Init(false, keyParam);
             //else
             //    cipherMode.Init(false, keyParamIV);
 
@@ -324,6 +318,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                     plainData = cipherMode.ProcessBytes(cipherData);
                 }
             }
+
+            // if (CryptoBlockCipher.AlgorithmName == "RC564")
+            //     return EnDeCodeHelper.GetBytesTrimNulls(plainData);
 
             return plainData;
         }

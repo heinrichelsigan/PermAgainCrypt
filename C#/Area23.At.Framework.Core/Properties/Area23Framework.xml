@@ -314,55 +314,6 @@
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/></param>
             <returns><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CryptParams"/></returns>
         </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes">
-            <summary>
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.#cctor">
-            <summary>
-            static constructor
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.AesGenWithKeyHash(System.String,System.String,System.Boolean)">
-            <summary>
-            AesGenWithKeyHash generates a new static Aes symetric encryption 
-            </summary>
-            <param name="secretKey">key param for encryption</param>
-            <param name="userHostAddr">user host address is here part of private key</param>
-            <param name="init">init three fish first time with a new key</param>
-            <returns>true, if init was with same key successfull</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.Encrypt(System.Byte[])">
-            <summary>
-            AES Encrypt by using RijndaelManaged
-            </summary>
-            <param name="plainData">Array of plain data byte</param>
-            <returns>Array of encrypted data byte</returns>
-            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="!:byte[]"/> is null or zero length</exception>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.Decrypt(System.Byte[])">
-            <summary>
-            AES Decrypt by using RijndaelManaged
-            </summary>
-            <param name="encryptedBytes">Array of encrypted data byte</param>
-            <returns>Array of plain data byte</returns>
-            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="!:byte[]"/> is null or zero length</exception>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.EncryptString(System.String)">
-            <summary>
-            Encrypts a string
-            </summary>
-            <param name="inPlainString">plain text string</param>
-            <returns>Base64 encoded encrypted byte[]</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Aes.DecryptString(System.String)">
-            <summary>
-            Decrypts a string, that is truely a base64 encoded encrypted byte[]
-            </summary>
-            <param name="inCryptString">base64 encoded string from encrypted byte[]</param>
-            <returns>plain text string (decrypted)</returns>
-        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet">
             <summary>
             AesNet native .Net Aes RijndaelManaged without bouncy castle
@@ -549,55 +500,6 @@
             </summary>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
             <returns><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered"/></returns>
-        </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3">
-            <summary>
-            static Des3 encryption helper
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
-            <seealso cref="!:https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.#cctor">
-            <summary>
-            static constructor
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.Des3GenWithKeyHash(System.String,System.String,System.Boolean)">
-            <summary>
-            Des3GenWithKeyHash generates 3Des Enginge with key and hash
-            </summary>
-            <param name="secretKey">your plain text secret key</param>
-            <param name="userHash">user key hash</param>
-            <param name="init">init TripleDes first time with a new key</param>
-            <returns>true, if init was with same key successfull</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.Encrypt(System.Byte[])">
-            <summary>
-            3Des encrypt bytes
-            </summary>
-            <param name="inBytes">Hex bytes</param>
-            <returns>byte[] encrypted bytes</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.Decrypt(System.Byte[])">
-            <summary>
-            3Des decrypt bytes
-            </summary>
-            <param name="inBytes">Hex bytes encrypted</param>
-            <returns>byte[] decrypted bytes</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.EncryptString(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
-            <summary>
-            3Des encrypt string
-            </summary>
-            <param name="inString">string in plain text</param>
-            <returns>Base64 encoded encrypted byte array</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3.DecryptString(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
-            <summary>
-            3Des decrypts string
-            </summary>
-            <param name="cipherText">Base64 encoded encrypted byte[]</param>
-            <returns>plain text string</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net">
             <summary>

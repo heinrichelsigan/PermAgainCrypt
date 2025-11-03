@@ -1,6 +1,7 @@
 ﻿using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using System.ComponentModel;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Area23.At.Framework.Core.Crypt.Hash
 {
@@ -8,6 +9,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
     /// <summary>
     /// KeyHash 
     /// </summary>
+    [Serializable]
     [DefaultValue(KeyHash.Hex)]
     public enum KeyHash : short
     {
@@ -24,6 +26,8 @@ namespace Area23.At.Framework.Core.Crypt.Hash
 
     public static class KeyHash_Extensions
     {
+        private static readonly KeyHash[] keyHashes = { KeyHash.Hex, KeyHash.OpenBSDCrypt, KeyHash.BCrypt, KeyHash.SCrypt, KeyHash.MD5, KeyHash.Sha1, KeyHash.Sha256, KeyHash.Sha384, KeyHash.Sha512 };
+
         public static KeyHash[] GetHashTypes()
         {
             List<KeyHash> list = new List<KeyHash>();
@@ -40,19 +44,9 @@ namespace Area23.At.Framework.Core.Crypt.Hash
             return (KeyHash)Enum.Parse(typeof(KeyHash), typeString);
         }
 
-        public static KeyHash GetKeyHashFromString(string svalue)
-        {
-            KeyHash aKeyHash = KeyHash.Hex;
-            bool parsed = Enum.TryParse<KeyHash>(svalue, out aKeyHash);
-            if (!parsed)
-                aKeyHash = KeyHash.Hex;
-
-            return aKeyHash;
-        }
-
         public static KeyHash GetKeyHashFromValue(short kValue)
         {
-            kValue = (short)(kValue % 0x10);
+            kValue = (short)((kValue % 0x10));
             foreach (KeyHash kHash in GetHashTypes())
             {
                 if ((short)kHash == kValue)
@@ -61,6 +55,23 @@ namespace Area23.At.Framework.Core.Crypt.Hash
             return KeyHash.Hex;
         }
 
+        public static KeyHash GetKeyHashFromString(string stringToHash)
+        {
+            switch (stringToHash)
+            {
+                case "SCrypt": return KeyHash.SCrypt;
+                case "BCrypt": return KeyHash.BCrypt;
+                case "OpenBSDCrypt": return KeyHash.OpenBSDCrypt;
+                case "MD5": return KeyHash.MD5;
+                case "Sha1": return KeyHash.Sha1;
+                case "Sha256": return KeyHash.Sha256;
+                case "Sha384": return KeyHash.Sha384;
+                case "Sha512": return KeyHash.Sha512;
+                case "Hex": return KeyHash.Hex;
+                default:
+                    return (KeyHash)Enum.Parse(typeof(KeyHash), stringToHash);
+            }
+        }
 
         public static string Hash(this KeyHash hash, string stringToHash)
         {

@@ -111,7 +111,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             HashSet<string> hashBytes = new HashSet<string>();
             foreach (byte bb in keyBytes)
             {
-                byte cb = (byte)((int)((int)bb % 0x19));
+                byte cb = (byte)((int)((int)bb % 0x20));
                 hexString = string.Format("{0:x2}", cb);
                 if (hexString.Length > 0 && !hashBytes.Contains(hexString))
                     hashBytes.Add(hexString);
@@ -195,10 +195,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 //    string privKey = keyPair.Private.ToString();
                 //    encryptBytes = Asymmetric.Rsa.Encrypt(inBytes);
                 //    break;
-                //case CipherEnum.Serpent:
-                //    Serpent.SerpentGenWithKey(secretKey, hash, true);
-                //    encryptBytes = Serpent.Encrypt(inBytes);
-                //    break;
                 case CipherEnum.ZenMatrix:                
                     encryptBytes = (new ZenMatrix(secretKey, hash, false)).Encrypt(inBytes);
                     break;
@@ -223,6 +219,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Noekeon:
                 case CipherEnum.RC2:
                 case CipherEnum.RC532:
+                // case CipherEnum.RC564:
                 case CipherEnum.RC6:
                 case CipherEnum.Rijndael:
                 case CipherEnum.Seed:
@@ -270,11 +267,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Des3Net:
                     Des3Net des3 = new Des3Net(secretKey, hash);
                     decryptBytes = des3.Decrypt(cipherBytes);
-                    break;
-                //case CipherEnum.Serpent:
-                //    sameKey = Serpent.SerpentGenWithKey(secretKey, hash, true);
-                //    decryptBytes = Serpent.Decrypt(cipherBytes);
-                //    break;
+                    break;                
                 case CipherEnum.RC564:
                     RC564.RC564GenWithKey(secretKey, hash, true);
                     decryptBytes = RC564.Decrypt(cipherBytes);
@@ -308,6 +301,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Noekeon:
                 case CipherEnum.RC2:
                 case CipherEnum.RC532:
+                // case CipherEnum.RC564:
                 case CipherEnum.RC6:
                 case CipherEnum.Rijndael:
                 case CipherEnum.Seed:

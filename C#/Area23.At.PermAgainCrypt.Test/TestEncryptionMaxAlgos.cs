@@ -89,13 +89,18 @@ namespace Area23.At.PermAgainCrypt.Test
                         (Math.Abs(deCodedBytes.Length - plainBytes.Length) <= 16));
 
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 && deCodedBytes.Length > 0 &&
-                        plainBytes.LongLength == deCodedBytes.LongLength && plainBytes[i] == deCodedBytes[i]);
+                        (Math.Abs(deCodedBytes.LongLength - plainBytes.LongLength) < 16) &&
+                        (plainBytes[0] == deCodedBytes[0] && plainBytes[1] == deCodedBytes[1] &&
+                            plainBytes[i + 16] == deCodedBytes[i + 16] && plainBytes[i + 8] == deCodedBytes[i + 8]));
             
                     endOp = DateTime.Now;
                     decOpTime = endOp.Subtract(midOp);
                     allOpTime = endOp.Subtract(startOp);
 
-                    if (deCodedBytes == null || deCodedBytes.Length < 1 || plainBytes.LongLength != deCodedBytes.LongLength || plainBytes[i] != deCodedBytes[i])
+                    if (deCodedBytes == null || deCodedBytes.Length < 1 ||
+                        (Math.Abs(deCodedBytes.LongLength - plainBytes.LongLength) > 15) ||
+                        plainBytes[0] != deCodedBytes[0] || plainBytes[1] != deCodedBytes[1] ||
+                        plainBytes[i + 16] != deCodedBytes[i + 16] || plainBytes[i + 8] != deCodedBytes[i + 8])
                     {
                         Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");

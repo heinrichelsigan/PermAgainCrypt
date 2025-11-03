@@ -6,7 +6,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 {
 
     [Serializable]
-    [DefaultValue(Json)]
+    [DefaultValue(SerType.Json)]
     public enum SerType : short
     {
         None = 0x0000,
@@ -15,7 +15,6 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         Mime = 0x3000,
         Raw = 0x4000
     }
-
 
     public enum MsgKind
     {
@@ -39,12 +38,24 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
         public static SerType GetSerType(string typeString)
         {
-            return (SerType)Enum.Parse(typeof(SerType), typeString);
+            if (!string.IsNullOrEmpty(typeString))
+            {
+                switch (typeString.ToLower().Replace("menu", ""))
+                {
+                    case "none": return SerType.None;
+                    case "json": return SerType.Json;
+                    case "xml": return SerType.Xml;
+                    case "mime": return SerType.Mime;
+                    case "raw": return SerType.Raw;
+                    default: break;
+                }
+            }
+            return SerType.Json;
         }
 
-        public static SerType GetSerTypeFromValue(short serValue)
+        public static SerType GetSerializationTypeFromValue(short serValue)
         {
-            serValue = (short)(serValue % 0x10000 - serValue % 0x1000);
+            serValue = (short)((serValue % 0x10000) - (serValue % 0x1000));
             foreach (SerType serType in GetSerTypes())
             {
                 if ((short)serType == serValue)
@@ -59,10 +70,10 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             switch (serTyoe)
             {
                 case SerType.Json: return Newtonsoft.Json.JsonConvert.SerializeObject(t);
-                case SerType.Xml: return Utils.SerializeToXml(t);
+                case SerType.Xml: return Utils.SerializeToXml<T>(t);
                 case SerType.Raw:
                     MemoryStream ms = new MemoryStream();
-                    ProtoBuf.Serializer.Serialize(ms, t);
+                    ProtoBuf.Serializer.Serialize<T>(ms, t);
                     ms.Seek(0, SeekOrigin.Begin);
                     return Encoding.UTF8.GetString(ms.ToByteArray());
                 case SerType.Mime: // TODO implement it
@@ -84,7 +95,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
                 case SerType.Mime: // TODO implement it
                 case SerType.None:
                 default:
-                    return default;
+                    return default(T);
             }
         }
     }
