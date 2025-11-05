@@ -153,11 +153,17 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             List<CipherEnum> cipherList = new List<CipherEnum>();
             pipeText = pipeText ?? "";
 
-            string[] algos = pipeText.Split(Constants.COOL_CRYPT_SPLIT.ToCharArray());
+            int pipeCnt = 0;
+            string[] algos = pipeText.Split(Constants.COOL_CRYPT_SPLIT.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
             foreach (string algo in algos)
             {
                 if (Enum.TryParse<CipherEnum>(algo, out cipher))
+                {
                     cipherList.Add(cipher);
+                    if ((++pipeCnt) >= 8)
+                        break;
+                }
+                    
             }
 
             return cipherList.ToArray();
