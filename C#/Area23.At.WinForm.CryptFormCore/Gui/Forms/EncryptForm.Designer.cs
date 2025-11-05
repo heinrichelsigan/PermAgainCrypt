@@ -459,7 +459,7 @@
             menuJson.Enabled = false;
             menuJson.Name = "menuJson";
             menuJson.ShortcutKeys = Keys.Control | Keys.J;
-            menuJson.Size = new Size(180, 22);
+            menuJson.Size = new Size(143, 22);
             menuJson.Text = "Json";
             // 
             // menuXml
@@ -468,7 +468,7 @@
             menuXml.Enabled = false;
             menuXml.Name = "menuXml";
             menuXml.ShortcutKeys = Keys.Control | Keys.X;
-            menuXml.Size = new Size(180, 22);
+            menuXml.Size = new Size(143, 22);
             menuXml.Text = "Xml";
             // 
             // menuRaw
@@ -477,7 +477,7 @@
             menuRaw.Enabled = false;
             menuRaw.Name = "menuRaw";
             menuRaw.ShortcutKeys = Keys.Control | Keys.R;
-            menuRaw.Size = new Size(180, 22);
+            menuRaw.Size = new Size(143, 22);
             menuRaw.Text = "Raw";
             // 
             // menuHelp
@@ -492,7 +492,7 @@
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(180, 22);
+            menuAbout.Size = new Size(147, 22);
             menuAbout.Text = "About";
             menuAbout.Click += menuAbout_Click;
             // 
@@ -501,7 +501,7 @@
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(180, 22);
+            menuHelpHelp.Size = new Size(147, 22);
             menuHelpHelp.Text = "Help";
             menuHelpHelp.Click += menuHelp_Click;
             // 
@@ -713,7 +713,7 @@
             // groupBoxFiles
             // 
             groupBoxFiles.AllowDrop = true;
-            groupBoxFiles.BackColor = SystemColors.ControlLight;
+            groupBoxFiles.BackColor = Color.FromArgb(247, 247, 247);
             groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
             groupBoxFiles.Controls.Add(pictureBoxFileIn);
             groupBoxFiles.Controls.Add(labelFileIn);

@@ -585,7 +585,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.textBoxHash.Text))
             {
-                this.pictureBoxRunningPipe.Image = Properties.Resources.PipeDecrypt;
+                this.pictureBoxRunningPipe.Image = Properties.Resources.PipeLineDecrypt;
                 Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);

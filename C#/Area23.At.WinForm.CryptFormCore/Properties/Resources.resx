@@ -320,4 +320,8 @@
     <value>C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\PipeDecrypt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>PipeDecrypt</comment>
   </data>
+  <data name="PipeLineDecrypt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\PipeLineDecrypt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>PipeLineDecrypt</comment>
+  </data>
 </root>
