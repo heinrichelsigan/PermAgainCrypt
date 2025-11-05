@@ -328,15 +328,15 @@ namespace Area23.At.WinForm.CryptFormCore
                 return;
             }
 
-            Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.DirectorySeparatorChar + Constants.AppLogFile);
+            // Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.DirectorySeparatorChar + Constants.AppLogFile);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             // MessageBox.Show("ScreenCapture", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);            
-            System.Windows.Forms.Form encryptForm = new EncryptFormSimple(); 
-            if (oldFlag)
-                encryptForm = new EncryptForm();
+            System.Windows.Forms.Form encryptForm = new EncryptForm();
+            //if (oldFlag)
+            //    encryptForm = new EncryptFormSimple();
 
             Application.Run(encryptForm);
 

@@ -8,6 +8,7 @@ using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
 using System.Media;
+using System.Security.Policy;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
@@ -18,12 +19,23 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
     public partial class EncryptFormSimple : EncryptFormBase
     {
 
+        #region ctor and load
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EncryptFormSimple"/> class.
+        /// </summary>
+        /// <remarks>This constructor sets up the form and initializes its components.  It should be
+        /// called when creating a new instance of the <see cref="EncryptFormSimple"/> form.</remarks>
         public EncryptFormSimple()
         {
             InitializeComponent();
         }
 
-
+        /// <summary>
+        /// EncryptForm_Load - form load event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
             this.comboBoxAlgo.Items.Clear();
@@ -45,13 +57,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             Hash_Click(sender, e);
         }
 
+        #endregion ctor and load
+
         #region MenuCompressionEncodingZipHash
 
-        private void menuCompression_Click(object sender, EventArgs e) => SetCompression((ToolStripMenuItem)sender, null);
+        protected internal void menuCompression_Click(object sender, EventArgs e) => SetCompression((ToolStripMenuItem)sender, null);
 
-        private void ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => SetCompression(null, comboBoxCompression.SelectedItem);
+        protected internal void ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => SetCompression(null, comboBoxCompression.SelectedItem);
 
-        private void SetCompression(ToolStripMenuItem? mi = null, object? comboItem = null)
+        /// <summary>
+        /// SetCompression – sets compression type from menu or combobox
+        /// </summary>
+        /// <param name="mi">selected compression ToolStripMenuItem</param>
+        /// <param name="comboItem">selected compression combobox item</param>
+        protected internal void SetCompression(ToolStripMenuItem? mi = null, object? comboItem = null)
         {
             ZipType zipType = (mi != null) ? ZipTypeExtensions.GetZipType(mi.Name ?? "None") :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None") :
@@ -103,7 +122,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             notifyIcon1.Visible = true;
         }
 
-        protected ZipType GetZip()
+        /// <summary>
+        /// GetZip - gets selected compression type
+        /// </summary>
+        /// <returns></returns>
+        protected internal ZipType GetZip()
         {
             if (menu7z.Checked) return ZipType.Z7;
             if (menuBZip2.Checked) return ZipType.BZip2;
@@ -115,11 +138,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return ZipType.None;
         }
 
-        private void menuEncodingKind_Click(object sender, EventArgs e) => SetEncoding((ToolStripMenuItem)sender, null);
+        protected internal void menuEncodingKind_Click(object sender, EventArgs e) => SetEncoding((ToolStripMenuItem)sender, null);
 
-        private void comboBoxEncoding_SelectedIndexChanged(object sender, EventArgs e) => SetEncoding(null, comboBoxEncoding.SelectedItem);
+        protected internal void comboBoxEncoding_SelectedIndexChanged(object sender, EventArgs e) => SetEncoding(null, comboBoxEncoding.SelectedItem);
 
-        protected void SetEncoding(ToolStripMenuItem? mi = null, object? comboItem = null)
+        /// <summary>
+        /// SetEncoding - sets encoding type from menu or combobox
+        /// </summary>
+        /// <param name="mi">encoding ToolStripMenuItem</param>
+        /// <param name="comboItem">selected encoding combobox item</param>
+        protected internal void SetEncoding(ToolStripMenuItem? mi = null, object? comboItem = null)
         {
             EncodingType encodingType = (mi != null) ? EncodingTypesExtensions.GetEncodingTypeFromString(mi.Name.Replace("menu", "")) :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None") :
@@ -176,7 +204,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             notifyIcon1.ShowBalloonTip(1000, "Info", $"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info);
         }
 
-        protected EncodingType GetEncoding()
+        /// <summary>
+        /// GetEncoding - gets selected encoding type
+        /// </summary>
+        /// <returns></returns>
+        protected internal EncodingType GetEncoding()
         {
             if (menuItemNone.Checked) return EncodingType.None;
             if (menuBase16.Checked) return EncodingType.Base16;
@@ -191,13 +223,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        private void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, null);
+        protected internal void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, null);
 
+        protected internal void RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => SetHash(null, (RadioButtonList)sender);
 
-        private void RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => SetHash(null, (RadioButtonList)sender);
-
-
-        protected void SetHash(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
+        /// <summary>
+        /// SetHash – sets hash type from menu or radiobuttonlist
+        /// </summary>
+        /// <param name="mi">hash ToolStripMenuItem selected</param>
+        /// <param name="radioButtonList">hash radioButtonList</param>
+        protected internal void SetHash(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
         {
             KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash aKeyHash = KeyHash.Hex;
@@ -252,7 +287,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        protected KeyHash GetHash()
+        /// <summary>
+        /// GetHash - gets selected hash type
+        /// </summary>
+        /// <returns></returns>
+        protected internal KeyHash GetHash()
         {
             if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
             if (menuHashHex.Checked) return KeyHash.Hex;
@@ -271,12 +310,35 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region Key_Click Hash_Click SetPipeline_Click Hash_Pipe_Click
 
-        private void pictureBoxKey_Click(object sender, EventArgs e)
+        /// <summary>
+        /// pictureBoxKey_Click - fills key textbox with email from registry or standard fallback
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void pictureBoxKey_Click(object sender, EventArgs e)
         {
             this.textBoxKey.Text = GetEmailFromRegistry();
         }
 
-        private void pictureBoxAddAlgo_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Hash_Click - generates hash from key
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void Hash_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.textBoxKey.Text))
+            {
+                this.textBoxHash.Text = GetHash().Hash(this.textBoxKey.Text);
+            }
+        }
+
+        /// <summary>
+        /// pictureBoxAddAlgo_Click - adds selected algorithm to pipeline
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
             CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
@@ -324,35 +386,22 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
+        /// <summary>
+        /// pictureBoxDelete_Click - clears pipeline textbox
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
         private void pictureBoxDelete_Click(object sender, EventArgs e)
         {
             this.textBoxPipe.Text = "";
         }
 
-        private void Clear_Click(object sender, EventArgs e)
-        {
-            this.textBoxHash.Text = string.Empty;
-            this.textBoxKey.Text = string.Empty;
-            this.textBoxPipe.Text = string.Empty;
-            this.textBoxSrc.Text = string.Empty;
-            this.textBoxOut.Text = string.Empty;
-            this.labelOutputFile.Text = string.Empty;
-            this.labelOutputFile.Visible = false;
-            this.pictureBoxOutFile.Tag = null;
-            this.pictureBoxOutFile.Visible = false;
-            this.labelFileIn.Text = "[no file selected]";
-            this.pictureBoxFileIn.Image = Properties.Resources.img_windows_start;
-        }
-
-        private void Hash_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(this.textBoxKey.Text))
-            {
-                this.textBoxHash.Text = GetHash().Hash(this.textBoxKey.Text);
-            }
-        }
-
-        private void Hash_Pipe_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Hash_Pipe_Click - creates pipeline from hash
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void Hash_Pipe_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -372,8 +421,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
-        private void SetPipeline_Click(object sender, EventArgs e)
+        /// <summary>
+        /// SetPipeline_Click - creates pipeline from key
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void SetPipeline_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -393,7 +446,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        private void RandomText_Click(object sender, EventArgs e)
+        /// <summary>
+        /// RandomText_Click - fills source textbox with random fortune text
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void RandomText_Click(object sender, EventArgs e)
         {
             string[] fortunes = ResReader.GetFortunes();
             if (fortunes.Length > 0)
@@ -404,9 +462,32 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
+        /// <summary>
+        /// Reset_Click - resets all fields to default
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void Reset_Click(object sender, EventArgs e)
+        {
+            this.textBoxHash.Text = string.Empty;
+            this.textBoxKey.Text = string.Empty;
+            this.textBoxPipe.Text = string.Empty;
+            this.textBoxSrc.Text = string.Empty;
+            this.textBoxOut.Text = string.Empty;
+            this.labelOutputFile.Text = string.Empty;
+            this.labelOutputFile.Visible = false;
+            this.pictureBoxOutFile.Image = Properties.Resources.image_file;
+            this.pictureBoxOutFile.Tag = null;
+            this.pictureBoxOutFile.Visible = false;
+            this.SetEncoding(null, "Base64");
+            this.SetCompression(null, "None");
+            this.SetHash(menuHashHex, radioButtonListHash);
+            this.labelFileIn.Text = "[no file selected]";
+            this.pictureBoxFileIn.Tag = null;
+            this.pictureBoxFileIn.Image = Properties.Resources.image_file;
+        }
 
         #endregion ButtonPictureBoxClickEvents
-
 
         #region EncryptDecrypt_Click
 
@@ -415,7 +496,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Encrypt_Click(object sender, EventArgs e)
+        protected internal void Encrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -430,7 +511,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (!string.IsNullOrEmpty(this.textBoxHash.Text))
             {
                 this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe;
-                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
+                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
 
@@ -466,9 +547,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                                string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + "." + GetEncoding().GetEnCodingExtension());
+                                string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
                                 SaveBytesDialog(outBytes, ref outFilePath);
                                 pictureBoxOutFile.Visible = true;
+                                pictureBoxOutFile.Tag = "{" + outFilePath + "}";
                                 pictureBoxOutFile.Image = outFilePath.GetImageThumbnailFromFile();
                                 string outFileName = Path.GetFileName(outFilePath);
                                 labelOutputFile.Text = outFileName;
@@ -490,7 +572,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Decrypt_Click(object sender, EventArgs e)
+        protected internal void Decrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -503,7 +585,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.textBoxHash.Text))
             {
-                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(120, 120));
+                this.pictureBoxRunningPipe.Image = Properties.Resources.DeCryptPipeLlne;
+                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos);
@@ -535,18 +618,19 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     {
                         if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
                         {
-                            if (Path.GetFileName(file) == labelFileIn.Text)
+                            if (Path.GetFileName(file) == labelFileIn.Text &&  
+                                pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
                             {
                                 Cursor.Current = new Cursor(iconSandClock.Handle);
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                                string outFileDecrypt = file.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + "." + GetEncoding().GetEnCodingExtension(), "");
+                                string outFileDecrypt = file.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension(), "");
                                 SaveBytesDialog(outBytes, ref outFileDecrypt);
                                 HashFiles.Add(outFileDecrypt);
                                 pictureBoxOutFile.Visible = true;
                                 pictureBoxOutFile.Image = outFileDecrypt.GetImageThumbnailFromFile();
-                                pictureBoxOutFile.Tag = outFileDecrypt;
+                                pictureBoxOutFile.Tag = outFileDecrypt;                                
                                 labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
                                 labelOutputFile.Visible = true;
 
@@ -559,12 +643,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
         #endregion EncryptDecrypt_Click
-
 
         #region DragNDrop
 
+        /// <summary>
+        /// Drag_Enter - drag enter event for file drop
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">DragEventArgs e</param>
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -586,7 +673,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
+        /// <summary>
+        /// DragEnterOver - handles drag enter and drag over events
+        /// </summary>
+        /// <param name="files"></param>
+        /// <param name="dragNDropState"></param>
+        /// <param name="e">DragEventArgs e</param>
         public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
@@ -626,7 +718,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
+        /// <summary>
+        /// Drag_Leave - drag leave event for file drop
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         internal void Drag_Leave(object sender, EventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -636,6 +732,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             SetGBoxText(this.groupBoxFiles, "Files Group Box");
         }
 
+        /// <summary>
+        /// Drag_Drop - drag drop event for file drop
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">DragEventArgs e</param>
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -650,6 +751,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return;
         }
 
+        /// <summary>
+        /// Drop_Files - handles dropped files
+        /// </summary>
+        /// <param name="files"></param>
         internal void Drop_Files(string[] files)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -669,6 +774,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             // string mimeSig = MimeSignature.GetMimeType(fileBytes, Path.GetFileName(fileName));
                             ext = Path.GetExtension(file).Replace(".", "");
                             pictureBoxFileIn.Image = file.GetImageThumbnailFromFile();
+                            pictureBoxFileIn.Tag = file;
                             this.labelFileIn.Text = Path.GetFileName(file);
                             Task.Run(() => PlaySoundFromResource("sound_arrow"));
                             // HashFiles = new HashSet<string>();
@@ -687,8 +793,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion DragNDrop
 
-
-        #region OpenSave
+        #region HelpOpenSave
 
         protected internal override void menuHelp_Click(object sender, EventArgs e)
         {
@@ -712,6 +817,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (result == DialogResult.OK && !string.IsNullOrEmpty(dialog.FileName) && System.IO.File.Exists(dialog.FileName))
             {
                 pictureBoxFileIn.Image = dialog.FileName.GetImageThumbnailFromFile();
+                pictureBoxFileIn.Tag = dialog.FileName;
                 this.labelFileIn.Text = Path.GetFileName(dialog.FileName);
                 HashFiles = new HashSet<string>();
                 HashFiles.Add(dialog.FileName);
@@ -797,59 +903,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion OpenSave    
 
-
         #region Media Methods
 
-        /// <summary>
-        /// PlaySoundFromResource - plays a sound embedded in application ressource file
-        /// </summary>
-        /// <param name="soundName">unique qualified name for sound</param>
-        protected static bool PlaySoundFromResource(string soundName)
-        {
-            bool played = false;
-            if (true)
-            {
-                UnmanagedMemoryStream stream = (UnmanagedMemoryStream)Resources.ResourceManager.GetStream(soundName);
-
-
-                if (stream != null)
-                {
-                    try
-                    {
-                        // Construct the sound player
-                        SoundPlayer player = new SoundPlayer(stream);
-                        player.Play();
-                        played = true;
-                        stream.Close();
-                    }
-                    catch (Exception exSound)
-                    {
-                        Area23Log.LogOriginMsgEx("EncryptForm", $"PlaySoundFromResource(string soundName = {soundName})", exSound);
-                        played = false;
-                    }
-                    //fixed (byte* bufferPtr = &bytes[0])
-                    //{
-                    //    System.IO.UnmanagedMemoryStream ums = new UnmanagedMemoryStream(bufferPtr, bytes.Length);
-                    //    SoundPlayer player = new SoundPlayer(ums);                        
-                    //    player.Play();
-                    //}
-                }
-            }
-
-            return played;
-        }
-
-        protected virtual async Task<bool> PlaySoundFromResourcesAsync(string soundName)
-        {
-            return await Task.Run(() => PlaySoundFromResource(soundName));
-        }
 
         private void pictureOutBoxFile_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(pictureBoxOutFile.Tag.ToString()) && pictureBoxOutFile.Visible &&
-                File.Exists(pictureBoxOutFile.Tag.ToString()))
+            if (pictureBoxOutFile != null && pictureBoxOutFile.Visible)
             {
-                ProcessCmd.Execute("explorer", pictureBoxOutFile.Tag.ToString());
+                string filePath = pictureBoxOutFile.Tag.ToString() ?? "";
+                if (!string.IsNullOrEmpty(filePath) && 
+                    !filePath.StartsWith("{") && !filePath.EndsWith("}") &&
+                        File.Exists(filePath))
+                {
+                    ProcessCmd.Execute("explorer", pictureBoxOutFile.Tag.ToString());
+                }
             }
         }
 
@@ -869,7 +936,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #endregion Media Methods
-
         
     }
+
 }

@@ -22,6 +22,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             base.OnLoad(e);
         }
 
+        #region delegates
+
         /// <summary>
         /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads
         /// </summary>
@@ -93,6 +95,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
+        #endregion delegates
+
+        #region getter methods
 
         /// <summary>
         /// GetCipherEnums gets all cipher algos for the cipher pipeline
@@ -114,7 +119,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <returns>user email adddress or anonymous ftp.cdrom.com</returns>
         public string GetEmailFromRegistry() => RegistryAccessor.GetEmailFromRegistry();
-        
+
+        #endregion getter methods
 
         #region DragNDrop
 

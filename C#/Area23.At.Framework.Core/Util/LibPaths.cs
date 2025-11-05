@@ -311,7 +311,7 @@ namespace Area23.At.Framework.Core.Util
             {
                 if (string.IsNullOrEmpty(systemDirResPath))
                 {
-                    systemDirResPath = SystemDirPath + Constants.RES_DIR + SepChar;
+                    systemDirResPath = (SystemDirPath.EndsWith(Path.DirectorySeparatorChar)) ? SystemDirPath : SystemDirPath + SepChar;
                     if (!Directory.Exists(systemDirResPath))
                     {
                         try
@@ -368,7 +368,7 @@ namespace Area23.At.Framework.Core.Util
             {
                 if (string.IsNullOrEmpty(logDirPath))
                 {
-                    logDirPath = SystemDirPath + Constants.LOG_DIR + SepChar;
+                    logDirPath = (SystemDirPath.EndsWith(Path.DirectorySeparatorChar)) ? SystemDirPath : SystemDirPath + SepChar;
 
                     if (!Directory.Exists(logDirPath))
                     {
@@ -376,7 +376,6 @@ namespace Area23.At.Framework.Core.Util
                         {
                             if (Constants.DirCreate && !Constants.NOLog)
                                 Directory.CreateDirectory(logDirPath);
-
                         }
                         catch { }
                     }

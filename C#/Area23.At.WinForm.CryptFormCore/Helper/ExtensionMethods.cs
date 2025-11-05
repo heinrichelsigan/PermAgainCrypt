@@ -104,7 +104,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 case "hex32":
                     return Properties.Resources.image_file_encrypted;
                 default:
-                    if (ext.Length > 6)
+                    if (ext.Length > 4)
                         return Properties.Resources.image_file_encrypted;
                     break;
             }

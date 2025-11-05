@@ -181,6 +181,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "TransparentDialog";
+            Opacity = 0.4D;
             Padding = new Padding(9);
             ShowIcon = false;
             ShowInTaskbar = false;

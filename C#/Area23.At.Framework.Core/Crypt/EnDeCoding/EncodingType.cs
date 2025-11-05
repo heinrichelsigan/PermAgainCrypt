@@ -74,14 +74,14 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             switch (type)
             {
                 case EncodingType.None: return "";
-                case EncodingType.Hex16: return "hex16";
-                case EncodingType.Base16: return "base16";
-                case EncodingType.Hex32: return "hex32";
-                case EncodingType.Base32: return "base32";
-                case EncodingType.Uu: return "uu";
-                case EncodingType.Xx: return "xx";
+                case EncodingType.Hex16: return ".hex16";
+                case EncodingType.Base16: return ".base16";
+                case EncodingType.Hex32: return ".hex32";
+                case EncodingType.Base32: return ".base32";
+                case EncodingType.Uu: return ".uu";
+                case EncodingType.Xx: return ".xx";
                 case EncodingType.Base64:
-                default: return "base64";
+                default: return ".base64";
             }
         }
 
@@ -100,7 +100,8 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
 
         public static EncodingType GetEnum(string enCodingString) 
         {
-            switch (enCodingString.ToLower())
+            string encodeExt = enCodingString.ToLower().Replace(".", "").Trim();
+            switch (encodeExt)
             {
                 case "raw":
                 case "none":

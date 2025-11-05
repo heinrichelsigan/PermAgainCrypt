@@ -263,6 +263,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap DeCryptPipeLlne {
+            get {
+                object obj = ResourceManager.GetObject("DeCryptPipeLlne", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Des {
             get {
                 object obj = ResourceManager.GetObject("Des", resourceCulture);
@@ -331,7 +341,7 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/heinrichelsigan/PermAgainCrypt.
+        ///   Looks up a localized string similar to https://cqrxs.eu/help/.
         /// </summary>
         internal static string HelpUrl {
             get {

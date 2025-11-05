@@ -41,7 +41,7 @@
             menuMainEncrypt = new ToolStripMenuItem();
             menuMainDecrypt = new ToolStripMenuItem();
             menuMainRandomText = new ToolStripMenuItem();
-            menuMainClear = new ToolStripMenuItem();
+            menuMainReset = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             menuFileExit = new ToolStripMenuItem();
             menuCompression = new ToolStripMenuItem();
@@ -84,7 +84,7 @@
             pictureBoxHash = new PictureBox();
             textBoxHash = new TextBox();
             buttonSetPipeline = new Button();
-            buttonClear = new Button();
+            buttonReset = new Button();
             pictureBoxFileIn = new PictureBox();
             pictureBoxAddAlgo = new PictureBox();
             textBoxPipe = new TextBox();
@@ -135,7 +135,7 @@
             // 
             // toolMenuMain
             // 
-            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileOpen, menuMainSave, toolStripSeparator2, menuMainHashKey, menuMainHashPipe, menuMainSetPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainRandomText, menuMainClear, toolStripSeparator1, menuFileExit });
+            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileOpen, menuMainSave, toolStripSeparator2, menuMainHashKey, menuMainHashPipe, menuMainSetPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainRandomText, menuMainReset, toolStripSeparator1, menuFileExit });
             toolMenuMain.Font = new Font("Lucida Sans Unicode", 9F);
             toolMenuMain.Name = "toolMenuMain";
             toolMenuMain.Size = new Size(46, 20);
@@ -216,13 +216,13 @@
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
-            // menuMainClear
+            // menuMainReset
             // 
-            menuMainClear.BackColor = SystemColors.Menu;
-            menuMainClear.Name = "menuMainClear";
-            menuMainClear.Size = new Size(152, 22);
-            menuMainClear.Text = "Clear";
-            menuMainClear.Click += Clear_Click;
+            menuMainReset.BackColor = SystemColors.Menu;
+            menuMainReset.Name = "menuMainReset";
+            menuMainReset.Size = new Size(152, 22);
+            menuMainReset.Text = "Reset";
+            menuMainReset.Click += Reset_Click;
             // 
             // toolStripSeparator1
             // 
@@ -575,18 +575,18 @@
             buttonSetPipeline.UseVisualStyleBackColor = false;
             buttonSetPipeline.Click += SetPipeline_Click;
             // 
-            // buttonClear
+            // buttonReset
             // 
-            buttonClear.BackColor = SystemColors.ControlLight;
-            buttonClear.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonClear.Location = new Point(654, 334);
-            buttonClear.Margin = new Padding(1);
-            buttonClear.Name = "buttonClear";
-            buttonClear.Size = new Size(120, 29);
-            buttonClear.TabIndex = 4;
-            buttonClear.Text = "Clear Form";
-            buttonClear.UseVisualStyleBackColor = false;
-            buttonClear.Click += Clear_Click;
+            buttonReset.BackColor = SystemColors.ControlLight;
+            buttonReset.Font = new Font("Lucida Sans Unicode", 10F);
+            buttonReset.Location = new Point(654, 334);
+            buttonReset.Margin = new Padding(1);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(120, 29);
+            buttonReset.TabIndex = 4;
+            buttonReset.Text = "Reset Form";
+            buttonReset.UseVisualStyleBackColor = false;
+            buttonReset.Click += Reset_Click;
             // 
             // pictureBoxFileIn
             // 
@@ -848,7 +848,7 @@
             Controls.Add(textBoxSrc);
             Controls.Add(textBoxPipe);
             Controls.Add(pictureBoxAddAlgo);
-            Controls.Add(buttonClear);
+            Controls.Add(buttonReset);
             Controls.Add(buttonSetPipeline);
             Controls.Add(textBoxHash);
             Controls.Add(pictureBoxHash);
@@ -926,7 +926,7 @@
         private PictureBox pictureBoxHash;
         private TextBox textBoxHash;
         private Button buttonSetPipeline;
-        private Button buttonClear;
+        private Button buttonReset;
         private BindingSource enumOptionsBindingSource;
         private BindingSource cipherEnumBindingSource;
         private PictureBox pictureBoxFileIn;
@@ -940,7 +940,7 @@
         private ToolStripMenuItem menuMainSave;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem menuMainEncrypt;
-        private ToolStripMenuItem menuMainClear;
+        private ToolStripMenuItem menuMainReset;
         private ToolStripMenuItem menuMainRandomText;
         private ToolStripMenuItem menuMainHashKey;
         private ToolStripMenuItem menuMainSetPipe;
@@ -965,4 +965,5 @@
         private Controls.RadioButtonList radioButtonListHash;
         private PictureBox pictureBoxRunningPipe;
     }
+
 }

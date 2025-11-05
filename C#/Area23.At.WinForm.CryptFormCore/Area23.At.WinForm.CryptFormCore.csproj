@@ -10,8 +10,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.1103</AssemblyVersion>
-    <FileVersion>2.25.1103</FileVersion>
+    <AssemblyVersion>2.25.1105</AssemblyVersion>
+    <FileVersion>2.25.1105</FileVersion>
     <Description>Symmetric Crypt Pipe WinForm  Heinrich Elsigan
 he@area23.at</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
@@ -34,13 +34,22 @@ he@area23.at</Description>
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Gui\Forms\EncryptFormSimple.cs" />
+    <Compile Remove="Gui\Forms\EncryptFormSimple.Designer.cs" />
+    <Compile Remove="Gui\Forms\TransparentBadge.cs" />
+    <Compile Remove="Gui\Forms\TransparentBadge.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Gui\Forms\EncryptFormSimple.resx" />
+    <EmbeddedResource Remove="Gui\Forms\TransparentBadge.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Program.cs.txt" />
   </ItemGroup>
     
 	<ItemGroup>
-        <Compile Update="Gui\Forms\EncryptFormSimple.cs">
-          <SubType>Form</SubType>
-        </Compile>
         <Compile Update="Gui\Forms\EncryptForm.cs">
           <SubType>Form</SubType>
         </Compile>
@@ -64,10 +73,6 @@ he@area23.at</Description>
 	</ItemGroup>
     
 	<ItemGroup>
-        <None Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\CryptPenacle.png">
-          <Pack>True</Pack>
-          <PackagePath>\</PackagePath>
-        </None>
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<None Update="log\**">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
