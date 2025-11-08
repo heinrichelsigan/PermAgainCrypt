@@ -278,7 +278,7 @@
     <value>..\Resources\Des.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EnCryptPipe1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EnCryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\EnCryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sound_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Audio\sound_arrow.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -301,27 +301,27 @@
     <value>..\Resources\a_hash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="EnCryptPipe2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\EnCryptPipe2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\EnCryptPipe2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icon_warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icon_warning.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CryptPipe1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\CryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="HelpUrl" xml:space="preserve">
     <value>https://cqrxs.eu/help/</value>
   </data>
   <data name="DeCryptPipeLlne" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DeCryptPipeLlne.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\DeCryptPipeLlne.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>DeCryptPipeLlne</comment>
   </data>
   <data name="PipeDecrypt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\PipeDecrypt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\PipeDecrypt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>PipeDecrypt</comment>
   </data>
   <data name="PipeLineDecrypt" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\Area23.At.WinForm.CryptFormCore\Resources\PipeLineDecrypt.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\arrows\CipherPipeDecryot.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>PipeLineDecrypt</comment>
   </data>
 </root>

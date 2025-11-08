@@ -1203,11 +1203,11 @@
             <returns><see cref="T:System.String">hexString</see> of keyBytes</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyToHexBytesSalt(System.String,System.Int32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyBytesToHexBytesSalt(System.Byte[],System.Int32)">
             <summary>
             KeyToHexBytes
             </summary>
-            <param name="key">secret key</param>
+            <param name="keyBytes">secret keyBytes</param>
             <param name="length">byte array length, default: 16, -1 for unlimited length</param>
             <returns><see cref="!:byte[]">byte[length]</see></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
@@ -1383,7 +1383,7 @@
         <member name="T:Area23.At.Framework.Core.Crypt.EnDeCoding.IDecodable">
             <summary>
             IDecodable is an common interface for <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Base16"/>, <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Base32"/>, <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Base64"/>,
-            <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Hex16"/>, <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Hex32"/> and <seealso cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Uu"/> Encoding / Decoding
+            <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Hex16"/>, <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Hex32"/>, <seealso cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Uu"/> and <seealso cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Xx"/> Encoding / Decoding
             </summary>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.EnDeCoding.RawString">
@@ -1505,6 +1505,8 @@
             <param name="xxEncodedStr">xx encoded string</param>
             <returns>xx decoded plain text</returns>
         </member>
+        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.BCrypt" -->
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.BCrypt.BCryptHash(System.Byte[])" -->
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash">
             <summary>
             KeyHash 

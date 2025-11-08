@@ -44,21 +44,21 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// <summary>
         /// KeyToHexBytes
         /// </summary>
-        /// <param name="key">secret key</param>
+        /// <param name="keyBytes">secret keyBytes</param>
         /// <param name="length">byte array length, default: 16, -1 for unlimited length</param>
         /// <returns><see cref="byte[]">byte[length]</see></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static byte[] KeyToHexBytesSalt(string key, int length = 16)
+        public static byte[] KeyBytesToHexBytesSalt(byte[] keyBytes, int length = 16)
         {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
+            if (keyBytes == null || keyBytes.Length == 0)
+                throw new ArgumentNullException("keyBytes");
 
-            string hexString = Hex16.ToHex16(EnDeCodeHelper.GetBytes(key));
+            string hexString = Hex16.ToHex16(keyBytes);
             byte[] hexBytes = EnDeCodeHelper.GetBytes(hexString);
 
             while (hexBytes.Length < length)
             {
-                hexBytes = hexBytes.TarBytes(EnDeCodeHelper.GetBytes(key), GetBytes(hexString));
+                hexBytes = hexBytes.TarBytes(keyBytes, GetBytes(hexString));
             }
 
             int len = (length > 0 && hexBytes.Length >= length) ? length : hexBytes.Length;
@@ -68,6 +68,14 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             Array.Copy(hexBytes, 0, outBytes, 0, len);
 
             return outBytes;
+        }
+
+        public static byte[] KeyToHexBytesSalt(string key, int length = 16)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+
+            return KeyBytesToHexBytesSalt(EnDeCodeHelper.GetBytes(key), length);
         }
 
         /// <summary>

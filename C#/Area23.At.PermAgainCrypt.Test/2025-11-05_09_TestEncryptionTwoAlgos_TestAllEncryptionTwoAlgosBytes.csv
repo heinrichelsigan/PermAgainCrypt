@@ -1,0 +1,17 @@
+FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Aes=>BlowFish,01.1032,00.2375,01.3408
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Camellia=>Cast6,01.2432,00.3937,01.6370
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Des3=>Fish2,00.4936,00.4559,00.9495
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Fish3=>Gost28147,00.2224,00.2920,00.5144
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Idea=>RC532,00.3168,00.2055,00.5223
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Seed=>SkipJack,00.3583,00.1129,00.4712
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Serpent=>Tea,00.0961,00.0855,00.1816
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,XTea=>SM4,00.0821,00.0754,00.1575
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Cast5=>Rijndael,00.1523,00.1537,00.3060
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Noekeon=>RC2,00.0784,00.0494,00.1278
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Tnepres=>Des,00.1145,00.1005,00.2151
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Aria=>CamelliaLight,00.1379,00.1165,00.2544
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,Dstu7624=>AesLight,00.2407,00.1150,00.3558
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,ThreeFish256=>Des3Net,00.1021,00.0978,00.1999
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,AesNet=>ZenMatrix,00.1936,00.1980,00.3917
+2025-09-23_Stats.gif,1830,anonymous@ftp.cdrom.com,ZenMatrix2=>Aes,00.2179,00.2240,00.4419

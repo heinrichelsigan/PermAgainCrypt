@@ -1,0 +1,9 @@
+FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime
+2025-09-23_Stats.gif,1830,Idea→Fish2→Aes→BlowFish→Noekeon→RC2→XTea→RC564→,02.5515,01.0463,03.5978
+2025-09-23_Stats.gif,1830,Dstu7624→Fish2→XTea→Aes→BlowFish→Noekeon→RC2→RC564→,01.1806,01.0508,02.2314
+2025-09-23_Stats.gif,1830,Idea→Fish2→Serpent→RC2→RC532→Gost28147→BlowFish→XTea→,00.4355,00.3066,00.7422
+2025-09-23_Stats.gif,1830,Idea→Fish2→RC532→XTea→Noekeon→Cast6→Serpent→RC2→,00.2869,00.3108,00.5978
+2025-09-23_Stats.gif,1830,Idea→Fish2→RC532→XTea→Noekeon→Cast6→Serpent→RC2→,00.2775,00.2407,00.5182
+2025-09-23_Stats.gif,1830,SM4→Fish3→RC532→Cast6→Fish2→XTea→BlowFish→Noekeon→,00.1953,00.2032,00.3985
+2025-09-23_Stats.gif,1830,Idea→Fish2→RC532→XTea→Noekeon→Cast6→Serpent→RC2→,00.3101,00.3089,00.6191
+2025-09-23_Stats.gif,1830,Idea→Fish2→RC532→XTea→Noekeon→Cast6→Serpent→RC2→,00.3381,00.2061,00.5443
