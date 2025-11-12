@@ -9,6 +9,14 @@
             Diffie Hellman key exchange
             </summary>
         </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa">
+            <summary>
+            Rsa Asymmetric cipher 
+            see https://github.dev/Ulterius/server/blob/770d1821de43cf1d0a93c79025995bdd812a76ee/RemoteTaskServer/Utilities/Security/Rsa.cs#L71#L87
+            https://github.dev/ThePBone/GalaxyBudsClient/blob/a06eff7713fde924466ae1a214571a2b6f0d1a42/GalaxyBudsClient/Utils/EncryptionUtils.cs#L18#L34
+            https://github.dev/Ulterius/server/blob/770d1821de43cf1d0a93c79025995bdd812a76ee/RemoteTaskServer/Utilities/Security/Rsa.cs#L71#L87
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.GenerateNewRsaKeyPair">
             <summary>
             GenerateNewRsaKeyPair - generates a new rsa key pair
@@ -23,32 +31,29 @@
             <param name="privateKey"></param>
             <returns><see cref="T:Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair"/></returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Encrypt(System.Byte[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Encrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
             <summary>
-            Rsa Encrypt
+            Rsa encrypt bytes with public key
             </summary>
-            <param name="plainInBytes">plain input byte[]</param>
-            <returns>encryptedOutBytes</returns>
+            <param name="bytesToEncrypt"><see cref="!:byte[]">bytes to encrypt</see></param>
+            <param name="pair"></param>
+            <returns>encrypted <see cref="!:byte[]"/></returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Decrypt(System.Byte[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Decrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
             <summary>
             Rsa Decrypt
             </summary>
-            <param name="encryptedInBytes">encrypted input byte array</param>
-            <returns>plain out byte[]</returns>
+            <param name="bytesToDecrypt"></param>
+            <param name="pair"></param>
+            <returns></returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.EncryptString(System.String)">
-            <summary>
-            Encrypts a string
-            </summary>
-            <param name="inPlainString">plain text string</param>
-            <returns>Base64 encoded encrypted byte[]</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.DecryptString(System.String)">
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.EncryptString(System.String,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.DecryptString(System.String,System.Boolean)">
             <summary>
             Decrypts a string, that is truely a base64 encoded encrypted byte[]
             </summary>
             <param name="inCryptString">base64 encoded string from encrypted byte[]</param>
+            <param name="isPublic">true, if it's public key, false if it's private key</param>
             <returns>plain text string (decrypted)</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum">
