@@ -32,7 +32,7 @@ including the follwing symmetric cipher algorithms:
 - Github: [github.com/bcgit](https://github.com/bcgit) 
 
 ## WinFormCore:
-<img width="788" height="698" alt="image" src="https://github.com/user-attachments/assets/6c9cc075-d8f5-4dbe-ac8b-af9684d964bd" />
+<img width="800" height="726" alt="image" src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/PermAgainCrypt_WinForm.gif" />
 
 ## Console Application:
 <img width="1132" height="818" alt="image" src="https://github.com/user-attachments/assets/bdda016b-5daa-436a-a9f0-4f981e54b688" />
