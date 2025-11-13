@@ -14,7 +14,7 @@ including the follwing symmetric cipher algorithms:
 - Seed, SM4
 - Serpent, Tnepres
 - Tea, XTea
-- and my own symmetric almost above average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
+- and my own symmetric simplest below average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
 
 ## Downloads
 [Download](https://cqrxs.eu/download/) [x86](https://cqrxs.eu/download/WinForm_x86.7z) and [x64](https://cqrxs.eu/download/WinForm_x64.7z) version [here](https://cqrxs.eu/download/).
