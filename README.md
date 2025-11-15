@@ -16,8 +16,18 @@ including the follwing symmetric cipher algorithms:
 - Tea, XTea
 - and my own symmetric simplest below average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
 
-## Downloads
-[Download](https://cqrxs.eu/download/) [x86](https://cqrxs.eu/download/WinForm_x86.7z) and [x64](https://cqrxs.eu/download/WinForm_x64.7z) version [here](https://cqrxs.eu/download/).
+## C# solution and all projects ported to .NetCore 10
+You need since 2025-11-15 Visual Studio 2026 and C# .NetCore 10.0 to compile C# csproj.
+
+## Download
+
+### Releases
+https://github.com/heinrichelsigan/PermAgainCrypt/releases/
+
+### [cqrxs.io/download](https://cqrxs.eu/download/)
+- [PermAgainCrypt_WinForm_NetCore10_x86](https://cqrxs.eu/download/PermAgainCrypt_WinForm_NetCore10_x86.7z)
+- [PermAgainCrypt_WinForm_NetCore10_x64](https://cqrxs.eu/download/PermAgainCrypt_WinForm_NetCore10_x64.7z)
+- Rendundant website is: https://io.cqrxs.eu/download/
 
 ## WebForm online test:
 - [area23.at/net/Crypt/CoolCrypt.aspx](https://area23.at/net/Crypt/CoolCrypt.aspx)
