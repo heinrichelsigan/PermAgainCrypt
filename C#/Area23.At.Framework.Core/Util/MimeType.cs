@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-
-namespace Area23.At.Framework.Core.Util
+﻿namespace Area23.At.Framework.Core.Util
 {
 
     /// <summary>

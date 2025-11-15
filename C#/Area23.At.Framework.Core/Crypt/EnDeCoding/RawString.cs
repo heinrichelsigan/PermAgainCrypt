@@ -1,6 +1,4 @@
-﻿
-
-namespace Area23.At.Framework.Core.Crypt.EnDeCoding
+﻿namespace Area23.At.Framework.Core.Crypt.EnDeCoding
 {
     /// <summary>
     /// Base16 hexadecimal byte encoding / decoding

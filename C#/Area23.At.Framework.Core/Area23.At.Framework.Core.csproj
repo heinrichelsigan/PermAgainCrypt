@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net9.0-windows</TargetFramework>
+	<TargetFramework>net10.0-windows7.0</TargetFramework>
 	<IsTrimmable>true</IsTrimmable>
 	<UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,8 +10,8 @@
     <Copyright>Copyleft © 2000-2040</Copyright>
 	<PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.25.1113</AssemblyVersion>
-    <FileVersion>2.25.1113</FileVersion>
+    <AssemblyVersion>2.25.1115</AssemblyVersion>
+    <FileVersion>2.25.1115</FileVersion>
 	<IsTrimmable>true</IsTrimmable>
 	<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
 	<PlatformTarget>AnyCPU</PlatformTarget>
@@ -57,6 +57,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Crypt\Hash\PasswdCrypt.cs" />
+    <Compile Remove="Crypt\Hash\Sparkle.cs" />
     <Compile Remove="Crypt\Msg\CType.cs" />
     <Compile Remove="Crypt\Cipher\Crpyt.cs" />
     <Compile Remove="Crypt\EnDeCoding\DeEnCoder.cs" />  
@@ -88,11 +90,12 @@
 
   <ItemGroup>
     <None Include="Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
+    <None Include="Crypt\Hash\RipeMD256.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
-    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="10.0.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />

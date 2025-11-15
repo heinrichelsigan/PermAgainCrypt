@@ -1,5 +1,4 @@
-﻿using Area23.At.Framework.Core.Crypt.EnDeCoding;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Area23.At.Framework.Core.Util
 {

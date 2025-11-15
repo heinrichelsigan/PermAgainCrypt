@@ -1,8 +1,5 @@
 ﻿using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Util;
-using System;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace Area23.At.Framework.Core.Crypt.Hash
 {
@@ -34,11 +31,11 @@ namespace Area23.At.Framework.Core.Crypt.Hash
             {
                 string argExcMsg = "BCryptHash(keyBytes) => keyBytes";
                 argExcMsg += (keyBytes == null) ? " is null." : string.Concat(".Length = ", keyBytes.Length, ".");
-                throw new ArgumentException(argExcMsg, "keyBytes"); 
+                throw new ArgumentException(argExcMsg, "keyBytes");
             }
 
             if (keyBytes.Length > PASSWD_BYTE_LEN)
-                    throw new ArgumentException($"BCryptHash(keyBytes) => {Hex16.ToHex16(keyBytes)} Length {keyBytes.LongLength} > {PASSWD_BYTE_LEN} bytes", "keyBytes");
+                throw new ArgumentException($"BCryptHash(keyBytes) => {Hex16.ToHex16(keyBytes)} Length {keyBytes.LongLength} > {PASSWD_BYTE_LEN} bytes", "keyBytes");
 
             byte[] salt = EnDeCodeHelper.KeyBytesToHexBytesSalt(keyBytes, SALT_BYTE_LEN);
 
@@ -69,11 +66,10 @@ namespace Area23.At.Framework.Core.Crypt.Hash
         }
 
 
-        public static string HashString(string string2Hash) => BCryptHash(string2Hash).ToHexString().ToLower();
+        public static string HashString(string string2Hash) => BCryptHash(string2Hash).ToHexString(false);
             
 
-
-        public static string Hash(byte[] bytes) => BCryptHash(bytes).ToHexString().ToLower();
+        public static string Hash(byte[] bytes) => BCryptHash(bytes).ToHexString(false);
 
 
         public static byte[] HashBytes(byte[] bytes) => BCryptHash(bytes);

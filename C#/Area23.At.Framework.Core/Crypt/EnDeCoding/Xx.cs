@@ -1,10 +1,5 @@
-﻿using Area23.At.Framework.Core.Crypt.EnDeCoding;
-using Area23.At.Framework.Core.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Area23.At.Framework.Core.Util;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Area23.At.Framework.Core.Crypt.EnDeCoding
 {

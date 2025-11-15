@@ -1,5 +1,4 @@
 ﻿using Area23.At.Framework.Core.Util;
-using Org.BouncyCastle.Utilities.Zlib;
 using System.Text;
 
 namespace Area23.At.Framework.Core.Crypt.EnDeCoding

@@ -19,7 +19,7 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,6 +63,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _2025_20_21_JollyRogerJoker {
+            get {
+                object obj = ResourceManager.GetObject("2025-20-21_JollyRogerJoker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap a_hash {
             get {
                 object obj = ResourceManager.GetObject("a_hash", resourceCulture);
@@ -76,56 +86,6 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap a_hash1 {
             get {
                 object obj = ResourceManager.GetObject("a_hash1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash2 {
-            get {
-                object obj = ResourceManager.GetObject("a_hash2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash3 {
-            get {
-                object obj = ResourceManager.GetObject("a_hash3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash4a {
-            get {
-                object obj = ResourceManager.GetObject("a_hash4a", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash5 {
-            get {
-                object obj = ResourceManager.GetObject("a_hash5", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash6 {
-            get {
-                object obj = ResourceManager.GetObject("a_hash6", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,6 +173,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ChiffrePentacle {
+            get {
+                object obj = ResourceManager.GetObject("ChiffrePentacle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap close_delete {
             get {
                 object obj = ResourceManager.GetObject("close_delete", resourceCulture);
@@ -226,6 +196,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap close_delete1 {
             get {
                 object obj = ResourceManager.GetObject("close_delete1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CryptPenacle {
+            get {
+                object obj = ResourceManager.GetObject("CryptPenacle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -341,11 +321,31 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap heinrichelsigan {
+            get {
+                object obj = ResourceManager.GetObject("heinrichelsigan", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to https://cqrxs.eu/help/.
         /// </summary>
         internal static string HelpUrl {
             get {
                 return ResourceManager.GetString("HelpUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon icon_delete {
+            get {
+                object obj = ResourceManager.GetObject("icon_delete", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -386,6 +386,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
             get {
                 object obj = ResourceManager.GetObject("icon_warning", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap image_delete {
+            get {
+                object obj = ResourceManager.GetObject("image_delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

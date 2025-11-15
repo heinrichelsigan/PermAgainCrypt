@@ -1,4 +1,5 @@
 ﻿using Area23.At.Framework.Core.Crypt;
+using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
@@ -14,8 +15,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal readonly Lock _Lock = new Lock();
 
         protected internal static HashSet<string> HashFiles = new HashSet<string>();
+        protected internal delegate void SetLabelVisibleCallback(System.Windows.Forms.Label label, bool visible);
+        protected internal delegate void SetLabelTextCallback(System.Windows.Forms.Label label, string text);
+        protected internal delegate void SetLabelBackColorCallback(System.Windows.Forms.Label label, Color backColor);
         protected internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
-        protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
+        protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);       
+
 
         protected override void OnLoad(EventArgs e)
         {
@@ -23,6 +28,107 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #region delegates
+
+
+        /// <summary>
+        /// SetLabelVisible delegate to set a text to <see cref="Label"/> across threads
+        /// </summary>
+        /// <param name="label">the label</param>
+        /// <param name="visible">bool visible</param>
+        protected internal virtual void SetLabelVisible(Label label, bool visible)
+        {
+            if (label != null)
+            {
+                if (InvokeRequired)
+                {
+                    SetLabelVisibleCallback setLabelVisible = delegate (Label lbl, bool isVisible)
+                    {
+                        if (lbl != null)
+                            lbl.Visible = isVisible;
+                    };
+                    try
+                    {
+                        Invoke(setLabelVisible, new object[] { label, visible });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelVisible visible: \"{visible}\".\n");
+                    }
+                }
+                else
+                {
+                    if (this != null && this.Name != null)
+                        label.Visible = visible;
+                }
+            }
+        }
+
+        /// <summary>
+        /// SetLabelText delegate to set a text to <see cref="Label"/> across threads
+        /// </summary>
+        /// <param name="label">the label</param>
+        /// <param name="text"><see cref="string">text</see>/param>
+        protected internal virtual void SetLabelText(Label label, string text)
+        {
+            if (label != null)
+            {
+                if (InvokeRequired)
+                {
+                    SetLabelTextCallback setLabelText = delegate (Label lbl, string labelText)
+                    {
+                        if (lbl != null)
+                            lbl.Text = labelText;
+                    };
+                    try
+                    {
+                        Invoke(setLabelText, new object[] { label, text });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelText Text: \"{text}\".\n");
+                    }
+                }
+                else
+                {
+                    if (this != null && this.Name != null)
+                        label.Text = text;
+                }
+            }
+        }
+
+        /// <summary>
+        /// SetLabelBackColor delegate to set <see cref="Color">Backcolor</see> for <see cref="Label"/> across threads
+        /// </summary>
+        /// <param name="label">the label</param>
+        /// <param name="backColor"><see cref="Color">backColor</see>/param>
+        protected internal virtual void SetLabelBackColor(Label label, Color backColor)
+        {
+            if (label != null)
+            {
+                if (InvokeRequired)
+                {
+                    SetLabelBackColorCallback setLabelBackColor = delegate (Label lbl, Color bgColor)
+                    {
+                        if (lbl != null)
+                            lbl.BackColor = bgColor;
+                    };
+                    try
+                    {
+                        Invoke(setLabelBackColor, new object[] { label, backColor });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n");
+                    }
+                }
+                else
+                {
+                    if (this != null && this.Name != null)
+                        label.BackColor = backColor;
+                }
+            }
+        }
+
 
         /// <summary>
         /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads
@@ -103,15 +209,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// GetCipherEnums gets all cipher algos for the cipher pipeline
         /// </summary>
         /// <param name="sorted">sort list with all cipher algos, default true</param>
-        /// <returns><see cref="List{string}"/></returns>
-        protected internal virtual List<string> GetCipherEnums(bool sorted = true)
+        /// <returns><see cref="string[]"/></returns>
+        protected internal virtual string[] GetCipherEnums(bool sorted = true)
         {
             List<string> cipherEnums = new List<string>();
             foreach (object item in Enum.GetValues(typeof(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum)))
                 cipherEnums.Add(item.ToString());
             if (sorted)
                 cipherEnums.Sort();
-            return cipherEnums;
+            return cipherEnums.ToArray();
         }
 
         /// <summary>
@@ -163,8 +269,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         protected internal virtual void menuAbout_Click(object sender, EventArgs e)
         {
-            TransparentDialog transparentDialog = new TransparentDialog();
-            transparentDialog.ShowDialog(this);
+            AboutDialog aboutDialog = new AboutDialog();
+            aboutDialog.ShowDialog(this);
         }
 
 

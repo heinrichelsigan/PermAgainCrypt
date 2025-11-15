@@ -137,6 +137,40 @@ at are called software.
   -- Levitating Trains and Kamikaze Genes: Technological
      Literacy for the 1990's.
 %
+Two battleships assigned to the training squadron had been at sea on maneuvers
+in heavy weather for several days.  I was serving on the lead battleship and
+was on watch on the bridge as night fell.  The visibility was poor with patchy
+fog, so the Captain remained on the bridge keeping an eye on all activities.
+	Shortly after dark, the lookout on the wing of the bridge reported,
+"Light, bearing on the starboard bow."
+	"Is it steady or moving astern?" the Captain called out.
+	Lookout replied, "Steady, Captain," which meant we were on a dangerous
+collision course with that ship.
+	The Captain then called to the signalman, "Signal that ship: We are on
+a collision course, advise you change course 20 degrees."
+	Back came a signal "Advisable for you to change course 20 degrees."
+	In reply, the Captain said, "Send: I'm a Captain, change course 20
+degrees!"
+	"I'm a seaman second class," came the reply, "You had better change
+course 20 degrees."
+	By that time, the Captain was furious. He spit out, "Send: I'm a
+battleship, change course 20 degrees."
+	Back came the flashing light: "I'm a lighthouse!"
+	We changed course.
+		-- The Naval Institute's "Proceedings"
+%
+Real World, The, n.:
+	1. In programming, those institutions at which programming may
+be used in the same sentence as FORTRAN, COBOL, RPG, IBM, etc.  2. To
+programmers, the location of non-programmers and activities not related
+to programming.  3. A universe in which the standard dress is shirt and
+tie and in which a person's working hours are defined as 9 to 5.  4.
+The location of the status quo.  5. Anywhere outside a university.
+"Poor fellow, he's left MIT and gone into the real world."  Used
+pejoratively by those not in residence there.  In conversation, talking
+of someone who has entered the real world is not unlike talking about a
+deceased person.
+%
 Those who can't write, write manuals.
 %
 Those who do not understand Unix are condemned to reinvent it, poorly.

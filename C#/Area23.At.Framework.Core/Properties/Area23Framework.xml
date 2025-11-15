@@ -1510,8 +1510,44 @@
             <param name="xxEncodedStr">xx encoded string</param>
             <returns>xx decoded plain text</returns>
         </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Ascon256">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.AsconHash256" />
+            </summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.BCrypt" -->
         <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.BCrypt.BCryptHash(System.Byte[])" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Blake2xs">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
+            </summary>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.Blake2xs.HashString(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
+            </summary>
+            <param name="stringToHash"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.CShake">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.CShakeDigest" />
+            </summary>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.CShake.HashString(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.CShakeDigest" />
+            </summary>
+            <param name="stringToHash"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Dstu7564">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.Dstu7564Digest" />
+            </summary>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash">
             <summary>
             KeyHash 
@@ -1530,8 +1566,20 @@
             <param name="showFileName">show fileName after hash sum</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.PasswdCrypt" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.PasswdCrypt.BCrypt(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt" -->
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.Byte[])" -->
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.String)" -->
+        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.RipeMD256" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.RipeMD256.HashString(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
+            </summary>
+            <param name="stringToHash"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.SCrypt" -->
+        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.SCrypt.SCryptHash(System.Byte[])" -->
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.Sha1">
             <summary>
             Sha256Sum creates Sha1Sum of a file or stream or byte[] or string
@@ -1610,6 +1658,24 @@
             <param name="stream">stream strm</param>
             <param name="fileName">optional filename to add after hash</param>
             <returns>Sha512 hash with optional fileName</returns>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Whirlpool">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.WhirlpoolDigest" />
+            </summary>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Zodiac">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
+            </summary>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.Zodiac.HashString(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
+            </summary>
+            <param name="stringToHash"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CContact.#ctor">
             <summary>
@@ -2248,11 +2314,12 @@
             <param name="fext">file extension</param>
             <returns>full file system path to new written file in case of success, on error simply null</returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Util.Extensions.ToHexString(System.Byte[])">
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.ToHexString(System.Byte[],System.Boolean)">
             <summary>
             <see cref="!:byte[]"/>.ToHexString() extension method: converts byte[] to HexString
             </summary>
             <param name="bytes">Array of <see cref="T:System.Byte"/></param>
+            <param name="UPPERCASE">bool default true, UPPERCASE LETTER CHARS ABCDEF</param>
             <returns>hexadecimal string</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.FindBytes(System.Byte[],System.Byte[],System.Int32)">

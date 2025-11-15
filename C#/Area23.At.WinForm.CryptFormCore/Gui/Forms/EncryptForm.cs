@@ -7,7 +7,8 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using System.Media;
+using System.Security.Policy;
+
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
@@ -37,21 +38,26 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e"></param>
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
+            this.labelInfoMessage.Visible = false;  
+            this.textBoxKey.Text = GetEmailFromRegistry();
+
+            this.comboBoxCompression.Items.Clear();
+            foreach (ZipType zipType in ZipTypeExtensions.GetZipTypes())
+                this.comboBoxCompression.Items.Add(zipType.ToString());
+            this.comboBoxCompression.SelectedItem = ZipType.None.ToString();
+
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
-            {
-                //if (cipher.StartsWith(CipherEnum.ZenMatrix2.ToString(), StringComparison.OrdinalIgnoreCase))
-                //    continue;
-                //else
-                this.comboBoxAlgo.Items.Add(cipher);
-            }
+                this.comboBoxAlgo.Items.Add(cipher.ToString());
+
+            this.comboBoxEncoding.Items.Clear();
+            foreach (EncodingType encodingType in EncodingTypesExtensions.GetEncodingTypes())
+                this.comboBoxEncoding.Items.Add(encodingType.ToString());
+            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
 
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             this.pictureBoxRunningPipe.Visible = true;
-            this.textBoxKey.Text = GetEmailFromRegistry();
 
-            comboBoxCompression.SelectedItem = ZipType.None.ToString();
-            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
             Hash_Click(sender, e);
         }
@@ -117,8 +123,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         break;
                 }
             }
-            notifyIcon1.ShowBalloonTip(1250, "Info", $"ZipType {zipType.ToString()} set.", ToolTipIcon.Info);
-            notifyIcon1.Visible = true;
+            SetInfoMessage($"ZipType {zipType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
 
         /// <summary>
@@ -158,7 +163,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 return;
             }
 
-            menuItemNone.Checked = false;
+            menuNone.Checked = false;
             menuBase16.Checked = false;
             menuHex16.Checked = false;
             menuBase32.Checked = false;
@@ -169,7 +174,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("menuBase") || mi.Name.StartsWith("menuHex") || mi.Name.StartsWith("menuUu") ||
-                    mi.Name.StartsWith("menuItemNone") || mi.Name.StartsWith("menuXx")))
+                    mi.Name.StartsWith("menuNone") || mi.Name.StartsWith("menuXx")))
             {
                 mi.Checked = true;
                 for (int i = 0; i < comboBoxEncoding.Items.Count; i++)
@@ -193,14 +198,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     case EncodingType.Hex32: menuHex32.Checked = true; break;
                     case EncodingType.Uu: menuUu.Checked = true; break;
                     case EncodingType.Xx: menuXx.Checked = true; break;
-                    case EncodingType.None: menuItemNone.Checked = true; break;
+                    case EncodingType.None: menuNone.Checked = true; break;
                     case EncodingType.Base64:
                     default: menuBase64.Checked = true; break;
                 }
             }
-            notifyIcon1.Text = $"Encoding {encodingType.ToString()} set.";
-            notifyIcon1.Visible = true;
-            notifyIcon1.ShowBalloonTip(1000, "Info", $"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info);
+            SetInfoMessage($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
 
         /// <summary>
@@ -209,7 +212,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <returns></returns>
         protected internal EncodingType GetEncoding()
         {
-            if (menuItemNone.Checked) return EncodingType.None;
+            if (menuNone.Checked) return EncodingType.None;
             if (menuBase16.Checked) return EncodingType.Base16;
             if (menuHex16.Checked) return EncodingType.Hex16;
             if (menuBase32.Checked) return EncodingType.Base32;
@@ -222,7 +225,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        protected internal void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, null);
+        protected internal void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, (RadioButtonList)radioButtonListHash);
 
         protected internal void RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => SetHash(null, (RadioButtonList)sender);
 
@@ -239,11 +242,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashBCrypt.Checked = false;
             menuHashHex.Checked = false;
             menuHashMD5.Checked = false;
-            menuHashOpenBsd.Checked = false;
+            menuHashOpenBSDCrypt.Checked = false;
             menuHashSCrypt.Checked = false;
             menuHashSha1.Checked = false;
             menuHashSha256.Checked = false;
             menuHashSha512.Checked = false;
+            menuHashWhirlpool.Checked = false;
+            menuHashAscon256.Checked = false;
+            menuHashBlake2xs.Checked = false;
+            menuHashCShake.Checked = false;
+            menuHashDstu7564.Checked = false;
+            menuHashRipeMD256.Checked = false;
+            menuHashXoodyak.Checked = false;
 
             string hashPattern = "Hex";
             if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
@@ -263,27 +273,38 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
             }
 
+
             if (radioButtonList != null && radioButtonList.SelectedItem != null)
             {
-                aKeyHash = KeyHash_Extensions.GetKeyHashFromString(radioButtonList.SelectedItem.ToString());
+                aKeyHash = (hashPattern.StartsWith("Xoo") || hashPattern.StartsWith("Zodi")) ?
+                            KeyHash_Extensions.GetKeyHashFromString(hashPattern) :
+                            KeyHash_Extensions.GetKeyHashFromString(radioButtonList.SelectedItem.ToString());
                 switch (aKeyHash)
                 {
                     case KeyHash.BCrypt: menuHashBCrypt.Checked = true; break;
                     case KeyHash.MD5: menuHashMD5.Checked = true; break;
-                    case KeyHash.OpenBSDCrypt: menuHashOpenBsd.Checked = true; break;
+                    case KeyHash.OpenBSDCrypt: menuHashOpenBSDCrypt.Checked = true; break;
                     case KeyHash.SCrypt: menuHashSCrypt.Checked = true; break;
                     case KeyHash.Sha1: menuHashSha1.Checked = true; break;
                     case KeyHash.Sha256: menuHashSha256.Checked = true; break;
                     case KeyHash.Sha512: menuHashSha512.Checked = true; break;
-                    case KeyHash.Hex:
-                    default: menuHashHex.Checked = true; break;
+                    case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
+                    case KeyHash.Ascon256: menuHashAscon256.Checked = true; break;
+                    case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
+                    case KeyHash.CShake: menuHashCShake.Checked = true; break;
+                    case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
+                    case KeyHash.RipeMD256: menuHashRipeMD256.Checked = true; break;
+                    case KeyHash.Xoodyak: menuHashXoodyak.Checked = true; break;
+                    case KeyHash.Hex: menuHashHex.Checked = true; break;
+                    default:
+                        Area23Log.LogOriginMsg("EncryptForm Hash", $"RadioButtonList: {radioButtonList.SelectedItem.ToString()} => KeyHash = {aKeyHash.ToString()}.");
+                        menuHashHex.Checked = true;
+                        break;
                 }
             }
 
             Hash_Click(this, new EventArgs());
-            notifyIcon1.Text = $"{GetHash().ToString()} hashed.";
-            notifyIcon1.ShowBalloonTip(1000, "Info", $"{GetHash().ToString()} hashed.", ToolTipIcon.Info);
-
+            SetInfoMessage($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
         }
 
         /// <summary>
@@ -295,11 +316,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
             if (menuHashHex.Checked) return KeyHash.Hex;
             if (menuHashMD5.Checked) return KeyHash.MD5;
-            if (menuHashOpenBsd.Checked) return KeyHash.OpenBSDCrypt;
+            if (menuHashOpenBSDCrypt.Checked) return KeyHash.OpenBSDCrypt;
             if (menuHashSCrypt.Checked) return KeyHash.SCrypt;
             if (menuHashSha1.Checked) return KeyHash.Sha1;
             if (menuHashSha256.Checked) return KeyHash.Sha256;
             if (menuHashSha512.Checked) return KeyHash.Sha512;
+            if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;
+            if (menuHashAscon256.Checked) return KeyHash.Ascon256;
+            if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
+            if (menuHashCShake.Checked) return KeyHash.CShake;
+            if (menuHashDstu7564.Checked) return KeyHash.Dstu7564;
+            if (menuHashRipeMD256.Checked) return KeyHash.RipeMD256;
+            if (menuHashXoodyak.Checked) return KeyHash.Xoodyak;
 
             menuHashHex.Checked = true;
             return KeyHash.Hex;
@@ -317,6 +345,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal void pictureBoxKey_Click(object sender, EventArgs e)
         {
             this.textBoxKey.Text = GetEmailFromRegistry();
+        }
+
+        /// <summary>
+        /// Event fired, when text in textbox key changed, when leaving cursor and stopped editing
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void textBoxKey_TextChanged(object sender, EventArgs e)
+        {
+            Hash_Click(sender, e);
         }
 
         /// <summary>
@@ -342,7 +380,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
-                if (cipherAlgors.Length <= 8)
+                if (cipherAlgors.Length < 8)
                 {
                     switch (cipherEnum)
                     {
@@ -379,8 +417,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
                 else
                 {
-                    notifyIcon1.ShowBalloonTip(3600, "Warning", "Max 8 algorithms in pipe reached!", ToolTipIcon.Warning);
-                    notifyIcon1.Visible = true;
+                    SetInfoMessage("Max 8 algorithms in pipe reached!", ToolTipIcon.Warning, 2000);
                 }
             }
         }
@@ -404,8 +441,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
-                notifyIcon1.Visible = true;
+                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);
                 return;
             }
 
@@ -429,8 +465,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                notifyIcon1.ShowBalloonTip(2000, "Warning", "Key is empty!", ToolTipIcon.Warning);
-                notifyIcon1.Visible = true;
+                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);               
                 return;
             }
 
@@ -499,9 +534,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                notifyIcon1.Text = "Key is empty!";
-                notifyIcon1.Visible = true;
-                notifyIcon1.ShowBalloonTip(3000, "Warning", "Key is empty!", ToolTipIcon.Warning);
+                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);
                 return;
             }
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
@@ -521,7 +554,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     try
                     {
-                        if (menuItemNone.Checked)
+                        if (menuNone.Checked)
                             SetEncoding(menuBase64);
 
                         string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
@@ -575,8 +608,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                notifyIcon1.ShowBalloonTip(3000, "Warning", "Key is empty!", ToolTipIcon.Warning);
-                notifyIcon1.Visible = true;
+                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);
                 return;
             }
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
@@ -598,7 +630,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     this.textBoxOut.Text = "";
                     try
                     {
-                        if (menuItemNone.Checked)
+                        if (menuNone.Checked)
                             SetEncoding(menuBase64);
 
                         // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
@@ -904,6 +936,50 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region Media Methods
 
+        protected internal void SetInfoMessage(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
+        {
+            SetLabelText(labelInfoMessage, message);
+            string toolHeader = toolIcon.ToString();
+            switch (toolIcon)
+            {
+                case ToolTipIcon.Error:
+                    toolHeader = "Error";
+                    SetLabelBackColor(labelInfoMessage, Color.OrangeRed);
+                    PlaySoundFromResource("sound_error");
+                    break;
+                case ToolTipIcon.Warning:
+                    SetLabelBackColor(labelInfoMessage, Color.Yellow);
+                    toolHeader = "Warning";
+                    PlaySoundFromResource("sound_warning");
+                    break;
+                case ToolTipIcon.Info:
+                default:
+                    SetLabelBackColor(labelInfoMessage, SystemColors.Info);
+                    toolHeader = "Info";
+                    PlaySoundFromResource("sound_info");
+                    break;
+            }
+            SetLabelVisible(this.labelInfoMessage, true);
+
+            notifyIcon1.Text = message;
+            notifyIcon1.Visible = true;
+            notifyIcon1.ShowBalloonTip(duration, toolHeader, message, toolIcon);
+
+                        
+            System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = duration };
+            setInfoMessageTimer.Elapsed += (s, en) =>
+            {
+                Task.Run(new System.Action(() =>                
+                {
+                    SetLabelText(labelInfoMessage, "");
+                    SetLabelBackColor(labelInfoMessage, SystemColors.Info);
+                    SetLabelVisible(labelInfoMessage, false);                    
+                }));
+                setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
+            };
+            setInfoMessageTimer.Start();
+
+        }
 
         private void pictureOutBoxFile_Click(object sender, EventArgs e)
         {

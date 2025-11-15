@@ -1,5 +1,4 @@
 ﻿using Area23.At.Framework.Core.Crypt.Hash;
-using System;
 using System.Configuration;
 using System.Text;
 
