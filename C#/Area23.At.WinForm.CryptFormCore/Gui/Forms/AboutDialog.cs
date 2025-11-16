@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
+﻿using System.Reflection;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
+    /// <summary>
+    /// About Dialog is a modal running about application dialog
+    /// </summary>
     partial class AboutDialog : Form
     {
         public AboutDialog()

@@ -986,7 +986,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "EncryptForm";
-            Opacity = 0.84D;
+            Opacity = 0.86D;
             Text = "EncryptForm";
             FormClosed += menuFileExit_Close;
             Load += EncryptForm_Load;
