@@ -2,7 +2,10 @@
 
 An eight staged symmetric block cipher crypto pipeline to improve advanced encryption standard based on meta DES, 3DES with P-Box S-Box.
 
+The following image shows you an example of a symmetric cipher **8 staged encryption pipe** and the corresponding **decryption** _inverse_ **pipe**.
 <img src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/Symmetric_Cipher_Pipeline.png" />
+Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks 
+and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
 
 Implementation is based on my blog article: [Making symmetric cipher encryption great again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html);
 including the follwing symmetric cipher algorithms:
