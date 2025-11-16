@@ -649,6 +649,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                 CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
+                BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
+                this.pictureBoxRunningPipe.Image = bGen.GenerateDecryptPipeImage();
+
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {                    
                     this.textBoxOut.Text = "";

@@ -16,7 +16,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         private readonly SymmCipherEnum[] inPipe;
         internal readonly SymmCipherEnum[] outPipe;
         internal EncodingType encodeType = EncodingType.Base64;
-        internal KeyHash kHash = KeyHash.Hex;
+        internal static KeyHash kHash = KeyHash.Hex;
         private readonly string pipeString;
         private string symmCipherKey = "", symmCipherHash = "";
 
@@ -24,7 +24,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         public SymmCipherEnum[] InPipe { get => inPipe; }
         public SymmCipherEnum[] OutPipe { get => outPipe; }
         public EncodingType EncodeType { get => encodeType; }
-        public KeyHash KHash { get => kHash; }
+        public static KeyHash KHash { get => kHash; }
 
         public string PipeString { get => pipeString; }
 
@@ -208,7 +208,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             string secretKey = "heinrich.elsigan@area23.at", string hashIv = "")
         {
             byte[] encryptBytes = inBytes;
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
 
             switch (cipherAlgo)
             {                                  
@@ -250,7 +250,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             string secretKey = "heinrich.elsigan@area23.at", string hashIv = "", bool fishOnAesEngine = false)
         {
             bool sameKey = true;
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             byte[] decryptBytes = cipherBytes;
 
             switch (cipherAlgo)
@@ -298,7 +298,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
                 throw new ArgumentNullException("secretKey");
             if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(symmCipherHash))
-                hashIv = EnDeCodeHelper.KeyToHex(secretKey);
+                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             symmCipherKey = secretKey;
             symmCipherHash = hashIv;
 
@@ -343,7 +343,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             symmCipherKey = string.IsNullOrEmpty(secretKey) ? symmCipherKey : secretKey;
 
             if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(symmCipherHash))
-                hashIv = EnDeCodeHelper.KeyToHex(symmCipherKey);
+                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(symmCipherKey);
 
             symmCipherHash = string.IsNullOrEmpty(hashIv) ? symmCipherHash : hashIv;
 

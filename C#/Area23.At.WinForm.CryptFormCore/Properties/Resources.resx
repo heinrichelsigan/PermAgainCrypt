@@ -378,4 +378,20 @@
     <value>..\Resources\arrows\process\encoding_right_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>encoding_right_0</comment>
   </data>
+  <data name="compress_right_start_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right_start_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right_start_0</comment>
+  </data>
+  <data name="compress_right_end_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right_end_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right_end_0</comment>
+  </data>
+  <data name="compress_right_start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right_start.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right_start</comment>
+  </data>
+  <data name="compress_right_end" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right_end.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right_end</comment>
+  </data>
 </root>

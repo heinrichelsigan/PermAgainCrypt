@@ -5,6 +5,7 @@ using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Org.BouncyCastle.Crypto;
 using System.Linq;
+using System.Text;
 
 namespace Area23.At.Framework.Core.Crypt.Cipher
 {
@@ -22,7 +23,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         private readonly CipherEnum[] inPipe;
         internal readonly CipherEnum[] outPipe;
         internal EncodingType encodeType = EncodingType.Base64;
-        internal KeyHash kHash = KeyHash.Hex;
+        internal static KeyHash kHash = KeyHash.Hex;
         private readonly string pipeString;
         private string symmCipherKey = "", symmCipherHash = "";
 
@@ -30,7 +31,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         public CipherEnum[] InPipe { get => inPipe; }
         public CipherEnum[] OutPipe { get => outPipe; }
         public EncodingType EncodeType { get => encodeType; }
-        public KeyHash KHash { get => kHash; }
+        public static KeyHash KHash { get => kHash; }
         public string PipeString { get => pipeString; }
 
 //#if DEBUG
@@ -223,7 +224,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
 
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             byte[] encryptBytes = inBytes;
 
             switch (cipherAlgo)
@@ -304,7 +305,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
             // bool sameKey = true;
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             byte[] decryptBytes = cipherBytes;
 
             switch (cipherAlgo)
@@ -392,7 +393,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv; // TODO
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
@@ -437,7 +438,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            string hash = (string.IsNullOrEmpty(hashIv)) ? EnDeCodeHelper.KeyToHex(secretKey) : hashIv;
+            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
