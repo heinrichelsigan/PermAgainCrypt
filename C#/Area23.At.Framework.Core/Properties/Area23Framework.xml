@@ -86,26 +86,26 @@
             Provides a simple crypt pipe for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/>
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             CipherPipe constructor with an array of <see cref="!:CipherEnum[]"/> as inpipe
             </summary>
             <param name="cipherEnums">array of <see cref="!:CipherEnum[]"/> as inpipe</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             CipherPipe constructor with an array of <see cref="!:string[]"/> cipherAlgos as inpipe
             </summary>
             <param name="cipherAlgos">array of <see cref="!:string[]"/> as inpipe</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.Byte[],System.UInt32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.Byte[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             CipherPipe ctor with array of user key bytes
             </summary>
             <param name="keyBytes">user key bytes</param>
             <param name="maxpipe">maximum lentgh <see cref="F:Area23.At.Framework.Core.Util.Constants.MAX_PIPE_LEN"/></param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String,System.String)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             Constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe"/> from key and hash
             by getting <see cref="!:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
@@ -688,19 +688,19 @@
             Provides a simple crypt pipe for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             SymmCipherPipe constructor with an array of <see cref="!:SymmCipherEnum[]"/> as inpipe
             </summary>
             <param name="symmCipherEnums">array of <see cref="!:SymmCipherEnum[]"/> as inpipe</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[])">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             SymmCipherPipe constructor with an array of <see cref="!:string[]"/> as inpipe
             </summary>
             <param name="symmCipherAlgos">array of <see cref="!:string[]"/> as inpipe</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             SymmCipherPipe ctor with array of user key bytes
             </summary>
@@ -2531,9 +2531,33 @@
             <exception cref="T:System.ArgumentException"></exception>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.Extensions.ArrayIndexOf``1(``0[],``0,System.Boolean)" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.Extensions.FirstIndexOf``1(``0[],``0)" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.Extensions.LastIndexOf``1(``0[],``0)" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.Extensions.IndicesOf``1(``0[],``0)" -->
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.FirstIndexOf``1(``0[],``0)">
+            <summary>
+            FirstIndexOf{T} generic search in a T array from starting at begin as usual
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="tarray">generic T array</param>
+            <param name="tvalue">generic T value to find</param>
+            <returns>if found, first  index of occurence of T value, if not found -1</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.LastIndexOf``1(``0[],``0)">
+            <summary>
+            LastIndexOf{T} generic search in a T array from starting at end
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="tarray">generic T array</param>
+            <param name="tvalue">generic T value to find</param>
+            <returns>if found, last index of occurence of T value, if not found -1</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.IndicesOf``1(``0[],``0)">
+            <summary>
+            IndicesOf{T} generic search that returns all indices of occurence of T value inside T array
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="tarray">generic T arreay</param>
+            <param name="tvalue">T value to find</param>
+            <returns>is tarray is null, null, if not fount an empty index array int[0], else inidices array int[]</returns>
+        </member>
         <member name="T:Area23.At.Framework.Core.Util.GifEncoder">
             <summary>   
             This encoder is taken from <see cref="!:https://github.com/DataDink/Bumpkit" />
@@ -2568,7 +2592,11 @@
             JsonHelper class for reading and writing json serialized store file.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Util.LibPaths" -->
+        <member name="T:Area23.At.Framework.Core.Util.LibPaths">
+            <summary>
+            LibPaths provides filesystem paths and directories for different needed locations, e.g. log + config files
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.LibPaths.#cctor">
             <summary>
             static constructor
@@ -3007,9 +3035,9 @@
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Zip.GZ" -->
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GZip(System.Byte[],System.Int32)">
             <summary>
-            GZip directly, please use <see cref="!:GZipViaStream(byte[])"/>
+            GZip directly
             </summary>
-            <param name="inBytes"><see cref="!:byte[]"/> inBytes</param>
+            <param name="inBytes"><see cref="!:byte[]">inBytes</see></param>
             <param name="compressionLevel">level of compression: 
              1  ... for at least no compression, 
             4,5 ... for average compression

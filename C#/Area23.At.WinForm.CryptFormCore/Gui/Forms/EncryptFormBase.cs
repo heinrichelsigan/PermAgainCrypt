@@ -3,7 +3,6 @@ using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using System.Media;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
@@ -19,8 +18,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal delegate void SetLabelTextCallback(System.Windows.Forms.Label label, string text);
         protected internal delegate void SetLabelBackColorCallback(System.Windows.Forms.Label label, Color backColor);
         protected internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
-        protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);       
-
+        protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, bool show);
+        protected internal delegate void SetStatusLabelTextCallback(System.Windows.Forms.ToolStripStatusLabel tsLabel, string text);
 
         protected override void OnLoad(EventArgs e)
         {
@@ -39,7 +38,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (label != null)
             {
-                if (InvokeRequired)
+                if (label.InvokeRequired)
                 {
                     SetLabelVisibleCallback setLabelVisible = delegate (Label lbl, bool isVisible)
                     {
@@ -52,12 +51,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (System.Exception exDelegate)
                     {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelVisible visible: \"{visible}\".\n");
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelVisible visible: \"{visible}\".\n", exDelegate);
                     }
                 }
                 else
                 {
-                    if (this != null && this.Name != null)
+                    if (this != null && label != null)
                         label.Visible = visible;
                 }
             }
@@ -72,7 +71,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (label != null)
             {
-                if (InvokeRequired)
+                if (label.InvokeRequired)
                 {
                     SetLabelTextCallback setLabelText = delegate (Label lbl, string labelText)
                     {
@@ -85,12 +84,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (System.Exception exDelegate)
                     {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelText Text: \"{text}\".\n");
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelText Text: \"{text}\".\n", exDelegate);
                     }
                 }
                 else
                 {
-                    if (this != null && this.Name != null)
+                    if (this != null && label != null)
                         label.Text = text;
                 }
             }
@@ -105,7 +104,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (label != null)
             {
-                if (InvokeRequired)
+                if (label.InvokeRequired)
                 {
                     SetLabelBackColorCallback setLabelBackColor = delegate (Label lbl, Color bgColor)
                     {
@@ -118,17 +117,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (System.Exception exDelegate)
                     {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n");
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n", exDelegate);
                     }
                 }
                 else
                 {
-                    if (this != null && this.Name != null)
+                    if (this != null && label != null)
                         label.BackColor = backColor;
                 }
             }
         }
-
 
         /// <summary>
         /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads
@@ -137,26 +135,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal virtual void SetGBoxText(GroupBox groupBox, string text)
         {
             string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (InvokeRequired)
+            if (groupBox != null)
             {
-                SetGroupBoxTextCallback setGroupBoxText = delegate (GroupBox gBox, string hText)
+                if (groupBox.InvokeRequired)
                 {
-                    if (gBox != null && gBox.Name != null && !string.IsNullOrEmpty(hText))
-                        gBox.Text = hText;
-                };
-                try
-                {
-                    Invoke(setGroupBoxText, new object[] { groupBox, textToSet });
+                    SetGroupBoxTextCallback setGroupBoxText = delegate (GroupBox gBox, string hText)
+                    {
+                        if (gBox != null && gBox.Name != null && !string.IsNullOrEmpty(hText))
+                            gBox.Text = hText;
+                    };
+                    try
+                    {
+                        Invoke(setGroupBoxText, new object[] { groupBox, textToSet });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
+                    }
                 }
-                catch (System.Exception exDelegate)
+                else
                 {
-                    Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n");
+                    if (this != null && groupBox != null && textToSet != null)
+                        groupBox.Text = textToSet;
                 }
-            }
-            else
-            {
-                if (this != null && this.Name != null && textToSet != null)
-                    groupBox.Text = textToSet;
             }
         }
 
@@ -170,7 +171,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (pictBox != null && image != null)
             {
-                if (InvokeRequired)
+                if (pictBox.InvokeRequired)
                 {
                     SetPictureBoxCallback setPictureBoxDelegate = delegate (PictureBox pBox, Image img, bool showing)
                     {
@@ -187,7 +188,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (System.Exception exDelegate)
                     {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\".\n");
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\".\n", exDelegate);
                     }
                 }
                 else
@@ -197,6 +198,39 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         pictBox.Image = image;
                         pictBox.Visible = visible;
                     }
+                }
+            }
+        }
+
+        protected internal virtual void SetPictureBoxImage(PictureBox pictBox, Bitmap bmp, bool visible = true) => SetPictureBoxImage(pictBox, (Image)bmp, visible);
+        
+        
+
+        protected internal virtual void SetStatusLabelText(System.Windows.Forms.ToolStripStatusLabel tsLabel, string text)
+        {            
+            if (tsLabel != null)
+            {
+                ToolStrip? tsParent = tsLabel.GetCurrentParent();
+                if (tsParent != null && tsParent.InvokeRequired)
+                {
+                    SetStatusLabelTextCallback setStatusLabelTextCallback = delegate (ToolStripStatusLabel tlbl, string msg)
+                    {
+                        if (tlbl != null)
+                            tlbl.Text = msg;
+                    };
+                    try
+                    {
+                        Invoke(setStatusLabelTextCallback, new object[] { tsLabel, text });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetStatusLabelTextCallback Text: \"{text}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (this != null && tsLabel != null)
+                        tsLabel.Text = text;
                 }
             }
         }
@@ -334,7 +368,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     try
                     {
                         // Construct the sound player
-                        SoundPlayer player = new SoundPlayer(stream);
+                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(stream);
                         player.Play();
                         played = true;
                         stream.Close();

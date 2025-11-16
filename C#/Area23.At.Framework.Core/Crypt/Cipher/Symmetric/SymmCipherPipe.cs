@@ -12,34 +12,39 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
     public class SymmCipherPipe
     {
 
+        internal ZipType zType = ZipType.None;
         private readonly SymmCipherEnum[] inPipe;
-        public readonly SymmCipherEnum[] outPipe;
+        internal readonly SymmCipherEnum[] outPipe;
+        internal EncodingType encodeType = EncodingType.Base64;
+        internal KeyHash kHash = KeyHash.Hex;
         private readonly string pipeString;
         private string symmCipherKey = "", symmCipherHash = "";
 
+        public ZipType ZType { get => zType; }
         public SymmCipherEnum[] InPipe { get => inPipe; }
-
         public SymmCipherEnum[] OutPipe { get => outPipe; }
+        public EncodingType EncodeType { get => encodeType; }
+        public KeyHash KHash { get => kHash; }
 
         public string PipeString { get => pipeString; }
 
-//#if DEBUG
-//        public Dictionary<SymmCipherEnum, byte[]> stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+        //#if DEBUG
+        //        public Dictionary<SymmCipherEnum, byte[]> stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
 
-//        public string HexStages
-//        {
-//            get
-//            {
-//                string hexOut = string.Empty;
-//                foreach (var stage in stageDictionary)
-//                {
-//                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
-//                }
+        //        public string HexStages
+        //        {
+        //            get
+        //            {
+        //                string hexOut = string.Empty;
+        //                foreach (var stage in stageDictionary)
+        //                {
+        //                    hexOut += stage.Key.ToString() + "\r\n" + Hex16.ToHex16(stage.Value) + "\r\n";
+        //                }
 
-//                return hexOut;
-//            }
-//        }
-//#endif
+        //                return hexOut;
+        //            }
+        //        }
+        //#endif
 
         #region ctor SymmCipherPipe
 
@@ -47,11 +52,26 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// SymmCipherPipe constructor with an array of <see cref="SymmCipherEnum[]"/> as inpipe
         /// </summary>
         /// <param name="symmCipherEnums">array of <see cref="SymmCipherEnum[]"/> as inpipe</param>
-        public SymmCipherPipe(SymmCipherEnum[] symmCipherEnums)
+        public SymmCipherPipe(SymmCipherEnum[] symmCipherEnums, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
+            // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+            maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
+
+            pipeString = "";
+            zType = zpType;            
             inPipe = new List<SymmCipherEnum>(symmCipherEnums).ToArray();
             outPipe = symmCipherEnums.Reverse<SymmCipherEnum>().ToArray();
-            pipeString = "";
+            encodeType = encType;
+            kHash = kh;            
+
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (var cipherEnum in inPipe)
+                    pipElems.Add(cipherEnum.ToString());                
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }
+
             foreach (SymmCipherEnum symmCipher in inPipe)
                 pipeString += symmCipher.GetSymmCipherChar();
         }
@@ -60,8 +80,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// SymmCipherPipe constructor with an array of <see cref="string[]"/> as inpipe
         /// </summary>
         /// <param name="symmCipherAlgos">array of <see cref="string[]"/> as inpipe</param>
-        public SymmCipherPipe(string[] symmCipherAlgos)
+        public SymmCipherPipe(string[] symmCipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
+            // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+            maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
+
             List<SymmCipherEnum> symmCipherEnums = new List<SymmCipherEnum>();
             foreach (string algo in symmCipherAlgos)
             {
@@ -75,9 +98,21 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 }
             }
 
+            pipeString = "";
+            zType = zpType;
             inPipe = new List<SymmCipherEnum>(symmCipherEnums).ToArray();
             outPipe = symmCipherEnums.Reverse<SymmCipherEnum>().ToArray();
-            pipeString = "";
+            encodeType = encType;
+            kHash = kh;
+
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (SymmCipherEnum symmCipher in inPipe)
+                    pipElems.Add(symmCipher.ToString());
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }
+
             foreach (SymmCipherEnum symmCipher in inPipe)
                 pipeString += symmCipher.GetSymmCipherChar();
         }
@@ -87,7 +122,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="keyBytes">user key bytes</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        public SymmCipherPipe(byte[] keyBytes, uint maxpipe = 8)
+        public SymmCipherPipe(byte[] keyBytes, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -120,6 +155,16 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             inPipe = new List<SymmCipherEnum>(pipeList).ToArray();
             outPipe = pipeList.Reverse<SymmCipherEnum>().ToArray();
             pipeString = "";
+           
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (var cipherEnum in inPipe)
+                    pipElems.Add(cipherEnum.ToString());
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }
+            
+
             foreach (SymmCipherEnum symmCipher in inPipe)
                 pipeString += symmCipher.GetSymmCipherChar();
         }
@@ -130,8 +175,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="key">secret key to generate pipe</param>
         /// <param name="hash">hash value of secret key</param>
-        public SymmCipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174")
-            : this(CryptHelper.GetUserKeyBytes(key, hash, 16), Constants.MAX_PIPE_LEN)
+        public SymmCipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174")        
+            : this(CryptHelper.GetUserKeyBytes(key, hash, 16), Constants.MAX_PIPE_LEN, EncodingType.Base64, ZipType.None, KeyHash.Hex)
         {
             symmCipherKey = key;
             symmCipherHash = hash;
@@ -141,7 +186,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// SymmCipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
-        public SymmCipherPipe(string key = "heinrich.elsigan@area23.at") : this(key, EnDeCodeHelper.KeyToHex(key))
+        public SymmCipherPipe(string key = "heinrich.elsigan@area23.at")
+            : this(key, EnDeCodeHelper.KeyToHex(key)) 
         {
             symmCipherKey = key;
         }

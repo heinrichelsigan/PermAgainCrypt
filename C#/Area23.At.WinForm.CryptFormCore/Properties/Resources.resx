@@ -330,4 +330,52 @@
   <data name="heinrichelsigan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\huge\heinrichelsigan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="arrow_right_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_0</comment>
+  </data>
+  <data name="arrow_right_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_1</comment>
+  </data>
+  <data name="arrow_right_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_2</comment>
+  </data>
+  <data name="arrow_right_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_3</comment>
+  </data>
+  <data name="arrow_right_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_4</comment>
+  </data>
+  <data name="arrow_right_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_5</comment>
+  </data>
+  <data name="arrow_right_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_6</comment>
+  </data>
+  <data name="arrow_right_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\arrow_right_7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_7</comment>
+  </data>
+  <data name="compress_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right</comment>
+  </data>
+  <data name="encoding_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\encoding_right.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>encoding_right</comment>
+  </data>
+  <data name="compress_right_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\compress_right_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>compress_right_0</comment>
+  </data>
+  <data name="encoding_right_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\encoding_right_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>encoding_right_0</comment>
+  </data>
 </root>

@@ -6,7 +6,7 @@ namespace Area23.At.Framework.Core.Util
 {
 
     /// <summary>
-    /// LibPaths provides filesystem paths & directories for different needed locations, e.g. log & config files
+    /// LibPaths provides filesystem paths and directories for different needed locations, e.g. log + config files
     /// </summary>
     public static class LibPaths
     {

@@ -35,9 +35,9 @@
             menuFileOpen = new ToolStripMenuItem();
             menuMainSave = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
+            menuMainSetPipe = new ToolStripMenuItem();
             menuMainHashKey = new ToolStripMenuItem();
             menuMainHashPipe = new ToolStripMenuItem();
-            menuMainSetPipe = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             menuMainEncrypt = new ToolStripMenuItem();
             menuMainDecrypt = new ToolStripMenuItem();
@@ -104,13 +104,16 @@
             groupBoxFiles = new GroupBox();
             pictureBoxRunningPipe = new PictureBox();
             pictureBoxDelete = new PictureBox();
-            notifyIcon1 = new NotifyIcon(components);
             comboBoxCompression = new ComboBox();
             comboBoxEncoding = new ComboBox();
             buttonRandomText = new Button();
             buttonHashPipe = new Button();
             radioButtonListHash = new Area23.At.WinForm.CryptFormCore.Gui.Controls.RadioButtonList();
             labelInfoMessage = new Label();
+            statusStrip = new StatusStrip();
+            statusLabelSource = new ToolStripStatusLabel();
+            statusLabelMsg = new ToolStripStatusLabel();
+            statusLabelDestination = new ToolStripStatusLabel();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -121,6 +124,7 @@
             groupBoxFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
+            statusStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStripEncrypt
@@ -132,7 +136,7 @@
             menuStripEncrypt.Location = new Point(0, 0);
             menuStripEncrypt.Name = "menuStripEncrypt";
             menuStripEncrypt.Padding = new Padding(3, 2, 2, 2);
-            menuStripEncrypt.Size = new Size(944, 24);
+            menuStripEncrypt.Size = new Size(1008, 24);
             menuStripEncrypt.TabIndex = 0;
             menuStripEncrypt.Text = "menuStripEncrypt";
             // 
@@ -167,6 +171,14 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(154, 6);
             // 
+            // menuMainSetPipe
+            // 
+            menuMainSetPipe.BackColor = SystemColors.Menu;
+            menuMainSetPipe.Name = "menuMainSetPipe";
+            menuMainSetPipe.Size = new Size(157, 22);
+            menuMainSetPipe.Text = "Set Pipe";
+            menuMainSetPipe.Click += SetPipeline_Click;
+            // 
             // menuMainHashKey
             // 
             menuMainHashKey.BackColor = SystemColors.Menu;
@@ -182,14 +194,6 @@
             menuMainHashPipe.Size = new Size(157, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
-            // 
-            // menuMainSetPipe
-            // 
-            menuMainSetPipe.BackColor = SystemColors.Menu;
-            menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(157, 22);
-            menuMainSetPipe.Text = "Set Pipe";
-            menuMainSetPipe.Click += SetPipeline_Click;
             // 
             // toolStripSeparator3
             // 
@@ -310,7 +314,7 @@
             // 
             menuNone.BackColor = SystemColors.Menu;
             menuNone.Name = "menuNone";
-            menuNone.Size = new Size(118, 22);
+            menuNone.Size = new Size(180, 22);
             menuNone.Text = "None";
             menuNone.ToolTipText = "no encoding, let it be binary as it is";
             menuNone.Click += menuEncodingKind_Click;
@@ -319,7 +323,7 @@
             // 
             menuBase16.BackColor = SystemColors.Menu;
             menuBase16.Name = "menuBase16";
-            menuBase16.Size = new Size(118, 22);
+            menuBase16.Size = new Size(180, 22);
             menuBase16.Text = "Base16";
             menuBase16.ToolTipText = "base16 en-/decoding";
             menuBase16.Click += menuEncodingKind_Click;
@@ -328,7 +332,7 @@
             // 
             menuHex16.BackColor = SystemColors.Menu;
             menuHex16.Name = "menuHex16";
-            menuHex16.Size = new Size(118, 22);
+            menuHex16.Size = new Size(180, 22);
             menuHex16.Text = "Hex16";
             menuHex16.ToolTipText = "hexadecimal half byte encoding";
             menuHex16.Click += menuEncodingKind_Click;
@@ -337,7 +341,7 @@
             // 
             menuBase32.BackColor = SystemColors.Menu;
             menuBase32.Name = "menuBase32";
-            menuBase32.Size = new Size(118, 22);
+            menuBase32.Size = new Size(180, 22);
             menuBase32.Text = "Base32";
             menuBase32.ToolTipText = "base32 en-/decoding";
             menuBase32.Click += menuEncodingKind_Click;
@@ -346,7 +350,7 @@
             // 
             menuHex32.BackColor = SystemColors.Menu;
             menuHex32.Name = "menuHex32";
-            menuHex32.Size = new Size(118, 22);
+            menuHex32.Size = new Size(180, 22);
             menuHex32.Text = "Hex32";
             menuHex32.ToolTipText = "hex32 en-/decoding";
             menuHex32.Click += menuEncodingKind_Click;
@@ -357,7 +361,7 @@
             menuBase64.Checked = true;
             menuBase64.CheckState = CheckState.Checked;
             menuBase64.Name = "menuBase64";
-            menuBase64.Size = new Size(118, 22);
+            menuBase64.Size = new Size(180, 22);
             menuBase64.Text = "Base64";
             menuBase64.ToolTipText = "base64 mime en-/decoding";
             menuBase64.Click += menuEncodingKind_Click;
@@ -366,7 +370,7 @@
             // 
             menuUu.BackColor = SystemColors.Menu;
             menuUu.Name = "menuUu";
-            menuUu.Size = new Size(118, 22);
+            menuUu.Size = new Size(180, 22);
             menuUu.Text = "Uu";
             menuUu.ToolTipText = "unix 2 unix en-/decoding, see uuencode, uudecode";
             menuUu.Click += menuEncodingKind_Click;
@@ -374,7 +378,7 @@
             // menuXx
             // 
             menuXx.Name = "menuXx";
-            menuXx.Size = new Size(118, 22);
+            menuXx.Size = new Size(180, 22);
             menuXx.Text = "Xx";
             menuXx.Click += menuEncodingKind_Click;
             // 
@@ -390,7 +394,7 @@
             // 
             menuHashAscon256.BackColor = SystemColors.ControlLight;
             menuHashAscon256.Name = "menuHashAscon256";
-            menuHashAscon256.Size = new Size(165, 22);
+            menuHashAscon256.Size = new Size(180, 22);
             menuHashAscon256.Text = "Ascon256";
             menuHashAscon256.Click += menuHash_Click;
             // 
@@ -398,7 +402,7 @@
             // 
             menuHashBlake2xs.BackColor = SystemColors.ControlLight;
             menuHashBlake2xs.Name = "menuHashBlake2xs";
-            menuHashBlake2xs.Size = new Size(165, 22);
+            menuHashBlake2xs.Size = new Size(180, 22);
             menuHashBlake2xs.Text = "Blake2xs";
             menuHashBlake2xs.Click += menuHash_Click;
             // 
@@ -406,7 +410,7 @@
             // 
             menuHashBCrypt.BackColor = SystemColors.ControlLight;
             menuHashBCrypt.Name = "menuHashBCrypt";
-            menuHashBCrypt.Size = new Size(165, 22);
+            menuHashBCrypt.Size = new Size(180, 22);
             menuHashBCrypt.Text = "B-Crypt";
             menuHashBCrypt.Click += menuHash_Click;
             // 
@@ -414,7 +418,7 @@
             // 
             menuHashCShake.BackColor = SystemColors.ControlLight;
             menuHashCShake.Name = "menuHashCShake";
-            menuHashCShake.Size = new Size(165, 22);
+            menuHashCShake.Size = new Size(180, 22);
             menuHashCShake.Text = "CShake";
             menuHashCShake.Click += menuHash_Click;
             // 
@@ -422,7 +426,7 @@
             // 
             menuHashDstu7564.BackColor = SystemColors.ControlLight;
             menuHashDstu7564.Name = "menuHashDstu7564";
-            menuHashDstu7564.Size = new Size(165, 22);
+            menuHashDstu7564.Size = new Size(180, 22);
             menuHashDstu7564.Text = "Dstu7564";
             menuHashDstu7564.Click += menuHash_Click;
             // 
@@ -430,7 +434,7 @@
             // 
             menuHashMD5.BackColor = SystemColors.Menu;
             menuHashMD5.Name = "menuHashMD5";
-            menuHashMD5.Size = new Size(165, 22);
+            menuHashMD5.Size = new Size(180, 22);
             menuHashMD5.Tag = "";
             menuHashMD5.Text = "MD5";
             menuHashMD5.Click += menuHash_Click;
@@ -441,7 +445,7 @@
             menuHashHex.Checked = true;
             menuHashHex.CheckState = CheckState.Checked;
             menuHashHex.Name = "menuHashHex";
-            menuHashHex.Size = new Size(165, 22);
+            menuHashHex.Size = new Size(180, 22);
             menuHashHex.Text = "Hex";
             menuHashHex.Click += menuHash_Click;
             // 
@@ -449,7 +453,7 @@
             // 
             menuHashOpenBSDCrypt.BackColor = SystemColors.ControlLight;
             menuHashOpenBSDCrypt.Name = "menuHashOpenBSDCrypt";
-            menuHashOpenBSDCrypt.Size = new Size(165, 22);
+            menuHashOpenBSDCrypt.Size = new Size(180, 22);
             menuHashOpenBSDCrypt.Text = "OpenBSDCrypt";
             menuHashOpenBSDCrypt.Click += menuHash_Click;
             // 
@@ -457,7 +461,7 @@
             // 
             menuHashRipeMD256.BackColor = SystemColors.ControlLight;
             menuHashRipeMD256.Name = "menuHashRipeMD256";
-            menuHashRipeMD256.Size = new Size(165, 22);
+            menuHashRipeMD256.Size = new Size(180, 22);
             menuHashRipeMD256.Text = "RipeMD256";
             menuHashRipeMD256.Click += menuHash_Click;
             // 
@@ -466,7 +470,7 @@
             menuHashSha1.BackColor = SystemColors.Menu;
             menuHashSha1.MergeAction = MergeAction.Insert;
             menuHashSha1.Name = "menuHashSha1";
-            menuHashSha1.Size = new Size(165, 22);
+            menuHashSha1.Size = new Size(180, 22);
             menuHashSha1.Text = "Sha1";
             menuHashSha1.Click += menuHash_Click;
             // 
@@ -474,7 +478,7 @@
             // 
             menuHashSha256.BackColor = SystemColors.Menu;
             menuHashSha256.Name = "menuHashSha256";
-            menuHashSha256.Size = new Size(165, 22);
+            menuHashSha256.Size = new Size(180, 22);
             menuHashSha256.Text = "Sha256";
             menuHashSha256.Click += menuHash_Click;
             // 
@@ -482,7 +486,7 @@
             // 
             menuHashSha512.BackColor = SystemColors.Menu;
             menuHashSha512.Name = "menuHashSha512";
-            menuHashSha512.Size = new Size(165, 22);
+            menuHashSha512.Size = new Size(180, 22);
             menuHashSha512.Text = "Sha512";
             menuHashSha512.Click += menuHash_Click;
             // 
@@ -490,7 +494,7 @@
             // 
             menuHashSCrypt.BackColor = SystemColors.ControlLight;
             menuHashSCrypt.Name = "menuHashSCrypt";
-            menuHashSCrypt.Size = new Size(165, 22);
+            menuHashSCrypt.Size = new Size(180, 22);
             menuHashSCrypt.Text = "S-Crypt";
             menuHashSCrypt.Click += menuHash_Click;
             // 
@@ -498,7 +502,7 @@
             // 
             menuHashWhirlpool.BackColor = SystemColors.ControlLight;
             menuHashWhirlpool.Name = "menuHashWhirlpool";
-            menuHashWhirlpool.Size = new Size(165, 22);
+            menuHashWhirlpool.Size = new Size(180, 22);
             menuHashWhirlpool.Text = "Whirlpool";
             menuHashWhirlpool.Click += menuHash_Click;
             // 
@@ -506,7 +510,7 @@
             // 
             menuHashXoodyak.BackColor = SystemColors.ControlLight;
             menuHashXoodyak.Name = "menuHashXoodyak";
-            menuHashXoodyak.Size = new Size(165, 22);
+            menuHashXoodyak.Size = new Size(180, 22);
             menuHashXoodyak.Text = "Xoodyak";
             menuHashXoodyak.Click += menuHash_Click;
             // 
@@ -578,11 +582,11 @@
             comboBoxAlgo.DropDownWidth = 160;
             comboBoxAlgo.Font = new Font("Lucida Sans Unicode", 10F);
             comboBoxAlgo.FormattingEnabled = true;
-            comboBoxAlgo.Location = new Point(96, 164);
+            comboBoxAlgo.Location = new Point(108, 173);
             comboBoxAlgo.Margin = new Padding(1);
             comboBoxAlgo.MaxDropDownItems = 32;
             comboBoxAlgo.Name = "comboBoxAlgo";
-            comboBoxAlgo.Size = new Size(115, 24);
+            comboBoxAlgo.Size = new Size(120, 24);
             comboBoxAlgo.TabIndex = 11;
             // 
             // textBoxKey
@@ -592,7 +596,7 @@
             textBoxKey.Location = new Point(48, 32);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(759, 30);
+            textBoxKey.Size = new Size(810, 30);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
             textBoxKey.TextChanged += textBoxKey_TextChanged;
@@ -630,14 +634,14 @@
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(759, 29);
+            textBoxHash.Size = new Size(823, 29);
             textBoxHash.TabIndex = 8;
             // 
             // buttonSetPipeline
             // 
             buttonSetPipeline.BackColor = SystemColors.Control;
             buttonSetPipeline.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonSetPipeline.Location = new Point(816, 32);
+            buttonSetPipeline.Location = new Point(876, 32);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
             buttonSetPipeline.Size = new Size(120, 30);
@@ -650,7 +654,7 @@
             // 
             buttonReset.BackColor = SystemColors.Control;
             buttonReset.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonReset.Location = new Point(816, 364);
+            buttonReset.Location = new Point(876, 364);
             buttonReset.Margin = new Padding(1);
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(120, 29);
@@ -675,7 +679,7 @@
             // 
             pictureBoxAddAlgo.BackColor = SystemColors.ControlLight;
             pictureBoxAddAlgo.Image = Properties.Resources.AddAesArrowHover;
-            pictureBoxAddAlgo.Location = new Point(223, 164);
+            pictureBoxAddAlgo.Location = new Point(230, 172);
             pictureBoxAddAlgo.Margin = new Padding(1);
             pictureBoxAddAlgo.Name = "pictureBoxAddAlgo";
             pictureBoxAddAlgo.Size = new Size(32, 27);
@@ -686,13 +690,13 @@
             // textBoxPipe
             // 
             textBoxPipe.BackColor = SystemColors.GradientInactiveCaption;
-            textBoxPipe.Font = new Font("Lucida Sans Unicode", 10F);
-            textBoxPipe.Location = new Point(264, 164);
+            textBoxPipe.Font = new Font("Lucida Sans Unicode", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxPipe.Location = new Point(264, 172);
             textBoxPipe.Margin = new Padding(1);
             textBoxPipe.MaxLength = 8192;
             textBoxPipe.Name = "textBoxPipe";
             textBoxPipe.ReadOnly = true;
-            textBoxPipe.Size = new Size(512, 28);
+            textBoxPipe.Size = new Size(578, 27);
             textBoxPipe.TabIndex = 13;
             // 
             // labelFileIn
@@ -706,11 +710,11 @@
             // 
             // labelOutputFile
             // 
-            labelOutputFile.Location = new Point(476, 110);
+            labelOutputFile.Location = new Point(545, 110);
             labelOutputFile.Margin = new Padding(2, 0, 2, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
-            labelOutputFile.Size = new Size(434, 24);
+            labelOutputFile.Size = new Size(444, 24);
             labelOutputFile.TabIndex = 24;
             labelOutputFile.Text = "[Output File]";
             labelOutputFile.Visible = false;
@@ -718,7 +722,7 @@
             // pictureBoxOutFile
             // 
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(852, 32);
+            pictureBoxOutFile.Location = new Point(921, 32);
             pictureBoxOutFile.Margin = new Padding(2);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
             pictureBoxOutFile.Size = new Size(58, 69);
@@ -732,13 +736,13 @@
             // 
             textBoxSrc.BackColor = SystemColors.ActiveCaption;
             textBoxSrc.Font = new Font("Lucida Console", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxSrc.Location = new Point(8, 404);
+            textBoxSrc.Location = new Point(8, 408);
             textBoxSrc.Margin = new Padding(2);
             textBoxSrc.MaxLength = 1048576;
             textBoxSrc.Multiline = true;
             textBoxSrc.Name = "textBoxSrc";
             textBoxSrc.ScrollBars = ScrollBars.Vertical;
-            textBoxSrc.Size = new Size(452, 264);
+            textBoxSrc.Size = new Size(480, 292);
             textBoxSrc.TabIndex = 42;
             // 
             // textBoxOut
@@ -746,14 +750,14 @@
             textBoxOut.BackColor = SystemColors.GradientInactiveCaption;
             textBoxOut.BorderStyle = BorderStyle.FixedSingle;
             textBoxOut.Font = new Font("Lucida Console", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxOut.Location = new Point(482, 404);
+            textBoxOut.Location = new Point(516, 408);
             textBoxOut.Margin = new Padding(2);
             textBoxOut.MaxLength = 1048576;
             textBoxOut.Multiline = true;
             textBoxOut.Name = "textBoxOut";
             textBoxOut.ReadOnly = true;
             textBoxOut.ScrollBars = ScrollBars.Vertical;
-            textBoxOut.Size = new Size(452, 264);
+            textBoxOut.Size = new Size(480, 292);
             textBoxOut.TabIndex = 43;
             // 
             // buttonEncrypt
@@ -773,7 +777,7 @@
             // 
             buttonDecrypt.BackColor = SystemColors.Control;
             buttonDecrypt.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonDecrypt.Location = new Point(176, 364);
+            buttonDecrypt.Location = new Point(142, 364);
             buttonDecrypt.Margin = new Padding(1);
             buttonDecrypt.Name = "buttonDecrypt";
             buttonDecrypt.Size = new Size(120, 29);
@@ -796,7 +800,7 @@
             groupBoxFiles.Margin = new Padding(2);
             groupBoxFiles.Name = "groupBoxFiles";
             groupBoxFiles.Padding = new Padding(2);
-            groupBoxFiles.Size = new Size(928, 144);
+            groupBoxFiles.Size = new Size(988, 144);
             groupBoxFiles.TabIndex = 20;
             groupBoxFiles.TabStop = false;
             groupBoxFiles.Text = "Files (drag files into)";
@@ -809,10 +813,10 @@
             // pictureBoxRunningPipe
             // 
             pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
-            pictureBoxRunningPipe.Location = new Point(166, 15);
+            pictureBoxRunningPipe.Location = new Point(166, 22);
             pictureBoxRunningPipe.Margin = new Padding(1);
             pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
-            pictureBoxRunningPipe.Size = new Size(600, 96);
+            pictureBoxRunningPipe.Size = new Size(697, 87);
             pictureBoxRunningPipe.TabIndex = 23;
             pictureBoxRunningPipe.TabStop = false;
             // 
@@ -820,18 +824,13 @@
             // 
             pictureBoxDelete.BackColor = SystemColors.Control;
             pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(780, 164);
+            pictureBoxDelete.Location = new Point(844, 172);
             pictureBoxDelete.Margin = new Padding(1);
             pictureBoxDelete.Name = "pictureBoxDelete";
             pictureBoxDelete.Size = new Size(27, 27);
             pictureBoxDelete.TabIndex = 15;
             pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += pictureBoxDelete_Click;
-            // 
-            // notifyIcon1
-            // 
-            notifyIcon1.Text = "notifyIcon1";
-            notifyIcon1.Visible = true;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;           
             // 
             // comboBoxCompression
             // 
@@ -839,11 +838,11 @@
             comboBoxCompression.Font = new Font("Lucida Sans Unicode", 10F);
             comboBoxCompression.FormattingEnabled = true;
             comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
-            comboBoxCompression.Location = new Point(8, 164);
+            comboBoxCompression.Location = new Point(8, 173);
             comboBoxCompression.Margin = new Padding(1);
             comboBoxCompression.MaxDropDownItems = 32;
             comboBoxCompression.Name = "comboBoxCompression";
-            comboBoxCompression.Size = new Size(82, 24);
+            comboBoxCompression.Size = new Size(96, 24);
             comboBoxCompression.TabIndex = 10;
             comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
@@ -854,7 +853,7 @@
             comboBoxEncoding.Font = new Font("Lucida Sans Unicode", 10F);
             comboBoxEncoding.FormattingEnabled = true;
             comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(816, 168);
+            comboBoxEncoding.Location = new Point(876, 173);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;
             comboBoxEncoding.Name = "comboBoxEncoding";
@@ -866,7 +865,7 @@
             // 
             buttonRandomText.BackColor = SystemColors.Control;
             buttonRandomText.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonRandomText.Location = new Point(340, 364);
+            buttonRandomText.Location = new Point(368, 364);
             buttonRandomText.Margin = new Padding(1);
             buttonRandomText.Name = "buttonRandomText";
             buttonRandomText.Size = new Size(120, 29);
@@ -879,7 +878,7 @@
             // 
             buttonHashPipe.BackColor = SystemColors.Control;
             buttonHashPipe.Font = new Font("Lucida Sans Unicode", 10F);
-            buttonHashPipe.Location = new Point(816, 128);
+            buttonHashPipe.Location = new Point(876, 128);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
             buttonHashPipe.Size = new Size(120, 29);
@@ -894,12 +893,12 @@
             radioButtonListHash.Font = new Font("Lucida Sans Unicode", 9.25F);
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
-            radioButtonListHash.Items.AddRange(new object[] { "Ascon256", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool" });
+            radioButtonListHash.Items.AddRange(new object[] { "Ascon256", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool", "Xoodyak" });
             radioButtonListHash.Location = new Point(8, 72);
             radioButtonListHash.Margin = new Padding(2);
             radioButtonListHash.MultiColumn = true;
             radioButtonListHash.Name = "radioButtonListHash";
-            radioButtonListHash.Size = new Size(926, 46);
+            radioButtonListHash.Size = new Size(988, 46);
             radioButtonListHash.Sorted = true;
             radioButtonListHash.TabIndex = 6;
             radioButtonListHash.SelectedIndexChanged += RadioButtonListHash_SelectedIndexChanged;
@@ -909,20 +908,55 @@
             labelInfoMessage.BackColor = SystemColors.Info;
             labelInfoMessage.Font = new Font("Lucida Fax", 9.25F);
             labelInfoMessage.ForeColor = SystemColors.InfoText;
-            labelInfoMessage.Location = new Point(484, 364);
+            labelInfoMessage.Location = new Point(516, 364);
             labelInfoMessage.Margin = new Padding(1);
             labelInfoMessage.Name = "labelInfoMessage";
-            labelInfoMessage.Size = new Size(323, 29);
+            labelInfoMessage.Size = new Size(356, 29);
             labelInfoMessage.TabIndex = 37;
             labelInfoMessage.Text = "Info Message";
             labelInfoMessage.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // statusStrip
+            // 
+            statusStrip.Font = new Font("Lucida Sans Unicode", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusStrip.Items.AddRange(new ToolStripItem[] { statusLabelSource, statusLabelMsg, statusLabelDestination });
+            statusStrip.Location = new Point(0, 707);
+            statusStrip.Name = "statusStrip";
+            statusStrip.Size = new Size(1008, 22);
+            statusStrip.TabIndex = 44;
+            statusStrip.Text = "statusStrip";
+            // 
+            // statusLabelSource
+            // 
+            statusLabelSource.AutoSize = false;
+            statusLabelSource.Font = new Font("Lucida Sans Unicode", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusLabelSource.Name = "statusLabelSource";
+            statusLabelSource.Size = new Size(216, 17);
+            statusLabelSource.Text = "statusLabelSource";
+            // 
+            // statusLabelMsg
+            // 
+            statusLabelMsg.AutoSize = false;
+            statusLabelMsg.Font = new Font("Lucida Sans Unicode", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusLabelMsg.Name = "statusLabelMsg";
+            statusLabelMsg.Size = new Size(520, 17);
+            statusLabelMsg.Text = "statusLabelMsg";
+            // 
+            // statusLabelDestination
+            // 
+            statusLabelDestination.AutoSize = false;
+            statusLabelDestination.Font = new Font("Lucida Sans Unicode", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            statusLabelDestination.Name = "statusLabelDestination";
+            statusLabelDestination.Size = new Size(216, 17);
+            statusLabelDestination.Text = "statusLabelDestination";
             // 
             // EncryptForm
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
-            ClientSize = new Size(944, 681);
+            ClientSize = new Size(1008, 729);
+            Controls.Add(statusStrip);
             Controls.Add(labelInfoMessage);
             Controls.Add(radioButtonListHash);
             Controls.Add(buttonHashPipe);
@@ -968,6 +1002,8 @@
             groupBoxFiles.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
+            statusStrip.ResumeLayout(false);
+            statusStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -975,7 +1011,6 @@
         #endregion
         private BindingSource enumOptionsBindingSource;
         internal GroupBox groupBoxFiles;
-        private NotifyIcon notifyIcon1;
         private PictureBox pictureBoxRunningPipe;
         protected internal TextBox textBoxKey;
         protected internal PictureBox pictureBoxKey;
@@ -1054,6 +1089,10 @@
         protected internal ToolStripMenuItem menuHashCShake;
         protected internal ToolStripMenuItem menuHashXoodyak;
         private Label labelInfoMessage;
+        private StatusStrip statusStrip;
+        private ToolStripStatusLabel statusLabelSource;
+        private ToolStripStatusLabel statusLabelMsg;
+        private ToolStripStatusLabel statusLabelDestination;
     }
 
 

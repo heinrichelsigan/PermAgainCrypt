@@ -972,7 +972,7 @@ namespace Area23.At.Framework.Core.Util
         }
 
         /// <summary>
-        /// FirstIndexOf<T> generic search in a T array from starting at begin as usual
+        /// FirstIndexOf{T} generic search in a T array from starting at begin as usual
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tarray">generic T array</param>
@@ -981,7 +981,7 @@ namespace Area23.At.Framework.Core.Util
         public static int FirstIndexOf<T>(this T[] tarray, T tvalue) => tarray.ArrayIndexOf(tvalue, true);
 
         /// <summary>
-        /// LastIndexOf<T> generic search in a T array from starting at end
+        /// LastIndexOf{T} generic search in a T array from starting at end
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tarray">generic T array</param>
@@ -989,8 +989,9 @@ namespace Area23.At.Framework.Core.Util
         /// <returns>if found, last index of occurence of T value, if not found -1</returns>
         public static int LastIndexOf<T>(this T[] tarray, T tvalue) => tarray.ArrayIndexOf(tvalue, false);
 
+
         /// <summary>
-        /// IndicesOf<T> generic search that returns all indices of occurence of T value inside T array
+        /// IndicesOf{T} generic search that returns all indices of occurence of T value inside T array
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tarray">generic T arreay</param>

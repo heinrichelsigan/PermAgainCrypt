@@ -4,6 +4,7 @@ using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Org.BouncyCastle.Crypto;
+using System.Linq;
 
 namespace Area23.At.Framework.Core.Crypt.Cipher
 {
@@ -17,14 +18,19 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         #region fields and properties
 
         private string cipherKey = "", cipherHash = "";
+        internal ZipType zType = ZipType.None;
         private readonly CipherEnum[] inPipe;
-        public readonly CipherEnum[] outPipe;
+        internal readonly CipherEnum[] outPipe;
+        internal EncodingType encodeType = EncodingType.Base64;
+        internal KeyHash kHash = KeyHash.Hex;
         private readonly string pipeString;
+        private string symmCipherKey = "", symmCipherHash = "";
 
+        public ZipType ZType { get => zType; }
         public CipherEnum[] InPipe { get => inPipe; }
-
         public CipherEnum[] OutPipe { get => outPipe; }
-
+        public EncodingType EncodeType { get => encodeType; }
+        public KeyHash KHash { get => kHash; }
         public string PipeString { get => pipeString; }
 
 //#if DEBUG
@@ -53,11 +59,26 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// CipherPipe constructor with an array of <see cref="CipherEnum[]"/> as inpipe
         /// </summary>
         /// <param name="cipherEnums">array of <see cref="CipherEnum[]"/> as inpipe</param>
-        public CipherPipe(CipherEnum[] cipherEnums)
+        public CipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
+            // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+            maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
+
+            pipeString = "";
+            zType = zpType;
             inPipe = new List<CipherEnum>(cipherEnums).ToArray();
             outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
-            pipeString = "";
+            encodeType = encType;
+            kHash = kh;
+
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (var cipherEnum in inPipe)
+                    pipElems.Add(cipherEnum.ToString());
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }            
+
             foreach (CipherEnum cipher in inPipe)
                 pipeString += cipher.GetCipherChar();
         }
@@ -66,8 +87,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// CipherPipe constructor with an array of <see cref="string[]"/> cipherAlgos as inpipe
         /// </summary>
         /// <param name="cipherAlgos">array of <see cref="string[]"/> as inpipe</param>
-        public CipherPipe(string[] cipherAlgos)
+        public CipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
+            // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+            maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
+
             List<CipherEnum> cipherEnums = new List<CipherEnum>();
             foreach (string algo in cipherAlgos)
             {
@@ -81,9 +105,21 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 }
             }
 
+            pipeString = "";
+            zType = zpType;
             inPipe = new List<CipherEnum>(cipherEnums).ToArray();
             outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
-            pipeString = "";
+            encodeType = encType;
+            kHash = kh;
+
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (var cipherEnum in inPipe)
+                    pipElems.Add(cipherEnum.ToString());
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }
+
             foreach (CipherEnum cipher in inPipe)
                 pipeString += cipher.GetCipherChar();
         }
@@ -93,7 +129,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// </summary>
         /// <param name="keyBytes">user key bytes</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        public CipherPipe(byte[] keyBytes, uint maxpipe = 8)
+        public CipherPipe(byte[] keyBytes, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -126,9 +162,21 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 pipeList.Add(sym0);
             }
 
+            pipeString = "";
+            zType = zpType;
             inPipe = new List<CipherEnum>(pipeList).ToArray();
             outPipe = pipeList.Reverse<CipherEnum>().ToArray();
-            pipeString = "";
+            encodeType = encType;
+            kHash = kh;
+
+            if (inPipe.Length > maxpipe)
+            {
+                List<string> pipElems = new List<string>(inPipe.Length);
+                foreach (var cipherEnum in inPipe)
+                    pipElems.Add(cipherEnum.ToString());
+                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            }
+
             foreach (CipherEnum cipherE in inPipe)
                 pipeString += cipherE.GetCipherChar();
 
@@ -140,8 +188,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// </summary>
         /// <param name="key">secret key to generate pipe</param>
         /// <param name="hash">hash value of secret key</param>
-        public CipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174")
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN)
+        public CipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174", EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)   
         {
             cipherKey = key;
             cipherHash = hash;
@@ -151,7 +199,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// CipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
-        public CipherPipe(string key = "heinrich.elsigan@area23.at") : this(key, EnDeCodeHelper.KeyToHex(key))
+        public CipherPipe(string key = "heinrich.elsigan@area23.at")
+            : this(key, EnDeCodeHelper.KeyToHex(key))
         {
             cipherKey = key;
         }

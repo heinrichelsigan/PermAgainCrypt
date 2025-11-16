@@ -7,7 +7,10 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using Org.BouncyCastle.Utilities.Encoders;
+using System.Drawing;
 using System.Security.Policy;
+using System.Windows.Forms;
 
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
@@ -57,6 +60,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             this.pictureBoxRunningPipe.Visible = true;
+            SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
 
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
             Hash_Click(sender, e);
@@ -449,7 +453,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            CipherPipe cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text);
+            CipherPipe cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -473,7 +477,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+            CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -545,25 +549,33 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe;
                 Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                CipherPipe cPipe = new CipherPipe(pipeAlgos);
+                CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+
+                BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
+                this.pictureBoxRunningPipe.Image = bGen.GenerateEncryptPipeImage();
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
                 {
-                    // this.pictureBoxRunningPipe.Visible = true;
                     this.textBoxOut.Text = "";
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     try
                     {
-                        if (menuNone.Checked)
+                        SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
+                        if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                             SetEncoding(menuBase64);
 
                         string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                         this.textBoxOut.Text = encrypted;
-                        Cursor.Current = DefaultCursor;
+                        SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
                     }
                     catch (Exception ex)
                     {
                         Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
+                        SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
+                    }
+                    finally
+                    {
+                        Cursor.Current = DefaultCursor;
                     }
                 }
                 if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
@@ -571,30 +583,45 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     // this.pictureBoxRunningPipe.Visible = true;
                     foreach (string file in HashFiles)
                     {
-                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
+                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
+                            labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
+                            pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
                         {
-                            if (Path.GetFileName(file) == labelFileIn.Text)
+                            Cursor.Current = new Cursor(iconSandClock.Handle);
+                            try
                             {
-                                Cursor.Current = new Cursor(iconSandClock.Handle);
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                                 string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
-                                SaveBytesDialog(outBytes, ref outFilePath);
-                                pictureBoxOutFile.Visible = true;
-                                pictureBoxOutFile.Tag = "{" + outFilePath + "}";
-                                pictureBoxOutFile.Image = outFilePath.GetImageThumbnailFromFile();
-                                string outFileName = Path.GetFileName(outFilePath);
-                                labelOutputFile.Text = outFileName;
-                                labelOutputFile.Visible = true;
-                                HashFiles.Add(outFilePath);
+                                bool saved = SaveBytesDialog(outBytes, ref outFilePath);
+                                if (saved)
+                                {
+                                    pictureBoxOutFile.Visible = true;
+                                    pictureBoxOutFile.Tag = "{" + outFilePath + "}";
+                                    pictureBoxOutFile.Image = outFilePath.GetImageThumbnailFromFile();
+                                    string outFileName = Path.GetFileName(outFilePath);
+                                    labelOutputFile.Text = outFileName;
+                                    labelOutputFile.Visible = true;
+                                    HashFiles.Add(outFilePath);
+                                }
+                                else
+                                {
+                                    SetInfoMessage("Saving file canceled by user", ToolTipIcon.Warning, 2000);
+                                }
 
-                                Cursor.Current = DefaultCursor;
-                                break;
                             }
+                            catch (Exception ex)
+                            {
+                                SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
+                            }
+                            finally
+                            {
+                                Cursor.Current = DefaultCursor;
+                            }
+                            break;
                         }
                     }
-
                 }
             }
         }
@@ -620,54 +647,71 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
                 CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                CipherPipe cPipe = new CipherPipe(pipeAlgos);
+                CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
-                {
+                {                    
                     this.textBoxOut.Text = "";
                     Cursor.Current = new Cursor(iconSandClock.Handle);
-
-                    this.textBoxOut.Text = "";
+                 
                     try
                     {
-                        if (menuNone.Checked)
+                        SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
+                        if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                             SetEncoding(menuBase64);
 
                         // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                         string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                         this.textBoxOut.Text = decrypted;
-                        Cursor.Current = DefaultCursor;
+                        SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
                     }
                     catch (Exception ex)
                     {
                         Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
+                        SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
+                    }
+                    finally
+                    {
+                        Cursor.Current = DefaultCursor;
                     }
                 }
                 if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
                 {
                     foreach (string file in HashFiles)
                     {
-                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
+                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
+                            labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text && 
+                            pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
                         {
-                            if (Path.GetFileName(file) == labelFileIn.Text &&
-                                pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                            Cursor.Current = new Cursor(iconSandClock.Handle);
+                            try
                             {
-                                Cursor.Current = new Cursor(iconSandClock.Handle);
                                 // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                                 byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                                 byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                                 string outFileDecrypt = file.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension(), "");
-                                SaveBytesDialog(outBytes, ref outFileDecrypt);
-                                HashFiles.Add(outFileDecrypt);
-                                pictureBoxOutFile.Visible = true;
-                                pictureBoxOutFile.Image = outFileDecrypt.GetImageThumbnailFromFile();
-                                pictureBoxOutFile.Tag = outFileDecrypt;
-                                labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
-                                labelOutputFile.Visible = true;
-
-                                Cursor.Current = DefaultCursor;
-                                break;
+                                bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
+                                if (saved)
+                                {
+                                    HashFiles.Add(outFileDecrypt);
+                                    pictureBoxOutFile.Visible = true;
+                                    pictureBoxOutFile.Image = outFileDecrypt.GetImageThumbnailFromFile();
+                                    pictureBoxOutFile.Tag = outFileDecrypt;
+                                    labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
+                                    labelOutputFile.Visible = true;
+                                }
+                                else
+                                    SetInfoMessage("Saving file canceled by user", ToolTipIcon.Warning, 2000);
                             }
+                            catch (Exception ex)
+                            {
+                                SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
+                            }
+                            finally
+                            {
+                                Cursor.Current = DefaultCursor;
+                            }
+                            break;
                         }
                     }
                 }
@@ -713,17 +757,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
-            {
-                if (HashFiles == null || HashFiles.Count == 0)
-                    HashFiles = new HashSet<string>(files);
-                else
-                    foreach (string file in files)
-                    {
-                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
-                            if (!HashFiles.Contains(file))
-                                HashFiles.Add(file);
-                    }
-
+            {               
                 if (dragNDropState == DragNDropState.DragEnter)
                     e.Effect = DragDropEffects.Copy;
                 if (dragNDropState != DragNDropState.DragLeave)
@@ -777,7 +811,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 e.Data.GetDataPresent(typeof(string[]))))
             {
                 if ((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null)
+                {
+                    if (HashFiles == null || HashFiles.Count == 0)
+                        HashFiles = new HashSet<string>(files);
+                    else
+                        foreach (string file in files)
+                        {
+                            if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
+                                if (!HashFiles.Contains(file))
+                                    HashFiles.Add(file);
+                        }
+
                     Drop_Files(files);
+                }
+                    
             }
             return;
         }
@@ -812,6 +859,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
                             isDragMode = false;
                             SetGBoxText(this.groupBoxFiles, "Files Group Box");
+
+                            FileInfo fi = new FileInfo(file);
+                            if (fi.Exists && fi.Length > 0)
+                                SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
                             break;
                         }
                     }
@@ -852,6 +903,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.labelFileIn.Text = Path.GetFileName(dialog.FileName);
                 HashFiles = new HashSet<string>();
                 HashFiles.Add(dialog.FileName);
+
+                
+                                FileInfo fi = new FileInfo(dialog.FileName);
+                if (fi.Exists && fi.Length > 0)
+                    SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
+            }
+            else
+            {
+                SetInfoMessage("Opening file canceled.", ToolTipIcon.Warning, 2000);
             }
         }
 
@@ -877,7 +937,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 dialog.FileName = Path.GetFileName(outFilePath);
                 dialog.DefaultExt = Path.GetExtension(outFilePath);
                 DialogResult result = dialog.ShowDialog();
-                if (result == DialogResult.OK && !string.IsNullOrEmpty(dialog.FileName))
                 {
                     outFilePath = dialog.FileName;
                     try
@@ -886,8 +945,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (Exception ex)
                     {
-                        Area23Log.LogOriginMsg(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n{ex}");
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n",ex);
+                        return false;
                     }
+                    FileInfo fi = new FileInfo(outFilePath);
+                    if (fi.Exists && fi.Length > 0)
+                        SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");
                     return true;
                 }
             }
@@ -939,16 +1002,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal void SetInfoMessage(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
         {
             SetLabelText(labelInfoMessage, message);
+            SetStatusLabelText(this.statusLabelMsg, message);
             string toolHeader = toolIcon.ToString();
             switch (toolIcon)
             {
                 case ToolTipIcon.Error:
                     toolHeader = "Error";
-                    SetLabelBackColor(labelInfoMessage, Color.OrangeRed);
+                    SetLabelBackColor(labelInfoMessage, ColorTranslator.FromHtml("#bab510"));
                     PlaySoundFromResource("sound_error");
                     break;
                 case ToolTipIcon.Warning:
-                    SetLabelBackColor(labelInfoMessage, Color.Yellow);
+                    SetLabelBackColor(labelInfoMessage, Color.LightYellow);
                     toolHeader = "Warning";
                     PlaySoundFromResource("sound_warning");
                     break;
@@ -960,11 +1024,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     break;
             }
             SetLabelVisible(this.labelInfoMessage, true);
-
-            notifyIcon1.Text = message;
-            notifyIcon1.Visible = true;
-            notifyIcon1.ShowBalloonTip(duration, toolHeader, message, toolIcon);
-
+            
                         
             System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = duration };
             setInfoMessageTimer.Elapsed += (s, en) =>

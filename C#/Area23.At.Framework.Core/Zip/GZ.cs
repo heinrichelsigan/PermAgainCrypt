@@ -1,5 +1,6 @@
 ﻿using Area23.At.Framework.Core.Util;
 using ICSharpCode.SharpZipLib.Core;
+using System.Buffers;
 using System.IO.Compression;
 
 namespace Area23.At.Framework.Core.Zip
@@ -15,18 +16,20 @@ namespace Area23.At.Framework.Core.Zip
         #region gzip compression
 
         /// <summary>
-        /// GZip directly, please use <see cref="GZipViaStream(byte[])"/>
+        /// GZip directly
         /// </summary>
-        /// <param name="inBytes"><see cref="byte[]"/> inBytes</param>
+        /// <param name="inBytes"><see cref="byte[]">inBytes</see></param>
         /// <param name="compressionLevel">level of compression: 
         ///  1  ... for at least no compression, 
         /// 4,5 ... for average compression
         ///  9  ... for strongest bzip2 compression, generating smallest most compact output 
         /// </param>
         /// <returns><see cref="byte[]"/> outbytes</returns>
-        public static byte[] GZip(byte[] inBytes, int compressionLevel = 6)
+        public static byte[]? GZip(byte[] inBytes, int compressionLevel = 6)
         {
             byte[]? zipBytes = null;
+            // ArraySegment<byte> bb = new ArraySegment<byte>();
+            
             MemoryStream msIn = new MemoryStream(inBytes, 0, inBytes.Length);
             msIn.Seek(0, SeekOrigin.Begin);
 
@@ -34,6 +37,7 @@ namespace Area23.At.Framework.Core.Zip
             {
                 ICSharpCode.SharpZipLib.GZip.GZip.Compress(msIn, msOut, true, BUFSZE, compressionLevel);
                 msOut.Flush();
+                // bb = new ArraySegment<byte>(msOut.ToByteArray());
                 zipBytes = msOut.ToByteArray();
             }
 
