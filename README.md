@@ -11,17 +11,18 @@ and after exiting the encryption pipe the file can be ascii encoded with base64 
 
 Implementation is based on my blog article: [Making symmetric cipher encryption great again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html),
 including the follwing symmetric cipher algorithms:
-- Aes, AesLight, AesNet, Rijndael	
+- [Aes](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), AesLight, AesNet, [Rijndael](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
 - [Bruce Schneier's](https://www.schneier.com/) BlowFish, 2-Fish, 3-Fish, 3-Fish-256	
-- Camellia, CamelliaLight
-- Cast5, Cast6
-- [National security agency's](https://nsa.gov) Des, 3-Des, Triple-Des.Net, Dstu7624, SkipJack
-- Gost28147, Idea, Noekeon
-- RC2, RC532, RC564, RC6
-- Seed, SM4
-- Serpent, Tnepres
-- Tea, XTea
-- and my own symmetric simplest below average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
+- [Camellia](https://en.wikipedia.org/wiki/Camellia_(cipher)), CamelliaLight
+- [Cast5](https://en.wikipedia.org/wiki/CAST-128), Cast6
+- [National security agency's](https://nsa.gov) Des, 3-Des, Triple-Des.Net,  [SkipJack](https://en.wikipedia.org/wiki/Skipjack_(cipher))
+- [Dstu7624](https://en.wikipedia.org/wiki/Kupyna)
+- [Gost28147](https://en.wikipedia.org/wiki/GOST_(block_cipher)), [Idea](https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm), [Noekeon](https://en.wikipedia.org/wiki/NOEKEON)
+- [RC2](https://de.wikipedia.org/wiki/RC2_(Blockchiffre)), [RC5](https://en.wikipedia.org/wiki/RC5)32, RC564, [RC6](https://en.wikipedia.org/wiki/RC6)
+- [Seed](https://en.wikipedia.org/wiki/SEED), [SM4](https://en.wikipedia.org/wiki/SM4_(cipher))
+- [Serpent](https://en.wikipedia.org/wiki/Serpent_(cipher)), Tnepres
+- [Tea](https://de.wikipedia.org/wiki/Tiny_Encryption_Algorithm), [XTea](https://en.wikipedia.org/wiki/XTEA)
+- and my own simplest below average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
 
 ## C# solution and all projects ported to .NetCore 10
 You need since 2025-11-15 Visual Studio 2026 and C# .NetCore 10.0 to compile C# csproj.
