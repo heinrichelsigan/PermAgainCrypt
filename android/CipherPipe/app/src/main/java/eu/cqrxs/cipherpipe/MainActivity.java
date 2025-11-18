@@ -2,6 +2,7 @@ package eu.cqrxs.cipherpipe;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,11 +18,13 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.SortedMap;
 
+import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.enums.CipherEnum;
 import eu.cqrxs.cipherpipe.enums.SymmCipherEnum;
 import eu.cqrxs.cipherpipe.enums.EncodingType;
 import eu.cqrxs.cipherpipe.enums.ZipType;
-import eu.cqrxs.cipherpipe.enums.KeyHash;
+import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
+import eu.cqrxs.cipherpipe.crypt.hash.*;
 
 
 
@@ -57,11 +60,28 @@ public class MainActivity extends AppCompatActivity {
         spinnerAlgos = (Spinner) findViewById(R.id.spinnerAlgos);
         spinnerEncode = (Spinner) findViewById(R.id.spinnerEncode);
 
-        // spinnerHash.setOnItemSelectedListener((OnItemSelectedListener) this);
         if (adapterHash == null)
             adapterHash = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, hashStrings);
         adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerHash.setAdapter(adapterHash);
+        spinnerHash.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
+                Log.d("onItemSelected", msg);
+                String selectedHash = parent.getSelectedItem().toString();
+                KeyHash keyHash = KeyHash.getEnum(selectedHash);
+                EditText text = (EditText)findViewById(R.id.editEncryptKey);
+                String keyValue = text.getText().toString();
+                String hashed = keyHash.hash(keyValue);
+                editKeyHash.setText(hashed);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ;
+            }
+        });
 
         if (adapterEndoding == null)
             adapterEndoding = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, encodingStrings);
@@ -84,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
+
+
 
 /*
 
@@ -175,26 +198,7 @@ public class MainActivity extends AppCompatActivity {
         return sortedTreePhonmeMap.keySet().toArray(new String[phoneCnt]);
     }
 
-
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        String msg = "adapterViewId: " + adapterView.getId() + " adapterView: " + adapterView.getAdapter().toString() +
-                " view: " + view.getId() +  " name. "  + view.getAccessibilityClassName() +
-                " i=" + i + " l=" + l;
-        Log.i(TAG, msg);
-        String selectedPhone = adapterView.getSelectedItem().toString();
-        String finalNumber = "";
-        if (sortedTreePhonmeMap.containsKey(selectedPhone)) {
-            finalNumber = sortedTreePhonmeMap.getOrDefault(selectedPhone, sortedPhoneMap.firstKey());
-        }
-
-        int phoneIdx = selectedPhone.indexOf(" | ");
-        if (phoneIdx > 0) {
-            finalNumber = selectedPhone.substring(0, phoneIdx);
-            txtphoneNo.setText(finalNumber);
-
-        }
-    }
+*/
 
 
- */
 }

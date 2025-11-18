@@ -21,8 +21,9 @@ import java.util.Set;
 
 /**
  * CipherEnum represents the enumerator for all cipher algorithms
+ * implements Serializable
  */
-public enum CipherEnum implements Serializable {
+public enum CipherEnum {
     Aes(0),
     BlowFish(1),
     Camellia(2),

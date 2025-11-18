@@ -52,7 +52,7 @@
 	<string name="select_hash" translatable="false">select hash</string>
 	<string name="encrypt_key" translatable="false">encrypt key</string>
     <string name="key_hash" translatable="false">key hash</string>
-    <string name="default_key" translatable="false" />
+    <string name="default_key" translatable="false">zen@area23.at</string>
 	<string name="enter_encrypt_key" translatable="false">enter encrypt key</string>
     <string name="enter_phone_number" translatable="false">enter phone number</string>
     <string name="show_text_destination" translatable="false">show text destination</string>
