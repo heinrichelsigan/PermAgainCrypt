@@ -77,6 +77,8 @@
             logoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             logoPictureBox.TabIndex = 12;
             logoPictureBox.TabStop = false;
+            logoPictureBox.MouseLeave += logoPictureBox_MouseLeave;
+            logoPictureBox.MouseHover += logoPictureBox_MouseHover;
             // 
             // labelProductName
             // 

@@ -8,7 +8,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
     /// BCrypt a classic unix passwd crypt method
     /// 
     /// All members are implemented via <see cref="Org.BouncyCastle.Crypto"/ namespace.
-    /// Thanx to the legion of <see href="https://bouncycastle.org/"" />
+    /// Thanx to the legion of <see href="https://bouncycastle.org/" />
     /// <see cref="Org.BouncyCastle.Crypto.Generators.BCrypt"/>
     /// </summary>
     public static class BCrypt
@@ -19,7 +19,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
 
         /// <summary>
         /// <see cref="Org.BouncyCastle.Crypto.Generators.BCrypt"/>
-        /// Thanx to the legion of <see href="https://bouncycastle.org/"" />
+        /// Thanx to the legion of <see href="https://bouncycastle.org/" />
         /// </summary>
         /// <param name="keyBytes">keyBytes to hash encrypt</param>
         /// <returns></returns>

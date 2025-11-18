@@ -253,6 +253,26 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ChiffreCryptDisk {
+            get {
+                object obj = ResourceManager.GetObject("ChiffreCryptDisk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ChiffreDisk {
+            get {
+                object obj = ResourceManager.GetObject("ChiffreDisk", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ChiffrePentacle {
             get {
                 object obj = ResourceManager.GetObject("ChiffrePentacle", resourceCulture);
@@ -366,6 +386,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap CryptPipe1 {
             get {
                 object obj = ResourceManager.GetObject("CryptPipe1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap decoding_right_0 {
+            get {
+                object obj = ResourceManager.GetObject("decoding_right_0", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -682,36 +712,6 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MenuImageDialog {
-            get {
-                object obj = ResourceManager.GetObject("MenuImageDialog", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap MenuImageInfo {
-            get {
-                object obj = ResourceManager.GetObject("MenuImageInfo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap MenuImageOld {
-            get {
-                object obj = ResourceManager.GetObject("MenuImageOld", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap PipeDecrypt {
             get {
                 object obj = ResourceManager.GetObject("PipeDecrypt", resourceCulture);
@@ -760,6 +760,24 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_click {
+            get {
+                return ResourceManager.GetStream("sound_click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_error {
+            get {
+                return ResourceManager.GetStream("sound_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream sound_glasses {
             get {
                 return ResourceManager.GetStream("sound_glasses", resourceCulture);
@@ -778,6 +796,15 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_hammer {
+            get {
+                return ResourceManager.GetStream("sound_hammer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream sound_laser {
             get {
                 return ResourceManager.GetStream("sound_laser", resourceCulture);
@@ -790,6 +817,33 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.IO.UnmanagedMemoryStream sound_push {
             get {
                 return ResourceManager.GetStream("sound_push", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_volatage {
+            get {
+                return ResourceManager.GetStream("sound_volatage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_warning {
+            get {
+                return ResourceManager.GetStream("sound_warning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_wind {
+            get {
+                return ResourceManager.GetStream("sound_wind", resourceCulture);
             }
         }
         

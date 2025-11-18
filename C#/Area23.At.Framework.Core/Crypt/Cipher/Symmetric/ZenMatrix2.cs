@@ -479,7 +479,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="inByte"><see cref="byte"/> in byte to map</param>
         /// <param name="outByte"><see cref=byte"/> mapped out byte</param>
         /// <param name="encrypt">true for encryption, false for decryption</param>
-        /// <returns>An <see cref="sbyte[]"/> array with 2  0x0 - 0xf segments (most significant & least significant) bit</returns>
+        /// <returns>An <see cref="sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
         private sbyte[] MapByteValue2(ref byte inByte, out byte outByte, bool encrypt = true)
         {
             List<sbyte> outSBytes = new List<sbyte>(2);

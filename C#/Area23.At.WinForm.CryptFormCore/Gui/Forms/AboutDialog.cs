@@ -97,5 +97,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
         #endregion
+
+        private void logoPictureBox_MouseHover(object sender, EventArgs e)
+        {
+            this.logoPictureBox.Image = Properties.Resources.ChiffreCryptDisk;
+        }
+
+        private void logoPictureBox_MouseLeave(object sender, EventArgs e)
+        {
+            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle;
+        }
     }
 }

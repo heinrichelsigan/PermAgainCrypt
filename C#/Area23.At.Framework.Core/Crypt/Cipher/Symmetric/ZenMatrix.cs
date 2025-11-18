@@ -69,8 +69,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         #region Properties
 
         /// <summary>
-        /// abstraction of a 0x10 => 0x10 matrix, for example
-        /// if MatrixPermutationKey = { 0x8, 0x3, 0x1, 0xe, 0x9, 0xf, 0x5, 0xc, 0x4, 0xd, 0xa, 0x7, 0xb, 0x2, 0x0, 0x6 }
+        /// abstraction of a 0x10 => 0x10 matrix, for example if 
+        /// MatrixPermutationKey = { 0x8, 0x3, 0x1, 0xe, 0x9, 0xf, 0x5, 0xc, 0x4, 0xd, 0xa, 0x7, 0xb, 0x2, 0x0, 0x6 }
         ///            
         ///     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
         ///     
@@ -105,9 +105,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         ///  { 0x8, 0x3, 0xe, 0x1, 0x9, 0xf, 0xb, 0xd, 0x0, 0x4, 0xc, 0x6, 0xa, 0x7, 0x2, 0x5 }
         /// 
         ///  that means, that
-        ///  value 0x0 will be mapped to 0x8 <=> 0x8 will be mapped back to 0x0      0 => 8 &&  8 => 0
-        ///  value 0x1 will be mapped to 0x3 <=> 0x3 will be mapped back to 0x1      1 => 3 &&  3 => 1
-        ///  value 0x2 will be mapped to 0xe <=> 0xe will be mapped back to 0x2      2 => e &&  e => 2
+        ///  value 0x0 will be mapped to 0x8 <=> 0x8 will be mapped back to 0x0      0 => 8 AND  8 => 0
+        ///  value 0x1 will be mapped to 0x3 <=> 0x3 will be mapped back to 0x1      1 => 3 AND  3 => 1
+        ///  value 0x2 will be mapped to 0xe <=> 0xe will be mapped back to 0x2      2 => e AND  e => 2
         ///  value 0x3 is already mapped back to 0x1 !                               3 => 1
         ///  ...
         ///  value 0xf is   already mapped back to 0x5 !                             f => 5

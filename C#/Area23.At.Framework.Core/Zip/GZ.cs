@@ -7,7 +7,7 @@ namespace Area23.At.Framework.Core.Zip
 {
 
     /// <summary>
-    /// abstraction of gnu zip gzip compression & decompression
+    /// abstraction of gnu zip gzip compression and decompression
     /// </summary>
     public static class GZ
     {

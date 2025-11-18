@@ -507,17 +507,17 @@ namespace Area23.At.Framework.Core.Util
         /// so that int firstIndex = <see cref="string.IndexOf(string)">main.IndexOf(patternStart)</see> >= 0,
         /// then substring will start at <see cref="string.Substring(int)">main.Substring(firstIndex)</see>
         /// </param>
-        /// <param name="firstIndex">default <see cref="true"/>, 
-        /// if <see cref="true"/>, then first occurence in main <see cref="string.IndexOf(string)">main.IndexOf(patternStart)</see> will be executed, 
-        /// otherwise if <see cref="false"/>, then <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternStart)</see> will be executed.
+        /// <param name="firstIndex">default <see cref="System.Boolean.TrueString"/>, 
+        /// if <see cref="System.Boolean.TrueString"/>, then first occurence in main <see cref="string.IndexOf(string)">main.IndexOf(patternStart)</see> will be executed, 
+        /// otherwise if <see cref="System.Boolean.FalseString"/>, then <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternStart)</see> will be executed.
         /// </param>
         /// <param name="markStartEnd">if <see cref="!string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
         /// then start position of substring will be set to <see cref="string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
         /// </param>
         /// <param name="patternEnd">end pattern for substring, <see cref="string.LastIndexOf(string)">main.IndexOf(patternEnd)</see></param>
-        /// <param name="lastIndex">default <see cref="false"/>
-        /// if <see cref="true"/>, then last occurence <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternEnd)</see> will be executed,
-        /// otherwise if <see cref="false"/>, then first occurence in main <see cref="string.IndexOf(string)">main.IndexOf(patternEnd)</see> will be executed. 
+        /// <param name="lastIndex">default <see cref="System.Boolean.FalseString"/>
+        /// if <see cref="System.Boolean.TrueString"/>, then last occurence <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternEnd)</see> will be executed,
+        /// otherwise if <see cref="System.Boolean.FalseString"/>, then first occurence in main <see cref="string.IndexOf(string)">main.IndexOf(patternEnd)</see> will be executed. 
         /// </param>
         /// <param name="comparasionType">
         /// <see cref="StringComparison">comparasionType</see> is set default to <see cref="StringComparison.CurrentCulture"/>
@@ -688,7 +688,7 @@ namespace Area23.At.Framework.Core.Util
         #region System.Drawing.Image extensions
 
         /// <summary>
-        /// <see cref="Image"/>.SaveRawToMemoryStream(ImageFormat imageFormat, out Guid? g) extension method: 
+        /// <see cref="System.Drawing.Image"/>.SaveRawToMemoryStream(ImageFormat imageFormat, out Guid? g) extension method: 
         /// saves an Image to <see cref="MemoryStream"/> and return <see cref="Guid"/> of <see cref="ImageFormat"/> as out parameter
         /// </summary>
         /// <param name="img"><see cref="Image"/> to be processed by Exentsion Method</param>

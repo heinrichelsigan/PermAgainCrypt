@@ -95,7 +95,7 @@ Cache-Control: no-cache";
         /// </summary>
         /// <param name="serverIp">server ip address</param>
         /// <param name="serverPort">server port (default 80)</param>
-        /// <returns><see cref="Task{object}"/></returns>
+        /// <returns><see cref="Task{Object}"/></returns>
         public static async Task<object> MakeWebRequestAsync(IPAddress serverIp, int serverPort = 80)
         {
             Task<object> makeTcpRequestTask = (Task<object>)await Task<object>.Run<object>(() =>

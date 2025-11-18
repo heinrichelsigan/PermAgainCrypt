@@ -552,7 +552,11 @@
             where 3-fish rides on AesEngine
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564">
+            <summary>
+            static class RC564, that implements RC564 static Encrypt + Decrypt members
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564.#cctor">
             <summary>
             static RC564 constructor
@@ -1516,7 +1520,16 @@
             </summary>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.BCrypt" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.BCrypt.BCryptHash(System.Byte[])" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.BCrypt.BCryptHash(System.Byte[])">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.BCrypt"/>
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            </summary>
+            <param name="keyBytes">keyBytes to hash encrypt</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.Blake2xs">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
@@ -1567,7 +1580,16 @@
             <returns></returns>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.Byte[])" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.Byte[])">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt" />
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            </summary>
+            <param name="keyBytes">keyBytes to hash encrypt</param>
+            <returns><see cref="!:Array&lt;Byte&gt;">byte[]</see></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
         <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.String)" -->
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.RipeMD256" -->
         <member name="M:Area23.At.Framework.Core.Crypt.Hash.RipeMD256.HashString(System.String)">
@@ -1579,7 +1601,16 @@
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.SCrypt" -->
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.SCrypt.SCryptHash(System.Byte[])" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.SCrypt.SCryptHash(System.Byte[])">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.SCrypt"/>
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            </summary>
+            <param name="keyBytes">keyBytes to hash encrypt</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.Sha1">
             <summary>
             Sha256Sum creates Sha1Sum of a file or stream or byte[] or string
@@ -1932,7 +1963,16 @@
             </summary>
             <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Net.NetworkAddresses.GetIpAddresses(System.Net.Sockets.AddressFamily)" -->
+        <member name="M:Area23.At.Framework.Core.Net.NetworkAddresses.GetIpAddresses(System.Net.Sockets.AddressFamily)">
+            <summary>
+            GetIpAddresses returns all IPAddresses for a certain <see cref="T:System.Net.Sockets.AddressFamily">AddressFamily</see>
+            </summary>
+            <param name="addressFamily">only <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork"/>.
+            <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6">AddressFamily.InterNetworkV6</see> and 
+            <seealso cref="F:System.Net.Sockets.AddressFamily.Unix"/> are supported.</param>
+            <returns><see cref="T:System.Collections.Generic.IList`1"/></returns>
+            <exception cref="T:System.Net.ProtocolViolationException"></exception>
+        </member>
         <member name="M:Area23.At.Framework.Core.Net.NetworkAddresses.GetMacAddress">
             <summary>
             GetMacAddress returns Mac Address
@@ -1963,7 +2003,7 @@
             </summary>
             <param name="serverIp">server ip address</param>
             <param name="serverPort">server port (default 80)</param>
-            <returns><see cref="!:Task&lt;object&gt;"/></returns>
+            <returns><see cref="T:System.Threading.Tasks.Task`1"/></returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest">
             <summary>
@@ -2404,17 +2444,17 @@
             so that int firstIndex = <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternStart)</see> >= 0,
             then substring will start at <see cref="M:System.String.Substring(System.Int32)">main.Substring(firstIndex)</see>
             </param>
-            <param name="firstIndex">default <see cref="!:true"/>, 
-            if <see cref="!:true"/>, then first occurence in main <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternStart)</see> will be executed, 
-            otherwise if <see cref="!:false"/>, then <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternStart)</see> will be executed.
+            <param name="firstIndex">default <see cref="F:System.Boolean.TrueString"/>, 
+            if <see cref="F:System.Boolean.TrueString"/>, then first occurence in main <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternStart)</see> will be executed, 
+            otherwise if <see cref="F:System.Boolean.FalseString"/>, then <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternStart)</see> will be executed.
             </param>
             <param name="markStartEnd">if <see cref="!:!string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
             then start position of substring will be set to <see cref="!:string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
             </param>
             <param name="patternEnd">end pattern for substring, <see cref="M:System.String.LastIndexOf(System.String)">main.IndexOf(patternEnd)</see></param>
-            <param name="lastIndex">default <see cref="!:false"/>
-            if <see cref="!:true"/>, then last occurence <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternEnd)</see> will be executed,
-            otherwise if <see cref="!:false"/>, then first occurence in main <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternEnd)</see> will be executed. 
+            <param name="lastIndex">default <see cref="F:System.Boolean.FalseString"/>
+            if <see cref="F:System.Boolean.TrueString"/>, then last occurence <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternEnd)</see> will be executed,
+            otherwise if <see cref="F:System.Boolean.FalseString"/>, then first occurence in main <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternEnd)</see> will be executed. 
             </param>
             <param name="comparasionType">
             <see cref="T:System.StringComparison">comparasionType</see> is set default to <see cref="F:System.StringComparison.CurrentCulture"/>
@@ -3032,7 +3072,11 @@
             </param>
             <returns><see cref="T:System.String">string name of processed (bzipped/bunzipped) file</see></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Zip.GZ" -->
+        <member name="T:Area23.At.Framework.Core.Zip.GZ">
+            <summary>
+            abstraction of gnu zip gzip compression and decompression
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GZip(System.Byte[],System.Int32)">
             <summary>
             GZip directly

@@ -134,7 +134,7 @@ namespace Area23.At.Framework.Core.Net
 
 
         /// <summary>
-        /// GetIpAddresses returns all IPAddresses for a certain <see cref="AddressFamily>AddressFamily</see>
+        /// GetIpAddresses returns all IPAddresses for a certain <see cref="AddressFamily">AddressFamily</see>
         /// </summary>
         /// <param name="addressFamily">only <see cref="AddressFamily.InterNetwork"/>.
         /// <see cref="AddressFamily.InterNetworkV6">AddressFamily.InterNetworkV6</see> and 

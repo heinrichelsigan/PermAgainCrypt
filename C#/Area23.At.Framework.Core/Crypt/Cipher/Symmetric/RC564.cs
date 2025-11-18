@@ -10,7 +10,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 {
 
     /// <summary>
-    /// static class RC564, that implements RC564 static Encrypt & Decrypt members
+    /// static class RC564, that implements RC564 static Encrypt + Decrypt members
     /// </summary>
     public static class RC564
     {

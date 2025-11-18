@@ -124,9 +124,6 @@
   <data name="image_zip" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\symbols\image_zip.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="MenuImageInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MenuImageInfo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CryptPenacle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\huge\CryptPenacle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -166,11 +163,11 @@
     <value>..\Resources\arrows\AddAesArrowHover.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sound_gong" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_gong.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_gong.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_gong</comment>
   </data>
   <data name="sound_push" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_push.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_push.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_push</comment>
   </data>
   <data name="img_visio" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -180,11 +177,8 @@
     <value>..\Resources\arrows\process\DeCryptPipeLlne.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>DeCryptPipeLlne</comment>
   </data>
-  <data name="MenuImageDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MenuImageDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="sound_camera" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_camera.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_camera.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_camera</comment>
   </data>
   <data name="a_hash" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -237,7 +231,7 @@
     <value>..\Resources\symbols\img_success1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sound_glasses" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_glasses.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_glasses.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_glasses</comment>
   </data>
   <data name="CryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -250,11 +244,11 @@
     <value>..\Resources\TransparentMenuImage.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="sound_arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_arrow.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_arrow.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_arrow</comment>
   </data>
   <data name="sound_laser" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Audio\sound_laser.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\Resources\sounds\sound_laser.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     <comment>sound_laser</comment>
   </data>
   <data name="a_right_key2" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -265,9 +259,6 @@
   </data>
   <data name="TripleDes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Algos\TripleDes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="MenuImageOld" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\MenuImageOld.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="a_right_hover" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrows\a_right_hover.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -393,5 +384,41 @@
   <data name="compress_right_end" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrows\process\compress_right_end.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>compress_right_end</comment>
+  </data>
+  <data name="sound_error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_error.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_error</comment>
+  </data>
+  <data name="sound_warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_warning.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_warning</comment>
+  </data>
+  <data name="sound_hammer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_hammer.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_hammer</comment>
+  </data>
+  <data name="sound_click" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_click.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_click</comment>
+  </data>
+  <data name="sound_volatage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_volatage.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_volatage</comment>
+  </data>
+  <data name="sound_wind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sounds\sound_wind.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <comment>sound_wind</comment>
+  </data>
+  <data name="ChiffreCryptDisk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\huge\ChiffreCryptDisk.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>ChiffreCryptDisk</comment>
+  </data>
+  <data name="ChiffreDisk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\huge\ChiffreDisk.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>ChiffreDisk</comment>
+  </data>
+  <data name="decoding_right_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\decoding_right_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>decoding_right_0</comment>
   </data>
 </root>

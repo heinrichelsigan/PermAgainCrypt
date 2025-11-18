@@ -1,12 +1,6 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
-using Area23.At.Framework.Core.Crypt.Cipher.Symmetric;
 using Area23.At.Framework.Core.Util;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO.Pipelines;
-using System.Resources;
-using System.Text;
 
 namespace Area23.At.WinForm.CryptFormCore.Helper
 {
@@ -52,15 +46,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     object obj = Properties.Resources.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));                                                            
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
-                    
-                    //string drawString = CiffrePipe.InPipe[i].ToString();
-                    //Font drawFont = new Font("Microsoft Sans Serif", 11, FontStyle.Bold);
-                    //SolidBrush drawBrush = new SolidBrush(Color.BlueViolet);
-                    //float x = offset + 6.0F;
-                    //float y = 5.0F + (i % 4) * 15.0F;
-                    //StringFormat drawFormat = new StringFormat();
-                    //drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    //g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+ 
 
                     offset += w;
                 }
@@ -68,27 +54,43 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 offset = startset;
                 for (int i = 0; (i < CiffrePipe.InPipe.Length); i++)
                 {
-                    w = 60;                    
-
+                    w = 60;
+                    Color color = (i < 5) ? ColorTranslator.FromHtml("#0000dd") : ColorTranslator.FromHtml("#0000bb");
                     string drawString = CiffrePipe.InPipe[i].ToString();
                     Font drawFont = new Font("Lucida Sans Unicode", 12, FontStyle.Bold);
-                    SolidBrush drawBrush = new SolidBrush(Color.LightSkyBlue);
+                    SolidBrush drawBrush = new SolidBrush(color);
                     float x = offset + 1.0F;
-                    float y = 1.0F + (i % 4) * 18.0F;
+                    float y =  ((i % 4) * 18.0F);
+                    switch (i)
+                    {
+                        case 1: y = 72F; break;
+                        case 2: y = 1F; break;
+                        case 3: y = 68F;  break;
+                        default:
+                            y = ((i % 4) * 18.0F); break;
+                    }
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
 
                     offset += w;
                 }
-
+                startset = offset;
 
                 if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
-                    offset += w;
+                    offset = startset;
+                    string drawString = this.CiffrePipe.EncodeType.ToString();
+                    Font drawFont = new Font("Lucida Sans Unicode", 10, FontStyle.Bold);
+                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    float x = offset + 1.0F;
+                    float y = 27.0F;
+                    StringFormat drawFormat = new StringFormat();
+                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
                 }
 
             }
@@ -106,8 +108,18 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
                 {
                     w = 60;
-                    ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
+                    ximage = new Bitmap(Properties.Resources.decoding_right_0, new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
+                    
+                    string drawString = this.CiffrePipe.EncodeType.ToString();
+                    Font drawFont = new Font("Lucida Sans Unicode", 10, FontStyle.Bold);
+                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    float x = offset + 1.0F;
+                    float y = 32.0F;
+                    StringFormat drawFormat = new StringFormat();
+                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+                        
                     offset += w;
                     startset += w;
                 }
@@ -122,15 +134,6 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
 
-                    //string drawString = CiffrePipe.OutPipe[i].ToString();
-                    //Font drawFont = new Font("Lucida Sans Unicode", 12, FontStyle.Bold);
-                    //SolidBrush drawBrush = new SolidBrush(Color.DeepSkyBlue);
-                    //float x = offset + 6.0F;
-                    //float y = 8.0F + (i % 4) * 12.0F;
-                    //StringFormat drawFormat = new StringFormat();
-                    //drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    //g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
                     offset += w;
                 }
 
@@ -139,14 +142,23 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 {
                     w = 60;
                     int r = 7 - i;
-                    
+
+                    Color color = (i < 4) ?  ColorTranslator.FromHtml("#110099") : ColorTranslator.FromHtml("#0000cc");
                     string drawString = CiffrePipe.OutPipe[i].ToString();
                     Font drawFont = new Font("Lucida Sans Unicode", 12, FontStyle.Bold);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#0000ee"));
+                    SolidBrush drawBrush = new SolidBrush(color);
                     float x = offset + 1.0F;
-                    float y = 1.0F + (i % 4) * 18.0F;
+                    float y = ((i % 4) * 18.0F); 
+                    switch (i)
+                    {
+                        case 5: y = 64F; break;
+                        case 6: y = 1F; break;
+                        case 7: y = 75F; break;
+                        default:
+                            y = ((i % 4) * 18.0F); break;
+                    }
                     StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                    drawFormat.FormatFlags = StringFormatFlags.NoWrap;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
 
                     offset += w;

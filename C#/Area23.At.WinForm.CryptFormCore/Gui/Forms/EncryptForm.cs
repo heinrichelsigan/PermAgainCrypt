@@ -41,7 +41,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e"></param>
         internal void EncryptForm_Load(object sender, EventArgs e)
         {
-            this.labelInfoMessage.Visible = false;  
+            this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
 
             this.comboBoxCompression.Items.Clear();
@@ -469,7 +469,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);               
+                SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);
                 return;
             }
 
@@ -653,10 +653,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.pictureBoxRunningPipe.Image = bGen.GenerateDecryptPipeImage();
 
                 if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
-                {                    
+                {
                     this.textBoxOut.Text = "";
                     Cursor.Current = new Cursor(iconSandClock.Handle);
-                 
+
                     try
                     {
                         SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
@@ -683,7 +683,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     foreach (string file in HashFiles)
                     {
                         if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
-                            labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text && 
+                            labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
                             pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
                         {
                             Cursor.Current = new Cursor(iconSandClock.Handle);
@@ -760,7 +760,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         public override void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
-            {               
+            {
                 if (dragNDropState == DragNDropState.DragEnter)
                     e.Effect = DragDropEffects.Copy;
                 if (dragNDropState != DragNDropState.DragLeave)
@@ -827,7 +827,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
                     Drop_Files(files);
                 }
-                    
+
             }
             return;
         }
@@ -907,8 +907,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 HashFiles = new HashSet<string>();
                 HashFiles.Add(dialog.FileName);
 
-                
-                                FileInfo fi = new FileInfo(dialog.FileName);
+
+                FileInfo fi = new FileInfo(dialog.FileName);
                 if (fi.Exists && fi.Length > 0)
                     SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
             }
@@ -948,7 +948,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     catch (Exception ex)
                     {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n",ex);
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n", ex);
                         return false;
                     }
                     FileInfo fi = new FileInfo(outFilePath);
@@ -1027,16 +1027,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     break;
             }
             SetLabelVisible(this.labelInfoMessage, true);
-            
-                        
+
+
             System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = duration };
             setInfoMessageTimer.Elapsed += (s, en) =>
             {
-                Task.Run(new System.Action(() =>                
+                Task.Run(new System.Action(() =>
                 {
                     SetLabelText(labelInfoMessage, "");
                     SetLabelBackColor(labelInfoMessage, SystemColors.Info);
-                    SetLabelVisible(labelInfoMessage, false);                    
+                    SetLabelVisible(labelInfoMessage, false);
                 }));
                 setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
             };
