@@ -78,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
 
                 selectedHash = parent.getSelectedItem().toString();
                 keyHash = KeyHash.getEnum(selectedHash);
-                if (showCipherPipe == null)
-                    showCipherPipe = (EditText) findViewById(R.id.editEncryptKey);
+                if (editEncryptKey == null)
+                    editEncryptKey = (EditText) findViewById(R.id.editEncryptKey);
                 String keyValue = "";
                 try {
-                    keyValue = showCipherPipe.getText().toString();
+                    keyValue = editEncryptKey.getText().toString();
                 } catch (Exception exi) {
                     keyValue = "zen@area23.at";
                 }
