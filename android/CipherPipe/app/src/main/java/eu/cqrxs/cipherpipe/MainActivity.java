@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -16,11 +17,20 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.SortedMap;
 
+import eu.cqrxs.cipherpipe.enums.CipherEnum;
+import eu.cqrxs.cipherpipe.enums.SymmCipherEnum;
+import eu.cqrxs.cipherpipe.enums.EncodingType;
+import eu.cqrxs.cipherpipe.enums.ZipType;
+import eu.cqrxs.cipherpipe.enums.KeyHash;
+
+
+
+
 public class MainActivity extends AppCompatActivity {
 
-    Button btnEncrypt, btnDecrypt;
-    EditText editEncryptKey, showCipherPipe, editTextSource, showTextDestination;
-    Spinner spinnerHash, spinnerKeys, spinnerZip, spinnerAlgos, spinnerEncode;
+    Button btnEncrypt, btnDecrypt, btnSetPipe;
+    EditText editEncryptKey, showCipherPipe, editTextSource, showTextDestination, editKeyHash;
+    Spinner spinnerHash, spinnerZip, spinnerAlgos, spinnerEncode;
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
     SortedMap<String, String> sortedAlgoMap, sortedHashMap, sortedEncodingMap;
     ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
@@ -30,18 +40,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        hashStrings = new String[]{"bcrypt", "OpenBSDCrypt", "MD5", "scrypt", "sha1", "sha256"};
-        encodingStrings = new String[]{"hex16", "base16", "uu", "base64", "xx"};
-        zipStrings = new String[]{"none", "bzip2", "gzip", "7zip"};
-        algoStrings = new String[]{"aes", "des3", "blowfish", "fish2", "fish3"};
+        hashStrings = KeyHash.getNames();
+        encodingStrings = EncodingType.getNames();
+        zipStrings = ZipType.getNames();
+        algoStrings = CipherEnum.getNames();
+        btnSetPipe = (Button) findViewById(R.id.btnSetPipe);
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
         editEncryptKey = (EditText) findViewById(R.id.editEncryptKey);
         showCipherPipe = (EditText) findViewById(R.id.showCipherPipe);
         editTextSource = (EditText) findViewById(R.id.editTextSource);
         showTextDestination = (EditText) findViewById(R.id.showTextDestination);
+        editKeyHash = (EditText) findViewById(R.id.editKeyHash);
         spinnerHash = (Spinner) findViewById(R.id.spinnerHash);
-        spinnerKeys = (Spinner) findViewById(R.id.spinnerKeys);
         spinnerZip = (Spinner) findViewById(R.id.spinnerZip);
         spinnerAlgos = (Spinner) findViewById(R.id.spinnerAlgos);
         spinnerEncode = (Spinner) findViewById(R.id.spinnerEncode);

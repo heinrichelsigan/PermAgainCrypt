@@ -1,5 +1,4 @@
 ﻿using Area23.At.Framework.Core.Crypt.EnDeCoding;
-using Org.BouncyCastle.Crypto.Digests;
 using System.ComponentModel;
 using System.Text;
 

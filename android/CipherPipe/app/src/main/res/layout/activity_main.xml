@@ -28,23 +28,6 @@
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="0">
-			<Spinner
-				android:id="@+id/spinnerKeys"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginTop="20dp"
-				android:hint="@string/enter_encrypt_key"
-				android:textColorHint="@color/abc_primary_text_material_dark"
-				android:tooltipText="@string/enter_encrypt_key" />
-		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/a1"
-			android:tag="@string/f_a1"
-			android:layout_width="100dp"
-			android:layout_height="120dp"
-			android:orientation="vertical"
-			android:layout_row="0"
-			android:layout_column="1">
 			<EditText
 				android:id="@+id/editEncryptKey"
 				android:layout_width="wrap_content"
@@ -56,13 +39,13 @@
 				android:textColorHint="@color/abc_primary_text_material_dark" />
 		</LinearLayout>
 		<LinearLayout
-			android:id="@+id/a2"
-			android:tag="@string/f_a2"
+			android:id="@+id/a1"
+			android:tag="@string/f_a1"
 			android:layout_width="100dp"
 			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="0"
-			android:layout_column="2">
+			android:layout_column="1">
 			<Spinner
 				android:id="@+id/spinnerHash"
 				android:layout_width="wrap_content"
@@ -74,6 +57,24 @@
 
 		</LinearLayout>
 		<LinearLayout
+			android:id="@+id/a2"
+			android:tag="@string/f_a2"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
+			android:orientation="vertical"
+			android:layout_row="0"
+			android:layout_column="2">
+			<EditText
+				android:id="@+id/editKeyHash"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:hint="@string/key_hash"
+				android:phoneNumber="true"
+				android:text="@string/default_key"
+				android:textColorHint="@color/abc_primary_text_material_dark" />
+		</LinearLayout>
+		<LinearLayout
 			android:id="@+id/a3"
 			android:tag="@string/f_a3"
 			android:layout_width="100dp"
@@ -81,7 +82,14 @@
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="3">
-
+			<Button
+			android:id="@+id/btnSetPipe"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="36dp"
+			android:textSize="9sp"
+			android:text="@string/setPipe" />
 
 		</LinearLayout>
 
