@@ -25,7 +25,7 @@ import java.util.Set;
 public class MD5 {
 
 
-    public static String hash(String instr) {
+    public static String hashString(String instr) {
         byte[] inBytes = instr.getBytes(Charset.forName("UTF-8"));
         if (inBytes == null || inBytes.length == 0)
             throw new IllegalArgumentException("public static String hash(String instr) inBytes from instr is null!");

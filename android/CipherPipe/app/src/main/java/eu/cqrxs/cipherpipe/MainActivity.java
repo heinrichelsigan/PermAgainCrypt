@@ -18,7 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.SortedMap;
 
-import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.enums.CipherEnum;
 import eu.cqrxs.cipherpipe.enums.SymmCipherEnum;
 import eu.cqrxs.cipherpipe.enums.EncodingType;
@@ -37,16 +36,20 @@ public class MainActivity extends AppCompatActivity {
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
     SortedMap<String, String> sortedAlgoMap, sortedHashMap, sortedEncodingMap;
     ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
+    String selectedHash = "";
+    KeyHash keyHash = KeyHash.Hex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        hashStrings = KeyHash.getNames();
-        encodingStrings = EncodingType.getNames();
-        zipStrings = ZipType.getNames();
-        algoStrings = CipherEnum.getNames();
+        try {
+            hashStrings = KeyHash.getNames();
+            encodingStrings = EncodingType.getNames();
+            zipStrings = ZipType.getNames();
+            algoStrings = CipherEnum.getNames();
+        } catch (Exception exi) {}
         btnSetPipe = (Button) findViewById(R.id.btnSetPipe);
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
@@ -62,26 +65,41 @@ public class MainActivity extends AppCompatActivity {
 
         if (adapterHash == null)
             adapterHash = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, hashStrings);
-        adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerHash.setAdapter(adapterHash);
+
         spinnerHash.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
-                Log.d("onItemSelected", msg);
-                String selectedHash = parent.getSelectedItem().toString();
-                KeyHash keyHash = KeyHash.getEnum(selectedHash);
-                EditText text = (EditText)findViewById(R.id.editEncryptKey);
-                String keyValue = text.getText().toString();
-                String hashed = keyHash.hash(keyValue);
-                editKeyHash.setText(hashed);
+                try {
+                    String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
+                    Log.d("onItemSelected", msg);
+                } catch (Exception exAdapter) {
+                }
+
+                selectedHash = parent.getSelectedItem().toString();
+                keyHash = KeyHash.getEnum(selectedHash);
+                if (showCipherPipe == null)
+                    showCipherPipe = (EditText) findViewById(R.id.editEncryptKey);
+                String keyValue = "";
+                try {
+                    keyValue = showCipherPipe.getText().toString();
+                } catch (Exception exi) {
+                    keyValue = "zen@area23.at";
+                }
+                String hashed = "";
+                try {
+                    hashed = keyHash.hash(keyValue);
+                    editKeyHash.setText(hashed);
+                } catch (Exception exh) {
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ;
             }
         });
+        adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerHash.setAdapter(adapterHash);
 
         if (adapterEndoding == null)
             adapterEndoding = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, encodingStrings);

@@ -23,10 +23,9 @@ import java.util.List;
 import java.util.Set;
 
 public class Whirlpool {
+    
 
-    public final static String VALID_CHARS = "0123456789abcdef";
-
-    public static String hash(String instr) {
+    public static String hashString(String instr) {
         byte[] inBytes = instr.getBytes(Charset.forName("UTF-8"));
         if (inBytes == null || inBytes.length == 0)
             throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");

@@ -117,43 +117,45 @@ public enum KeyHash implements Serializable {
      * @return name of enum
      */
     public String hash(String instr) {
-		int xval = getValue();
-		switch (xval) {
-			case 0x0:
-				return Hex.hash(instr);
-			// case 0x1:
-			// return OpenBSDCrypt.hash(instr);
-			// case 0x2:
-// 				return BCrypt.hash(instr);
-			// case 0x3:
-			// return´SCrypt.hash(instr);
-			case 0x4:
-				return eu.cqrxs.cipherpipe.crypt.hash.MD5.hash(instr);
-			case 0x5:
-				return Sha1.hash(instr);
-			case 0x6:
-				return Sha256.hash(instr);
-			case 0x7:
-				return Sha384.hash(instr);
-			case 0x8:
-				return Sha512.hash(instr);
-			case 0x9:
-				return Whirlpool.hash(instr);
-			// case 0xa:
-			// 	return "Ascon256";
-			case 0xb:
-				return Blake2xs.hash(instr);
-			case 0xc:
-				return CShake.hash(instr);
-			case 0xd:
-				return Dstu7564.hash(instr);
-			case 0xe:
-				return RipeMD256.hash(instr);
-			// case 0xf:
-			// return "Xoodyak";
-			default:
-				break;
-		}
+		try {
+			int xval = getValue();
+			switch (xval) {
+				case 0x0:
+					return eu.cqrxs.cipherpipe.crypt.hash.Hex.hashString(instr);
+				// case 0x1:
+				// return OpenBSDCrypt.hash(instr);
+				// case 0x2:
+				// 				return BCrypt.hash(instr);
+				// case 0x3:
+				// return´SCrypt.hash(instr);
+				case 0x4:
+					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
+				case 0x5:
+					return eu.cqrxs.cipherpipe.crypt.hash.Sha1.hashString(instr);
+				case 0x6:
+					return  eu.cqrxs.cipherpipe.crypt.hash.Sha256.hashString(instr);
+				case 0x7:
+					return  eu.cqrxs.cipherpipe.crypt.hash.Sha384.hashString(instr);
+				// case 0x8:
+				//  return Sha512.hash(instr);
+				case 0x9:
+					return eu.cqrxs.cipherpipe.crypt.hash.Whirlpool.hashString(instr);
+				// case 0xa:
+				// 	return "Ascon256";
+				case 0xb:
+					return eu.cqrxs.cipherpipe.crypt.hash.Blake2xs.hashString(instr);
+				case 0xc:
+					return eu.cqrxs.cipherpipe.crypt.hash.CShake.hashString(instr);
+				case 0xd:
+					return eu.cqrxs.cipherpipe.crypt.hash.Dstu7564.hashString(instr);
+				case 0xe:
+					return eu.cqrxs.cipherpipe.crypt.hash.RipeMD256.hashString(instr);
+				// case 0xf:
+				// return "Xoodyak";
+				default:
+					break;
+			}
+		} catch (Exception exi) { }
 		return "";
     }
 
