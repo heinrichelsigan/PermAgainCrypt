@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinnerHash, spinnerKeys, spinnerZip, spinnerAlgos, spinnerEncode;
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
     SortedMap<String, String> sortedAlgoMap, sortedHashMap, sortedEncodingMap;
-    ArrayAdapter adapterHash = null;
+    ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         hashStrings = new String[]{"bcrypt", "OpenBSDCrypt", "MD5", "scrypt", "sha1", "sha256"};
-
+        encodingStrings = new String[]{"hex16", "base16", "uu", "base64", "xx"};
+        zipStrings = new String[]{"none", "bzip2", "gzip", "7zip"};
+        algoStrings = new String[]{"aes", "des3", "blowfish", "fish2", "fish3"};
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
         editEncryptKey = (EditText) findViewById(R.id.editEncryptKey);
@@ -49,6 +51,21 @@ public class MainActivity extends AppCompatActivity {
             adapterHash = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, hashStrings);
         adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerHash.setAdapter(adapterHash);
+
+        if (adapterEndoding == null)
+            adapterEndoding = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, encodingStrings);
+        adapterEndoding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerEncode.setAdapter(adapterEndoding);
+
+        if (adapterAlgos == null)
+            adapterAlgos = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, algoStrings);
+        adapterAlgos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAlgos.setAdapter(adapterAlgos);
+
+        if (adapterZip == null)
+            adapterZip = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, zipStrings);
+        adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerZip.setAdapter(adapterZip);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

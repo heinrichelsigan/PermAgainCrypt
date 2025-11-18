@@ -9,9 +9,9 @@
 
 	<GridLayout
 		android:id="@+id/GridLayoutCipherPipe"
-		android:layout_width="320dp"
-		android:layout_height="240dp"
-		android:layout_marginTop="100dp"
+		android:layout_width="480dp"
+		android:layout_height="360dp"
+		android:layout_marginTop="120dp"
 		android:layout_marginStart="20dp"
 		android:layout_marginEnd="20dp"
 		android:columnWidth="64dp"
@@ -23,82 +23,74 @@
 		<LinearLayout
 			android:id="@+id/a0"
 			android:tag="@string/f_a0"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="0">
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Hello World!"
-					app:layout_constraintBottom_toBottomOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent" />
+			<Spinner
+				android:id="@+id/spinnerKeys"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:hint="@string/enter_encrypt_key"
+				android:textColorHint="@color/abc_primary_text_material_dark"
+				android:tooltipText="@string/enter_encrypt_key" />
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/a1"
 			android:tag="@string/f_a1"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="1">
-
-			<Spinner
-                android:id="@+id/spinnerKeys"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="@string/enter_encrypt_key"
-                android:textColorHint="@color/abc_primary_text_material_dark"
-                android:tooltipText="@string/enter_encrypt_key" />        
+			<EditText
+				android:id="@+id/editEncryptKey"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:hint="@string/encrypt_key"
+				android:phoneNumber="true"
+				android:text="@string/default_key"
+				android:textColorHint="@color/abc_primary_text_material_dark" />
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/a2"
 			android:tag="@string/f_a2"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="2">
+			<Spinner
+				android:id="@+id/spinnerHash"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="20dp"
+				android:hint="@string/select_hash"
+				android:textColorHint="@color/abc_primary_text_material_dark"
+				android:tooltipText="@string/select_hash" />
 
-            <EditText
-                android:id="@+id/editEncryptKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="@string/encrypt_key"
-                android:phoneNumber="true"
-                android:text="@string/default_key"
-                android:textColorHint="@color/abc_primary_text_material_dark" />
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/a3"
 			android:tag="@string/f_a3"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="0"
 			android:layout_column="3">
 
-            <Spinner
-                android:id="@+id/spinnerHash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="@string/select_hash"
-                android:textColorHint="@color/abc_primary_text_material_dark"
-                android:tooltipText="@string/select_hash" />   
+
 		</LinearLayout>
 
 
 		<LinearLayout
 			android:id="@+id/b0"
 			android:tag="@string/f_b0"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="1"
 			android:layout_column="0">
@@ -114,8 +106,8 @@
 		<LinearLayout
 			android:id="@+id/b1"
 			android:tag="@string/f_b1"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="1"
 			android:layout_column="1">
@@ -132,8 +124,8 @@
 		<LinearLayout
 			android:id="@+id/b2"
 			android:tag="@string/f_b2"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="1"
 			android:layout_column="2">
@@ -151,8 +143,8 @@
 		<LinearLayout
 			android:id="@+id/b3"
 			android:tag="@string/f_b3"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="1"
 			android:layout_column="3">
@@ -172,16 +164,17 @@
 		<LinearLayout
 			android:id="@+id/c0"
 			android:tag="@string/f_c0"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="2"
 			android:layout_column="0">
 			 <EditText
                 android:id="@+id/editTextSource"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="1dp"
+				 android:textSize="9sp"
                 android:hint="@string/enter_source_text"
                 android:text="@string/none"
                 android:textColorHint="@color/abc_primary_text_material_dark" />
@@ -189,8 +182,8 @@
 		<LinearLayout
 			android:id="@+id/c1"
 			android:tag="@string/f_c1"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="2"
 			android:layout_column="1">
@@ -200,14 +193,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="36dp"
+				android:textSize="9sp"
                 android:text="@string/encrypt" />     
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/c2"
 			android:tag="@string/f_c2"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="2"
 			android:layout_column="2">
@@ -217,23 +211,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
+                android:textSize="9sp"
+				android:layout_marginTop="36dp"
                 android:text="@string/decrypt" />     
 		</LinearLayout>
 		<LinearLayout
 			android:id="@+id/c3"
 			android:tag="@string/f_c3"
-			android:layout_width="64dp"
-			android:layout_height="48dp"
+			android:layout_width="100dp"
+			android:layout_height="120dp"
 			android:orientation="vertical"
 			android:layout_row="2"
 			android:layout_column="3">
 
              <EditText
                 android:id="@+id/showTextDestination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+			 	android:layout_width="100dp"
+			 	android:layout_height="120dp"
+			 	android:textSize="9sp"
+                android:layout_marginTop="1dp"
                 android:hint="@string/show_text_destination"
                 android:text="@string/none"
                 android:textColorHint="@color/abc_primary_text_material_dark" />
