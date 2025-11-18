@@ -34,6 +34,15 @@ bld/
 [Ll]ogs/
 [Ppackages]/
 
+Deploy/*.7z
+Deploy/*.zip
+Deploy/*.bz2
+Deploy/*.gz
+Deploy/*.exe
+Deploy/test/
+Deploy/console/*.exe
+Deploy/console/*.7z
+
 EU.CqrXs.WinForm.SecureChat/SecureChatFiles/20*.json
 EU.CqrXs.WinForm.SecureChat/SecureChatFiles/AttachFiles/*.htm
 EU.CqrXs.WinForm.SecureChat/SecureChatFiles/AttachFiles/*.html
