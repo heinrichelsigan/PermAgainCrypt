@@ -513,6 +513,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap file_encrypted_broken {
+            get {
+                object obj = ResourceManager.GetObject("file_encrypted_broken", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap heinrichelsigan {
             get {
                 object obj = ResourceManager.GetObject("heinrichelsigan", resourceCulture);

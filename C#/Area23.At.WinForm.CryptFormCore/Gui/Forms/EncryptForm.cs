@@ -7,10 +7,6 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using Org.BouncyCastle.Utilities.Encoders;
-using System.Drawing;
-using System.Security.Policy;
-using System.Windows.Forms;
 
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
@@ -32,6 +28,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         public EncryptForm()
         {
             InitializeComponent();
+
+            menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
+            buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e)); 
         }
 
         /// <summary>
@@ -523,6 +522,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.labelFileIn.Text = "[no file selected]";
             this.pictureBoxFileIn.Tag = null;
             this.pictureBoxFileIn.Image = Properties.Resources.image_file;
+            this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
         }
 
         #endregion ButtonPictureBoxClickEvents
@@ -534,7 +534,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected internal void Encrypt_Click(object sender, EventArgs e)
+        protected internal async Task Encrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -543,84 +543,93 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
+            
+            Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
+            CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
+            CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
-            if (!string.IsNullOrEmpty(this.textBoxHash.Text))
+            BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
+            this.pictureBoxRunningPipe.Image = bGen.GenerateEncryptPipeImage();
+
+            if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
             {
-                this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe;
-                Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
-                CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
-
-                BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-                this.pictureBoxRunningPipe.Image = bGen.GenerateEncryptPipeImage();
-
-                if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
+                this.textBoxOut.Text = "";
+                Cursor.Current = new Cursor(iconSandClock.Handle);
+                try
                 {
-                    this.textBoxOut.Text = "";
-                    Cursor.Current = new Cursor(iconSandClock.Handle);
-                    try
-                    {
-                        SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
-                        if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                            SetEncoding(menuBase64);
+                    SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
+                    if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
+                        SetEncoding(menuBase64);
 
-                        string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                        this.textBoxOut.Text = encrypted;
-                        SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
-                    }
-                    catch (Exception ex)
-                    {
-                        Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
-                        SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
-                    }
-                    finally
-                    {
-                        Cursor.Current = DefaultCursor;
-                    }
+                    string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    this.textBoxOut.Text = encrypted;
+                    SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
                 }
-                if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+                catch (Exception ex)
                 {
-                    // this.pictureBoxRunningPipe.Visible = true;
-                    foreach (string file in HashFiles)
+                    Area23Log.LogOriginMsgEx("EncryptForm", "Decrypt_Click", ex);
+                    SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
+                }
+                finally
+                {
+                    Cursor.Current = DefaultCursor;
+                }
+            }
+            if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+            {
+                // this.pictureBoxRunningPipe.Visible = true;
+                foreach (string file in HashFiles)
+                {
+                    if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
+                        labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
+                        pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
                     {
-                        if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
-                            labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
-                            pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                        Cursor.Current = new Cursor(iconSandClock.Handle);
+                        try
                         {
-                            Cursor.Current = new Cursor(iconSandClock.Handle);
-                            try
+                            // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
+                            byte[] fileBytes = System.IO.File.ReadAllBytes(file);
+                            byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                            string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
+                            bool saved = SaveBytesDialog(outBytes, ref outFilePath);
+                            if (saved)
                             {
-                                // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
-                                byte[] fileBytes = System.IO.File.ReadAllBytes(file);
-                                byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                                string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
-                                bool saved = SaveBytesDialog(outBytes, ref outFilePath);
-                                if (saved)
+                                string outFileName = Path.GetFileName(outFilePath);
+
+                                bool isVerified = await VerifyEncryptedFileAsync(file, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+                                if (!isVerified)
                                 {
-                                    pictureBoxOutFile.Visible = true;
-                                    pictureBoxOutFile.Tag = "{" + outFilePath + "}";
-                                    pictureBoxOutFile.Image = outFilePath.GetImageThumbnailFromFile();
-                                    string outFileName = Path.GetFileName(outFilePath);
-                                    labelOutputFile.Text = outFileName;
-                                    labelOutputFile.Visible = true;
-                                    HashFiles.Add(outFilePath);
+                                    this.SetInfoMessage("Encryption couldn't be verified", ToolTipIcon.Warning, 6000);
+                                    await PlaySoundFromResourcesAsync("sound_hammer");                                    
+                                    SetPictureBoxImage(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, true);
                                 }
                                 else
                                 {
-                                    SetInfoMessage("Saving file canceled by user", ToolTipIcon.Warning, 2000);
+                                    this.SetInfoMessage("Encryption verified", ToolTipIcon.Info, 3000);
+                                    await PlaySoundFromResourcesAsync("sound_lase");
+                                    SetPictureBoxImage(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), true);
                                 }
+                                
+                                pictureBoxOutFile.Tag = "{" + outFilePath + "}";                                
+                                labelOutputFile.Text = outFileName;
+                                labelOutputFile.Visible = true;
+                                HashFiles.Add(outFilePath);
+                            }
+                            else
+                            {
+                                SetInfoMessage("Saving file canceled by user", ToolTipIcon.Warning, 3000);
+                            }
 
-                            }
-                            catch (Exception ex)
-                            {
-                                SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 4000);
-                            }
-                            finally
-                            {
-                                Cursor.Current = DefaultCursor;
-                            }
-                            break;
                         }
+                        catch (Exception ex)
+                        {
+                            SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 5000);
+                        }
+                        finally
+                        {
+                            Cursor.Current = DefaultCursor;
+                        }
+                        break;
                     }
                 }
             }

@@ -1,4 +1,5 @@
 ﻿using Area23.At.Framework.Core.Crypt;
+using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Crypt.Cipher.Symmetric;
 using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
@@ -17,7 +18,9 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
         public SerType MsgType { get; set; }
 
-        public EncodingType EnCodingType { get; set; }
+		public CipherPipe CryptPipe { get; set; }
+
+        public EncodingType EnCodingType { get => CryptPipe.EncodeType; set => CryptPipe.EncodeType = value; }	
 
         public string Message { get; set; }
 

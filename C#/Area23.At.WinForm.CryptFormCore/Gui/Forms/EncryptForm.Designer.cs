@@ -206,7 +206,6 @@
             menuMainEncrypt.Name = "menuMainEncrypt";
             menuMainEncrypt.Size = new Size(157, 22);
             menuMainEncrypt.Text = "Encrypt";
-            menuMainEncrypt.Click += Encrypt_Click;
             // 
             // menuMainDecrypt
             // 
@@ -771,7 +770,6 @@
             buttonEncrypt.TabIndex = 33;
             buttonEncrypt.Text = "Encrypt";
             buttonEncrypt.UseVisualStyleBackColor = false;
-            buttonEncrypt.Click += Encrypt_Click;
             // 
             // buttonDecrypt
             // 

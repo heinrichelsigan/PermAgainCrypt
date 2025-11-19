@@ -86,6 +86,36 @@
             Provides a simple crypt pipe for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/>
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.ZType">
+            <summary>
+            ZType is current <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/>
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncodeType">
+            <summary>
+            Current <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncodeType"/> 
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.KHash">
+            <summary>
+            KHash is <see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/>
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.InPipe">
+            <summary>
+            InPipe is current encryption pipe
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.OutPipe">
+            <summary>
+            OutPipe will always be generated from <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.InPipe"/>
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.PipeString">
+            <summary>
+            PipeString will always be generated on the fly from <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.InPipe"/>
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             CipherPipe constructor with an array of <see cref="!:CipherEnum[]"/> as inpipe
@@ -119,6 +149,19 @@
             </summary>
             <param name="key"></param>
         </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.ToJson">
+            <summary>
+            ToJson 
+            </summary>
+            <returns>serialized string</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.FromJson(System.String)">
+            <summary>
+            FromJson
+            </summary>
+            <param name="json">serialized json</param>
+            <returns><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe"/></returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.CipherEnum,System.String,System.String)">
             <summary>
             Generic encrypt bytes to bytes
@@ -129,7 +172,7 @@
             <param name="keyIv">key's iv</param>
             <returns>encrypted byte Array</returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.CipherEnum,System.String,System.String,System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.CipherEnum,System.String,System.String)">
             <summary>
             Generic decrypt bytes to bytes
             </summary>

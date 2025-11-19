@@ -1,6 +1,8 @@
 ﻿using Area23.At.Framework.Core.Crypt;
 using Area23.At.Framework.Core.Crypt.Cipher;
+using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Util;
+using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
 
@@ -348,6 +350,47 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion AboutHelpExitClose
 
+
+        #region verify output file
+
+        public async Task<bool> VerifyEncryptedFileAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
+        {
+            byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
+            byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
+            string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension() + "." + cPipe.PipeString + cPipe.EncodeType.GetEnCodingExtension(), "");
+            byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
+            
+            bool success = await Task.Run(() => CompareBytes(inBytes, outBytes));
+            return success;
+        }
+
+        public bool CompareBytes(byte[] inBytes, byte[] outBytes)
+        {
+            if (inBytes != null && outBytes != null && inBytes.Length > 0 && outBytes.Length > 0)
+            {
+                if (Math.Abs(inBytes.LongLength - outBytes.LongLength) < 16)
+                {
+                    long q = inBytes.LongLength / 4;
+                    for (long l = 0; l < (q); l++)
+                    {
+                        if (inBytes[l] != outBytes[l])
+                            return false;
+                    }
+                    if (inBytes.LongLength > 32)
+                    {
+                        for (long k = inBytes.LongLength - q; k < (inBytes.LongLength - 16); k++)
+                        {
+                            if (inBytes[k] != outBytes[k])
+                                return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        #endregion verify output file
 
         #region Media Methods
 
