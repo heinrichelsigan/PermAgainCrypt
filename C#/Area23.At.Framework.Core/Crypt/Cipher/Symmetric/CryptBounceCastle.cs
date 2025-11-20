@@ -100,7 +100,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// Generic CryptBounceCastle constructor
         /// </summary>
         /// <param name="cparams">parameters to crypt</param>
-        /// <param name="init">init <see cref="ThreeFish"/> first time with a new key</param>
+        /// <param name="init">init <see cref="CryptBounceCastle"/> first time with a new key</param>
         public CryptBounceCastle(CryptParams cparams, bool init = true)
         {
             CryptoBlockCipher = (cparams.BlockCipher == null) ? new AesEngine() : cparams.BlockCipher;
@@ -173,8 +173,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// Generic CryptBounceCastle Encrypt member function
         /// difference between out parameter encryptedData and return value, are 2 different encryption methods, but with the same result at the end
         /// </summary>
-        /// <param name="plainData">plain data as <see cref="byte[]"/></param>
-        /// <returns>encrypted data <see cref="byte[]">bytes</see></returns>
+        /// <param name="plainData">plain data as <see cref="T:byte[]"/></param>
+        /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         public byte[] Encrypt(byte[] plainData)
         {
             var cipher = CryptoBlockCipher;
@@ -239,7 +239,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// Generic CryptBounceCastle Decrypt member function
         /// difference between out parameter decryptedData and return value, are 2 different decryption methods, but with the same result at the end
         /// </summary>
-        /// <param name="cipherData">encrypted <see cref="byte[]">bytes</see></param>
+        /// <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
         /// <returns>decrypted plain byte[] data</returns>
         public byte[] Decrypt(byte[] cipherData)
         {

@@ -92,17 +92,20 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         #region ctor CipherPipe
 
         /// <summary>
-        /// CipherPipe constructor with an array of <see cref="CipherEnum[]"/> as inpipe
+        /// CipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
         /// </summary>
-        /// <param name="cipherEnums">array of <see cref="CipherEnum[]"/> as inpipe</param>
+        /// <param name="cipherEnums">array of <see cref="T:CipherEnum[]"/> as inpipe</param>
         public CipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             // pipeString = "";
+            int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));
             zType = zpType;
-            inPipe = new List<CipherEnum>(cipherEnums).ToArray();
+            CipherEnum[] pipeArray = new CipherEnum[isize];
+            Array.Copy(cipherEnums, pipeArray, isize);            
+            inPipe = new List<CipherEnum>(pipeArray).ToArray();
             // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
             encodeType = encType;
             kHash = kh;
@@ -120,15 +123,20 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         }
 
         /// <summary>
-        /// CipherPipe constructor with an array of <see cref="string[]"/> cipherAlgos as inpipe
+        /// CipherPipe constructor with an array of <see cref="T:string[]"/> cipherAlgos as inpipe
         /// </summary>
-        /// <param name="cipherAlgos">array of <see cref="string[]"/> as inpipe</param>
+        /// <param name="cipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
+        /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
+        /// <param name="encType"><see cref="EncodeType"/></param>
+        /// <param name="zpType"><see cref="Zip.ZipType"/></param>
+        /// <param name="kh"><see cref="KeyHash"/></param>
         public CipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             List<CipherEnum> cipherEnums = new List<CipherEnum>();
+            int cnt = 0;
             foreach (string algo in cipherAlgos)
             {
                 if (!string.IsNullOrEmpty(algo))
@@ -138,12 +146,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                         cipherAlgo = CipherEnum.Aes;
 
                     cipherEnums.Add(cipherAlgo);
-                }
+                    
+                    if (++cnt > 7)
+                        break;
+                }                
             }
 
             // pipeString = "";
-            zType = zpType;
-            inPipe = new List<CipherEnum>(cipherEnums).ToArray();
+            inPipe = cipherEnums.ToArray();
+            // inPipe = new List<CipherEnum>(cipherEnums).ToArray();
             // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
             encodeType = encType;
             kHash = kh;
@@ -165,6 +176,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// </summary>
         /// <param name="keyBytes">user key bytes</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
+        /// <param name="encType"><see cref="EncodeType"/></param>
+        /// <param name="zpType"><see cref="Zip.ZipType"/></param>
+        /// <param name="kh"><see cref="KeyHash"/></param>
+        /// <exception cref="ArgumentException"></exception>
         public CipherPipe(byte[] keyBytes, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
@@ -200,8 +215,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
             // pipeString = "";
             zType = zpType;
-            inPipe = new List<CipherEnum>(pipeList).ToArray();
-            // outPipe = pipeList.Reverse<CipherEnum>().ToArray();
+            inPipe = pipeList.ToArray();
             encodeType = encType;
             kHash = kh;
 
@@ -220,10 +234,14 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
         /// <summary>
         /// Constructs a <see cref="CipherPipe"/> from key and hash
-        /// by getting <see cref="byte[]">byte[] keybytes</see> with <see cref="CryptHelper.GetUserKeyBytes(string, string, int)"/>
+        /// by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="CryptHelper.GetUserKeyBytes(string, string, int)"/>
         /// </summary>
         /// <param name="key">secret key to generate pipe</param>
         /// <param name="hash">hash value of secret key</param>
+        /// <param name="maxpipe"></param>
+        /// <param name="encType"></param>
+        /// <param name="zpType"></param>
+        /// <param name="kh"></param>
         public CipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174", EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
             : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)   
         {
@@ -269,7 +287,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 this.cipherHash = pipe.cipherHash;  
             }
             return pipe;
-        } 
+        }
 
         #endregion json
 
@@ -281,7 +299,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="inBytes">Array of byte</param>
         /// <param name="cipherAlgo"><see cref="CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
-        /// <param name="keyIv">key's iv</param>
+        /// <param name="hash">key's hash</param>
         /// <returns>encrypted byte Array</returns>
         public static byte[] EncryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, string secretKey, string hash)
         {
@@ -362,7 +380,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="cipherBytes">Encrypted array of byte</param>
         /// <param name="cipherAlgo"><see cref="CipherEnum"/>both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
-        /// <param name="keyIv">key's iv</param>
+        /// <param name="hash">key's hash</param>
         /// <returns>decrypted byte Array</returns>
         public static byte[] DecryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, string secretKey, string hash)
         {
@@ -447,7 +465,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <summary>
         /// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
         /// </summary>
-        /// <param name="inBytes">plain <see cref="byte[]"/> to encrypt</param>
+        /// <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
         /// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
         /// <param name="hashIv">hash key iv relational to secret key</param>
         /// <param name="zipBefore"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
@@ -493,7 +511,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="secretKey">user secret key, normally email address</param>
         /// <param name="hashIv">hash relational to secret kay</param>
         /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
-        /// <returns><see cref="byte[]"/> plain bytes</returns>
+        /// <returns><see cref="T:byte[]"/> plain bytes</returns>
         public byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv, ZipType unzipAfter = ZipType.None)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
@@ -686,7 +704,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="inString">string to encrypt multiple times</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="encType"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text</param>
+        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text</param>
         /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
         /// <returns>encrypted string</returns>        

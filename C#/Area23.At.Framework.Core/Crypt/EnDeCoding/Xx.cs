@@ -67,7 +67,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// </summary>
         /// <param name="inBytes">byte array to encode</param>
         /// <returns>encoded string</returns>
-        public string Encode(byte[] data) => Xx.ToXx(data);
+        public string Encode(byte[] inBytes) => Xx.ToXx(inBytes);
 
         /// <summary>
         /// Decodes an encoded string to byte[]

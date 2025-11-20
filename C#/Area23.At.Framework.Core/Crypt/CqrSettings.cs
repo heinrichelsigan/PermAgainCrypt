@@ -1,6 +1,7 @@
 ﻿using Area23.At.Framework.Core.Crypt.Msg;
 using Area23.At.Framework.Core.Util;
 using Newtonsoft.Json;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Area23.At.Framework.Core.Crypt
 {
@@ -99,7 +100,7 @@ namespace Area23.At.Framework.Core.Crypt
         /// <summary>
         /// json serializes <see cref="CryptSettings"/> and 
         /// saves json serialized data string to 
-        /// <see cref="LibPaths.AppDirPath"/> + <see cref="Constants.JSON_SAVE_FILE"/>
+        /// <see cref="LibPaths.SystemDirPath"/> + <see cref="Constants.JSON_SAVE_FILE"/>
         /// </summary>
         /// <param name="CryptSettings">settings to save</param>
         /// <param name="jsonFileName">filename, where writing serialized json</param>

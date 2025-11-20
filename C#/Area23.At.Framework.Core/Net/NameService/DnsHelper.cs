@@ -44,7 +44,7 @@ namespace Area23.At.Framework.Core.Net.NameService
         /// GetDnsHostNamesByHostName gets official reverse lookup hostname for a hostname
         /// </summary>
         /// <param name="hostname"></param>
-        /// <returns><see cref="IList{string}"/></returns>
+        /// <returns><see cref="IList{T}">IList{string}</see></returns>
         public static IList<string> GetHostNamesByHostName(string hostname = "")
         {
             List<string> hostnames = new List<string>();

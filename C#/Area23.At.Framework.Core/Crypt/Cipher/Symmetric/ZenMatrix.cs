@@ -53,7 +53,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         };
 
         /// <summary>
-        /// MagicOrder is a byte[], that helps filling up keybytes up 16 bytes deterministic, when keybytes < 16
+        /// MagicOrder is a byte[], that helps filling up keybytes up 16 bytes deterministic, when keybytes lesser then 16
         /// </summary>
         protected internal static readonly int[] MagicOrder = {
             0x8,    0x3,    0x1,    0xe,
@@ -92,25 +92,25 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         ///     0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,             f
         ///     
         /// then 
-        /// value 0x0 will be mapped to 0x8      0 =>  8
-        /// value 0x1 will be mapped to 0x3      1 =>  3
-        /// value 0x2 will be mapped to 0x1      2 =>  1
-        /// value 0x3 will be mapped to 0xe      3 => 14
+        /// value 0x0 will be mapped to 0x8      0 →   8
+        /// value 0x1 will be mapped to 0x3      1 →   3
+        /// value 0x2 will be mapped to 0x1      2 →   1
+        /// value 0x3 will be mapped to 0xe      3 →  14
         /// ... and         
-        /// value 0xe will be mapped to 0x0     14 =>  0
-        /// value 0xf will be mapped to 0x6     15 =>  6         
+        /// value 0xe will be mapped to 0x0     14 →   0
+        /// value 0xf will be mapped to 0x6     15 →   6         
         /// 
         /// a full symmetric <see cref="MatrixPermutationKey"/> would like:
         ///     0    1    2    3    4    5    6    7    8    9    a    b    c    d    e    f
         ///  { 0x8, 0x3, 0xe, 0x1, 0x9, 0xf, 0xb, 0xd, 0x0, 0x4, 0xc, 0x6, 0xa, 0x7, 0x2, 0x5 }
         /// 
         ///  that means, that
-        ///  value 0x0 will be mapped to 0x8 <=> 0x8 will be mapped back to 0x0      0 => 8 AND  8 => 0
-        ///  value 0x1 will be mapped to 0x3 <=> 0x3 will be mapped back to 0x1      1 => 3 AND  3 => 1
-        ///  value 0x2 will be mapped to 0xe <=> 0xe will be mapped back to 0x2      2 => e AND  e => 2
-        ///  value 0x3 is already mapped back to 0x1 !                               3 => 1
+        ///  value 0x0 will be mapped to 0x8 ⇔ 0x8 will be mapped back to 0x0      0 →	8 AND  8 →	0
+        ///  value 0x1 will be mapped to 0x3 ⇔ 0x3 will be mapped back to 0x1      1 →	3 AND  3 →	1
+        ///  value 0x2 will be mapped to 0xe ⇔ 0xe will be mapped back to 0x2      2 →	e AND  e →	2
+        ///  value 0x3 is already mapped back to 0x1 !                              3 →	1
         ///  ...
-        ///  value 0xf is   already mapped back to 0x5 !                             f => 5
+        ///  value 0xf is   already mapped back to 0x5 !                            f →	5
         /// </summary>
         public sbyte[] MatrixPermutationKey { get; protected internal set; }
 
@@ -137,7 +137,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// PermutationKeyHash is same as <see cref="MatrixPermutationKey"/>
-        /// Advantage of <see cref="HashSet{sbyte}"/> is, that no duplicated values can be inside
+        /// Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
         /// </summary>
         public HashSet<sbyte> PermutationKeyHash { get; protected internal set; }
 
@@ -630,8 +630,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Encrypt member function
         /// </summary>
-        /// <param name="pdata">plain data as <see cref="byte[]"/></param>
-        /// <returns>encrypted data <see cref="byte[]">bytes</see></returns>
+        /// <param name="pdata">plain data as <see cref="T:byte[]"/></param>
+        /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         public virtual byte[] Encrypt(byte[] pdata)
         {
             // Check arguments.
@@ -656,7 +656,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Decrypt member function
         /// </summary>
-        /// <param name="cdata">encrypted cipher <see cref="byte[]">bytes</see></param>
+        /// <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
         /// <returns>decrypted plain byte[] data</returns>
         public virtual byte[] Decrypt(byte[] ecdata)
         {
@@ -690,7 +690,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
         /// </summary>
         /// <param name="matrix">sbyte[16] encryption matrix</param>
-        /// <returns><see cref="sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
+        /// <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
         internal static sbyte[] BuildInverseMatrix(sbyte[] matrix, int size = 0x10)
         {
             if (matrix != null && matrix.Length == size)
@@ -711,9 +711,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// through <see cref="InverseMatrix"/> in case of decryption.
         /// </summary>
         /// <param name="inByte"><see cref="byte"/> in byte to map</param>
-        /// <param name="outByte"><see cref=byte"/> mapped out byte</param>
+        /// <param name="outByte"><see cref="byte"/> mapped out byte</param>
         /// <param name="encrypt">true for encryption, false for decryption</param>
-        /// <returns>An <see cref="sbyte[]"/> array with 2  0x0 - 0xf segments (most significant & least significant) bit</returns>
+        /// <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant and least significant) bit</returns>
         protected internal virtual sbyte[] MapByteValue(ref byte inByte, out byte outByte, bool encrypt = true)
         {
             List<sbyte> outSBytes = new List<sbyte>(2);

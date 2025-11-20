@@ -5,7 +5,7 @@ namespace Area23.At.Framework.Core.Util
 {
 
     /// <summary>
-    /// Most simple & tiny static logger
+    /// Most simple and tiny static logger
     /// </summary>
     public static class SLog
     {
@@ -167,7 +167,7 @@ namespace Area23.At.Framework.Core.Util
         /// and <see cref="string">string appName</see>
         /// </summary>
         /// <param name="prefix"><see cref="string"/> prefix</param>
-        /// <param name="exLog"><see cref="Exception/">xZpd</param>
+        /// <param name="exLog"><see cref="Exception">exLog</see></param>
         /// <param name="appName"><see cref="string"/> appName</param>
         public static void Log(string prefix, Exception exLog, string appName = "")
         {

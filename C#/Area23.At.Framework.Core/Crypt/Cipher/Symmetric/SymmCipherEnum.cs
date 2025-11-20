@@ -5,7 +5,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
     /// <summary>
     /// SymmCipherEnum maps prefered provided symmetric <see cref="Org.BouncyCastle.Crypto.IBlockCipher"/> algorthims
-    /// Default algorithm is <see cref="SymmCipherEnum.Aes"/ ><seealso cref="Org.BouncyCastle.Crypto.Engines.AesEngine" />
+    /// Default algorithm is <see cref="SymmCipherEnum.Aes"/> <seealso cref="Org.BouncyCastle.Crypto.Engines.AesEngine" />
     /// </summary>
     [DefaultValue("Aes")]
     public enum SymmCipherEnum : byte

@@ -21,23 +21,23 @@
             <summary>
             GenerateNewRsaKeyPair - generates a new rsa key pair
             </summary>
-            <returns><see cref="!:AsymmetricCipherKeyPairy"/></returns>
+            <returns><see cref="T:Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.GetRsaKeyPair(System.String,System.String)">
             <summary>
             Get Rsa Key Pair by private and public key
             </summary>
-            <param name="publicKey"></param>
-            <param name="privateKey"></param>
+            <param name="pubKey"></param>
+            <param name="privKey"></param>
             <returns><see cref="T:Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Encrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
             <summary>
             Rsa encrypt bytes with public key
             </summary>
-            <param name="bytesToEncrypt"><see cref="!:byte[]">bytes to encrypt</see></param>
+            <param name="bytesToEncrypt"><see cref="T:byte[]">bytes to encrypt</see></param>
             <param name="pair"></param>
-            <returns>encrypted <see cref="!:byte[]"/></returns>
+            <returns>encrypted <see cref="T:yte[]"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.Decrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
             <summary>
@@ -47,7 +47,14 @@
             <param name="pair"></param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.EncryptString(System.String,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.EncryptString(System.String,System.Boolean)">
+            <summary>
+            Encrypts a string
+            </summary>
+            <param name="inPlainString">plain text string</param>
+            <param name="isPublic">true, if it's public key, false if it's private key</param>
+            <returns>Base64 encoded encrypted byte[]</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Asymmetric.Rsa.DecryptString(System.String,System.Boolean)">
             <summary>
             Decrypts a string, that is truely a base64 encoded encrypted byte[]
@@ -79,7 +86,7 @@
             parses pipe semicolon separated pipe string to CipherList
             </summary>
             <param name="pipeText">semicolon separated pipe string to CipherList </param>
-            <returns><see cref="!:CipherEnum[]"/> array of ciphers for the pipe</returns>
+            <returns><see cref="T:CipherEnum[]"/> array of ciphers for the pipe</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe">
             <summary>
@@ -118,15 +125,19 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.CipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
-            CipherPipe constructor with an array of <see cref="!:CipherEnum[]"/> as inpipe
+            CipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
             </summary>
-            <param name="cipherEnums">array of <see cref="!:CipherEnum[]"/> as inpipe</param>
+            <param name="cipherEnums">array of <see cref="T:CipherEnum[]"/> as inpipe</param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
-            CipherPipe constructor with an array of <see cref="!:string[]"/> cipherAlgos as inpipe
+            CipherPipe constructor with an array of <see cref="T:string[]"/> cipherAlgos as inpipe
             </summary>
-            <param name="cipherAlgos">array of <see cref="!:string[]"/> as inpipe</param>
+            <param name="cipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
+            <param name="maxpipe">maximum lentgh <see cref="F:Area23.At.Framework.Core.Util.Constants.MAX_PIPE_LEN"/></param>
+            <param name="encType"><see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncodeType"/></param>
+            <param name="zpType"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
+            <param name="kh"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.Byte[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
@@ -134,14 +145,22 @@
             </summary>
             <param name="keyBytes">user key bytes</param>
             <param name="maxpipe">maximum lentgh <see cref="F:Area23.At.Framework.Core.Util.Constants.MAX_PIPE_LEN"/></param>
+            <param name="encType"><see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncodeType"/></param>
+            <param name="zpType"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
+            <param name="kh"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
+            <exception cref="T:System.ArgumentException"></exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             Constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe"/> from key and hash
-            by getting <see cref="!:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
+            by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
             </summary>
             <param name="key">secret key to generate pipe</param>
             <param name="hash">hash value of secret key</param>
+            <param name="maxpipe"></param>
+            <param name="encType"></param>
+            <param name="zpType"></param>
+            <param name="kh"></param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.#ctor(System.String)">
             <summary>
@@ -169,7 +188,7 @@
             <param name="inBytes">Array of byte</param>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
-            <param name="keyIv">key's iv</param>
+            <param name="hash">key's hash</param>
             <returns>encrypted byte Array</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.CipherEnum,System.String,System.String)">
@@ -179,14 +198,14 @@
             <param name="cipherBytes">Encrypted array of byte</param>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/>both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
-            <param name="keyIv">key's iv</param>
+            <param name="hash">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
-            <param name="inBytes">plain <see cref="!:byte[]"/> to encrypt</param>
+            <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
             <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
@@ -201,7 +220,7 @@
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
             <param name="unzipAfter"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
-            <returns><see cref="!:byte[]"/> plain bytes</returns>
+            <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.EncrpytTextGoRounds(System.String,System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
@@ -256,7 +275,7 @@
             <param name="inString">string to encrypt multiple times</param>
             <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
             and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-            <param name="encType"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text</param>
+            <param name="encoding"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text</param>
             <param name="zipBefore">Zip bytes with <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> before passing them in encrypted stage pipeline. <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
             <returns>encrypted string</returns>        
@@ -290,7 +309,7 @@
             PrivateKeyWithUserHash, helper to double private secret key with hash
             </summary>
             <param name="secKey">users private secret key</param>
-            <param name="keyHash">users private secret key hash</param>
+            <param name="hashedKey">users private secret key hash</param>
             <returns>doubled concatendated string of (secretKey + hash)</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
@@ -374,7 +393,7 @@
             </summary>
             <param name="plainData">Array of plain data byte</param>
             <returns>Array of encrypted data byte</returns>
-            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="!:byte[]"/> is null or zero length</exception>
+            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.Decrypt(System.Byte[])">
             <summary>
@@ -382,7 +401,7 @@
             </summary>
             <param name="encryptedBytes">Array of encrypted data byte</param>
             <returns>Array of plain data byte</returns>
-            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="!:byte[]"/> is null or zero length</exception>
+            <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.EncryptString(System.String)">
             <summary>
@@ -443,7 +462,7 @@
             Generic CryptBounceCastle constructor
             </summary>
             <param name="cparams">parameters to crypt</param>
-            <param name="init">init <see cref="!:ThreeFish"/> first time with a new key</param>
+            <param name="init">init <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptBounceCastle"/> first time with a new key</param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptBounceCastle.GetUserKeyBytes(System.String,System.String)">
             <summary>
@@ -458,15 +477,15 @@
             Generic CryptBounceCastle Encrypt member function
             difference between out parameter encryptedData and return value, are 2 different encryption methods, but with the same result at the end
             </summary>
-            <param name="plainData">plain data as <see cref="!:byte[]"/></param>
-            <returns>encrypted data <see cref="!:byte[]">bytes</see></returns>
+            <param name="plainData">plain data as <see cref="T:byte[]"/></param>
+            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptBounceCastle.Decrypt(System.Byte[])">
             <summary>
             Generic CryptBounceCastle Decrypt member function
             difference between out parameter decryptedData and return value, are 2 different decryption methods, but with the same result at the end
             </summary>
-            <param name="cipherData">encrypted <see cref="!:byte[]">bytes</see></param>
+            <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptBounceCastle.EncryptString(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
@@ -501,18 +520,18 @@
             standard ctor with <see cref="F:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum.Aes"/> default
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>
-            constructs a object with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="!:KeyLen"/>
+            constructs a object with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.CryptParams.KeyLen"/>
             for parameter <see cref="N:Area23.At.Framework.Core.Crypt.Cipher"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
             <summary>
             constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> object 
-            with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="!:KeyLen"/>
-            with additional <see cref="!:Key"/> and <see cref="N:Area23.At.Framework.Core.Crypt.Hash"/>
+            with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, 
+            with additional Key and <see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash" />
             for parameter <see cref="N:Area23.At.Framework.Core.Crypt.Cipher"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
@@ -520,7 +539,7 @@
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> object by <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            with additional <see cref="!:Key"/> and <see cref="!:KeyHashing"/>
+            with additional key <see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/></param>
             <param name="key">secret key</param>
@@ -529,7 +548,7 @@
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CryptParams"/> object by <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/>
-            with additional <see cref="!:Key"/>, <see cref="N:Area23.At.Framework.Core.Crypt.Hash"/> and <see cref="!:KeyHashing"/>
+            with additional kay and hash, <see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/></param>
             <param name="key">secret key</param>
@@ -542,7 +561,7 @@
             </summary>
             <param name="cryptParams">another instance</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.RequestPreferedAlgorithm(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered.RequestPreferedAlgorithm(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>
             static way to get valid <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> for a requested <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             </summary>
@@ -572,7 +591,7 @@
             <summary>
             3Des decrypt bytes
             </summary>
-            <param name="inBytes">Hex bytes encrypted</param>
+            <param name="cipherBytes">Hex bytes encrypted</param>
             <returns>byte[] decrypted bytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net.EncryptString(System.String)">
@@ -618,14 +637,14 @@
             <summary>
             RC564 Encrypt with <see cref="T:Org.BouncyCastle.Crypto.Engines.RC564Engine"/>
             </summary>
-            <param name="plainData">plain data as <see cref="!:byte[]"/></param>
-            <returns>encrypted data <see cref="!:byte[]">bytes</see></returns>
+            <param name="plainData">plain data as <see cref="T:byte[]"/></param>
+            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564.Decrypt(System.Byte[])">
             <summary>
             RC564 Decrypt with <see cref="T:Org.BouncyCastle.Crypto.Engines.RC564Engine"/>
             </summary>
-            <param name="cipherData">encrypted <see cref="!:byte[]">bytes</see></param>
+            <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564.EncryptString(System.String)">
@@ -665,14 +684,14 @@
             <summary>
             Serpent Encrypt member function
             </summary>
-            <param name="plainData">plain data as <see cref="!:byte[]"/></param>
-            <returns>encrypted data <see cref="!:byte[]">bytes</see></returns>
+            <param name="plainData">plain data as <see cref="T:byte[]"/></param>
+            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.Decrypt(System.Byte[])">
             <summary>
             Serpent Decrypt member function
             </summary>
-            <param name="cipherData">encrypted <see cref="!:byte[]">bytes</see></param>
+            <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.EncryptString(System.String)">
@@ -689,7 +708,12 @@
             <param name="inCryptString">base64 encrypted string</param>
             <returns>plain text decrypted string</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum">
+            <summary>
+            SymmCipherEnum maps prefered provided symmetric <see cref="T:Org.BouncyCastle.Crypto.IBlockCipher"/> algorthims
+            Default algorithm is <see cref="F:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum.Aes"/> <seealso cref="T:Org.BouncyCastle.Crypto.Engines.AesEngine" />
+            </summary>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions">
             <summary>
             SymmCipherEnumExtensions provides extension methods for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
@@ -737,15 +761,15 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
-            SymmCipherPipe constructor with an array of <see cref="!:SymmCipherEnum[]"/> as inpipe
+            SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
             </summary>
-            <param name="symmCipherEnums">array of <see cref="!:SymmCipherEnum[]"/> as inpipe</param>
+            <param name="symmCipherEnums">array of <see cref="T:SymmCipherEnum[]"/> as inpipe</param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
-            SymmCipherPipe constructor with an array of <see cref="!:string[]"/> as inpipe
+            SymmCipherPipe constructor with an array of <see cref="T:string[]"/> as inpipe
             </summary>
-            <param name="symmCipherAlgos">array of <see cref="!:string[]"/> as inpipe</param>
+            <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
@@ -757,7 +781,7 @@
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String)">
             <summary>
             Constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe"/> from key and hash
-            by getting <see cref="!:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
+            by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
             </summary>
             <param name="key">secret key to generate pipe</param>
             <param name="hash">hash value of secret key</param>
@@ -778,21 +802,21 @@
             <param name="keyIv">key's iv</param>
             <returns>encrypted byte Array</returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,System.Boolean)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
             <summary>
             Generic decrypt bytes to bytes
             </summary>
             <param name="cipherBytes">Encrypted array of byte</param>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
-            <param name="keyIv">key's iv</param>
+            <param name="hashIv">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,Area23.At.Framework.Core.Zip.ZipType)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
-            <param name="inBytes">plain <see cref="!:byte[]"/> to encrypt</param>
+            <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
             <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
@@ -807,9 +831,22 @@
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
             <param name="unzipAfter"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
-            <returns><see cref="!:byte[]"/> plain bytes</returns>
+            <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.EncrpytToString(System.String,System.String,System.String@,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.EncrpytToString(System.String,System.String,System.String@,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
+            <summary>
+            EncrpytToStringd
+            </summary>
+            <param name="inString">string to encrypt multiple times</param>
+            <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+            and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+            <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
+            <param name="encoding"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+            <param name="zipBefore">Zip bytes with <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> before passing them in encrypted stage pipeline. <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Zip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
+            <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
+            <returns>encrypted string</returns>        
+            <returns></returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytToString(System.String,System.String,System.String@,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             DecrpytToString
@@ -881,8 +918,57 @@
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "F:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MagicOrder" -->
-        <!-- Badly formed XML comment ignored for member "P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey" -->
+        <member name="F:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MagicOrder">
+            <summary>
+            MagicOrder is a byte[], that helps filling up keybytes up 16 bytes deterministic, when keybytes lesser then 16
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey">
+            <summary>
+            abstraction of a 0x10 => 0x10 matrix, for example if 
+            MatrixPermutationKey = { 0x8, 0x3, 0x1, 0xe, 0x9, 0xf, 0x5, 0xc, 0x4, 0xd, 0xa, 0x7, 0xb, 0x2, 0x0, 0x6 }
+                       
+                0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+                
+            (   0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,             0
+                0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             1
+                0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             2
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0,             3
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,             4
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,             5
+                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             6
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,             7
+                0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             8
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,             9
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,             a
+                0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0,             b
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0,             c
+                0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             d
+                1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,             e
+                0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,             f
+                
+            then 
+            value 0x0 will be mapped to 0x8      0 →   8
+            value 0x1 will be mapped to 0x3      1 →   3
+            value 0x2 will be mapped to 0x1      2 →   1
+            value 0x3 will be mapped to 0xe      3 →  14
+            ... and         
+            value 0xe will be mapped to 0x0     14 →   0
+            value 0xf will be mapped to 0x6     15 →   6         
+            
+            a full symmetric <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/> would like:
+                0    1    2    3    4    5    6    7    8    9    a    b    c    d    e    f
+             { 0x8, 0x3, 0xe, 0x1, 0x9, 0xf, 0xb, 0xd, 0x0, 0x4, 0xc, 0x6, 0xa, 0x7, 0x2, 0x5 }
+            
+             that means, that
+             value 0x0 will be mapped to 0x8 ⇔ 0x8 will be mapped back to 0x0      0 →	8 AND  8 →	0
+             value 0x1 will be mapped to 0x3 ⇔ 0x3 will be mapped back to 0x1      1 →	3 AND  3 →	1
+             value 0x2 will be mapped to 0xe ⇔ 0xe will be mapped back to 0x2      2 →	e AND  e →	2
+             value 0x3 is already mapped back to 0x1 !                              3 →	1
+             ...
+             value 0xf is   already mapped back to 0x5 !                            f →	5
+            </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.InverseMatrix">
             <summary>
             Inverse Matrix 
@@ -891,7 +977,7 @@
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.PermutationKeyHash">
             <summary>
             PermutationKeyHash is same as <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/>
-            Advantage of <see cref="!:HashSet&lt;sbyte&gt;"/> is, that no duplicated values can be inside
+            Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.ProcessBlock(System.Byte[],System.Int32,System.Byte[],System.Int32)">
@@ -976,14 +1062,14 @@
             <summary>
             MatrixSymChiffer Encrypt member function
             </summary>
-            <param name="pdata">plain data as <see cref="!:byte[]"/></param>
-            <returns>encrypted data <see cref="!:byte[]">bytes</see></returns>
+            <param name="pdata">plain data as <see cref="T:byte[]"/></param>
+            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.Decrypt(System.Byte[])">
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
-            <param name="cdata">encrypted cipher <see cref="!:byte[]">bytes</see></param>
+            <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.BuildInverseMatrix(System.SByte[],System.Int32)">
@@ -991,9 +1077,18 @@
             BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
             </summary>
             <param name="matrix">sbyte[16] encryption matrix</param>
-            <returns><see cref="!:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
+            <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)">
+            <summary>
+            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/> in case of encrypt,
+            through <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.InverseMatrix"/> in case of decryption.
+            </summary>
+            <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
+            <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
+            <param name="encrypt">true for encryption, false for decryption</param>
+            <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant and least significant) bit</returns>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2">
             <summary>
             More complex sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
@@ -1007,7 +1102,7 @@
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2">
             <summary>
             abstraction of a 0x10 => 0x10 matrix, for example
-            <see cref="!:MatrixPermutationKey"/> 
+            <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/> 
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2">
@@ -1018,7 +1113,7 @@
         <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.PermutationKeyHash2">
             <summary>
             PermutationKeyHash is same as <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/>
-            Advantage of <see cref="!:HashSet&lt;sbyte&gt;"/> is, that no duplicated values can be inside
+            Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor">
@@ -1086,14 +1181,14 @@
             <summary>
             MatrixSymChiffer Encrypt member function
             </summary>
-            <param name="pdata">plain data as <see cref="!:byte[]"/></param>
-            <returns>encrypted data <see cref="!:byte[]">bytes</see></returns>
+            <param name="pdata">plain data as <see cref="T:byte[]"/></param>
+            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.Decrypt(System.Byte[])">
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
-            <param name="cdata">encrypted cipher <see cref="!:byte[]">bytes</see></param>
+            <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.SByte[],System.Int32)">
@@ -1101,9 +1196,18 @@
             BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
             </summary>
             <param name="matrix">sbyte[16] encryption matrix</param>
-            <returns><see cref="!:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
+            <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)">
+            <summary>
+            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="!:MatrixPermutationKey"/> in case of encrypt,
+            through <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2"/> in case of decryption.
+            </summary>
+            <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
+            <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
+            <param name="encrypt">true for encryption, false for decryption</param>
+            <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.CryptSettings.#ctor">
             <summary>
             CryptSettings constructor maybe needed public for NewTonSoftJson serializing object
@@ -1128,7 +1232,7 @@
             <summary>
             json serializes <see cref="T:Area23.At.Framework.Core.Crypt.CryptSettings"/> and 
             saves json serialized data string to 
-            <see cref="!:LibPaths.AppDirPath"/> + <see cref="F:Area23.At.Framework.Core.Util.Constants.JSON_SAVE_FILE"/>
+            <see cref="P:Area23.At.Framework.Core.Util.LibPaths.SystemDirPath"/> + <see cref="F:Area23.At.Framework.Core.Util.Constants.JSON_SAVE_FILE"/>
             </summary>
             <param name="CryptSettings">settings to save</param>
             <param name="jsonFileName">filename, where writing serialized json</param>
@@ -1150,7 +1254,7 @@
             <summary>
             Decodes a hex string to byte[]
             </summary>
-            <param name="hexString">hex16 encoded string</param>
+            <param name="encodedString">hex16 encoded string</param>
             <returns></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.Base16.ToBase16(System.Byte[])">
@@ -1238,7 +1342,11 @@
             TODO: base58
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper">
+            <summary>
+            static helper class for Encoding / Decoding
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.KeyToHex(System.String)">
             <summary>
             KeyHexString transforms a private secret key to hex string
@@ -1251,7 +1359,7 @@
             <summary>
             KeyBytesToHex transforms keyBytes to a hex string
             </summary>
-            <param name="keyBytes"><see cref="!:byte[]"/> keyBytes to transform</param>
+            <param name="keyBytes"><see cref="T:byte[]"/> keyBytes to transform</param>
             <returns><see cref="T:System.String">hexString</see> of keyBytes</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
@@ -1261,7 +1369,7 @@
             </summary>
             <param name="keyBytes">secret keyBytes</param>
             <param name="length">byte array length, default: 16, -1 for unlimited length</param>
-            <returns><see cref="!:byte[]">byte[length]</see></returns>
+            <returns><see cref="T:byte[]">byte[length]</see></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.HexToKey(System.String)">
@@ -1279,7 +1387,7 @@
             <param name="inBytes">inBytes to encdode</param>
             <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
             "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="!:encryptBytes"/> represent a binary without encryption</param>
+            <param name="fromPlain">Only for uu: true, if <see cref="!:inBytes"/> represent a binary without encryption</param>
             <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
             <returns>encoded string</returns>
         </member>
@@ -1294,7 +1402,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.DecodeText(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,System.Boolean,System.Boolean)">
             <summary>
-            EncodedTextToBytes transforms an encoded text string into a <see cref="!:byte[]">býte array</see>
+            EncodedTextToBytes transforms an encoded text string into a <see cref="T:byte[]">býte array</see>
             </summary>
             <param name="cipherText">encoded (encrypted) text string</param>
             <param name="encodingType"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> could be 
@@ -1305,7 +1413,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.DecodeText(System.String,System.String)">
             <summary>
-            DecodeText decodes an encoded text string to a <see cref="!:byte[]">býte array</see>
+            DecodeText decodes an encoded text string to a <see cref="T:byte[]">býte array</see>
             </summary>
             <param name="inText">encoded (encrypted) text string</param>
             <param name="enCodingString">ebcoding enum <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> as plain string
@@ -1315,9 +1423,9 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.DecodeBytes(System.Byte[],System.String)">
             <summary>
-            DecodeText decodes an encoded text string to a <see cref="!:byte[]">býte array</see>
+            DecodeText decodes an encoded text string to a <see cref="T:byte[]">býte array</see>
             </summary>
-            <param name="inText">encoded (encrypted) text string</param>
+            <param name="inBytes">encoded (encrypted) text string</param>
             <param name="enCodingString">ebcoding enum <see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> as plain string
             "Base64" is default.</param>
             <returns>binary byte array</returns>>
@@ -1562,7 +1670,15 @@
             <see cref="T:Org.BouncyCastle.Crypto.Digests.AsconHash256" />
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.BCrypt" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.BCrypt">
+            <summary>
+            BCrypt a classic unix passwd crypt method
+            
+            All members are implemented via <see cref="N:Org.BouncyCastle.Crypto"/> namespace.
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.BCrypt"/>
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Hash.BCrypt.BCryptHash(System.Byte[])">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Generators.BCrypt"/>
@@ -1622,7 +1738,15 @@
             <param name="showFileName">show fileName after hash sum</param>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt">
+            <summary>
+            OpenBSDCrypt a classic unix passwd crypt method
+            
+            All members are implemented via <see cref="N:Org.BouncyCastle.Crypto"/> namespace.
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt"/>
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.Byte[])">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt" />
@@ -1633,8 +1757,22 @@
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.String)" -->
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.RipeMD256" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.OpenBSDCrypt.OpenBSDCryptHash(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt" />
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            </summary>
+            <param name="passwd">string password</param>
+            <returns>string encrypted password</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.RipeMD256">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
+            Thanx to the legion of <see href="https://bouncycastle.org/" />
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Hash.RipeMD256.HashString(System.String)">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
@@ -1643,7 +1781,15 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Crypt.Hash.SCrypt" -->
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.SCrypt">
+            <summary>
+            SCrypt a classic unix passwd crypt method
+            
+            All members are implemented via <see cref="N:Org.BouncyCastle.Crypto"/> namespace.
+            Thanx to the legion of <see href="https://bouncycastle.org/"/>
+            <see cref="T:Org.BouncyCastle.Crypto.Generators.SCrypt"/>
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Hash.SCrypt.SCryptHash(System.Byte[])">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Generators.SCrypt"/>
@@ -1678,7 +1824,7 @@
             Hashes a file
             </summary>
             <param name="filePath">full(unc) path to file</param>
-            <param name="fileName">optional filename to add after hash</param>
+            <param name="showFileName">true for filename to add after hash, otherwise false</param>
             <returns>Sha512 hash of file with optional fileName at end</returns>
             <exception cref="T:System.ArgumentNullException">thrown, when filePath == null | filePath == "" | !File.Exists(filePath)</exception>        
         </member>
@@ -1692,7 +1838,7 @@
             Hashes a file
             </summary>
             <param name="filePath">full(unc) path to file</param>
-            <param name="fileName">optional filename to add after hash</param>
+            <param name="showFileName">true for filename to add after hash, otherwise false</param>
             <returns>Sha512 hash of file with optional fileName at end</returns>
             <exception cref="T:System.ArgumentNullException">thrown, when filePath == null | filePath == "" | !File.Exists(filePath)</exception>        
         </member>
@@ -1706,7 +1852,7 @@
             Hashes a file
             </summary>
             <param name="filePath">full(unc) path to file</param>
-            <param name="fileName">optional filename to add after hash</param>
+            <param name="showFileName">show filename beside hash</param>
             <returns>Sha512 hash of file with optional fileName at end</returns>
             <exception cref="T:System.ArgumentNullException">thrown, when filePath == null | filePath == "" | !File.Exists(filePath)</exception>
         </member>
@@ -1721,7 +1867,7 @@
             <summary>
             Hashes a Sha512 of byte[]
             </summary>
-            <param name="bytes"><see cref="!:byte[]">byte[] bytes</see></param>
+            <param name="bytes"><see cref="T:byte[]">byte[] bytes</see></param>
             <param name="fileName">optional fileName to end</param>
             <returns></returns>
         </member>
@@ -1765,7 +1911,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CContact.GetRowParams">
             <summary>
-            <see cref="!:object[]">RowParams</see> gets an object array of row parameters to show in <see cref="T:System.Windows.Forms.DataGridView"/>
+            <see cref="T:object[]">RowParams</see> gets an object array of row parameters to show in <see cref="T:System.Windows.Forms.DataGridView"/>
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CContact.ToJsonEncrypt(System.String,Area23.At.Framework.Core.Crypt.Msg.CContact,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType)">
@@ -1810,7 +1956,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CFile.GetFileNameContentLength">
             <summary>
-            GetFileNameContentLength write <see cref="!:CqrFileName"/> and <see cref="!:Data.Length"/>
+            GetFileNameContentLength write <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CFile"/> and  Data.Length
             </summary>
             <returns>CqrFileName + " [" + Data.Length + "]";</returns>
         </member>
@@ -1818,9 +1964,11 @@
             <summary>
             ToJsonEncrypt
             </summary>
-            <param name="serverKey">server key to encrypt</param>
-            <param name="ccntct"><see cref="T:Area23.At.Framework.Core.Crypt.Msg.CContact"/> to encrypt and serialize</param>
-            <returns>a serialized <see cref="T:System.String" /> of encrypted <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CContact"/></returns>
+            <param name="serverKey">server key to encrypt</param>        
+            <param name="cfile"><see cref="T:Area23.At.Framework.Core.Crypt.Msg.CFile"/></param>
+            <param name="encoder"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/></param>
+            <param name="zipType"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
+            <returns>serialized json string</returns>
             <exception cref="T:Area23.At.Framework.Core.Crypt.CException"></exception>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CFile.FromJsonDecrypt(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType)">
@@ -1860,7 +2008,11 @@
             Base64 mime encoded string of raw data
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Crypt.Msg.CImage.#ctor" -->
+        <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.#ctor">
+            <summary>
+            Default empty constructor (needed for json serialize and deserialize)
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.#ctor(System.String,System.Byte[])">
             <summary>
             Ctor with filename and byte[] data
@@ -1900,7 +2052,7 @@
             <summary>
             ToDrawingImage converts a <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CImage"/> to a <see cref="T:System.Drawing.Image"/>
             </summary>
-            <param name="cqrImage"><see cref="T:Area23.At.Framework.Core.Crypt.Msg.CImage"/> to convert</param>
+            <param name="cImage"><see cref="T:Area23.At.Framework.Core.Crypt.Msg.CImage"/> to convert</param>
             <returns>converted <see cref="T:System.Drawing.Image"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.FromDrawingImage(System.Drawing.Image,System.String)">
@@ -1945,7 +2097,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CryptMsg`1.EncryptToJson(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType)">
             <summary>
-            Serialize <see cref="!:CSrvMsg&lt;TC&gt;"/> to Json Stting
+            Serialize <see cref="T:CSrvMsg{TC}"/> to Json Stting
             </summary>
             <returns>json serialized string</returns>
         </member>
@@ -1954,6 +2106,15 @@
             Serialize <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CryptMsg`1"/> to Json Stting
             </summary>
             <returns>json serialized string</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Msg.SerializationTypeExtension.Cerialize``1(Area23.At.Framework.Core.Crypt.Msg.SerType,``0)">
+            <summary>
+            Cerialize
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="serTyoe"></param>
+            <param name="t"></param>
+            <returns></returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Net.NameService.DnsHelper">
             <summary>
@@ -1979,7 +2140,7 @@
             GetDnsHostNamesByHostName gets official reverse lookup hostname for a hostname
             </summary>
             <param name="hostname"></param>
-            <returns><see cref="!:IList&lt;string&gt;"/></returns>
+            <returns><see cref="T:System.Collections.Generic.IList`1">IList{string}</see></returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Net.NetworkAddresses">
             <summary>
@@ -1998,7 +2159,7 @@
             GetConnectedIpAddressesAsync
             </summary>
             <param name="serverIps">serverIPs List to connect and verify, if connection is possible through</param>
-            <returns><see cref="!:Task&lt;List&lt;IPAddress&gt;&gt;"/></returns>
+            <returns><see cref="T:Task{List{IPAddress}}"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Net.NetworkAddresses.GetIpAddresses">
             <summary>
@@ -2062,7 +2223,16 @@
             static constructor
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)" -->
+        <member name="M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)">
+            <summary>
+            DownloadString downloads a string from an uri
+            </summary>
+            <param name="url"></param>
+            <param name="secretKey"></param>
+            <param name="keyIv"></param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
+            <returns>downloaded string</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)">
             <summary>
             ExternalClientIpFromServer gets external network ip for client from server
@@ -2279,7 +2449,7 @@
         </member>
         <member name="P:Area23.At.Framework.Core.Util.Constants.AppLogFile">
             <summary>
-            AppLogFile - logfile with <see cref="!:Framework.Library.Extensions.Area23Date(DateTime)"/> prefix
+            AppLogFile - logfile with <see cref="M:Area23.At.Framework.Core.Util.Extensions.Area23Date(System.DateTime)"/> prefix
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Util.Constants.Locale">
@@ -2366,22 +2536,22 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ToByteArray(System.IO.Stream)">
             <summary>
-            <see cref="T:System.IO.Stream"/>.ToByteArray() extension method: converts <see cref="T:System.IO.Stream"/> to <see cref="!:byte[]"/> array
+            <see cref="T:System.IO.Stream"/>.ToByteArray() extension method: converts <see cref="T:System.IO.Stream"/> to <see cref="T:byte[]"/> array
             </summary>
             <param name="stream"><see cref="T:System.IO.Stream"/> which static methods are now extended</param>
-            <returns>binary <see cref="!:byte[]">byte[] array</see></returns>
+            <returns>binary <see cref="T:byte[]">byte[] array</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.GetImageMimeType(System.Byte[])">
             <summary>
-            <see cref="!:byte[]"/>.GetImageMimeType() extension method: auto detect mime type of an image inside an binary byte[] array
+            <see cref="T:byte[]"/>.GetImageMimeType() extension method: auto detect mime type of an image inside an binary byte[] array
             via <see cref="M:System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders"/> <seealso cref="M:System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders"/>
             </summary>
-            <param name="bytes">binary <see cref="!:byte[]">byte[] array</see></param>
+            <param name="bytes">binary <see cref="T:byte[]">byte[] array</see></param>
             <returns></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ArrayIndexOf(System.Byte[],System.Byte)">
             <summary>
-            <see cref="!:byte[]"/>.ArrayIndexOf(byte value) extension method: gets the first index of specified byte value
+            <see cref="T:byte[]"/>.ArrayIndexOf(byte value) extension method: gets the first index of specified byte value
             </summary>
             <param name="bytes">byte[] to search</param>
             <param name="value">byte to find</param>
@@ -2389,9 +2559,9 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ToFile(System.Byte[],System.String,System.String,System.String)">
             <summary>
-            <see cref="!:byte[]"/>.ToFile(string filePath, string fileName, string fext) extension method: writes a byte array to a file
+            <see cref="T:byte[]"/>.ToFile(string filePath, string fileName, string fext) extension method: writes a byte array to a file
             </summary>
-            <param name="bytes"><see cref="!:byte[]"/></param>
+            <param name="bytes"><see cref="T:byte[]"/></param>
             <param name="filePath">filesystem path</param>
             <param name="fileName">filename</param>
             <param name="fext">file extension</param>
@@ -2399,7 +2569,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ToHexString(System.Byte[],System.Boolean)">
             <summary>
-            <see cref="!:byte[]"/>.ToHexString() extension method: converts byte[] to HexString
+            <see cref="T:byte[]"/>.ToHexString() extension method: converts byte[] to HexString
             </summary>
             <param name="bytes">Array of <see cref="T:System.Byte"/></param>
             <param name="UPPERCASE">bool default true, UPPERCASE LETTER CHARS ABCDEF</param>
@@ -2407,7 +2577,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.FindBytes(System.Byte[],System.Byte[],System.Int32)">
             <summary>
-            <see cref="!:byte[]"/>.FindBytes extension method: searches hayStack for the first occurence of needle, 
+            <see cref="T:byte[]"/>.FindBytes extension method: searches hayStack for the first occurence of needle, 
             FindBytes uses static equivalent <see cref="M:Area23.At.Framework.Core.Util.Extensions.BytesBytes(System.Byte[],System.Byte[],System.Int32)"/> 
             </summary>
             <param name="hayStack">byte[] of haystack to search through</param>
@@ -2427,7 +2597,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.TarBytes(System.Byte[],System.Byte[][])">
             <summary>
-            <see cref="!:byte[]"/>.TarBytes extension method: tars 
+            <see cref="T:byte[]"/>.TarBytes extension method: tars 
             </summary>
             <param name="baseBytes">base byte array</param>
             <param name="bytesToAdd">more byte arrays</param>
@@ -2440,12 +2610,21 @@
             <param name="bytesToAdd">one up to many byte arrays</param>
             <returns>large tared byte array</returns>
         </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.CompareBytes(System.Byte[],System.Byte[],System.Boolean)">
+            <summary>
+            Compare bytes extension Method
+            </summary>
+            <param name="baseBytes">base bytes</param>
+            <param name="bytesToCompare">bytes to compare</param>
+            <param name="partially">true: only compare less then half of bytes, false: all byter</param>
+            <returns>something like Levenstein Distanz</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.FromHexString(System.String)">
             <summary>
             <see cref="T:System.String"/>.FromHexString() extension method: converts hexadecimal string to byte[]
             </summary>
             <param name="hexString">hexadecimal string</param>
-            <returns><see cref="!:byte[]">byte[]</see> Array of <see cref="T:System.Byte"/></returns>
+            <returns><see cref="T:byte[]">byte[]</see> Array of <see cref="T:byte[]"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.Base64ToStream(System.String)">
             <summary>
@@ -2491,7 +2670,7 @@
             if <see cref="F:System.Boolean.TrueString"/>, then first occurence in main <see cref="M:System.String.IndexOf(System.String)">main.IndexOf(patternStart)</see> will be executed, 
             otherwise if <see cref="F:System.Boolean.FalseString"/>, then <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternStart)</see> will be executed.
             </param>
-            <param name="markStartEnd">if <see cref="!:!string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
+            <param name="markStartEnd">if <see cref="M:System.String.IsNullOrEmpty(System.String)">!string.IsNullOrEmpty(markStartEnd)</see> 
             then start position of substring will be set to <see cref="!:string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
             </param>
             <param name="patternEnd">end pattern for substring, <see cref="M:System.String.LastIndexOf(System.String)">main.IndexOf(patternEnd)</see></param>
@@ -2569,14 +2748,14 @@
             <see cref="T:System.Drawing.Image"/>.ToByteArray() extension method: converts <see cref="T:System.Drawing.Image"/> to byte array
             </summary>
             <param name="img">this <see cref="T:System.Drawing.Image"/></param>
-            <returns><see cref="!:byte[]?"/> array</returns>
+            <returns><see cref="T:byte[]?"/> array</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ToBase64(System.Drawing.Image)">
             <summary>
             <see cref="T:System.Drawing.Image"/>.ToBase64() extension method: converts <see cref="T:System.Drawing.Image"/> to base64 string
             </summary>
             <param name="img">this <see cref="T:System.Drawing.Image"/></param>
-            <returns>base64 encoded <see cref="!:string?"/></returns>
+            <returns>base64 encoded <see cref="T:string?"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.IsValidXml(System.String)">
             <summary>
@@ -2602,7 +2781,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.SwapTPositions``1(``0[],System.Int32,System.Int32,System.Boolean)">
             <summary>
-            <see cref="!:T"/>.SwapTPositions&lt;<typeparamref name="T"/>&gt;(this <typeparamref name="T"/>[] tarray, .. extensions method
+            SwapTPositions&lt;<typeparamref name="T"/>&gt;(this <typeparamref name="T"/>[] tarray, .. extensions method
             Swaps values of two positions inside a generic Array
             </summary>
             <typeparam name="T"></typeparam>
@@ -2613,7 +2792,16 @@
             <returns>swapped T generic array</returns>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.Extensions.ArrayIndexOf``1(``0[],``0,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.ArrayIndexOf``1(``0[],``0,System.Boolean)">
+            <summary>
+            ArrayIndexOf{T} generic extension to find the first or last occurence of a T value in T[] tarray
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="tarray">generic T array</param>
+            <param name="tvalue">T value to find</param>
+            <param name="fromStart">if true, begin search at start (default), if false begin searching from end to start</param>
+            <returns>if found, first or last index postition of Tvalue, if not found -1</returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.FirstIndexOf``1(``0[],``0)">
             <summary>
             FirstIndexOf{T} generic search in a T array from starting at begin as usual
@@ -2643,9 +2831,9 @@
         </member>
         <member name="T:Area23.At.Framework.Core.Util.GifEncoder">
             <summary>   
-            This encoder is taken from <see cref="!:https://github.com/DataDink/Bumpkit" />
-            <seealso cref="!:https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs">GifEncoder.cs</seealso>
-            <seealso cref="!:https://github.com/DataDink/Bumpkit?tab=Unlicense-1-ov-file">Unlicense license of DataDink/Bumpkit</seealso>
+            This encoder is taken from <see href="https://github.com/DataDink/Bumpkit" />
+            <seealso href="https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs">GifEncoder.cs</seealso>
+            <seealso href="https://github.com/DataDink/Bumpkit?tab=Unlicense-1-ov-file">Unlicense license of DataDink/Bumpkit</seealso>
             Encodes multiple images as an animated gif to a stream. <br />
             ALWAYS ALWAYS ALWAYS wire this up   in a using block <br />
             Disposing the encoder will complete the file. <br />
@@ -2654,14 +2842,11 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Image,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <summary>
-            Encodes multiple images as an animated gif to a stream. <br />
-            ALWAYS ALWAYS ALWAYS wire this in a using block <br />
-            Disposing the encoder will complete the file. <br />
-            Uses default .net GIF encoding and adds animation headers.
+            GifEncoder
             </summary>
-            <param name="stream">The stream that will be written to.</param>
-            <param name="width">Sets the width for this gif or null to use the first frame's width.</param>
-            <param name="height">Sets the height for this gif or null to use the first frame's height.</param>
+            <param name="img">img</param>
+            <param name="repeatCount">repeat n times</param>
+            <param name="frameDelay">deley betweeen frames</param>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.Drawing.Image,System.Nullable{System.TimeSpan})">
             <summary>
@@ -2734,7 +2919,7 @@
             <summary>
             GetMimeType
             </summary>
-            <param name="fileBytes"><see cref="!:byte[]">byte[] binary array</see></param>
+            <param name="fileBytes"><see cref="T:byte[]">byte[] binary array</see></param>
             <param name="fileName">save filename</param>
             <returns>detected mime type by binary byte pattern, 
             if no specific mime type detect => default application/octet-stream</returns>
@@ -2770,7 +2955,7 @@
             <summary>
             GetMimeType
             </summary>
-            <param name="fileBytes"><see cref="!:byte[]">byte[] binary array</see></param>
+            <param name="fileBytes"><see cref="T:byte[]">byte[] binary array</see></param>
             <param name="fileName">save filename</param>
             <returns>detected mime type by binary byte pattern, 
             if no specific mime type detect => default application/octet-stream</returns>
@@ -2828,7 +3013,7 @@
             <param name="regHive">registry root hive</param>
             <param name="subKeyName">registry subkey name</param>
             <param name="regName">registry name ref</param>
-            <returns><see cref="!:Task&lt;object&gt;"/></returns>
+            <returns><see cref="T:System.Threading.Tasks.Task`1">Task{object}</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.RegistryAccessor.SetRegistryEntryAsync(System.Object,Microsoft.Win32.RegistryHive,System.String,System.String)">
             <summary>
@@ -2889,7 +3074,11 @@
             </summary>
             <returns></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Util.SLog" -->
+        <member name="T:Area23.At.Framework.Core.Util.SLog">
+            <summary>
+            Most simple and tiny static logger
+            </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Util.SLog.LogFile">
             <summary>
             LogFile
@@ -2919,8 +3108,24 @@
             <param name="exLog"><see cref="T:System.Exception"/> to log</param>
             <param name="appName">application name</param>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Util.SLog.Log(System.String,System.Exception,System.String)" -->
-        <!-- Badly formed XML comment ignored for member "T:Area23.At.Framework.Core.Util.Utils" -->
+        <member name="M:Area23.At.Framework.Core.Util.SLog.Log(System.String,System.Exception,System.String)">
+            <summary>
+            static log with <see cref="T:System.String">string prefix</see>, downcasted generic <see cref="T:System.Exception">Exception xZpd</see> 
+            and <see cref="T:System.String">string appName</see>
+            </summary>
+            <param name="prefix"><see cref="T:System.String"/> prefix</param>
+            <param name="exLog"><see cref="T:System.Exception">exLog</see></param>
+            <param name="appName"><see cref="T:System.String"/> appName</param>
+        </member>
+        <member name="T:Area23.At.Framework.Core.Util.Utils">
+            <summary>
+            Static Utils, thanks to
+            <see href="https://newtonsoft.com/json/">Newtonsoft Json.NET</see>
+            <seealso href="https://stackoverflow.com/">Stackoverflow</seealso>
+            <seealso href="https://stackoverflow.com/questions/4123590/serialize-an-object-to-xml">xml serializer thread on stackoverflow</seealso>
+            <seeslo href="https://gist.github.com/riyadparvez/4467678">gist.github.com/riyadparvez</seeslo> for generic reflection
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.Utils.SwapT``1(``0@,``0@)">
             <summary>
             SwapT a generic swapper
@@ -3012,11 +3217,11 @@
         <member name="T:Area23.At.Framework.Core.Static.ProcessCmd">
             <summary>
             ProcessCmd static class for running an executable or processing shell command
-            <see cref="!:https://github.com/heinrichelsigan/area23.at/blob/main/Framework/Library/ProcessCmd.cs">ProcessCmd.cs at github.com/heinrichelsigan</see>
+            <see href="https://github.com/heinrichelsigan/area23.at/blob/main/Framework/Library/ProcessCmd.cs">ProcessCmd.cs at github.com/heinrichelsigan</see>
             ProcessCmd class is free software; 
             you can redistribute it and/or modify it under the terms of the GNU Library General Public License 
             aspublished by the Free Software Foundation; 
-            either <seealso cref="!:https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2</seealso> 
+            either <seealso href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2</seealso> 
             of the License, or (at your option) any later version.
             See the GNU Library General Public License for more details.    
             </summary>
@@ -3036,7 +3241,7 @@
             Execute a binary or shell cmd
             </summary>
             <param name="cmdPath">full or relative filepath to executable</param>
-            <param name="arguments"><see cref="!:string[]">string[] arguments</see> passed to executable</param>
+            <param name="arguments"><see cref="T:string[]">string[] arguments</see> passed to executable</param>
             <param name="quoteArgs"><see cref="T:System.Boolean">bool quoteArgs</see> set each single argument under double quote, when passing it to cmdPath</param>
             <param name="useShellExecute"><see cref="T:System.Boolean">bool useShellExecute</see> true, when using system shell to execute cmdPath</param>
             <returns>Console output of executed command</returns>
@@ -3049,29 +3254,43 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BZip(System.Byte[],System.Int32)">
             <summary>
-            BZip transfdorms uncompressed <see cref="!:byte[]">byte[] inBytes</see> to <see cref="!:byte[]">bzip2 compressed (byte[])bytes</see>
+            BZip transfdorms uncompressed <see cref="T:yte[]">byte[] inBytes</see> to <see cref="T:byte[]">bzip2 compressed (byte[])bytes</see>
             </summary>
-            <param name="inBytes"> <see cref="!:byte[]">bytes</see> ready to compress</param>
+            <param name="inBytes"> <see cref="T:byte[]">bytes</see> ready to compress</param>
             <param name="compressionLevel">level of compression: 
              1  ... for at least no compression, 
             4,5 ... for average compression
              9  ... for strongest bzip2 compression, generating smallest most compact output 
             </param>
-            <returns><see cref="!:byte[]?">byte[] bzip2 compressed out bytes</see></returns>
+            <returns><see cref="T:byte[]?">byte[] bzip2 compressed out bytes</see></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Zip.BZip2.BZip2Stream(System.IO.MemoryStream,System.Boolean,System.Int32)" -->
+        <member name="M:Area23.At.Framework.Core.Zip.BZip2.BZip2Stream(System.IO.MemoryStream,System.Boolean,System.Int32)">
+            <summary>
+            BZip2Stream bzip2 data on a  a <see cref="T:System.IO.MemoryStream">Memorystream memIn</see>
+            and write bzip2 compressed data on <see cref="T:System.IO.MemoryStream">MemoryStream memOut</see>
+            </summary>
+            <param name="memIn"><see cref="T:System.IO.MemoryStream">Memorystream containg data to compress</see></param>
+            <param name="closeDisposeMemIn">if true, parameter passed <see cref="T:System.IO.MemoryStream">memIn</see> will be closed and disppsed 
+            after compressed data are written to <see cref="T:System.IO.MemoryStream">MemoryStream memOut</see>, which will be returned</param>
+            <param name="compressionLevel">level of compression: 
+             1  ... for at least no compression, 
+            4,5 ... for average compression
+             9  ... for strongest bzip2 compression, generating smallest most compact output 
+            </param>
+            <returns><see cref="T:System.IO.MemoryStream">MemoryStream memOut containing bzip2 compressed data</see></returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BZip2Bytes(System.Byte[],System.Int32)">
             <summary>
-            BZip2Bytes bzip2 <see cref="!:byte[]">byte[] inBytes</see> 
-            and write bzip2 compressed data <see cref="!:byte[]">byte[] outBytes</see> 
+            BZip2Bytes bzip2 <see cref="T:byte[]">byte[] inBytes</see> 
+            and write bzip2 compressed data <see cref="T:byte[]">byte[] outBytes</see> 
             </summary>
-            <param name="inBytes"><see cref="!:byte[]">byte[] inBytes, containing data to compress with bzip2</see></param>
+            <param name="inBytes"><see cref="T:byte[]">byte[] inBytes, containing data to compress with bzip2</see></param>
             <param name="compressionLevel">level of compression: 
              1  ... for at least no compression, 
             4,5 ... for average compression
              9  ... for strongest bzip2 compression, generating smallest most compact output 
             </param>
-            <returns><see cref="!:byte[]">byte[] outBytes</see> containing bzip2 compressed data of / from <see cref="!:byte[]">byte[] outBytes</see></returns>
+            <returns><see cref="T:byte[]">byte[] outBytes</see> containing bzip2 compressed data of / from <see cref="T:byte[]">byte[] outBytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BZip2TextAndEncode(System.String,System.Int32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
             <summary>
@@ -3084,20 +3303,29 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BUnZip(System.Byte[])">
             <summary>
-            BUnZips compressed <see cref="!:byte[]">byte[] inBytes</see> 
-            and returns the decompressed bunzipped <see cref="!:byte[]?" />.
+            BUnZips compressed <see cref="T:byte[]">byte[] inBytes</see> 
+            and returns the decompressed bunzipped <see cref="T:byte[]?" />.
             </summary>
-            <param name="inBytes">compressed / bzipped <see cref="!:byte[]">byte[] inBytes</see></param>
-            <returns>decompressed bunzipped <see cref="!:byte[]?">byte[]?</see></returns>
+            <param name="inBytes">compressed / bzipped <see cref="T:byte[]">byte[] inBytes</see></param>
+            <returns>decompressed bunzipped <see cref="T:byte[]?">byte[]?</see></returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Zip.BZip2.BUnZip2Stream(System.IO.MemoryStream,System.Boolean)" -->
+        <member name="M:Area23.At.Framework.Core.Zip.BZip2.BUnZip2Stream(System.IO.MemoryStream,System.Boolean)">
+            <summary>
+            BUnZip2Stream bunzip2 (= decompresses) data on a <see cref="T:System.IO.MemoryStream">Memorystream memIn</see>
+            and writes decompressed unzipped data to <see cref="T:System.IO.MemoryStream">MemoryStream memOut</see>
+            </summary>
+            <param name="memIn"><see cref="T:System.IO.MemoryStream">Memorystream containg bzip2 compressed / zipped data to decompress</see></param>        
+            <param name="closeDisposeMemIn">if true, parameter passed <see cref="T:System.IO.MemoryStream">memIn</see> will be closed and disppsed 
+            after compressed data are written to <see cref="T:System.IO.MemoryStream">MemoryStream memOut</see>, which will be returned</param>
+            <returns><see cref="T:System.IO.MemoryStream">MemoryStream memOut containing bunzip2 decompressed / unzipped data</see></returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BUnZip2Bytes(System.Byte[])">
             <summary>
-            BUnZip2Bytes bunzips <see cref="!:byte[]">byte[] inBytes</see> and writes
-            decompressed unzipped data to <see cref="!:byte[]">byte[] outBytes</see> 
+            BUnZip2Bytes bunzips <see cref="T:byte[]">byte[] inBytes</see> and writes
+            decompressed unzipped data to <see cref="T:byte[]">byte[] outBytes</see> 
             </summary>
-            <param name="inBytes"><see cref="!:byte[]">byte[] inBytes, containing bzip2 compressed data</see></param>
-            <returns><see cref="!:byte[]">byte[] outBytes</see> containing bunzipped / decompressed data from <see cref="!:byte[]">byte[] inBytes</see></returns>
+            <param name="inBytes"><see cref="T:byte[]">byte[] inBytes, containing bzip2 compressed data</see></param>
+            <returns><see cref="T:byte[]">byte[] outBytes</see> containing bunzipped / decompressed data from <see cref="T:byte[]">byte[] inBytes</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.BZip2.BzFile(System.String,System.String@,System.String,System.Boolean,System.Int32)">
             <summary>
@@ -3124,13 +3352,13 @@
             <summary>
             GZip directly
             </summary>
-            <param name="inBytes"><see cref="!:byte[]">inBytes</see></param>
+            <param name="inBytes"><see cref="T:byte[]">inBytes</see></param>
             <param name="compressionLevel">level of compression: 
              1  ... for at least no compression, 
             4,5 ... for average compression
              9  ... for strongest bzip2 compression, generating smallest most compact output 
             </param>
-            <returns><see cref="!:byte[]"/> outbytes</returns>
+            <returns><see cref="T:byte[]"/> outbytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GZipStream(System.IO.MemoryStream)">
             <summary>
@@ -3141,23 +3369,19 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GUnZip(System.Byte[])">
             <summary>
-            Please use <see cref="!:GUnZipViaStream(byte[])"/>
+            GUnZip
             </summary>
-            <param name="inBytes"><see cref="!:byte[]"/> inBytes</param>
-            <returns><see cref="!:byte[]"/> outbytes</returns>
+            <param name="inBytes"><see cref="T:byte[]"/> inBytes</param>
+            <returns><see cref="T:byte[]"/> outbytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GUnZipBytes(System.Byte[])">
             <summary>
-            GUnZipViaStream
+            GUnZipBytes
             </summary>
-            <param name="inBytes"><see cref="!:byte[]"/> inBytes</param>
-            <returns><see cref="!:byte[]"/> outbytes</returns>
+            <param name="inBytes"><see cref="T:byte[]"/> inBytes</param>
+            <returns><see cref="T:byte[]"/> outbytes</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Zip.GZ.GzFile(System.String,System.String@,System.String,System.Boolean,System.Int32)">
-            <summary>
-            
-            </summary>
-            <param name="inFile"></param>
             <summary>
             GzFile gzips or gunzips a file
             </summary>
@@ -3200,6 +3424,13 @@
             <param name="inBytes"></param>
             <returns>zipped bytes</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])" -->
+        <member name="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])">
+            <summary>
+            Generic unzip extension method for <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/>
+            </summary>
+            <param name="zipType">this the <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
+            <param name="compressedBytes"></param>
+            <returns>decompressed bytes</returns>
+        </member>
     </members>
 </doc>

@@ -245,7 +245,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// GetCipherEnums gets all cipher algos for the cipher pipeline
         /// </summary>
         /// <param name="sorted">sort list with all cipher algos, default true</param>
-        /// <returns><see cref="string[]"/></returns>
+        /// <returns><see cref="T:string[]"/></returns>
         protected internal virtual string[] GetCipherEnums(bool sorted = true)
         {
             List<string> cipherEnums = new List<string>();
@@ -303,17 +303,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region AboutHelpExitClose
 
-        protected internal virtual void menuAbout_Click(object sender, EventArgs e)
+        protected internal virtual async Task menuAbout_Click(object sender, EventArgs e)
         {
             AboutDialog aboutDialog = new AboutDialog();
-            aboutDialog.ShowDialog(this);
+            await aboutDialog.ShowDialogAsync();  
         }
 
 
-        protected internal virtual void menuHelp_Click(object sender, EventArgs e)
+        protected internal virtual async Task menuHelp_Click(object sender, EventArgs e)
         {
             // System.Windows.Forms.Help.ShowHelp(this, Resources.HelpUrl);
-            System.Windows.Forms.Help.ShowHelp(this, Resources.HelpUrl, HelpNavigator.TableOfContents, "area23.at");
+            System.Windows.Forms.Help.ShowHelp(this, Resources.HelpUrl, HelpNavigator.TableOfContents, "cqrxs.eu");
         }
 
         protected internal virtual void menuFileExit_Click(object sender, EventArgs e)
@@ -370,7 +370,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             {
                 if (Math.Abs(inBytes.LongLength - outBytes.LongLength) < 16)
                 {
-                    long q = inBytes.LongLength / 4;
+                    int divisor = (inBytes.LongLength > 50000000) ? 40 : 8;
+                    long q = (long)(inBytes.LongLength / 8);
                     for (long l = 0; l < (q); l++)
                     {
                         if (inBytes[l] != outBytes[l])

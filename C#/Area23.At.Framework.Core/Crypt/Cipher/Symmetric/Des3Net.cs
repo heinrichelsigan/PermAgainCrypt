@@ -175,7 +175,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// 3Des decrypt bytes
         /// </summary>
-        /// <param name="inBytes">Hex bytes encrypted</param>
+        /// <param name="cipherBytes">Hex bytes encrypted</param>
         /// <returns>byte[] decrypted bytes</returns>
         public byte[] Decrypt(byte[] cipherBytes)
         {

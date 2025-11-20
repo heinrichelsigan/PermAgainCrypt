@@ -30,7 +30,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// abstraction of a 0x10 => 0x10 matrix, for example
-        /// <see cref="MatrixPermutationKey"/> 
+        /// <see cref="MatrixPermutationKey2"/> 
         /// </summary>
         public sbyte[] MatrixPermutationKey2 { get; protected internal set; }
 
@@ -57,7 +57,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// PermutationKeyHash is same as <see cref="MatrixPermutationKey2"/>
-        /// Advantage of <see cref="HashSet{sbyte}"/> is, that no duplicated values can be inside
+        /// Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
         /// </summary>
         public HashSet<sbyte> PermutationKeyHash2 { get; protected internal set; }
 
@@ -370,8 +370,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Encrypt member function
         /// </summary>
-        /// <param name="pdata">plain data as <see cref="byte[]"/></param>
-        /// <returns>encrypted data <see cref="byte[]">bytes</see></returns>
+        /// <param name="pdata">plain data as <see cref="T:byte[]"/></param>
+        /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         public override byte[] Encrypt(byte[] pdata)
         {
             // Check arguments.
@@ -418,7 +418,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Decrypt member function
         /// </summary>
-        /// <param name="cdata">encrypted cipher <see cref="byte[]">bytes</see></param>
+        /// <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
         /// <returns>decrypted plain byte[] data</returns>
         public override byte[] Decrypt(byte[] ecdata)
         {
@@ -466,7 +466,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
         /// </summary>
         /// <param name="matrix">sbyte[16] encryption matrix</param>
-        /// <returns><see cref="sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
+        /// <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
         internal static sbyte[] BuildInverseMatrix2(sbyte[] matrix, int size = 0x10)
         {
             return BuildInverseMatrix(matrix, 0x10);
@@ -477,9 +477,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// through <see cref="InverseMatrix2"/> in case of decryption.
         /// </summary>
         /// <param name="inByte"><see cref="byte"/> in byte to map</param>
-        /// <param name="outByte"><see cref=byte"/> mapped out byte</param>
+        /// <param name="outByte"><see cref="byte"/> mapped out byte</param>
         /// <param name="encrypt">true for encryption, false for decryption</param>
-        /// <returns>An <see cref="sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
+        /// <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
         private sbyte[] MapByteValue2(ref byte inByte, out byte outByte, bool encrypt = true)
         {
             List<sbyte> outSBytes = new List<sbyte>(2);

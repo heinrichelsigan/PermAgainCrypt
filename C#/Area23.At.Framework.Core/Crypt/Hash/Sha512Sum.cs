@@ -15,7 +15,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
         /// Hashes a file
         /// </summary>
         /// <param name="filePath">full(unc) path to file</param>
-        /// <param name="fileName">optional filename to add after hash</param>
+        /// <param name="showFileName">show filename beside hash</param>
         /// <returns>Sha512 hash of file with optional fileName at end</returns>
         /// <exception cref="ArgumentNullException">thrown, when filePath == null | filePath == "" | !File.Exists(filePath)</exception>
         public static string Hash(string filePath, bool showFileName = true)
@@ -41,7 +41,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
         /// <summary>
         /// Hashes a Sha512 of byte[]
         /// </summary>
-        /// <param name="bytes"><see cref="byte[]">byte[] bytes</see></param>
+        /// <param name="bytes"><see cref="T:byte[]">byte[] bytes</see></param>
         /// <param name="fileName">optional fileName to end</param>
         /// <returns></returns>
         public static string Hash(byte[] bytes, string fileName = "") => HashBytes(bytes).ToHexString() + (!string.IsNullOrEmpty(fileName) ? " " + fileName : "");

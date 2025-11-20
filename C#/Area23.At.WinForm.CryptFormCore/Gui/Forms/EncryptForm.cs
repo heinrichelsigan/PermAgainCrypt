@@ -30,7 +30,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             InitializeComponent();
 
             menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
+            menuMainDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
+            menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
+            menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
             buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e)); 
+            buttonDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
         }
 
         /// <summary>
@@ -587,26 +591,28 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         Cursor.Current = new Cursor(iconSandClock.Handle);
                         try
                         {
-                            // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);                                
+                            // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                             byte[] fileBytes = System.IO.File.ReadAllBytes(file);
                             byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                             string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
+                            SetInfoMessage("Starting verificaton", ToolTipIcon.Info, 4000);
                             bool saved = SaveBytesDialog(outBytes, ref outFilePath);
                             if (saved)
-                            {
+                            {                                
+                                Cursor.Current = new Cursor(iconSandClock.Handle);
+                                
                                 string outFileName = Path.GetFileName(outFilePath);
-
                                 bool isVerified = await VerifyEncryptedFileAsync(file, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
                                 if (!isVerified)
                                 {
-                                    this.SetInfoMessage("Encryption couldn't be verified", ToolTipIcon.Warning, 6000);
+                                    await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, 6000);
                                     await PlaySoundFromResourcesAsync("sound_hammer");                                    
                                     SetPictureBoxImage(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, true);
                                 }
                                 else
                                 {
-                                    this.SetInfoMessage("Encryption verified", ToolTipIcon.Info, 3000);
-                                    await PlaySoundFromResourcesAsync("sound_lase");
+                                    await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, 6000);
+                                    await PlaySoundFromResourcesAsync("sound_laser");
                                     SetPictureBoxImage(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), true);
                                 }
                                 
@@ -614,6 +620,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                                 labelOutputFile.Text = outFileName;
                                 labelOutputFile.Visible = true;
                                 HashFiles.Add(outFilePath);
+
+                                Cursor.Current = DefaultCursor;
                             }
                             else
                             {
@@ -623,12 +631,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         }
                         catch (Exception ex)
                         {
-                            SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 5000);
+                            SetInfoMessage(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 5000);                            
                         }
-                        finally
-                        {
-                            Cursor.Current = DefaultCursor;
-                        }
+
+                        Cursor.Current = DefaultCursor;
                         break;
                     }
                 }
@@ -640,7 +646,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected internal void Decrypt_Click(object sender, EventArgs e)
+        protected internal async Task Decrypt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(this.textBoxKey.Text))
             {
@@ -889,9 +895,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region HelpOpenSave
 
-        protected internal override void menuHelp_Click(object sender, EventArgs e)
+        protected internal override async Task menuHelp_Click(object sender, EventArgs e)
         {
-            base.menuHelp_Click(sender, e);
+            await base.menuHelp_Click(sender, e);
         }
 
         /// <summary>
@@ -962,7 +968,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     }
                     FileInfo fi = new FileInfo(outFilePath);
                     if (fi.Exists && fi.Length > 0)
-                        SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");
+                        SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");                    
+
                     return true;
                 }
             }
@@ -1033,6 +1040,48 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     SetLabelBackColor(labelInfoMessage, SystemColors.Info);
                     toolHeader = "Info";
                     PlaySoundFromResource("sound_info");
+                    break;
+            }
+            SetLabelVisible(this.labelInfoMessage, true);
+
+
+            System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = duration };
+            setInfoMessageTimer.Elapsed += (s, en) =>
+            {
+                Task.Run(new System.Action(() =>
+                {
+                    SetLabelText(labelInfoMessage, "");
+                    SetLabelBackColor(labelInfoMessage, SystemColors.Info);
+                    SetLabelVisible(labelInfoMessage, false);
+                }));
+                setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
+            };
+            setInfoMessageTimer.Start();
+
+        }
+
+        protected internal async Task SetInfoMessageAsync(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
+        {
+            SetLabelText(labelInfoMessage, message);
+            SetStatusLabelText(this.statusLabelMsg, message);
+            string toolHeader = toolIcon.ToString();
+            switch (toolIcon)
+            {
+                case ToolTipIcon.Error:
+                    toolHeader = "Error";
+                    SetLabelBackColor(labelInfoMessage, ColorTranslator.FromHtml("#bab510"));
+                    await PlaySoundFromResourcesAsync("sound_error");
+                    break;
+                case ToolTipIcon.Warning:
+                    SetLabelBackColor(labelInfoMessage, Color.LightYellow);
+                    toolHeader = "Warning";
+                    await PlaySoundFromResourcesAsync("sound_warning");
+                    break;
+                case ToolTipIcon.Info:
+                default:
+                    SetLabelBackColor(labelInfoMessage, SystemColors.Info);
+                    toolHeader = "Info";
+                    await PlaySoundFromResourcesAsync("sound_info");
                     break;
             }
             SetLabelVisible(this.labelInfoMessage, true);

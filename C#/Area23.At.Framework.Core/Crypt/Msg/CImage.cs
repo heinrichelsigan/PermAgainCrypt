@@ -48,7 +48,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         #region constructors
 
         /// <summary>
-        /// Default empty constructor (needed for json serialize & deserialize)
+        /// Default empty constructor (needed for json serialize and deserialize)
         /// </summary>
         public CImage() : base()
         {
@@ -181,7 +181,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         /// <summary>
         /// ToDrawingImage converts a <see cref="CImage"/> to a <see cref="Image"/>
         /// </summary>
-        /// <param name="cqrImage"><see cref="CImage"/> to convert</param>
+        /// <param name="cImage"><see cref="CImage"/> to convert</param>
         /// <returns>converted <see cref="Image"/></returns>
         public static Bitmap ToDrawingImage(CImage cImage)
         {

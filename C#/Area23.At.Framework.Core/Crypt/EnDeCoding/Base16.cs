@@ -23,7 +23,7 @@
         /// <summary>
         /// Decodes a hex string to byte[]
         /// </summary>
-        /// <param name="hexString">hex16 encoded string</param>
+        /// <param name="encodedString">hex16 encoded string</param>
         /// <returns></returns>
         public byte[] Decode(string encodedString) => Base16.FromBase16(encodedString);
      

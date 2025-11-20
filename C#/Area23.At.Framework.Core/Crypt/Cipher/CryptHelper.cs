@@ -26,15 +26,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// PrivateKeyWithUserHash, helper to double private secret key with hash
         /// </summary>
         /// <param name="secKey">users private secret key</param>
-        /// <param name="keyHash">users private secret key hash</param>
+        /// <param name="hashedKey">users private secret key hash</param>
         /// <returns>doubled concatendated string of (secretKey + hash)</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        internal static string PrivateKeyWithUserHash(string secKey, string kayHash)
+        internal static string PrivateKeyWithUserHash(string secKey, string hashedKey)
         {
             if (string.IsNullOrEmpty(secKey))
                 throw new ArgumentNullException("secKey");
 
-            string usrHash = string.IsNullOrEmpty(kayHash) ? EnDeCodeHelper.KeyToHex(secKey) : kayHash;
+            string usrHash = string.IsNullOrEmpty(hashedKey) ? EnDeCodeHelper.KeyToHex(secKey) : hashedKey;
 
             return string.Concat(secKey, usrHash);
         }

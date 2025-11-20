@@ -145,7 +145,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// parses pipe semicolon separated pipe string to CipherList
         /// </summary>
         /// <param name="pipeText">semicolon separated pipe string to CipherList </param>
-        /// <returns><see cref="CipherEnum[]"/> array of ciphers for the pipe</returns>
+        /// <returns><see cref="T:CipherEnum[]"/> array of ciphers for the pipe</returns>
         public static CipherEnum[] ParsePipeText(string pipeText)
         {
             CipherEnum cipher = CipherEnum.Aes;

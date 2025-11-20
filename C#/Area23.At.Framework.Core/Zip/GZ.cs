@@ -18,13 +18,13 @@ namespace Area23.At.Framework.Core.Zip
         /// <summary>
         /// GZip directly
         /// </summary>
-        /// <param name="inBytes"><see cref="byte[]">inBytes</see></param>
+        /// <param name="inBytes"><see cref="T:byte[]">inBytes</see></param>
         /// <param name="compressionLevel">level of compression: 
         ///  1  ... for at least no compression, 
         /// 4,5 ... for average compression
         ///  9  ... for strongest bzip2 compression, generating smallest most compact output 
         /// </param>
-        /// <returns><see cref="byte[]"/> outbytes</returns>
+        /// <returns><see cref="T:byte[]"/> outbytes</returns>
         public static byte[]? GZip(byte[] inBytes, int compressionLevel = 6)
         {
             byte[]? zipBytes = null;
@@ -80,10 +80,10 @@ namespace Area23.At.Framework.Core.Zip
         #region gunzip decompression
 
         /// <summary>
-        /// Please use <see cref="GUnZipViaStream(byte[])"/>
+        /// GUnZip
         /// </summary>
-        /// <param name="inBytes"><see cref="byte[]"/> inBytes</param>
-        /// <returns><see cref="byte[]"/> outbytes</returns>
+        /// <param name="inBytes"><see cref="T:byte[]"/> inBytes</param>
+        /// <returns><see cref="T:byte[]"/> outbytes</returns>
         public static byte[] GUnZip(byte[] inBytes)
         {
             byte[]? unZipBytes = null;
@@ -106,10 +106,10 @@ namespace Area23.At.Framework.Core.Zip
 
 
         /// <summary>
-        /// GUnZipViaStream
+        /// GUnZipBytes
         /// </summary>
-        /// <param name="inBytes"><see cref="byte[]"/> inBytes</param>
-        /// <returns><see cref="byte[]"/> outbytes</returns>
+        /// <param name="inBytes"><see cref="T:byte[]"/> inBytes</param>
+        /// <returns><see cref="T:byte[]"/> outbytes</returns>
         public static byte[] GUnZipBytes(byte[] inBytes)
         {
             byte[]? unZipBytes = null;
@@ -149,11 +149,7 @@ namespace Area23.At.Framework.Core.Zip
         #endregion gunzip decompression
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inFile"></param>
-
+        
         /// <summary>
         /// GzFile gzips or gunzips a file
         /// </summary>

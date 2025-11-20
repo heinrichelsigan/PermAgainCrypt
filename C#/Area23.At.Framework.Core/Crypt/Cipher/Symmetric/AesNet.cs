@@ -126,7 +126,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="plainData">Array of plain data byte</param>
         /// <returns>Array of encrypted data byte</returns>
-        /// <exception cref="ArgumentNullException">is thrown when input enrypted <see cref="byte[]"/> is null or zero length</exception>
+        /// <exception cref="ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         public byte[] Encrypt(byte[] plainData)
         {
             // Check arguments. 
@@ -147,7 +147,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="encryptedBytes">Array of encrypted data byte</param>
         /// <returns>Array of plain data byte</returns>
-        /// <exception cref="ArgumentNullException">is thrown when input enrypted <see cref="byte[]"/> is null or zero length</exception>
+        /// <exception cref="ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         public byte[] Decrypt(byte[] encryptedBytes) 
         {
             // Check arguments. 

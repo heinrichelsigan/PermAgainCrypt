@@ -73,7 +73,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Asymmetric
         /// <summary>
         /// GenerateNewRsaKeyPair - generates a new rsa key pair
         /// </summary>
-        /// <returns><see cref="AsymmetricCipherKeyPairy"/></returns>
+        /// <returns><see cref="AsymmetricCipherKeyPair"/></returns>
         internal static AsymmetricCipherKeyPair GenerateNewRsaKeyPair()
         {
             if (rsaKeyPair != null)
@@ -94,8 +94,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Asymmetric
         /// <summary>
         /// Get Rsa Key Pair by private and public key
         /// </summary>
-        /// <param name="publicKey"></param>
-        /// <param name="privateKey"></param>
+        /// <param name="pubKey"></param>
+        /// <param name="privKey"></param>
         /// <returns><see cref="AsymmetricCipherKeyPair"/></returns>
         internal static AsymmetricCipherKeyPair GetRsaKeyPair(string pubKey, string privKey)
         {
@@ -127,9 +127,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Asymmetric
         /// <summary>
         /// Rsa encrypt bytes with public key
         /// </summary>
-        /// <param name="bytesToEncrypt"><see cref="byte[]">bytes to encrypt</see></param>
+        /// <param name="bytesToEncrypt"><see cref="T:byte[]">bytes to encrypt</see></param>
         /// <param name="pair"></param>
-        /// <returns>encrypted <see cref="byte[]"/></returns>
+        /// <returns>encrypted <see cref="T:yte[]"/></returns>
         public static byte[] Encrypt(byte[] bytesToEncrypt, AsymmetricCipherKeyPair pair)
         {
             var encryptEngine = new Pkcs1Encoding(new RsaEngine());
@@ -182,7 +182,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Asymmetric
 
         #region EnDecryptString
 
-        /// <summary>
         /// <summary>
         /// Encrypts a string
         /// </summary>

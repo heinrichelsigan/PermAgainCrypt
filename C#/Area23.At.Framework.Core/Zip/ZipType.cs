@@ -104,7 +104,7 @@ namespace Area23.At.Framework.Core.Zip
         /// <summary>
         /// Generic unzip extension method for <see cref="ZipType"/>
         /// </summary>
-        /// <param name="zipType">this the <see cref="ZipType"/>/param>
+        /// <param name="zipType">this the <see cref="ZipType"/></param>
         /// <param name="compressedBytes"></param>
         /// <returns>decompressed bytes</returns>
         public static byte[] Unzip(this ZipType zipType, byte[] compressedBytes)

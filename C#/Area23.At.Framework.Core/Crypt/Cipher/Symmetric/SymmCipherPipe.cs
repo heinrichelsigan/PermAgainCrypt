@@ -49,9 +49,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         #region ctor SymmCipherPipe
 
         /// <summary>
-        /// SymmCipherPipe constructor with an array of <see cref="SymmCipherEnum[]"/> as inpipe
+        /// SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
         /// </summary>
-        /// <param name="symmCipherEnums">array of <see cref="SymmCipherEnum[]"/> as inpipe</param>
+        /// <param name="symmCipherEnums">array of <see cref="T:SymmCipherEnum[]"/> as inpipe</param>
         public SymmCipherPipe(SymmCipherEnum[] symmCipherEnums, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
@@ -77,9 +77,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         }
 
         /// <summary>
-        /// SymmCipherPipe constructor with an array of <see cref="string[]"/> as inpipe
+        /// SymmCipherPipe constructor with an array of <see cref="T:string[]"/> as inpipe
         /// </summary>
-        /// <param name="symmCipherAlgos">array of <see cref="string[]"/> as inpipe</param>
+        /// <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         public SymmCipherPipe(string[] symmCipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
@@ -171,7 +171,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// Constructs a <see cref="SymmCipherPipe"/> from key and hash
-        /// by getting <see cref="byte[]">byte[] keybytes</see> with <see cref="CryptHelper.GetUserKeyBytes(string, string, int)"/>
+        /// by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="CryptHelper.GetUserKeyBytes(string, string, int)"/>
         /// </summary>
         /// <param name="key">secret key to generate pipe</param>
         /// <param name="hash">hash value of secret key</param>
@@ -244,10 +244,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="cipherBytes">Encrypted array of byte</param>
         /// <param name="cipherAlgo"><see cref="SymmCipherEnum"/>both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
-        /// <param name="keyIv">key's iv</param>
+        /// <param name="hashIv">key's hash</param>
         /// <returns>decrypted byte Array</returns>
         public static byte[] DecryptBytesFast(byte[] cipherBytes, SymmCipherEnum cipherAlgo = SymmCipherEnum.Aes,
-            string secretKey = "heinrich.elsigan@area23.at", string hashIv = "", bool fishOnAesEngine = false)
+            string secretKey = "heinrich.elsigan@area23.at", string hashIv = "")
         {
             bool sameKey = true;
             string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
@@ -272,7 +272,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 case SymmCipherEnum.Tea:
                 case SymmCipherEnum.XTea:
                 default:
-                    CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hash, fishOnAesEngine);
+                    CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hash);
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
                     break;
@@ -288,7 +288,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 		/// <summary>
 		/// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
 		/// </summary>
-		/// <param name="inBytes">plain <see cref="byte[]"/> to encrypt</param>
+		/// <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
 		/// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
 		/// <param name="hashIv">hash key iv relational to secret key</param>
 		/// <param name="zipBefore"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
@@ -334,7 +334,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="secretKey">user secret key, normally email address</param>
         /// <param name="hashIv">hash relational to secret kay</param>
         /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
-        /// <returns><see cref="byte[]"/> plain bytes</returns>
+        /// <returns><see cref="T:byte[]"/> plain bytes</returns>
         public byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey = "", string hashIv = "", ZipType unzipAfter = ZipType.None)
         {
             if (string.IsNullOrEmpty(symmCipherKey) && string.IsNullOrEmpty(secretKey))
@@ -386,8 +386,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="inString">string to encrypt multiple times</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="pipeStrig">out parameter for setting hash to compare entities encryption</param>
-        /// <param name="encoding"><see cref="EncodingType"/ type for encoding encrypted bytes back in plain text></param>
+        /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
+        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
         /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
         /// <returns>encrypted string</returns>        

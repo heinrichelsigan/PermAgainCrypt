@@ -100,7 +100,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         #region EnDeCrypt+DeSerialize
 
         /// <summary>
-        /// Serialize <see cref="CSrvMsg{TC}"/> to Json Stting
+        /// Serialize <see cref="T:CSrvMsg{TC}"/> to Json Stting
         /// </summary>
         /// <returns>json serialized string</returns>
         public override string EncryptToJson(string serverKey, EncodingType encoder = EncodingType.Base64, Zip.ZipType zipType = Zip.ZipType.None)

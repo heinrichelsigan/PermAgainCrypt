@@ -86,7 +86,7 @@ namespace Area23.At.Framework.Core.Net.WebHttp
         /// <param name="url"></param>
         /// <param name="secretKey"></param>
         /// <param name="keyIv"></param>
-        /// <param name="encoding"><see cref=System.Text.Encoding"/></param>
+        /// <param name="encoding"><see cref="System.Text.Encoding"/></param>
         /// <returns>downloaded string</returns>
         public static string DownloadString(string url, string secretKey, string keyIv = "", System.Text.Encoding? encoding = null)
         {

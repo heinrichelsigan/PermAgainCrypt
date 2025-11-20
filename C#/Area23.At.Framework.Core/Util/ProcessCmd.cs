@@ -6,11 +6,11 @@ namespace Area23.At.Framework.Core.Static
 
     /// <summary>
     /// ProcessCmd static class for running an executable or processing shell command
-    /// <see cref="https://github.com/heinrichelsigan/area23.at/blob/main/Framework/Library/ProcessCmd.cs">ProcessCmd.cs at github.com/heinrichelsigan</see>
+    /// <see href="https://github.com/heinrichelsigan/area23.at/blob/main/Framework/Library/ProcessCmd.cs">ProcessCmd.cs at github.com/heinrichelsigan</see>
     /// ProcessCmd class is free software; 
     /// you can redistribute it and/or modify it under the terms of the GNU Library General Public License 
     /// aspublished by the Free Software Foundation; 
-    /// either <seealso cref="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2</seealso> 
+    /// either <seealso href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html">version 2</seealso> 
     /// of the License, or (at your option) any later version.
     /// See the GNU Library General Public License for more details.    
     /// </summary>
@@ -66,7 +66,7 @@ namespace Area23.At.Framework.Core.Static
         /// Execute a binary or shell cmd
         /// </summary>
         /// <param name="cmdPath">full or relative filepath to executable</param>
-        /// <param name="arguments"><see cref="string[]">string[] arguments</see> passed to executable</param>
+        /// <param name="arguments"><see cref="T:string[]">string[] arguments</see> passed to executable</param>
         /// <param name="quoteArgs"><see cref="bool">bool quoteArgs</see> set each single argument under double quote, when passing it to cmdPath</param>
         /// <param name="useShellExecute"><see cref="bool">bool useShellExecute</see> true, when using system shell to execute cmdPath</param>
         /// <returns>Console output of executed command</returns>

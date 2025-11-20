@@ -227,10 +227,10 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         }
 
         public override string ToXml() => Utils.SerializeToXml(this);
-        
+
 
         /// <summary>
-        /// <see cref="object[]">RowParams</see> gets an object array of row parameters to show in <see cref="DataGridView"/>
+        /// <see cref="T:object[]">RowParams</see> gets an object array of row parameters to show in <see cref="DataGridView"/>
         /// </summary>
         public object[] GetRowParams()
         {

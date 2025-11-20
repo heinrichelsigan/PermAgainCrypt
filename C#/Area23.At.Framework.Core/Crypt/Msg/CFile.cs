@@ -254,7 +254,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         }
 
         /// <summary>
-        /// GetFileNameContentLength write <see cref="CqrFileName"/> and <see cref="Data.Length"/>
+        /// GetFileNameContentLength write <see cref="Msg.CFile"/> and  Data.Length
         /// </summary>
         /// <returns>CqrFileName + " [" + Data.Length + "]";</returns>
         public string GetFileNameContentLength()
@@ -359,9 +359,11 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         /// <summary>
         /// ToJsonEncrypt
         /// </summary>
-        /// <param name="serverKey">server key to encrypt</param>
-        /// <param name="ccntct"><see cref="CContact"/> to encrypt and serialize</param>
-        /// <returns>a serialized <see cref="string" /> of encrypted <see cref="CContact"/></returns>
+        /// <param name="serverKey">server key to encrypt</param>        
+        /// <param name="cfile"><see cref="CFile"/></param>
+        /// <param name="encoder"><see cref="EncodingType"/></param>
+        /// <param name="zipType"><see cref="Zip.ZipType"/></param>
+        /// <returns>serialized json string</returns>
         /// <exception cref="CException"></exception>
         public static string ToJsonEncrypt(string serverKey, ref CFile cfile, 
             EncodingType encoder = EncodingType.Base64, Zip.ZipType zipType = Zip.ZipType.None)

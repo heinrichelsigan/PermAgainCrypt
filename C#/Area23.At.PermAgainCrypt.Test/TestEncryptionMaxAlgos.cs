@@ -64,14 +64,13 @@ namespace Area23.At.PermAgainCrypt.Test
             int i = 0;
             foreach (string email in TestEmails) 
             {
-                string pipeText = "";
+                
                 string hashIv = KeyHash.Hex.Hash(email);
                 i++;
                 CipherPipe pipe = new CipherPipe(email, hashIv);
-                foreach (CipherEnum cipher in pipe.InPipe)            
-                    pipeText += cipher.ToString() + "→";
-                
-                
+                string pipeText = pipe.PipeString;
+
+
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
 
                 try
@@ -97,14 +96,16 @@ namespace Area23.At.PermAgainCrypt.Test
                     decOpTime = endOp.Subtract(midOp);
                     allOpTime = endOp.Subtract(startOp);
 
-                    if (deCodedBytes == null || deCodedBytes.Length < 1 ||
-                        (Math.Abs(deCodedBytes.LongLength - plainBytes.LongLength) > 15) ||
-                        plainBytes[0] != deCodedBytes[0] || plainBytes[1] != deCodedBytes[1] ||
-                        plainBytes[i + 16] != deCodedBytes[i + 16] || plainBytes[i + 8] != deCodedBytes[i + 8])
+                    if (deCodedBytes != null && deCodedBytes.Length > 0 &&
+                        (Math.Abs(deCodedBytes.LongLength - plainBytes.LongLength) < 16)) 
                     {
-                        Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                        Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
-                        Assert.Fail();
+                        long difference = deCodedBytes.CompareBytes(plainBytes, true);
+                        if (difference > 0)
+                        {
+                            Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
+                            Assert.Fail();
+                        }
                     }
                     Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);

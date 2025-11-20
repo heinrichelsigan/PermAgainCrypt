@@ -89,7 +89,7 @@ namespace Area23.At.Framework.Core.Net
         /// GetConnectedIpAddressesAsync
         /// </summary>
         /// <param name="serverIps">serverIPs List to connect and verify, if connection is possible through</param>
-        /// <returns><see cref="Task{List{IPAddress}}"/></returns>
+        /// <returns><see cref="T:Task{List{IPAddress}}"/></returns>
         public static async Task<List<IPAddress>> GetConnectedIpAddressesAsync(List<IPAddress>? serverIps = null)
         {
             return await Task<List<IPAddress>>.Run<List<IPAddress>>(() => (GetConnectedIpAddresses(serverIps)));

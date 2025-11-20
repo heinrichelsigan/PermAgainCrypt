@@ -107,10 +107,10 @@ namespace Area23.At.Framework.Core.Util
         #region stream_extensions
 
         /// <summary>
-        /// <see cref="Stream"/>.ToByteArray() extension method: converts <see cref="Stream"/> to <see cref="byte[]"/> array
+        /// <see cref="Stream"/>.ToByteArray() extension method: converts <see cref="Stream"/> to <see cref="T:byte[]"/> array
         /// </summary>
         /// <param name="stream"><see cref="Stream"/> which static methods are now extended</param>
-        /// <returns>binary <see cref="byte[]">byte[] array</see></returns>
+        /// <returns>binary <see cref="T:byte[]">byte[] array</see></returns>
         public static byte[] ToByteArray(this Stream stream)
         {
             if (stream is MemoryStream)
@@ -130,10 +130,10 @@ namespace Area23.At.Framework.Core.Util
         #region byteArray_extensions
 
         /// <summary>
-        /// <see cref="byte[]"/>.GetImageMimeType() extension method: auto detect mime type of an image inside an binary byte[] array
+        /// <see cref="T:byte[]"/>.GetImageMimeType() extension method: auto detect mime type of an image inside an binary byte[] array
         /// via <see cref="ImageCodecInfo.GetImageEncoders()"/> <seealso cref="ImageCodecInfo.GetImageDecoders()"/>
         /// </summary>
-        /// <param name="bytes">binary <see cref="byte[]">byte[] array</see></param>
+        /// <param name="bytes">binary <see cref="T:byte[]">byte[] array</see></param>
         /// <returns></returns>
         public static string GetImageMimeType(this byte[] bytes)
         {
@@ -148,7 +148,7 @@ namespace Area23.At.Framework.Core.Util
         }
 
         /// <summary>
-        /// <see cref="byte[]"/>.ArrayIndexOf(byte value) extension method: gets the first index of specified byte value
+        /// <see cref="T:byte[]"/>.ArrayIndexOf(byte value) extension method: gets the first index of specified byte value
         /// </summary>
         /// <param name="bytes">byte[] to search</param>
         /// <param name="value">byte to find</param>
@@ -167,9 +167,9 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// <see cref="byte[]"/>.ToFile(string filePath, string fileName, string fext) extension method: writes a byte array to a file
+        /// <see cref="T:byte[]"/>.ToFile(string filePath, string fileName, string fext) extension method: writes a byte array to a file
         /// </summary>
-        /// <param name="bytes"><see cref="byte[]"/></param>
+        /// <param name="bytes"><see cref="T:byte[]"/></param>
         /// <param name="filePath">filesystem path</param>
         /// <param name="fileName">filename</param>
         /// <param name="fext">file extension</param>
@@ -217,7 +217,7 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// <see cref="byte[]"/>.ToHexString() extension method: converts byte[] to HexString
+        /// <see cref="T:byte[]"/>.ToHexString() extension method: converts byte[] to HexString
         /// </summary>
         /// <param name="bytes">Array of <see cref="byte"/></param>
         /// <param name="UPPERCASE">bool default true, UPPERCASE LETTER CHARS ABCDEF</param>
@@ -233,7 +233,7 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// <see cref="byte[]"/>.FindBytes extension method: searches hayStack for the first occurence of needle, 
+        /// <see cref="T:byte[]"/>.FindBytes extension method: searches hayStack for the first occurence of needle, 
         /// FindBytes uses static equivalent <see cref="BytesBytes(byte[], byte[], int)"/> 
         /// </summary>
         /// <param name="hayStack">byte[] of haystack to search through</param>
@@ -286,7 +286,7 @@ namespace Area23.At.Framework.Core.Util
         }
 
         /// <summary>
-        /// <see cref="byte[]"/>.TarBytes extension method: tars 
+        /// <see cref="T:byte[]"/>.TarBytes extension method: tars 
         /// </summary>
         /// <param name="baseBytes">base byte array</param>
         /// <param name="bytesToAdd">more byte arrays</param>
@@ -321,22 +321,42 @@ namespace Area23.At.Framework.Core.Util
         }
 
 
-        public static long CompareBytes(this byte[] baseBytes, byte[] bytesToCompare)
+        /// <summary>
+        /// Compare bytes extension Method
+        /// </summary>
+        /// <param name="baseBytes">base bytes</param>
+        /// <param name="bytesToCompare">bytes to compare</param>
+        /// <param name="partially">true: only compare less then half of bytes, false: all byter</param>
+        /// <returns>something like Levenstein Distanz</returns>
+        public static long CompareBytes(this byte[] baseBytes, byte[] bytesToCompare, bool partially = false)
         {
             long difference = 0;
-            if (baseBytes == null && bytesToCompare == null ||
-                baseBytes.Length == 0 && bytesToCompare.Length == 0)
+            if ((baseBytes == null && bytesToCompare == null) ||
+                (baseBytes.Length == 0 && bytesToCompare.Length == 0))
                 return difference;
 
             if (baseBytes.Length != bytesToCompare.Length)
                 difference = Math.Abs((long)(baseBytes.Length - bytesToCompare.Length)) * 256;
             else // if (baseBytes.Length == bytesToCompare.Length)
             {
-                for (int ib = 0; ib < baseBytes.Length; ib++)
+                long ql = (partially) ? (long)(baseBytes.LongLength / 3) : (long)(baseBytes.LongLength);
+                for (long lb = 0; lb < ql; lb++)
                 {
-                    if (baseBytes[ib] != bytesToCompare[ib])
-                        difference += Math.Abs((long)(baseBytes[ib] - bytesToCompare[ib]));
+                    if (baseBytes[lb] != bytesToCompare[lb])
+                        difference += Math.Abs((long)(baseBytes[lb] - bytesToCompare[lb]));
                 }
+
+                if (partially)
+                {
+                    ql = 3*ql;
+                    for (long lb = ql; lb < (long)(baseBytes.LongLength - 16); lb++)
+                    {
+                        if (baseBytes[lb] != bytesToCompare[lb])
+                            difference += Math.Abs((long)(baseBytes[lb] - bytesToCompare[lb]));
+                    }
+                }
+
+
             }
 
             return difference;
@@ -416,7 +436,7 @@ namespace Area23.At.Framework.Core.Util
         /// <see cref="string"/>.FromHexString() extension method: converts hexadecimal string to byte[]
         /// </summary>
         /// <param name="hexString">hexadecimal string</param>
-        /// <returns><see cref="byte[]">byte[]</see> Array of <see cref="byte"/></returns>
+        /// <returns><see cref="T:byte[]">byte[]</see> Array of <see cref="T:byte[]"/></returns>
         public static byte[] FromHexString(this string hexString)
         {
             byte[] bytes = new byte[hexString.Length / 2];
@@ -511,7 +531,7 @@ namespace Area23.At.Framework.Core.Util
         /// if <see cref="System.Boolean.TrueString"/>, then first occurence in main <see cref="string.IndexOf(string)">main.IndexOf(patternStart)</see> will be executed, 
         /// otherwise if <see cref="System.Boolean.FalseString"/>, then <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternStart)</see> will be executed.
         /// </param>
-        /// <param name="markStartEnd">if <see cref="!string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
+        /// <param name="markStartEnd">if <see cref="string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
         /// then start position of substring will be set to <see cref="string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
         /// </param>
         /// <param name="patternEnd">end pattern for substring, <see cref="string.LastIndexOf(string)">main.IndexOf(patternEnd)</see></param>
@@ -691,7 +711,7 @@ namespace Area23.At.Framework.Core.Util
         /// <see cref="System.Drawing.Image"/>.SaveRawToMemoryStream(ImageFormat imageFormat, out Guid? g) extension method: 
         /// saves an Image to <see cref="MemoryStream"/> and return <see cref="Guid"/> of <see cref="ImageFormat"/> as out parameter
         /// </summary>
-        /// <param name="img"><see cref="Image"/> to be processed by Exentsion Method</param>
+        /// <param name="img"><see cref="System.Drawing.Image"/> to be processed by Exentsion Method</param>
         /// <param name="imageFormat"><see cref="ImageFormat"/></param>
         /// <param name="g"><see cref="Guid">out Guid g</see></param>
         /// <returns><see cref="MemoryStream"/></returns>
@@ -710,7 +730,7 @@ namespace Area23.At.Framework.Core.Util
         /// <see cref="Image"/>.ToByteArray() extension method: converts <see cref="Image"/> to byte array
         /// </summary>
         /// <param name="img">this <see cref="Image"/></param>
-        /// <returns><see cref="byte[]?"/> array</returns>
+        /// <returns><see cref="T:byte[]?"/> array</returns>
         public static byte[] ToByteArray(this System.Drawing.Image img)
         {
             byte[] bytes;
@@ -773,7 +793,7 @@ namespace Area23.At.Framework.Core.Util
         /// <see cref="Image"/>.ToBase64() extension method: converts <see cref="Image"/> to base64 string
         /// </summary>
         /// <param name="img">this <see cref="Image"/></param>
-        /// <returns>base64 encoded <see cref="string?"/></returns>
+        /// <returns>base64 encoded <see cref="T:string?"/></returns>
         public static string? ToBase64(this System.Drawing.Image img)
         {
             string? base64 = null;
@@ -914,7 +934,7 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// <see cref="T"/>.SwapTPositions&lt;<typeparamref name="T"/>&gt;(this <typeparamref name="T"/>[] tarray, .. extensions method
+        /// SwapTPositions&lt;<typeparamref name="T"/>&gt;(this <typeparamref name="T"/>[] tarray, .. extensions method
         /// Swaps values of two positions inside a generic Array
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -951,7 +971,7 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// ArrayIndexOf<T> generic extension to find the first or last occurence of a T value in T[] tarray
+        /// ArrayIndexOf{T} generic extension to find the first or last occurence of a T value in T[] tarray
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="tarray">generic T array</param>

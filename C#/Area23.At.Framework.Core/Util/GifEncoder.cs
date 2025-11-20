@@ -6,9 +6,9 @@ namespace Area23.At.Framework.Core.Util
 {
 
     /// <summary>   
-    /// This encoder is taken from <see cref="https://github.com/DataDink/Bumpkit" />
-    /// <seealso cref="https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs">GifEncoder.cs</seealso>
-    /// <seealso cref="https://github.com/DataDink/Bumpkit?tab=Unlicense-1-ov-file">Unlicense license of DataDink/Bumpkit</seealso>
+    /// This encoder is taken from <see href="https://github.com/DataDink/Bumpkit" />
+    /// <seealso href="https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs">GifEncoder.cs</seealso>
+    /// <seealso href="https://github.com/DataDink/Bumpkit?tab=Unlicense-1-ov-file">Unlicense license of DataDink/Bumpkit</seealso>
     /// Encodes multiple images as an animated gif to a stream. <br />
     /// ALWAYS ALWAYS ALWAYS wire this up   in a using block <br />
     /// Disposing the encoder will complete the file. <br />
@@ -58,14 +58,11 @@ namespace Area23.At.Framework.Core.Util
 
 
         /// <summary>
-        /// Encodes multiple images as an animated gif to a stream. <br />
-        /// ALWAYS ALWAYS ALWAYS wire this in a using block <br />
-        /// Disposing the encoder will complete the file. <br />
-        /// Uses default .net GIF encoding and adds animation headers.
+        /// GifEncoder
         /// </summary>
-        /// <param name="stream">The stream that will be written to.</param>
-        /// <param name="width">Sets the width for this gif or null to use the first frame's width.</param>
-        /// <param name="height">Sets the height for this gif or null to use the first frame's height.</param>
+        /// <param name="img">img</param>
+        /// <param name="repeatCount">repeat n times</param>
+        /// <param name="frameDelay">deley betweeen frames</param>
         public GifEncoder(Image img, int? repeatCount = null, TimeSpan? frameDelay = null)
         {
             _byteList = new List<byte>();            

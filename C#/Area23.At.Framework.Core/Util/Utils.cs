@@ -10,7 +10,6 @@ namespace Area23.At.Framework.Core.Util
     /// <seealso href="https://stackoverflow.com/">Stackoverflow</seealso>
     /// <seealso href="https://stackoverflow.com/questions/4123590/serialize-an-object-to-xml">xml serializer thread on stackoverflow</seealso>
     /// <seeslo href="https://gist.github.com/riyadparvez/4467678">gist.github.com/riyadparvez</seeslo> for generic reflection
-
     /// </summary>
     public static class Utils
     {

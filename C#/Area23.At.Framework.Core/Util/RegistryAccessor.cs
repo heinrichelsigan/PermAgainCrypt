@@ -239,7 +239,7 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="regHive">registry root hive</param>
         /// <param name="subKeyName">registry subkey name</param>
         /// <param name="regName">registry name ref</param>
-        /// <returns><see cref="Task{object}"/></returns>
+        /// <returns><see cref="Task{T}">Task{object}</see></returns>
         public static async Task<object> GetRegistryEntryAsync(RegistryHive regHive, string subKeyName, string regName)
         {
             Task<object> readRegValueTask = (Task<object>)await Task.Run<object>(() =>

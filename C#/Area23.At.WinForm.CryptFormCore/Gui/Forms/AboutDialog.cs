@@ -33,7 +33,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         return titleAttribute.Title;
                     }
                 }
-                return System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+
+                return System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetAssembly(typeof(AboutDialog)).Location);                
             }
         }
 

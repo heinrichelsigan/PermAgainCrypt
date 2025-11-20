@@ -7,7 +7,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
     /// <summary>
     /// OpenBSDCrypt a classic unix passwd crypt method
     /// 
-    /// All members are implemented via <see cref="Org.BouncyCastle.Crypto"/ namespace.
+    /// All members are implemented via <see cref="Org.BouncyCastle.Crypto"/> namespace.
     /// Thanx to the legion of <see href="https://bouncycastle.org/" />
     /// <see cref="Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt"/>
     /// </summary>
@@ -47,7 +47,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
 
         /// <summary>
         /// <see cref="Org.BouncyCastle.Crypto.Generators.OpenBsdBCrypt" />
-        /// Thanx to the legion of <see href="https://bouncycastle.org/"" />
+        /// Thanx to the legion of <see href="https://bouncycastle.org/" />
         /// </summary>
         /// <param name="passwd">string password</param>
         /// <returns>string encrypted password</returns>

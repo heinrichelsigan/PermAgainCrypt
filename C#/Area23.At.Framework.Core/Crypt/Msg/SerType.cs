@@ -65,6 +65,13 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         }
 
 
+        /// <summary>
+        /// Cerialize
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serTyoe"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static string Cerialize<T>(this SerType serTyoe, T t)
         {
             switch (serTyoe)

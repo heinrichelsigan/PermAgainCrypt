@@ -7,7 +7,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
     /// <summary>
     /// SCrypt a classic unix passwd crypt method
     /// 
-    /// All members are implemented via <see cref="Org.BouncyCastle.Crypto"/ namespace.
+    /// All members are implemented via <see cref="Org.BouncyCastle.Crypto"/> namespace.
     /// Thanx to the legion of <see href="https://bouncycastle.org/"/>
     /// <see cref="Org.BouncyCastle.Crypto.Generators.SCrypt"/>
     /// </summary>

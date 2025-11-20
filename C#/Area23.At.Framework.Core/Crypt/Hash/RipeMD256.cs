@@ -6,7 +6,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
 {
     /// <summary>
     /// <see cref="Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
-    /// Thanx to the legion of <see href="https://bouncycastle.org/"" />
+    /// Thanx to the legion of <see href="https://bouncycastle.org/" />
     /// </summary>
     public static class RipeMD256
     {
