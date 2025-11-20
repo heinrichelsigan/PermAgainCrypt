@@ -18,12 +18,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.SortedMap;
 
-import eu.cqrxs.cipherpipe.enums.CipherEnum;
-import eu.cqrxs.cipherpipe.enums.SymmCipherEnum;
-import eu.cqrxs.cipherpipe.enums.EncodingType;
-import eu.cqrxs.cipherpipe.enums.ZipType;
-import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
+import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.crypt.hash.*;
+import eu.cqrxs.cipherpipe.crypt.encoding.*;
 
 
 
@@ -38,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
     String selectedHash = "", selectEncodeType = "", selectZipType = "", selectCipherAlgo = "";
     KeyHash keyHash = KeyHash.Hex;
-    EncodingType encodeType = EncodingType.Base64;
+    EncodeEnum encodeType = EncodeEnum.Base64;
     ZipType zipType = ZipType.None;
 
     CipherEnum cipher;
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         try {
             hashStrings = KeyHash.getNames();
-            encodingStrings = EncodingType.getNames();
+            encodingStrings = EncodeEnum.getNames();
             zipStrings = ZipType.getNames();
             algoStrings = CipherEnum.getNames();
         } catch (Exception exi) {}
@@ -74,7 +71,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnEncrypt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextSource = (EditText) findViewById(R.id.editTextSource);
+                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
+                String plain = editTextSource.getText().toString();
+                String encoded = encodeType.encode(plain);
+                showTextDestination.setText(encoded);
+            }
+        });
 
+        btnDecrypt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextSource = (EditText) findViewById(R.id.editTextSource);
+                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
+                String encoded = editTextSource.getText().toString();
+                String decoded = encodeType.decode(encoded);
+                showTextDestination.setText(decoded);
+            }
+        });
 
         if (adapterHash == null)
             adapterHash = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, hashStrings);
@@ -128,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 selectEncodeType = parent.getSelectedItem().toString();
-                encodeType = EncodingType.getEnum(selectEncodeType);
+                encodeType = EncodeEnum.getEnum(selectEncodeType);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
