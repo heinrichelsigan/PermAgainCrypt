@@ -1,5 +1,4 @@
 #define CLR2COMPATIBILITY
-using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Gui.Forms;
 using Microsoft.Win32.SafeHandles;
 using System.Diagnostics.CodeAnalysis;

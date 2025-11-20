@@ -1,5 +1,4 @@
-﻿using Area23.At.Framework.Core.Crypt;
-using Area23.At.Framework.Core.Crypt.Cipher;
+﻿using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
