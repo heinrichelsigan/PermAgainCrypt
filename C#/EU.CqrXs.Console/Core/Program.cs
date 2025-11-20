@@ -8,6 +8,7 @@ using System.Text;
 
 namespace EU.CqrXs.Console.Core
 {
+
     /// <summary>
     /// OptEnum different option types
     /// </summary>
