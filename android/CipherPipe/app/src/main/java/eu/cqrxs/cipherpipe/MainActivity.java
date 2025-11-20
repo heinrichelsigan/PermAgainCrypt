@@ -36,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
     SortedMap<String, String> sortedAlgoMap, sortedHashMap, sortedEncodingMap;
     ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
-    String selectedHash = "";
+    String selectedHash = "", selectEncodeType = "", selectZipType = "", selectCipherAlgo = "";
     KeyHash keyHash = KeyHash.Hex;
+    EncodingType encodeType = EncodingType.Base64;
+    ZipType zipType = ZipType.None;
+
+    CipherEnum cipher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +67,19 @@ public class MainActivity extends AppCompatActivity {
         spinnerAlgos = (Spinner) findViewById(R.id.spinnerAlgos);
         spinnerEncode = (Spinner) findViewById(R.id.spinnerEncode);
 
+        btnSetPipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
         if (adapterHash == null)
             adapterHash = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, hashStrings);
-
+        adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerHash.setAdapter(adapterHash);
         spinnerHash.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -98,18 +112,51 @@ public class MainActivity extends AppCompatActivity {
                 ;
             }
         });
-        adapterHash.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerHash.setAdapter(adapterHash);
+
 
         if (adapterEndoding == null)
             adapterEndoding = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, encodingStrings);
         adapterEndoding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerEncode.setAdapter(adapterEndoding);
+        spinnerEncode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
+                    Log.d("onItemSelected", msg);
+                } catch (Exception exAdapter) {
+                }
+
+                selectEncodeType = parent.getSelectedItem().toString();
+                encodeType = EncodingType.getEnum(selectEncodeType);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ;
+            }
+        });
 
         if (adapterAlgos == null)
             adapterAlgos = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, algoStrings);
         adapterAlgos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAlgos.setAdapter(adapterAlgos);
+        spinnerAlgos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
+                    Log.d("onItemSelected", msg);
+                } catch (Exception exAdapter) {
+                }
+
+                selectCipherAlgo = parent.getSelectedItem().toString();
+                cipher = CipherEnum.getEnum(selectCipherAlgo);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ;
+            }
+        });
 
         if (adapterZip == null)
             adapterZip = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, zipStrings);

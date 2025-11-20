@@ -84,34 +84,34 @@
     <string name="f_c0" translatable="false">c0</string>
     <string name="f_d0" translatable="false">d0</string>
     <string name="f_e0" translatable="false">e0</string>
-
+    <string name="f_f0" translatable="false">f0</string>
 
     <string name="f_a1" translatable="false">a1</string>
     <string name="f_b1" translatable="false">b1</string>
     <string name="f_c1" translatable="false">c1</string>
     <string name="f_d1" translatable="false">d1</string>
     <string name="f_e1" translatable="false">e1</string>
-   
+    <string name="f_f1" translatable="false">f1</string>
 
     <string name="f_a2" translatable="false">a2</string>
     <string name="f_b2" translatable="false">b2</string>
     <string name="f_c2" translatable="false">c2</string>
     <string name="f_d2" translatable="false">d2</string>
     <string name="f_e2" translatable="false">e2</string>
-
+    <string name="f_f2" translatable="false">f2</string>
     
     <string name="f_a3" translatable="false">a3</string>
     <string name="f_b3" translatable="false">b3</string>
     <string name="f_c3" translatable="false">c3</string>
     <string name="f_d3" translatable="false">d3</string>
     <string name="f_e3" translatable="false">e3</string>
-   
+    <string name="f_f3" translatable="false">f3</string>
 
     <string name="f_a4" translatable="false">a4</string>
     <string name="f_b4" translatable="false">b4</string>
     <string name="f_c4" translatable="false">c4</string>
     <string name="f_d4" translatable="false">d4</string>
     <string name="f_e4" translatable="false">e4</string>
-
+    <string name="f_f4" translatable="false">f4</string>
 	
 </resources>

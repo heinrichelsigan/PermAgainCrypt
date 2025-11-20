@@ -133,11 +133,11 @@ public enum KeyHash implements Serializable {
 				case 0x5:
 					return eu.cqrxs.cipherpipe.crypt.hash.Sha1.hashString(instr);
 				case 0x6:
-					return  eu.cqrxs.cipherpipe.crypt.hash.Sha256.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.Sha256.hashString(instr);
 				case 0x7:
-					return  eu.cqrxs.cipherpipe.crypt.hash.Sha384.hashString(instr);
-				// case 0x8:
-				//  return Sha512.hash(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.Sha384.hashString(instr);
+				case 0x8:
+				  return eu.cqrxs.cipherpipe.crypt.hash.Sha512.hashString(instr);
 				case 0x9:
 					return eu.cqrxs.cipherpipe.crypt.hash.Whirlpool.hashString(instr);
 				// case 0xa:
