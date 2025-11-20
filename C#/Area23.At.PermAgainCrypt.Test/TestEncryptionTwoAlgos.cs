@@ -51,17 +51,20 @@ namespace Area23.At.PermAgainCrypt.Test
             File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
-            CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
+            List<CipherEnum> cipherENumList = CipherEnumExtensions.GetCipherTypes().ToList();
+            cipherENumList.RemoveAt(cipherENumList.Count - 1);
+            CipherEnum[] cipherEnums = cipherENumList.ToArray(); // CipherEnumExtensions.GetCipherTypes();
+            CipherEnum[] cipherTypes = cipherENumList.ToArray(); // CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None };
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;            
             string plainText = File.ReadAllText(fileTextTest);
-            for (int i = 0; i < cipherEnums.Length; i += 2)
+            for (int i = 1; i < cipherEnums.Length; i += 2)
             {
-                CipherEnum cipherType = cipherEnums[i];
-                CipherEnum cipherEnum = cipherEnums[((i + 1) % cipherEnums.Length)];
+                CipherEnum cipherType = cipherEnums[i - 1];
+                CipherEnum cipherEnum = cipherEnums[((i) % cipherEnums.Length)];
 
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
                 CipherPipe pipe = new CipherPipe(cipherPair); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);

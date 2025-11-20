@@ -147,7 +147,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
                     cipherEnums.Add(cipherAlgo);
                     
-                    if (++cnt > 7)
+                    if (++cnt >= maxpipe)
                         break;
                 }                
             }
