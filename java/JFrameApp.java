@@ -229,19 +229,36 @@ public class JFrameApp extends JFrame
 		// jf.add(jMenuBar);
 		// jMenuBar.move(0,  0);
 		
-		jComboBox.setBounds(48, 36, 640, 24);
-		jf.getContentPane().add(jComboBox);
 		
-		jPanelCenter.setBounds(48, 72, 640, 400);
-		jPanelCenter.setLayout(new GridLayout(1, 2));
-		jPanelCenter.setBackground(Color.BLACK);  
-		jPanelCenter.add(jTextAreaSource);
-		jTextAreaSource.setBounds(1,1,632,196);
+		jLabelKey.setBounds(1, 4, 32, 32);
+		jTextKey.setBounds(36, 4, 320, 32);
+		jComboBox.setBounds(380, 4, 224, 32);
+		jLabelHash.setBounds(1, 60, 32, 32);
+		jTextHash.setBounds(36, 60, 320, 32);
+		jButtonSetPipe.setBounds(420, 60, 120, 32);
+		jf.getContentPane().add(jLabelKey);
+		jf.getContentPane().add(jTextKey);
+		jf.getContentPane().add(jComboBox);
+		jf.getContentPane().add(jLabelHash);
+		jf.getContentPane().add(jTextHash);
+		jf.getContentPane().add(jButtonSetPipe);
+		
+		jTextAreaSource.setBounds(1,300,600,300);
 		jTextAreaSource.setBackground(Color.GRAY);  
-		jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");		
-		jPanelCenter.add(jTextAreaDestination);
-		jTextAreaDestination.setBounds(1,240,632,196);
+		jTextAreaDestination.setBounds(301,300,632,300);
 		jTextAreaDestination.setBackground(Color.YELLOW);  
+		
+				
+		jPanelCenter.setBounds(12, 108, 620, 620);		
+		jPanelCenter.setLayout(new GridLayout(1, 2));
+		jPanelCenter.setBackground(Color.BLACK);  		
+				
+		jPanelCenter.add(jTextAreaSource);
+		jPanelCenter.add(jTextAreaDestination);
+		
+		jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");		
+		
+		
 		
 		jf.getContentPane().add(jPanelCenter);
 		
@@ -285,6 +302,11 @@ public class JFrameApp extends JFrame
 	JPanel jPanelCenter = new JPanel();
 	JButton JButton1 = new JButton();
 	JTextArea jTextAreaSource = new JTextArea(), jTextAreaDestination = new JTextArea();
+	javax.swing.JTextField jTextKey = new JTextField();
+	javax.swing.JTextField jTextHash = new JTextField();
+	javax.swing.JLabel jLabelKey = new JLabel("key:");
+	javax.swing.JLabel jLabelHash = new JLabel("hash:");
+	JButton jButtonSetPipe = new JButton();
 	
 	JMenuBar jMenuBar = new JMenuBar();
 	// JMenuBar jMenuBar = new JMenuBar();
