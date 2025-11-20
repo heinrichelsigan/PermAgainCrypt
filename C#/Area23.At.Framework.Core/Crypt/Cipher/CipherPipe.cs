@@ -695,6 +695,40 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         }
 
 
+        public string EncrpytEncode(byte[] inBytes, string secretKey, EncodingType encType = EncodingType.Base64, 
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                throw new ArgumentNullException("seretkey");
+
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            cipherHash = keyHash.Hash(secretKey);
+            ZType = zipBefore;
+            KHash = keyHash;
+            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
+            string cryptedEncoded = encType.EnCode(outBytes);
+            return cryptedEncoded;
+        }
+
+
+
+        public byte[] DecodeDecrpyt(string encoded, string secretKey, EncodingType encType = EncodingType.Base64, 
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                throw new ArgumentNullException("seretkey");
+
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            cipherHash = keyHash.Hash(secretKey);
+            ZType = unzipAfter;
+            KHash = keyHash;
+            byte[] cipherBytes = encodeType.DeCode(encoded);
+            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, keyHash.Hash(secretKey), unzipAfter);
+
+            return outBytes;
+        }
+
+
 
         #region static en-de-crypt members
 

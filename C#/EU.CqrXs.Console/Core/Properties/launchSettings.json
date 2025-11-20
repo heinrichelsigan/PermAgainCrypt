@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.Console": {
       "commandName": "Project",
-      "commandLineArgs": "-C=heinrich.elsigan@area23.at -c=base64 "
+      "commandLineArgs": " -i=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\README.MD.Whirlpool.bz.Base32 -d=base32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=S:\\PermAgainCrypt\\Deploy\\console\\README_NEWER.txt"
     }
   }
 }

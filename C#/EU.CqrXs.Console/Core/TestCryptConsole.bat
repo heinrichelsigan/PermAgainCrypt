@@ -1,6 +1,10 @@
 ﻿
 del /q README.MD.BlowFish.Fish2.Fish3.base64 README_MD.txt
-EU.CqrXs.Console.Core.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -k=Hallo -e=base64 -o=.\README.MD.BlowFish.Fish2.Fish3.base64
-EU.CqrXs.Console.Core.exe -i=.\README.MD.BlowFish.Fish2.Fish3.base64  -d=base64 -D=BlowFish,Fish2,Fish3 -k=Hallo -u=gzip -o=.\README_MD.txt
+EU.CqrXs.Console.Core.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=.\README.MD.BlowFish.Fish2.Fish3.base64
+EU.CqrXs.Console.Core.exe -i=.\README.MD.BlowFish.Fish2.Fish3.base64  -d=base64 -D=BlowFish,Fish2,Fish3 -p=Hallo -u=gzip -o=.\README_NEW.txt
+
+
+EU.CqrXs.Console.Core.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=base32 -o=.\README.MD.Whirlpool.bz.Base32
+EU.CqrXs.Console.Core.exe -i=.\README.MD.Whirlpool.bz.Base32 -d=base32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\README_NEWER.txt
 
 pause
