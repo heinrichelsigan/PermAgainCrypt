@@ -3,8 +3,13 @@ using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using Org.BouncyCastle.Crypto.Macs;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
 using System.Configuration;
+using System.Diagnostics;
+using System.Drawing;
 using System.Reflection;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Area23.At.PermAgainCrypt.Test
 {
@@ -48,7 +53,6 @@ namespace Area23.At.PermAgainCrypt.Test
             File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
-            
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None };
             KeyHash kHash = KeyHash.Hex;
@@ -65,6 +69,7 @@ namespace Area23.At.PermAgainCrypt.Test
                 i++;
                 CipherPipe pipe = new CipherPipe(email, hashIv);
                 string pipeText = pipe.PipeString;
+
 
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
 
@@ -99,11 +104,6 @@ namespace Area23.At.PermAgainCrypt.Test
                         {
                             Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
-                            string cx = "";
-                            foreach (CipherEnum c in pipe.InPipe)
-                                cx += c.ToString() + "->";
-                            Console.WriteLine($"          \t{cx}");
-
                             Assert.Fail();
                         }
                     }

@@ -48,11 +48,8 @@ namespace Area23.At.PermAgainCrypt.Test
                 fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
             File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,Cipher,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
-            Assert.IsTrue(File.Exists(fileTextTest));            
-            List<CipherEnum> cipherENumList = CipherEnumExtensions.GetCipherTypes().ToList();
-            cipherENumList.RemoveAt(cipherENumList.Count - 1);
-            // CipherEnum[] cipherEnums = cipherENumList.ToArray(); // CipherEnumExtensions.GetCipherTypes();
-            CipherEnum[] cipherTypes = cipherENumList.ToArray(); // CipherEnumExtensions.GetCipherTypes();
+            Assert.IsTrue(File.Exists(fileTextTest));
+            CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None };
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
@@ -82,16 +79,12 @@ namespace Area23.At.PermAgainCrypt.Test
                     decOpTime = endOp.Subtract(midOp);
                     allOpTime = endOp.Subtract(startOp);
 
-                    if (deCodedBytes != null && deCodedBytes.Length > 0 &&
-                        (Math.Abs(deCodedBytes.LongLength - plainBytes.LongLength) < 16))
+                    if (deCodedBytes == null || deCodedBytes.Length < 1 ||
+                        (deCodedBytes.Length != plainBytes.Length && Math.Abs(deCodedBytes.Length - plainBytes.Length) > 16))
                     {
-                        long difference = deCodedBytes.CompareBytes(plainBytes, true);
-                        if (difference > 0)
-                        {
-                            Console.WriteLine($"{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                            Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
-                            Assert.Fail();
-                        }
+                        Console.WriteLine($"{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                        Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
+                        Assert.Fail();
                     }
                     Console.WriteLine($"{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
