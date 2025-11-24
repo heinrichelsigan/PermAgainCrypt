@@ -101,13 +101,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             // pipeString = "";
-            int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));
-            zType = zpType;
+            int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));            
             CipherEnum[] pipeArray = new CipherEnum[isize];
             Array.Copy(cipherEnums, pipeArray, isize);            
             inPipe = new List<CipherEnum>(pipeArray).ToArray();
             // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
             encodeType = encType;
+            zType = zpType;            
             kHash = kh;
 
             if (inPipe.Length > maxpipe)

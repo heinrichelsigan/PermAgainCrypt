@@ -7,4 +7,8 @@ EU.CqrXs.Console.Core.exe -i=.\README.MD.BlowFish.Fish2.Fish3.base64  -d=base64 
 EU.CqrXs.Console.Core.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=base32 -o=.\README.MD.Whirlpool.bz.Base32
 EU.CqrXs.Console.Core.exe -i=.\README.MD.Whirlpool.bz.Base32 -d=base32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\README_NEWER.txt
 
+
+EU.CqrXs.Console.Core.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
+EU.CqrXs.Console.Core.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\README_NEWEST.txt
+
 pause
