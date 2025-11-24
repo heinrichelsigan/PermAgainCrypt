@@ -58,10 +58,4 @@
     <ProjectReference Include="..\..\Area23.At.Framework.Core\Area23.At.Framework.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="TestCryptConsole.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
