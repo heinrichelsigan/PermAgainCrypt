@@ -32,9 +32,9 @@ You need since 2025-11-15 Visual Studio 2026 and C# .NetCore 10.0 to compile C# 
 ### Releases
 https://github.com/heinrichelsigan/PermAgainCrypt/releases/
 
-### [cqrxs.io/download](https://cqrxs.eu/download/)
-- [PermAgainCrypt_WinForm_NetCore10_x86+x64](https://cqrxs.eu/download/2025-11-18_WinForm_x86+x64.7z)
-- Rendundant website is: https://io.cqrxs.eu/download/
+### [cqrxs.eu/download](https://cqrxs.eu/download/)
+- [PermAgainCrypt_WinForm_NetCore10_x86+x64](https://cqrxs.eu/download/PermAgainCrypt_WinForm_NetCore10_x64.7z)
+- Rendundant website is [io.cqrxs.eu/download](https://io.cqrxs.eu/download/)
 
 ## WebForm online test:
 - [area23.at/net/Crypt/CoolCrypt.aspx](https://area23.at/net/Crypt/CoolCrypt.aspx)
