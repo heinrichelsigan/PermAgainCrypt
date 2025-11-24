@@ -1,4 +1,5 @@
 #define CLR2COMPATIBILITY
+using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Gui.Forms;
 using Microsoft.Win32.SafeHandles;
 using System.Diagnostics.CodeAnalysis;
@@ -294,11 +295,12 @@ namespace Area23.At.WinForm.CryptFormCore
 
     #endregion InnerClasses_Structs
 
-    internal static class Program
+    public static class Program
     {
-        internal static List<System.Windows.Forms.Form> tFormsNew = new List<System.Windows.Forms.Form>();
-        internal static string progName = string.Empty;
-        public static Mutex? mutex;
+        
+        public static string ProgName { get => Constants.APP_NAME; }
+
+        internal static Mutex? mutex;      
 
 
         /// <summary>
@@ -306,36 +308,25 @@ namespace Area23.At.WinForm.CryptFormCore
         /// </summary>
         /// <param name="args">arguments</param>
         [STAThread]
-        static void Main(string[] args)
-        {
-            bool oldFlag = false;
-            progName = System.IO.Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
-            mutex = new Mutex(false, progName);
+        internal static void Main(string[] args)
+        {            
+            mutex = (mutex == null) ? new Mutex(false, Constants.APP_NAME) : mutex;
 
-            foreach (string arg in args)
+            if (!mutex.WaitOne(1000, false))              
             {
-                if (arg.ToLower().Contains("old") || arg.ToLower().Contains("classic"))
-                    oldFlag = true;
-            }
-
-            if (!mutex.WaitOne(1000, false))
-            {
-                Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
+                // Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
                 // Area23.At.Framework.Library.Area23Log.Logger.LogOriginMsg(roachName, $"Another instance of {roachName} is already running!");
-                Console.Out.WriteLine($"Another instance of {progName} is already running!");
-                MessageBox.Show($"Another instance of {progName} is already running!", $"{progName}: multiple startup!", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                // Console.Out.WriteLine($"Another instance of {ProgName} is already running!");
+                MessageBox.Show($"Another instance of {ProgName} is already running!", "Attention");
                 return;
             }
 
-            // Area23Log.SetLogFile(AppContext.BaseDirectory.ToString() + Path.DirectorySeparatorChar + Constants.AppLogFile);
+            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
-
-            // MessageBox.Show("ScreenCapture", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);            
             System.Windows.Forms.Form encryptForm = new EncryptForm();
-            //if (oldFlag)
-            //    encryptForm = new EncryptFormSimple();
+
 
             Application.Run(encryptForm);
 
@@ -343,7 +334,7 @@ namespace Area23.At.WinForm.CryptFormCore
         }
 
 
-        internal static void ReleaseCloseDisposeMutex()
+        public static void ReleaseCloseDisposeMutex()
         {
             Exception? ex = null;
             if (Program.mutex != null)
@@ -358,8 +349,8 @@ namespace Area23.At.WinForm.CryptFormCore
                     catch (Exception exRelease)
                     {
                         ex = exRelease;
-                        Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
-                        Console.Out.WriteLine($"{progName} exception when releasing mutex: {exRelease.Message}\r\n{exRelease.ToString()}\r\n{exRelease.StackTrace}\r\n");
+                        // Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
+                        // Console.Out.WriteLine($"{ProgName} exception when releasing mutex: {exRelease.Message}\r\n{exRelease.ToString()}\r\n{exRelease.StackTrace}\r\n");
                     }
                     try
                     {
@@ -368,8 +359,8 @@ namespace Area23.At.WinForm.CryptFormCore
                     catch (Exception exClose)
                     {
                         if (ex == null)
-                            Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
-                        Console.Out.WriteLine($"{progName} exception when closing mutex: {exClose.Message}\r\n{exClose.ToString()}\r\n{exClose.StackTrace}\r\n");
+                        //    Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
+                        //Console.Out.WriteLine($"{ProgName} exception when closing mutex: {exClose.Message}\r\n{exClose.ToString()}\r\n{exClose.StackTrace}\r\n");
                         ex = exClose;
                     }
                     try
@@ -378,9 +369,9 @@ namespace Area23.At.WinForm.CryptFormCore
                     }
                     catch (Exception exDispose) 
                     {
-                        if (ex == null)
-                            Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
-                        Console.Out.WriteLine($"{progName} exception when disposing mutex: {exDispose.Message}\r\n{exDispose.ToString()}\r\n{exDispose.StackTrace}\r\n");
+                        //if (ex == null)
+                        //    Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
+                        //Console.Out.WriteLine($"{ProgName} exception when disposing mutex: {exDispose.Message}\r\n{exDispose.ToString()}\r\n{exDispose.StackTrace}\r\n");
                         ex = exDispose;
                     }
 
@@ -392,9 +383,9 @@ namespace Area23.At.WinForm.CryptFormCore
             }
             catch (Exception exNull)
             {
-                if (ex == null)
-                    Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
-                Console.Out.WriteLine($"{progName} exception when setting mutex to NULL: {exNull.Message}\r\n{exNull.ToString()}\r\n{exNull.StackTrace}\r\n");
+                //if (ex == null)
+                //    Kernel32.AttachConsole(Kernel32.ATTACH_PARENT_PROCESS);
+                //Console.Out.WriteLine($"{ProgName} exception when setting mutex to NULL: {exNull.Message}\r\n{exNull.ToString()}\r\n{exNull.StackTrace}\r\n");
                 ex = exNull;
             }
             finally
