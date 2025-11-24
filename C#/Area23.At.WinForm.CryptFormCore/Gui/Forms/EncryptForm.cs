@@ -648,7 +648,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     if (saved)
                     {
                         string outFileName = Path.GetFileName(outFilePath);
-                        bool isVerified = await VerifyEncryptedFileAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+                        bool isVerified = true;
+                        if (sha512ToolStripMenuItem.Checked)
+                            isVerified = await VerifyEncryptedFileBytesAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+                        if (bytesOfFileToolStripMenuItem.Checked)
+                            isVerified = await VerifyEncryptedFileShaAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+
                         if (!isVerified)
                         {
                             await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);

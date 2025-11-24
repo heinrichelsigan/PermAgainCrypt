@@ -1,5 +1,6 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Crypt.EnDeCoding;
+using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Crypt.Msg;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
@@ -563,15 +564,34 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region verify output file
 
-        public async Task<bool> VerifyEncryptedFileAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
+
+        public async Task<bool> VerifyEncryptedFileBytesAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
         {
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
             byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
             string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension() + "." + cPipe.PipeString + cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
-            
+
             bool success = await Task.Run(() => CompareBytes(inBytes, outBytes));
             return success;
+        }
+
+        public async Task<bool> VerifyEncryptedFileShaAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
+        {
+            byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
+            byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
+            string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension() + "." + cPipe.PipeString + cPipe.EncodeType.GetEnCodingExtension(), "");
+            byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
+
+            bool shaSuccess = CompareSha512HashSum(inBytes, outBytes);
+            return shaSuccess;
+        }
+
+        public bool CompareSha512HashSum(byte[] inBytes, byte[] outBytes)
+        {
+            string shaHashIn = Sha512Sum.Hash(inBytes);
+            string shaHashOut = Sha512Sum.Hash(outBytes);
+            return (shaHashIn.Equals(shaHashOut));
         }
 
         public bool CompareBytes(byte[] inBytes, byte[] outBytes)

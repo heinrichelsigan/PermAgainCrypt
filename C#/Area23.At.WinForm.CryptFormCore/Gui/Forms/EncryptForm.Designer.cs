@@ -76,6 +76,13 @@
             menuHashSCrypt = new ToolStripMenuItem();
             menuHashWhirlpool = new ToolStripMenuItem();
             menuHashXoodyak = new ToolStripMenuItem();
+            optionsToolStripMenuItem = new ToolStripMenuItem();
+            warnOnNoneStandardSettingsToolStripMenuItem = new ToolStripMenuItem();
+            warnOnEmptyPipeToolStripMenuItem = new ToolStripMenuItem();
+            warnOnDoubleZippingToolStripMenuItem = new ToolStripMenuItem();
+            verifyEncryptionToolStripMenuItem = new ToolStripMenuItem();
+            sha512ToolStripMenuItem = new ToolStripMenuItem();
+            bytesOfFileToolStripMenuItem = new ToolStripMenuItem();
             menuSerialize = new ToolStripMenuItem();
             menuJson = new ToolStripMenuItem();
             menuXml = new ToolStripMenuItem();
@@ -114,10 +121,6 @@
             statusLabelSource = new ToolStripStatusLabel();
             statusLabelMsg = new ToolStripStatusLabel();
             statusLabelDestination = new ToolStripStatusLabel();
-            optionsToolStripMenuItem = new ToolStripMenuItem();
-            warnOnEmptyPipeToolStripMenuItem = new ToolStripMenuItem();
-            warnOnDoubleZippingToolStripMenuItem = new ToolStripMenuItem();
-            warnOnNoneStandardSettingsToolStripMenuItem = new ToolStripMenuItem();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -386,42 +389,42 @@
             // 
             menuHashAscon256.BackColor = SystemColors.ControlLight;
             menuHashAscon256.Name = "menuHashAscon256";
-            menuHashAscon256.Size = new Size(180, 22);
+            menuHashAscon256.Size = new Size(170, 22);
             menuHashAscon256.Text = "Ascon256";
             // 
             // menuHashBlake2xs
             // 
             menuHashBlake2xs.BackColor = SystemColors.ControlLight;
             menuHashBlake2xs.Name = "menuHashBlake2xs";
-            menuHashBlake2xs.Size = new Size(180, 22);
+            menuHashBlake2xs.Size = new Size(170, 22);
             menuHashBlake2xs.Text = "Blake2xs";
             // 
             // menuHashBCrypt
             // 
             menuHashBCrypt.BackColor = SystemColors.ControlLight;
             menuHashBCrypt.Name = "menuHashBCrypt";
-            menuHashBCrypt.Size = new Size(180, 22);
+            menuHashBCrypt.Size = new Size(170, 22);
             menuHashBCrypt.Text = "B-Crypt";
             // 
             // menuHashCShake
             // 
             menuHashCShake.BackColor = SystemColors.ControlLight;
             menuHashCShake.Name = "menuHashCShake";
-            menuHashCShake.Size = new Size(180, 22);
+            menuHashCShake.Size = new Size(170, 22);
             menuHashCShake.Text = "CShake";
             // 
             // menuHashDstu7564
             // 
             menuHashDstu7564.BackColor = SystemColors.ControlLight;
             menuHashDstu7564.Name = "menuHashDstu7564";
-            menuHashDstu7564.Size = new Size(180, 22);
+            menuHashDstu7564.Size = new Size(170, 22);
             menuHashDstu7564.Text = "Dstu7564";
             // 
             // menuHashMD5
             // 
             menuHashMD5.BackColor = SystemColors.Menu;
             menuHashMD5.Name = "menuHashMD5";
-            menuHashMD5.Size = new Size(180, 22);
+            menuHashMD5.Size = new Size(170, 22);
             menuHashMD5.Tag = "";
             menuHashMD5.Text = "MD5";
             // 
@@ -431,21 +434,21 @@
             menuHashHex.Checked = true;
             menuHashHex.CheckState = CheckState.Checked;
             menuHashHex.Name = "menuHashHex";
-            menuHashHex.Size = new Size(180, 22);
+            menuHashHex.Size = new Size(170, 22);
             menuHashHex.Text = "Hex";
             // 
             // menuHashOpenBSDCrypt
             // 
             menuHashOpenBSDCrypt.BackColor = SystemColors.ControlLight;
             menuHashOpenBSDCrypt.Name = "menuHashOpenBSDCrypt";
-            menuHashOpenBSDCrypt.Size = new Size(180, 22);
+            menuHashOpenBSDCrypt.Size = new Size(170, 22);
             menuHashOpenBSDCrypt.Text = "OpenBSDCrypt";
             // 
             // menuHashRipeMD256
             // 
             menuHashRipeMD256.BackColor = SystemColors.ControlLight;
             menuHashRipeMD256.Name = "menuHashRipeMD256";
-            menuHashRipeMD256.Size = new Size(180, 22);
+            menuHashRipeMD256.Size = new Size(170, 22);
             menuHashRipeMD256.Text = "RipeMD256";
             // 
             // menuHashSha1
@@ -453,43 +456,107 @@
             menuHashSha1.BackColor = SystemColors.Menu;
             menuHashSha1.MergeAction = MergeAction.Insert;
             menuHashSha1.Name = "menuHashSha1";
-            menuHashSha1.Size = new Size(180, 22);
+            menuHashSha1.Size = new Size(170, 22);
             menuHashSha1.Text = "Sha1";
             // 
             // menuHashSha256
             // 
             menuHashSha256.BackColor = SystemColors.Menu;
             menuHashSha256.Name = "menuHashSha256";
-            menuHashSha256.Size = new Size(180, 22);
+            menuHashSha256.Size = new Size(170, 22);
             menuHashSha256.Text = "Sha256";
             // 
             // menuHashSha512
             // 
             menuHashSha512.BackColor = SystemColors.Menu;
             menuHashSha512.Name = "menuHashSha512";
-            menuHashSha512.Size = new Size(180, 22);
+            menuHashSha512.Size = new Size(170, 22);
             menuHashSha512.Text = "Sha512";
             // 
             // menuHashSCrypt
             // 
             menuHashSCrypt.BackColor = SystemColors.ControlLight;
             menuHashSCrypt.Name = "menuHashSCrypt";
-            menuHashSCrypt.Size = new Size(180, 22);
+            menuHashSCrypt.Size = new Size(170, 22);
             menuHashSCrypt.Text = "S-Crypt";
             // 
             // menuHashWhirlpool
             // 
             menuHashWhirlpool.BackColor = SystemColors.ControlLight;
             menuHashWhirlpool.Name = "menuHashWhirlpool";
-            menuHashWhirlpool.Size = new Size(180, 22);
+            menuHashWhirlpool.Size = new Size(170, 22);
             menuHashWhirlpool.Text = "Whirlpool";
             // 
             // menuHashXoodyak
             // 
             menuHashXoodyak.BackColor = SystemColors.ControlLight;
             menuHashXoodyak.Name = "menuHashXoodyak";
-            menuHashXoodyak.Size = new Size(180, 22);
+            menuHashXoodyak.Size = new Size(170, 22);
             menuHashXoodyak.Text = "Xoodyak";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { warnOnNoneStandardSettingsToolStripMenuItem, warnOnEmptyPipeToolStripMenuItem, warnOnDoubleZippingToolStripMenuItem, verifyEncryptionToolStripMenuItem });
+            optionsToolStripMenuItem.Font = new Font("Lucida Sans Typewriter", 10F);
+            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            optionsToolStripMenuItem.Size = new Size(75, 20);
+            optionsToolStripMenuItem.Text = "Options";
+            // 
+            // warnOnNoneStandardSettingsToolStripMenuItem
+            // 
+            warnOnNoneStandardSettingsToolStripMenuItem.BackColor = SystemColors.ControlLight;
+            warnOnNoneStandardSettingsToolStripMenuItem.Checked = true;
+            warnOnNoneStandardSettingsToolStripMenuItem.CheckOnClick = true;
+            warnOnNoneStandardSettingsToolStripMenuItem.CheckState = CheckState.Checked;
+            warnOnNoneStandardSettingsToolStripMenuItem.Name = "warnOnNoneStandardSettingsToolStripMenuItem";
+            warnOnNoneStandardSettingsToolStripMenuItem.Size = new Size(306, 22);
+            warnOnNoneStandardSettingsToolStripMenuItem.Text = "Ask when no standard settings";
+            // 
+            // warnOnEmptyPipeToolStripMenuItem
+            // 
+            warnOnEmptyPipeToolStripMenuItem.BackColor = SystemColors.ControlLight;
+            warnOnEmptyPipeToolStripMenuItem.Checked = true;
+            warnOnEmptyPipeToolStripMenuItem.CheckOnClick = true;
+            warnOnEmptyPipeToolStripMenuItem.CheckState = CheckState.Checked;
+            warnOnEmptyPipeToolStripMenuItem.Name = "warnOnEmptyPipeToolStripMenuItem";
+            warnOnEmptyPipeToolStripMenuItem.Size = new Size(306, 22);
+            warnOnEmptyPipeToolStripMenuItem.Text = "Warn on empty pipe";
+            warnOnEmptyPipeToolStripMenuItem.ToolTipText = "Warn on en-/decrypting when cipher pipe is empty";
+            // 
+            // warnOnDoubleZippingToolStripMenuItem
+            // 
+            warnOnDoubleZippingToolStripMenuItem.BackColor = SystemColors.ControlLight;
+            warnOnDoubleZippingToolStripMenuItem.Checked = true;
+            warnOnDoubleZippingToolStripMenuItem.CheckOnClick = true;
+            warnOnDoubleZippingToolStripMenuItem.CheckState = CheckState.Checked;
+            warnOnDoubleZippingToolStripMenuItem.Name = "warnOnDoubleZippingToolStripMenuItem";
+            warnOnDoubleZippingToolStripMenuItem.Size = new Size(306, 22);
+            warnOnDoubleZippingToolStripMenuItem.Text = "Warn on double zipping";
+            warnOnDoubleZippingToolStripMenuItem.ToolTipText = "Warn, when zipping an already zipped or strong compressed file";
+            // 
+            // verifyEncryptionToolStripMenuItem
+            // 
+            verifyEncryptionToolStripMenuItem.BackColor = SystemColors.ControlLight;
+            verifyEncryptionToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { sha512ToolStripMenuItem, bytesOfFileToolStripMenuItem });
+            verifyEncryptionToolStripMenuItem.Name = "verifyEncryptionToolStripMenuItem";
+            verifyEncryptionToolStripMenuItem.Size = new Size(306, 22);
+            verifyEncryptionToolStripMenuItem.Text = "Verify Encryption";
+            // 
+            // sha512ToolStripMenuItem
+            // 
+            sha512ToolStripMenuItem.Checked = true;
+            sha512ToolStripMenuItem.CheckOnClick = true;
+            sha512ToolStripMenuItem.CheckState = CheckState.Checked;
+            sha512ToolStripMenuItem.Name = "sha512ToolStripMenuItem";
+            sha512ToolStripMenuItem.Size = new Size(210, 22);
+            sha512ToolStripMenuItem.Text = "sha512 hash";
+            // 
+            // bytesOfFileToolStripMenuItem
+            // 
+            bytesOfFileToolStripMenuItem.CheckOnClick = true;
+            bytesOfFileToolStripMenuItem.Name = "bytesOfFileToolStripMenuItem";
+            bytesOfFileToolStripMenuItem.Size = new Size(210, 22);
+            bytesOfFileToolStripMenuItem.Text = "1/8 bytes of file";
             // 
             // menuSerialize
             // 
@@ -507,7 +574,7 @@
             menuJson.Enabled = false;
             menuJson.Name = "menuJson";
             menuJson.ShortcutKeys = Keys.Control | Keys.J;
-            menuJson.Size = new Size(180, 22);
+            menuJson.Size = new Size(161, 22);
             menuJson.Text = "Json";
             // 
             // menuXml
@@ -516,7 +583,7 @@
             menuXml.Enabled = false;
             menuXml.Name = "menuXml";
             menuXml.ShortcutKeys = Keys.Control | Keys.X;
-            menuXml.Size = new Size(180, 22);
+            menuXml.Size = new Size(161, 22);
             menuXml.Text = "Xml";
             // 
             // menuRaw
@@ -525,7 +592,7 @@
             menuRaw.Enabled = false;
             menuRaw.Name = "menuRaw";
             menuRaw.ShortcutKeys = Keys.Control | Keys.R;
-            menuRaw.Size = new Size(180, 22);
+            menuRaw.Size = new Size(161, 22);
             menuRaw.Text = "Raw";
             // 
             // menuHelp
@@ -922,46 +989,6 @@
             statusLabelDestination.Size = new Size(216, 17);
             statusLabelDestination.Text = "statusLabelDestination";
             // 
-            // optionsToolStripMenuItem
-            // 
-            optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { warnOnNoneStandardSettingsToolStripMenuItem, warnOnEmptyPipeToolStripMenuItem, warnOnDoubleZippingToolStripMenuItem });
-            optionsToolStripMenuItem.Font = new Font("Lucida Sans Typewriter", 10F);
-            optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            optionsToolStripMenuItem.Size = new Size(75, 20);
-            optionsToolStripMenuItem.Text = "Options";
-            // 
-            // warnOnEmptyPipeToolStripMenuItem
-            // 
-            warnOnEmptyPipeToolStripMenuItem.BackColor = SystemColors.ControlLight;
-            warnOnEmptyPipeToolStripMenuItem.Checked = true;
-            warnOnEmptyPipeToolStripMenuItem.CheckState = CheckState.Checked;
-            warnOnEmptyPipeToolStripMenuItem.Name = "warnOnEmptyPipeToolStripMenuItem";
-            warnOnEmptyPipeToolStripMenuItem.Size = new Size(306, 22);
-            warnOnEmptyPipeToolStripMenuItem.Text = "Warn on empty pipe";
-            warnOnEmptyPipeToolStripMenuItem.ToolTipText = "Warn on en-/decrypting when cipher pipe is empty";
-            warnOnEmptyPipeToolStripMenuItem.CheckOnClick = true;
-            // 
-            // warnOnDoubleZippingToolStripMenuItem
-            // 
-            warnOnDoubleZippingToolStripMenuItem.BackColor = SystemColors.ControlLight;
-            warnOnDoubleZippingToolStripMenuItem.Checked = true;
-            warnOnDoubleZippingToolStripMenuItem.CheckState = CheckState.Checked;
-            warnOnDoubleZippingToolStripMenuItem.Name = "warnOnDoubleZippingToolStripMenuItem";
-            warnOnDoubleZippingToolStripMenuItem.Size = new Size(306, 22);
-            warnOnDoubleZippingToolStripMenuItem.Text = "Warn on double zipping";
-            warnOnDoubleZippingToolStripMenuItem.ToolTipText = "Warn, when zipping an already zipped or strong compressed file";
-            warnOnDoubleZippingToolStripMenuItem.CheckOnClick = true;
-            // 
-            // warnOnNoneStandardSettingsToolStripMenuItem
-            // 
-            warnOnNoneStandardSettingsToolStripMenuItem.BackColor = SystemColors.ControlLight;
-            warnOnNoneStandardSettingsToolStripMenuItem.Checked = true;
-            warnOnNoneStandardSettingsToolStripMenuItem.CheckState = CheckState.Checked;
-            warnOnNoneStandardSettingsToolStripMenuItem.Name = "warnOnNoneStandardSettingsToolStripMenuItem";
-            warnOnNoneStandardSettingsToolStripMenuItem.Size = new Size(306, 22);
-            warnOnNoneStandardSettingsToolStripMenuItem.Text = "Ask when no standard settings";
-            warnOnNoneStandardSettingsToolStripMenuItem.CheckOnClick = true;
-            // 
             // EncryptForm
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
@@ -1110,6 +1137,9 @@
         private ToolStripMenuItem warnOnEmptyPipeToolStripMenuItem;
         private ToolStripMenuItem warnOnDoubleZippingToolStripMenuItem;
         private ToolStripMenuItem warnOnNoneStandardSettingsToolStripMenuItem;
+        private ToolStripMenuItem verifyEncryptionToolStripMenuItem;
+        private ToolStripMenuItem sha512ToolStripMenuItem;
+        private ToolStripMenuItem bytesOfFileToolStripMenuItem;
     }
 
 
