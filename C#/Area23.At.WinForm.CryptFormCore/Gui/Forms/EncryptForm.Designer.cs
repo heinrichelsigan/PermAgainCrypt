@@ -228,7 +228,6 @@
             menuMainReset.Name = "menuMainReset";
             menuMainReset.Size = new Size(180, 22);
             menuMainReset.Text = "Reset";
-            menuMainReset.Click += Reset_Click;
             // 
             // toolStripSeparator1
             // 
@@ -314,8 +313,7 @@
             menuNone.Name = "menuNone";
             menuNone.Size = new Size(180, 22);
             menuNone.Text = "None";
-            menuNone.ToolTipText = "no encoding, let it be binary as it is";
-            menuNone.Click += menuEncodingKind_Click;
+            menuNone.ToolTipText = "no encoding, let it be binary as it is";            
             // 
             // menuBase16
             // 
@@ -324,7 +322,6 @@
             menuBase16.Size = new Size(180, 22);
             menuBase16.Text = "Base16";
             menuBase16.ToolTipText = "base16 en-/decoding";
-            menuBase16.Click += menuEncodingKind_Click;
             // 
             // menuHex16
             // 
@@ -332,8 +329,7 @@
             menuHex16.Name = "menuHex16";
             menuHex16.Size = new Size(180, 22);
             menuHex16.Text = "Hex16";
-            menuHex16.ToolTipText = "hexadecimal half byte encoding";
-            menuHex16.Click += menuEncodingKind_Click;
+            menuHex16.ToolTipText = "hexadecimal half byte encoding";            
             // 
             // menuBase32
             // 
@@ -341,28 +337,23 @@
             menuBase32.Name = "menuBase32";
             menuBase32.Size = new Size(180, 22);
             menuBase32.Text = "Base32";
-            menuBase32.ToolTipText = "base32 en-/decoding";
-            menuBase32.Click += menuEncodingKind_Click;
+            menuBase32.ToolTipText = "base32 en-/decoding";            
             // 
             // menuHex32
             // 
             menuHex32.BackColor = SystemColors.Menu;
             menuHex32.Name = "menuHex32";
             menuHex32.Size = new Size(180, 22);
-            menuHex32.Text = "Hex32";
-            menuHex32.ToolTipText = "hex32 en-/decoding";
-            menuHex32.Click += menuEncodingKind_Click;
+            menuHex32.Text = "Hex32";         
             // 
             // menuBase64
             // 
             menuBase64.BackColor = SystemColors.Menu;
             menuBase64.Checked = true;
-            menuBase64.CheckState = CheckState.Checked;
-            menuBase64.Name = "menuBase64";
+            menuBase64.CheckState = CheckState.Checked;            
             menuBase64.Size = new Size(180, 22);
             menuBase64.Text = "Base64";
             menuBase64.ToolTipText = "base64 mime en-/decoding";
-            menuBase64.Click += menuEncodingKind_Click;
             // 
             // menuUu
             // 
@@ -370,15 +361,13 @@
             menuUu.Name = "menuUu";
             menuUu.Size = new Size(180, 22);
             menuUu.Text = "Uu";
-            menuUu.ToolTipText = "unix 2 unix en-/decoding, see uuencode, uudecode";
-            menuUu.Click += menuEncodingKind_Click;
+            menuUu.ToolTipText = "unix 2 unix en-/decoding, see uuencode, uudecode";            
             // 
             // menuXx
             // 
             menuXx.Name = "menuXx";
             menuXx.Size = new Size(180, 22);
             menuXx.Text = "Xx";
-            menuXx.Click += menuEncodingKind_Click;
             // 
             // menuHash
             // 
@@ -394,7 +383,6 @@
             menuHashAscon256.Name = "menuHashAscon256";
             menuHashAscon256.Size = new Size(180, 22);
             menuHashAscon256.Text = "Ascon256";
-            menuHashAscon256.Click += menuHash_Click;
             // 
             // menuHashBlake2xs
             // 
@@ -402,7 +390,6 @@
             menuHashBlake2xs.Name = "menuHashBlake2xs";
             menuHashBlake2xs.Size = new Size(180, 22);
             menuHashBlake2xs.Text = "Blake2xs";
-            menuHashBlake2xs.Click += menuHash_Click;
             // 
             // menuHashBCrypt
             // 
@@ -410,7 +397,6 @@
             menuHashBCrypt.Name = "menuHashBCrypt";
             menuHashBCrypt.Size = new Size(180, 22);
             menuHashBCrypt.Text = "B-Crypt";
-            menuHashBCrypt.Click += menuHash_Click;
             // 
             // menuHashCShake
             // 
@@ -418,7 +404,6 @@
             menuHashCShake.Name = "menuHashCShake";
             menuHashCShake.Size = new Size(180, 22);
             menuHashCShake.Text = "CShake";
-            menuHashCShake.Click += menuHash_Click;
             // 
             // menuHashDstu7564
             // 
@@ -426,7 +411,6 @@
             menuHashDstu7564.Name = "menuHashDstu7564";
             menuHashDstu7564.Size = new Size(180, 22);
             menuHashDstu7564.Text = "Dstu7564";
-            menuHashDstu7564.Click += menuHash_Click;
             // 
             // menuHashMD5
             // 
@@ -434,8 +418,7 @@
             menuHashMD5.Name = "menuHashMD5";
             menuHashMD5.Size = new Size(180, 22);
             menuHashMD5.Tag = "";
-            menuHashMD5.Text = "MD5";
-            menuHashMD5.Click += menuHash_Click;
+            menuHashMD5.Text = "MD5";            
             // 
             // menuHashHex
             // 
@@ -445,7 +428,6 @@
             menuHashHex.Name = "menuHashHex";
             menuHashHex.Size = new Size(180, 22);
             menuHashHex.Text = "Hex";
-            menuHashHex.Click += menuHash_Click;
             // 
             // menuHashOpenBSDCrypt
             // 
@@ -453,15 +435,13 @@
             menuHashOpenBSDCrypt.Name = "menuHashOpenBSDCrypt";
             menuHashOpenBSDCrypt.Size = new Size(180, 22);
             menuHashOpenBSDCrypt.Text = "OpenBSDCrypt";
-            menuHashOpenBSDCrypt.Click += menuHash_Click;
             // 
             // menuHashRipeMD256
             // 
             menuHashRipeMD256.BackColor = SystemColors.ControlLight;
             menuHashRipeMD256.Name = "menuHashRipeMD256";
             menuHashRipeMD256.Size = new Size(180, 22);
-            menuHashRipeMD256.Text = "RipeMD256";
-            menuHashRipeMD256.Click += menuHash_Click;
+            menuHashRipeMD256.Text = "RipeMD256";            
             // 
             // menuHashSha1
             // 
@@ -470,15 +450,13 @@
             menuHashSha1.Name = "menuHashSha1";
             menuHashSha1.Size = new Size(180, 22);
             menuHashSha1.Text = "Sha1";
-            menuHashSha1.Click += menuHash_Click;
             // 
             // menuHashSha256
             // 
             menuHashSha256.BackColor = SystemColors.Menu;
             menuHashSha256.Name = "menuHashSha256";
             menuHashSha256.Size = new Size(180, 22);
-            menuHashSha256.Text = "Sha256";
-            menuHashSha256.Click += menuHash_Click;
+            menuHashSha256.Text = "Sha256";;
             // 
             // menuHashSha512
             // 
@@ -486,7 +464,6 @@
             menuHashSha512.Name = "menuHashSha512";
             menuHashSha512.Size = new Size(180, 22);
             menuHashSha512.Text = "Sha512";
-            menuHashSha512.Click += menuHash_Click;
             // 
             // menuHashSCrypt
             // 
@@ -494,7 +471,6 @@
             menuHashSCrypt.Name = "menuHashSCrypt";
             menuHashSCrypt.Size = new Size(180, 22);
             menuHashSCrypt.Text = "S-Crypt";
-            menuHashSCrypt.Click += menuHash_Click;
             // 
             // menuHashWhirlpool
             // 
@@ -502,7 +478,6 @@
             menuHashWhirlpool.Name = "menuHashWhirlpool";
             menuHashWhirlpool.Size = new Size(180, 22);
             menuHashWhirlpool.Text = "Whirlpool";
-            menuHashWhirlpool.Click += menuHash_Click;
             // 
             // menuHashXoodyak
             // 
@@ -510,7 +485,6 @@
             menuHashXoodyak.Name = "menuHashXoodyak";
             menuHashXoodyak.Size = new Size(180, 22);
             menuHashXoodyak.Text = "Xoodyak";
-            menuHashXoodyak.Click += menuHash_Click;
             // 
             // menuSerialize
             // 
@@ -656,8 +630,7 @@
             buttonReset.Size = new Size(120, 30);
             buttonReset.TabIndex = 36;
             buttonReset.Text = "Reset Form";
-            buttonReset.UseVisualStyleBackColor = false;
-            buttonReset.Click += Reset_Click;
+            buttonReset.UseVisualStyleBackColor = false;            
             // 
             // pictureBoxFileIn
             // 
@@ -855,7 +828,6 @@
             comboBoxEncoding.Name = "comboBoxEncoding";
             comboBoxEncoding.Size = new Size(120, 23);
             comboBoxEncoding.TabIndex = 14;
-            comboBoxEncoding.SelectedIndexChanged += comboBoxEncoding_SelectedIndexChanged;
             // 
             // buttonRandomText
             // 
@@ -897,7 +869,6 @@
             radioButtonListHash.Size = new Size(988, 46);
             radioButtonListHash.Sorted = true;
             radioButtonListHash.TabIndex = 6;
-            radioButtonListHash.SelectedIndexChanged += RadioButtonListHash_SelectedIndexChanged;
             // 
             // labelInfoMessage
             // 

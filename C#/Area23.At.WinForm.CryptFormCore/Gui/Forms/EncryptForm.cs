@@ -29,12 +29,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         {
             InitializeComponent();
 
+            buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
+            buttonDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
+            buttonReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e)); 
+            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboBoxEncoding_SelectedIndexChanged(sender, e));
+            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) => await RadioButtonListHash_SelectedIndexChanged(sender, e));
+
             menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
             menuMainDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
+            menuMainReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
-            buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e)); 
-            buttonDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
+            ToolStripMenuItem[] menuEncodings = { menuNone, menuBase16, menuHex16, menuHex32, menuBase32, menuBase64, menuUu, menuXx };
+            foreach (ToolStripMenuItem encodingMenu in menuEncodings)
+            {
+                encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
+            }
+            ToolStripMenuItem[] menuHashes = { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, 
+                        menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+            foreach (ToolStripMenuItem hashMenu in menuHashes)
+            {
+                hashMenu.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
+            }
+
         }
 
         /// <summary>
@@ -149,16 +166,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return ZipType.None;
         }
 
-        protected internal void menuEncodingKind_Click(object sender, EventArgs e) => SetEncoding((ToolStripMenuItem)sender, null);
+        protected internal async Task menuEncodingKind_Click(object sender, EventArgs e) => await SetEncodingAsync((ToolStripMenuItem)sender, null);
 
-        protected internal void comboBoxEncoding_SelectedIndexChanged(object sender, EventArgs e) => SetEncoding(null, comboBoxEncoding.SelectedItem);
+        protected internal async Task comboBoxEncoding_SelectedIndexChanged(object sender, EventArgs e) => await SetEncodingAsync(null, comboBoxEncoding.SelectedItem);
 
         /// <summary>
         /// SetEncoding - sets encoding type from menu or combobox
         /// </summary>
         /// <param name="mi">encoding ToolStripMenuItem</param>
         /// <param name="comboItem">selected encoding combobox item</param>
-        protected internal void SetEncoding(ToolStripMenuItem? mi = null, object? comboItem = null)
+        protected internal async Task SetEncodingAsync(ToolStripMenuItem? mi = null, object? comboItem = null)
         {
             EncodingType encodingType = (mi != null) ? EncodingTypesExtensions.GetEncodingTypeFromString(mi.Name.Replace("menu", "")) :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None") :
@@ -210,7 +227,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     default: menuBase64.Checked = true; break;
                 }
             }
-            SetInfoMessage($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
+            await SetInfoMessageAsync($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
 
         /// <summary>
@@ -232,16 +249,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         }
 
-        protected internal void menuHash_Click(object sender, EventArgs e) => SetHash((ToolStripMenuItem)sender, (RadioButtonList)radioButtonListHash);
+        protected internal async Task menuHash_Click(object sender, EventArgs e) => await SetHashAsync((ToolStripMenuItem)sender, (RadioButtonList)radioButtonListHash);
 
-        protected internal void RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => SetHash(null, (RadioButtonList)sender);
+        protected internal async Task RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => await SetHashAsync(null, (RadioButtonList)sender);
 
         /// <summary>
         /// SetHash – sets hash type from menu or radiobuttonlist
         /// </summary>
         /// <param name="mi">hash ToolStripMenuItem selected</param>
         /// <param name="radioButtonList">hash radioButtonList</param>
-        protected internal void SetHash(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
+        protected internal async Task SetHashAsync(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
         {
             KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash aKeyHash = KeyHash.Hex;
@@ -311,7 +328,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
 
             Hash_Click(this, new EventArgs());
-            SetInfoMessage($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
+            await SetInfoMessageAsync($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
         }
 
         /// <summary>
@@ -392,29 +409,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     switch (cipherEnum)
                     {
                         case CipherEnum.BlowFish:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.blowfish, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
                             break;
                         case CipherEnum.Fish2:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TwoFish, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
                             break;
                         case CipherEnum.Fish3:
                         case CipherEnum.ThreeFish256:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
                             break;
                         case CipherEnum.Serpent:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Serpent, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
                             break;
                         case CipherEnum.XTea:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.XTea, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.XTea, "", true);
                             break;
                         case CipherEnum.Tea:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Tea, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Tea, "", true);
                             break;
                         case CipherEnum.Des:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Des, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Des, "", true);
                             break;
                         case CipherEnum.Des3:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TripleDes, true);
+                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
                             break;
                         default:
                             break;
@@ -508,7 +525,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// </summary>
         /// <param name="sender">object sender</param>
         /// <param name="e">EventArgs e</param>
-        protected internal void Reset_Click(object sender, EventArgs e)
+        protected internal async Task Reset_Click(object sender, EventArgs e)
         {
             this.textBoxHash.Text = string.Empty;
             this.textBoxKey.Text = string.Empty;
@@ -520,9 +537,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.pictureBoxOutFile.Image = Properties.Resources.image_file;
             this.pictureBoxOutFile.Tag = null;
             this.pictureBoxOutFile.Visible = false;
-            this.SetEncoding(null, "Base64");
+            await this.SetEncodingAsync(null, "Base64");
             this.SetCompression(null, "None");
-            this.SetHash(menuHashHex, radioButtonListHash);
+            await this.SetHashAsync(menuHashHex, radioButtonListHash);
             this.labelFileIn.Text = "[no file selected]";
             this.pictureBoxFileIn.Tag = null;
             this.pictureBoxFileIn.Image = Properties.Resources.image_file;
@@ -563,13 +580,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 await SetInfoMessageAsync("Starting encryption plain text", ToolTipIcon.Info, -1);                
                 try
                 {
-                    SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
+                    await SetStatusLabelTextAsync(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
                     if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        SetEncoding(menuBase64);
+                        await SetEncodingAsync(menuBase64);
 
                     string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.textBoxOut.Text = encrypted;
-                    SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
+                    await SetStatusLabelTextAsync(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
+                    await SetInfoMessageAsync("Encryption finished", ToolTipIcon.Info, 5000);
                 }
                 catch (Exception ex)
                 {
@@ -583,70 +601,78 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
             if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
             {
-                // this.pictureBoxRunningPipe.Visible = true;
-                await SetInfoMessageAsync("Starting encryption for file " + labelFileIn.Text, ToolTipIcon.Info, -1);
-                foreach (string file in HashFiles)
+                string fileName = FileMatches();
+                if (string.IsNullOrEmpty(fileName))
                 {
-                    if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
-                        labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
-                        pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                    await SetInfoMessageAsync("No file found to encrypt", ToolTipIcon.Warning, 6000);
+                    await SetStatusLabelTextAsync(this.statusLabelSource, "No file found to encrypt");
+                    return;
+                }
+
+                await SetInfoMessageAsync("Starting encryption for file " + labelFileIn.Text, ToolTipIcon.Info, -1);
+
+                Cursor.Current = new Cursor(iconSandClock.Handle);
+                try
+                {
+                    // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileName);
+                    byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
+                    await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
+
+                    bool saved = SaveBytesDialog(outBytes, ref outFilePath);
+                    if (saved)
                     {
                         Cursor.Current = new Cursor(iconSandClock.Handle);
-                        try
+
+                        string outFileName = Path.GetFileName(outFilePath);
+                        bool isVerified = await VerifyEncryptedFileAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+                        if (!isVerified)
                         {
-                            // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                            byte[] fileBytes = System.IO.File.ReadAllBytes(file);
-                            byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                            string outFilePath = (file + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
-                            await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
-
-                            bool saved = SaveBytesDialog(outBytes, ref outFilePath);
-                            if (saved)
-                            {                                
-                                Cursor.Current = new Cursor(iconSandClock.Handle);
-                                
-                                string outFileName = Path.GetFileName(outFilePath);
-                                bool isVerified = await VerifyEncryptedFileAsync(file, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
-                                if (!isVerified)
-                                {
-                                    await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
-                                    await PlaySoundFromResourcesAsync("sound_hammer");                                    
-                                    SetPictureBoxImage(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, true);
-                                }
-                                else
-                                {
-                                    await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
-                                    await PlaySoundFromResourcesAsync("sound_laser");
-                                    SetPictureBoxImage(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), true);
-                                }
-                                
-                                pictureBoxOutFile.Tag = "{" + outFilePath + "}";                                
-                                labelOutputFile.Text = outFileName;
-                                labelOutputFile.Visible = true;
-                                HashFiles.Add(outFilePath);
-
-                                Cursor.Current = DefaultCursor;
-                            }
-                            else
-                            {
-                                await SetInfoMessageAsync("Saving file canceled by user", ToolTipIcon.Warning, 3000);
-                            }
-
+                            await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
+                            await PlaySoundFromResourcesAsync("sound_hammer");
+                            await SetPictureBoxImageAsync(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            await SetInfoMessageAsync(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 5000);                            
+                            await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
+                            await PlaySoundFromResourcesAsync("sound_laser");
+                            await SetPictureBoxImageAsync(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
+
+                        await SetLabelTextAsync(labelOutputFile, outFileName);
+                        HashFiles.Add(outFilePath);
 
                         Cursor.Current = DefaultCursor;
-                        break;
                     }
+                    else
+                    {
+                        await SetInfoMessageAsync("Saving file canceled by user", ToolTipIcon.Warning, 3000);
+                    }
+
                 }
+                catch (Exception ex)
+                {
+                    await SetInfoMessageAsync(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 5000);
+                }
+
+                Cursor.Current = DefaultCursor;
             }
 
-            TimeSpan running = DateTime.Now.Subtract(start);
-            SetStatusLabelText(this.statusLabelMsg, "Time: " + running.ToString());
+            await SetStatusLabelTextAsync(this.statusLabelMsg, "Time: " + DateTime.Now.Subtract(start).ToString());
 
+        }
+
+        public string FileMatches() 
+        {
+            foreach (string file in HashFiles)
+            {
+                if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
+                    labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
+                        pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                    return file;
+            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -679,18 +705,19 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             {
                 this.textBoxOut.Text = "";
                 Cursor.Current = new Cursor(iconSandClock.Handle);
-                await SetInfoMessageAsync("Starting decryption plain text", ToolTipIcon.Info, -1);
+                await SetInfoMessageAsync("Starting decryption of cipher text", ToolTipIcon.Info, -1);
 
                 try
                 {
-                    SetStatusLabelText(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
+                    await SetStatusLabelTextAsync(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
                     if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        SetEncoding(menuBase64);
+                        await SetEncodingAsync(menuBase64);
 
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.textBoxOut.Text = decrypted;
-                    SetStatusLabelText(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
+                    await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
+                    await SetStatusLabelTextAsync(this.statusLabelDestination, $"destination chars: {this.textBoxOut.Text.Length}");
                 }
                 catch (Exception ex)
                 {
@@ -704,50 +731,44 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
             if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
             {
+                string fileName = FileMatches();
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    await SetInfoMessageAsync("No file found to decrypt", ToolTipIcon.Warning, 6000);
+                    await SetStatusLabelTextAsync(this.statusLabelSource, "No file found to decrypt");
+                    return;
+                }
+
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting decryption file " + labelFileIn.Text, ToolTipIcon.Info, -1);
 
-                foreach (string file in HashFiles)
+                try
                 {
-                    if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
-                        labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
-                        pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                    // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileName);
+                    byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    string outFileDecrypt = fileName.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension(), "");
+                    bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
+                    if (saved)
                     {
-                        
-                        try
-                        {
-                            // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                            byte[] fileBytes = System.IO.File.ReadAllBytes(file);
-                            byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                            string outFileDecrypt = file.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension(), "");
-                            bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
-                            if (saved)
-                            {
-                                HashFiles.Add(outFileDecrypt);
-                                pictureBoxOutFile.Visible = true;
-                                SetPictureBoxImage(pictureBoxOutFile, outFileDecrypt.GetImageThumbnailFromFile(), true);
-                                pictureBoxOutFile.Tag = outFileDecrypt;
-                                labelOutputFile.Text = Path.GetFileName(outFileDecrypt);
-                                labelOutputFile.Visible = true;
-                            }
-                            else
-                                await SetInfoMessageAsync("Saving file canceled by user", ToolTipIcon.Warning, 6000);
-                        }
-                        catch (Exception ex)
-                        {
-                            await SetInfoMessageAsync(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 8000);
-                        }
-                        finally
-                        {
-                            Cursor.Current = DefaultCursor;
-                        }
-                        break;
+                        HashFiles.Add(outFileDecrypt);
+                        await SetPictureBoxImageAsync(pictureBoxOutFile, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
+                        await SetLabelTextAsync(labelOutputFile, Path.GetFileName(outFileDecrypt));
                     }
+                    else
+                        await SetInfoMessageAsync("Saving file canceled by user", ToolTipIcon.Warning, 6000);
+                }
+                catch (Exception ex)
+                {
+                    await SetInfoMessageAsync(ex.GetType().Name + ": " + ex.Message.ToString(), ToolTipIcon.Error, 8000);
+                }
+                finally
+                {
+                    Cursor.Current = DefaultCursor;
                 }
             }
-            
-            TimeSpan running = DateTime.Now.Subtract(start);
-            SetStatusLabelText(this.statusLabelMsg, "Time: " + running.ToString());
+
+            await SetStatusLabelTextAsync(this.statusLabelMsg, "Time: " + DateTime.Now.Subtract(start).ToString());
         }
 
         #endregion EncryptDecrypt_Click
@@ -897,7 +918,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             {
                                 if (fi.Length > 1048576)
                                     SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
-                                else if (fi.Length > 2048)
+                                else if (fi.Length > 1024)
                                     SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1024)} kb");
                                 else SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
                             }                           
@@ -1094,41 +1115,39 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         protected internal async Task SetInfoMessageAsync(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
-        {
-            SetLabelText(labelInfoMessage, message);
-            SetStatusLabelText(this.statusLabelMsg, message);
+        {            
+            await SetStatusLabelTextAsync(this.statusLabelMsg, message);
             string toolHeader = toolIcon.ToString();
             switch (toolIcon)
             {
                 case ToolTipIcon.Error:
                     toolHeader = "Error";
-                    SetLabelBackColor(labelInfoMessage, ColorTranslator.FromHtml("#bab510"));
+                    await SetLabelBackColorAsync(labelInfoMessage, ColorTranslator.FromHtml("#bab510"));
                     await PlaySoundFromResourcesAsync("sound_error");
                     break;
                 case ToolTipIcon.Warning:
-                    SetLabelBackColor(labelInfoMessage, Color.LightYellow);
+                    await SetLabelBackColorAsync(labelInfoMessage, Color.LightYellow);
                     toolHeader = "Warning";
                     await PlaySoundFromResourcesAsync("sound_warning");
                     break;
                 case ToolTipIcon.Info:
                 default:
-                    SetLabelBackColor(labelInfoMessage, SystemColors.Info);
+                    await SetLabelBackColorAsync(labelInfoMessage, SystemColors.Info);
                     toolHeader = "Info";
                     await PlaySoundFromResourcesAsync("sound_info");
                     break;
             }
-            SetLabelVisible(this.labelInfoMessage, true);
+            await SetLabelTextAsync(labelInfoMessage, message);
 
             if (duration > 0)
             {
                 System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = duration };
                 setInfoMessageTimer.Elapsed += (s, en) =>
                 {
-                    Task.Run(new System.Action(() =>
-                    {
-                        SetLabelText(labelInfoMessage, "");
-                        SetLabelBackColor(labelInfoMessage, SystemColors.Info);
-                        SetLabelVisible(labelInfoMessage, false);
+                    Task.Run(new System.Action(async() =>
+                    {                        
+                        await SetLabelBackColorAsync(labelInfoMessage, SystemColors.Info);
+                        await SetLabelVisibleAsync(labelInfoMessage, false);
                     }));
                     setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
                 };
@@ -1158,8 +1177,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             {
                 Task.Run(new System.Action(() =>
                 {
-                    SetPictureBoxImage(this.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, true);
-                    SetPictureBoxImage(this.pictureBoxOutFile, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, false);
+                    SetPictureBoxImage(this.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", true);
+                    SetPictureBoxImage(this.pictureBoxOutFile, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", false);
                 }));
                 resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
             };
@@ -1169,5 +1188,4 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         #endregion Media Methods
 
     }
-
-}
+    }

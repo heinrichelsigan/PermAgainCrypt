@@ -78,5 +78,9 @@ he@area23.at</Description>
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
+    
+	<ItemGroup>
+	  <Folder Include="log\" />
+	</ItemGroup>
 
 </Project>
