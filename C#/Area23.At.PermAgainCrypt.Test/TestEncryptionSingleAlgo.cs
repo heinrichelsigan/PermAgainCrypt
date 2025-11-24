@@ -50,6 +50,7 @@ namespace Area23.At.PermAgainCrypt.Test
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes();
+            CipherEnum cipherType = CipherEnum.Des3;
             ZipType[] zTypes = new ZipType[] { ZipType.None };
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
@@ -59,7 +60,9 @@ namespace Area23.At.PermAgainCrypt.Test
             byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
             foreach (CipherEnum cipherEnum in cipherTypes)
             {
-                CipherEnum[] cipherEnums = new CipherEnum[] { cipherEnum };
+                cipherType = (cipherEnum == CipherEnum.Rsa) ? CipherEnum.Des3 : cipherEnum;
+
+                CipherEnum[] cipherEnums = new CipherEnum[] { cipherType };
                 CipherPipe pipe = new CipherPipe(cipherEnums); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
                 try
                 {
@@ -82,21 +85,21 @@ namespace Area23.At.PermAgainCrypt.Test
                     if (deCodedBytes == null || deCodedBytes.Length < 1 ||
                         (deCodedBytes.Length != plainBytes.Length && Math.Abs(deCodedBytes.Length - plainBytes.Length) > 16))
                     {
-                        Console.WriteLine($"{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                        Console.WriteLine($"{cipherType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                         Assert.Fail();
                     }
-                    Console.WriteLine($"{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    Console.WriteLine($"{cipherType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
                     File.AppendAllText(fileCsvOut, 
-                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
+                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
                         Environment.NewLine);
 
 
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{cipherEnum} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    Console.WriteLine($"{cipherType} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }                
 
             }

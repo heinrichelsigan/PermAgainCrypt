@@ -48,24 +48,30 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
             if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
                 fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
+            File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,ZipType,EncodingType,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
-            ZipType[] zTypes = new ZipType[] { ZipType.None };
+            ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.Zip, ZipType.GZip, ZipType.BZip2 };
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
-            EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
-            EncodingType encType = EncodingType.Base64;            
+            EncodingType[] encodingTypes = EncodingTypesExtensions.GetEncodingTypes();
+            EncodingType encType = EncodingType.Base64;
             string plainText = File.ReadAllText(fileTextTest);
+            int j = 0;
             for (int i = 0; i < cipherEnums.Length; i += 2)
             {
                 CipherEnum cipherType = cipherEnums[i];
                 CipherEnum cipherEnum = cipherEnums[((i + 1) % cipherEnums.Length)];
+                if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
+                if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
                 CipherPipe pipe = new CipherPipe(cipherPair); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+                zType = zTypes[j % zTypes.Length];
+                if ((encType = encodingTypes[++j % encodingTypes.Length]) == EncodingType.None)
+                    encType = EncodingType.Base64;
 
                 try
                 {
@@ -91,20 +97,20 @@ namespace Area23.At.PermAgainCrypt.Test
                         long difference = deCodedBytes.CompareBytes(plainBytes, true);
                         if (difference > 0)
                         {
-                            Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
                     File.AppendAllText(fileCsvOut,
-                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
+                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{zType},{encType},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
                         Environment.NewLine);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }
             }
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
@@ -143,19 +149,27 @@ namespace Area23.At.PermAgainCrypt.Test
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
-            ZipType[] zTypes = new ZipType[] { ZipType.None };
+            ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.Zip, ZipType.GZip, ZipType.BZip2 };
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
-            EncodingType encType = EncodingType.Base64;
+            EncodingType encType = EncodingType.Base64;           
             string plainText = File.ReadAllText(fileTextTest);
+            int j = 0;
             for (int i = 0; i < cipherEnums.Length; i++)
             {
                 CipherEnum cipherType = cipherEnums[i];
                 CipherEnum cipherEnum = cipherEnums[((i + 1) % cipherEnums.Length)];
+                if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
+                if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
-                CipherPipe pipe = new CipherPipe(cipherPair); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);                    
+                CipherPipe pipe = new CipherPipe(cipherPair, 8, encType, zType, kHash);
+                byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+                zType = zTypes[j % zTypes.Length];
+                if ((encType = encodingTypes[++j % encodingTypes.Length]) == EncodingType.None)
+                    encType = EncodingType.Base64;
+
 
                 try
                 {

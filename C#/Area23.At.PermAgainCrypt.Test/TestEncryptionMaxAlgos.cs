@@ -22,7 +22,8 @@ namespace Area23.At.PermAgainCrypt.Test
     [TestClass]
     public sealed class TestEncryptionMaxAlgos
     {
-        public static readonly string[] TestEmails = { "he@area23.at", "zen@area23.at", "helsigan@area23.at", "heinrich.elsigan@area23.at",
+        public static readonly string[] TestEmails = { "he@area23.at", "zen@area23.at", "helsigan@area23.at", "heinrich.elsigan@area23.at", "he23@area23.at",
+            "postmaster@cqrxs.eu", "zen@smtp.area23.at", "nobody@io.cqrxs.eu",
             "heinrich.elsigan@gmail.com", "office.area23@gmail.com", "heinrich.elsigan@live.at", "heinrich.elsigan@proton.me" };
 
         [TestMethod]
@@ -50,26 +51,30 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
             if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
                 fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
+            File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,ZipType,EncodingType,KeyHash,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
-            ZipType[] zTypes = new ZipType[] { ZipType.None };
+            ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.GZip, ZipType.BZip2, ZipType.Zip };
+            KeyHash[] kHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash kHash = KeyHash.Hex;
             ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;
             string plainText = File.ReadAllText(fileTextTest);
-            
-            int i = 0;
+
+            int i = 0, j = 0;
             foreach (string email in TestEmails) 
             {
                 
-                string hashIv = KeyHash.Hex.Hash(email);
+                kHash = kHashes[j % kHashes.Length];
+                encType = encodingTypes[j % encodingTypes.Length];
+                zType = zTypes[(++j) % zTypes.Length];
                 i++;
-                CipherPipe pipe = new CipherPipe(email, hashIv);
-                string pipeText = pipe.PipeString;
 
+                string hashIv = kHash.Hash(email);
+                CipherPipe pipe = new CipherPipe(email, hashIv, encType, zType, kHash);
+                string pipeText = pipe.PipeString;
 
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
 
@@ -102,15 +107,15 @@ namespace Area23.At.PermAgainCrypt.Test
                         long difference = deCodedBytes.CompareBytes(plainBytes, true);
                         if (difference > 0)
                         {
-                            Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"{pipeText} \tencrypt for {email} {zType} {encType} {kHash} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
-                    Console.WriteLine($"{pipeText} \tencrypt for {email} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    Console.WriteLine($"{pipeText} \tencrypt for {email}  {zType} {encType} {kHash} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
                     File.AppendAllText(fileCsvOut,
-                        $"{Path.GetFileName(fileBytesTest)},{size},{pipeText},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
+                        $"{Path.GetFileName(fileBytesTest)},{size},{pipeText}, {zType},{encType},{kHash} {encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
                         Environment.NewLine);
                 }
                 catch (Exception e)
