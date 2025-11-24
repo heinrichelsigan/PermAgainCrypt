@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.Console": {
       "commandName": "Project",
-      "commandLineArgs": " -?"
+      "commandLineArgs": " -i=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\README.MD.gz.BlowFish.Fish2.Fish3.base64 "
     }
   }
 }

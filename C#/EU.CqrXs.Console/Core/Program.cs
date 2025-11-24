@@ -117,7 +117,7 @@ namespace EU.CqrXs.Console.Core
 
             string[] algos = new List<string>().ToArray();
 
-             foreach (OptEnum optVar in dict.Keys)
+            foreach (OptEnum optVar in dict.Keys)
             {
                 string optStr = dict[optVar];
                 switch (optVar)
@@ -163,7 +163,7 @@ namespace EU.CqrXs.Console.Core
             }
 
             CipherPipe pipe = (algos.Length > 0) ? 
-                                    new CipherPipe(algos) :
+                                    new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) : 
                                     new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
 
             // System.Console.WriteLine($"CipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
