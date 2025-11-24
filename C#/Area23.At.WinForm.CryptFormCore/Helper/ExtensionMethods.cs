@@ -112,5 +112,35 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
             return Properties.Resources.image_file;
         }
 
+
+        public static bool IsCompressedFile(this string fileExtension)
+        {
+            switch (fileExtension.Replace(".", "").ToLower())
+            {
+                case "gz":
+                case "tar":
+                case "tar.gz":
+                case "tgz":
+                case "bz":
+                case "bz2":
+                case "tar.bz":
+                case "tar.bz2":
+                case "tbz":
+                case "7z":
+                case "7zip":
+                case "zip":
+                case "rar":
+                case "jar":
+                case "mp4":
+                case "mp3":
+                case "arj":
+                case "z":
+                case "exe":
+                case "dll":
+                    return true;
+            }
+            return false;
+        }
+
     }
 }
