@@ -9,7 +9,7 @@ The following image shows you an example of a symmetric cipher **8 staged encryp
 Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks 
 and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
 
-Implementation is based on my blog article: [Making symmetric cipher encryption great again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html),
+Implementation is based on my blog article: [Making symmetric cipher encryption meta permutating again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html),
 including the follwing symmetric cipher algorithms:
 - [Aes](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), AesLight, AesNet, [Rijndael](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
 - [Bruce Schneier's](https://www.schneier.com/) BlowFish, 2-Fish, 3-Fish, 3-Fish-256	
