@@ -9,7 +9,7 @@ The following image shows you an example of a symmetric cipher **8 staged encryp
 Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks 
 and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
 
-Implementation is based on my blog article: [Making symmetric cipher encryption great again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html),
+Implementation is based on my blog article: [Making symmetric cipher encryption meta permutating again](https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html),
 including the follwing symmetric cipher algorithms:
 - [Aes](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard), AesLight, AesNet, [Rijndael](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard)
 - [Bruce Schneier's](https://www.schneier.com/) BlowFish, 2-Fish, 3-Fish, 3-Fish-256	
@@ -32,9 +32,9 @@ You need since 2025-11-15 Visual Studio 2026 and C# .NetCore 10.0 to compile C# 
 ### Releases
 https://github.com/heinrichelsigan/PermAgainCrypt/releases/
 
-### [cqrxs.io/download](https://cqrxs.eu/download/)
-- [PermAgainCrypt_WinForm_NetCore10_x86+x64](https://cqrxs.eu/download/2025-11-18_WinForm_x86+x64.7z)
-- Rendundant website is: https://io.cqrxs.eu/download/
+### [cqrxs.eu/download](https://cqrxs.eu/download/)
+- [PermAgainCrypt_WinForm_NetCore10_x86+x64](https://cqrxs.eu/download/PermAgainCrypt_WinForm_NetCore10_x64.7z)
+- Rendundant website is [io.cqrxs.eu/download](https://io.cqrxs.eu/download/)
 
 ## WebForm online test:
 - [area23.at/net/Crypt/CoolCrypt.aspx](https://area23.at/net/Crypt/CoolCrypt.aspx)
