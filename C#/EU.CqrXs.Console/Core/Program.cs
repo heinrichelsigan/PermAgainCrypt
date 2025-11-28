@@ -3,8 +3,6 @@ using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
-using System.Drawing;
-using System.IO.Pipelines;
 using System.Text;
 
 
@@ -55,9 +53,9 @@ namespace EU.CqrXs.Console.Core
     /// </summary>
     internal class Program
     {
+        
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetFullPath(System.Environment.ProcessPath);
-        private static readonly Lock _lock = new Lock();
         static string? inName = null, outName = null, outEnviron = null, key = null;
         static bool reverseDirection = false;
         static FileInfo? inFile = null, outFile = null;
@@ -67,37 +65,40 @@ namespace EU.CqrXs.Console.Core
         static EncodingType encodingType = EncodingType.None;
         static KeyHash keyHash = KeyHash.Hex;
 
-
-
         /// <summary>
         /// Console app pipe for crypt/decrypt zip/unzip encode/decode md5sum/shaSum
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            lock (_lock)
-            {
-                if (args.Length <= 1)
-                    Usage();
-                Constants.DirCreate = false;
-                Constants.NOLog = true;
-            }
+            if (args.Length <= 1)
+                Usage();
+            Constants.DirCreate = false;
+            Constants.NOLog = true;           
 
             Dictionary<OptEnum, string> dict = new Dictionary<OptEnum, string>();
+            string[] algos = new List<string>().ToArray();
+
             for (int i = 0; i < args.Length; i++)
             {
+                // string optStr = GetOption(... => out OptEnum optEnum)
                 string optStr = GetOption(args[i], out OptEnum optEnum);
 
-
-                if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam)
-                    ; // nothing todo for input or output options
-                else if (optEnum == OptEnum.Help || optEnum == OptEnum.Usage)
+                // Nothing todo on io params
+                if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
+                else // Help => Usage()
+                    if (optEnum == OptEnum.Help)
                     Usage();
-                else if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
+                else // Usage with error message
+                    if (optEnum == OptEnum.Usage)
+                    Usage(optStr);
+                else // fetch passphrase or Key or Qey (decrypt key) from optEnum and optStr
+                    if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
                     passKey = optStr;
-                else
+                else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>();  
                     dict.Add(optEnum, optStr);
             }
+            // read from stdin, when no inName specified
             if (string.IsNullOrEmpty(inName))
             {
                 System.Console.WriteLine("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
@@ -115,8 +116,7 @@ namespace EU.CqrXs.Console.Core
                 }
             }
 
-            string[] algos = new List<string>().ToArray();
-
+            // iterate all option keys
             foreach (OptEnum optVar in dict.Keys)
             {
                 string optStr = dict[optVar];
@@ -126,45 +126,43 @@ namespace EU.CqrXs.Console.Core
                     case OptEnum.Unzip:
                         if (optStr.ToLower().Contains("gz") || optStr.ToLower().Contains("gunzip"))
                             zipType = ZipType.GZip;
-                        // outBytes = GZ.GZipBytes(inBytes);
-                        else if (optStr.ToLower().Contains("bz") || optStr.ToLower().Contains("bunzip") || optStr.ToLower().Contains("2"))
-                            zipType = ZipType.BZip2;
-                        // outBytes = BZip2.BZip(inBytes);
-                        else if (optStr.ToLower().Contains("zip") || optStr.ToLower().Contains("unzip"))
-                            zipType = ZipType.Zip;                            
                         else
-                            Usage("urecognized zip option: " + optStr);   
-                        
-                        break;                    
+                            if (optStr.ToLower().Contains("bz") || optStr.ToLower().Contains("bunzip") || optStr.ToLower().Contains("2"))
+                            zipType = ZipType.BZip2;
+                        else
+                            if (optStr.ToLower().Contains("zip") || optStr.ToLower().Contains("unzip"))
+                            zipType = ZipType.Zip;
+                        else
+                            Usage("urecognized zip option: " + optStr);
+
+                        break;
                     case OptEnum.Encode:
                     case OptEnum.Decode:
                         encodingType = EncodingTypesExtensions.GetEnum(optStr);
-                        // outBytes = EnDeCodeHelper.EncodeBytes(inBytes, optStr);
                         break;
-                    // case OptEnum.Key
                     case OptEnum.Hash:
                         keyHash = KeyHash_Extensions.GetKeyHashFromString(optStr);
                         break;
                     case OptEnum.Crypt:
-                    case OptEnum.Decrypt:
+                    case OptEnum.Decrypt: // Usage on not existing or empty passphrase / key
                         if (string.IsNullOrEmpty(passKey) || string.IsNullOrWhiteSpace(passKey))
                             Usage($"urecognized crypt option \"{optStr}\" without --pass=passPhrase ");
 
+                        // when string / array is not null, fetch array for crypt pipe
                         if (!string.IsNullOrEmpty(optStr))
                         {
                             optStr = optStr.Replace("(", "").Replace("{", "").Replace("[", "").Replace("]", "").Replace("}", "").Replace(")", "");
                             algos = optStr.Split(",;:".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         }
-                        // outBytes = inPipe.MerryGoRoundEncrpyt(inBytes, key, EnDeCodeHelper.KeyToHex(key)); // EnDeCodeHelper.KeyToHex(optStr));
-                        break;                    
+                        break;
                     default: break;
-
-                }                
+                }
             }
 
-            CipherPipe pipe = (algos.Length > 0) ? 
-                                    new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) : 
-                                    new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+            // Create cipher pipe for en-/decryption
+            CipherPipe pipe = (algos.Length > 0) ?
+                                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
+                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
 
             // System.Console.WriteLine($"CipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
 
@@ -174,6 +172,7 @@ namespace EU.CqrXs.Console.Core
                 foreach (CipherEnum cipher in pipe.InPipe)
                     System.Console.Write($"{cipher}=>");
                 System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
+                // Encrypt process
                 string outString = pipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
                 outBytes = System.Text.Encoding.UTF8.GetBytes(outString);
             }
@@ -183,22 +182,25 @@ namespace EU.CqrXs.Console.Core
                 foreach (CipherEnum cipher in pipe.OutPipe)
                     System.Console.Write($"{cipher}=>");
                 System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
-                string inString = System.Text.Encoding.UTF8.GetString(inBytes);                
+                // Decrypt process
+                string inString = System.Text.Encoding.UTF8.GetString(inBytes);
                 outBytes = pipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
-            }                
+            }
 
             inBytes = outBytes;
 
             if (string.IsNullOrEmpty(outName))
                 System.Console.WriteLine(Encoding.UTF8.GetString(outBytes));
-            else if (outFile != null)
+            else
+                if (outFile != null)
                 File.WriteAllBytes(outFile.FullName, outBytes);
-            else if (!string.IsNullOrEmpty(outEnviron))
+            else
+                if (!string.IsNullOrEmpty(outEnviron))
                 System.Environment.SetEnvironmentVariable(outEnviron, Encoding.UTF8.GetString(outBytes));
-           
+
+
             return;
         }
-
 
         /// <summary>
         /// Gets an option by argument
@@ -214,6 +216,7 @@ namespace EU.CqrXs.Console.Core
                 optEnum = OptEnum.Usage;
                 return optArg;
             }
+            optArg = argument;
             string arg = argument.TrimStart("-/".ToCharArray());
 
             if (arg.Contains("="))
@@ -222,67 +225,85 @@ namespace EU.CqrXs.Console.Core
             switch (arg[0])
             {
                 case 'I':
-                case 'i': optEnum = OptEnum.InParam;
+                case 'i':
+                    optEnum = OptEnum.InParam;
                     inName = optArg;
                     if (string.IsNullOrEmpty(inName))
                         ; // Else
-                    else if (arg.ToLower().Contains("file") || File.Exists(inName) || File.Exists(Path.Combine(progDirectory, inName)))
-                    {
-                        if (File.Exists(Path.Combine(progDirectory, inName))) 
+                    else 
+                        if (arg.ToLower().Contains("file") || File.Exists(inName) || File.Exists(Path.Combine(progDirectory, inName)))
                         {
-                            inFile = new FileInfo(Path.Combine(progDirectory, inName));
-                            inBytes = File.ReadAllBytes(Path.Combine(progDirectory, inName));
+                            if (File.Exists(Path.Combine(progDirectory, inName)))
+                            {
+                                inFile = new FileInfo(Path.Combine(progDirectory, inName));
+                                inBytes = File.ReadAllBytes(Path.Combine(progDirectory, inName));
+                            }
+                            else if (File.Exists(inName))
+                            {
+                                inFile = new FileInfo(inName);
+                                inBytes = File.ReadAllBytes(inName);
+                            }
                         }
-                        else if (File.Exists(inName)) 
+                    else 
+                        if (arg.ToLower().Contains("text") || !string.IsNullOrEmpty(inName))
                         {
-                            inFile = new FileInfo(inName);
-                            inBytes = File.ReadAllBytes(inName);
-                        }                        
-                    }
-                    else if (arg.ToLower().Contains("text") || !string.IsNullOrEmpty(inName))
-                    {
-                        string? inStr = Environment.GetEnvironmentVariable(inName.TrimStart("$".ToCharArray()));
-                        if (inStr == null || inStr.Length == 0)
-                            inStr = inName;
-                        inBytes = Encoding.UTF8.GetBytes(inStr);
-                    }
+                            string? inStr = Environment.GetEnvironmentVariable(inName.TrimStart("$".ToCharArray()));
+                            if (inStr == null || inStr.Length == 0)
+                                inStr = inName;
+                            inBytes = Encoding.UTF8.GetBytes(inStr);
+                        }
                     else
                         Usage($"unrecognized option: {argument}.");
 
                     return optArg;
                 case 'O':
-                case 'o': optEnum = OptEnum.OutP;
+                case 'o':
+                    optEnum = OptEnum.OutP;
                     outName = optArg;
                     if (string.IsNullOrEmpty(outName))
                         ; // to stdout                    
-                    else if (arg.ToLower().Contains("file") || optArg.Contains(LibPaths.SepChar) || optArg.Contains('.') || !string.IsNullOrEmpty(outName))
-                        outFile = new FileInfo(outName);
-                    else if (!string.IsNullOrEmpty(outName) || arg.ToLower().Contains("text") || optArg.StartsWith("$"))
-                        outEnviron = optArg;
+                    else 
+                        if (arg.ToLower().Contains("file") || optArg.Contains(LibPaths.SepChar) || optArg.Contains('.') || !string.IsNullOrEmpty(outName))
+                            outFile = new FileInfo(outName);
+                    else 
+                        if (!string.IsNullOrEmpty(outName) || arg.ToLower().Contains("text") || optArg.StartsWith("$"))
+                            outEnviron = optArg;
 
                     return optArg;
                 case 'Z':
-                case 'z': optEnum = OptEnum.Zip; return optArg;
+                case 'z': optEnum = OptEnum.Zip; 
+                    return optArg;
                 case 'U':
-                case 'u': reverseDirection = true; optEnum = OptEnum.Unzip; return optArg;
+                case 'u': reverseDirection = true; optEnum = OptEnum.Unzip; 
+                    return optArg;
                 case 'E':
-                case 'e': optEnum = OptEnum.Encode; return optArg;
-                case 'd': reverseDirection = true; optEnum = OptEnum.Decode; return optArg;
+                case 'e': optEnum = OptEnum.Encode; 
+                    return optArg;
+                case 'd': reverseDirection = true; optEnum = OptEnum.Decode; 
+                    return optArg;
                 case 'C':
-                case 'c': optEnum = OptEnum.Crypt; return optArg;
-                case 'D': reverseDirection = true; optEnum = OptEnum.Decrypt; return optArg;
+                case 'c': optEnum = OptEnum.Crypt; 
+                    return optArg;
+                case 'D': reverseDirection = true; optEnum = OptEnum.Decrypt; 
+                    return optArg;
                 case 'k':
-                case 'K': optEnum = OptEnum.Key; return optArg;
+                case 'K': optEnum = OptEnum.Key; 
+                    return optArg;
                 case 'p':
-                case 'P': optEnum = OptEnum.Pass; return optArg;
+                case 'P': optEnum = OptEnum.Pass; 
+                    return optArg;
                 case 'q':
-                case 'Q': reverseDirection = true; optEnum = OptEnum.Qey; return optArg;
+                case 'Q': reverseDirection = true; optEnum = OptEnum.Qey; 
+                    return optArg;
                 case 'h':
-                case 'H': optEnum = OptEnum.Hash; return optArg;
+                case 'H': optEnum = OptEnum.Hash; 
+                    return optArg;
                 case 'g':
                 case 'G':
-                case '?': optEnum = OptEnum.Usage; Usage(); return optArg;
-                default: optEnum = OptEnum.Usage; Usage($"unrecognized option: {argument}."); return argument;
+                case '?': 
+                default:  optEnum = OptEnum.Usage; 
+                    optArg = $"unrecognized option: {argument}.";
+                    return optArg;
             }
         }
 

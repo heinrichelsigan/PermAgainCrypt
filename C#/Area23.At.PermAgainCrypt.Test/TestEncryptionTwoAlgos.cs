@@ -46,9 +46,9 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
-                fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,ZipType,EncodingType,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
+            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
+            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
+            //File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,ZipType,EncodingType,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
@@ -102,11 +102,13 @@ namespace Area23.At.PermAgainCrypt.Test
                             Assert.Fail();
                         }
                     }
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+
                     double size = deCodedBytes.Length / (1024);
-                    File.AppendAllText(fileCsvOut,
-                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{zType},{encType},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
-                        Environment.NewLine);
+                    Console.WriteLine($"{size}KB {cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    
+                    //File.AppendAllText(fileCsvOut,
+                    //    $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{zType},{encType},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
+                    //    Environment.NewLine);
                 }
                 catch (Exception e)
                 {
@@ -143,9 +145,9 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
-                fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            File.WriteAllText(fileCsvOut, $"FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime{Environment.NewLine}");
+            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
+            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
+            //File.WriteAllText(fileCsvOut, $"FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime{Environment.NewLine}");
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
@@ -197,11 +199,12 @@ namespace Area23.At.PermAgainCrypt.Test
                         Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedText.Length}) != plainBytes.Length ({plainText.Length})");
                         Assert.Fail();
                     }
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedText.Length / (1024);
-                    File.AppendAllText(fileCsvOut,
-                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}"
-                        + Environment.NewLine);
+                    Console.WriteLine($"{size}KB {cipherType}=>{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    
+                    //File.AppendAllText(fileCsvOut,
+                    //    $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}"
+                    //    + Environment.NewLine);
                 }
                 catch (Exception e)
                 {

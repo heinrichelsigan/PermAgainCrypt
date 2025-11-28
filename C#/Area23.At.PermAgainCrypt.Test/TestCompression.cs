@@ -43,42 +43,44 @@ namespace Area23.At.PermAgainCrypt.Test
             ZipType[] zTypes = new ZipType[] { ZipType.GZip, ZipType.BZip2, ZipType.Zip };
             KeyHash kHash = KeyHash.Hex;
             // ZipType zType = ZipType.None;            
-            EncodingType[] encodingTypes = new EncodingType[] { EncodingType.None, EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
-            EncodingType encType = EncodingType.Base64;
+            EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base32, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
             CipherPipe pipe = new CipherPipe(cipherEnums); //  new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
             string plainText = File.ReadAllText(fileTextTest);
-            foreach (ZipType zType in zTypes)
+            foreach (EncodingType encType in encodingTypes)
             {
-                try
+                foreach (ZipType zType in zTypes)
                 {
-                    startOp = DateTime.Now;
-                    string cipherText = pipe.EncrpytTextGoRounds(plainText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
-                                                encType, zType, kHash);
-                    Assert.IsNotNull(cipherText);
-                    
-                    midOp = DateTime.Now;
-                    encOpTime = midOp.Subtract(startOp);
-                    string deCodedText = pipe.DecryptTextRoundsGo(cipherText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
-                                            encType, zType, kHash);
-                    Assert.AreEqual<string>(deCodedText, plainText);
-                    
-                    endOp = DateTime.Now;
-                    decOpTime = endOp.Subtract(midOp);
-                    allOpTime = endOp.Subtract(startOp);
-
-                    if (string.IsNullOrEmpty(deCodedText) || !deCodedText.Equals(plainText, StringComparison.Ordinal))
+                    try
                     {
-                        Console.WriteLine($"{zType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                        Console.WriteLine($"          \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
-                        Assert.Fail();
-                    }
-                    Console.WriteLine($"{zType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"{zType} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
-                }
+                        startOp = DateTime.Now;
+                        string cipherText = pipe.EncrpytTextGoRounds(plainText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                    encType, zType, kHash);
+                        Assert.IsNotNull(cipherText);
 
+                        midOp = DateTime.Now;
+                        encOpTime = midOp.Subtract(startOp);
+                        string deCodedText = pipe.DecryptTextRoundsGo(cipherText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                encType, zType, kHash);
+                        Assert.AreEqual<string>(deCodedText, plainText);
+
+                        endOp = DateTime.Now;
+                        decOpTime = endOp.Subtract(midOp);
+                        allOpTime = endOp.Subtract(startOp);
+
+                        if (string.IsNullOrEmpty(deCodedText) || !deCodedText.Equals(plainText, StringComparison.Ordinal))
+                        {
+                            Console.WriteLine($"{zType}/{encType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"                 \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
+                            Assert.Fail();
+                        }
+                        Console.WriteLine($"{zType}/{encType}  \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"{zType}/{encType} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    }
+
+                }
             }
 
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");

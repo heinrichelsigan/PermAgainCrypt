@@ -575,9 +575,9 @@
             <seealso cref="!:https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net.#cctor">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net.#ctor">
             <summary>
-            static constructor
+            
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net.Encrypt(System.Byte[])">

@@ -627,7 +627,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     DialogResult dresult = MessageBox.Show(this, "Zip an already compressed file twice?", "Double zip warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (dresult == DialogResult.No)
-                        return ;
+                        return;
                 }
 
                 await SetInfoMessageAsync("Starting encryption for file " + labelFileIn.Text, ToolTipIcon.Info, -1);

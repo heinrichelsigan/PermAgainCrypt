@@ -44,9 +44,9 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut)) 
-                fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,Cipher,Hash,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
+            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut)) 
+            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
+            //File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,Cipher,Hash,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes();
@@ -66,6 +66,7 @@ namespace Area23.At.PermAgainCrypt.Test
                 CipherEnum[] cipherEnums = new CipherEnum[] { cipherEnum };
                 CipherPipe pipe = new CipherPipe(cipherEnums); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
                 KeyHash khane = khs[(khcnt)%(khs.Length)];
+                encType = encodingTypes[(khcnt) % (encodingTypes.Length)];
                 khcnt++;
                 try
                 {
@@ -91,25 +92,23 @@ namespace Area23.At.PermAgainCrypt.Test
                         long difference = deCodedBytes.CompareBytes(plainBytes, true);
                         if (difference > 0)
                         {
-                            Console.WriteLine($"{cipherEnum} {khane} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                            Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
+                            Console.WriteLine($"{cipherEnum}/{encType}/{khane} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"              \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
-                    Console.WriteLine($"{cipherEnum} {khane} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     double size = deCodedBytes.Length / (1024);
-                    File.AppendAllText(fileCsvOut, 
-                        $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherEnum},{khane},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
-                        Environment.NewLine);
-
+                    Console.WriteLine($"{cipherEnum}/{encType}/{khane} for {Email} {size}KB\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    
 
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{cipherEnum} {khane} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    Console.WriteLine($"{cipherEnum}/{encType}/{khane} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }                
 
             }
+            
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
             return;
         }

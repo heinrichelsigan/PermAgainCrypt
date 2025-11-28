@@ -34,6 +34,8 @@ namespace Area23.At.Framework.Core.Util
         public const char UNDER_SCORE = '_';
 
         public const string APP_NAME = "Area23.At";
+        public const string APP_NAME_WINFORM = "Area23.At.WinForm.CryptFormCore";
+        public const string APP_NAME_CONSOLE = "EU.CqrXs.Console.Core.exe";
         public const string APP_DIR = "net";
         public const string APP_ERROR = "AppError";
         public const string VERSION = "v2.25.411";
