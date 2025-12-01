@@ -8,6 +8,7 @@ using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
@@ -18,6 +19,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
     /// </summary>
     public partial class EncryptForm : EncryptFormBase
     {
+        #region fields and properties
+
+        
+
+        #endregion fields and properties
 
         #region ctor and load
 
@@ -948,6 +954,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             FileInfo fi = new FileInfo(file);
                             if (fi.Exists && fi.Length > 0)
                             {
+                                CPipe = GetCPipeFromFileName(file);
                                 if (fi.Length > 1048576)
                                     SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
                                 else if (fi.Length > 1024)
@@ -999,6 +1006,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 FileInfo fi = new FileInfo(dialog.FileName);
                 if (fi.Exists && fi.Length > 0)
                 {
+                    var cpip = GetCPipeFromFileName(dialog.FileName);
+                    if (cpip != null)
+                    {
+                        
+                    }
                     if (fi.Length > 1048576)
                         SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
                     else if (fi.Length > 2048)

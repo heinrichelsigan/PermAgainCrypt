@@ -15,6 +15,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal System.Windows.Forms.DragDropEffects _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
         protected internal bool isDragMode = false;
         protected internal readonly Lock _Lock = new Lock();
+        protected internal CipherPipe? CPipe;
 
         protected internal static HashSet<string> HashFiles = new HashSet<string>();
         protected internal delegate void SetLabelVisibleCallback(System.Windows.Forms.Label label, bool visible);
@@ -451,6 +452,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
 
         #region getter methods
+        
 
         /// <summary>
         /// GetCipherEnums gets all cipher algos for the cipher pipeline
@@ -564,6 +566,21 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region verify output file
 
+        public CipherPipe? GetCPipeFromFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            string origName = fileName.GetFileNameAndCipherPipe(out CipherPipe? fPipe);
+            if (fPipe != null && 
+                (!string.IsNullOrEmpty(fPipe.PipeString) || fPipe.ZType != ZipType.None || fPipe.EncodeType != EncodingType.None || fPipe.KHash != KeyHash.Hex))
+            {
+                CPipe = fPipe;
+                return CPipe;
+            }
+
+            return null;
+        }
 
         public async Task<bool> VerifyEncryptedFileBytesAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
         {
