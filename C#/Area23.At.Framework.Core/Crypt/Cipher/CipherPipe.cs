@@ -705,6 +705,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             cipherHash = keyHash.Hash(secretKey);
+            encodeType = encType;
             ZType = zipBefore;
             KHash = keyHash;
             byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
@@ -721,6 +722,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
             cipherHash = hashIV;
+            encodeType = encType;
             ZType = zipBefore;
             KHash = keyHash;
 
@@ -748,6 +750,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             cipherHash = keyHash.Hash(secretKey);
+            encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
             byte[] cipherBytes = encodeType.DeCode(encoded);
@@ -766,6 +769,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
             cipherHash = hashIV;
+            encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
 
