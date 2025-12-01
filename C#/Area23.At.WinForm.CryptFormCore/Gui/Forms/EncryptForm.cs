@@ -636,23 +636,25 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 try
                 {
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileName);
-                    byte[] outBytes = cPipe.EncrpytFileBytesGoRounds(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension());
+                    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
+
+                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
+                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
 
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await SetStatusLabelTextAsync(this.statusLabelMsg, "encryption time: " + DateTime.Now.Subtract(start).ToString());
                     await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
 
-                    bool saved = SaveBytesDialog(outBytes, ref outFilePath);
+                    bool saved = SaveBytesDialog(encodedBytes, ref outFilePath);
                     if (saved)
                     {
                         string outFileName = Path.GetFileName(outFilePath);
                         bool isVerified = true;
                         if (sha512ToolStripMenuItem.Checked)
-                            isVerified = await VerifyEncryptedFileBytesAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
-                        if (bytesOfFileToolStripMenuItem.Checked)
                             isVerified = await VerifyEncryptedFileShaAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
+                        if (bytesOfFileToolStripMenuItem.Checked)
+                            isVerified = await VerifyEncryptedFileBytesAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
 
                         if (!isVerified)
                         {
@@ -676,7 +678,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     {
                         await SetInfoMessageAsync("Saving file canceled by user", ToolTipIcon.Warning, 3000);
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -772,9 +773,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 try
                 {
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    byte[] fileBytes = System.IO.File.ReadAllBytes(fileName);
-                    byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    string outFileDecrypt = fileName.Replace(GetZip().GetZipTypeExtension() + "." + cPipe.PipeString + GetEncoding().GetEnCodingExtension(), "");
+                    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
+                    
+                    byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    string miniPipe = (string.IsNullOrEmpty(cPipe.PipeString)) ? "" : "." + cPipe.PipeString;
+                    string outFileDecrypt = outFileDecrypt = fileName.Replace(GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension(), "");
+                    
                     bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
                     if (saved)
                     {
@@ -1056,6 +1060,56 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
             return false;
         }
+
+
+        /// <summary>
+        /// SaveBytesDialog saves byte array to file with save file dialog 
+        /// </summary>
+        /// <param name="fileBytes">byte array to save</param>
+        /// <param name="outFilePath">ref will be returned; calculated outFilePath</param>
+        /// <returns>true if saved, false if not saved</returns>
+        internal bool SaveEncodedStringDialog(string encodedString, ref string outFilePath)
+        {
+            // this.pictureBoxRunningPipe.Visible = false;
+            SaveFileDialog dialog = new SaveFileDialog();
+            outFilePath = outFilePath ?? string.Empty;
+            if (encodedString != null && encodedString.Length > 0)
+            {
+                dialog.Title = "Save File";
+                dialog.CheckPathExists = true;
+                dialog.RestoreDirectory = true;
+                dialog.SupportMultiDottedExtensions = true;
+                dialog.AddExtension = true;
+                dialog.FileName = Path.GetFileName(outFilePath);
+                dialog.DefaultExt = Path.GetExtension(outFilePath);
+                DialogResult result = dialog.ShowDialog();
+                {
+                    outFilePath = dialog.FileName;
+                    try
+                    {
+                        File.WriteAllText(outFilePath, encodedString);
+                    }
+                    catch (Exception ex)
+                    {
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n", ex);
+                        return false;
+                    }
+                    FileInfo fi = new FileInfo(outFilePath);
+                    if (fi.Exists && fi.Length > 0)
+                    {
+                        if (fi.Length > 1048576)
+                            SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1048576)} MB");
+                        else if (fi.Length > 2048)
+                            SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1024)} kb");
+                        else SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");
+                    }
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         /// <summary>
         /// 

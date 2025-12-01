@@ -13,9 +13,11 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
     {
 
         #region const or static readonly fields
+
         public static readonly object _lock = new object();
         public const string VALID_CHARS = "!\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_` \r\n";
 
+        static string invalidChars = "";
         
         static readonly byte[] XXEncMap = new byte[]
         {
@@ -263,6 +265,16 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             string fromXxFunCall = "FromXx(string xxEncStr[.Length=" + xxEncStr.Length + "])";
             Area23Log.LogOriginMsg("Xx", fromXxFunCall + "... STARTED.");
 
+            lock (_lock)
+            {
+                if (!string.IsNullOrEmpty(invalidChars))
+                {
+                    foreach (char c in invalidChars)
+                        xxEncStr = xxEncStr.Replace(c.ToString(), "");
+                    invalidChars = "";
+                }
+            }
+
             MemoryStream inStream = new MemoryStream(), outStream = new MemoryStream();
             var writer = new StreamWriter(inStream);
             writer.Write(xxEncStr);
@@ -322,8 +334,16 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
                 {
                     if (!ValidCharList.Contains(ch))
                     {
-                        error += ch.ToString();
-                        isValid = false;
+                        if (((int)ch) > 255)
+                        {
+                            invalidChars += ch.ToString();
+                        }
+                        else
+                        {
+                            error += ch.ToString();
+                            isValid = false;
+                            return isValid;
+                        }
                     }
                 }
             }

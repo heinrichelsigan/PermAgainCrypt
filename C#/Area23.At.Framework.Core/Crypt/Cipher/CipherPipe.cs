@@ -5,6 +5,7 @@ using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
+using System.Text;
 
 namespace Area23.At.Framework.Core.Crypt.Cipher
 {
@@ -45,7 +46,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// InPipe is current encryption pipe
         /// </summary>
         public CipherEnum[] InPipe { get => inPipe; internal set => inPipe = value; }
-        
+
         /// <summary>
         /// OutPipe will always be generated from <see cref="InPipe"/>
         /// </summary>
@@ -101,13 +102,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             // pipeString = "";
-            int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));            
+            int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));
             CipherEnum[] pipeArray = new CipherEnum[isize];
-            Array.Copy(cipherEnums, pipeArray, isize);            
+            Array.Copy(cipherEnums, pipeArray, isize);
             inPipe = new List<CipherEnum>(pipeArray).ToArray();
             // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
             encodeType = encType;
-            zType = zpType;            
+            zType = zpType;
             kHash = kh;
 
             if (inPipe.Length > maxpipe)
@@ -119,7 +120,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             }
 
             // foreach (CipherEnum cipher in inPipe)
-                // pipeString += cipher.GetCipherChar();
+            // pipeString += cipher.GetCipherChar();
         }
 
         /// <summary>
@@ -146,10 +147,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                         cipherAlgo = CipherEnum.Aes;
 
                     cipherEnums.Add(cipherAlgo);
-                    
+
                     if (++cnt > maxpipe)
                         break;
-                }                
+                }
             }
 
             // pipeString = "";
@@ -244,7 +245,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="zpType"></param>
         /// <param name="kh"></param>
         public CipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174", EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)   
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)
         {
             cipherKey = key;
             cipherHash = hash;
@@ -285,7 +286,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 this.kHash = pipe.KHash;
                 this.zType = pipe.ZType;
                 this.cipherKey = pipe.cipherKey;
-                this.cipherHash = pipe.cipherHash;  
+                this.cipherHash = pipe.cipherHash;
             }
             return pipe;
         }
@@ -306,7 +307,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
-            if (string.IsNullOrEmpty (hash))
+            if (string.IsNullOrEmpty(hash))
                 throw new ArgumentNullException("hash");
 
             byte[] encryptBytes = inBytes;
@@ -329,7 +330,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                     encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
                     break;
-                case CipherEnum.ZenMatrix:                
+                case CipherEnum.ZenMatrix:
                     encryptBytes = (new ZenMatrix(secretKey, hash, false)).Encrypt(inBytes);
                     break;
                 case CipherEnum.ZenMatrix2:
@@ -390,7 +391,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(hash))
                 throw new ArgumentNullException("hash");
             // bool sameKey = true;
-            
+
             byte[] decryptBytes = cipherBytes;
 
             switch (cipherAlgo)
@@ -402,7 +403,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Des3Net:
                     Des3Net des3 = new Des3Net(secretKey, hash);
                     decryptBytes = des3.Decrypt(cipherBytes);
-                    break;                
+                    break;
                 case CipherEnum.RC564:
                     RC564.RC564GenWithKey(secretKey, hash, true);
                     decryptBytes = RC564.Decrypt(cipherBytes);
@@ -415,8 +416,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     decryptBytes = (new ZenMatrix(secretKey, hash, false)).Decrypt(cipherBytes);
                     break;
                 case CipherEnum.ZenMatrix2:
-                     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-                     break;
+                    decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
+                    break;
                 case CipherEnum.Aes:
                 case CipherEnum.AesLight:
                 case CipherEnum.Aria:
@@ -482,10 +483,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
             byte[] encryptedBytes = new byte[inBytes.Length];
             Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
-//#if DEBUG
-//            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-//            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
-//#endif
+            //#if DEBUG
+            //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
+            //            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
+            //#endif
             if (zipBefore != ZipType.None)
             {
                 encryptedBytes = zipBefore.Zip(inBytes);
@@ -496,9 +497,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             {
                 encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
                 inBytes = encryptedBytes;
-//#if DEBUG
-//                stageDictionary.Add(cipher, encryptedBytes);
-//#endif
+                //#if DEBUG
+                //                stageDictionary.Add(cipher, encryptedBytes);
+                //#endif
             }
 
             return encryptedBytes;
@@ -523,10 +524,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             cipherHash = hash;
 
             byte[] decryptedBytes = new byte[cipherBytes.Length];
-//#if DEBUG
-//            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-//            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
-//#endif 
+            //#if DEBUG
+            //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
+            //            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
+            //#endif 
             if (OutPipe == null || OutPipe.Length == 0)
                 Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
             else
@@ -534,9 +535,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 {
                     decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
                     cipherBytes = decryptedBytes;
-//#if DEBUG
-//                    stageDictionary.Add(cipher, cipherBytes);
-//#endif
+                    //#if DEBUG
+                    //                    stageDictionary.Add(cipher, cipherBytes);
+                    //#endif
                 }
 
             if (unzipAfter != ZipType.None)
@@ -623,7 +624,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             EncodingType decoding = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None,
             KeyHash keyHash = KeyHash.Hex)
-        {            
+        {
             byte[] cipherBytes = decoding.GetEnCoder().Decode(cryptedEncodedMsg);
 
             // perform multi crypt pipe stages
@@ -661,7 +662,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             cipherHash = hashIv;
             KHash = keyHash;
             ZType = unzipAfter;
-            EncodeType = decoding;             
+            EncodeType = decoding;
 
             // perform multi crypt pipe stages
             byte[] decryptedBytes = DecrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, unzipAfter);
@@ -682,7 +683,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             return MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
         }
 
-              
+
         public byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
@@ -696,7 +697,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         }
 
 
-        public string EncrpytEncode(byte[] inBytes, string secretKey, EncodingType encType = EncodingType.Base64, 
+        public string EncrpytEncode(byte[] inBytes, string secretKey, EncodingType encType = EncodingType.Base64,
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
@@ -711,9 +712,42 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             return cryptedEncoded;
         }
 
+        public byte[]  EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
+           ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                throw new ArgumentNullException("seretkey");
+
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
+            cipherHash = hashIV;
+            ZType = zipBefore;
+            KHash = keyHash;
+
+            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
+            string cryptedEncoded = encType.EnCode(outBytes);
+
+            //byte[] encryptedBytes = (new List<byte>().ToArray());
+
+            //MemoryStream ms = new MemoryStream();            
+            //using (TextWriter txt = new StreamWriter(ms))
+            //{
+            //    txt.Write(cryptedEncoded);
+            //    ms.Position = 0;
+
+            //    encryptedBytes = ms.ToByteArray();
+            //}
+            //if (encryptedBytes.Length == 0)
+            //{
+            byte[] encryptedBytes = System.Text.Encoding.UTF8.GetBytes(cryptedEncoded);
+            // }
+
+            return encryptedBytes;
+        }
 
 
-        public byte[] DecodeDecrpyt(string encoded, string secretKey, EncodingType encType = EncodingType.Base64, 
+
+        public byte[] DecodeDecrpyt(string encoded, string secretKey, EncodingType encType = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
@@ -729,6 +763,27 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             return outBytes;
         }
 
+
+        public byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
+           ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                throw new ArgumentNullException("seretkey");
+
+
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
+            cipherHash = hashIV;
+            ZType = unzipAfter;
+            KHash = keyHash;
+
+                       
+            string encoded = System.Text.Encoding.UTF8.GetString(encodedBytes);
+            byte[] cipherBytes = encodeType.DeCode(encoded);
+            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, hashIV, unzipAfter);
+
+            return outBytes;
+        }
 
 
         #region static en-de-crypt members

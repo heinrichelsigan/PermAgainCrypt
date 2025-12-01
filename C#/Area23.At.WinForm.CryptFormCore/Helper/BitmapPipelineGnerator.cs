@@ -1,5 +1,6 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
+using Area23.At.Framework.Core.Zip;
 using System.Globalization;
 
 namespace Area23.At.WinForm.CryptFormCore.Helper
@@ -180,11 +181,11 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     ximage = new Bitmap(Properties.Resources.compress_right_end_0, new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
 
-                    string drawString = this.CiffrePipe.ZType.ToString();
+                    string drawString = this.CiffrePipe.ZType.GetUnzipString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
                     float x = offset + 2.4F;
-                    float y = 1.5F;
+                    float y = 0.5F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);                    

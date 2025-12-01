@@ -7,6 +7,7 @@
     {
 
         public const string VALID_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/=";
+        static string invalidChars = "";
 
         #region common interface, interfaces for static members appear in C# 7.3 or later
         
@@ -52,10 +53,10 @@
                     error += ch;
                     valid = false;
                 }
-                else 
-                    parsedString += ch;
             }
             byte[] outBytes = new byte[0];
+
+            parsedString = (string.IsNullOrEmpty(error)) ? inString : inString.Trim(error.ToCharArray());
             try
             {
                 outBytes = Convert.FromBase64String(inString);

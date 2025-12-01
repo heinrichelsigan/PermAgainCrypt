@@ -72,6 +72,18 @@ namespace Area23.At.Framework.Core.Zip
             return ZipType.None;
         }
 
+        public static string GetUnzipString(this ZipType zType)
+        {
+            string zipString = zType.ToString();
+            if (zipString.Contains("Zip"))
+                zipString = zipString.Replace("Zip", "UnZip");
+            else if (zipString.Contains("7"))
+                zipString = "7unzip";
+            else
+                zipString = "";
+
+            return zipString;
+        }
 
         /// <summary>
         /// Generic zip extension method for <see cref="ZipType"/>

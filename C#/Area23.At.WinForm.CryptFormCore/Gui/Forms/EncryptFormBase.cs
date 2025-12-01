@@ -568,8 +568,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         public async Task<bool> VerifyEncryptedFileBytesAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
         {
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
-            byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
-            string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension() + "." + cPipe.PipeString + cPipe.EncodeType.GetEnCodingExtension(), "");
+            // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
+            byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
+            // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
             bool success = await Task.Run(() => CompareBytes(inBytes, outBytes));
@@ -578,9 +579,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         public async Task<bool> VerifyEncryptedFileShaAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
         {
+            // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
-            byte[] outBytes = cPipe.DecryptFileBytesRoundsGo(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
-            string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension() + "." + cPipe.PipeString + cPipe.EncodeType.GetEnCodingExtension(), "");
+            byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
+            // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
             bool shaSuccess = CompareSha512HashSum(inBytes, outBytes);
