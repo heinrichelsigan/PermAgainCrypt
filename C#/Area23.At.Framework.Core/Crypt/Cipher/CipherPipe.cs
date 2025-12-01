@@ -725,22 +725,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             KHash = keyHash;
 
             byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
-            string cryptedEncoded = encType.EnCode(outBytes);
+            byte[] encryptedBytes = (new List<byte>()).ToArray();
+            if (encType != EncodingType.None)
+            {
+                string cryptedEncoded = encType.EnCode(outBytes);
+                encryptedBytes = System.Text.Encoding.UTF8.GetBytes(cryptedEncoded);
+            }
+            else
+                encryptedBytes = outBytes;
 
-            //byte[] encryptedBytes = (new List<byte>().ToArray());
-
-            //MemoryStream ms = new MemoryStream();            
-            //using (TextWriter txt = new StreamWriter(ms))
-            //{
-            //    txt.Write(cryptedEncoded);
-            //    ms.Position = 0;
-
-            //    encryptedBytes = ms.ToByteArray();
-            //}
-            //if (encryptedBytes.Length == 0)
-            //{
-            byte[] encryptedBytes = System.Text.Encoding.UTF8.GetBytes(cryptedEncoded);
-            // }
 
             return encryptedBytes;
         }
@@ -770,16 +763,21 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
             cipherHash = hashIV;
             ZType = unzipAfter;
             KHash = keyHash;
 
-                       
-            string encoded = System.Text.Encoding.UTF8.GetString(encodedBytes);
-            byte[] cipherBytes = encodeType.DeCode(encoded);
+            byte[] cipherBytes = (new List<byte>()).ToArray();
+            if (encType != EncodingType.None)
+            {
+                string encoded = System.Text.Encoding.UTF8.GetString(encodedBytes);
+                cipherBytes = encodeType.DeCode(encoded);
+            }
+            else
+                cipherBytes = encodedBytes;
+
             byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, hashIV, unzipAfter);
 
             return outBytes;

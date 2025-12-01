@@ -16,6 +16,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
+            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle1;
         }
 
         #region Assembly Attribute Accessors
@@ -65,12 +66,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         private void logoPictureBox_MouseHover(object sender, EventArgs e)
         {
-            this.logoPictureBox.Image = Properties.Resources.ChiffreCryptDisk;
+            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle2;
         }
 
         private void logoPictureBox_MouseLeave(object sender, EventArgs e)
         {
-            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle;
+            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle1;
         }
     }
 }

@@ -52,7 +52,7 @@
             tableLayoutPanel.Controls.Add(textBoxDescription, 1, 4);
             tableLayoutPanel.Controls.Add(okButton, 1, 5);
             tableLayoutPanel.Dock = DockStyle.Fill;
-            tableLayoutPanel.Location = new Point(5, 5);
+            tableLayoutPanel.Location = new Point(4, 2);
             tableLayoutPanel.Margin = new Padding(4, 2, 4, 2);
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 6;
@@ -62,18 +62,18 @@
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            tableLayoutPanel.Size = new Size(694, 371);
+            tableLayoutPanel.Size = new Size(718, 373);
             tableLayoutPanel.TabIndex = 0;
             // 
             // logoPictureBox
             // 
             logoPictureBox.Dock = DockStyle.Fill;
-            logoPictureBox.Image = Properties.Resources._2025_20_21_JollyRogerJoker;
+            logoPictureBox.Image = Properties.Resources.ChiffrePentacle2;
             logoPictureBox.Location = new Point(4, 2);
             logoPictureBox.Margin = new Padding(4, 2, 4, 2);
             logoPictureBox.Name = "logoPictureBox";
             tableLayoutPanel.SetRowSpan(logoPictureBox, 6);
-            logoPictureBox.Size = new Size(339, 367);
+            logoPictureBox.Size = new Size(351, 369);
             logoPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             logoPictureBox.TabIndex = 12;
             logoPictureBox.TabStop = false;
@@ -83,11 +83,11 @@
             // labelProductName
             // 
             labelProductName.Dock = DockStyle.Fill;
-            labelProductName.Location = new Point(354, 0);
-            labelProductName.Margin = new Padding(7, 0, 4, 0);
+            labelProductName.Location = new Point(363, 2);
+            labelProductName.Margin = new Padding(4, 2, 4, 2);
             labelProductName.MaximumSize = new Size(0, 20);
             labelProductName.Name = "labelProductName";
-            labelProductName.Size = new Size(336, 20);
+            labelProductName.Size = new Size(351, 20);
             labelProductName.TabIndex = 19;
             labelProductName.Text = "Product Name";
             labelProductName.TextAlign = ContentAlignment.MiddleLeft;
@@ -95,11 +95,11 @@
             // labelVersion
             // 
             labelVersion.Dock = DockStyle.Fill;
-            labelVersion.Location = new Point(354, 37);
-            labelVersion.Margin = new Padding(7, 0, 4, 0);
+            labelVersion.Location = new Point(366, 39);
+            labelVersion.Margin = new Padding(7, 2, 4, 2);
             labelVersion.MaximumSize = new Size(0, 20);
             labelVersion.Name = "labelVersion";
-            labelVersion.Size = new Size(336, 20);
+            labelVersion.Size = new Size(348, 20);
             labelVersion.TabIndex = 0;
             labelVersion.Text = "Version";
             labelVersion.TextAlign = ContentAlignment.MiddleLeft;
@@ -107,11 +107,11 @@
             // labelCopyright
             // 
             labelCopyright.Dock = DockStyle.Fill;
-            labelCopyright.Location = new Point(354, 74);
-            labelCopyright.Margin = new Padding(7, 0, 4, 0);
+            labelCopyright.Location = new Point(363, 76);
+            labelCopyright.Margin = new Padding(4, 2, 4, 2);
             labelCopyright.MaximumSize = new Size(0, 20);
             labelCopyright.Name = "labelCopyright";
-            labelCopyright.Size = new Size(336, 20);
+            labelCopyright.Size = new Size(351, 20);
             labelCopyright.TabIndex = 21;
             labelCopyright.Text = "Copyright";
             labelCopyright.TextAlign = ContentAlignment.MiddleLeft;
@@ -119,11 +119,11 @@
             // labelCompanyName
             // 
             labelCompanyName.Dock = DockStyle.Fill;
-            labelCompanyName.Location = new Point(354, 111);
-            labelCompanyName.Margin = new Padding(7, 0, 4, 0);
+            labelCompanyName.Location = new Point(363, 113);
+            labelCompanyName.Margin = new Padding(4, 2, 4, 2);
             labelCompanyName.MaximumSize = new Size(0, 20);
             labelCompanyName.Name = "labelCompanyName";
-            labelCompanyName.Size = new Size(336, 20);
+            labelCompanyName.Size = new Size(351, 20);
             labelCompanyName.TabIndex = 22;
             labelCompanyName.Text = "Company Name";
             labelCompanyName.TextAlign = ContentAlignment.MiddleLeft;
@@ -132,13 +132,13 @@
             // 
             textBoxDescription.Dock = DockStyle.Fill;
             textBoxDescription.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxDescription.Location = new Point(354, 150);
-            textBoxDescription.Margin = new Padding(7, 2, 4, 2);
+            textBoxDescription.Location = new Point(363, 150);
+            textBoxDescription.Margin = new Padding(4, 2, 4, 2);
             textBoxDescription.Multiline = true;
             textBoxDescription.Name = "textBoxDescription";
             textBoxDescription.ReadOnly = true;
             textBoxDescription.ScrollBars = ScrollBars.Both;
-            textBoxDescription.Size = new Size(336, 181);
+            textBoxDescription.Size = new Size(351, 182);
             textBoxDescription.TabIndex = 23;
             textBoxDescription.TabStop = false;
             textBoxDescription.Text = "Description";
@@ -148,7 +148,7 @@
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             okButton.DialogResult = DialogResult.Cancel;
             okButton.Font = new Font("Microsoft Sans Serif", 9.25F);
-            okButton.Location = new Point(602, 341);
+            okButton.Location = new Point(626, 343);
             okButton.Margin = new Padding(4, 2, 4, 2);
             okButton.Name = "okButton";
             okButton.Size = new Size(88, 28);
@@ -160,7 +160,7 @@
             AcceptButton = okButton;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(704, 381);
+            ClientSize = new Size(726, 377);
             Controls.Add(tableLayoutPanel);
             Font = new Font("Microsoft Sans Serif", 9.25F);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -169,7 +169,7 @@
             MinimizeBox = false;
             Name = "AboutDialog";
             Opacity = 0.66D;
-            Padding = new Padding(5, 5, 5, 5);
+            Padding = new Padding(4, 2, 4, 2);
             ShowIcon = false;
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
