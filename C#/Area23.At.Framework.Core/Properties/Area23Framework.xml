@@ -727,17 +727,17 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetCharSymmCipherDict">
             <summary>
-            GetCharSymmCipherDict gets <see cref="!:Dictionary&lt;char, SymmCipherEnum&gt;"/>,
+            GetCharSymmCipherDict gets <see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/>,
             where hexbyte as char is mapped to <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum" />
             </summary>
-            <returns><see cref="!:Dictionary&lt;char, SymmCipherEnum&gt;"/></returns>        
+            <returns><see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/></returns>        
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetByteSymmCipherDict">
             <summary>
-            GetByteSymmCipherDict gets <see cref="!:Dictionary&lt;byte, SymmCipherEnum&gt;"/>,
+            GetByteSymmCipherDict gets <see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/>,
             where hex byte value is mapped to  <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum" />
             </summary>
-            <returns><see cref="!:Dictionary&lt;byte, SymmCipherEnum&gt;"/></returns>
+            <returns><see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetSymmCipherChar(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>

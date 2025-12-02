@@ -7,7 +7,10 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
@@ -19,11 +22,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
     /// </summary>
     public partial class EncryptForm : EncryptFormBase
     {
-        #region fields and properties
-
-        
-
-        #endregion fields and properties
 
         #region ctor and load
 
@@ -47,13 +45,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
-            ToolStripMenuItem[] menuEncodings = { menuNone, menuBase16, menuHex16, menuHex32, menuBase32, menuBase64, menuUu, menuXx };
+
+            ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
             {
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
             }
-            ToolStripMenuItem[] menuHashes = { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt,
-                        menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+
+            ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
             foreach (ToolStripMenuItem hashMenu in menuHashes)
             {
                 hashMenu.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
@@ -118,11 +117,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 return;
             }
 
-            menu7z.Checked = false;
-            menuBZip2.Checked = false;
-            menuGZip.Checked = false;
-            menuZip.Checked = false;
-            menuCompressionNone.Checked = false;
+            zmenu7z.Checked = false;
+            zmenuBZip2.Checked = false;
+            zmenuGZip.Checked = false;
+            zmenuZip.Checked = false;
+            zmenuNone.Checked = false;
 
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("menu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
@@ -143,13 +142,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 zipType = ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None");
                 switch (zipType)
                 {
-                    case ZipType.BZip2: menuBZip2.Checked = true; break;
-                    case ZipType.GZip: menuGZip.Checked = true; break;
-                    case ZipType.Zip: menuZip.Checked = true; break;
+                    case ZipType.BZip2: zmenuBZip2.Checked = true; break;
+                    case ZipType.GZip: zmenuGZip.Checked = true; break;
+                    case ZipType.Zip: zmenuZip.Checked = true; break;
                     case ZipType.Z7:
                     case ZipType.None:
                     default:
-                        menuCompressionNone.Checked = true;
+                        zmenuNone.Checked = true;
                         comboBoxCompression.SelectedItem = ZipType.None.ToString();
                         break;
                 }
@@ -163,12 +162,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <returns></returns>
         protected internal ZipType GetZip()
         {
-            if (menu7z.Checked) return ZipType.Z7;
-            if (menuBZip2.Checked) return ZipType.BZip2;
-            if (menuGZip.Checked) return ZipType.GZip;
-            if (menuZip.Checked) return ZipType.Zip;
-            // if (menuCompressionNone.Checked) return ZipType.None;
-            menuCompressionNone.Checked = true;
+            if (zmenu7z.Checked) return ZipType.Z7;
+            if (zmenuBZip2.Checked) return ZipType.BZip2;
+            if (zmenuGZip.Checked) return ZipType.GZip;
+            if (zmenuZip.Checked) return ZipType.Zip;
+            // if (zmenuEncNone.Checked) return ZipType.None;
+            zmenuNone.Checked = true;
             comboBoxCompression.SelectedItem = ZipType.None.ToString();
             return ZipType.None;
         }
@@ -184,7 +183,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="comboItem">selected encoding combobox item</param>
         protected internal async Task SetEncodingAsync(ToolStripMenuItem? mi = null, object? comboItem = null)
         {
-            EncodingType encodingType = (mi != null) ? EncodingTypesExtensions.GetEncodingTypeFromString(mi.Name.Replace("menu", "")) :
+            EncodingType encodingType = (mi != null) ? EncodingTypesExtensions.GetEncodingTypeFromString(mi.Name.Replace("menuEnc", "")) :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None") :
                 EncodingType.None;
 
@@ -194,18 +193,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 return;
             }
 
-            menuNone.Checked = false;
-            menuBase16.Checked = false;
-            menuHex16.Checked = false;
-            menuBase32.Checked = false;
-            menuHex32.Checked = false;
-            menuBase64.Checked = false;
-            menuUu.Checked = false;
-            menuXx.Checked = false;
+            menuEncNone.Checked = false;
+            menuEncBase16.Checked = false;
+            menuEncHex16.Checked = false;
+            menuEncBase32.Checked = false;
+            menuEncHex32.Checked = false;
+            menuEncBase64.Checked = false;
+            menuEncUu.Checked = false;
+            menuEncXx.Checked = false;
 
             if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("menuBase") || mi.Name.StartsWith("menuHex") || mi.Name.StartsWith("menuUu") ||
-                    mi.Name.StartsWith("menuNone") || mi.Name.StartsWith("menuXx")))
+                (mi.Name.StartsWith("menuEncBase") || mi.Name.StartsWith("menuEncHex") || mi.Name.StartsWith("menuEncUu") ||
+                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx")))
             {
                 mi.Checked = true;
                 for (int i = 0; i < comboBoxEncoding.Items.Count; i++)
@@ -223,15 +222,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 encodingType = EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None");
                 switch (encodingType)
                 {
-                    case EncodingType.Base16: menuBase16.Checked = true; break;
-                    case EncodingType.Hex16: menuHex16.Checked = true; break;
-                    case EncodingType.Base32: menuBase32.Checked = true; break;
-                    case EncodingType.Hex32: menuHex32.Checked = true; break;
-                    case EncodingType.Uu: menuUu.Checked = true; break;
-                    case EncodingType.Xx: menuXx.Checked = true; break;
-                    case EncodingType.None: menuNone.Checked = true; break;
+                    case EncodingType.Base16: menuEncBase16.Checked = true; break;
+                    case EncodingType.Hex16: menuEncHex16.Checked = true; break;
+                    case EncodingType.Base32: menuEncBase32.Checked = true; break;
+                    case EncodingType.Hex32: menuEncHex32.Checked = true; break;
+                    case EncodingType.Uu: menuEncUu.Checked = true; break;
+                    case EncodingType.Xx: menuEncXx.Checked = true; break;
+                    case EncodingType.None: menuEncNone.Checked = true; break;
                     case EncodingType.Base64:
-                    default: menuBase64.Checked = true; break;
+                    default: menuEncBase64.Checked = true; break;
                 }
             }
             await SetInfoMessageAsync($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
@@ -243,14 +242,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <returns></returns>
         protected internal EncodingType GetEncoding()
         {
-            if (menuNone.Checked) return EncodingType.None;
-            if (menuBase16.Checked) return EncodingType.Base16;
-            if (menuHex16.Checked) return EncodingType.Hex16;
-            if (menuBase32.Checked) return EncodingType.Base32;
-            if (menuHex32.Checked) return EncodingType.Hex32;
-            if (menuUu.Checked) return EncodingType.Uu;
-            if (menuXx.Checked) return EncodingType.Xx;
-            menuBase64.Checked = true;
+            if (menuEncNone.Checked) return EncodingType.None;
+            if (menuEncBase16.Checked) return EncodingType.Base16;
+            if (menuEncHex16.Checked) return EncodingType.Hex16;
+            if (menuEncBase32.Checked) return EncodingType.Base32;
+            if (menuEncHex32.Checked) return EncodingType.Hex32;
+            if (menuEncUu.Checked) return EncodingType.Uu;
+            if (menuEncXx.Checked) return EncodingType.Xx;
+            menuEncBase64.Checked = true;
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             return EncodingType.Base64;
 
@@ -598,8 +597,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 try
                 {
                     await SetStatusLabelTextAsync(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
-                    if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        await SetEncodingAsync(menuBase64);
+                    if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
+                        await SetEncodingAsync(menuEncBase64);
 
                     string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.textBoxOut.Text = encrypted;
@@ -744,8 +743,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 try
                 {
                     await SetStatusLabelTextAsync(this.statusLabelSource, $"source chars: {textBoxSrc.Text.Length}");
-                    if (menuNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        await SetEncodingAsync(menuBase64);
+                    if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
+                        await SetEncodingAsync(menuEncBase64);
 
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
@@ -934,35 +933,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
                     {
-
-                        lock (_Lock)
-                        {
-                            this.textBoxSrc.Text = string.Empty;
-                            this.textBoxOut.Text = string.Empty;
-                            // byte[] fileBytes = System.IO.File.ReadAllBytes(file);
-                            // string mimeSig = MimeSignature.GetMimeType(fileBytes, Path.GetFileName(fileName));
-                            ext = Path.GetExtension(file).Replace(".", "");
-                            pictureBoxFileIn.Image = file.GetImageThumbnailFromFile();
-                            pictureBoxFileIn.Tag = file;
-                            this.labelFileIn.Text = Path.GetFileName(file);
-                            Task.Run(() => PlaySoundFromResource("sound_arrow"));
-                            // HashFiles = new HashSet<string>();
-                            _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
-                            isDragMode = false;
-                            SetGBoxText(this.groupBoxFiles, "Files Group Box");
-
-                            FileInfo fi = new FileInfo(file);
-                            if (fi.Exists && fi.Length > 0)
-                            {
-                                CPipe = GetCPipeFromFileName(file);
-                                if (fi.Length > 1048576)
-                                    SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
-                                else if (fi.Length > 1024)
-                                    SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1024)} kb");
-                                else SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
-                            }
-                            break;
-                        }
+                        FileAddedAction(file);
+                        ext = Path.GetExtension(file).Replace(".", "");
+                        _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
+                        isDragMode = false;
+                        break;
                     }
                 }
 
@@ -972,6 +947,92 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         }
 
         #endregion DragNDrop
+
+        #region file loading and saving ops
+
+        /// <summary>
+        /// FileAddedAction is called, when a file was opened 
+        /// either by Menu Main -> Open
+        /// or dragged into the file groupbox of the WinForm
+        /// </summary>
+        /// <param name="fileName"></param>
+        internal void FileAddedAction(string fileName)
+        {            
+            FileInfo fi = new FileInfo(fileName);
+            if (fi.Exists && fi.Length > 0)
+            {
+                this.textBoxSrc.Text = string.Empty;
+                this.textBoxOut.Text = string.Empty;
+                SetGBoxText(this.groupBoxFiles, "Files Group Box");
+
+                pictureBoxFileIn.Image = fileName.GetImageThumbnailFromFile();
+                pictureBoxFileIn.Tag = fileName;
+                labelFileIn.Text = Path.GetFileName(fileName);
+
+                _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
+                isDragMode = false;
+
+                Task.Run(() => PlaySoundFromResource("sound_arrow"));
+
+                HashFiles = new HashSet<string>();
+                HashFiles.Add(fileName);
+
+                if (fi.Length > 1048576)
+                    SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
+                else if (fi.Length > 2048)
+                    SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1024)} kb");
+                else SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
+
+                if (menuItemCreatePipeSettingsFromFileName.Checked)
+                {
+                    var cpip = GetCPipeFromFileName(fileName);
+                    if (cpip != null)
+                    {
+                        ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+                        ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
+                        ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
+
+                        foreach (var miHash in menuHashes)
+                        {
+                            if (miHash.Name.Replace("menuHash", "").Equals(cpip.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                                miHash.Text.Equals(cpip.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                SetHashAsync((ToolStripMenuItem)miHash, radioButtonListHash).ConfigureAwait(false);
+
+                                break;
+                            }
+                        }
+                        foreach (var miEnc in menuEncodings)
+                        {
+                            if (miEnc.Name.Replace("menuEnc", "").Equals(cpip.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                                miEnc.Text.Equals(cpip.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                SetEncodingAsync((ToolStripMenuItem)miEnc, null).ConfigureAwait(true);
+                                break;
+                            }
+                        }
+                        foreach (var miZip in menuZips)
+                        {
+                            if (miZip.Name.Replace("zmenu", "").Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                               miZip.Text.Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                SetCompression((ToolStripMenuItem)miZip, null);
+                                break;
+                            }
+                        }
+
+                        this.textBoxPipe.Text = "";
+                        foreach (CipherEnum cipher in cpip.InPipe)
+                        {
+                            this.textBoxPipe.Text += cipher.ToString() + ";";
+                        }
+                    }
+                }
+
+            }
+        }
+
+        #endregion file loading and saving ops
 
         #region HelpOpenSave
 
@@ -996,27 +1057,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.OK && !string.IsNullOrEmpty(dialog.FileName) && System.IO.File.Exists(dialog.FileName))
             {
-                pictureBoxFileIn.Image = dialog.FileName.GetImageThumbnailFromFile();
-                pictureBoxFileIn.Tag = dialog.FileName;
-                this.labelFileIn.Text = Path.GetFileName(dialog.FileName);
-                HashFiles = new HashSet<string>();
-                HashFiles.Add(dialog.FileName);
-
-
-                FileInfo fi = new FileInfo(dialog.FileName);
-                if (fi.Exists && fi.Length > 0)
-                {
-                    var cpip = GetCPipeFromFileName(dialog.FileName);
-                    if (cpip != null)
-                    {
-                        
-                    }
-                    if (fi.Length > 1048576)
-                        SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1048576)} MB");
-                    else if (fi.Length > 2048)
-                        SetStatusLabelText(this.statusLabelSource, $"FileSize: {(fi.Length / 1024)} kb");
-                    else SetStatusLabelText(this.statusLabelSource, $"FileSize: {fi.Length} bytes");
-                }
+                FileAddedAction(dialog.FileName);
             }
             else
             {
@@ -1051,55 +1092,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     try
                     {
                         File.WriteAllBytes(outFilePath, fileBytes);
-                    }
-                    catch (Exception ex)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n", ex);
-                        return false;
-                    }
-                    FileInfo fi = new FileInfo(outFilePath);
-                    if (fi.Exists && fi.Length > 0)
-                    {
-                        if (fi.Length > 1048576)
-                            SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1048576)} MB");
-                        else if (fi.Length > 2048)
-                            SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1024)} kb");
-                        else SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");
-                    }
-
-                    return true;
-                }
-            }
-            return false;
-        }
-
-
-        /// <summary>
-        /// SaveBytesDialog saves byte array to file with save file dialog 
-        /// </summary>
-        /// <param name="fileBytes">byte array to save</param>
-        /// <param name="outFilePath">ref will be returned; calculated outFilePath</param>
-        /// <returns>true if saved, false if not saved</returns>
-        internal bool SaveEncodedStringDialog(string encodedString, ref string outFilePath)
-        {
-            // this.pictureBoxRunningPipe.Visible = false;
-            SaveFileDialog dialog = new SaveFileDialog();
-            outFilePath = outFilePath ?? string.Empty;
-            if (encodedString != null && encodedString.Length > 0)
-            {
-                dialog.Title = "Save File";
-                dialog.CheckPathExists = true;
-                dialog.RestoreDirectory = true;
-                dialog.SupportMultiDottedExtensions = true;
-                dialog.AddExtension = true;
-                dialog.FileName = Path.GetFileName(outFilePath);
-                dialog.DefaultExt = Path.GetExtension(outFilePath);
-                DialogResult result = dialog.ShowDialog();
-                {
-                    outFilePath = dialog.FileName;
-                    try
-                    {
-                        File.WriteAllText(outFilePath, encodedString);
                     }
                     catch (Exception ex)
                     {

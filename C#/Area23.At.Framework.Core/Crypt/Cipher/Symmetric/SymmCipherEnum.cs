@@ -51,10 +51,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         }
 
         /// <summary>
-        /// GetCharSymmCipherDict gets <see cref="Dictionary{char, SymmCipherEnum}"/>,
+        /// GetCharSymmCipherDict gets <see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/>,
         /// where hexbyte as char is mapped to <see cref="SymmCipherEnum" />
         /// </summary>
-        /// <returns><see cref="Dictionary{char, SymmCipherEnum}"/></returns>        
+        /// <returns><see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/></returns>        
         public static Dictionary<char, SymmCipherEnum> GetCharSymmCipherDict()
         {
             Dictionary<char, SymmCipherEnum> charSymmCipherDict = new Dictionary<char, SymmCipherEnum>();
@@ -67,10 +67,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         }
 
         /// <summary>
-        /// GetByteSymmCipherDict gets <see cref="Dictionary{byte, SymmCipherEnum}"/>,
+        /// GetByteSymmCipherDict gets <see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/>,
         /// where hex byte value is mapped to  <see cref="SymmCipherEnum" />
         /// </summary>
-        /// <returns><see cref="Dictionary{byte, SymmCipherEnum}"/></returns>
+        /// <returns><see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/></returns>
         public static Dictionary<byte, SymmCipherEnum> GetByteSymmCipherDict()
         {
             Dictionary<byte, SymmCipherEnum> byteSymmCipherDict = new Dictionary<byte, SymmCipherEnum>();
