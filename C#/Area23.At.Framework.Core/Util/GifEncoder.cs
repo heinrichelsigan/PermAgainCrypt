@@ -1,4 +1,8 @@
-﻿using System.Drawing.Imaging;
+﻿using Org.BouncyCastle.Crypto.IO;
+using Org.BouncyCastle.Utilities;
+using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 
 // https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs
 
@@ -43,15 +47,18 @@ namespace Area23.At.Framework.Core.Util
         private int? _repeatCount;
         TimeSpan _frameDelay;
         private List<byte> _byteList;
+        public byte[] GifBytes { get; protected internal set; }
+        internal MemoryStream _memoryStream;
         
         // Public Accessors
         public TimeSpan FrameDelay { get => _frameDelay; }
+
         public byte[] GifData
         {
             get
             {
-                if (!_isFinished) Finish();
-                return _byteList.ToArray();
+                if (!_isFinished) Finish(ref _memoryStream);  
+                return GifBytes;
             }
         }
 
@@ -65,124 +72,172 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="frameDelay">deley betweeen frames</param>
         public GifEncoder(Image img, int? repeatCount = null, TimeSpan? frameDelay = null)
         {
-            _byteList = new List<byte>();            
+            _byteList = new List<byte>();
+            GifBytes = (new List<byte>()).ToArray();
+            _memoryStream = new MemoryStream();
             _repeatCount = repeatCount;
             _frameDelay = frameDelay.GetValueOrDefault();
             _isFinished = false;
-            using (MemoryStream ms = new MemoryStream())
+
+            using (MemoryStream srcGif = new MemoryStream())
             {
-                img.Save(ms, ImageFormat.Gif);
-                InitHeader(ms, img.Width, img.Height);
-                WriteGraphicControlBlock(ms, FrameDelay);
-                WriteImageBlock(ms, !_isFirstImage, 0, 0, img.Width, img.Height);
+                img.Save(srcGif, ImageFormat.Gif);
+                WriteHeader(ref _memoryStream, srcGif, img.Width, img.Height);
+                WriteGraphicControlBlock(ref _memoryStream, srcGif, FrameDelay);
+                WriteImageBlock(ref _memoryStream, srcGif, !_isFirstImage, 0, 0, img.Width, img.Height);
             }
+
             _isFirstImage = false;
+
         }
+
+
+        public GifEncoder(Bitmap bmp, int? repeatCount = null, TimeSpan? frameDelay = null, params Bitmap[] gifFrames) 
+        {
+            _byteList = new List<byte>();
+            GifBytes = (new List<byte>()).ToArray();
+            _memoryStream = new MemoryStream();
+            _repeatCount = repeatCount;
+            _frameDelay = frameDelay.GetValueOrDefault();
+            _isFinished = false;
+
+            using (MemoryStream srcGif = new MemoryStream())
+            {
+                bmp.Save(srcGif, ImageFormat.Gif);
+                WriteHeader(ref _memoryStream, srcGif, bmp.Width, bmp.Height);
+                WriteGraphicControlBlock(ref _memoryStream, srcGif, FrameDelay);
+                WriteImageBlock(ref _memoryStream, srcGif, !_isFirstImage, 0, 0, bmp.Width, bmp.Height);
+            }
+
+            _isFirstImage = false;
+
+            foreach (Bitmap? frame in gifFrames)
+            {
+                if (frame != null)
+                    AddFrame(ref _memoryStream, (Image)frame, FrameDelay);
+            }
+
+            if (!_isFinished)
+                Finish(ref _memoryStream);
+        }
+
 
         /// <summary>
         /// Adds a frame to this animation.
         /// </summary>
         /// <param name="img">The image to add</param>
         /// <param name="frameDelay">TimeSpan for delay</param>
-        public void AddFrame(Image img, TimeSpan? frameDelay = null)
+        public void AddFrame(ref MemoryStream ms, Image img, TimeSpan? frameDelay = null)
         {
             if (_isFinished)
                 return;
+
+            ms = ms ?? new MemoryStream(GifBytes);
 
             _frameDelay = frameDelay.GetValueOrDefault();
             using (var gifStream = new MemoryStream())
             {
                 img.Save(gifStream, ImageFormat.Gif);
-                if (_isFirstImage) // Steal the global color table info
+                if (_isFirstImage) // Init gif header with global color table info of 1st frame
                 {
-                    InitHeader(gifStream, img.Width, img.Height);
+                    WriteHeader(ref ms, gifStream, img.Width, img.Height);
                 }
-                WriteGraphicControlBlock(gifStream, FrameDelay);
-                WriteImageBlock(gifStream, !_isFirstImage, 0, 0, img.Width, img.Height);
+                WriteGraphicControlBlock(ref ms, gifStream, FrameDelay);
+                WriteImageBlock(ref ms, gifStream, !_isFirstImage, 0, 0, img.Width, img.Height);
             }
             _isFirstImage = false;
         }
 
-        private void InitHeader(Stream sourceGif, int w, int h)
+        private void WriteHeader(ref MemoryStream ms, Stream sourceGif, int w, int h)
         {
             if (_isFinished)
                 return;
+
+            ms = ms ?? new MemoryStream(GifBytes);
 
             // File Header
-            WriteString(FileType);
-            WriteString(FileVersion);
-            WriteShort(w); // Initial Logical Width
-            WriteShort(h); // Initial Logical Height
+            WriteString(ref ms, FileType);
+            WriteString(ref ms, FileVersion);
+            WriteShort(ref ms, w); // Initial Logical Width
+            WriteShort(ref ms, h); // Initial Logical Height
+            
             sourceGif.Position = SourceGlobalColorInfoPosition;
-            WriteByte(sourceGif.ReadByte()); // Global Color Table Info
-            WriteByte(0); // Background Color Index
-            WriteByte(0); // Pixel aspect ratio
-            WriteColorTable(sourceGif);
+            WriteByte(ref ms, sourceGif.ReadByte()); // Global Color Table Info
+            WriteByte(ref ms, 0); // Background Color Index
+            WriteByte(ref ms, 0); // Pixel aspect ratio
+            WriteColorTable(ref ms, sourceGif);
 
             // App Extension Header
-            WriteShort(ApplicationExtensionBlockIdentifier); // 0xff21            
-            WriteByte(ApplicationBlockSize);
-            WriteString(ApplicationIdentification);            
-            WriteByte(3); // Application block length
-            WriteByte(1);            
-            WriteShort(_repeatCount.GetValueOrDefault(0)); // Repeat count for images.
-            WriteByte(0); // terminator
+            WriteShort(ref ms, ApplicationExtensionBlockIdentifier); // 0xff21            
+            WriteByte(ref ms, ApplicationBlockSize);
+            WriteString(ref ms, ApplicationIdentification);            
+            WriteByte(ref ms, 3); // Application block length
+            WriteByte(ref ms, 1);            
+            WriteShort(ref ms, _repeatCount.GetValueOrDefault(0)); // Repeat count for images.
+            WriteByte(ref ms, 0); // terminator
         }
 
-        private void WriteColorTable(Stream sourceGif)
+        private void WriteColorTable(ref MemoryStream ms, Stream sourceGif)
         {
             if (_isFinished)
                 return;
+
+            ms = ms ?? new MemoryStream(GifBytes);
 
             sourceGif.Position = SourceColorBlockPosition; // Locating the image color table
             byte[] colorTable = new byte[SourceColorBlockLength];
             sourceGif.Read(colorTable, 0, colorTable.Length);
-            WriteBytes(colorTable, colorTable.Length);
+            
+            WriteBytes(ref ms, colorTable, colorTable.Length);
         }
 
-        private void WriteGraphicControlBlock(Stream sourceGif, TimeSpan frameDelay)
+        private void WriteGraphicControlBlock(ref MemoryStream ms, Stream sourceGif, TimeSpan frameDelay)
         {
             if (_isFinished)
                 return;
+
+            ms = ms ?? new MemoryStream(GifBytes);
 
             sourceGif.Position = SourceGraphicControlExtensionPosition; // Locating the source GCE
             var blockhead = new byte[SourceGraphicControlExtensionLength];
             sourceGif.Read(blockhead, 0, blockhead.Length); // Reading source GCE
 
-            WriteShort(GraphicControlExtensionBlockIdentifier); // Identifier
-            WriteByte(GraphicControlExtensionBlockSize); // Block Size
-            WriteByte(blockhead[3] & 0xf7 | 0x08); // Setting disposal flag
-            WriteShort(Convert.ToInt32(frameDelay.TotalMilliseconds / 10)); // Setting frame delay
-            WriteByte(blockhead[6]); // Transparent color index
-            WriteByte(0); // Terminator
+            WriteShort(ref ms, GraphicControlExtensionBlockIdentifier); // Identifier
+            WriteByte(ref ms, GraphicControlExtensionBlockSize); // Block Size
+            WriteByte(ref ms, blockhead[3] & 0xf7 | 0x08); // Setting disposal flag
+            WriteShort(ref ms, Convert.ToInt32(frameDelay.TotalMilliseconds / 10)); // Setting frame delay
+            WriteByte(ref ms, blockhead[6]); // Transparent color index
+            WriteByte(ref ms, 0); // Terminator
         }
 
-        private void WriteImageBlock(Stream sourceGif, bool includeColorTable, int x, int y, int h, int w)
+        private void WriteImageBlock(ref MemoryStream ms, Stream sourceGif, bool includeColorTable, int x, int y, int h, int w)
         {
             if (_isFinished)
                 return;
 
+            ms = ms ?? new MemoryStream(GifBytes);
+
             sourceGif.Position = SourceImageBlockPosition; // Locating the image block
             byte[] header = new byte[SourceImageBlockHeaderLength];
             sourceGif.Read(header, 0, header.Length);
-            WriteByte(header[0]); // Separator
-            WriteShort(x); // Position X
-            WriteShort(y); // Position Y
-            WriteShort(h); // Height
-            WriteShort(w); // Width
+            WriteByte(ref ms, header[0]); // Separator
+            WriteShort(ref ms, x); // Position X
+            WriteShort(ref ms, y); // Position Y
+            WriteShort(ref ms, h); // Height
+            WriteShort(ref ms, w); // Width
 
             if (includeColorTable) // If first frame, use global color table - else use local
             {
                 sourceGif.Position = SourceGlobalColorInfoPosition;
-                WriteByte(sourceGif.ReadByte() & 0x3f | 0x80); // Enabling local color table
-                WriteColorTable(sourceGif);
+                WriteByte(ref ms, sourceGif.ReadByte() & 0x3f | 0x80); // Enabling local color table
+                WriteColorTable(ref ms, sourceGif);
             }
             else
             {
-                WriteByte(header[9] & 0x07 | 0x07); // Disabling local color table
+                WriteByte(ref ms, header[9] & 0x07 | 0x07); // Disabling local color table
             }
 
-            WriteByte(header[10]); // LZW Min Code Size
+            WriteByte(ref ms, header[10]); // LZW Min Code Size
 
             // Read/Write image data
             sourceGif.Position = SourceImageBlockPosition + SourceImageBlockHeaderLength;
@@ -193,73 +248,45 @@ namespace Area23.At.Framework.Core.Util
                 byte[] imgData = new byte[dataLength];
                 sourceGif.Read(imgData, 0, dataLength);
 
-                WriteByte(Convert.ToByte(dataLength));
-                WriteBytes(imgData, dataLength);
+                WriteByte(ref ms, Convert.ToByte(dataLength));
+                WriteBytes(ref ms, imgData, dataLength);
                 dataLength = sourceGif.ReadByte();
             }
 
-            WriteByte(0); // Terminator
+            WriteByte(ref ms, 0); // Terminator
 
         }
 
-        private void WriteByte(int value)
+        private void WriteByte(ref MemoryStream ms, int value)
         {
-            if (_isFinished)
-                return;
-
-            _byteList.Add(Convert.ToByte(value));
+            GifBytes = GifBytes.WriteByte(ref ms, value, _isFinished);
         }
 
-        private void WriteShort(int value)
+        private void WriteShort(ref MemoryStream ms, int value)
         {
-            if (_isFinished)
-                return;
-            Byte b0 = Convert.ToByte(value & 0xff);
-            _byteList.Add(b0);
-            Byte b1 = Convert.ToByte((value >> 8) & 0xff);
-            _byteList.Add(b1);
+            GifBytes = GifBytes.WriteShort(ref ms, value, _isFinished);
         }
 
-        private void WriteString(string value)
+        private void WriteString(ref MemoryStream ms, string value)
         {
-            if (_isFinished)
-                return;
-
-            byte[] stringBytes = value.ToArray().Select(c => (byte)c).ToArray();
-            foreach (byte b in stringBytes)
-                _byteList.Add(b);
+            GifBytes = GifBytes.WriteString(ref ms, value, _isFinished);            
         }
 
-        private void WriteBytes(byte[] bytes, int length)
+        private void WriteBytes(ref MemoryStream ms, byte[]? bytes, int length)
         {
-            if (_isFinished)
-                return;
-
-            if (bytes != null && bytes.Length > 0)
-            {
-                for (int bc = 0; bc < Math.Min(length, bytes.Length); bc++)
-                {
-                    _byteList.Add((byte)bytes[bc]);
-                }
-            }
+            GifBytes = GifBytes.WriteBytes(ref ms, bytes, length, _isFinished);
         }
 
-        private void WriteBytes(byte[] bytes)
+        private void WriteBytes(ref MemoryStream ms, byte[] bytes)
         {
-            if (_isFinished)
-                return;
-
-            if (bytes != null && bytes.Length > 0)
-            {
-                foreach (byte b in bytes)
-                    _byteList.Add(b);
-            }
+            GifBytes = GifBytes.WriteBytes(ref ms, bytes, _isFinished);
         }
   
-        public void Finish()
-        {
+        public void Finish(ref MemoryStream ms)
+        {            
             // Complete File
-            WriteByte(FileTrailer);
+            WriteByte(ref ms, FileTrailer);
+            ms.Flush();
             _isFinished = true;
         }
 
@@ -267,5 +294,99 @@ namespace Area23.At.Framework.Core.Util
         {
             
         }
+    }
+
+    public static class GIfEncoderExtensions
+    {
+
+        public static byte[] WriteByte(this byte[] gifBytes, ref MemoryStream ms, int value, bool _isFinished)
+        {
+            List<byte> byteList = new List<byte>(gifBytes);
+            ms = ms ?? new MemoryStream(gifBytes);
+            if (!_isFinished)
+            {                
+                byte b = Convert.ToByte(value);
+                byteList.Add(b);
+                ms.Write(new byte[] { b });
+            }
+
+            return byteList.ToArray();
+        }
+
+        public static byte[] WriteShort(this byte[] gifBytes, ref MemoryStream ms, int value, bool _isFinished)
+        {
+            List<byte> byteList = new List<byte>(gifBytes);
+            ms = ms ?? new MemoryStream(gifBytes);
+            if (!_isFinished)
+            {                
+                Byte b0 = Convert.ToByte(value & 0xff);
+                Byte b1 = Convert.ToByte((value >> 8) & 0xff);
+
+                byteList.AddRange(new byte[] { b0, b1 });
+                ms.Write(new byte[] { b0, b1 });
+                
+            }
+
+            return byteList.ToArray();
+        }
+
+        public static byte[] WriteString(this byte[] gifBytes, ref MemoryStream ms, string value, bool _isFinished = false)
+        {
+            List<byte> byteList = new List<byte>(gifBytes);
+            ms = ms ?? new MemoryStream(gifBytes);
+            if (!_isFinished)
+            {
+                byte[] stringBytes = value.ToArray().Select(c => (byte)c).ToArray();
+
+                byteList.AddRange(stringBytes);
+                ms.Write(stringBytes);
+
+                return byteList.ToArray();
+            }
+
+            return byteList.ToArray();
+        }
+
+        public static byte[] WriteBytes(this byte[] gifBytes, ref MemoryStream ms, byte[] bytes, bool _isFinished = false)
+        {
+            List<byte> byteList = new List<byte>(gifBytes);
+            ms = ms ?? new MemoryStream(gifBytes);
+
+            if (!_isFinished)
+            {                
+                if (bytes != null && bytes.Length > 0)
+                {
+                    byteList.AddRange(bytes);
+                    ms.Write(bytes);
+                    return byteList.ToArray();
+                }
+            }
+
+            return byteList.ToArray();
+        }
+
+        public static byte[] WriteBytes(this byte[] gifBytes, ref MemoryStream ms, byte[]? bytes, int length, bool _isFinished = false)
+        {
+            List<byte> byteList = new List<byte>(gifBytes);
+            ms = ms ?? new MemoryStream(gifBytes);
+            
+            if (!_isFinished)
+            {                
+                if (bytes != null && bytes.Length > 0)
+                {
+                    length = (int)Math.Abs(length);
+                    int bytesLen = Math.Min((int)length, ((int)bytes?.Length));
+                    byte[] bytesToWrite = new byte[bytesLen];
+                    Array.Copy(bytes, bytesToWrite, bytesLen);
+
+                    byteList.AddRange(bytesToWrite);
+                    ms.Write(bytesToWrite);
+                    return byteList.ToArray();
+                }
+            }
+
+            return byteList.ToArray();
+        }
+
     }
 }

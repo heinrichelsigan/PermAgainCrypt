@@ -737,7 +737,7 @@
             GetByteSymmCipherDict gets <see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/>,
             where hex byte value is mapped to  <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum" />
             </summary>
-            <returns><see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/></returns>
+            <returns><see cref="T:Dictionary{ T:byte, T:SymmCipherEnum}"/></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetSymmCipherChar(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>
@@ -2278,6 +2278,11 @@
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.Blank_640x96">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.build_with">
             <summary>
               Looks up a localized string similar to VisualStudio 2022 C# 9.0.
@@ -2359,6 +2364,11 @@
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageHash">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.WinjForms_EncryptPipe">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
@@ -2848,7 +2858,7 @@
             <param name="repeatCount">repeat n times</param>
             <param name="frameDelay">deley betweeen frames</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.Drawing.Image,System.Nullable{System.TimeSpan})">
+        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.IO.MemoryStream@,System.Drawing.Image,System.Nullable{System.TimeSpan})">
             <summary>
             Adds a frame to this animation.
             </summary>

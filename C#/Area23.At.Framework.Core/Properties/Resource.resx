@@ -392,7 +392,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         NZUZcuPREeGQsJ4uY7OMrSXXFh4Q7kjajuRriQInFa8rtjOrVvGe6oXBRWc6pnSZbUQYZ5IpdExWWSZD
         jl5ZHVE8orIfruBvzfunxGWKaxlLHKOsYGPk/ag/+N2tl+rvKyQFw1Dz7PvvnVC7Dd9bvv915PvfxxB4
         gkun5F85hKEP0bdKWscBNG7A+VVJM3fgYhNaHrOGa+SlgEwtlYK3U/mmGWi6gfq5Qm/FfU7uIS5dTVzD
-        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAHdElNRQfpAhcM
+        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfpAhcM
         MiSS+JVoAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAlg5JREFUeF7t3Qmymzy3
         RuHM6Z9T5vTdMWVOuUUURZsl0dl0gvVWPSE2xg0GsffBPufHD2OMMb3nN6/Ykt+/f29afuvtmQ6WX5o/
         m8b9jy4vzT86vxYev/H8jDHGGGOMMUekVXz/va66Pqe1TMzcfN43L7fmxftr3P7H//73v+byfy40bt94
@@ -1046,7 +1046,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         NZUZcuPREeGQsJ4uY7OMrSXXFh4Q7kjajuRriQInFa8rtjOrVvGe6oXBRWc6pnSZbUQYZ5IpdExWWSZD
         jl5ZHVE8orIfruBvzfunxGWKaxlLHKOsYGPk/ag/+N2tl+rvKyQFw1Dz7PvvnVC7Dd9bvv915PvfxxB4
         gkun5F85hKEP0bdKWscBNG7A+VVJM3fgYhNaHrOGa+SlgEwtlYK3U/mmGWi6gfq5Qm/FfU7uIS5dTVzD
-        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw8AAAsPAZL5A6UAAAAHdElNRQfpAhcM
+        3j50pSV7vsK768p7+/NMsb8f0JhyzJ0XM/EAAAAJcEhZcwAACw0AAAsNAe0HwCwAAAAHdElNRQfpAhcM
         MjcWRtS2AAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAApkVJREFUeF7t/V/ILF12
         33me65Gnh7kxg8HQIGho6JvmoEvR4EH0hfvGYzCDLgbDwGtdTV8MbhBiDKYGGg1upg1GsCWQkaaQQcgy
         tloj5FZLtCULG73GYqZld1utRlVjq1wqWSpV1Vv11lvnHA375LNPrPitFf8yIyL33vFd8CGe3Dsj/0RG
@@ -2196,5 +2196,12 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="WinjForms_EncryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WinjForms_EncryptPipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Blank_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank_640x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Blank_640x96</comment>
   </data>
 </root>

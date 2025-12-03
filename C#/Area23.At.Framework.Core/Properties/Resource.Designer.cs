@@ -19,7 +19,7 @@ namespace Area23.At.Framework.Core.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -75,6 +75,16 @@ namespace Area23.At.Framework.Core.Properties {
         internal static System.Drawing.Bitmap BitmapAbout {
             get {
                 object obj = ResourceManager.GetObject("BitmapAbout", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Blank_640x96 {
+            get {
+                object obj = ResourceManager.GetObject("Blank_640x96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -226,6 +236,16 @@ namespace Area23.At.Framework.Core.Properties {
         internal static System.Drawing.Bitmap ImageHash {
             get {
                 object obj = ResourceManager.GetObject("ImageHash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WinjForms_EncryptPipe {
+            get {
+                object obj = ResourceManager.GetObject("WinjForms_EncryptPipe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

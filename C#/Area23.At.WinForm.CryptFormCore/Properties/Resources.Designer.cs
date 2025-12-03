@@ -233,9 +233,99 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_9 {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_9", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_a {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_a", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_b {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_c {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_c", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_d {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_d", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_e {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_e", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap arrow_right_f {
+            get {
+                object obj = ResourceManager.GetObject("arrow_right_f", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap arrow_right_hover {
             get {
                 object obj = ResourceManager.GetObject("arrow_right_hover", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Blank_640x96 {
+            get {
+                object obj = ResourceManager.GetObject("Blank_640x96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Blank_720x96 {
+            get {
+                object obj = ResourceManager.GetObject("Blank_720x96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -742,6 +832,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PermEncryptAgain__EncryptPipe {
+            get {
+                object obj = ResourceManager.GetObject("PermEncryptAgain__EncryptPipe", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap PipeDecrypt {
             get {
                 object obj = ResourceManager.GetObject("PipeDecrypt", resourceCulture);
@@ -943,6 +1043,16 @@ namespace Area23.At.WinForm.CryptFormCore.Properties {
         internal static System.Drawing.Bitmap WinFormAboutDialog {
             get {
                 object obj = ResourceManager.GetObject("WinFormAboutDialog", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WinForms_EncryptPipe {
+            get {
+                object obj = ResourceManager.GetObject("WinForms_EncryptPipe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

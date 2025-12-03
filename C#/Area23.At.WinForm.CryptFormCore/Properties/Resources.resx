@@ -431,4 +431,48 @@
   <data name="ChiffrePentacle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ChiffrePentacle2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="WinForms_EncryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WinjForms_EncryptPipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>WinForms_EncryptPipe</comment>
+  </data>
+  <data name="PermEncryptAgain__EncryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PermEncryptAgain__EncryptPipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>PermEncryptAgain__EncryptPipe</comment>
+  </data>
+  <data name="Blank_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank_640x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Blank_640x96</comment>
+  </data>
+  <data name="Blank_720x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank_720x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Blank_720x96</comment>
+  </data>
+  <data name="arrow_right_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_b</comment>
+  </data>
+  <data name="arrow_right_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_a</comment>
+  </data>
+  <data name="arrow_right_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_9</comment>
+  </data>
+  <data name="arrow_right_f" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_f.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_f</comment>
+  </data>
+  <data name="arrow_right_e" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_e.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_e</comment>
+  </data>
+  <data name="arrow_right_d" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_d.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_d</comment>
+  </data>
+  <data name="arrow_right_c" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right_c</comment>
+  </data>
 </root>

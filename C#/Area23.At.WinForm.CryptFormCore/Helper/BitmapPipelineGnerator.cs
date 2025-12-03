@@ -1,7 +1,9 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using System.Drawing;
 using System.Globalization;
+using System.Reflection.Metadata;
 
 namespace Area23.At.WinForm.CryptFormCore.Helper
 {
@@ -16,20 +18,24 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
         public BitmapPipelineGnerator(CipherPipe pipe)
         {
-            if (pipe == null) 
+            if (pipe == null)
                 throw new ArgumentException(nameof(pipe));
             CiffrePipe = pipe;
         }
 
 
+
         public Image GenerateEncryptPipeImage()
         {
-            System.Drawing.Bitmap mergeimg = new Bitmap(640, 96), ximage;
+            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resources.Blank_720x96, new Size(720, 96)), ximage;
+            System.Drawing.Bitmap? gifStartImage = new Bitmap(Properties.Resources.Blank_720x96, new Size(720, 96));
+            List<Bitmap> bitmaps = new List<Bitmap>();
+
             string bmpName = "";
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
+            int w = 64, offset = 0, startset = 0;
+            if (CiffrePipe.ZType != Framework.Core.Zip.ZipType.None)
             {
-                int w = 64, offset = 0, startset = 0;
-                if (CiffrePipe.ZType != Framework.Core.Zip.ZipType.None)
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.compress_right_start_0, new Size(64, 64));
@@ -47,36 +53,48 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     offset += w;
                     startset += w;
                 }
-                
+                gifStartImage = new Bitmap(mergeimg, 720, 96);
+                bitmaps.Add(gifStartImage);
+            }
 
-                for (int i = 0; (i < CiffrePipe.InPipe.Length); i++)
+            startset = offset;
+
+            for (int i = 0; (i < CiffrePipe.InPipe.Length); i++)
+            {
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
                 {
                     w = 60;
                     char ch = CiffrePipe.InPipe[i].GetCipherChar();
                     bmpName = $"arrow_right_{i}";
                     object obj = Properties.Resources.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
-                    ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));                                                            
+                    ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
- 
 
-                    offset += w;
                 }
+                if (gifStartImage == null)
+                    gifStartImage = new Bitmap(mergeimg, 720, 96);
+                bitmaps.Add(new Bitmap(mergeimg, 720, 96));
+            }
 
-                offset = startset;
+
+            offset = startset;
+
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
+            {
                 for (int i = 0; (i < CiffrePipe.InPipe.Length); i++)
                 {
-                    w = 60;
+
                     Color color = (i < 5) ? ColorTranslator.FromHtml("#0000dd") : ColorTranslator.FromHtml("#0000bb");
                     string drawString = CiffrePipe.InPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
                     float x = offset + 2.0F;
-                    float y =  ((i % 4) * 18.0F);
+                    float y = ((i % 4) * 18.0F);
                     switch (i)
                     {
                         case 1: y = 78F; break;
                         case 2: y = 1F; break;
-                        case 3: y = 76F;  break;
+                        case 3: y = 76F; break;
                         default:
                             y = ((i % 4) * 18.0F); break;
                     }
@@ -86,9 +104,13 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
                     offset += w;
                 }
-                startset = offset;
+            }
+            bitmaps.Add(new Bitmap(mergeimg, 720, 96));
 
-                if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
+
+            if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
+            {
+                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
@@ -103,11 +125,22 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
                 }
-
+                bitmaps.Add(new Bitmap(mergeimg, 720, 96));
             }
 
-            return mergeimg;
+            TimeSpan ts = new TimeSpan(0, 0, 0, 4, 0);
+            GifEncoder gifAnimEncoder = new GifEncoder(gifStartImage, 1, ts, bitmaps.ToArray());
+
+            MemoryStream mStream = new MemoryStream();
+            byte[] pData = gifAnimEncoder.GifData;
+            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+            Bitmap animGif = new Bitmap(mStream, true);
+            animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("YYYYmmDDhhmmss") + ".gif");
+            mStream.Dispose();
+
+            return animGif;
         }
+        
 
         public Image GenerateDecryptPipeImage()
         {

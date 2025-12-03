@@ -70,7 +70,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// GetByteSymmCipherDict gets <see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/>,
         /// where hex byte value is mapped to  <see cref="SymmCipherEnum" />
         /// </summary>
-        /// <returns><see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/></returns>
+        /// <returns><see cref="T:Dictionary{ T:byte, T:SymmCipherEnum}"/></returns>
         public static Dictionary<byte, SymmCipherEnum> GetByteSymmCipherDict()
         {
             Dictionary<byte, SymmCipherEnum> byteSymmCipherDict = new Dictionary<byte, SymmCipherEnum>();
