@@ -2872,6 +2872,19 @@
             <param name="frameDelay">delay between gif frames</param>
             <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
         </member>
+        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Nullable{System.Int32},System.Nullable{System.TimeSpan},System.Drawing.Bitmap[])">
+            <summary>
+            Initializes a new instance of the GifEncoder class with the specified frames, optional repeat count, and
+            optional frame delay.
+            </summary>
+            <remarks>The first image in the gifFrames array is used as the initial frame of the GIF. All
+            provided frames are added in the order specified. The resulting GIF is finalized upon construction and
+            cannot be modified after initialization.</remarks>
+            <param name="repeatCount">The number of times the GIF animation should repeat. If null, the animation will loop indefinitely.</param>
+            <param name="frameDelay">The delay between frames, specified as a TimeSpan. If null, a default delay is used.</param>
+            <param name="gifFrames">An array of Bitmap images to include as frames in the GIF. The order of images determines the frame
+            sequence. Cannot be null or empty.</param>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.IO.MemoryStream@,System.Drawing.Image,System.Nullable{System.TimeSpan})">
             <summary>
             Adds a frame to this animation.
