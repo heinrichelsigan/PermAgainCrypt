@@ -49,10 +49,7 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
-            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //File.WriteAllText(fileCsvOut, "FullName,Size[KB],CipherPipe,ZipType,EncodingType,KeyHash,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
-
+            
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.GZip, ZipType.BZip2, ZipType.Zip };
@@ -81,14 +78,12 @@ namespace Area23.At.PermAgainCrypt.Test
                 try
                 {
                     startOp = DateTime.Now;
-                    byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, email, hashIv,
-                                                encType, zType, kHash);
+                    byte[] cipherBytes = pipe.EncryptEncodeBytes(plainBytes, email, hashIv, encType, zType, kHash);
                     Assert.IsNotNull(cipherBytes);
 
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
-                    byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, email, hashIv,
-                                            encType, zType, kHash);
+                    byte[] deCodedBytes = pipe.DecodeDecrpytBytes(cipherBytes, email, hashIv, encType, zType, kHash);
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 &&
                         (Math.Abs(deCodedBytes.Length - plainBytes.Length) <= 16));
 
@@ -108,16 +103,13 @@ namespace Area23.At.PermAgainCrypt.Test
                         if (difference > 0)
                         {
                             Console.WriteLine($"{pipeText} \tencrypt for {email} {zType} {encType} {kHash} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                            Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
+                            Console.WriteLine($"           \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
                     double size = deCodedBytes.Length / (1024);
-                    Console.WriteLine($"{pipeText} {size}KB \tencrypt for {email} {zType} {encType} {kHash} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
-                    
-                    //File.AppendAllText(fileCsvOut,
-                    //    $"{Path.GetFileName(fileBytesTest)},{size},{pipeText}, {zType},{encType},{kHash} {encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
-                    //    Environment.NewLine);
+                    Console.WriteLine($"{pipeText} {size}KB \tencrypt for {email} {zType} {encType} {kHash} in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");                   
+               
                 }
                 catch (Exception e)
                 {
@@ -125,6 +117,7 @@ namespace Area23.At.PermAgainCrypt.Test
                 }
 
             }
+
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
             return;
         }

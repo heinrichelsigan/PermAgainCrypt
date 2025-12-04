@@ -49,9 +49,14 @@ namespace Area23.At.Framework.Core.Util
         private List<byte> _byteList;
         public byte[] GifBytes { get; protected internal set; }
         internal MemoryStream _memoryStream;
-        
+        public Bitmap AnimBitmap { get => new Bitmap(_memoryStream, false); }
+        public Image AnimImage { get => ((Image)AnimBitmap); }
+
+
         // Public Accessors
         public TimeSpan FrameDelay { get => _frameDelay; }
+
+        
 
         public byte[] GifData
         {
@@ -283,11 +288,14 @@ namespace Area23.At.Framework.Core.Util
         }
   
         public void Finish(ref MemoryStream ms)
-        {            
-            // Complete File
-            WriteByte(ref ms, FileTrailer);
-            ms.Flush();
-            _isFinished = true;
+        {
+            if (!_isFinished)
+            {
+                // Complete File
+                WriteByte(ref ms, FileTrailer);
+                ms.Flush();
+                _isFinished = true;
+            }
         }
 
         public void Dispose()

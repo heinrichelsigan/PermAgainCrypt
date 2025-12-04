@@ -45,10 +45,7 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
-            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
-            
+
             Assert.IsTrue(File.Exists(fileTextTest));
             List<CipherEnum> chipherEList = CipherEnumExtensions.GetCipherTypes().ToList();
             chipherEList.RemoveAt(chipherEList.Count - 1)  ; // remove RSA
@@ -56,7 +53,7 @@ namespace Area23.At.PermAgainCrypt.Test
             ZipType[] zTypes = new ZipType[] { ZipType.BZip2, ZipType.GZip, ZipType.Zip, ZipType.None };
             KeyHash[] kHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash kHash = KeyHash.Hex;
-            ZipType zType = ZipType.None;
+            ZipType zType = ZipType.None;            
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Base16, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;            
             string plainText = File.ReadAllText(fileTextTest);            
@@ -81,14 +78,14 @@ namespace Area23.At.PermAgainCrypt.Test
                 try
                 {
                     startOp = DateTime.Now;
-                    byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Email, KeyHash.Hex.Hash(Email),
-                                                encType, zType, kHash);
+                    byte[] cipherBytes = pipe.EncryptEncodeBytes(plainBytes, Email, KeyHash.Hex.Hash(Email), encType, zType, kHash);
+
                     Assert.IsNotNull(cipherBytes);
 
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
-                    byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Email, KeyHash.Hex.Hash(Email),
-                                            encType, zType, kHash);
+                    byte[] deCodedBytes = pipe.DecodeDecrpytBytes(cipherBytes, Email, KeyHash.Hex.Hash(Email), encType, zType, kHash);
+
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 &&
                         (Math.Abs(deCodedBytes.Length - plainBytes.Length) <= 16));
 
@@ -107,10 +104,7 @@ namespace Area23.At.PermAgainCrypt.Test
                     }
                     double size = deCodedBytes.Length / (1024);
                     Console.WriteLine($"{size}KB {cipherEnums[i]}=>{cipherEnums[i+1]}=>{cipherEnums[i+2]}=>{cipherEnums[i+3]} for {Email} {zType} {encType} {kHash}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
-                    
-                    //File.AppendAllText(fileCsvOut,
-                    //    $"{Path.GetFileName(fileBytesTest)},{size},{Email}{cipherEnums[i]}=>{cipherEnums[i+1]}=>{cipherEnums[i+2]}=>{cipherEnums[i+3]},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}" +
-                    //    Environment.NewLine);
+
                 }
                 catch (Exception e)
                 {

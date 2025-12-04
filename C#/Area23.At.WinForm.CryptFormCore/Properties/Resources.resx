@@ -475,4 +475,64 @@
     <value>..\Resources\arrow_right_c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>arrow_right_c</comment>
   </data>
+  <data name="block_arrow_right-compress" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\block_arrow_right-compress.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>block_arrow_right-compress</comment>
+  </data>
+  <data name="arrow_right-8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-8</comment>
+  </data>
+  <data name="arrow_right-7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-7</comment>
+  </data>
+  <data name="arrow_right-0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-0</comment>
+  </data>
+  <data name="arrow_right-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-1</comment>
+  </data>
+  <data name="arrow_right-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-2</comment>
+  </data>
+  <data name="arrow_right-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-3</comment>
+  </data>
+  <data name="arrow_right-4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-4</comment>
+  </data>
+  <data name="arrow_right-5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-5</comment>
+  </data>
+  <data name="arrow_right-6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-6</comment>
+  </data>
+  <data name="arrow_right-9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-9</comment>
+  </data>
+  <data name="arrow_right-a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-a.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-a</comment>
+  </data>
+  <data name="arrow_right-b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-b</comment>
+  </data>
+  <data name="arrow_right-c" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrow_right-c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>arrow_right-c</comment>
+  </data>
+  <data name="Blank_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Blank_640x108</comment>
+  </data>
 </root>
