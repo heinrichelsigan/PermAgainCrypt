@@ -7,6 +7,10 @@ using System.Reflection.Metadata;
 
 namespace Area23.At.WinForm.CryptFormCore.Helper
 {
+
+    /// <summary>
+    /// BitmapPipelineGnerator - abstraction for generating images for en-/decryption pipelines
+    /// </summary>
     internal class BitmapPipelineGnerator
     {
         public CipherPipe CiffrePipe { get; private set; }
@@ -25,6 +29,10 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
 
 
+        /// <summary>
+        /// GenerateEncryptPipeImage - generates image for symmetric cipher encryption pipeline
+        /// </summary>
+        /// <returns><see cref="Image">the image</see></returns>
         public Image GenerateEncryptPipeImage()
         {
             System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resources.Blank_640x108, new Size(640, 108)), ximage;
@@ -43,13 +51,13 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
                     string drawString = this.CiffrePipe.ZType.ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa5ade"));
                     float x = offset + 1.0F;
                     float y = 77.5F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
+                    
                     offset += w;
                     startset += w;
                 }
@@ -85,7 +93,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 for (int i = 0; (i < CiffrePipe.InPipe.Length); i++)
                 {
 
-                    Color color = (i < 5) ? ColorTranslator.FromHtml("#0000dd") : ColorTranslator.FromHtml("#0000bb");
+                    Color color = (i < 5) ? ColorTranslator.FromHtml("#0000ee") : ColorTranslator.FromHtml("#0000dd");
                     string drawString = CiffrePipe.InPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
@@ -118,7 +126,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));                    
                     string drawString = this.CiffrePipe.EncodeType.ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa5ade"));
                     float x = offset + 1.0F;
                     float y = 2.5F;
                     StringFormat drawFormat = new StringFormat();
@@ -135,8 +143,12 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
             return animGif;
         }
-        
 
+
+        /// <summary>
+        /// GenerateDecryptPipeImage generates an image for decrypt symmetric cipher pipeline 
+        /// </summary>
+        /// <returns><see cref="Image">the image</see></returns>
         public Image GenerateDecryptPipeImage()
         {
             System.Drawing.Bitmap mergeimg = new Bitmap(640, 96), ximage;
@@ -152,7 +164,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     
                     string drawString = this.CiffrePipe.EncodeType.ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
                     float x = offset + 0.2F;
                     float y = 77.5F;
                     StringFormat drawFormat = new StringFormat();
@@ -182,7 +194,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     w = 60;
                     int r = 7 - i;
 
-                    Color color = (i < 4) ?  ColorTranslator.FromHtml("#110099") : ColorTranslator.FromHtml("#0000cc");
+                    Color color = (i < 4) ? ColorTranslator.FromHtml("#2200aa") : ColorTranslator.FromHtml("#0000dd");
                     string drawString = CiffrePipe.OutPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
@@ -211,7 +223,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
 
                     string drawString = this.CiffrePipe.ZType.GetUnzipString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(Color.DarkOrange);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
                     float x = offset + 2.4F;
                     float y = 0.5F;
                     StringFormat drawFormat = new StringFormat();
