@@ -2858,6 +2858,20 @@
             <param name="repeatCount">repeat n times</param>
             <param name="frameDelay">deley betweeen frames</param>
         </member>
+        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Bitmap,System.Nullable{System.Int32},System.Nullable{System.TimeSpan},System.Drawing.Bitmap[])">
+            <summary>
+            2025-12-04 4th December Release  v2.25.1204
+            Added new ctor in GifEncoder  for creating animated gifs
+            <code>
+            GifEncoder gifAnimEncoder = new GifEncoder(gifStartImage, 1, ts, bitmaps.ToArray());
+            Bitmap animGif = gifAnimEncoder.AnimBitmap;
+            animGif.Save("h:\\tmp\\"+DateTime.Now.ToString("mmss") + ".gif");</code>
+            </summary>
+            <param name="bmp">start basic image</param>
+            <param name="repeatCount">repeat count</param>
+            <param name="frameDelay">delay between gif frames</param>
+            <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
+        </member>
         <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.IO.MemoryStream@,System.Drawing.Image,System.Nullable{System.TimeSpan})">
             <summary>
             Adds a frame to this animation.
