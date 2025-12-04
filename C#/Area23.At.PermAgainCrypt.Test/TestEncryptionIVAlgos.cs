@@ -4,7 +4,6 @@ using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using System.Configuration;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Area23.At.PermAgainCrypt.Test
