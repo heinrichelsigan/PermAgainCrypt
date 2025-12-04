@@ -67,7 +67,7 @@ namespace Area23.At.Framework.Core.Crypt
         /// </summary>
         /// <param name="jsonFileName">fileName of serialized json</param>
         /// <returns>singelton <see cref="CryptSettings.Instance"/></returns>
-        public CryptSettings Load(string jsonFileName = null)
+        public CryptSettings Load(string? jsonFileName = null)
         {
             string settingsSerializeString = string.Empty;
             Serializet = (Serializet != SerType.None) ? Serializet : SerType.Json;
@@ -105,7 +105,7 @@ namespace Area23.At.Framework.Core.Crypt
         /// <param name="CryptSettings">settings to save</param>
         /// <param name="jsonFileName">filename, where writing serialized json</param>
         /// <returns>true on successfully save</returns>
-        public static bool Save(CryptSettings settings = null, string jsonFileName = null)
+        public static bool Save(CryptSettings? settings = null, string? jsonFileName = null)
         {
             settings = settings ?? CryptSettings.Instance;
             jsonFileName = jsonFileName ?? LibPaths.SystemDirPath + Constants.JSON_SETTINGS_FILE;

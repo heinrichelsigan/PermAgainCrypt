@@ -572,7 +572,7 @@
             <summary>
             Des3Net native .Net triple des without bouncy castle
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
-            <seealso cref="!:https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/"/>
+            <seealso href="https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/" />
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Des3Net.#ctor">
@@ -2278,11 +2278,6 @@
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.Blank_640x96">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.build_with">
             <summary>
               Looks up a localized string similar to VisualStudio 2022 C# 9.0.
@@ -2364,11 +2359,6 @@
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageHash">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.WinjForms_EncryptPipe">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
@@ -2681,7 +2671,7 @@
             otherwise if <see cref="F:System.Boolean.FalseString"/>, then <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternStart)</see> will be executed.
             </param>
             <param name="markStartEnd">if <see cref="M:System.String.IsNullOrEmpty(System.String)">!string.IsNullOrEmpty(markStartEnd)</see> 
-            then start position of substring will be set to <see cref="!:string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
+            then start position of substring will be set to <see cref="!:String.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
             </param>
             <param name="patternEnd">end pattern for substring, <see cref="M:System.String.LastIndexOf(System.String)">main.IndexOf(patternEnd)</see></param>
             <param name="lastIndex">default <see cref="F:System.Boolean.FalseString"/>

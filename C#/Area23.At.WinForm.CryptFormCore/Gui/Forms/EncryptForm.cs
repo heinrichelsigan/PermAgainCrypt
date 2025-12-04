@@ -124,7 +124,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuNone.Checked = false;
 
             if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("menu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
+                (mi.Name.StartsWith("zmenu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
             {
                 mi.Checked = true;
                 for (int i = 0; i < comboBoxCompression.Items.Count; i++)
@@ -543,7 +543,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.pictureBoxOutFile.Image = Properties.Resources.image_file;
             this.pictureBoxOutFile.Tag = null;
             this.pictureBoxOutFile.Visible = false;
-            await this.SetEncodingAsync(null, "Base64");
+            await this.SetEncodingAsync(menuEncBase64);
             this.SetCompression(null, "None");
             await this.SetHashAsync(menuHashHex, radioButtonListHash);
             this.labelFileIn.Text = "[no file selected]";
@@ -645,7 +645,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
                     byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
-                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
+                    string outFilePath = (fileName + GetHash().GetExtension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
 
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await SetStatusLabelTextAsync(this.statusLabelMsg, "encryption time: " + DateTime.Now.Subtract(start).ToString());
@@ -782,7 +782,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     
                     byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     string miniPipe = (string.IsNullOrEmpty(cPipe.PipeString)) ? "" : "." + cPipe.PipeString;
-                    string outFileDecrypt = outFileDecrypt = fileName.Replace(GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension(), "");
+                    string outFileDecrypt = (fileName.Contains(GetHash().GetExtension())) ? fileName.Replace(GetHash().GetExtension(), "") : fileName;
+                    outFileDecrypt = outFileDecrypt.Replace(GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension(), "");
                     
                     bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
                     if (saved)

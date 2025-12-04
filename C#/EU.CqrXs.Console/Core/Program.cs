@@ -73,6 +73,7 @@ namespace EU.CqrXs.Console.Core
         {
             if (args.Length <= 1)
                 Usage();
+            encodingType = EncodingType.None;
             Constants.DirCreate = false;
             Constants.NOLog = true;           
 

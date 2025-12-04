@@ -32,7 +32,9 @@ namespace Area23.At.Framework.Core.Zip
         {
             if (!string.IsNullOrEmpty(zipTypeStr)) 
             {
-                switch (zipTypeStr.ToLower().Replace("menu", ""))
+                string detectzip = zipTypeStr.ToLower().Replace("zmenu", "");
+                detectzip = detectzip.ToLower().Replace("menu", "");
+                switch (detectzip)
                 {
                     case "zip": return ZipType.Zip;
                     case "gzip": return ZipType.GZip;

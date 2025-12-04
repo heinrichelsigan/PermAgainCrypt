@@ -532,7 +532,7 @@ namespace Area23.At.Framework.Core.Util
         /// otherwise if <see cref="System.Boolean.FalseString"/>, then <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternStart)</see> will be executed.
         /// </param>
         /// <param name="markStartEnd">if <see cref="string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
-        /// then start position of substring will be set to <see cref="string.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
+        /// then start position of substring will be set to <see cref="String.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
         /// </param>
         /// <param name="patternEnd">end pattern for substring, <see cref="string.LastIndexOf(string)">main.IndexOf(patternEnd)</see></param>
         /// <param name="lastIndex">default <see cref="System.Boolean.FalseString"/>

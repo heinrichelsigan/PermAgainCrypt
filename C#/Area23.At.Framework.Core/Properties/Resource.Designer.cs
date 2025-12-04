@@ -80,16 +80,6 @@ namespace Area23.At.Framework.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Blank_640x96 {
-            get {
-                object obj = ResourceManager.GetObject("Blank_640x96", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to VisualStudio 2022 C# 9.0.
         /// </summary>
         internal static string build_with {
@@ -236,16 +226,6 @@ namespace Area23.At.Framework.Core.Properties {
         internal static System.Drawing.Bitmap ImageHash {
             get {
                 object obj = ResourceManager.GetObject("ImageHash", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap WinjForms_EncryptPipe {
-            get {
-                object obj = ResourceManager.GetObject("WinjForms_EncryptPipe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

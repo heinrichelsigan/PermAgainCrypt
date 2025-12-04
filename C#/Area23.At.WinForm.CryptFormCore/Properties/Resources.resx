@@ -419,6 +419,18 @@
     <value>..\Resources\arrows\process\arrow_right_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>arrow_right_2</comment>
   </data>
+  <data name="Blank_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\Blank_640x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Blank_640x96</comment>
+  </data>
+  <data name="BlankEncrypt_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlankEncrypt_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>BlankEncrypt_640x96</comment>
+  </data>
+  <data name="BlankDecrypt_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\arrows\process\BlankDecrypt_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>BlankDecrypt_640x96</comment>
+  </data>
   <data name="WinFormAboutDialog" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\huge\WinFormAboutDialog.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -438,14 +450,6 @@
   <data name="PermEncryptAgain__EncryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PermEncryptAgain__EncryptPipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>PermEncryptAgain__EncryptPipe</comment>
-  </data>
-  <data name="Blank_640x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Blank_640x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>Blank_640x96</comment>
-  </data>
-  <data name="Blank_720x96" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Blank_720x96.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>Blank_720x96</comment>
   </data>
   <data name="arrow_right_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrow_right_b.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -531,8 +535,8 @@
     <value>..\Resources\arrow_right-c.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>arrow_right-c</comment>
   </data>
-  <data name="Blank_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Blank_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>Blank_640x108</comment>
+  <data name="encoding_right_end_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\encoding_right_end_0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>encoding_right_end_0</comment>
   </data>
 </root>
