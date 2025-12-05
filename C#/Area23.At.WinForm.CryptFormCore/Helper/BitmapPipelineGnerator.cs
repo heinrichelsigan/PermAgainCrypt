@@ -126,7 +126,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
                 {
                     w = 60;
-                    ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
+                    ximage = new Bitmap(Properties.Resources.encoding_right_end_0, new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));                    
                     string drawString = this.CiffrePipe.EncodeType.ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
@@ -163,7 +163,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
                 {
                     w = 60;
-                    ximage = new Bitmap(Properties.Resources.decoding_right_0, new Size(64, 64));
+                    ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
                     
                     string drawString = this.CiffrePipe.EncodeType.ToString();
