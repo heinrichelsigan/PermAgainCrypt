@@ -108,6 +108,8 @@ namespace Area23.At.Framework.Core.Crypt.Hash
             return KeyHash.Hex;
         }
 
+        public static string GetExtension(this KeyHash hash) => "." + hash.ToString();
+            
         public static string Hash(this KeyHash hash, string stringToHash)
         {
             switch (hash)
