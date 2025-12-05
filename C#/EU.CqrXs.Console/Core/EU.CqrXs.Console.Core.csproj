@@ -58,7 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="ConsoleCryptTest.bat">
+    <None Update="Console_Test.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
