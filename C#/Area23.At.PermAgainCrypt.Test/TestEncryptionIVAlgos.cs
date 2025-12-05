@@ -8,6 +8,7 @@ using System.Reflection;
 
 namespace Area23.At.PermAgainCrypt.Test
 {
+
     /// <summary>
     /// TestEncryptionTwoAlgos tests all en- / decryption with 2 <see cref="CipherEnum"/>  algos in <see cref="CipherPipe"/>
     /// Aes => Aes, Aes => BlowFish, Aes => Camellia, 
@@ -52,7 +53,7 @@ namespace Area23.At.PermAgainCrypt.Test
             ZipType[] zTypes = new ZipType[] { ZipType.BZip2, ZipType.GZip, ZipType.Zip, ZipType.None };
             KeyHash[] kHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash kHash = KeyHash.Hex;
-            ZipType zType = ZipType.None;            
+            ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Base16, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;            
             string plainText = File.ReadAllText(fileTextTest);            

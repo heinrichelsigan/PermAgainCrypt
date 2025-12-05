@@ -630,34 +630,32 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // comboBoxAlgo
             // 
-            comboBoxAlgo.AutoSize = false;
             comboBoxAlgo.BackColor = SystemColors.Control;
             comboBoxAlgo.DropDownWidth = 160;
             comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxAlgo.FormattingEnabled = true;
-            comboBoxAlgo.Location = new Point(108, 168);
+            comboBoxAlgo.Location = new Point(108, 170);
             comboBoxAlgo.Margin = new Padding(1);
             comboBoxAlgo.MaxDropDownItems = 32;
             comboBoxAlgo.Name = "comboBoxAlgo";
-            comboBoxAlgo.Size = new Size(120, 27);
+            comboBoxAlgo.Size = new Size(120, 23);
             comboBoxAlgo.TabIndex = 11;
             // 
             // textBoxKey
             // 
             textBoxKey.AutoSize = false;
-            textBoxKey.BackColor = SystemColors.ActiveBorder;
-            textBoxKey.Font = new Font("Lucida Sans Typewriter", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxKey.BackColor = SystemColors.ControlLightLight;
+            textBoxKey.Font = new Font("Lucida Sans Typewriter", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxKey.Location = new Point(48, 32);
             textBoxKey.Margin = new Padding(1);
-            textBoxKey.Name = "textBoxKey";            
-            textBoxKey.Size = new Size(810, 30);
+            textBoxKey.Name = "textBoxKey";
+            textBoxKey.Size = new Size(810, 27);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
             textBoxKey.TextChanged += textBoxKey_TextChanged;
             // 
             // pictureBoxKey
             // 
-            pictureBoxKey.AutoSize = false;
             pictureBoxKey.BackColor = SystemColors.Control;
             pictureBoxKey.Image = Properties.Resources.key_ring;
             pictureBoxKey.Location = new Point(8, 32);
@@ -670,7 +668,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // pictureBoxHash
             // 
-            pictureBoxHash.AutoSize = false;
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBoxHash.BackColor = SystemColors.Control;
             pictureBoxHash.Image = Properties.Resources.a_hash1;
@@ -685,20 +682,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // textBoxHash
             // 
             textBoxHash.AutoSize = false;
-            textBoxHash.BackColor = SystemColors.GradientActiveCaption;
-            textBoxHash.Font = new Font("Lucida Sans Typewriter", 9.25F);
+            textBoxHash.BackColor = SystemColors.Control;
+            textBoxHash.Font = new Font("Lucida Sans Typewriter", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxHash.Location = new Point(48, 128);
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(823, 30);
+            textBoxHash.Size = new Size(823, 27);
             textBoxHash.TabIndex = 8;
             // 
             // buttonSetPipeline
             // 
             buttonSetPipeline.AutoSize = false;
             buttonSetPipeline.BackColor = SystemColors.Control;
-            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonSetPipeline.Location = new Point(876, 32);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
@@ -711,12 +708,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // buttonReset
             // 
             buttonReset.AutoSize = false;
-            buttonReset.BackColor = SystemColors.Control;            
-            buttonReset.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonReset.BackColor = SystemColors.Control;
+            buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonReset.Location = new Point(876, 366);
             buttonReset.Margin = new Padding(1);
             buttonReset.Name = "buttonReset";
-            buttonReset.Size = new Size(120, 30);
+            buttonReset.Size = new Size(120, 27);
             buttonReset.TabIndex = 36;
             buttonReset.Text = "Reset Form";
             buttonReset.UseVisualStyleBackColor = false;
@@ -750,21 +747,21 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // textBoxPipe
             // 
             textBoxPipe.AutoSize = false;
-            textBoxPipe.BackColor = SystemColors.GradientInactiveCaption;
+            textBoxPipe.BackColor = SystemColors.ControlLightLight;
             textBoxPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxPipe.Location = new Point(264, 168);
+            textBoxPipe.Location = new Point(264, 169);
             textBoxPipe.Margin = new Padding(1);
             textBoxPipe.MaxLength = 8192;
             textBoxPipe.Name = "textBoxPipe";
             textBoxPipe.ReadOnly = true;
-            textBoxPipe.Size = new Size(578, 27);
+            textBoxPipe.Size = new Size(578, 25);
             textBoxPipe.TabIndex = 13;
             // 
             // labelFileIn
             // 
             labelFileIn.Font = new Font("Lucida Sans Typewriter", 8.75F);
             labelFileIn.Location = new Point(12, 112);
-            labelFileIn.Margin = new Padding(2, 0, 2, 0);
+            labelFileIn.Margin = new Padding(1, 0, 1, 0);
             labelFileIn.Name = "labelFileIn";
             labelFileIn.Size = new Size(432, 23);
             labelFileIn.TabIndex = 21;
@@ -774,7 +771,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
             labelOutputFile.Location = new Point(545, 112);
-            labelOutputFile.Margin = new Padding(2, 0, 2, 0);
+            labelOutputFile.Margin = new Padding(1, 0, 1, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
             labelOutputFile.Size = new Size(444, 23);
@@ -782,13 +779,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             labelOutputFile.Text = "[Output File]";
             labelOutputFile.Visible = false;
             // 
-            // pictureBoxOutFile
+            // pictureBoxOutFile            
             // 
+            pictureBoxOutFile.AutoSize = false;
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(921, 32);
-            pictureBoxOutFile.Margin = new Padding(2);
+            pictureBoxOutFile.Location = new Point(918, 32);
+            pictureBoxOutFile.Margin = new Padding(1);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
-            pictureBoxOutFile.Size = new Size(58, 69);
+            pictureBoxOutFile.Size = new Size(68, 68);
             pictureBoxOutFile.TabIndex = 25;
             pictureBoxOutFile.TabStop = false;
             pictureBoxOutFile.Visible = false;
@@ -797,7 +795,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // textBoxSrc
             // 
-            textBoxSrc.BackColor = SystemColors.ActiveCaption;
+            textBoxSrc.BackColor = SystemColors.ControlLight;
             textBoxSrc.Font = new Font("Lucida Console", 8F);
             textBoxSrc.Location = new Point(8, 407);
             textBoxSrc.Margin = new Padding(2);
@@ -810,7 +808,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // textBoxOut
             // 
-            textBoxOut.BackColor = SystemColors.GradientInactiveCaption;
+            textBoxOut.BackColor = SystemColors.Control;
             textBoxOut.BorderStyle = BorderStyle.FixedSingle;
             textBoxOut.Font = new Font("Lucida Console", 8F);
             textBoxOut.Location = new Point(516, 407);
@@ -825,24 +823,26 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // buttonEncrypt
             // 
+            buttonEncrypt.AutoSize = false;
             buttonEncrypt.BackColor = SystemColors.Control;
-            buttonEncrypt.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonEncrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonEncrypt.Location = new Point(8, 366);
             buttonEncrypt.Margin = new Padding(1);
             buttonEncrypt.Name = "buttonEncrypt";
-            buttonEncrypt.Size = new Size(120, 30);
+            buttonEncrypt.Size = new Size(120, 27);
             buttonEncrypt.TabIndex = 33;
             buttonEncrypt.Text = "Encrypt";
             buttonEncrypt.UseVisualStyleBackColor = false;
             // 
             // buttonDecrypt
             // 
+            buttonDecrypt.AutoSize = false;
             buttonDecrypt.BackColor = SystemColors.Control;
-            buttonDecrypt.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonDecrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonDecrypt.Location = new Point(142, 366);
             buttonDecrypt.Margin = new Padding(1);
             buttonDecrypt.Name = "buttonDecrypt";
-            buttonDecrypt.Size = new Size(120, 30);
+            buttonDecrypt.Size = new Size(120, 27);
             buttonDecrypt.TabIndex = 34;
             buttonDecrypt.Text = "Decrypt";
             buttonDecrypt.UseVisualStyleBackColor = false;
@@ -886,7 +886,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxDelete.AutoSize = false;
             pictureBoxDelete.BackColor = SystemColors.Control;
             pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(844, 168);
+            pictureBoxDelete.Location = new Point(844, 169);
             pictureBoxDelete.Margin = new Padding(1);
             pictureBoxDelete.Name = "pictureBoxDelete";
             pictureBoxDelete.Size = new Size(27, 27);
@@ -901,11 +901,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxCompression.FormattingEnabled = true;
             comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
-            comboBoxCompression.Location = new Point(8, 168);
+            comboBoxCompression.Location = new Point(8, 170);
             comboBoxCompression.Margin = new Padding(1);
             comboBoxCompression.MaxDropDownItems = 32;
             comboBoxCompression.Name = "comboBoxCompression";
-            comboBoxCompression.Size = new Size(96, 27);
+            comboBoxCompression.Size = new Size(96, 23);
             comboBoxCompression.TabIndex = 10;
             comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
@@ -917,22 +917,22 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxEncoding.FormattingEnabled = true;
             comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(876, 168);
+            comboBoxEncoding.Location = new Point(876, 170);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;
             comboBoxEncoding.Name = "comboBoxEncoding";
-            comboBoxEncoding.Size = new Size(120, 27);
+            comboBoxEncoding.Size = new Size(120, 23);
             comboBoxEncoding.TabIndex = 14;
             // 
             // buttonRandomText
             // 
             buttonRandomText.AutoSize = false;
             buttonRandomText.BackColor = SystemColors.Control;
-            buttonRandomText.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonRandomText.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonRandomText.Location = new Point(368, 366);
             buttonRandomText.Margin = new Padding(1);
             buttonRandomText.Name = "buttonRandomText";
-            buttonRandomText.Size = new Size(120, 30);
+            buttonRandomText.Size = new Size(120, 27);
             buttonRandomText.TabIndex = 35;
             buttonRandomText.Text = "Random Text";
             buttonRandomText.UseVisualStyleBackColor = false;
@@ -942,11 +942,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonHashPipe.AutoSize = false;
             buttonHashPipe.BackColor = SystemColors.Control;
-            buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 9.75F);
             buttonHashPipe.Location = new Point(876, 128);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
-            buttonHashPipe.Size = new Size(120, 30);
+            buttonHashPipe.Size = new Size(120, 27);
             buttonHashPipe.TabIndex = 9;
             buttonHashPipe.Text = "Hash Pipe";
             buttonHashPipe.UseVisualStyleBackColor = false;
@@ -968,7 +968,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             radioButtonListHash.TabIndex = 6;
             // 
             // labelInfoMessage
-            //
+            // 
             labelInfoMessage.AutoSize = false;
             labelInfoMessage.BackColor = SystemColors.Info;
             labelInfoMessage.Font = new Font("Lucida Fax", 9.25F);
@@ -976,7 +976,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             labelInfoMessage.Location = new Point(516, 366);
             labelInfoMessage.Margin = new Padding(1);
             labelInfoMessage.Name = "labelInfoMessage";
-            labelInfoMessage.Size = new Size(356, 30);
+            labelInfoMessage.Size = new Size(356, 27);
             labelInfoMessage.TabIndex = 37;
             labelInfoMessage.Text = "Info Message";
             labelInfoMessage.TextAlign = ContentAlignment.MiddleCenter;
@@ -1052,7 +1052,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "EncryptForm";
-            Opacity = 0.86D;
+            Opacity = 0.92D;
             Text = "EncryptForm";
             FormClosed += menuFileExit_Close;
             Load += EncryptForm_Load;

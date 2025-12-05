@@ -35,8 +35,8 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
         /// <returns><see cref="Image">the image</see></returns>
         public Image GenerateEncryptPipeImage()
         {
-            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resources.Blank_640x108, new Size(640, 108)), ximage;
-            System.Drawing.Bitmap? gifStartImage = new Bitmap(Properties.Resources.Blank_640x108, new Size(640, 108));
+            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resources.BlankEncrypt_640x96, new Size(640, 108)), ximage;
+            System.Drawing.Bitmap? gifStartImage = new Bitmap(Properties.Resources.BlankEncrypt_640x96, new Size(640, 108));
             List<Bitmap> bitmaps = new List<Bitmap>();
 
             string bmpName = "";
@@ -47,13 +47,13 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.block_arrow_right_compress, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(0, 16, w, 64));
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(0, 20, w, 64));
 
                     string drawString = this.CiffrePipe.ZType.ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa5ade"));
+                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#df0fef"));
                     float x = offset + 1.0F;
-                    float y = 77.5F;
+                    float y = 82.5F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
@@ -76,7 +76,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     bmpName = $"arrow_right-{i}";
                     object obj = Properties.Resources.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
 
                     offset += w;
                 }                
@@ -97,15 +97,19 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     string drawString = CiffrePipe.InPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
-                    float x = offset + 2.0F;
-                    float y = ((i % 4) * 18.0F);
+                    float x = offset + 1.0F;
+                    float y = 2F + ((i % 4) * 23.0F);
                     switch (i)
                     {
-                        case 1: y = 78F; break;
-                        case 2: y = 1F; break;
-                        case 3: y = 76F; break;
-                        default:
-                            y = ((i % 4) * 18.0F); break;
+                        case 1: y = 84F;    break;
+                        case 2: y = 1F;     break;
+                        case 3: y = 86F;    break;
+                        case 4: y = 2F;     break;
+                        case 5: 
+                        case 6:
+                        case 7: y = 1F + ((i % 4) * 23.0F);
+                            drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold); break;
+                        default: y = 1F + ((i % 4) * 23.0F); break;
                     }
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
@@ -123,12 +127,12 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.encoding_right_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));                    
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));                    
                     string drawString = this.CiffrePipe.EncodeType.ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa5ade"));
+                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
+                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#bf0fef"));
                     float x = offset + 1.0F;
-                    float y = 2.5F;
+                    float y = 4.0F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
@@ -136,10 +140,10 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 bitmaps.Add(new Bitmap(mergeimg, 640, 108));
             }
 
-            TimeSpan ts = new TimeSpan(0, 0, 0, 0, 400);
-            GifEncoder gifAnimEncoder = new GifEncoder(gifStartImage, 1, ts, bitmaps.ToArray());
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, 500);
+            GifEncoder gifAnimEncoder = new GifEncoder(1, ts, bitmaps.ToArray());
             Bitmap animGif = gifAnimEncoder.AnimBitmap;
-            animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("yyyyMMDDhhmmss") + ".gif");
+            animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("yyyy-MM-DD_hhmmss") + ".gif");
 
             return animGif;
         }
@@ -151,7 +155,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
         /// <returns><see cref="Image">the image</see></returns>
         public Image GenerateDecryptPipeImage()
         {
-            System.Drawing.Bitmap mergeimg = new Bitmap(640, 96), ximage;
+            System.Drawing.Bitmap mergeimg = new Bitmap(640, 108), ximage;
             string bmpName = "";
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
             {
@@ -160,13 +164,13 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.decoding_right_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
                     
                     string drawString = this.CiffrePipe.EncodeType.ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
-                    float x = offset + 0.2F;
-                    float y = 77.5F;
+                    float x = offset + 1F;
+                    float y = 86F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
@@ -180,10 +184,10 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     w = 60;
                     int r = 7 - i;
                     char ch = CiffrePipe.OutPipe[i].GetCipherChar();
-                    bmpName = $"arrow_right_{r}";
+                    bmpName = $"arrow_right-{r}";
                     object obj = Properties.Resources.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
 
                     offset += w;
                 }
@@ -198,15 +202,15 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     string drawString = CiffrePipe.OutPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
-                    float x = offset + 1.0F;
-                    float y = ((i % 4) * 18.0F); 
+                    float x = offset + 2.0F;
+                    float y = 1.5F + ((i % 4) * 23.0F);
                     switch (i)
                     {
-                        case 5: y = 72F; break;
-                        case 6: y = 1F; break;
-                        case 7: y = 75F; break;
+                        case 5: y = 84F; break;
+                        case 6: y = 4F; break;
+                        case 7: y = 86F; break;
                         default:
-                            y = ((i % 4) * 18.0F); break;
+                            y = 1.5F + ((i % 4) * 23.0F); break;
                     }
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.NoWrap;
@@ -219,13 +223,13 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 {
                     w = 60;
                     ximage = new Bitmap(Properties.Resources.compress_right_end_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 16, w, 64));
+                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
 
                     string drawString = this.CiffrePipe.ZType.GetUnzipString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
                     float x = offset + 2.4F;
-                    float y = 0.5F;
+                    float y = 3.8F;
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);                    
