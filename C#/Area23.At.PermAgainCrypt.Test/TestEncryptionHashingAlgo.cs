@@ -43,10 +43,7 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileBytesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
-            string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut)) 
-            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //File.WriteAllText(fileCsvOut, "FullName,Size[KB],Email,Cipher,Hash,EncOpTime,DecOptTime,AllOpTime" + Environment.NewLine);
+            string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";            
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherTypes = CipherEnumExtensions.GetCipherTypes();
@@ -92,15 +89,14 @@ namespace Area23.At.PermAgainCrypt.Test
                         long difference = deCodedBytes.CompareBytes(plainBytes, true);
                         if (difference > 0)
                         {
-                            Console.WriteLine($"{cipherEnum}/{encType}/{khane} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
-                            Console.WriteLine($"              \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
+                            Console.WriteLine($"{khane}/{cipherEnum}/{encType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"                              \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
                     double size = deCodedBytes.Length / (1024);
-                    Console.WriteLine($"{cipherEnum}/{encType}/{khane} for {Email} {size}KB\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    Console.WriteLine($"{khane}/{cipherEnum}/{encType} for {Email} {size}KB\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     
-
                 }
                 catch (Exception e)
                 {

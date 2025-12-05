@@ -288,7 +288,7 @@ namespace Area23.At.Framework.Core.Util
         /// <returns>user email adddress or anonymous ftp.cdrom.com</returns>
         public static string GetEmailFromRegistry()
         {
-            string userEmail = "anonymous@ftp.cdrom.com";
+            string userEmail = "";
             try
             {
                 userEmail = (string)RegistryAccessor.GetRegistryEntry(Microsoft.Win32.RegistryHive.CurrentUser,
@@ -311,7 +311,9 @@ namespace Area23.At.Framework.Core.Util
             {
                 CException.SetLastException(exEmailAddress);
             }
+
             userEmail = "anonymous@ftp.cdrom.com";
+
             return userEmail;
         }
 

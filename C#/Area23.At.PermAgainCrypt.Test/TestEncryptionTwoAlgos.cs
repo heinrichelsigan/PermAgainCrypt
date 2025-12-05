@@ -5,6 +5,7 @@ using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Org.BouncyCastle.Tls;
 using System.Configuration;
+using System.Drawing;
 using System.Reflection;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -51,6 +52,7 @@ namespace Area23.At.PermAgainCrypt.Test
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.Zip, ZipType.GZip, ZipType.BZip2 };
             KeyHash kHash = KeyHash.Hex;
+            KeyHash[] kHashes = KeyHash_Extensions.GetHashTypes();
             ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = EncodingTypesExtensions.GetEncodingTypes();
             EncodingType encType = EncodingType.Base64;
@@ -63,23 +65,25 @@ namespace Area23.At.PermAgainCrypt.Test
                 if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
                 if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
-                CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
-                CipherPipe pipe = new CipherPipe(cipherPair); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+                CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
                 zType = zTypes[j % zTypes.Length];
+                kHash = kHashes[j % kHashes.Length];
                 if ((encType = encodingTypes[++j % encodingTypes.Length]) == EncodingType.None)
                     encType = EncodingType.Base64;
+                
+                CipherPipe pipe = new CipherPipe(cipherPair, 8, encType, zType, kHash);                
 
                 try
                 {
                     startOp = DateTime.Now;
-                    byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Email, KeyHash.Hex.Hash(Email),
+                    byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Email, kHash.Hash(Email),
                                                 encType, zType, kHash);
                     Assert.IsNotNull(cipherBytes);
 
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
-                    byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Email, KeyHash.Hex.Hash(Email),
+                    byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Email, kHash.Hash(Email),
                                             encType, zType, kHash);
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 && deCodedBytes.Length > 0 &&
                         plainBytes.LongLength == deCodedBytes.LongLength && plainBytes[i] == deCodedBytes[i]);
@@ -94,19 +98,19 @@ namespace Area23.At.PermAgainCrypt.Test
                         long difference = deCodedBytes.CompareBytes(plainBytes, true);
                         if (difference > 0)
                         {
-                            Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"{kHash} {cipherType}=>{cipherEnum} {zType} {encType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                             Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedBytes.Length}) != plainBytes.Length ({plainBytes.Length})");
                             Assert.Fail();
                         }
                     }
 
                     double size = deCodedBytes.Length / (1024);
-                    Console.WriteLine($"{size}KB {cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    Console.WriteLine($"{kHash} {cipherType}=>{cipherEnum} {zType} {encType} {size}KB for {Email} \tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
                     
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    Console.WriteLine($"{kHash} {cipherType}=>{cipherEnum} {zType} {encType} for {Email} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }
             }
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
@@ -139,14 +143,12 @@ namespace Area23.At.PermAgainCrypt.Test
             string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //if (ConfigurationManager.AppSettings != null && ((dirCsvOut = ConfigurationManager.AppSettings["StatDir"]) != null) && Directory.Exists(dirCsvOut))
-            //    fileCsvOut = dirCsvOut + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
-            //File.WriteAllText(fileCsvOut, $"FullName,Size[KB],Email,CipherPipe,EncOpTime,DecOptTime,AllOpTime{Environment.NewLine}");
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = CipherEnumExtensions.GetCipherTypes();
             ZipType[] zTypes = new ZipType[] { ZipType.None, ZipType.Zip, ZipType.GZip, ZipType.BZip2 };
             KeyHash kHash = KeyHash.Hex;
+            KeyHash[] kHashes = KeyHash_Extensions.GetHashTypes();
             ZipType zType = ZipType.None;
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;           
@@ -160,24 +162,23 @@ namespace Area23.At.PermAgainCrypt.Test
                 if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
-                CipherPipe pipe = new CipherPipe(cipherPair, 8, encType, zType, kHash);
-                byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
                 zType = zTypes[j % zTypes.Length];
+                kHash = kHashes[j % kHashes.Length];
                 if ((encType = encodingTypes[++j % encodingTypes.Length]) == EncodingType.None)
-                    encType = EncodingType.Base64;
-
-
+                    encType = EncodingType.Base64;                
+                
+                CipherPipe pipe = new CipherPipe(cipherPair, 8, encType, zType, kHash);
+                
                 try
                 {
                     startOp = DateTime.Now;
-                    string cryptText = pipe.EncrpytTextGoRounds(plainText, Email, KeyHash.Hex.Hash(Email),
-                                                encType, zType, kHash);
+                    byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+                    string cryptText = pipe.EncrpytTextGoRounds(plainText, Email, kHash.Hash(Email), encType, zType, kHash);
                     Assert.IsTrue(!string.IsNullOrEmpty(cryptText));
 
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
-                    string deCodedText = pipe.DecryptTextRoundsGo(cryptText, Email, KeyHash.Hex.Hash(Email),
-                                            encType, zType, kHash);
+                    string deCodedText = pipe.DecryptTextRoundsGo(cryptText, Email, kHash.Hash(Email), encType, zType, kHash);
                     if (!string.IsNullOrEmpty(plainText) && !string.IsNullOrEmpty(deCodedText))
                         Assert.IsTrue(plainText.Length >= 0 && deCodedText.Length >= 0 && deCodedText.Length == plainText.Length);
 
@@ -189,20 +190,16 @@ namespace Area23.At.PermAgainCrypt.Test
 
                     if (deCodedText == null || deCodedText.Length < 1 || (deCodedText.Length != plainText.Length) || !plainText.Equals(deCodedText))
                     {
-                        Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                        Console.WriteLine($"{kHash} {zType} {cipherType}=>{cipherEnum} {encType} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
                         Console.WriteLine($"          \tdeCodedBytes.Length ({deCodedText.Length}) != plainBytes.Length ({plainText.Length})");
                         Assert.Fail();
                     }
                     double size = deCodedText.Length / (1024);
-                    Console.WriteLine($"{size}KB {cipherType}=>{cipherEnum} for {Email}\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
-                    
-                    //File.AppendAllText(fileCsvOut,
-                    //    $"{Path.GetFileName(fileBytesTest)},{size},{Email},{cipherType}=>{cipherEnum},{encOpTime.ToString("ss'.'ffff")},{decOpTime.ToString("ss'.'ffff")},{allOpTime.ToString("ss'.'ffff")}"
-                    //    + Environment.NewLine);
-                }
+                    Console.WriteLine($"{kHash} {zType} {cipherType}=>{cipherEnum} {encType} for {Email} {size}KB\tencrypt in {encOpTime.ToString("ss'.'ffff")} \tdecrypt in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                                    }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"{cipherType}=>{cipherEnum} for {Email}\tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    Console.WriteLine($"{kHash} {zType} {cipherType}=>{cipherEnum} {encType} for {Email}\tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
                 }
             }
             Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
