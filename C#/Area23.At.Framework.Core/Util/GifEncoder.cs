@@ -44,7 +44,7 @@ namespace Area23.At.Framework.Core.Util
 
         private bool _isFirstImage = true;
         private bool _isFinished = false;
-        private int? _repeatCount;
+        private int? _repeatCount = 0;
         TimeSpan _frameDelay;
         private List<byte> _byteList;
         public byte[] GifBytes { get; protected internal set; }
@@ -80,7 +80,7 @@ namespace Area23.At.Framework.Core.Util
             _byteList = new List<byte>();
             GifBytes = (new List<byte>()).ToArray();
             _memoryStream = new MemoryStream();
-            _repeatCount = repeatCount;
+            _repeatCount = repeatCount ?? 0;
             _frameDelay = frameDelay.GetValueOrDefault();
             _isFinished = false;
 
@@ -108,12 +108,12 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="repeatCount">repeat count</param>
         /// <param name="frameDelay">delay between gif frames</param>
         /// <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
-        public GifEncoder(Bitmap bmp, int? repeatCount = null, TimeSpan? frameDelay = null, params Bitmap[] gifFrames) 
+        public GifEncoder(Bitmap bmp, int? repeatCount, TimeSpan? frameDelay, params Bitmap[] gifFrames) 
         {
             _byteList = new List<byte>();
             GifBytes = (new List<byte>()).ToArray();
             _memoryStream = new MemoryStream();
-            _repeatCount = repeatCount;
+            _repeatCount = repeatCount ?? 0;
             _frameDelay = frameDelay.GetValueOrDefault();
             _isFinished = false;
 
@@ -149,29 +149,27 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="frameDelay">The delay between frames, specified as a TimeSpan. If null, a default delay is used.</param>
         /// <param name="gifFrames">An array of Bitmap images to include as frames in the GIF. The order of images determines the frame
         /// sequence. Cannot be null or empty.</param>
-        public GifEncoder(int? repeatCount = null, TimeSpan? frameDelay = null, params Bitmap[] gifFrames)
+        public GifEncoder(Bitmap[] gifFrames, int? repeatCount, TimeSpan? frameDelay)
         {
             _byteList = new List<byte>();
             GifBytes = (new List<byte>()).ToArray();
             _memoryStream = new MemoryStream();
-            _repeatCount = repeatCount;
-            _frameDelay = frameDelay.GetValueOrDefault();
+            _repeatCount = repeatCount ?? 0;
+            _frameDelay = frameDelay ?? frameDelay.GetValueOrDefault();
             _isFinished = false;
-            _isFirstImage = false;
 
             for (int i = 0; i < gifFrames.Length; i++)
             {
                 if (i < 1 && gifFrames[0] != null)
                 {
-                    Bitmap firstBmp = gifFrames[0];
-
                     using (MemoryStream srcGif = new MemoryStream())
                     {
-                        firstBmp.Save(srcGif, ImageFormat.Gif);
-                        WriteHeader(ref _memoryStream, srcGif, firstBmp.Width, firstBmp.Height);
+                        gifFrames[0].Save(srcGif, ImageFormat.Gif);
+                        WriteHeader(ref _memoryStream, srcGif, gifFrames[0].Width, gifFrames[0].Height);
                         WriteGraphicControlBlock(ref _memoryStream, srcGif, FrameDelay);
-                        WriteImageBlock(ref _memoryStream, srcGif, !_isFirstImage, 0, 0, firstBmp.Width, firstBmp.Height);
+                        WriteImageBlock(ref _memoryStream, srcGif, !_isFirstImage, 0, 0, gifFrames[0].Width, gifFrames[0].Height);
                     }
+                    _isFirstImage = false;
                 }
                 else if (gifFrames[i] != null)
                     AddFrame(ref _memoryStream, (Image)gifFrames[i], FrameDelay);

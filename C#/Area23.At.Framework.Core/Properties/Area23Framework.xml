@@ -2862,7 +2862,7 @@
             <param name="frameDelay">delay between gif frames</param>
             <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Nullable{System.Int32},System.Nullable{System.TimeSpan},System.Drawing.Bitmap[])">
+        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Bitmap[],System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
             <summary>
             Initializes a new instance of the GifEncoder class with the specified frames, optional repeat count, and
             optional frame delay.
