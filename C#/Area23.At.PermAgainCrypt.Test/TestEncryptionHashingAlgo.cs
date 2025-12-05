@@ -40,8 +40,8 @@ namespace Area23.At.PermAgainCrypt.Test
 
             DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
             TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
-            string fileBytesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
-            string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+            string fileByesTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
+            string fileTextTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";            
 
@@ -53,7 +53,7 @@ namespace Area23.At.PermAgainCrypt.Test
             EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
             EncodingType encType = EncodingType.Base64;            
             string plainText = File.ReadAllText(fileTextTest);
-            byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+            byte[] plainBytes = File.ReadAllBytes(fileByesTest);
             KeyHash[] khs = KeyHash_Extensions.GetHashTypes();
             int khcnt = 0;
             foreach (CipherEnum cipherEnum in cipherTypes)

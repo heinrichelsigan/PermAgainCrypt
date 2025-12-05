@@ -34,8 +34,8 @@ namespace Area23.At.PermAgainCrypt.Test
 
             DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
             TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
-            string fileByesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
-            string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+            string fileByesTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
+            string fileTextTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
 
             Assert.IsTrue(File.Exists(fileTextTest));
             CipherEnum[] cipherEnums = new CipherEnum[] { CipherEnum.Aes };

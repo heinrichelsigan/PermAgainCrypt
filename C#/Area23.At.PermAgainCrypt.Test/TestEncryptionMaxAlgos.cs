@@ -45,8 +45,8 @@ namespace Area23.At.PermAgainCrypt.Test
 
             DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
             TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
-            string fileBytesTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
-            string fileTextTest = AppContext.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+            string fileByesTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
+            string fileTextTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
             string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
             
@@ -73,7 +73,7 @@ namespace Area23.At.PermAgainCrypt.Test
                 CipherPipe pipe = new CipherPipe(email, hashIv, encType, zType, kHash);
                 string pipeText = pipe.PipeString;
 
-                byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
+                byte[] plainBytes = File.ReadAllBytes(fileByesTest);
 
                 try
                 {
