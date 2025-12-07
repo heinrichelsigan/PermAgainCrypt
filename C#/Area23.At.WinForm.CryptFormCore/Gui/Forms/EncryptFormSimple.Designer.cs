@@ -3,7 +3,7 @@
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
 
-    partial class EncryptForm
+    partial class EncryptFormSimple
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EncryptForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EncryptFormSimple));
             menuStripEncrypt = new MenuStrip();
             toolMenuMain = new ToolStripMenuItem();
             menuFileOpen = new ToolStripMenuItem();
@@ -85,9 +85,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             verifyEncryptionToolStripMenuItem = new ToolStripMenuItem();
             sha512ToolStripMenuItem = new ToolStripMenuItem();
             bytesOfFileToolStripMenuItem = new ToolStripMenuItem();
-            menuOptionsMenuFileSettings = new ToolStripMenuItem();
-            menuItemCreatePipeSettingsFromFileName = new ToolStripMenuItem();
-            menuFileSettingsItemAutomaticallySaveToTemp = new ToolStripMenuItem();
             menuSerialize = new ToolStripMenuItem();
             menuJson = new ToolStripMenuItem();
             menuXml = new ToolStripMenuItem();
@@ -127,15 +124,19 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             statusLabelMsg = new ToolStripStatusLabel();
             statusLabelDestination = new ToolStripStatusLabel();
             progressBar = new ProgressBar();
+            menuOptionsMenuFileSettings = new ToolStripMenuItem();
+            menuItemCreatePipeSettingsFromFileName = new ToolStripMenuItem();
+            menuFileSettingsItemAutomaticallySaveToTemp = new ToolStripMenuItem();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxHash).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).BeginInit();            
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).BeginInit();
-            groupBoxFiles.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
+            groupBoxFiles.SuspendLayout();
+            
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
             SuspendLayout();
@@ -168,7 +169,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
             menuFileOpen.Size = new Size(162, 22);
             menuFileOpen.Text = "Open";
-            menuFileOpen.Click += this.menuFileOpen_Click;
+            menuFileOpen.Click += menuFileOpen_Click;
             // 
             // menuMainSave
             // 
@@ -177,7 +178,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
             menuMainSave.Size = new Size(162, 22);
             menuMainSave.Text = "Save";
-            menuMainSave.Click += this.menuMainSave_Click;
+            menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
@@ -190,7 +191,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSetPipe.Name = "menuMainSetPipe";
             menuMainSetPipe.Size = new Size(162, 22);
             menuMainSetPipe.Text = "Set Pipe";
-            menuMainSetPipe.Click += this.SetPipeline_Click;
+            menuMainSetPipe.Click += SetPipeline_Click;
             // 
             // menuMainHashKey
             // 
@@ -198,7 +199,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashKey.Name = "menuMainHashKey";
             menuMainHashKey.Size = new Size(162, 22);
             menuMainHashKey.Text = "Hash Key";
-            menuMainHashKey.Click += this.Hash_Click;
+            menuMainHashKey.Click += Hash_Click;
             // 
             // menuMainHashPipe
             // 
@@ -206,7 +207,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashPipe.Name = "menuMainHashPipe";
             menuMainHashPipe.Size = new Size(162, 22);
             menuMainHashPipe.Text = "Hash Pipe";
-            menuMainHashPipe.Click += this.Hash_Pipe_Click;
+            menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
@@ -233,7 +234,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainRandomText.Name = "menuMainRandomText";
             menuMainRandomText.Size = new Size(162, 22);
             menuMainRandomText.Text = "Random Text";
-            menuMainRandomText.Click += this.RandomText_Click;
+            menuMainRandomText.Click += RandomText_Click;
             // 
             // menuMainReset
             // 
@@ -254,7 +255,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
             menuFileExit.Size = new Size(162, 22);
             menuFileExit.Text = "Exit";
-            menuFileExit.Click += this.menuFileExit_Click;
+            menuFileExit.Click += menuFileExit_Click;
             // 
             // menuCompression
             // 
@@ -271,7 +272,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
             zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
-            zmenu7z.Click += this.menuCompression_Click;
+            zmenu7z.Click += menuCompression_Click;
             // 
             // zmenuBZip2
             // 
@@ -280,7 +281,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
             zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
-            zmenuBZip2.Click += this.menuCompression_Click;
+            zmenuBZip2.Click += menuCompression_Click;
             // 
             // zmenuGZip
             // 
@@ -289,7 +290,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
             zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
-            zmenuGZip.Click += this.menuCompression_Click;
+            zmenuGZip.Click += menuCompression_Click;
             // 
             // zmenuZip
             // 
@@ -298,7 +299,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
             zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
-            zmenuZip.Click += this.menuCompression_Click;
+            zmenuZip.Click += menuCompression_Click;
             // 
             // zmenuNone
             // 
@@ -309,7 +310,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
             zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
-            zmenuNone.Click += this.menuCompression_Click;
+            zmenuNone.Click += menuCompression_Click;
             // 
             // menuEncoding
             // 
@@ -562,34 +563,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             bytesOfFileToolStripMenuItem.Size = new Size(210, 22);
             bytesOfFileToolStripMenuItem.Text = "1/8 bytes of file";
             // 
-            // menuOptionsMenuFileSettings
-            // 
-            menuOptionsMenuFileSettings.BackColor = SystemColors.ControlLight;
-            menuOptionsMenuFileSettings.DropDownItems.AddRange(new ToolStripItem[] { menuItemCreatePipeSettingsFromFileName, menuFileSettingsItemAutomaticallySaveToTemp });
-            menuOptionsMenuFileSettings.Name = "menuOptionsMenuFileSettings";
-            menuOptionsMenuFileSettings.Size = new Size(210, 22);
-            menuOptionsMenuFileSettings.Text = "File Settings";
-            // 
-            // menuItemCreatePipeSettingsFromFileName
-            // 
-            menuItemCreatePipeSettingsFromFileName.BackColor = SystemColors.ControlLight;
-            menuItemCreatePipeSettingsFromFileName.CheckOnClick = true;
-            menuItemCreatePipeSettingsFromFileName.Name = "menuItemCreatePipeSettingsFromFileName";
-            menuItemCreatePipeSettingsFromFileName.Size = new Size(346, 22);
-            menuItemCreatePipeSettingsFromFileName.Text = "Create Pipe Settings from FileName";
-            menuItemCreatePipeSettingsFromFileName.ToolTipText = "Creates Cipher Pipe, hash, encode and zip settings in Form from opened  fileName";
-            // 
-            // menuFileSettingsItemAutomaticallySaveToTemp
-            // 
-            menuFileSettingsItemAutomaticallySaveToTemp.BackColor = SystemColors.ControlLight;
-            menuFileSettingsItemAutomaticallySaveToTemp.Checked = true;
-            menuFileSettingsItemAutomaticallySaveToTemp.CheckOnClick = true;
-            menuFileSettingsItemAutomaticallySaveToTemp.CheckState = CheckState.Checked;
-            menuFileSettingsItemAutomaticallySaveToTemp.Name = "menuFileSettingsItemAutomaticallySaveToTemp";
-            menuFileSettingsItemAutomaticallySaveToTemp.Size = new Size(346, 22);
-            menuFileSettingsItemAutomaticallySaveToTemp.Text = "Automatically Save to Temp";
-            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";
-            // 
             // menuSerialize
             // 
             menuSerialize.DropDownItems.AddRange(new ToolStripItem[] { menuJson, menuXml, menuRaw });
@@ -673,7 +646,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxKey.Size = new Size(810, 25);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
-            textBoxKey.TextChanged += this.textBoxKey_TextChanged;
+            textBoxKey.TextChanged += textBoxKey_TextChanged;
             // 
             // pictureBoxKey
             // 
@@ -685,7 +658,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxKey.Size = new Size(30, 30);
             pictureBoxKey.TabIndex = 3;
             pictureBoxKey.TabStop = false;
-            pictureBoxKey.Click += this.pictureBoxKey_Click;
+            pictureBoxKey.Click += pictureBoxKey_Click;
             // 
             // pictureBoxHash
             // 
@@ -698,10 +671,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxHash.Size = new Size(32, 30);
             pictureBoxHash.TabIndex = 7;
             pictureBoxHash.TabStop = false;
-            pictureBoxHash.Click += this.Hash_Click;
+            pictureBoxHash.Click += Hash_Click;
             // 
             // textBoxHash
             // 
+            textBoxHash.AutoSize = false;
             textBoxHash.BackColor = SystemColors.Control;
             textBoxHash.Font = new Font("Lucida Sans Typewriter", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxHash.Location = new Point(48, 128);
@@ -722,7 +696,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonSetPipeline.TabIndex = 5;
             buttonSetPipeline.Text = "Set Pipeline";
             buttonSetPipeline.UseVisualStyleBackColor = false;
-            buttonSetPipeline.Click += this.SetPipeline_Click;
+            buttonSetPipeline.Click += SetPipeline_Click;
             // 
             // buttonReset
             // 
@@ -740,7 +714,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             pictureBoxFileIn.Image = Properties.Resources.image_file;
             pictureBoxFileIn.InitialImage = Properties.Resources.img_success;
-            pictureBoxFileIn.Location = new Point(12, 30);
+            pictureBoxFileIn.Location = new Point(12, 32);
             pictureBoxFileIn.Margin = new Padding(2);
             pictureBoxFileIn.Name = "pictureBoxFileIn";
             pictureBoxFileIn.Size = new Size(64, 64);
@@ -758,7 +732,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxAddAlgo.Size = new Size(32, 27);
             pictureBoxAddAlgo.TabIndex = 12;
             pictureBoxAddAlgo.TabStop = false;
-            pictureBoxAddAlgo.Click += this.pictureBoxAddAlgo_Click;
+            pictureBoxAddAlgo.Click += pictureBoxAddAlgo_Click;
             // 
             // textBoxPipe
             // 
@@ -775,21 +749,21 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // labelFileIn
             // 
             labelFileIn.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelFileIn.Location = new Point(12, 115);
+            labelFileIn.Location = new Point(12, 112);
             labelFileIn.Margin = new Padding(1, 0, 1, 0);
             labelFileIn.Name = "labelFileIn";
-            labelFileIn.Size = new Size(483, 28);
+            labelFileIn.Size = new Size(432, 23);
             labelFileIn.TabIndex = 21;
             labelFileIn.Text = "[Input File]";
             // 
             // labelOutputFile
             // 
             labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelOutputFile.Location = new Point(508, 115);
+            labelOutputFile.Location = new Point(545, 112);
             labelOutputFile.Margin = new Padding(1, 0, 1, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
-            labelOutputFile.Size = new Size(477, 28);
+            labelOutputFile.Size = new Size(444, 23);
             labelOutputFile.TabIndex = 24;
             labelOutputFile.Text = "[Output File]";
             labelOutputFile.Visible = false;
@@ -797,15 +771,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // pictureBoxOutFile
             // 
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(917, 30);
+            pictureBoxOutFile.Location = new Point(918, 32);
             pictureBoxOutFile.Margin = new Padding(1);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
             pictureBoxOutFile.Size = new Size(68, 68);
             pictureBoxOutFile.TabIndex = 25;
             pictureBoxOutFile.TabStop = false;
             pictureBoxOutFile.Visible = false;
-            pictureBoxOutFile.Click += this.pictureOutBoxFile_Click;
-            pictureBoxOutFile.DoubleClick += this.pictureOutBoxFile_Click;
+            pictureBoxOutFile.Click += pictureOutBoxFile_Click;
+            pictureBoxOutFile.DoubleClick += pictureOutBoxFile_Click;
             // 
             // textBoxSrc
             // 
@@ -877,11 +851,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             groupBoxFiles.TabIndex = 20;
             groupBoxFiles.TabStop = false;
             groupBoxFiles.Text = "Files (drag files into)";
-            groupBoxFiles.DragDrop += this.Drag_Drop;
-            groupBoxFiles.DragEnter += this.Drag_Enter;
-            groupBoxFiles.DragOver += this.Drag_Over;
-            groupBoxFiles.DragLeave += this.Drag_Leave;
-            groupBoxFiles.GiveFeedback += this.Give_FeedBack;
+            groupBoxFiles.DragDrop += Drag_Drop;
+            groupBoxFiles.DragEnter += Drag_Enter;
+            groupBoxFiles.DragOver += Drag_Over;
+            groupBoxFiles.DragLeave += Drag_Leave;
+            groupBoxFiles.GiveFeedback += Give_FeedBack;
             // 
             // pictureBoxRunningPipe
             // 
@@ -903,7 +877,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxDelete.Size = new Size(27, 27);
             pictureBoxDelete.TabIndex = 15;
             pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += this.pictureBoxDelete_Click;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;
             // 
             // comboBoxCompression
             // 
@@ -917,7 +891,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxCompression.Name = "comboBoxCompression";
             comboBoxCompression.Size = new Size(96, 23);
             comboBoxCompression.TabIndex = 10;
-            comboBoxCompression.SelectedIndexChanged += this.ComboBoxCompression_SelectedIndexChanged;
+            comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
             // comboBoxEncoding
             // 
@@ -944,7 +918,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonRandomText.TabIndex = 35;
             buttonRandomText.Text = "Random Text";
             buttonRandomText.UseVisualStyleBackColor = false;
-            buttonRandomText.Click += this.RandomText_Click;
+            buttonRandomText.Click += RandomText_Click;
             // 
             // buttonHashPipe
             // 
@@ -957,7 +931,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonHashPipe.TabIndex = 9;
             buttonHashPipe.Text = "Hash Pipe";
             buttonHashPipe.UseVisualStyleBackColor = false;
-            buttonHashPipe.Click += this.Hash_Pipe_Click;
+            buttonHashPipe.Click += Hash_Pipe_Click;
             // 
             // radioButtonListHash
             // 
@@ -1028,7 +1002,35 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             progressBar.Size = new Size(989, 26);
             progressBar.TabIndex = 45;
             // 
-            // EncryptForm
+            // menuOptionsMenuFileSettings
+            // 
+            menuOptionsMenuFileSettings.BackColor = SystemColors.ControlLight;
+            menuOptionsMenuFileSettings.DropDownItems.AddRange(new ToolStripItem[] { menuItemCreatePipeSettingsFromFileName, menuFileSettingsItemAutomaticallySaveToTemp });
+            menuOptionsMenuFileSettings.Name = "menuOptionsMenuFileSettings";
+            menuOptionsMenuFileSettings.Size = new Size(210, 22);
+            menuOptionsMenuFileSettings.Text = "File Settings";
+            // 
+            // menuItemCreatePipeSettingsFromFileName
+            // 
+            menuItemCreatePipeSettingsFromFileName.BackColor = SystemColors.ControlLight;
+            menuItemCreatePipeSettingsFromFileName.CheckOnClick = true;
+            menuItemCreatePipeSettingsFromFileName.Name = "menuItemCreatePipeSettingsFromFileName";
+            menuItemCreatePipeSettingsFromFileName.Size = new Size(346, 22);
+            menuItemCreatePipeSettingsFromFileName.Text = "Create Pipe Settings from FileName";
+            menuItemCreatePipeSettingsFromFileName.ToolTipText = "Creates Cipher Pipe, hash, encode and zip settings in Form from opened  fileName";
+            // 
+            // menuFileSettingsItemAutomaticallySaveToTemp
+            // 
+            menuFileSettingsItemAutomaticallySaveToTemp.BackColor = SystemColors.ControlLight;
+            menuFileSettingsItemAutomaticallySaveToTemp.Checked = true;
+            menuFileSettingsItemAutomaticallySaveToTemp.CheckOnClick = true;
+            menuFileSettingsItemAutomaticallySaveToTemp.CheckState = CheckState.Checked;
+            menuFileSettingsItemAutomaticallySaveToTemp.Name = "menuFileSettingsItemAutomaticallySaveToTemp";
+            menuFileSettingsItemAutomaticallySaveToTemp.Size = new Size(346, 22);
+            menuFileSettingsItemAutomaticallySaveToTemp.Text = "Automatically Save to Temp";
+            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";
+            // 
+            // EncryptFormSimple
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -1065,22 +1067,22 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "EncryptForm";
+            Name = "EncryptFormSimple";
             Opacity = 0.92D;
-            Text = "EncryptForm";
+            Text = "EncryptFormSimple";
             FormClosed += menuFileExit_Close;
-            Load += this.EncryptForm_Load;
+            Load += EncryptFormSimple_Load;
             menuStripEncrypt.ResumeLayout(false);
             menuStripEncrypt.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxHash).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxHash).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).EndInit();            
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).EndInit();
-            groupBoxFiles.ResumeLayout(false);
-            groupBoxFiles.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
+            groupBoxFiles.ResumeLayout(false);
+            groupBoxFiles.PerformLayout();            
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
@@ -1090,100 +1092,116 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion
         private BindingSource enumOptionsBindingSource;
+
+        internal TextBox textBoxKey;        
+        internal TextBox textBoxHash;
+        internal TextBox textBoxPipe;
+        internal TextBox textBoxSrc;
+        internal TextBox textBoxOut;
+
+        internal Button buttonSetPipeline;
+        internal Button buttonHashPipe;
+        internal Button buttonEncrypt;
+        internal Button buttonDecrypt;
+        internal Button buttonRandomText;
+        internal Button buttonReset;
+        internal Label labelInfoMessage;
+
+        internal ComboBox comboBoxEncoding;
+        internal ComboBox comboBoxCompression;
+        internal ComboBox comboBoxAlgo;
+        
+        internal PictureBox pictureBoxKey;
+        internal PictureBox pictureBoxHash;
+        internal PictureBox pictureBoxAddAlgo;
+        internal PictureBox pictureBoxDelete;
+
         internal GroupBox groupBoxFiles;
-        private PictureBox pictureBoxRunningPipe;
-        protected internal PictureBox pictureBoxKey;
-        protected internal PictureBox pictureBoxHash;
-        protected internal TextBox textBoxHash;
-        protected internal Button buttonSetPipeline;
-        protected internal ComboBox comboBoxCompression;
-        protected internal Button buttonHashPipe;
-        protected internal Controls.RadioButtonList radioButtonListHash;
-        protected internal MenuStrip menuStripEncrypt;
-        protected internal ToolStripMenuItem toolMenuMain;
-        protected internal ToolStripMenuItem menuFileOpen;
-        protected internal ToolStripMenuItem menuMainDecrypt;
-        protected internal ToolStripSeparator toolStripSeparator1;
-        protected internal ToolStripMenuItem menuFileExit;
-        protected internal ToolStripMenuItem menuCompression;
-        internal  ToolStripMenuItem zmenuBZip2;
-        internal  ToolStripMenuItem zmenuZip;
-        internal  ToolStripMenuItem zmenu7z;
-        internal  ToolStripMenuItem zmenuGZip;
-        internal  ToolStripMenuItem zmenuNone;
-        internal  ToolStripMenuItem menuEncoding;
-        internal  ToolStripMenuItem menuEncBase16;
-        internal  ToolStripMenuItem menuEncHex16;
-        internal  ToolStripMenuItem menuEncBase32;
-        internal  ToolStripMenuItem menuEncHex32;
-        protected internal ComboBox comboBoxAlgo;
-        protected internal Button buttonReset;
-        protected internal PictureBox pictureBoxFileIn;
-        protected internal PictureBox pictureBoxAddAlgo;
-        protected internal TextBox textBoxPipe;
-        protected internal Label labelFileIn;
-        protected internal Label labelOutputFile;
-        protected internal PictureBox pictureBoxOutFile;
-        protected internal TextBox textBoxSrc;
-        protected internal TextBox textBoxOut;
-        protected internal ToolStripMenuItem menuMainSave;
-        protected internal ToolStripSeparator toolStripSeparator2;
-        protected internal ToolStripMenuItem menuMainEncrypt;
-        protected internal ToolStripMenuItem menuMainReset;
-        protected internal ToolStripMenuItem menuMainRandomText;
-        protected internal ToolStripMenuItem menuMainHashKey;
-        protected internal ToolStripMenuItem menuMainSetPipe;
-        protected internal ToolStripSeparator toolStripSeparator3;
-        protected internal Button buttonEncrypt;
-        protected internal Button buttonDecrypt;
-        internal  ToolStripMenuItem menuEncNone;
-        protected internal PictureBox pictureBoxDelete;
-        protected internal ComboBox comboBoxEncoding;
-        protected internal Button buttonRandomText;
-        internal  ToolStripMenuItem menuMainHashPipe;
-        internal  ToolStripMenuItem menuEncBase64;
-        internal  ToolStripMenuItem menuEncUu;
-        internal  ToolStripMenuItem menuHash;
-        internal  ToolStripMenuItem menuHashBCrypt;
-        internal  ToolStripMenuItem menuEncXx;
-        internal  ToolStripMenuItem menuSerialize;
-        internal  ToolStripMenuItem menuJson;
-        internal  ToolStripMenuItem menuXml;
-        internal  ToolStripMenuItem menuRaw;
+        internal PictureBox pictureBoxRunningPipe;
+        internal PictureBox pictureBoxFileIn;
+        internal PictureBox pictureBoxOutFile;        
+        internal Label labelFileIn;
+        internal Label labelOutputFile;
+
+        internal Controls.RadioButtonList radioButtonListHash;
+        internal ProgressBar progressBar;
+
+        internal MenuStrip menuStripEncrypt;
+
+        internal ToolStripMenuItem toolMenuMain;
+        internal ToolStripMenuItem menuFileOpen;
+        internal ToolStripMenuItem menuMainSave;
+        internal ToolStripSeparator toolStripSeparator1;                    
+        internal ToolStripMenuItem menuMainHashKey;
+        internal ToolStripMenuItem menuMainSetPipe;
+        internal ToolStripMenuItem menuMainHashPipe;
+        internal ToolStripSeparator toolStripSeparator2;
+        internal ToolStripMenuItem menuMainEncrypt;
+        internal ToolStripMenuItem menuMainDecrypt;
+        internal ToolStripMenuItem menuMainReset;
+        internal ToolStripMenuItem menuMainRandomText;
+        internal ToolStripSeparator toolStripSeparator3;
+        internal ToolStripMenuItem menuFileExit;
+
+        internal ToolStripMenuItem menuCompression;
+        internal ToolStripMenuItem zmenuBZip2;
+        internal ToolStripMenuItem zmenuZip;
+        internal ToolStripMenuItem zmenu7z;
+        internal ToolStripMenuItem zmenuGZip;
+        internal ToolStripMenuItem zmenuNone;
+        
+        internal ToolStripMenuItem menuEncoding;
+        internal ToolStripMenuItem menuEncNone;
+        internal ToolStripMenuItem menuEncBase16;
+        internal ToolStripMenuItem menuEncHex16;
+        internal ToolStripMenuItem menuEncBase32;
+        internal ToolStripMenuItem menuEncHex32;        
+        internal ToolStripMenuItem menuEncBase64;
+        internal ToolStripMenuItem menuEncUu;
+        internal ToolStripMenuItem menuEncXx;
+
+        internal ToolStripMenuItem menuHash;
+        internal ToolStripMenuItem menuHashBCrypt;        
         internal ToolStripMenuItem menuHashSCrypt;
         internal ToolStripMenuItem menuHashMD5;
-        internal  ToolStripMenuItem menuHashSha1;
-        internal  ToolStripMenuItem menuHashSha512;
-        internal  ToolStripMenuItem menuHashOpenBSDCrypt;
-        internal  ToolStripMenuItem menuHashSha256;
-        internal  ToolStripMenuItem menuHashHex;
-        internal  ToolStripMenuItem menuHelp;
-        internal  ToolStripMenuItem menuAbout;
-        internal  ToolStripMenuItem menuHelpHelp;
-        internal  ToolStripMenuItem menuHashAscon256;
-        internal  ToolStripMenuItem menuHashRipeMD256;
-        internal  ToolStripMenuItem menuHashWhirlpool;
-        internal  ToolStripMenuItem menuHashBlake2xs;
-        internal  ToolStripMenuItem menuHashDstu7564;
-        internal  ToolStripMenuItem menuHashCShake;
-        internal  ToolStripMenuItem menuHashXoodyak;
-        private Label labelInfoMessage;
-        private StatusStrip statusStrip;
-        private ToolStripStatusLabel statusLabelSource;
-        private ToolStripStatusLabel statusLabelMsg;
-        private ToolStripStatusLabel statusLabelDestination;
-        private ToolStripMenuItem optionsToolStripMenuItem;
-        private ToolStripMenuItem verifyEncryptionToolStripMenuItem;
-        private ToolStripMenuItem sha512ToolStripMenuItem;
-        private ToolStripMenuItem bytesOfFileToolStripMenuItem;
-        internal TextBox textBoxKey;
-        private ProgressBar progressBar;
-        private ToolStripMenuItem menuOptionsItemsWarnings;
-        private ToolStripMenuItem warnOnEmptyPipeToolStripMenuItem;
-        private ToolStripMenuItem warnOnDoubleZippingToolStripMenuItem;
-        private ToolStripMenuItem menuOptionsMenuFileSettings;
-        private ToolStripMenuItem menuItemCreatePipeSettingsFromFileName;
-        private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
+        internal ToolStripMenuItem menuHashSha1;
+        internal ToolStripMenuItem menuHashSha512;
+        internal ToolStripMenuItem menuHashOpenBSDCrypt;
+        internal ToolStripMenuItem menuHashSha256;
+        internal ToolStripMenuItem menuHashHex;
+        internal ToolStripMenuItem menuHashAscon256;
+        internal ToolStripMenuItem menuHashRipeMD256;
+        internal ToolStripMenuItem menuHashWhirlpool;
+        internal ToolStripMenuItem menuHashBlake2xs;
+        internal ToolStripMenuItem menuHashDstu7564;
+        internal ToolStripMenuItem menuHashCShake;
+        internal ToolStripMenuItem menuHashXoodyak;
+
+        internal ToolStripMenuItem optionsToolStripMenuItem;
+        internal ToolStripMenuItem verifyEncryptionToolStripMenuItem;
+        internal ToolStripMenuItem sha512ToolStripMenuItem;
+        internal ToolStripMenuItem bytesOfFileToolStripMenuItem;
+        internal ToolStripMenuItem menuOptionsItemsWarnings;
+        internal ToolStripMenuItem warnOnEmptyPipeToolStripMenuItem;
+        internal ToolStripMenuItem warnOnDoubleZippingToolStripMenuItem;
+        internal ToolStripMenuItem menuOptionsMenuFileSettings;
+        internal ToolStripMenuItem menuItemCreatePipeSettingsFromFileName;
+        internal ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
+
+        internal ToolStripMenuItem menuSerialize;
+        internal ToolStripMenuItem menuJson;
+        internal ToolStripMenuItem menuXml;
+        internal ToolStripMenuItem menuRaw;
+
+        internal ToolStripMenuItem menuHelp;
+        internal ToolStripMenuItem menuAbout;
+        internal ToolStripMenuItem menuHelpHelp;
+
+        internal StatusStrip statusStrip;
+        internal ToolStripStatusLabel statusLabelSource;
+        internal ToolStripStatusLabel statusLabelMsg;
+        internal ToolStripStatusLabel statusLabelDestination;
+   
     }
 
 
