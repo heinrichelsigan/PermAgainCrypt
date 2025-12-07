@@ -19,6 +19,8 @@ namespace Area23.At.WinForm.CryptFormCore
 
         internal static Mutex? mutex;
 
+        internal static SystemColorMode colorMode = SystemColorMode.System;
+
 
         /// <summary>
         ///  The main entry point for the application.
@@ -36,8 +38,22 @@ namespace Area23.At.WinForm.CryptFormCore
                 return;
             }
 
+            if (args.Length > 0)
+            {
+                foreach (string arg in args)
+                {
+                    if (arg.Contains("dark", StringComparison.CurrentCultureIgnoreCase))
+                        colorMode = SystemColorMode.Dark;
+                    if (arg.Contains("classic", StringComparison.CurrentCultureIgnoreCase))
+                        colorMode = SystemColorMode.Classic;
+                }
+            }
+
+                
+
             // set Application basic settings
             Application.EnableVisualStyles();
+            Application.SetColorMode(colorMode);
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
