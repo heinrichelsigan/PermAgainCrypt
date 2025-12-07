@@ -279,7 +279,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         #endregion thread safe delegates
 
 
-        protected internal void PictureBoxFileOut_Click(object sender, EventArgs e)
+        protected internal void PictureBoxFileInOut_Click(object sender, EventArgs e)
         {
             if (sender is PictureBox pb && pb != null && pb.Visible && pb.Tag != null)
             {
@@ -297,11 +297,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                         fPath.Contains(".xx", StringComparison.CurrentCultureIgnoreCase) ||
                         fPath.Contains(".base64", StringComparison.CurrentCultureIgnoreCase))
                     {
-
+                        ProcessCmd.Execute("notepad", pb.Tag.ToString());
+                        return; 
                     }
                 }
-                    
-                }
+                
+                ProcessCmd.Execute("explorer", pb.Tag?.ToString());
             }
         }
 

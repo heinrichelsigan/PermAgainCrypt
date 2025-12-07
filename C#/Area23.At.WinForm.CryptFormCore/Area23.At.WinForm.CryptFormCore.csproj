@@ -47,6 +47,9 @@ he@area23.at</Description>
   </ItemGroup>
     
 	<ItemGroup>
+        <Compile Update="Gui\Forms\EncryptFormMultiControls.cs">
+          <SubType>Form</SubType>
+        </Compile>
         <Compile Update="Gui\Forms\EncryptForm.cs">
           <SubType>Form</SubType>
         </Compile>
@@ -62,6 +65,9 @@ he@area23.at</Description>
     </ItemGroup>
     
 	<ItemGroup>
+	  <EmbeddedResource Update="Gui\Forms\EncryptFormMultiControls.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Gui\Forms\EncryptFormSimple.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>

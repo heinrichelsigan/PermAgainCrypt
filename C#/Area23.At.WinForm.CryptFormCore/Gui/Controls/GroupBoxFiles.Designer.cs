@@ -75,6 +75,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             pictureBoxFileIn.SizeMode = PictureBoxSizeMode.AutoSize;
             pictureBoxFileIn.TabIndex = 22;
             pictureBoxFileIn.TabStop = false;
+            pictureBoxFileIn.Click += PictureBoxFileInOut_Click;
             // 
             // pictureBoxFileOut
             // 
@@ -86,8 +87,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             pictureBoxFileOut.TabIndex = 25;
             pictureBoxFileOut.TabStop = false;
             pictureBoxFileOut.Visible = false;
-            pictureBoxFileOut.Click += pictureBoxFileOut_Click;
-            pictureBoxFileOut.DoubleClick += pictureBoxFileOut_Click;
+            pictureBoxFileOut.Click += PictureBoxFileInOut_Click;
+
             // 
             // pictureBoxRunningPipe
             // 
