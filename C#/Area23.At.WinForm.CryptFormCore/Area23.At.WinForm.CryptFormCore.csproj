@@ -53,9 +53,6 @@ he@area23.at</Description>
         <Compile Update="Gui\Forms\EncryptForm.cs">
           <SubType>Form</SubType>
         </Compile>
-        <Compile Update="Gui\Forms\EncryptFormSimple.cs">
-          <SubType>Form</SubType>
-        </Compile>
         <Compile Update="Properties\Resources.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
@@ -66,9 +63,6 @@ he@area23.at</Description>
     
 	<ItemGroup>
 	  <EmbeddedResource Update="Gui\Forms\EncryptFormMultiControls.resx">
-	    <SubType>Designer</SubType>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Gui\Forms\EncryptFormSimple.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>
 	  <EmbeddedResource Update="Properties\Resources.resx">
@@ -89,11 +83,6 @@ he@area23.at</Description>
     
 	<ItemGroup>
 	  <Folder Include="log\" />
-	</ItemGroup>
-    
-	<ItemGroup>
-	  <None Include="Gui\Forms\EncryptFormSimple.cs" />
-	  <None Include="Gui\Forms\EncryptFormSimple.resx" />
 	</ItemGroup>
 
 </Project>

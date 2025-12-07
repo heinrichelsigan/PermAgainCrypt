@@ -43,9 +43,10 @@ namespace Area23.At.WinForm.CryptFormCore
 
             // instanciate a new EncryptForm
             System.Windows.Forms.Form encryptForm = new EncryptForm();
+            System.Windows.Forms.Form multipleControls = new EncryptFormMultiControls();
 
             // Run application
-            Application.Run(encryptForm);
+            Application.Run(multipleControls);
 
             // Release, Close, Dispose Mutal Exclusion
             ReleaseCloseDisposeMutex();

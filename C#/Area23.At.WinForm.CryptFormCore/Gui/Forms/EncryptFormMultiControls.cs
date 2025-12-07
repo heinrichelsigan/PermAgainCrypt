@@ -39,6 +39,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboBoxEncoding_SelectedIndexChanged(sender, e));
             radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) => await RadioButtonListHash_SelectedIndexChanged(sender, e));
+            groupBoxFiles.FileAdded += GroupBoxFilesAdded;
 
             menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
             menuMainDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
@@ -84,8 +85,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.comboBoxEncoding.Items.Add(encodingType.ToString());
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
 
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
-            this.pictureBoxRunningPipe.Visible = true;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Visible = true;
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
 
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
@@ -415,29 +416,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     switch (cipherEnum)
                     {
                         case CipherEnum.BlowFish:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
                             break;
                         case CipherEnum.Fish2:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
                             break;
                         case CipherEnum.Fish3:
                         case CipherEnum.ThreeFish256:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
                             break;
                         case CipherEnum.Serpent:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
                             break;
                         case CipherEnum.XTea:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.XTea, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.XTea, "", true);
                             break;
                         case CipherEnum.Tea:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Tea, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Tea, "", true);
                             break;
                         case CipherEnum.Des:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Des, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Des, "", true);
                             break;
                         case CipherEnum.Des3:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
                             break;
                         default:
                             break;
@@ -538,18 +539,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.textBoxPipe.Text = string.Empty;
             this.textBoxSrc.Text = string.Empty;
             this.textBoxOut.Text = string.Empty;
-            this.labelOutputFile.Text = string.Empty;
-            this.labelOutputFile.Visible = false;
-            this.pictureBoxOutFile.Image = Properties.Resources.image_file;
-            this.pictureBoxOutFile.Tag = null;
-            this.pictureBoxOutFile.Visible = false;
+            this.groupBoxFiles.labelOutputFile.Text = string.Empty;
+            this.groupBoxFiles.labelOutputFile.Visible = false;
+            this.groupBoxFiles.pictureBoxFileOut.Image = Properties.Resources.image_file;
+            this.groupBoxFiles.pictureBoxFileOut.Tag = null;
+            this.groupBoxFiles.pictureBoxFileOut.Visible = false;
             await this.SetEncodingAsync(menuEncBase64);
             this.SetCompression(null, "None");
             await this.SetHashAsync(menuHashHex, radioButtonListHash);
-            this.labelFileIn.Text = "[no file selected]";
-            this.pictureBoxFileIn.Tag = null;
-            this.pictureBoxFileIn.Image = Properties.Resources.image_file;
-            this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
+            this.groupBoxFiles.labelFileIn.Text = "[no file selected]";
+            this.groupBoxFiles.pictureBoxFileIn.Tag = null;
+            this.groupBoxFiles.pictureBoxFileIn.Image = Properties.Resources.image_file;
+            this.groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
         }
 
         #endregion ButtonPictureBoxClickEvents
@@ -586,7 +587,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
             BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-            SetPictureBoxImage(pictureBoxRunningPipe, bGen.GenerateEncryptPipeImage());
+            SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, bGen.GenerateEncryptPipeImage());
 
             DateTime start = DateTime.Now;
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
@@ -615,7 +616,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     Cursor.Current = DefaultCursor;
                 }
             }
-            if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+            if (!string.IsNullOrEmpty(groupBoxFiles.labelFileIn.Text) && !groupBoxFiles.labelFileIn.Text.StartsWith("["))
             {
                 string fileName = FileMatches();
                 if (string.IsNullOrEmpty(fileName))
@@ -635,7 +636,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         return;
                 }
 
-                await SetInfoMessageAsync("Starting encryption for file " + labelFileIn.Text, ToolTipIcon.Info, -1);
+                await SetInfoMessageAsync("Starting encryption for file " + groupBoxFiles.labelFileIn.Text, ToolTipIcon.Info, -1);
 
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 try
@@ -665,16 +666,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
                             await PlaySoundFromResourcesAsync("sound_hammer");
-                            await SetPictureBoxImageAsync(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
+                            await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
                         }
                         else
                         {
                             await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
                             await PlaySoundFromResourcesAsync("sound_laser");
-                            await SetPictureBoxImageAsync(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
+                            await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
 
-                        await SetLabelTextAsync(labelOutputFile, outFileName);
+                        await SetLabelTextAsync(groupBoxFiles.labelOutputFile, outFileName);
                         HashFiles.Add(outFilePath);
 
                         Cursor.Current = DefaultCursor;
@@ -701,8 +702,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             foreach (string file in HashFiles)
             {
                 if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file) &&
-                    labelFileIn != null && Path.GetFileName(file) == labelFileIn.Text &&
-                        pictureBoxFileIn.Tag != null && pictureBoxFileIn.Tag.ToString() == file)
+                    groupBoxFiles.labelFileIn != null && Path.GetFileName(file) == groupBoxFiles.labelFileIn.Text &&
+                        groupBoxFiles.pictureBoxFileIn.Tag != null && groupBoxFiles.pictureBoxFileIn.Tag.ToString() == file)
                     return file;
             }
             return string.Empty;
@@ -725,14 +726,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
             DateTime start = DateTime.Now;
 
-            this.pictureBoxRunningPipe.Image = Properties.Resources.PipeLineDecrypt;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.PipeLineDecrypt;
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
             BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-            SetPictureBoxImage(pictureBoxRunningPipe, bGen.GenerateDecryptPipeImage());
+            SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, bGen.GenerateDecryptPipeImage());
 
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
             {
@@ -762,7 +763,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     Cursor.Current = DefaultCursor;
                 }
             }
-            if (!string.IsNullOrEmpty(this.labelFileIn.Text) && !labelFileIn.Text.StartsWith("["))
+            if (!string.IsNullOrEmpty(groupBoxFiles.labelFileIn.Text) && !groupBoxFiles.labelFileIn.Text.StartsWith("["))
             {
                 string fileName = FileMatches();
                 if (string.IsNullOrEmpty(fileName))
@@ -773,7 +774,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
 
                 Cursor.Current = new Cursor(iconSandClock.Handle);
-                await SetInfoMessageAsync("Starting decryption file " + labelFileIn.Text, ToolTipIcon.Info, -1);
+                await SetInfoMessageAsync("Starting decryption file " + groupBoxFiles.labelFileIn.Text, ToolTipIcon.Info, -1);
 
                 try
                 {
@@ -789,8 +790,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     if (saved)
                     {
                         HashFiles.Add(outFileDecrypt);
-                        await SetPictureBoxImageAsync(pictureBoxOutFile, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
-                        await SetLabelTextAsync(labelOutputFile, Path.GetFileName(outFileDecrypt));
+                        await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
+                        await SetLabelTextAsync(groupBoxFiles.labelOutputFile, Path.GetFileName(outFileDecrypt));
                         await SetInfoMessageAsync("file decrypted", ToolTipIcon.Info, -1);
                     }
                     else
@@ -820,7 +821,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">DragEventArgs e</param>
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
 
             if (e != null && e.Data != null)
@@ -881,7 +882,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e"></param>
         internal void Drag_Leave(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
@@ -895,7 +896,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">DragEventArgs e</param>
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
 
             if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) ||
@@ -926,7 +927,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="files"></param>
         internal void Drop_Files(string[] files)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string ext = null;
             if (isDragMode && files != null && files.Length > 0)
             {
@@ -951,6 +952,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region file loading and saving ops
 
+        public virtual void GroupBoxFilesAdded(object sender, Area23EventArgs<string> filesToAddArgs)
+        {
+            string fileToAdd = "";
+            if (filesToAddArgs != null && ((fileToAdd = filesToAddArgs.GenericTData.ToString()) != null))
+            {
+                FileAddedAction(fileToAdd);
+            }
+        }
+
         /// <summary>
         /// FileAddedAction is called, when a file was opened 
         /// either by Menu Main -> Open
@@ -966,9 +976,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.textBoxOut.Text = string.Empty;
                 SetGBoxText(this.groupBoxFiles, "Files Group Box");
 
-                pictureBoxFileIn.Image = fileName.GetImageThumbnailFromFile();
-                pictureBoxFileIn.Tag = fileName;
-                labelFileIn.Text = Path.GetFileName(fileName);
+                groupBoxFiles.pictureBoxFileIn.Image = fileName.GetImageThumbnailFromFile();
+                groupBoxFiles.pictureBoxFileIn.Tag = fileName;
+                groupBoxFiles.labelFileIn.Text = Path.GetFileName(fileName);
 
                 _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
                 isDragMode = false;
@@ -1049,7 +1059,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;
@@ -1124,7 +1134,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         internal void menuMainSave_Click(object sender, EventArgs e)
         {
             // this.pictureBoxRunningPipe.Visible = false;
-            if (this.pictureBoxOutFile.Visible || labelOutputFile.Visible)
+            if (groupBoxFiles.pictureBoxFileOut.Visible || groupBoxFiles.labelOutputFile.Visible)
             {
                 byte[] fileBytes = new byte[0];
                 string fileName = "";
@@ -1133,7 +1143,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
                     {
-                        if (Path.GetFileName(filePath) == labelOutputFile.Text)
+                        if (Path.GetFileName(filePath) == groupBoxFiles.labelOutputFile.Text)
                         {
                             fileName = filePath;
                             fileBytes = System.IO.File.ReadAllBytes(filePath);
@@ -1146,8 +1156,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 {
                     if (HashFiles.Contains(fileName))
                         HashFiles.Remove(fileName);
-                    this.pictureBoxOutFile.Visible = false;
-                    this.labelOutputFile.Visible = false;
+                    groupBoxFiles.pictureBoxFileOut.Visible = false;
+                    groupBoxFiles.labelOutputFile.Visible = false;
                 }
 
 
@@ -1244,14 +1254,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         private void pictureOutBoxFile_Click(object sender, EventArgs e)
         {
-            if (pictureBoxOutFile != null && pictureBoxOutFile.Visible)
+            if (groupBoxFiles.pictureBoxFileOut != null && groupBoxFiles.pictureBoxFileOut.Visible)
             {
-                string filePath = pictureBoxOutFile.Tag.ToString() ?? "";
+                string filePath = groupBoxFiles.pictureBoxFileOut.Tag.ToString() ?? "";
                 if (!string.IsNullOrEmpty(filePath) &&
                     !filePath.StartsWith("{") && !filePath.EndsWith("}") &&
                         File.Exists(filePath))
                 {
-                    ProcessCmd.Execute("explorer", pictureBoxOutFile.Tag.ToString());
+                    ProcessCmd.Execute("explorer", groupBoxFiles.pictureBoxFileOut.Tag.ToString());
                 }
             }
         }
@@ -1263,8 +1273,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             {
                 Task.Run(new System.Action(() =>
                 {
-                    SetPictureBoxImage(this.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", true);
-                    SetPictureBoxImage(this.pictureBoxOutFile, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", false);
+                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", true);
+                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileOut, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", false);
                 }));
                 resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
             };

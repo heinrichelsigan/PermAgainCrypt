@@ -103,18 +103,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxHash = new TextBox();
             buttonSetPipeline = new Button();
             buttonReset = new Button();
-            pictureBoxFileIn = new PictureBox();
             pictureBoxAddAlgo = new PictureBox();
             textBoxPipe = new TextBox();
-            labelFileIn = new Label();
-            labelOutputFile = new Label();
-            pictureBoxOutFile = new PictureBox();
             textBoxSrc = new TextBox();
             textBoxOut = new TextBox();
             buttonEncrypt = new Button();
             buttonDecrypt = new Button();
-            groupBoxFiles = new GroupBox();
-            pictureBoxRunningPipe = new PictureBox();
             pictureBoxDelete = new PictureBox();
             comboBoxCompression = new ComboBox();
             comboBoxEncoding = new ComboBox();
@@ -127,15 +121,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             statusLabelMsg = new ToolStripStatusLabel();
             statusLabelDestination = new ToolStripStatusLabel();
             progressBar = new ProgressBar();
+            groupBoxFiles = new Area23.At.WinForm.CryptFormCore.Gui.Controls.GroupBoxFiles();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxHash).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).BeginInit();
-            groupBoxFiles.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
             SuspendLayout();
@@ -168,7 +159,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
             menuFileOpen.Size = new Size(162, 22);
             menuFileOpen.Text = "Open";
-            menuFileOpen.Click += this.menuFileOpen_Click;
+            menuFileOpen.Click += menuFileOpen_Click;
             // 
             // menuMainSave
             // 
@@ -177,7 +168,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
             menuMainSave.Size = new Size(162, 22);
             menuMainSave.Text = "Save";
-            menuMainSave.Click += this.menuMainSave_Click;
+            menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
@@ -190,7 +181,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSetPipe.Name = "menuMainSetPipe";
             menuMainSetPipe.Size = new Size(162, 22);
             menuMainSetPipe.Text = "Set Pipe";
-            menuMainSetPipe.Click += this.SetPipeline_Click;
+            menuMainSetPipe.Click += SetPipeline_Click;
             // 
             // menuMainHashKey
             // 
@@ -198,7 +189,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashKey.Name = "menuMainHashKey";
             menuMainHashKey.Size = new Size(162, 22);
             menuMainHashKey.Text = "Hash Key";
-            menuMainHashKey.Click += this.Hash_Click;
+            menuMainHashKey.Click += Hash_Click;
             // 
             // menuMainHashPipe
             // 
@@ -206,7 +197,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashPipe.Name = "menuMainHashPipe";
             menuMainHashPipe.Size = new Size(162, 22);
             menuMainHashPipe.Text = "Hash Pipe";
-            menuMainHashPipe.Click += this.Hash_Pipe_Click;
+            menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
@@ -233,7 +224,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainRandomText.Name = "menuMainRandomText";
             menuMainRandomText.Size = new Size(162, 22);
             menuMainRandomText.Text = "Random Text";
-            menuMainRandomText.Click += this.RandomText_Click;
+            menuMainRandomText.Click += RandomText_Click;
             // 
             // menuMainReset
             // 
@@ -254,7 +245,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
             menuFileExit.Size = new Size(162, 22);
             menuFileExit.Text = "Exit";
-            menuFileExit.Click += this.menuFileExit_Click;
+            menuFileExit.Click += menuFileExit_Click;
             // 
             // menuCompression
             // 
@@ -271,7 +262,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
             zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
-            zmenu7z.Click += this.menuCompression_Click;
+            zmenu7z.Click += menuCompression_Click;
             // 
             // zmenuBZip2
             // 
@@ -280,7 +271,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
             zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
-            zmenuBZip2.Click += this.menuCompression_Click;
+            zmenuBZip2.Click += menuCompression_Click;
             // 
             // zmenuGZip
             // 
@@ -289,7 +280,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
             zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
-            zmenuGZip.Click += this.menuCompression_Click;
+            zmenuGZip.Click += menuCompression_Click;
             // 
             // zmenuZip
             // 
@@ -298,7 +289,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
             zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
-            zmenuZip.Click += this.menuCompression_Click;
+            zmenuZip.Click += menuCompression_Click;
             // 
             // zmenuNone
             // 
@@ -309,7 +300,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
             zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
-            zmenuNone.Click += this.menuCompression_Click;
+            zmenuNone.Click += menuCompression_Click;
             // 
             // menuEncoding
             // 
@@ -656,73 +647,73 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxAlgo.DropDownWidth = 160;
             comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxAlgo.FormattingEnabled = true;
-            comboBoxAlgo.Location = new Point(108, 170);
+            comboBoxAlgo.Location = new Point(108, 160);
             comboBoxAlgo.Margin = new Padding(1);
             comboBoxAlgo.MaxDropDownItems = 32;
             comboBoxAlgo.Name = "comboBoxAlgo";
             comboBoxAlgo.Size = new Size(120, 23);
-            comboBoxAlgo.TabIndex = 11;
+            comboBoxAlgo.TabIndex = 12;
             // 
             // textBoxKey
             // 
             textBoxKey.BackColor = SystemColors.ControlLightLight;
             textBoxKey.Font = new Font("Lucida Sans Typewriter", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxKey.Location = new Point(48, 32);
+            textBoxKey.Location = new Point(48, 30);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(810, 25);
+            textBoxKey.Size = new Size(823, 25);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
-            textBoxKey.TextChanged += this.textBoxKey_TextChanged;
+            textBoxKey.TextChanged += textBoxKey_TextChanged;
             // 
             // pictureBoxKey
             // 
             pictureBoxKey.BackColor = SystemColors.Control;
             pictureBoxKey.Image = Properties.Resources.key_ring;
-            pictureBoxKey.Location = new Point(8, 32);
+            pictureBoxKey.Location = new Point(8, 28);
             pictureBoxKey.Margin = new Padding(1);
             pictureBoxKey.Name = "pictureBoxKey";
             pictureBoxKey.Size = new Size(30, 30);
             pictureBoxKey.TabIndex = 3;
             pictureBoxKey.TabStop = false;
-            pictureBoxKey.Click += this.pictureBoxKey_Click;
+            pictureBoxKey.Click += pictureBoxKey_Click;
             // 
             // pictureBoxHash
             // 
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBoxHash.BackColor = SystemColors.Control;
             pictureBoxHash.Image = Properties.Resources.a_hash1;
-            pictureBoxHash.Location = new Point(8, 128);
+            pictureBoxHash.Location = new Point(8, 69);
             pictureBoxHash.Margin = new Padding(1);
             pictureBoxHash.Name = "pictureBoxHash";
             pictureBoxHash.Size = new Size(32, 30);
-            pictureBoxHash.TabIndex = 7;
+            pictureBoxHash.TabIndex = 6;
             pictureBoxHash.TabStop = false;
-            pictureBoxHash.Click += this.Hash_Click;
+            pictureBoxHash.Click += Hash_Click;
             // 
             // textBoxHash
             // 
             textBoxHash.BackColor = SystemColors.Control;
             textBoxHash.Font = new Font("Lucida Sans Typewriter", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHash.Location = new Point(48, 128);
+            textBoxHash.Location = new Point(48, 69);
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(823, 27);
-            textBoxHash.TabIndex = 8;
+            textBoxHash.Size = new Size(823, 23);
+            textBoxHash.TabIndex = 7;
             // 
             // buttonSetPipeline
             // 
             buttonSetPipeline.BackColor = SystemColors.Control;
             buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonSetPipeline.Location = new Point(876, 32);
+            buttonSetPipeline.Location = new Point(876, 30);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
             buttonSetPipeline.Size = new Size(120, 30);
             buttonSetPipeline.TabIndex = 5;
             buttonSetPipeline.Text = "Set Pipeline";
             buttonSetPipeline.UseVisualStyleBackColor = false;
-            buttonSetPipeline.Click += this.SetPipeline_Click;
+            buttonSetPipeline.Click += SetPipeline_Click;
             // 
             // buttonReset
             // 
@@ -736,76 +727,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonReset.Text = "Reset Form";
             buttonReset.UseVisualStyleBackColor = false;
             // 
-            // pictureBoxFileIn
-            // 
-            pictureBoxFileIn.Image = Properties.Resources.image_file;
-            pictureBoxFileIn.InitialImage = Properties.Resources.img_success;
-            pictureBoxFileIn.Location = new Point(12, 30);
-            pictureBoxFileIn.Margin = new Padding(2);
-            pictureBoxFileIn.Name = "pictureBoxFileIn";
-            pictureBoxFileIn.Size = new Size(64, 64);
-            pictureBoxFileIn.SizeMode = PictureBoxSizeMode.AutoSize;
-            pictureBoxFileIn.TabIndex = 22;
-            pictureBoxFileIn.TabStop = false;
-            // 
             // pictureBoxAddAlgo
             // 
             pictureBoxAddAlgo.BackColor = SystemColors.ControlLight;
             pictureBoxAddAlgo.Image = Properties.Resources.AddAesArrowHover;
-            pictureBoxAddAlgo.Location = new Point(230, 168);
+            pictureBoxAddAlgo.Location = new Point(230, 159);
             pictureBoxAddAlgo.Margin = new Padding(1);
             pictureBoxAddAlgo.Name = "pictureBoxAddAlgo";
             pictureBoxAddAlgo.Size = new Size(32, 27);
-            pictureBoxAddAlgo.TabIndex = 12;
+            pictureBoxAddAlgo.TabIndex = 13;
             pictureBoxAddAlgo.TabStop = false;
-            pictureBoxAddAlgo.Click += this.pictureBoxAddAlgo_Click;
+            pictureBoxAddAlgo.Click += pictureBoxAddAlgo_Click;
             // 
             // textBoxPipe
             // 
             textBoxPipe.BackColor = SystemColors.ControlLightLight;
             textBoxPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxPipe.Location = new Point(264, 169);
+            textBoxPipe.Location = new Point(264, 160);
             textBoxPipe.Margin = new Padding(1);
             textBoxPipe.MaxLength = 8192;
             textBoxPipe.Name = "textBoxPipe";
             textBoxPipe.ReadOnly = true;
             textBoxPipe.Size = new Size(578, 23);
-            textBoxPipe.TabIndex = 13;
-            // 
-            // labelFileIn
-            // 
-            labelFileIn.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelFileIn.Location = new Point(12, 115);
-            labelFileIn.Margin = new Padding(1, 0, 1, 0);
-            labelFileIn.Name = "labelFileIn";
-            labelFileIn.Size = new Size(483, 28);
-            labelFileIn.TabIndex = 21;
-            labelFileIn.Text = "[Input File]";
-            // 
-            // labelOutputFile
-            // 
-            labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelOutputFile.Location = new Point(508, 115);
-            labelOutputFile.Margin = new Padding(1, 0, 1, 0);
-            labelOutputFile.Name = "labelOutputFile";
-            labelOutputFile.RightToLeft = RightToLeft.Yes;
-            labelOutputFile.Size = new Size(477, 28);
-            labelOutputFile.TabIndex = 24;
-            labelOutputFile.Text = "[Output File]";
-            labelOutputFile.Visible = false;
-            // 
-            // pictureBoxOutFile
-            // 
-            pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(917, 30);
-            pictureBoxOutFile.Margin = new Padding(1);
-            pictureBoxOutFile.Name = "pictureBoxOutFile";
-            pictureBoxOutFile.Size = new Size(68, 68);
-            pictureBoxOutFile.TabIndex = 25;
-            pictureBoxOutFile.TabStop = false;
-            pictureBoxOutFile.Visible = false;
-            pictureBoxOutFile.Click += this.pictureOutBoxFile_Click;
-            pictureBoxOutFile.DoubleClick += this.pictureOutBoxFile_Click;
+            textBoxPipe.TabIndex = 14;
             // 
             // textBoxSrc
             // 
@@ -859,51 +803,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonDecrypt.Text = "Decrypt";
             buttonDecrypt.UseVisualStyleBackColor = false;
             // 
-            // groupBoxFiles
-            // 
-            groupBoxFiles.AllowDrop = true;
-            groupBoxFiles.BackColor = SystemColors.Control;
-            groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
-            groupBoxFiles.Controls.Add(pictureBoxFileIn);
-            groupBoxFiles.Controls.Add(labelFileIn);
-            groupBoxFiles.Controls.Add(pictureBoxOutFile);
-            groupBoxFiles.Controls.Add(labelOutputFile);
-            groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
-            groupBoxFiles.Location = new Point(8, 198);
-            groupBoxFiles.Margin = new Padding(2);
-            groupBoxFiles.Name = "groupBoxFiles";
-            groupBoxFiles.Padding = new Padding(2);
-            groupBoxFiles.Size = new Size(988, 145);
-            groupBoxFiles.TabIndex = 20;
-            groupBoxFiles.TabStop = false;
-            groupBoxFiles.Text = "Files (drag files into)";
-            groupBoxFiles.DragDrop += this.Drag_Drop;
-            groupBoxFiles.DragEnter += this.Drag_Enter;
-            groupBoxFiles.DragOver += this.Drag_Over;
-            groupBoxFiles.DragLeave += this.Drag_Leave;
-            groupBoxFiles.GiveFeedback += this.Give_FeedBack;
-            // 
-            // pictureBoxRunningPipe
-            // 
-            pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
-            pictureBoxRunningPipe.Location = new Point(180, 1);
-            pictureBoxRunningPipe.Margin = new Padding(1);
-            pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
-            pictureBoxRunningPipe.Size = new Size(640, 108);
-            pictureBoxRunningPipe.TabIndex = 23;
-            pictureBoxRunningPipe.TabStop = false;
-            // 
             // pictureBoxDelete
             // 
             pictureBoxDelete.BackColor = SystemColors.Control;
             pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(844, 169);
+            pictureBoxDelete.Location = new Point(844, 160);
             pictureBoxDelete.Margin = new Padding(1);
             pictureBoxDelete.Name = "pictureBoxDelete";
             pictureBoxDelete.Size = new Size(27, 27);
             pictureBoxDelete.TabIndex = 15;
             pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += this.pictureBoxDelete_Click;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;
             // 
             // comboBoxCompression
             // 
@@ -911,13 +821,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxCompression.FormattingEnabled = true;
             comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
-            comboBoxCompression.Location = new Point(8, 170);
+            comboBoxCompression.Location = new Point(8, 160);
             comboBoxCompression.Margin = new Padding(1);
             comboBoxCompression.MaxDropDownItems = 32;
             comboBoxCompression.Name = "comboBoxCompression";
             comboBoxCompression.Size = new Size(96, 23);
-            comboBoxCompression.TabIndex = 10;
-            comboBoxCompression.SelectedIndexChanged += this.ComboBoxCompression_SelectedIndexChanged;
+            comboBoxCompression.TabIndex = 11;
+            comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
             // comboBoxEncoding
             // 
@@ -926,12 +836,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxEncoding.FormattingEnabled = true;
             comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(876, 170);
+            comboBoxEncoding.Location = new Point(876, 160);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;
             comboBoxEncoding.Name = "comboBoxEncoding";
             comboBoxEncoding.Size = new Size(120, 23);
-            comboBoxEncoding.TabIndex = 14;
+            comboBoxEncoding.TabIndex = 15;
             // 
             // buttonRandomText
             // 
@@ -944,20 +854,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonRandomText.TabIndex = 35;
             buttonRandomText.Text = "Random Text";
             buttonRandomText.UseVisualStyleBackColor = false;
-            buttonRandomText.Click += this.RandomText_Click;
+            buttonRandomText.Click += RandomText_Click;
             // 
             // buttonHashPipe
             // 
             buttonHashPipe.BackColor = SystemColors.Control;
             buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonHashPipe.Location = new Point(876, 128);
+            buttonHashPipe.Location = new Point(876, 69);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
             buttonHashPipe.Size = new Size(120, 27);
-            buttonHashPipe.TabIndex = 9;
+            buttonHashPipe.TabIndex = 8;
             buttonHashPipe.Text = "Hash Pipe";
             buttonHashPipe.UseVisualStyleBackColor = false;
-            buttonHashPipe.Click += this.Hash_Pipe_Click;
+            buttonHashPipe.Click += Hash_Pipe_Click;
             // 
             // radioButtonListHash
             // 
@@ -966,13 +876,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
             radioButtonListHash.Items.AddRange(new object[] { "Ascon256", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool", "Xoodyak" });
-            radioButtonListHash.Location = new Point(8, 73);
+            radioButtonListHash.Location = new Point(8, 113);
             radioButtonListHash.Margin = new Padding(2);
             radioButtonListHash.MultiColumn = true;
             radioButtonListHash.Name = "radioButtonListHash";
             radioButtonListHash.Size = new Size(988, 38);
             radioButtonListHash.Sorted = true;
-            radioButtonListHash.TabIndex = 6;
+            radioButtonListHash.TabIndex = 10;
             // 
             // labelInfoMessage
             // 
@@ -1028,12 +938,27 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             progressBar.Size = new Size(989, 26);
             progressBar.TabIndex = 45;
             // 
-            // EncryptForm
+            // groupBoxFiles
+            // 
+            groupBoxFiles.AllowDrop = true;
+            groupBoxFiles.BackColor = SystemColors.Control;
+            groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
+            groupBoxFiles.Location = new Point(8, 196);
+            groupBoxFiles.Margin = new Padding(2);
+            groupBoxFiles.Name = "groupBoxFiles";
+            groupBoxFiles.Padding = new Padding(2);
+            groupBoxFiles.Size = new Size(988, 145);
+            groupBoxFiles.TabIndex = 18;
+            groupBoxFiles.TabStop = false;
+            groupBoxFiles.Text = "groupBoxFiles";
+            // 
+            // EncryptFormMultiControls
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1008, 729);
+            Controls.Add(groupBoxFiles);
             Controls.Add(progressBar);
             Controls.Add(statusStrip);
             Controls.Add(labelInfoMessage);
@@ -1043,7 +968,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             Controls.Add(comboBoxEncoding);
             Controls.Add(comboBoxCompression);
             Controls.Add(pictureBoxDelete);
-            Controls.Add(groupBoxFiles);
             Controls.Add(buttonDecrypt);
             Controls.Add(buttonEncrypt);
             Controls.Add(textBoxOut);
@@ -1069,18 +993,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             Opacity = 0.92D;
             Text = "EncryptFormMultiControls";
             FormClosed += menuFileExit_Close;
-            Load += this.EncryptFormMultiControls_Load;
+            Load += EncryptFormMultiControls_Load;
             menuStripEncrypt.ResumeLayout(false);
             menuStripEncrypt.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxHash).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).EndInit();
-            groupBoxFiles.ResumeLayout(false);
-            groupBoxFiles.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
@@ -1090,8 +1009,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion
         private BindingSource enumOptionsBindingSource;
-        internal GroupBox groupBoxFiles;
-        private PictureBox pictureBoxRunningPipe;
         protected internal PictureBox pictureBoxKey;
         protected internal PictureBox pictureBoxHash;
         protected internal TextBox textBoxHash;
@@ -1118,12 +1035,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         internal  ToolStripMenuItem menuEncHex32;
         protected internal ComboBox comboBoxAlgo;
         protected internal Button buttonReset;
-        protected internal PictureBox pictureBoxFileIn;
         protected internal PictureBox pictureBoxAddAlgo;
         protected internal TextBox textBoxPipe;
-        protected internal Label labelFileIn;
-        protected internal Label labelOutputFile;
-        protected internal PictureBox pictureBoxOutFile;
         protected internal TextBox textBoxSrc;
         protected internal TextBox textBoxOut;
         protected internal ToolStripMenuItem menuMainSave;
@@ -1184,6 +1097,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private ToolStripMenuItem menuOptionsMenuFileSettings;
         private ToolStripMenuItem menuItemCreatePipeSettingsFromFileName;
         private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
+        private Controls.GroupBoxFiles groupBoxFiles;
     }
 
 

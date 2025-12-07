@@ -926,7 +926,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         /// <param name="files"></param>
         internal void Drop_Files(string[] files)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string ext = null;
             if (isDragMode && files != null && files.Length > 0)
             {
