@@ -111,7 +111,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
         public CImage(string serializedImgage, SerType msgType = SerType.Json)
         {
-            CImage cImage = msgType == SerType.Xml ? FromXml<CImage>(serializedImgage) : FromJson<CImage>(serializedImgage);
+            CImage cImage = msgType.DeCerialize<CImage>(serializedImgage);
             if (cImage != null)
             {
 				CloneCopy(cImage, this);
@@ -161,11 +161,10 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             return base.CCopy(leftDest, rightSrc);
         }
 
-        /// <summary>
-        /// ToXml serializes this <see cref="CImage"/> to serialized xml <see cref="string"/>
-        /// </summary>
-        /// <returns>xml serialized string</returns>
-        public override string ToXml() => Utils.SerializeToXml(this);
+        public override string Cerialize() => Cerializer.Cerialize<CImage>(this);
+
+        public CImage? DeCerialize(string jsonText) => DeCerialize<CImage>(jsonText);
+
 
         /// <summary>
         /// ToDrawingBitmap converts this <see cref="CImage"/> to <see cref="Bitmap"/>
@@ -356,7 +355,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             destination.Message = source.Message;
             destination.Hash = source.Hash;
-            destination.MsgType = source.MsgType;
+            destination.Cerializer = source.Cerializer;
             destination.CBytes = source.CBytes;
             destination.Md5Hash = source.Md5Hash;
 
@@ -377,7 +376,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             destination.Message = source.Message;
             destination.Hash = source.Hash;
-            destination.MsgType = source.MsgType;
+            destination.Cerializer = source.Cerializer;
             destination.CBytes = source.CBytes;
             destination.Md5Hash = source.Md5Hash;
 

@@ -16,7 +16,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
 		#region properties
 
-        public SerType MsgType { get; set; }
+        public SerType Cerializer { get; set; }
 
 		public CipherPipe CryptPipe { get; set; }
 
@@ -27,9 +27,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         [JsonIgnore]
         public virtual string SerializedMsg
         {
-            get => MsgType == SerType.Xml ?
-                        ToXml() :
-                        JsonConvert.SerializeObject(this, Formatting.Indented);
+			get => Cerialize();
         }
 
         public string Hash { get; set; }
@@ -48,7 +46,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 		/// </summary>
 		public CMsg()
 		{
-			MsgType = SerType.Json;
+            Cerializer = SerType.Json;
 			Message = string.Empty;
             // SerializedMsg = string.Empty;
             Hash = string.Empty;
@@ -77,20 +75,20 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 			switch (msgArt)
 			{
 				case SerType.Json:
-					MsgType = SerType.Json;
+                    Cerializer = SerType.Json;
 					CMsg cjson = GetMsgContentType(serializedString, out Type cqrType, SerType.Json);
 					if (cjson != null)
 					{
-						cjson.MsgType = SerType.Json;
+						cjson.Cerializer = SerType.Json;
 						CloneCopy(cjson, this);
                     }
 					break;
 				case SerType.Xml:
-					MsgType = SerType.Xml;
+                    Cerializer = SerType.Xml;
 					CMsg cXml = GetMsgContentType(serializedString, out Type cqType, msgArt);
 					if (cXml != null)
 					{
-						cXml.MsgType = SerType.Xml;
+						cXml.Cerializer = SerType.Xml;
                         CloneCopy(cXml, this);
 					}
 					break;
@@ -99,7 +97,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
 				case SerType.Raw:
 				default:
-					MsgType = SerType.Raw;
+                    Cerializer = SerType.Raw;
 					Message = serializedString;
                     // SerializedMsg = serializedString;
 
@@ -120,7 +118,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 		/// <param name="msgArt"></param>
 		public CMsg(string plainTextMsg, string hash, SerType msgArt = SerType.Raw, string md5Hash = "")
 		{
-			MsgType = msgArt;
+            Cerializer = msgArt;
 			Hash = hash;
 			Message = plainTextMsg;
             // SerializedMsg = "";
@@ -169,7 +167,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         {
 			if (Encrypt(serverKey, encoder, zipType))
 			{
-				string serializedJson = ToJson();
+				string serializedJson = Cerialize();
 				return serializedJson;
 			}
 			throw new CException($"EncryptToJson(string severKey failed");
@@ -201,7 +199,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 			if (string.IsNullOrEmpty(serialized))
 				serialized = SerializedMsg;
 
-			CMsg? cc = FromJson<CMsg>(serialized);
+			CMsg? cc = Cerializer.DeCerialize<CMsg>(serialized);
 			if (cc != null && cc.Decrypt(serverKey, decoder, zipType))
 			{
                 CloneCopy(cc, this);
@@ -245,14 +243,14 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         /// Serialize all CC classes to json
         /// </summary>
         /// <returns>json serialized string</returns>
-        public virtual string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public virtual string Cerialize() => Cerializer.Cerialize(this);
 
-        public virtual T? FromJson<T>(string jsonText)
+        public virtual T? DeCerialize<T>(string jsonText)
 		{
 			if (string.IsNullOrEmpty(jsonText))
 				jsonText = SerializedMsg;
 
-			T? t = JsonConvert.DeserializeObject<T>(jsonText);
+			T? t = Cerializer.DeCerialize<T>(jsonText);
 			if (t != null)
 			{
 				if (t is CMsg cc)
@@ -263,32 +261,13 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 					cfile.CCopy(this, cfile);
 				else if (t is CImage cimg)
 					cimg.CCopy(this, cimg);
-			}
-			
-			return t;
+                else if (t is CryptMsg<object> csrvmsg)
+					csrvmsg.CCopy(this, csrvmsg);
+            }
+
+            return t;
 		}
 
-		public virtual string ToXml() => Utils.SerializeToXml(this);
-
-		public virtual T FromXml<T>(string xmlText)
-		{
-			T? t = Utils.DeserializeFromXml<T>(xmlText);
-			if (t != null)
-			{
-				if (t is CMsg cc)
-					cc.CCopy(this, cc);
-				if (t is CContact cct)
-                    cct.CCopy(this, cct);
-				else if (t is CFile cfile)
-                    cfile.CCopy(this, cfile);
-				else if (t is CImage cimg)
-                    cimg.CCopy(this, cimg);
-				//else if (t is CryptMsg<TC> csrvmsg)
-    //                csrvmsg.CCopy(this, csrvmsg);
-			}
-
-			return t;
-		}
 
 
         #endregion serialization / deserialization
@@ -490,7 +469,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             destination.Hash = source.Hash;
             destination.Message = source.Message;
-            destination.MsgType = source.MsgType;
+            destination.Cerializer = source.Cerializer;
             destination.CBytes = source.CBytes;
             destination.Md5Hash = source.Md5Hash;
 			destination.EnCodingType = source.EnCodingType;

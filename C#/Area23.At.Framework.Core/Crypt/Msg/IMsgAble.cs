@@ -2,16 +2,14 @@
 {
     public interface IMsgAble
     {
-        SerType MsgType { get; }        
+        SerType Cerializer { get; }        
         string Message { get; }
 
         string Hash { get; }
         string Md5Hash { get; }
 
-        string ToJson();
-        T FromJson<T>(string jsonText);
-        string ToXml();
-        T FromXml<T>(string xmlText);
-      
+        string Cerialize();
+        T? DeCerialize<T>(string jsonText);
+
     }
 }

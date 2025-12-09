@@ -244,7 +244,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         public static string ToUu(byte[] inBytes)
         {
             string toUuFunCall = $"ToUu(byte[{inBytes.Length}] inBytes)";
-            Area23Log.LogOriginMsg("Uu", $"{toUuFunCall} ... STARTED.");
+            //Area23Log.LogOriginMsg("Uu", $"{toUuFunCall} ... STARTED.");
             MemoryStream outStream = new MemoryStream();
             UUEncode(new MemoryStream(inBytes), outStream);
             outStream.Flush();
@@ -260,7 +260,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         public static byte[] FromUu(string uuEncStr)
         {
             string fromUuFunCall = "FromUu(string uuEncStr[.Length=" + uuEncStr.Length + "])";
-            Area23Log.LogOriginMsg("Uu", fromUuFunCall + "... STARTED.");
+            // Area23Log.LogOriginMsg("Uu", fromUuFunCall + "... STARTED.");
 
             lock (_lock)
             {
@@ -282,7 +282,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             outStream.Flush();
             byte[] plainBytes = outStream.ToArray();
 
-            Area23Log.LogOriginMsg("Uu", $"byte[{plainBytes.Length}] plainBytes = FromUu(string uuEncStr) ... FINISHED.");
+            // Area23Log.LogOriginMsg("Uu", $"byte[{plainBytes.Length}] plainBytes = FromUu(string uuEncStr) ... FINISHED.");
             return plainBytes;
         }
 

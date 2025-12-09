@@ -61,7 +61,7 @@ namespace Area23.At.Framework.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area23.At.Framework.Library.
+        ///   Looks up a localized string similar to Area23.At.Framework.Core.
         /// </summary>
         internal static string app_name {
             get {
@@ -70,41 +70,11 @@ namespace Area23.At.Framework.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BitmapAbout {
-            get {
-                object obj = ResourceManager.GetObject("BitmapAbout", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to VisualStudio 2022 C# 9.0.
+        ///   Looks up a localized string similar to VisualStudio 2022 C# 10.0.
         /// </summary>
         internal static string build_with {
             get {
                 return ResourceManager.GetString("build_with", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap F40 {
-            get {
-                object obj = ResourceManager.GetObject("F40", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap F45 {
-            get {
-                object obj = ResourceManager.GetObject("F45", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -166,16 +136,6 @@ namespace Area23.At.Framework.Core.Properties {
         internal static System.Drawing.Bitmap ImageAesArrowHover {
             get {
                 object obj = ResourceManager.GetObject("ImageAesArrowHover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ImageCar {
-            get {
-                object obj = ResourceManager.GetObject("ImageCar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

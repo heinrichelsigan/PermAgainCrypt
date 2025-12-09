@@ -1,8 +1,10 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
+using Area23.At.Framework.Core.Crypt.Cipher.Symmetric;
 using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
+using Org.BouncyCastle.Crypto;
 using System.Text;
 
 
@@ -28,7 +30,9 @@ namespace EU.CqrXs.Console.Core
         Help = 0xb,
         Qey = 0xc,
         Pass = 0xd,
-        Hash = 0xe
+        Hash = 0xe,
+        SymmCipher = 0xf
+
     }
 
 
@@ -48,12 +52,13 @@ namespace EU.CqrXs.Console.Core
     ///    |  -p --pass=Passphrase
     /// -k | --key=mykey
     /// -q | --qey=myqey    
-    /// -H | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak         
+    /// -H | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    /// -S | --SymmCipher 
     /// -? | --gethelp
     /// </summary>
     internal class Program
     {
-        
+        static bool useSymmCipher = false;
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetFullPath(System.Environment.ProcessPath);
         static string? inName = null, outName = null, outEnviron = null, key = null;
@@ -96,6 +101,9 @@ namespace EU.CqrXs.Console.Core
                 else // fetch passphrase or Key or Qey (decrypt key) from optEnum and optStr
                     if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
                     passKey = optStr;
+                else // prefetch SymmCipherMode
+                    if (optEnum == OptEnum.SymmCipher)
+                    useSymmCipher = true;
                 else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>();  
                     dict.Add(optEnum, optStr);
             }
@@ -155,37 +163,74 @@ namespace EU.CqrXs.Console.Core
                             optStr = optStr.Replace("(", "").Replace("{", "").Replace("[", "").Replace("]", "").Replace("}", "").Replace(")", "");
                             algos = optStr.Split(",;:".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                         }
-                        break;
+                        break;                    
                     default: break;
                 }
             }
 
             // Create cipher pipe for en-/decryption
             CipherPipe pipe = (algos.Length > 0) ?
-                                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
-                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-
+                            new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
+                            new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+            SymmCipherPipe symmPipe;
+            if (useSymmCipher)
+            {
+                
+            }
             // System.Console.WriteLine($"CipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
-
+            
+            string outString = "";
             if (!reverseDirection)
             {
                 System.Console.Write($" InPipe: ");
-                foreach (CipherEnum cipher in pipe.InPipe)
-                    System.Console.Write($"{cipher}=>");
-                System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
-                // Encrypt process
-                string outString = pipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
+                if (useSymmCipher)
+                {
+                    symmPipe = (algos.Length > 0) ?
+                        new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
+                        new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    foreach (var symmCipher in symmPipe.InPipe)
+                        System.Console.Write($"{symmCipher}=>");
+                    System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
+                        $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+                    outString = symmPipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
+                }
+                else
+                {
+                    foreach (CipherEnum cipher in pipe.InPipe)
+                        System.Console.Write($"{cipher}=>");
+                    System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipType={pipe.ZType} " +
+                        $"EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
+                    outString = pipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
+                }
+
+                // Encrypt process;
                 outBytes = System.Text.Encoding.UTF8.GetBytes(outString);
             }
             else
             {
-                System.Console.Write($"OutPipe: ");
-                foreach (CipherEnum cipher in pipe.OutPipe)
-                    System.Console.Write($"{cipher}=>");
-                System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
                 // Decrypt process
                 string inString = System.Text.Encoding.UTF8.GetString(inBytes);
-                outBytes = pipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
+
+                System.Console.Write($"OutPipe: ");
+                if (useSymmCipher)
+                {
+                    symmPipe = (algos.Length > 0) ?
+                        new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
+                        new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    foreach (var symmCipher in symmPipe.OutPipe)
+                        System.Console.Write($"{symmCipher}=>");
+                    System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
+                        $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+                    outBytes = symmPipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
+                }
+                else
+                {
+                    foreach (CipherEnum cipher in pipe.OutPipe)
+                        System.Console.Write($"{cipher}=>");
+                    System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipType={pipe.ZType} " +
+                        $"EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
+                    outBytes = pipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
+                }                   
             }
 
             inBytes = outBytes;
@@ -301,6 +346,8 @@ namespace EU.CqrXs.Console.Core
                 case 'h':
                 case 'H': optEnum = OptEnum.Hash; 
                     return optArg;
+                case 'S': optEnum = OptEnum.SymmCipher;
+                    return optArg;
                 case 'g':
                 case 'G':
                 case '?': 
@@ -325,7 +372,7 @@ namespace EU.CqrXs.Console.Core
     -z | --zip={gzip|bzip2}
     -d | --decode={raw|hex16|hex32|base32|base64|uu}
     -e | --encode={raw|hex16|hex32|base32|base64|uu}
-    -c | --crypt={algo1,algo2,...}          
+      -c | --crypt={algo1,algo2,...}
          algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
@@ -335,19 +382,24 @@ namespace EU.CqrXs.Console.Core
             Seed,SkipJack,Serpent,SM4,
             Tea,Tnepres,XTea,
             ZenMatrix,ZenMatrix2
-       |  -p --pass=Passphrase
-    -D | --decrypt={[aes,des3,blowfish,fish2,fish3]|key}
-       |  -p --pass=Passphrase    
+        symmAlgo: 
+            Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
+      -p --pass=Passphrase
+    -D | --decrypt=={algo1,algo2,...}
+      -p --pass=Passphrase    
     -k | --key=passKey encrypt
     -q | --qey=passKey decrypt
-    -h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}      
+    -h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    -S | --SymmCipher 
     -? | --gethelp");
 
-            System.Console.Out.WriteLine($"\nExamples:");
-            System.Console.Out.WriteLine($"      \t{Path.GetFileName(progName)} -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32");
-            System.Console.Out.WriteLine($"      \t{Path.GetFileName(progName)} -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg");
-            System.Console.Out.WriteLine($"      \t{Path.GetFileName(progName)} --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64");
-            System.Console.Out.WriteLine($"      \t{Path.GetFileName(progName)} -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg");
+            System.Console.Out.WriteLine($"\nExamples: ");
+            System.Console.Out.WriteLine($"\t{Path.GetFileName(progName)} -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32");
+            System.Console.Out.WriteLine($"\t{Path.GetFileName(progName)} -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg");
+            System.Console.Out.WriteLine($"\n\t{Path.GetFileName(progName)} --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64");
+            System.Console.Out.WriteLine($"\t{Path.GetFileName(progName)} -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg");
+            System.Console.Out.WriteLine($"\n\t{Path.GetFileName(progName)} -i=README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=README.MD.SCrypt.zip.uu");
+            System.Console.Out.WriteLine($"\t{Path.GetFileName(progName)} -i=README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=README_UNZIP.txt");
 
             System.Environment.Exit(0);
         }

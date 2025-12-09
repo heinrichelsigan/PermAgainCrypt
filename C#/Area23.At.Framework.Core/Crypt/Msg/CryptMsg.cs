@@ -26,7 +26,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Hash = "";
             TContent = null;
             Md5Hash = "";
-            MsgType = SerType.Json;
+            Cerializer = SerType.Json;
             CBytes = null;
         }
 
@@ -47,7 +47,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Message = msg ?? string.Empty;
             TContent = tContent;
             Md5Hash = "";
-            MsgType = SerType.Json;
+            Cerializer = SerType.Json;
             CBytes = null;
         }
 
@@ -59,13 +59,13 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             if (msgArt == SerType.Json)
             {
-                cMsg = FromJson<CryptMsg<TC>>(serializedString);
-                cMsg.MsgType = SerType.Json;
+                cMsg = Cerializer.DeCerialize<CryptMsg<TC>>(serializedString);
+                cMsg.Cerializer = SerType.Json;
             }
             else if (msgArt == SerType.Xml)
             {
-                cMsg = FromXml<CryptMsg<TC>>(serializedString);
-                cMsg.MsgType = SerType.Xml;
+                cMsg = Cerializer.DeCerialize<CryptMsg<TC>>(serializedString);
+                cMsg.Cerializer = SerType.Xml;
             }
 
             if (cMsg == null)
@@ -76,7 +76,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Message = cMsg.Message;
             CBytes = cMsg.CBytes;
             Md5Hash = cMsg.Md5Hash;
-            MsgType = cMsg.MsgType;
+            Cerializer = cMsg.Cerializer;
         }
 
 
@@ -107,7 +107,8 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         {
             if (Encrypt(serverKey, encoder, zipType))
             {
-                string serializedJson = ToJson();
+                Cerializer = SerType.Json;
+                string serializedJson = Cerialize();
                 return serializedJson;
             }
             throw new CException($"EncryptToJson(string severKey failed");
@@ -144,12 +145,12 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             if (string.IsNullOrEmpty(serialized))
                 serialized = SerializedMsg;
 
-            CryptMsg<TC> csrvmsg = FromJson<CryptMsg<TC>>(serialized);
+            CryptMsg<TC> csrvmsg = DeCerialize<CryptMsg<TC>>(serialized);
             if (csrvmsg != null && Decrypt(serverKey, decoder, zipType))
             {
                 csrvmsg.Message = Message;
                 csrvmsg.CBytes = CBytes;
-                csrvmsg.MsgType = MsgType;
+                csrvmsg.Cerializer = Cerializer;
                 csrvmsg.Md5Hash = Md5Hash;
                 csrvmsg.Hash = Hash;
                 csrvmsg.TContent = TContent;
@@ -199,55 +200,9 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
         #region members
 
-        public override T? FromJson<T>(string jsonText) where T : default
-        {
-            CryptMsg<TC> cMsg = JsonConvert.DeserializeObject<CryptMsg<TC>>(jsonText);
-            try
-            {
-                if (this is T t && cMsg is T && cMsg != null)
-                {
-                    TContent = cMsg.TContent;
-                    Hash = cMsg.Hash;
-                    Md5Hash = cMsg.Md5Hash;
-                    Message = cMsg.Message;
-                    MsgType = SerType.Json;
+        public override string Cerialize() => Cerializer.Cerialize<CryptMsg<TC>>(this);
 
-                    return t;
-                }
-            }
-            catch (Exception exJson)
-            {
-                Area23Log.LogOriginMsgEx("CryptMsg", "FromJson", exJson);
-            }
-            
-            return base.FromJson<T>(jsonText);
-        }
-
-        public override string ToXml() => Utils.SerializeToXml(this);
-
-        public override T FromXml<T>(string xmlText)
-        {
-            CryptMsg<TC> cMsg = Utils.DeserializeFromXml<CryptMsg<TC>>(xmlText);
-            try
-            {
-                if (this is T t && cMsg is T && cMsg != null)
-                {
-                    TContent = cMsg.TContent;
-                    Hash = cMsg.Hash;
-                    Md5Hash = cMsg.Md5Hash;
-                    Message = cMsg.Message;
-                    MsgType = SerType.Xml;
-
-                    return t;
-                }
-            }
-            catch (Exception exJson)
-            {
-                Area23Log.LogOriginMsgEx("CryptMsg", "FromXml", exJson);
-            }
-
-            return base.FromXml<T>(xmlText);
-        }
+        public CryptMsg<TC>? DeCerialize(string jsonText) => DeCerialize<CryptMsg<TC>>(jsonText);
 
         #endregion members
 
@@ -265,7 +220,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         {
             if (EncryptSrvMsg(serverKey, ref cSrvMsg, encoder, zipType))
             {
-                string serializedJson = cSrvMsg.ToJson();
+                string serializedJson = cSrvMsg.Cerialize();
                 return serializedJson;
             }
             throw new CException($"EncryptToJson(string severKey, CryptMsg<TC> cSrvMsg) failed");
@@ -365,7 +320,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             destination.Hash = source.Hash;
             destination.Message = source.Message;
-            destination.MsgType = source.MsgType;
+            destination.Cerializer = source.Cerializer;
             destination.CBytes = source.CBytes;
             destination.Md5Hash = source.Md5Hash;      
             destination.TContent = source.TContent;

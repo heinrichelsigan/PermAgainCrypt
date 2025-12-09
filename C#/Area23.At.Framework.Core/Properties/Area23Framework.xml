@@ -240,6 +240,7 @@
             </summary>
             <param name="inBytes">binary data</param>
             <param name="cryptKey">prviate key for encryption</param>
+            <param name="encoding"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType">encoding type</see> for decodinng</param>
             <param name="hashIv">private key hash for encryption</param>
             <param name="zipBefore"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
@@ -264,6 +265,7 @@
             <param name="cipherBytes"></param>
             <param name="cryptKey">prviate key for encryption</param>
             <param name="hashIv">private hash for encryption</param>
+            <param name="decoding"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType">decoding type</see> for decodinng</param>
             <param name="unzipAfter"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/></param>
             <returns>plain data byte[]</returns>
@@ -608,12 +610,6 @@
             <param name="cipherText">Base64 encoded encrypted byte[]</param>
             <returns>plain text string</returns>
         </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.FishRequiresAesEngineException">
-            <summary>
-            this exception is only implemented, because of a 1st 
-            where 3-fish rides on AesEngine
-            </summary>
-        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564">
             <summary>
             static class RC564, that implements RC564 static Encrypt + Decrypt members
@@ -657,53 +653,6 @@
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.RC564.DecryptString(System.String)">
             <summary>
             RC564 Decrypt String method
-            </summary>
-            <param name="inCryptString">base64 encrypted string</param>
-            <returns>plain text decrypted string</returns>
-        </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent">
-            <summary>
-            Serpent static class implementing Serpent symetric chiffer algorithm
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.#cctor">
-            <summary>
-            static constructor for serpent encryption
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.SerpentGenWithKey(System.String,System.String,System.Boolean)">
-            <summary>
-            SerpentGenWithKey => Generates new <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent"/> with secret key
-            </summary>
-            <param name="secretKey">key param for encryption</param>
-            <param name="usrHash">user key hash</param>
-            <param name="init">init <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent"/> first time with a new key</param>
-            <returns>true, if init was with same key successfull</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.Encrypt(System.Byte[])">
-            <summary>
-            Serpent Encrypt member function
-            </summary>
-            <param name="plainData">plain data as <see cref="T:byte[]"/></param>
-            <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.Decrypt(System.Byte[])">
-            <summary>
-            Serpent Decrypt member function
-            </summary>
-            <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
-            <returns>decrypted plain byte[] data</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.EncryptString(System.String)">
-            <summary>
-            Serpent Encrypt String method
-            </summary>
-            <param name="inString">plain string to encrypt</param>
-            <returns>base64 encoded encrypted string</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.DecryptString(System.String)">
-            <summary>
-            Serpent Decrypt String method
             </summary>
             <param name="inCryptString">base64 encrypted string</param>
             <returns>plain text decrypted string</returns>
@@ -759,6 +708,21 @@
             Provides a simple crypt pipe for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.ZType">
+            <summary>
+            ZType is current <see cref="T:Area23.At.Framework.Core.Zip.ZipType"/>
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.EncodeType">
+            <summary>
+            Current <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.EncodeType"/> 
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.KHash">
+            <summary>
+            KHash is <see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/>
+            </summary>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
@@ -778,7 +742,7 @@
             <param name="keyBytes">user key bytes</param>
             <param name="maxpipe">maximum lentgh <see cref="F:Area23.At.Framework.Core.Util.Constants.MAX_PIPE_LEN"/></param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType,Area23.At.Framework.Core.Zip.ZipType,Area23.At.Framework.Core.Crypt.Hash.KeyHash)">
             <summary>
             Constructs a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe"/> from key and hash
             by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
@@ -792,6 +756,19 @@
             </summary>
             <param name="key"></param>
         </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.ToJson">
+            <summary>
+            ToJson 
+            </summary>
+            <returns>serialized string</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.FromJson(System.String)">
+            <summary>
+            FromJson
+            </summary>
+            <param name="json">serialized json</param>
+            <returns><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe"/></returns>
+        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
             <summary>
             Generic encrypt bytes to bytes
@@ -799,7 +776,7 @@
             <param name="inBytes">Array of byte</param>
             <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum"/> both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
-            <param name="keyIv">key's iv</param>
+            <param name="hashIv">key's hash</param>
             <returns>encrypted byte Array</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
@@ -859,31 +836,6 @@
             <param name="unzipAfter"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
             <returns>Decrypted stirng</returns>
-        </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCrypt">
-            <summary>
-            Basic class for symmetric cipher encryption
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCrypt.EncryptBytes(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
-            <summary>
-            Generic encrypt bytes to bytes
-            </summary>
-            <param name="inBytes">Array of byte</param>
-            <param name="cipherAlgo"><see cref="T:Area23.At.Framework.Core.Crypt.Cipher.CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key hash iv</param>
-            <returns>encrypted byte Array</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCrypt.DecryptBytes(System.Byte[],Area23.At.Framework.Core.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
-            <summary>
-            Generic decrypt bytes to bytes
-            </summary>
-            <param name="cipherBytes">Encrypted array of byte</param>
-            <param name="cipherAlgo">both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key hash iv</param>
-            <returns>decrypted byte Array</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix">
              <summary>
@@ -1159,20 +1111,11 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessEncryptBytes2(System.Byte[],System.Int32,System.Int32)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessBytes2(System.Byte[],System.Int32,System.Int32)">
             <summary>
-            ProcessEncryptBytes2, processes the next len=16 bytes to encrypt, starting at offSet
+            ProcessBytes2  processes the next len=16 bytes to encrypt or decrypt, starting at offSet
             </summary>
-            <param name="inBytesPadding">in bytes array to encrypt</param>
-            <param name="offSet">starting offSet</param>
-            <param name="len">len of byte block (default 16)</param>
-            <returns>byte[len] (default: 16) segment of encrypted bytes</returns>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessDecryptBytes2(System.Byte[],System.Int32,System.Int32)">
-            <summary>
-            ProcessDecryptBytes  processes the next len=16 bytes to decrypt, starting at offSet
-            </summary>
-            <param name="inBytesEncrypted">encrypted bytes array to deccrypt</param>
+            <param name="inBytes">incoming bytes array to en-/deccrypt</param>
             <param name="offSet">starting offSet</param>
             <param name="len">len of byte block (default 16)</param>
             <returns>byte[len] (default: 16) segment of decrypted bytes</returns>
@@ -2036,12 +1979,6 @@
             if fileName is null or empty
             then a name <see cref="!:Extensions.Area23DateTimeWithMillis(DateTime)"/></param> + "_image." + extension based mime type will be given
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.ToXml">
-            <summary>
-            ToXml serializes this <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CImage"/> to serialized xml <see cref="T:System.String"/>
-            </summary>
-            <returns>xml serialized string</returns>
-        </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.ToDrawingBitmap">
             <summary>
             ToDrawingBitmap converts this <see cref="T:Area23.At.Framework.Core.Crypt.Msg.CImage"/> to <see cref="T:System.Drawing.Bitmap"/>
@@ -2083,7 +2020,7 @@
             <param name="hash"></param>
             <param name="msgArt"></param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Msg.CMsg.ToJson">
+        <member name="M:Area23.At.Framework.Core.Crypt.Msg.CMsg.Cerialize">
             <summary>
             Serialize all CC classes to json
             </summary>
@@ -2270,27 +2207,12 @@
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.app_name">
             <summary>
-              Looks up a localized string similar to Area23.At.Framework.Library.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.BitmapAbout">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
+              Looks up a localized string similar to Area23.At.Framework.Core.
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.build_with">
             <summary>
-              Looks up a localized string similar to VisualStudio 2022 C# 9.0.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.F40">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.F45">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
+              Looks up a localized string similar to VisualStudio 2022 C# 10.0.
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.fortune_u8">
@@ -2329,11 +2251,6 @@
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageAesArrowHover">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:Area23.At.Framework.Core.Properties.Resource.ImageCar">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>

@@ -100,7 +100,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             ZenMatrixGenWithBytes2(keyBytes2, true);
         }
 
-
         /// <summary>
         /// initializes a <see cref="ZenMatrix"/> with an array of key bytes
         /// </summary>
@@ -133,7 +132,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
             _inverseMatrix2 = BuildInverseMatrix(MatrixPermutationKey2);
         }
-
 
 
         /// <summary>
@@ -308,59 +306,33 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             Area23Log.LogOriginMsg("ZenMatrix2", perm2 + " KeyBytes = " + kbs2);
         }
 
-
         #endregion ctor_init_gen_reverse
 
         #region ProcessEncryptDecryptBytes
 
         /// <summary>
-        /// ProcessEncryptBytes2, processes the next len=16 bytes to encrypt, starting at offSet
+        /// ProcessBytes2  processes the next len=16 bytes to encrypt or decrypt, starting at offSet
         /// </summary>
-        /// <param name="inBytesPadding">in bytes array to encrypt</param>
-        /// <param name="offSet">starting offSet</param>
-        /// <param name="len">len of byte block (default 16)</param>
-        /// <returns>byte[len] (default: 16) segment of encrypted bytes</returns>
-        protected internal virtual byte[] ProcessEncryptBytes2(byte[] inBytesPadding, int offSet = 0, int len = 0x10)
-        {
-            int aCnt = 0, bCnt = 0;
-            byte[] processedEncrypted = null;
-            if (offSet < inBytesPadding.Length && offSet + len <= inBytesPadding.Length)
-            {
-                processedEncrypted = new byte[len];
-                for (aCnt = 0, bCnt = offSet; bCnt < offSet + len; aCnt++, bCnt++)
-                {
-                    byte b = inBytesPadding[bCnt];
-                    MapByteValue2(ref b, out byte mapEncryptB, true);
-                    sbyte sm = MatrixPermutationKey[aCnt];
-                    processedEncrypted[(int)sm] = mapEncryptB;
-                }
-            }
-            return processedEncrypted ?? new byte[0];
-        }
-
-        /// <summary>
-        /// ProcessDecryptBytes  processes the next len=16 bytes to decrypt, starting at offSet
-        /// </summary>
-        /// <param name="inBytesEncrypted">encrypted bytes array to deccrypt</param>
+        /// <param name="inBytes">incoming bytes array to en-/deccrypt</param>
         /// <param name="offSet">starting offSet</param>
         /// <param name="len">len of byte block (default 16)</param>
         /// <returns>byte[len] (default: 16) segment of decrypted bytes</returns>
-        protected internal virtual byte[] ProcessDecryptBytes2(byte[] inBytesEncrypted, int offSet = 0, int len = 0x10)
+        protected internal virtual byte[] ProcessBytes2(byte[] inBytes, int offSet = 0, int len = 0x10)
         {
             int aCnt = 0, bCnt = 0;
-            byte[] processedDecrypted = null;
-            if (offSet < inBytesEncrypted.Length && offSet + len <= inBytesEncrypted.Length)
+            byte[] processed = null;
+            if (offSet < inBytes.Length && offSet + len <= inBytes.Length)
             {
-                processedDecrypted = new byte[len];
+                processed = new byte[len];
                 for (aCnt = 0, bCnt = offSet; bCnt < offSet + len; aCnt++, bCnt++)
                 {
-                    byte b = inBytesEncrypted[bCnt];
-                    MapByteValue2(ref b, out byte mapDecryptB, false);
-                    sbyte sm = InverseMatrix[aCnt];
-                    processedDecrypted[(int)sm] = mapDecryptB;
+                    byte b = inBytes[bCnt];
+                    MapByteValue2(ref b, out byte mappedByte, forEncryption);
+                    sbyte sm = (forEncryption) ? MatrixPermutationKey[aCnt] : InverseMatrix[aCnt];
+                    processed[(int)sm] = mappedByte;
                 }
             }
-            return processedDecrypted ?? new byte[0];
+            return processed ?? new byte[0];
         }
 
         #endregion ProcessEncryptDecryptBytes
@@ -377,6 +349,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             // Check arguments.
             if (pdata == null || pdata.Length <= 0)
                 throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
+
+            forEncryption = true;
 
             int dlen = pdata.Length;                        // length of data bytes
             int oSize = dlen + (0x10 - (dlen % 0x10));      // oSize is rounded up to next number % 16 == 0
@@ -405,7 +379,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             List<byte> encryptedBytes = new List<byte>();
             for (int i = 0; i < obytes.Length; i += 0x10)
             {
-                foreach (byte pb in ProcessEncryptBytes2(obytes, i, 0x10))
+                foreach (byte pb in ProcessBytes2(obytes, i, 0x10))
                 {
                     encryptedBytes.Add(pb);
                 }
@@ -425,14 +399,16 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             if (ecdata == null || ecdata.Length <= 0)
                 throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] ecdata): ArgumentNullException ecdata = null or Lenght 0.");
 
+            forEncryption = false;
+
             int eclen = ecdata.Length;
             int ecSize = (eclen % 0x10 == 0) ? eclen : (eclen + (0x10 - (eclen % 0x10)));
-            if (ecSize > eclen) {; } // something went wrong                
+            if (ecSize > eclen) {; } // something went wrong                            
 
             List<byte> outBytes = new List<byte>();
             for (int pc = 0; pc < ecdata.Length; pc += 16)
             {
-                foreach (byte rb in ProcessDecryptBytes2(ecdata, pc, 16))
+                foreach (byte rb in ProcessBytes2(ecdata, pc, 16))
                 {
                     outBytes.Add(rb);
                 }

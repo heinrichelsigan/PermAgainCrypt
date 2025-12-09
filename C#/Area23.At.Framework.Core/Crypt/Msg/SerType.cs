@@ -72,9 +72,9 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         /// <param name="serTyoe"></param>
         /// <param name="t"></param>
         /// <returns></returns>
-        public static string Cerialize<T>(this SerType serTyoe, T t)
+        public static string Cerialize<T>(this SerType serType, T t)
         {
-            switch (serTyoe)
+            switch (serType)
             {
                 case SerType.Json: return Newtonsoft.Json.JsonConvert.SerializeObject(t);
                 case SerType.Xml: return Utils.SerializeToXml<T>(t);

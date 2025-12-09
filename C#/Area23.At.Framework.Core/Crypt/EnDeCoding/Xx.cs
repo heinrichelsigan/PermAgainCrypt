@@ -246,7 +246,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         public static string ToXx(byte[] inBytes)
         {
             string toXxFunCall = $"ToXx(byte[{inBytes.Length}] inBytes)";
-            Area23Log.LogOriginMsg("Xx", $"{toXxFunCall} ... STARTED.");
+            // Area23Log.LogOriginMsg("Xx", $"{toXxFunCall} ... STARTED.");
             MemoryStream outStream = new MemoryStream();
             XXEncode(new MemoryStream(inBytes), outStream);
             outStream.Flush();
@@ -263,7 +263,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         {
 
             string fromXxFunCall = "FromXx(string xxEncStr[.Length=" + xxEncStr.Length + "])";
-            Area23Log.LogOriginMsg("Xx", fromXxFunCall + "... STARTED.");
+            // Area23Log.LogOriginMsg("Xx", fromXxFunCall + "... STARTED.");
 
             lock (_lock)
             {
@@ -285,7 +285,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
             outStream.Flush();
             byte[] plainBytes = outStream.ToArray();
 
-            Area23Log.LogOriginMsg("Xx", $"byte[{plainBytes.Length}] plainBytes = FromUu(string xxEncStr) ... FINISHED.");
+            // Area23Log.LogOriginMsg("Xx", $"byte[{plainBytes.Length}] plainBytes = FromUu(string xxEncStr) ... FINISHED.");
             return plainBytes;
         }
 

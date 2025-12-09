@@ -162,13 +162,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             }
             if (parameters is ParametersWithIV)
             {
-                byte[] bKey = new byte[0], bIv = ((ParametersWithIV)parameters).GetIV();
+                byte[] bKey = new byte[0];                
                 if (((ParametersWithIV)parameters).Parameters is KeyParameter)
-                {
                     bKey = ((KeyParameter)(((ParametersWithIV)parameters).Parameters)).GetKey();
-                }
-                bKey = bKey ?? new byte[0];
-                bIv = bIv ?? new byte[0];
+                byte[] bIv = ((ParametersWithIV)parameters).GetIV();
+
+                bKey = (bKey == null || bKey.Length == 0) ? new byte[0] : bKey;
+                bIv = (bIv == null || bIv.Length == 0) ? new byte[0] : bIv;
                 if (bKey.Length == 0 && bIv.Length == 0)
                     throw new ArgumentNullException("parameters", "KeyParameter and/or ParametersWithIV contain a null or empty key or iv.");
 
@@ -411,12 +411,8 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 for (int i = 0; i < 0x20; i++)
                 {
                     if (PermutationKeyHash.Contains(b) || ((int)b) == ba)
-                    {
-                        if (i < 0x10)
-                            b = ((sbyte)((Convert.ToInt32(keyByte) + MagicOrder[i]) % 0x10));
-                        if (i >= 0x10)
-                            b = ((sbyte)((Convert.ToInt32(keyByte) + i) % 0x10));
-                    }
+                        b = (i >= 0x10) ? ((sbyte)((Convert.ToInt32(keyByte) + i) % 0x10)) :
+                                ((sbyte)((Convert.ToInt32(keyByte) + MagicOrder[i]) % 0x10));
                     else break;
                 }
 
@@ -452,13 +448,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                         {
                             for (int l = 0x0f; l >= 0; l--)
                             {
-                                if (!MatrixDict.Values.Contains((sbyte)l))
-                                {
-                                    MatrixDict.Add((sbyte)k, (sbyte)l);
-                                    if (!MatrixDict.Keys.Contains((sbyte)l))
-                                        MatrixDict.Add((sbyte)l, (sbyte)k);
-                                    break;
-                                }
+                                if (MatrixDict.Values.Contains((sbyte)l))
+                                    continue;
+
+                                MatrixDict.Add((sbyte)k, (sbyte)l);
+                                if (!MatrixDict.Keys.Contains((sbyte)l))
+                                    MatrixDict.Add((sbyte)l, (sbyte)k);
+                                break;
                             }
                         }
                     }

@@ -64,18 +64,18 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             switch(serType)
             {
                 case SerType.Xml:
-                    FromXml<CContact>(serialized);
+                    serType.DeCerialize<CContact>(serialized);
                     break;
                 case SerType.Raw:     // TODO= implement it
                 case SerType.None:    // TODO= implement it
                     break;
                 case SerType.Mime:
                     string json = Encoding.UTF8.GetString(Convert.FromBase64String(serialized));
-                    FromJson<CContact>(json);
+                    serType.DeCerialize<CContact>(json);
                     break;
                 case SerType.Json:
                 default:
-                    FromJson<CContact>(serialized);
+                    serType.DeCerialize<CContact>(serialized);
                     break;
             } 
         }
@@ -226,7 +226,9 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             return base.CCopy(leftDest, rightSrc);  
         }
 
-        public override string ToXml() => Utils.SerializeToXml(this);
+        public override string Cerialize() => Cerializer.Cerialize<CContact>(this);
+
+        public CContact? DeCerialize(string jsonText) =>  DeCerialize<CContact>(jsonText);
 
 
         /// <summary>
@@ -274,7 +276,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             if (!EncryptSrvMsg(serverKey, ref ccntct, encoder, zipType))
                 throw new CException($"static string ToJsonEncrypt(string severKey, CContact ccntct) failed.");
                 
-            string serializedJson = ccntct.ToJson();
+            string serializedJson = ccntct.Cerialize();
             return serializedJson;            
         }
 
@@ -383,7 +385,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
 			destination.Hash = source.Hash;
 			destination.Message = source.Message;
-			destination.MsgType = source.MsgType;
+			destination.Cerializer = source.Cerializer;
 			destination.CBytes = source.CBytes;
 			destination.Md5Hash = source.Md5Hash;
 

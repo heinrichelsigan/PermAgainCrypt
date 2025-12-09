@@ -44,7 +44,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Data = data;
             Base64Type = MimeType.GetMimeType(Data, FileName);
             Hash = hash;
-            MsgType = SerType.Json;
+            Cerializer = SerType.Json;
             Sha256Hash = Sha256Sum.Hash(Data, "");
             EnCodingType = EncodingType.Base64;
         }
@@ -61,7 +61,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Base64Type = MimeType.GetMimeType(Data, FileName);
             Hash = hash;            
             Sha256Hash = Sha256Sum.Hash(Data, "");
-            MsgType = SerType.Json;
+            Cerializer = SerType.Json;
             EnCodingType = EncodingType.Base64;
         }
 
@@ -80,7 +80,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         public CFile(string fileName, string mimeType, byte[] data, string hash, string sMd5 = "", string sSha256 = "", SerType msgType = SerType.Json) :
                 this(fileName, mimeType, data, hash, sMd5, sSha256)
         {
-            MsgType = msgType;
+            Cerializer = msgType;
         }
 
         public CFile(string fileName, string mimeType, byte[] data, string hash, string sMd5 = "", string sSha256 = "", SerType msgType = SerType.Json, EncodingType enCodeType = EncodingType.Base64) :
@@ -96,7 +96,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Base64Type = MimeType.GetMimeType(Data, FileName);
             Md5Hash = "";
             Sha256Hash = Sha256Sum.Hash(Data, "");
-            MsgType = SerType.Json;
+            Cerializer = SerType.Json;
             EnCodingType = EncodingType.Base64;
             Hash = hash;
         }
@@ -111,7 +111,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             Base64Type = MimeType.GetMimeType(Data, FileName);
             Md5Hash = "";
             Sha256Hash = Sha256Sum.Hash(Data, "");
-            MsgType = msgType;
+            Cerializer = msgType;
             EnCodingType = EncodingType.Base64;
             Hash = hash;
         }
@@ -176,9 +176,12 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         }
 
         public virtual string ToBase64() => Convert.ToBase64String(Data);
-    
-        public override string ToXml() => Utils.SerializeToXml(this);
-        
+
+        public override string Cerialize() => Cerializer.Cerialize<CFile>(this);
+
+        public CFile? DeCerialize(string jsonText) => DeCerialize<CFile>(jsonText);
+
+
         public CFile GetCFile(string encodedSerilizedOrRawText, SerType msgArt = SerType.Json)
         {
             if (msgArt == SerType.None || msgArt == SerType.Raw)
@@ -206,11 +209,11 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             }
             else if (msgArt == SerType.Json)
             {
-                FromJson<CFile>(encodedSerilizedOrRawText);
+                msgArt.DeCerialize<CFile>(encodedSerilizedOrRawText);
             }
             else if (msgArt == SerType.Xml)
             {
-                FromXml<CFile>(encodedSerilizedOrRawText);
+                msgArt.DeCerialize<CFile>(encodedSerilizedOrRawText);
             }
             return this;
         }
@@ -374,7 +377,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
             if (!EncryptSrvMsg(serverKey, ref cfile, encoder, zipType))
                 throw new CException($"static string ToJsonEncrypt(string serverKey, ref CFile cfile) failed.");
 
-            string serializedJson = cfile.ToJson();
+            string serializedJson = cfile.Cerialize();
             return serializedJson;
         }
 
@@ -493,7 +496,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
 
             destination.Message = source.Message;
             destination.Hash = source.Hash;
-            destination.MsgType = source.MsgType;
+            destination.Cerializer = source.Cerializer;
             destination.CBytes = source.CBytes;
             destination.Md5Hash = source.Md5Hash;
 
