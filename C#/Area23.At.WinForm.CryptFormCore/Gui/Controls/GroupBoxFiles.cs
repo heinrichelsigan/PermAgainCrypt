@@ -3,14 +3,7 @@ using Area23.At.Framework.Core.Static;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using static Area23.At.WinForm.CryptFormCore.Gui.Forms.EncryptFormBase;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 {
@@ -18,6 +11,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
     {
 
         internal Cursor NormalCursor, NoDropCursor;
+        internal Icon iconFileWork;
         internal System.Windows.Forms.DragDropEffects _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
         internal bool isDragMode = false;
         private readonly Lock _Lock = new Lock();
@@ -27,9 +21,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public EventHandler<Area23EventArgs<string>>? FileAdded { get; set; }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public EventHandler<EventArgs>? FileRequired { get; set; }
+
         public GroupBoxFiles()
         {
             InitializeComponent();
+            NormalCursor = DefaultCursor;
+            iconFileWork = new Icon(Properties.Resources.icon_file_working, new Size(32, 32));
+            NoDropCursor = new Cursor(iconFileWork.Handle);
         }
 
         protected override void OnPaint(PaintEventArgs pe)
@@ -281,12 +281,23 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 
         protected internal void PictureBoxFileInOut_Click(object sender, EventArgs e)
         {
-            if (sender is PictureBox pb && pb != null && pb.Visible && pb.Tag != null)
+            if (sender is PictureBox pb && pb != null && pb.Visible)
             {
-                string filePath = pb.Tag?.ToString() ?? "";
-                if (!string.IsNullOrEmpty(filePath) &&
-                    !filePath.StartsWith("{") && !filePath.EndsWith("}") &&
-                        File.Exists(filePath))
+                
+                string filePath = (pb.Tag != null && !string.IsNullOrEmpty(pb.Tag?.ToString())) ? pb.Tag?.ToString() : "";
+                if (string.IsNullOrEmpty(filePath) || pb.Name.Equals("pictureBoxFileIn", StringComparison.OrdinalIgnoreCase))
+                {
+                    EventHandler<EventArgs> handler = FileRequired;
+                    handler?.Invoke(this, e);
+                    return; 
+                }
+                if ((filePath.StartsWith("{") && filePath.EndsWith("}")) ||
+                    (filePath.StartsWith("[") && !filePath.EndsWith("]")))
+                {
+                    filePath = filePath.Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "");
+                }
+                        
+                if (File.Exists(filePath))
                 {
                     string fPath = filePath.ToLower();
                     if (fPath.EndsWith(".base16", StringComparison.OrdinalIgnoreCase) ||
@@ -297,12 +308,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                         fPath.Contains(".xx", StringComparison.CurrentCultureIgnoreCase) ||
                         fPath.Contains(".base64", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        ProcessCmd.Execute("notepad", pb.Tag.ToString());
-                        return; 
+                        ProcessCmd.Execute("notepad", filePath);
+                        return;
                     }
+                    
+                    ProcessCmd.Execute("explorer", filePath);
+                    return;
                 }
-                
-                ProcessCmd.Execute("explorer", pb.Tag?.ToString());
+                else
+                {
+                    pb.Image = Resources.image_file;
+                }
             }
         }
 
@@ -391,10 +407,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 
                 if (NormalCursor == null || NoDropCursor == null)
                 {
-                    Icon iconFileWork = new Icon(Properties.Resources.icon_file_working, new Size(32, 32));
-                    Icon iconFileWarn = new Icon(Properties.Resources.icon_file_warning, new Size(32, 32));
-                    NormalCursor = new Cursor(iconFileWork.Handle);
-                    NoDropCursor = new Cursor(iconFileWarn.Handle);
+                    iconFileWork = new Icon(Properties.Resources.icon_file_working, new Size(32, 32));
+
+                    NormalCursor = DefaultCursor; // new Cursor(iconFileWarn.Handle);                    
+                    NoDropCursor = new Cursor(iconFileWork.Handle);
                 }
 
                 Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;

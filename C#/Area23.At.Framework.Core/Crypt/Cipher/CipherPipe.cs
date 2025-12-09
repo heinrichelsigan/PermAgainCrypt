@@ -5,6 +5,7 @@ using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
+using System.IO.Pipelines;
 using System.Text;
 
 namespace Area23.At.Framework.Core.Crypt.Cipher
@@ -100,27 +101,14 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
-
-            // pipeString = "";
+            
             int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));
-            CipherEnum[] pipeArray = new CipherEnum[isize];
-            Array.Copy(cipherEnums, pipeArray, isize);
-            inPipe = new List<CipherEnum>(pipeArray).ToArray();
-            // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
+            inPipe = new CipherEnum[isize];
+            Array.Copy(cipherEnums, inPipe, isize);
+            
             encodeType = encType;
             zType = zpType;
-            kHash = kh;
-
-            if (inPipe.Length > maxpipe)
-            {
-                List<string> pipElems = new List<string>(inPipe.Length);
-                foreach (var cipherEnum in inPipe)
-                    pipElems.Add(cipherEnum.ToString());
-                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-            }
-
-            // foreach (CipherEnum cipher in inPipe)
-            // pipeString += cipher.GetCipherChar();
+            kHash = kh;            
         }
 
         /// <summary>
@@ -153,24 +141,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 }
             }
 
-            // pipeString = "";
             inPipe = cipherEnums.ToArray();
-            // inPipe = new List<CipherEnum>(cipherEnums).ToArray();
-            // outPipe = cipherEnums.Reverse<CipherEnum>().ToArray();
+
             encodeType = encType;
             kHash = kh;
             zType = zpType;
-
-            if (inPipe.Length > maxpipe)
-            {
-                List<string> pipElems = new List<string>(inPipe.Length);
-                foreach (var cipherEnum in inPipe)
-                    pipElems.Add(cipherEnum.ToString());
-                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-            }
-
-            // foreach (CipherEnum cipher in inPipe)
-            // pipeString += cipher.GetCipherChar();
         }
 
         /// <summary>
@@ -188,46 +163,32 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             ushort scnt = 0;
-            List<CipherEnum> pipeList = new List<CipherEnum>();
-            Dictionary<string, CipherEnum> symDict = new Dictionary<string, CipherEnum>();
-            foreach (CipherEnum symmC in Enum.GetValues(typeof(CipherEnum)))
-            {
-                string hex = $"{((ushort)symmC):x2}";
-                scnt++;
-                symDict.Add(hex, symmC);
-            }
+            List<CipherEnum> pipeList = new List<CipherEnum>();     
 
-            string hexString = string.Empty;
-            HashSet<string> hashBytes = new HashSet<string>();
-            foreach (byte bb in keyBytes)
+            HashSet<byte> hashBytes = new HashSet<byte>();
+            for (int i = 0; i < keyBytes.Length && pipeList.Count < maxpipe; i++)
             {
-                byte cb = (byte)((int)((int)bb % 0x20));
-                hexString = string.Format("{0:x2}", cb);
-                if (hexString.Length > 0 && !hashBytes.Contains(hexString))
-                    hashBytes.Add(hexString);
+                byte cb = (byte)((int)((int)keyBytes[i] % 0x20));
+                if (!hashBytes.Contains(cb))
+                {
+                    hashBytes.Add(cb);
+                    pipeList.Add(CipherEnumExtensions.ByteCipherDict[cb]);
+                }
             }
-
-            hexString = string.Empty;
-            for (int kcnt = 0; kcnt < hashBytes.Count && pipeList.Count < maxpipe; kcnt++)
-            {
-                hexString += hashBytes.ElementAt(kcnt).ToString();
-                CipherEnum sym0 = symDict[hashBytes.ElementAt(kcnt)];
-                pipeList.Add(sym0);
-            }
-
-            // pipeString = "";
-            zType = zpType;
+           
             inPipe = pipeList.ToArray();
+
+            zType = zpType;            
             encodeType = encType;
             kHash = kh;
 
-            if (inPipe.Length > maxpipe)
-            {
-                List<string> pipElems = new List<string>(inPipe.Length);
-                foreach (var cipherEnum in inPipe)
-                    pipElems.Add(cipherEnum.ToString());
-                throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-            }
+            //if (inPipe.Length > maxpipe)
+            //{
+            //    List<string> pipElems = new List<string>(inPipe.Length);
+            //    foreach (var cipherEnum in inPipe)
+            //        pipElems.Add(cipherEnum.ToString());
+            //    throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
+            //}
 
             // foreach (CipherEnum cipherE in inPipe)
             // pipeString += cipherE.GetCipherChar();
@@ -244,7 +205,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// <param name="encType"></param>
         /// <param name="zpType"></param>
         /// <param name="kh"></param>
-        public CipherPipe(string key = "heinrich.elsigan@area23.at", string hash = "6865696e726963682e656c736967616e406172656132332e6174", EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+        public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
             : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)
         {
             cipherKey = key;
@@ -255,7 +216,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// CipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
-        public CipherPipe(string key = "heinrich.elsigan@area23.at")
+        public CipherPipe(string key)
             : this(key, EnDeCodeHelper.KeyToHex(key))
         {
             cipherKey = key;

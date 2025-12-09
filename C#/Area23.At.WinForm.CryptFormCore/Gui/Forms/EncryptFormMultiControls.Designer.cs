@@ -157,7 +157,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileOpen.BackColor = SystemColors.Menu;
             menuFileOpen.Name = "menuFileOpen";
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
-            menuFileOpen.Size = new Size(162, 22);
+            menuFileOpen.Size = new Size(180, 22);
             menuFileOpen.Text = "Open";
             menuFileOpen.Click += menuFileOpen_Click;
             // 
@@ -166,20 +166,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSave.BackColor = SystemColors.Menu;
             menuMainSave.Name = "menuMainSave";
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuMainSave.Size = new Size(162, 22);
+            menuMainSave.Size = new Size(180, 22);
             menuMainSave.Text = "Save";
             menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(159, 6);
+            toolStripSeparator2.Size = new Size(177, 6);
             // 
             // menuMainSetPipe
             // 
             menuMainSetPipe.BackColor = SystemColors.Menu;
             menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(162, 22);
+            menuMainSetPipe.Size = new Size(180, 22);
             menuMainSetPipe.Text = "Set Pipe";
             menuMainSetPipe.Click += SetPipeline_Click;
             // 
@@ -187,7 +187,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainHashKey.BackColor = SystemColors.Menu;
             menuMainHashKey.Name = "menuMainHashKey";
-            menuMainHashKey.Size = new Size(162, 22);
+            menuMainHashKey.Size = new Size(180, 22);
             menuMainHashKey.Text = "Hash Key";
             menuMainHashKey.Click += Hash_Click;
             // 
@@ -195,34 +195,34 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainHashPipe.BackColor = SystemColors.Menu;
             menuMainHashPipe.Name = "menuMainHashPipe";
-            menuMainHashPipe.Size = new Size(162, 22);
+            menuMainHashPipe.Size = new Size(180, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(159, 6);
+            toolStripSeparator3.Size = new Size(177, 6);
             // 
             // menuMainEncrypt
             // 
             menuMainEncrypt.BackColor = SystemColors.Menu;
             menuMainEncrypt.Name = "menuMainEncrypt";
-            menuMainEncrypt.Size = new Size(162, 22);
+            menuMainEncrypt.Size = new Size(180, 22);
             menuMainEncrypt.Text = "Encrypt";
             // 
             // menuMainDecrypt
             // 
             menuMainDecrypt.BackColor = SystemColors.Menu;
             menuMainDecrypt.Name = "menuMainDecrypt";
-            menuMainDecrypt.Size = new Size(162, 22);
+            menuMainDecrypt.Size = new Size(180, 22);
             menuMainDecrypt.Text = "Decrypt";
             // 
             // menuMainRandomText
             // 
             menuMainRandomText.BackColor = SystemColors.Menu;
             menuMainRandomText.Name = "menuMainRandomText";
-            menuMainRandomText.Size = new Size(162, 22);
+            menuMainRandomText.Size = new Size(180, 22);
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
@@ -230,20 +230,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainReset.BackColor = SystemColors.Menu;
             menuMainReset.Name = "menuMainReset";
-            menuMainReset.Size = new Size(162, 22);
+            menuMainReset.Size = new Size(180, 22);
             menuMainReset.Text = "Reset";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(159, 6);
+            toolStripSeparator1.Size = new Size(177, 6);
             // 
             // menuFileExit
             // 
             menuFileExit.BackColor = SystemColors.Menu;
             menuFileExit.Name = "menuFileExit";
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
-            menuFileExit.Size = new Size(162, 22);
+            menuFileExit.Size = new Size(180, 22);
             menuFileExit.Text = "Exit";
             menuFileExit.Click += menuFileExit_Click;
             // 
@@ -630,7 +630,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(161, 22);
+            menuAbout.Size = new Size(180, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -638,7 +638,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(161, 22);
+            menuHelpHelp.Size = new Size(180, 22);
             menuHelpHelp.Text = "Help";
             // 
             // comboBoxAlgo
@@ -719,7 +719,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonReset.BackColor = SystemColors.Control;
             buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonReset.Location = new Point(876, 348);
+            buttonReset.Location = new Point(876, 360);
             buttonReset.Margin = new Padding(1);
             buttonReset.Name = "buttonReset";
             buttonReset.Size = new Size(120, 27);
@@ -755,8 +755,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             textBoxSrc.BackColor = SystemColors.ControlLight;
             textBoxSrc.Font = new Font("Lucida Console", 8F);
-            textBoxSrc.Location = new Point(8, 381);
-            textBoxSrc.Margin = new Padding(2);
+            textBoxSrc.Location = new Point(8, 396);
+            textBoxSrc.Margin = new Padding(1);
             textBoxSrc.MaxLength = 1048576;
             textBoxSrc.Multiline = true;
             textBoxSrc.Name = "textBoxSrc";
@@ -769,8 +769,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxOut.BackColor = SystemColors.Control;
             textBoxOut.BorderStyle = BorderStyle.FixedSingle;
             textBoxOut.Font = new Font("Lucida Console", 8F);
-            textBoxOut.Location = new Point(516, 381);
-            textBoxOut.Margin = new Padding(2);
+            textBoxOut.Location = new Point(516, 396);
+            textBoxOut.Margin = new Padding(1);
             textBoxOut.MaxLength = 1048576;
             textBoxOut.Multiline = true;
             textBoxOut.Name = "textBoxOut";
@@ -783,7 +783,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonEncrypt.BackColor = SystemColors.Control;
             buttonEncrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonEncrypt.Location = new Point(8, 348);
+            buttonEncrypt.Location = new Point(8, 360);
             buttonEncrypt.Margin = new Padding(1);
             buttonEncrypt.Name = "buttonEncrypt";
             buttonEncrypt.Size = new Size(120, 27);
@@ -795,7 +795,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonDecrypt.BackColor = SystemColors.Control;
             buttonDecrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonDecrypt.Location = new Point(142, 348);
+            buttonDecrypt.Location = new Point(142, 360);
             buttonDecrypt.Margin = new Padding(1);
             buttonDecrypt.Name = "buttonDecrypt";
             buttonDecrypt.Size = new Size(120, 27);
@@ -847,7 +847,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonRandomText.BackColor = SystemColors.Control;
             buttonRandomText.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonRandomText.Location = new Point(368, 348);
+            buttonRandomText.Location = new Point(368, 360);
             buttonRandomText.Margin = new Padding(1);
             buttonRandomText.Name = "buttonRandomText";
             buttonRandomText.Size = new Size(120, 27);
@@ -876,7 +876,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
             radioButtonListHash.Items.AddRange(new object[] { "Ascon256", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool", "Xoodyak" });
-            radioButtonListHash.Location = new Point(8, 113);
+            radioButtonListHash.Location = new Point(8, 111);
             radioButtonListHash.Margin = new Padding(2);
             radioButtonListHash.MultiColumn = true;
             radioButtonListHash.Name = "radioButtonListHash";
@@ -889,7 +889,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             labelInfoMessage.BackColor = SystemColors.Info;
             labelInfoMessage.Font = new Font("Lucida Fax", 9.25F);
             labelInfoMessage.ForeColor = SystemColors.InfoText;
-            labelInfoMessage.Location = new Point(516, 348);
+            labelInfoMessage.Location = new Point(516, 360);
             labelInfoMessage.Margin = new Padding(1);
             labelInfoMessage.Name = "labelInfoMessage";
             labelInfoMessage.Size = new Size(356, 27);
@@ -933,9 +933,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // progressBar
             // 
-            progressBar.Location = new Point(8, 678);
+            progressBar.Location = new Point(8, 692);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(989, 26);
+            progressBar.Size = new Size(989, 12);
             progressBar.TabIndex = 45;
             // 
             // groupBoxFiles
@@ -943,11 +943,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             groupBoxFiles.AllowDrop = true;
             groupBoxFiles.BackColor = SystemColors.Control;
             groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
-            groupBoxFiles.Location = new Point(8, 196);
+            groupBoxFiles.Location = new Point(8, 192);
             groupBoxFiles.Margin = new Padding(2);
             groupBoxFiles.Name = "groupBoxFiles";
             groupBoxFiles.Padding = new Padding(2);
-            groupBoxFiles.Size = new Size(988, 145);
+            groupBoxFiles.Size = new Size(988, 156);
             groupBoxFiles.TabIndex = 18;
             groupBoxFiles.TabStop = false;
             groupBoxFiles.Text = "groupBoxFiles";
@@ -988,6 +988,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             MainMenuStrip = menuStripEncrypt;
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
+            MaximumSize = new Size(1024, 768);
             MinimizeBox = false;
             Name = "EncryptFormMultiControls";
             Opacity = 0.92D;

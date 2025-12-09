@@ -107,13 +107,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxAddAlgo = new PictureBox();
             textBoxPipe = new TextBox();
             labelFileIn = new Label();
-            labelOutputFile = new Label();
             pictureBoxOutFile = new PictureBox();
             textBoxSrc = new TextBox();
             textBoxOut = new TextBox();
             buttonEncrypt = new Button();
             buttonDecrypt = new Button();
             groupBoxFiles = new GroupBox();
+            panelOutLabel = new Panel();
+            labelOutputFile = new Label();
             pictureBoxRunningPipe = new PictureBox();
             pictureBoxDelete = new PictureBox();
             comboBoxCompression = new ComboBox();
@@ -135,6 +136,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).BeginInit();
             groupBoxFiles.SuspendLayout();
+            panelOutLabel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
@@ -168,7 +170,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
             menuFileOpen.Size = new Size(162, 22);
             menuFileOpen.Text = "Open";
-            menuFileOpen.Click += this.menuFileOpen_Click;
+            menuFileOpen.Click += menuFileOpen_Click;
             // 
             // menuMainSave
             // 
@@ -177,7 +179,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
             menuMainSave.Size = new Size(162, 22);
             menuMainSave.Text = "Save";
-            menuMainSave.Click += this.menuMainSave_Click;
+            menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
@@ -190,7 +192,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSetPipe.Name = "menuMainSetPipe";
             menuMainSetPipe.Size = new Size(162, 22);
             menuMainSetPipe.Text = "Set Pipe";
-            menuMainSetPipe.Click += this.SetPipeline_Click;
+            menuMainSetPipe.Click += SetPipeline_Click;
             // 
             // menuMainHashKey
             // 
@@ -198,7 +200,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashKey.Name = "menuMainHashKey";
             menuMainHashKey.Size = new Size(162, 22);
             menuMainHashKey.Text = "Hash Key";
-            menuMainHashKey.Click += this.Hash_Click;
+            menuMainHashKey.Click += Hash_Click;
             // 
             // menuMainHashPipe
             // 
@@ -206,7 +208,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainHashPipe.Name = "menuMainHashPipe";
             menuMainHashPipe.Size = new Size(162, 22);
             menuMainHashPipe.Text = "Hash Pipe";
-            menuMainHashPipe.Click += this.Hash_Pipe_Click;
+            menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
@@ -233,7 +235,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainRandomText.Name = "menuMainRandomText";
             menuMainRandomText.Size = new Size(162, 22);
             menuMainRandomText.Text = "Random Text";
-            menuMainRandomText.Click += this.RandomText_Click;
+            menuMainRandomText.Click += RandomText_Click;
             // 
             // menuMainReset
             // 
@@ -254,7 +256,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
             menuFileExit.Size = new Size(162, 22);
             menuFileExit.Text = "Exit";
-            menuFileExit.Click += this.menuFileExit_Click;
+            menuFileExit.Click += menuFileExit_Click;
             // 
             // menuCompression
             // 
@@ -271,7 +273,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
             zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
-            zmenu7z.Click += this.menuCompression_Click;
+            zmenu7z.Click += menuCompression_Click;
             // 
             // zmenuBZip2
             // 
@@ -280,7 +282,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
             zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
-            zmenuBZip2.Click += this.menuCompression_Click;
+            zmenuBZip2.Click += menuCompression_Click;
             // 
             // zmenuGZip
             // 
@@ -289,7 +291,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
             zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
-            zmenuGZip.Click += this.menuCompression_Click;
+            zmenuGZip.Click += menuCompression_Click;
             // 
             // zmenuZip
             // 
@@ -298,7 +300,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
             zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
-            zmenuZip.Click += this.menuCompression_Click;
+            zmenuZip.Click += menuCompression_Click;
             // 
             // zmenuNone
             // 
@@ -309,7 +311,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
             zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
-            zmenuNone.Click += this.menuCompression_Click;
+            zmenuNone.Click += menuCompression_Click;
             // 
             // menuEncoding
             // 
@@ -673,7 +675,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxKey.Size = new Size(810, 25);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
-            textBoxKey.TextChanged += this.textBoxKey_TextChanged;
+            textBoxKey.TextChanged += textBoxKey_TextChanged;
             // 
             // pictureBoxKey
             // 
@@ -685,7 +687,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxKey.Size = new Size(30, 30);
             pictureBoxKey.TabIndex = 3;
             pictureBoxKey.TabStop = false;
-            pictureBoxKey.Click += this.pictureBoxKey_Click;
+            pictureBoxKey.Click += pictureBoxKey_Click;
             // 
             // pictureBoxHash
             // 
@@ -698,7 +700,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxHash.Size = new Size(32, 30);
             pictureBoxHash.TabIndex = 7;
             pictureBoxHash.TabStop = false;
-            pictureBoxHash.Click += this.Hash_Click;
+            pictureBoxHash.Click += Hash_Click;
             // 
             // textBoxHash
             // 
@@ -708,7 +710,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(823, 27);
+            textBoxHash.Size = new Size(823, 23);
             textBoxHash.TabIndex = 8;
             // 
             // buttonSetPipeline
@@ -722,7 +724,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonSetPipeline.TabIndex = 5;
             buttonSetPipeline.Text = "Set Pipeline";
             buttonSetPipeline.UseVisualStyleBackColor = false;
-            buttonSetPipeline.Click += this.SetPipeline_Click;
+            buttonSetPipeline.Click += SetPipeline_Click;
             // 
             // buttonReset
             // 
@@ -758,7 +760,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxAddAlgo.Size = new Size(32, 27);
             pictureBoxAddAlgo.TabIndex = 12;
             pictureBoxAddAlgo.TabStop = false;
-            pictureBoxAddAlgo.Click += this.pictureBoxAddAlgo_Click;
+            pictureBoxAddAlgo.Click += pictureBoxAddAlgo_Click;
             // 
             // textBoxPipe
             // 
@@ -782,30 +784,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             labelFileIn.TabIndex = 21;
             labelFileIn.Text = "[Input File]";
             // 
-            // labelOutputFile
-            // 
-            labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelOutputFile.Location = new Point(508, 115);
-            labelOutputFile.Margin = new Padding(1, 0, 1, 0);
-            labelOutputFile.Name = "labelOutputFile";
-            labelOutputFile.RightToLeft = RightToLeft.Yes;
-            labelOutputFile.Size = new Size(477, 28);
-            labelOutputFile.TabIndex = 24;
-            labelOutputFile.Text = "[Output File]";
-            labelOutputFile.Visible = false;
-            // 
             // pictureBoxOutFile
             // 
             pictureBoxOutFile.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxOutFile.Location = new Point(917, 30);
+            pictureBoxOutFile.Location = new Point(915, 30);
             pictureBoxOutFile.Margin = new Padding(1);
             pictureBoxOutFile.Name = "pictureBoxOutFile";
             pictureBoxOutFile.Size = new Size(68, 68);
             pictureBoxOutFile.TabIndex = 25;
             pictureBoxOutFile.TabStop = false;
             pictureBoxOutFile.Visible = false;
-            pictureBoxOutFile.Click += this.pictureOutBoxFile_Click;
-            pictureBoxOutFile.DoubleClick += this.pictureOutBoxFile_Click;
+            pictureBoxOutFile.Click += pictureOutBoxFile_Click;
+            pictureBoxOutFile.DoubleClick += pictureOutBoxFile_Click;
             // 
             // textBoxSrc
             // 
@@ -863,11 +853,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             groupBoxFiles.AllowDrop = true;
             groupBoxFiles.BackColor = SystemColors.Control;
+            groupBoxFiles.Controls.Add(panelOutLabel);
             groupBoxFiles.Controls.Add(pictureBoxRunningPipe);
             groupBoxFiles.Controls.Add(pictureBoxFileIn);
             groupBoxFiles.Controls.Add(labelFileIn);
             groupBoxFiles.Controls.Add(pictureBoxOutFile);
-            groupBoxFiles.Controls.Add(labelOutputFile);
             groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
             groupBoxFiles.Location = new Point(8, 198);
             groupBoxFiles.Margin = new Padding(2);
@@ -877,16 +867,39 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             groupBoxFiles.TabIndex = 20;
             groupBoxFiles.TabStop = false;
             groupBoxFiles.Text = "Files (drag files into)";
-            groupBoxFiles.DragDrop += this.Drag_Drop;
-            groupBoxFiles.DragEnter += this.Drag_Enter;
-            groupBoxFiles.DragOver += this.Drag_Over;
-            groupBoxFiles.DragLeave += this.Drag_Leave;
-            groupBoxFiles.GiveFeedback += this.Give_FeedBack;
+            groupBoxFiles.DragDrop += Drag_Drop;
+            groupBoxFiles.DragEnter += Drag_Enter;
+            groupBoxFiles.DragOver += Drag_Over;
+            groupBoxFiles.DragLeave += Drag_Leave;
+            groupBoxFiles.GiveFeedback += Give_FeedBack;
+            // 
+            // panelOutLabel
+            // 
+            panelOutLabel.Controls.Add(labelOutputFile);
+            panelOutLabel.Location = new Point(508, 120);
+            panelOutLabel.Name = "panelOutLabel";
+            panelOutLabel.RightToLeft = RightToLeft.Yes;
+            panelOutLabel.Size = new Size(477, 26);
+            panelOutLabel.TabIndex = 26;
+            // 
+            // labelOutputFile
+            // 
+            labelOutputFile.AutoSize = true;
+            labelOutputFile.Dock = DockStyle.Right;
+            labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
+            labelOutputFile.Location = new Point(379, 0);
+            labelOutputFile.Margin = new Padding(1, 0, 1, 0);
+            labelOutputFile.Name = "labelOutputFile";
+            labelOutputFile.RightToLeft = RightToLeft.Yes;
+            labelOutputFile.Size = new Size(98, 13);
+            labelOutputFile.TabIndex = 25;
+            labelOutputFile.Text = "[Output File]";
+            labelOutputFile.Visible = false;
             // 
             // pictureBoxRunningPipe
             // 
             pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
-            pictureBoxRunningPipe.Location = new Point(180, 1);
+            pictureBoxRunningPipe.Location = new Point(180, 6);
             pictureBoxRunningPipe.Margin = new Padding(1);
             pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
             pictureBoxRunningPipe.Size = new Size(640, 108);
@@ -903,7 +916,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxDelete.Size = new Size(27, 27);
             pictureBoxDelete.TabIndex = 15;
             pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += this.pictureBoxDelete_Click;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;
             // 
             // comboBoxCompression
             // 
@@ -917,7 +930,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxCompression.Name = "comboBoxCompression";
             comboBoxCompression.Size = new Size(96, 23);
             comboBoxCompression.TabIndex = 10;
-            comboBoxCompression.SelectedIndexChanged += this.ComboBoxCompression_SelectedIndexChanged;
+            comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
             // comboBoxEncoding
             // 
@@ -944,7 +957,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonRandomText.TabIndex = 35;
             buttonRandomText.Text = "Random Text";
             buttonRandomText.UseVisualStyleBackColor = false;
-            buttonRandomText.Click += this.RandomText_Click;
+            buttonRandomText.Click += RandomText_Click;
             // 
             // buttonHashPipe
             // 
@@ -957,7 +970,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonHashPipe.TabIndex = 9;
             buttonHashPipe.Text = "Hash Pipe";
             buttonHashPipe.UseVisualStyleBackColor = false;
-            buttonHashPipe.Click += this.Hash_Pipe_Click;
+            buttonHashPipe.Click += Hash_Pipe_Click;
             // 
             // radioButtonListHash
             // 
@@ -1069,7 +1082,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             Opacity = 0.92D;
             Text = "EncryptForm";
             FormClosed += menuFileExit_Close;
-            Load += this.EncryptForm_Load;
+            Load += EncryptForm_Load;
             menuStripEncrypt.ResumeLayout(false);
             menuStripEncrypt.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).EndInit();
@@ -1080,6 +1093,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxOutFile).EndInit();
             groupBoxFiles.ResumeLayout(false);
             groupBoxFiles.PerformLayout();
+            panelOutLabel.ResumeLayout(false);
+            panelOutLabel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             statusStrip.ResumeLayout(false);
@@ -1122,7 +1137,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal PictureBox pictureBoxAddAlgo;
         protected internal TextBox textBoxPipe;
         protected internal Label labelFileIn;
-        protected internal Label labelOutputFile;
         protected internal PictureBox pictureBoxOutFile;
         protected internal TextBox textBoxSrc;
         protected internal TextBox textBoxOut;
@@ -1184,6 +1198,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private ToolStripMenuItem menuOptionsMenuFileSettings;
         private ToolStripMenuItem menuItemCreatePipeSettingsFromFileName;
         private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
+        private Panel panelOutLabel;
+        protected internal Label labelOutputFile;
     }
 
 

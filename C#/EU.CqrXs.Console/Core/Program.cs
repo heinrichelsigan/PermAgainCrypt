@@ -222,6 +222,8 @@ namespace EU.CqrXs.Console.Core
 
             if (arg.Contains("="))
                 optArg = arg.GetSubStringByPattern("=", true, "", " ", true, StringComparison.CurrentCultureIgnoreCase);
+            else if (arg.Contains(":"))
+                optArg = arg.GetSubStringByPattern(":", true, "", " ", true, StringComparison.CurrentCultureIgnoreCase);
 
             switch (arg[0])
             {

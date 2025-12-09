@@ -40,6 +40,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboBoxEncoding_SelectedIndexChanged(sender, e));
             radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) => await RadioButtonListHash_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
+            groupBoxFiles.FileRequired += GroupBoxFileRequired;
 
             menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
             menuMainDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
@@ -666,16 +667,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         {
                             await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
                             await PlaySoundFromResourcesAsync("sound_hammer");
-                            await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
+                            await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
                         }
                         else
                         {
                             await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
                             await PlaySoundFromResourcesAsync("sound_laser");
-                            await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
+                            await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
 
-                        await SetLabelTextAsync(groupBoxFiles.labelOutputFile, outFileName);
+                        await groupBoxFiles.SetLabelVisibleTextAsync(groupBoxFiles.labelOutputFile, true, outFileName);
+
+
                         HashFiles.Add(outFilePath);
 
                         Cursor.Current = DefaultCursor;
@@ -952,13 +955,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region file loading and saving ops
 
-        public virtual void GroupBoxFilesAdded(object sender, Area23EventArgs<string> filesToAddArgs)
+        public virtual void GroupBoxFilesAdded(object sender, Area23EventArgs<string> fileToAddArgs)
         {
             string fileToAdd = "";
-            if (filesToAddArgs != null && ((fileToAdd = filesToAddArgs.GenericTData.ToString()) != null))
+            if (fileToAddArgs != null && ((fileToAdd = fileToAddArgs.GenericTData.ToString()) != null))
             {
                 FileAddedAction(fileToAdd);
             }
+        }
+
+        public virtual void GroupBoxFileRequired(object sender, EventArgs e)
+        {
+            menuFileOpen_Click(sender, e);
         }
 
         /// <summary>

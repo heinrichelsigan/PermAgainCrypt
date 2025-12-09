@@ -41,17 +41,17 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         Des = 0x17,
         Aria = 0x18,
         CamelliaLight = 0x19,
-        Dstu7624 = 0x1a,         
+        Dstu7624 = 0x1a,
         AesLight = 0x1b,
         ThreeFish256 = 0x1c,
-        
+
         Des3Net = 0x1d,
-        AesNet = 0x1e, 
+        AesNet = 0x1e,
 
 
-        ZenMatrix = 0x1f, 
-        ZenMatrix2 = 0x20, 
-        
+        ZenMatrix = 0x1f,
+        ZenMatrix2 = 0x20,
+
         Rsa = 0x21
         // DH = 0x22,
     }
@@ -72,6 +72,17 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
             }
 
             return list.ToArray();
+        }
+
+        public static Dictionary<byte, CipherEnum> ByteCipherDict
+        {
+            get
+            {
+                Dictionary<byte, CipherEnum> hexCipherDict = new Dictionary<byte, CipherEnum>();
+                foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
+                    hexCipherDict.Add((byte)cipher, cipher);
+                return hexCipherDict;
+            }
         }
 
         /// <summary>
@@ -122,10 +133,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Tnepres: return 'T';
                 case CipherEnum.Rijndael: return 'j';
                 case CipherEnum.XTea: return 'X';
-                
+
                 case CipherEnum.ZenMatrix: return 'z';
                 case CipherEnum.ZenMatrix2: return 'Z';
-                               
+
                 case CipherEnum.Rsa: return '%';
                 // case CipherEnum.DH: return '!';
 
@@ -162,14 +173,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     if ((++pipeCnt) >= 8)
                         break;
                 }
-                    
+
             }
 
             return cipherList.ToArray();
         }
 
+    
 
-        public static CipherEnum[] FromString(string pipeText)
+public static CipherEnum[] FromString(string pipeText)
         {
             CipherPipe cp = new CipherPipe(pipeText);
             return cp.InPipe;

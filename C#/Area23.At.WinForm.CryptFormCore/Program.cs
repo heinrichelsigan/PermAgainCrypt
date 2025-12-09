@@ -1,7 +1,7 @@
 #define CLR2COMPATIBILITY
+using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Gui.Forms;
-using Microsoft.Win32.SafeHandles;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -9,6 +9,13 @@ using System.Runtime.InteropServices;
 
 namespace Area23.At.WinForm.CryptFormCore
 {
+
+    public enum FormMode
+    {
+        Simple = 0,
+        MultiComponent = 1,
+        Complex = 2
+    }
 
     #region program
 
@@ -20,7 +27,8 @@ namespace Area23.At.WinForm.CryptFormCore
         internal static Mutex? mutex;
 
         internal static SystemColorMode colorMode = SystemColorMode.System;
-
+        internal static FormMode formMode = FormMode.MultiComponent;
+        // internal static CipherPipe? ciperPipe;
 
         /// <summary>
         ///  The main entry point for the application.
@@ -46,9 +54,10 @@ namespace Area23.At.WinForm.CryptFormCore
                         colorMode = SystemColorMode.Dark;
                     if (arg.Contains("classic", StringComparison.CurrentCultureIgnoreCase))
                         colorMode = SystemColorMode.Classic;
+                    if (arg.Contains("simple", StringComparison.CurrentCultureIgnoreCase))
+                        formMode = FormMode.Simple;
                 }
             }
-
                 
 
             // set Application basic settings
@@ -58,11 +67,10 @@ namespace Area23.At.WinForm.CryptFormCore
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             // instanciate a new EncryptForm
-            System.Windows.Forms.Form encryptForm = new EncryptForm();
-            System.Windows.Forms.Form multipleControls = new EncryptFormMultiControls();
+            System.Windows.Forms.Form form = (formMode == FormMode.Simple) ? new EncryptForm() : new EncryptFormMultiControls();
 
             // Run application
-            Application.Run(multipleControls);
+            Application.Run(form);
 
             // Release, Close, Dispose Mutal Exclusion
             ReleaseCloseDisposeMutex();

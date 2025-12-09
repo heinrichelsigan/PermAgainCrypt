@@ -32,11 +32,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GroupBoxFiles));
+            panelOutLabel = new Panel();
             pictureBoxFileIn = new PictureBox();
             pictureBoxFileOut = new PictureBox();
             pictureBoxRunningPipe = new PictureBox();
             labelFileIn = new Label();
             labelOutputFile = new Label();
+            panelOutLabel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileOut).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
@@ -45,24 +47,35 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             // labelFileIn
             // 
             labelFileIn.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelFileIn.Location = new Point(12, 112);
+            labelFileIn.Location = new Point(12, 128);
             labelFileIn.Margin = new Padding(1, 0, 1, 0);
             labelFileIn.Name = "labelFileIn";
-            labelFileIn.Size = new Size(432, 23);
+            labelFileIn.Size = new Size(472, 23);
             labelFileIn.TabIndex = 21;
             labelFileIn.Text = "[Input File]";
             // 
+            // panelOutLabel
+            // 
+            panelOutLabel.Controls.Add(labelOutputFile);
+            panelOutLabel.Location = new Point(508, 128);
+            panelOutLabel.Name = "panelOutLabel";
+            panelOutLabel.RightToLeft = RightToLeft.Yes;
+            panelOutLabel.Size = new Size(477, 26);
+            panelOutLabel.TabIndex = 24;
+            // 
             // labelOutputFile
             // 
+            labelOutputFile.AutoSize = true;
+            labelOutputFile.Dock = DockStyle.Right;
             labelOutputFile.Font = new Font("Lucida Sans Typewriter", 8.75F);
-            labelOutputFile.Location = new Point(545, 112);
+            labelOutputFile.Location = new Point(1, 0);
             labelOutputFile.Margin = new Padding(1, 0, 1, 0);
             labelOutputFile.Name = "labelOutputFile";
             labelOutputFile.RightToLeft = RightToLeft.Yes;
-            labelOutputFile.Size = new Size(444, 23);
-            labelOutputFile.TabIndex = 24;
+            labelOutputFile.Size = new Size(473, 23);
+            labelOutputFile.TabIndex = 25;
             labelOutputFile.Text = "[Output File]";
-            labelOutputFile.Visible = false;
+            labelOutputFile.Visible = false;            
             // 
             // pictureBoxFileIn
             // 
@@ -80,7 +93,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             // pictureBoxFileOut
             // 
             pictureBoxFileOut.Image = Properties.Resources.image_file_encrypted;
-            pictureBoxFileOut.Location = new Point(918, 32);
+            pictureBoxFileOut.Location = new Point(915, 32);
             pictureBoxFileOut.Margin = new Padding(1);
             pictureBoxFileOut.Name = "pictureBoxFileOut";
             pictureBoxFileOut.Size = new Size(68, 68);
@@ -93,7 +106,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             // pictureBoxRunningPipe
             // 
             pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
-            pictureBoxRunningPipe.Location = new Point(180, 1);
+            pictureBoxRunningPipe.Location = new Point(180, 11);
             pictureBoxRunningPipe.Margin = new Padding(1);
             pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";
             pictureBoxRunningPipe.Size = new Size(640, 108);
@@ -108,13 +121,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             this.Controls.Add(pictureBoxFileIn);
             this.Controls.Add(labelFileIn);
             this.Controls.Add(pictureBoxFileOut);
-            this.Controls.Add(labelOutputFile);
+            this.Controls.Add(panelOutLabel);
             this.Font = new Font("Lucida Sans Typewriter", 8F);
             this.Location = new Point(0, 0);
-            this.Margin = new Padding(2);
+            this.Margin = new Padding(1);
             this.Name = "GroupBoxFiles";
-            this.Padding = new Padding(2);
-            this.Size = new Size(988, 145);
+            this.Padding = new Padding(1);
+            this.Size = new Size(988, 156);
             this.TabIndex = 20;
             this.TabStop = false;
             this.Text = "Files (drag files into)";
@@ -126,6 +139,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileOut).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();
+            panelOutLabel.ResumeLayout(false);
+            panelOutLabel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -137,5 +152,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         internal PictureBox pictureBoxFileOut;        
         internal Label labelFileIn;
         internal Label labelOutputFile;
+        internal Panel panelOutLabel;
     }
 }
