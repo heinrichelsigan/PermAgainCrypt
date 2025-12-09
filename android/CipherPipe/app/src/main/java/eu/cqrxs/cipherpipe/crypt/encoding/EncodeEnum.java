@@ -10,6 +10,7 @@
 
 package eu.cqrxs.cipherpipe.crypt.encoding;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
@@ -109,36 +110,55 @@ public enum EncodeEnum implements Serializable {
         }
         return "";
     }
-    public String decode(String hexString) {
+
+
+    /**
+     * decode transforms am encoded String to a readable text String
+     * @param encodedString an encoded String
+     * @return a readable plain text String
+     * @exception IllegalArgumentException is thrown when base64 encoded String is null or empty
+     * @exception IOException is thrown, when UUDecoder().decodeBuffer(uuEncString) fails
+     */
+    public String decode(String encodedString) throws IOException {
         int xvalue = getValue();
         switch (xvalue) {
             case 0:
-                return hexString;
+                return encodedString;
             case 0x200:
-                return new Base16Coder().decode(hexString);
+                return new Base16Coder().decode(encodedString);
             case 0x300:
-                return new Hex16Coder().decode(hexString);
+                return new Hex16Coder().decode(encodedString);
             case 0x400:
                 throw new NotImplementedError("base32 not implemented");
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
-                return new UuCoder().decode(hexString);
+                return new UuCoder().decode(encodedString);
             case 0x700:
                 throw new NotImplementedError("base58 not implemented");
             case 0x800:
-                return new Base64Coder().decode(hexString);
+                return new Base64Coder().decode(encodedString);
             case 0x900:
                 throw new NotImplementedError("xx not implemented");
                 // return new XxEncoder().encode(inString);
             default:
                 break;
         }
-        return hexString;
+        return encodedString;
     }
 
 
-    public String encodeBytesToString(byte[] inBytes) {
+    /**
+     * encodeBytesToString - converts a binary byte array into an encoded String
+     * @param inBytes byte array
+     * @return an ASCII encoded String
+     * @exception IllegalArgumentException is thrown when inBytes is null or empty
+     * @exception IOException is thrown when encoding to ASCII encoded String fails
+     */
+    public String encodeBytesToString(byte[] inBytes) throws IOException {
+        if (inBytes == null || inBytes.length < 1)
+            throw new IllegalArgumentException("public static string encodeBytesToString(byte[] inBytes == NULL)");
+
         int xvalue = getValue();
         switch (xvalue) {
             case 0:
@@ -166,32 +186,49 @@ public enum EncodeEnum implements Serializable {
         return inBytes.toString();
     }
 
-    public byte[] decodeStringToBytes(String inString) {
+
+    /**
+     * decodeStringToBytes transforms an uu encoded string into an binary byte[] array
+     * @param encodedString: an uu encoded String
+     * @return binary byte array
+     * @exception IllegalArgumentException is thrown when uu encoded String is null or empty
+     * @exception IOException is thrown when Decoder decoding failed
+     */
+    public byte[] decodeStringToBytes(String encodedString) throws IOException {
+        if (encodedString == null || encodedString.length() == 0)
+            throw new IllegalArgumentException("public static byte[] decodeStringToBytes(String encodedString), encodedString == NULL || encodedString == \"\"");
+
         int xvalue = getValue();
         switch (xvalue) {
             case 0:
-                return inString.getBytes();
+                return encodedString.getBytes();
             case 0x200:
-                return new Base16Coder().decodeStringToBytes(inString);
+                return new Base16Coder().decodeStringToBytes(encodedString);
             case 0x300:
-                return new Hex16Coder().decodeStringToBytes(inString);
+                return new Hex16Coder().decodeStringToBytes(encodedString);
             case 0x400:
                 throw new NotImplementedError("base32 not implemented");
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
-                return new UuCoder().decodeStringToBytes(inString);
+                byte[] plainBytes = new byte[0];
+                try {
+                    plainBytes = (new UuCoder()).decodeStringToBytes(encodedString);
+                } catch (IOException ioEx) {
+                    throw ioEx;
+                }
+                return plainBytes;
             case 0x700:
                 throw new NotImplementedError("base58 not implemented");
             case 0x800:
-                return new Base64Coder().decodeStringToBytes(inString);
+                return new Base64Coder().decodeStringToBytes(encodedString);
             case 0x900:
                 throw new NotImplementedError("xx not implemented");
                 // return new XxEncoder().encode(inString);
             default:
                 break;
         }
-        return inString.getBytes();
+        return encodedString.getBytes();
     }
 
 

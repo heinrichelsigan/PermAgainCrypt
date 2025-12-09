@@ -23,12 +23,15 @@
  * questions.
  */
 
-package jdk.unsupported;
+
 
 /*
+package jdk.unsupported;
 package sun.misc;
+package jdk.unsupported;
 package cqrxs.eu.fw.crypt.endecoding;
  */
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;

@@ -23,15 +23,16 @@
  * questions.
  */
 
-package jdk.unsupported;
 
 /*
+package jdk.unsupported;
 package sun.misc;
  cqrxs.eu.fw.crypt.endecoding;
  */
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
 /** This exception is thrown when EOF is reached */
 public class CEStreamExhausted extends java.io.IOException {
-    static final long serialVersionUID = -5889118049525891904L;
+    private static final long serialVersionUID = -5889118049525891904L;
 }
 

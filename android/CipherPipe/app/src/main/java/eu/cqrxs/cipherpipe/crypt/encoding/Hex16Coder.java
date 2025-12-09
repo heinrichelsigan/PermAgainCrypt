@@ -38,8 +38,8 @@ public class Hex16Coder extends EnDeCoder  {
 			throw new IllegalArgumentException("public String ToHex(byte[] inBytes == NULL)");
 
 		String hexString = "";
-		HexFormat hex = HexFormat.of();
-		hexString = hex.formatHex(inBytes);
+        HexFormat hex = HexFormat.of();
+        hexString = hex.formatHex(inBytes);
 
 		return hexString;
 	}

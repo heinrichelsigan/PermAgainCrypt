@@ -23,14 +23,14 @@
  * questions.
  */
 
-package jdk.unsupported;
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
 /*
 package sun.misc;
  */
 
 public class CEFormatException extends java.io.IOException {
-    static final long serialVersionUID = -7139121221067081482L;
+    private static final long serialVersionUID = -7139121221067081482L;
     public CEFormatException(String s) {
         super(s);
     }

@@ -23,14 +23,17 @@
  * questions.
  */
 
-package jdk.unsupported;
-
 /*
 package sun.misc;
+package jdk.unsupported;
 package cqrxs.eu.fw.crypt.endecoding;
  */
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
-
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterEncoder;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterDecoder;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CEFormatException;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CEStreamExhausted;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -86,9 +89,9 @@ import java.nio.ByteBuffer;
  * @author      Chuck McManis
  * @see         CEFormatException
  * @see         CharacterEncoder
- * @see         UCDecoder
- * @see         UUDecoder
- * @see         BASE64Decoder
+ * @see         eu.cqrxs.cipherpipe.crypt.encoding.uu.UUEncoder
+ * @see         eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder
+ * @see         eu.cqrxs.cipherpipe.crypt.encoding.Base64Coder
  */
 
 public abstract class CharacterDecoder {

@@ -23,13 +23,19 @@
  * questions.
  */
 
-package jdk.unsupported;
 
-/* 
+
+/*
 package sun.misc;
-package cqrxs.eu.fw.crypt.endecoding; 
+package jdk.unsupported;
+package cqrxs.eu.fw.crypt.endecoding;
  */
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterEncoder;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterDecoder;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CEFormatException;
+import eu.cqrxs.cipherpipe.crypt.encoding.uu.CEStreamExhausted;
 import java.io.PushbackInputStream;
 import java.io.OutputStream;
 import java.io.InputStream;

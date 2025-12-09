@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.IOException;
 import java.util.SortedMap;
 
 import eu.cqrxs.cipherpipe.enums.*;
@@ -88,7 +89,11 @@ public class MainActivity extends AppCompatActivity {
                 editTextSource = (EditText) findViewById(R.id.editTextSource);
                 showTextDestination = (EditText) findViewById(R.id.showTextDestination);
                 String encoded = editTextSource.getText().toString();
-                String decoded = encodeType.decode(encoded);
+                String decoded = "";
+                try {
+                    decoded = encodeType.decode(encoded);
+                } catch (IOException ioEx) {
+                }
                 showTextDestination.setText(decoded);
             }
         });

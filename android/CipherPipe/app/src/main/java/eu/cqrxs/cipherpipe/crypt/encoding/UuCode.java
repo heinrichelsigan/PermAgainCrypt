@@ -633,9 +633,9 @@ class UUDecoder extends CharacterDecoder {
  *
  * @author      Chuck McManis
  * @see         CharacterDecoder;
- * @see         UCEncoder
  * @see         UUEncoder
- * @see         BASE64Encoder
+ * @see         UUDecoder
+ * @see         Base64Coder
  */
 abstract class CharacterEncoder {
 
