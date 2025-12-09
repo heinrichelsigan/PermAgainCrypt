@@ -1,5 +1,4 @@
 ﻿using Area23.At.Framework.Core.Crypt.Cipher;
-using Area23.At.Framework.Core.Static;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
