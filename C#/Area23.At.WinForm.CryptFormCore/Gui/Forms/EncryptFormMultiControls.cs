@@ -652,8 +652,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await SetStatusLabelTextAsync(this.statusLabelMsg, "encryption time: " + DateTime.Now.Subtract(start).ToString());
                     await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
-
-                    bool saved = SaveBytesDialog(encodedBytes, ref outFilePath);
+                    
+                    bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
+                                SaveBytesNoDialog(encodedBytes, ref outFilePath) :
+                                SaveBytesDialog(encodedBytes, ref outFilePath);
                     if (saved)
                     {
                         string outFileName = Path.GetFileName(outFilePath);
@@ -736,7 +738,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
             BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-            SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, bGen.GenerateDecryptPipeImage());
+            groupBoxFiles.SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, bGen.GenerateDecryptPipeImage());
 
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
             {
@@ -788,13 +790,15 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     string miniPipe = (string.IsNullOrEmpty(cPipe.PipeString)) ? "" : "." + cPipe.PipeString;
                     string outFileDecrypt = (fileName.Contains(GetHash().GetExtension())) ? fileName.Replace(GetHash().GetExtension(), "") : fileName;
                     outFileDecrypt = outFileDecrypt.Replace(GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension(), "");
-                    
-                    bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
+
+                    bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
+                                SaveBytesNoDialog(outBytes, ref outFileDecrypt) :
+                                SaveBytesDialog(outBytes, ref outFileDecrypt);
                     if (saved)
                     {
                         HashFiles.Add(outFileDecrypt);
-                        await SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
-                        await SetLabelTextAsync(groupBoxFiles.labelOutputFile, Path.GetFileName(outFileDecrypt));
+                        await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
+                        await groupBoxFiles.SetLabelVisibleTextAsync(groupBoxFiles.labelOutputFile, true, Path.GetFileName(outFileDecrypt));
                         await SetInfoMessageAsync("file decrypted", ToolTipIcon.Info, -1);
                     }
                     else
@@ -1129,6 +1133,56 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
                     return true;
                 }
+            }
+            return false;
+        }
+
+
+
+        /// <summary>
+        /// SaveBytesNoDialog saves byte array to file in temporary directory
+        /// </summary>
+        /// <param name="fileBytes">byte array to save</param>
+        /// <param name="outFilePath">ref will be returned; calculated outFilePath</param>
+        /// <returns>true if saved, false if not saved</returns>
+        internal bool SaveBytesNoDialog(byte[] fileBytes, ref string outFilePath)
+        {
+            // this.pictureBoxRunningPipe.Visible = false;           
+            outFilePath = outFilePath ?? string.Empty;
+            if (fileBytes != null && fileBytes.Length > 0)
+            {
+                string tempFileDirectory = Environment.GetEnvironmentVariable("LOCALAPPDATA") ?? "";
+                if (string.IsNullOrEmpty(tempFileDirectory))
+                    tempFileDirectory = Path.Combine(
+                        Environment.GetEnvironmentVariable("windir") ?? Environment.GetEnvironmentVariable("SystemRoot") ?? "C:\\Windows",
+                        "Temp");
+                else tempFileDirectory = Path.Combine(tempFileDirectory, "Temp");
+
+                if (!Directory.Exists(tempFileDirectory))
+                    Directory.CreateDirectory(tempFileDirectory);
+
+                outFilePath = Path.Combine(tempFileDirectory, Path.GetFileName(outFilePath));
+
+                try
+                {
+                    File.WriteAllBytes(outFilePath, fileBytes);
+                }
+                catch (Exception ex)
+                {
+                    Area23Log.LogOriginMsgEx(this.Name, $"Exception in SaveBytesDialog for file: \"{outFilePath}\".\n", ex);
+                    return false;
+                }
+                FileInfo fi = new FileInfo(outFilePath);
+                if (fi.Exists && fi.Length > 0)
+                {
+                    if (fi.Length > 1048576)
+                        SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1048576)} MB");
+                    else if (fi.Length > 2048)
+                        SetStatusLabelText(this.statusLabelDestination, $"FileSize: {(fi.Length / 1024)} kb");
+                    else SetStatusLabelText(this.statusLabelDestination, $"FileSize: {fi.Length} bytes");
+                }
+
+                return true;
             }
             return false;
         }
