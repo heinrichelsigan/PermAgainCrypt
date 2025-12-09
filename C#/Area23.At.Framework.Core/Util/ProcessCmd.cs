@@ -1,7 +1,7 @@
 ﻿using Area23.At.Framework.Core.Util;
 using System.Diagnostics;
 
-namespace Area23.At.Framework.Core.Static
+namespace Area23.At.Framework.Core.Util
 {
 
     /// <summary>

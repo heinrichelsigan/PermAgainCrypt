@@ -7,7 +7,7 @@
 
     public class Area23EventArgs<T> : EventArgs
     {
-        
+
         /// <summary>
         /// <typeparamref name="T">geneneric T type or class</typeparamref>
         /// </summary>

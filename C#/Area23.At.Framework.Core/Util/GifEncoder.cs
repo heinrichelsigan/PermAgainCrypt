@@ -1,8 +1,4 @@
-﻿using Org.BouncyCastle.Crypto.IO;
-using Org.BouncyCastle.Utilities;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.IO;
+﻿using System.Drawing.Imaging;
 
 // https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs
 
@@ -108,7 +104,7 @@ namespace Area23.At.Framework.Core.Util
         /// <param name="repeatCount">repeat count</param>
         /// <param name="frameDelay">delay between gif frames</param>
         /// <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
-        public GifEncoder(Bitmap bmp, int? repeatCount, TimeSpan? frameDelay, params Bitmap[] gifFrames) 
+        public GifEncoder(Bitmap bmp, int? repeatCount, TimeSpan? frameDelay, params Bitmap[] gifFrames)
         {
             _byteList = new List<byte>();
             GifBytes = (new List<byte>()).ToArray();
