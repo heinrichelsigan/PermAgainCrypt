@@ -17,6 +17,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import kotlin.NotImplementedError;
+
 /**
  * ZipType represents the enumerator for all Encoding to ascii algorithms
  */
@@ -43,6 +45,15 @@ public enum ZipType implements Serializable {
      */
     public int getValue() { return value; }
 
+
+    public byte[] zip(byte[] plainBytes) {
+        throw new NotImplementedError("zipping not implemented");
+    }
+
+    public byte[] unzip(byte[] zippedBytes) {
+        throw new NotImplementedError("unzipping not implemented");
+
+    }
 
     /**
      * getName
@@ -153,7 +164,7 @@ public enum ZipType implements Serializable {
 
     /**
      * getEnum
-     * @param ch column character
+     * @param eName zip type name
      * @return the enum {@link ZipType}
      */
     public static ZipType getEnum(String eName) {
