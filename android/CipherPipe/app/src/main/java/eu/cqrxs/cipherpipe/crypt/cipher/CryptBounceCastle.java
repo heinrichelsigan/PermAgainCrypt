@@ -4,7 +4,7 @@ import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
 
 import androidx.core.content.res.TypedArrayUtils;
 
-import com.google.common.primitives.Bytes;
+// import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -114,12 +114,13 @@ public class CryptBounceCastle  {
             tmpKey = new byte[keyLen];
             tmpIv = new byte[keyLen];
 
-            if (cparams.key == null || cparams.key.length() == 0)
-                throw new IllegalArgumentException("cparams.Key");
 
-            privateKey = cparams.key;
-            privateHash = (cparams.hash == null || cparams.hash.length() == 0) ?
-                    KeyHash.Hex.hash(cparams.key) : cparams.hash;
+            // throw new IllegalArgumentException("cparams.Key");
+
+            privateKey = (cparams.key != null && cparams.key.length() > 0) ?
+                    cparams.key :  Constants.AUTHOR_EMAIL;
+            privateHash = (cparams.hash != null && cparams.hash.length() > 0) ?
+                    cparams.hash : cparams.keyHashing.hash(cparams.key);
 
             tmpKey = getUserKeyBytes(privateKey, privateHash);
             // tmpKey = (privateKey.Length >= KeyLen) ? Encoding.UTF8.GetBytes(privateKey) : Encoding.UTF8.GetBytes(privateKey + privateHash);

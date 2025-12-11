@@ -81,6 +81,8 @@ public enum CipherEnum implements Serializable {
      */
     public int getValue() { return value; }
 
+    public byte getByteValue() { return ((byte)value); }
+
     /**
      * getCipherChar
      * @return upper letter {@link char}
@@ -136,6 +138,18 @@ public enum CipherEnum implements Serializable {
 		}
         return 'A'; 	// Aes
     }
+
+    public static CipherEnum fromString(String algo) {
+        String alg = (algo != null && algo.length() > 0) ? algo.toLowerCase() : "Aes";
+        CipherEnum cEnum = CipherEnum.Aes;
+        try {
+            cEnum = CipherEnum.valueOf(CipherEnum.class, alg);
+        }  catch (Exception exEnum) {
+            cEnum = CipherEnum.Aes;
+        }
+        return cEnum;
+    }
+
 
     /**
      * getChar
@@ -259,11 +273,11 @@ public enum CipherEnum implements Serializable {
      * getByteCipherDict()
      * @return a HashMap Map<byte,CipherEnum>
      */
-    public static Map<Byte,CipherEnum> getByteCipherDict() {
+    public static HashMap<Byte,CipherEnum> getByteCipherDict() {
 
-        Map<Byte,CipherEnum>  map = new HashMap<Byte,CipherEnum> ();
+        HashMap<Byte,CipherEnum> map = new HashMap<Byte,CipherEnum> ();
         for (CipherEnum cipherEnum : CipherEnum.values())  {
-            Byte b = Byte.valueOf(((byte)cipherEnum.getValue()));
+            Byte b = Byte.valueOf(((byte)cipherEnum.getByteValue()));
             map.put(b, cipherEnum);
         }
         return map;
@@ -285,13 +299,17 @@ public enum CipherEnum implements Serializable {
         String[] algos = pipeText.split(Constants.COOL_CRYPT_SPLIT);
         for (String algo : algos)
         {
-            cipher = CipherEnum.valueOf(algo);
+            cipher = CipherEnum.fromString(algo);
             cipherList.add(cipher);
             if ((++pipeCnt) >= 8)
                 break;
         }
 
-        return cipherList.toArray(CipherEnum[]::new);
+        CipherEnum[] cipherEnums = new CipherEnum[cipherList.size()];
+        for (int ci = 0; ci < cipherList.size(); ci ++) {
+            cipherEnums[ci] = cipherList.get(ci);
+        }
+        return cipherEnums;
     }
 
     public static CipherEnum fromSymmCipherEnum(SymmCipherEnum symmCipherEnum) {

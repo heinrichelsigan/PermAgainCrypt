@@ -1,12 +1,12 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
-import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
 
 import androidx.core.content.res.TypedArrayUtils;
 
-import com.google.common.primitives.Bytes;
+// import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
@@ -61,11 +61,12 @@ public class CipherPipe {
 
 
     public CipherEnum[] getOutPipe() {
-        List<CipherEnum> ceList = new ArrayList<CipherEnum>();
-        for (int i = inPipe.length - 1; i >= 0; i--) {
-            ceList.add(inPipe[i]);
-        }
-        return ceList.toArray(CipherEnum[]::new);
+        CipherEnum[] outEnums = new CipherEnum[inPipe.length];
+        int outIdx = 0;
+        for (int i = inPipe.length - 1; i >= 0; i--)
+            outEnums[outIdx++] = inPipe[i];
+
+        return outEnums;
     }
 
     public String getPipeString() {
@@ -102,7 +103,10 @@ public class CipherPipe {
 
         int isize = Math.min(((int)cipherEnums.length), ((int)maxpipe));
         inPipe = new CipherEnum[isize];
-        System.arraycopy(cipherEnums, 0, inPipe, 0, isize);
+        for (int ib = 0; (ib < cipherEnums.length && ib < isize); ib++) {
+            inPipe[ib] = cipherEnums[ib];
+        }
+        // System.arraycopy(cipherEnums, 0, inPipe, 0, isize);
 
         encodeType = encType;
         zType = zpType;
@@ -159,14 +163,24 @@ public class CipherPipe {
 
         HashSet<Byte> hashBytes = new HashSet<Byte>();
         for (int i = 0; i < keyBytes.length && pipeList.size() < maxpipe; i++) {
-            Byte cb = Byte.valueOf((byte)((int)((int)keyBytes[i] % 0x20)));
+            byte bb = (byte)((int)((int)keyBytes[i] % 32));
+            Byte cb = Byte.valueOf(bb);
             if (!hashBytes.contains(cb)) {
                 hashBytes.add(cb);
-                pipeList.add(CipherEnum.getByteCipherDict().get(cb));
+                CipherEnum cipherEnm = CipherEnum.getByteCipherDict().get(cb);
+                pipeList.add(cipherEnm);
             }
         }
 
-        inPipe = pipeList.toArray(CipherEnum[]::new);
+        try {
+            inPipe = new CipherEnum[pipeList.size()];
+            inPipe = pipeList.toArray(CipherEnum[]::new);
+        } catch (Exception ex) {
+            inPipe = new CipherEnum[pipeList.size()];
+            for (int ib = 0; ib < pipeList.size(); ib++) {
+                inPipe[ib] = pipeList.get(ib);
+            }
+        }
 
         zType = zpType;
         encodeType = encType;
@@ -246,12 +260,12 @@ public class CipherPipe {
      * @param hash users key hashed
      * @return byte array of encrypted bytes
      */
-    public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String secretKey, String hash)
+    public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String secretKey, String hashedKey)
         throws InvalidCipherTextException {
         if (secretKey == null || secretKey.length() < 1)
             throw new IllegalArgumentException("seretkey");
-        if (hash == null || hash.length() == 0)
-            throw new IllegalArgumentException("hash");
+        if (hashedKey == null || hashedKey.length() == 0)
+            throw new IllegalArgumentException("hashedKey");
 
         byte[] encryptBytes = inBytes;
 
@@ -312,7 +326,7 @@ public class CipherPipe {
             case ZenMatrix:
             case ZenMatrix2:
             default:
-                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
+                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
                 // TODO: full port standard bouncycastle wrapper to java
@@ -514,7 +528,7 @@ public class CipherPipe {
             KeyHash keyHash) throws InvalidCipherTextException, IOException
     {
         // Transform String to bytes
-        byte[] inBytes = inString.getBytes();
+        byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
 
         // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
         byte[] encryptedBytes = encrpytFileBytesGoRounds(inBytes, cryptKey, hashIv, encoding, zipBefore, keyHash);
@@ -576,13 +590,18 @@ public class CipherPipe {
             ZipType unzipAfter,
             KeyHash keyHash) throws InvalidCipherTextException, IOException
     {
+
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
+
 
         // perform multi crypt pipe stages
         byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash);
 
         // Get String from decrypted bytes
-        String decrypted = decryptedBytes.toString();
+        String decrypted = (inPipe.length == 0) ?
+                new String(cipherBytes, "UTF8") :
+                new String(decryptedBytes, StandardCharsets.UTF_8);
+
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
         int idx = decrypted.length() - 1;
         while (decrypted.charAt(decrypted.length() - 1) == '\0')

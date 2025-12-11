@@ -4,7 +4,7 @@ import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
 
 import androidx.core.content.res.TypedArrayUtils;
 
-import com.google.common.primitives.Bytes;
+// import com.google.common.primitives.Bytes;
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
@@ -215,16 +215,16 @@ public class CryptParams {
     }
 
 
-    public CryptParams(CipherEnum cipherAlgo, String key, String hash, KeyHash keyHash) {
+    public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed, KeyHash keyHash) {
         this(cipherAlgo);
-        key = key;
         keyHashing = keyHash;
-        hash = (hash == null || hash.length() < 1) ? keyHash.hash(key) : hash;
+        key = (secretKey == null || secretKey.length() == 0) ? Constants.AUTHOR_EMAIL : secretKey;
+        hash = (keyHashed == null || keyHashed.length() < 1) ? keyHashing.hash(secretKey) : keyHashed;
     }
 
 
-    public CryptParams(CipherEnum cipherAlgo, String key, KeyHash keyHash) {
-        this(cipherAlgo, key, keyHash.hash(key), keyHash);
+    public CryptParams(CipherEnum cipherAlgo, String secretKey, KeyHash keyHash) {
+        this(cipherAlgo, secretKey, keyHash.hash(secretKey), keyHash);
     }
 
     /***
@@ -233,10 +233,10 @@ public class CryptParams {
      * @param key user key for encryption {@link String}
      * @param hash hashed user key
      */
-    public CryptParams(CipherEnum cipherAlgo, String key, String hash) {
+    public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed) {
         this(cipherAlgo);
-        key = key;
-        hash = (hash == null || hash.length() < 1) ? keyHashing.hash(key) : hash;
+        key = (secretKey == null || secretKey.length() == 0) ? Constants.AUTHOR_EMAIL : secretKey;
+        hash = (keyHashed == null || keyHashed.length() < 1) ? keyHashing.hash(secretKey) : keyHashed;
     }
 
     /***

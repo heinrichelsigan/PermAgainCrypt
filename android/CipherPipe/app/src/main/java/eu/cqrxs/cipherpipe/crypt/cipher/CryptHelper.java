@@ -10,7 +10,7 @@ package eu.cqrxs.cipherpipe.crypt.cipher;
 
 import androidx.core.content.res.TypedArrayUtils;
 
-import com.google.common.primitives.Bytes;
+// import com.google.common.primitives.Bytes;
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
@@ -152,7 +152,8 @@ public class CryptHelper {
         }
 
         byte[] outOut = new byte[outBytes.size()];
-        System.arraycopy(outBytes.toArray(), 0, outOut, 0, outBytes.size());// Byte[] bytes = outBytes.toArray();
+        for (int arrcp = 0; arrcp < outBytes.size(); arrcp++) // manually array copy
+            outOut[arrcp] = ((Byte)outBytes.get(arrcp)).byteValue();
 
         return outOut;
     }

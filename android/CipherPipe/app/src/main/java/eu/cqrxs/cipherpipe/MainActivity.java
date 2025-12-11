@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.SortedMap;
 
 import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
+import eu.cqrxs.cipherpipe.crypt.cipher.CipherPipe;
 import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.crypt.hash.*;
 import eu.cqrxs.cipherpipe.crypt.encoding.*;
@@ -35,10 +37,12 @@ public class MainActivity extends AppCompatActivity {
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
     SortedMap<String, String> sortedAlgoMap, sortedHashMap, sortedEncodingMap;
     ArrayAdapter adapterHash = null, adapterEndoding = null, adapterZip = null, adapterAlgos = null;
-    String selectedHash = "", selectEncodeType = "", selectZipType = "", selectCipherAlgo = "";
+    String selectedHash = "", selectEncodeType = "", selectZipType = "", selectCipherAlgo = "", selectedZip = "";
     KeyHash keyHash = KeyHash.Hex;
     EncodeEnum encodeType = EncodeEnum.Base64;
     ZipType zipType = ZipType.None;
+
+    static boolean firstTimeInit = true, firstTimeInitEncodings = true;
 
     CipherEnum cipher;
 
@@ -69,7 +73,17 @@ public class MainActivity extends AppCompatActivity {
         btnSetPipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String key = editEncryptKey.getText().toString();
+                String hashed = keyHash.hash(key);
+                editKeyHash.setText(hashed);
 
+                CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash);
+
+                CipherEnum[] cipherEnums = pipe.getInPipe();
+                String pipeSting = "";
+                for (int ci = 0; ci < cipherEnums.length; ci++)
+                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+                showCipherPipe.setText(pipeSting);
             }
         });
 
@@ -78,9 +92,38 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editTextSource = (EditText) findViewById(R.id.editTextSource);
                 showTextDestination = (EditText) findViewById(R.id.showTextDestination);
+                showCipherPipe = (EditText) findViewById(R.id.showCipherPipe);
+
+                String key = editEncryptKey.getText().toString();
+                String hashed = keyHash.hash(key);
+                editKeyHash.setText(hashed);
+
+                String cipherPipeString = showCipherPipe.getText().toString();
+                CipherEnum[] ciphers = new CipherEnum[0];
+                if (cipherPipeString.length() > 0) {
+                    ciphers = CipherEnum.parsePipeText(cipherPipeString);
+                }
+                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+
                 String plain = editTextSource.getText().toString();
-                String encoded = encodeType.encode(plain);
-                showTextDestination.setText(encoded);
+                String encrypted = "";
+                CipherEnum[] cipherEnums = pipe.getInPipe();
+                String pipeSting = "";
+                for (int ci = 0; ci < cipherEnums.length; ci++)
+                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+
+                showMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s",
+                        pipeSting, encodeType.getName(),  keyHash.getName(), zipType.getName()), 2, false);
+                try {
+                    showMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+                            key, hashed, encodeType.getName(),  keyHash.getName(), zipType.getName()), 4, false);
+                    encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+
+                    showTextDestination.setText(encrypted);
+                } catch (Exception ex) {
+                    showTextDestination.setText(ex.toString());
+                }
+
             }
         });
 
@@ -89,13 +132,39 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editTextSource = (EditText) findViewById(R.id.editTextSource);
                 showTextDestination = (EditText) findViewById(R.id.showTextDestination);
-                String encoded = editTextSource.getText().toString();
-                String decoded = "";
-                try {
-                    decoded = encodeType.decode(encoded);
-                } catch (IOException ioEx) {
+                editTextSource = (EditText) findViewById(R.id.editTextSource);
+                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
+
+                String key = editEncryptKey.getText().toString();
+                String hashed = keyHash.hash(key);
+                editKeyHash.setText(hashed);
+
+
+                String cipherPipeString = showCipherPipe.getText().toString();
+                CipherEnum[] ciphers = new CipherEnum[0];
+                if (cipherPipeString.length() > 0) {
+                    ciphers = CipherEnum.parsePipeText(cipherPipeString);
                 }
-                showTextDestination.setText(decoded);
+                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+
+                String plain ="";
+                String encrypted = editTextSource.getText().toString();
+                CipherEnum[] cipherEnums = pipe.getOutPipe();
+                String pipeSting = "";
+                for (int ci = 0; ci < cipherEnums.length; ci++)
+                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+                showMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
+                                pipeSting, encodeType.getName(),  keyHash.getName(), zipType.getName()), 1, true);
+
+                String decrypted = "";
+                try {
+                    decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+                    showTextDestination.setText(decrypted);
+                    showMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+                            key, hashed, encodeType.getName(),  keyHash.getName(), zipType.getName()), 4, true);
+                } catch (Exception ex) {
+                    showTextDestination.setText(ex.toString());
+                }
             }
         });
 
@@ -159,6 +228,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if (firstTimeInitEncodings) {
+            spinnerEncode.setSelection(7);
+            firstTimeInitEncodings = false;
+        }
+
         if (adapterAlgos == null)
             adapterAlgos = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, algoStrings);
         adapterAlgos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,9 +245,16 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("onItemSelected", msg);
                 } catch (Exception exAdapter) {
                 }
+                showCipherPipe = (EditText) findViewById(R.id.showCipherPipe);
 
                 selectCipherAlgo = parent.getSelectedItem().toString();
                 cipher = CipherEnum.getEnum(selectCipherAlgo);
+                String currentPipe = showCipherPipe.getText().toString();
+                if (firstTimeInit) {
+                    showCipherPipe.setText("");
+                    firstTimeInit = false;
+                } else
+                    showCipherPipe.setText(currentPipe + cipher.getName() + ";");
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -185,6 +266,23 @@ public class MainActivity extends AppCompatActivity {
             adapterZip = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, zipStrings);
         adapterZip.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerZip.setAdapter(adapterZip);
+        spinnerZip.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    String msg = "adapterViewId: " + parent.getId() + " adapterView: " + parent.getAdapter().toString();
+                    Log.d("onItemSelected", msg);
+                } catch (Exception exAdapter) {
+                }
+
+                selectedZip = parent.getSelectedItem().toString();
+                zipType = ZipType.getEnum(selectedZip);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                ;
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -194,6 +292,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void showMsg(String text, int gravity, boolean showLong) {
+        Toast toast = new Toast(getBaseContext());
+        toast.setDuration(showLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        toast.setText(text);
+        toast.setGravity(4, 40, 40);
+        toast.setMargin(0.8F, 0.4F);
+        toast.show();
+    }
 
 
 /*

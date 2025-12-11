@@ -36,7 +36,6 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.fragment
-    implementation 'com.google.guava:guava:16+'
     implementation 'org.bouncycastle:bcprov-jdk18on:1.72'
     implementation 'org.bouncycastle:bcpkix-jdk18on:1.72'
     implementation 'org.bouncycastle:bcutil-jdk18on:1.72'
