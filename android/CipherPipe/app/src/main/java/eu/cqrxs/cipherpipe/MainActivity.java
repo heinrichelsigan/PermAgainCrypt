@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.io.IOException;
 import java.util.SortedMap;
 
+import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
 import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.crypt.hash.*;
 import eu.cqrxs.cipherpipe.crypt.encoding.*;

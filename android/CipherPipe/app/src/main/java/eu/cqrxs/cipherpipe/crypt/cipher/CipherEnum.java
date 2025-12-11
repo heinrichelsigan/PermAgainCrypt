@@ -8,7 +8,7 @@
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
  */
 
-package eu.cqrxs.cipherpipe.enums;
+package eu.cqrxs.cipherpipe.crypt.cipher;
 
 import androidx.annotation.NonNull;
 
@@ -16,8 +16,12 @@ import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import eu.cqrxs.cipherpipe.util.Constants;
 
 /**
  * CipherEnum represents the enumerator for all cipher algorithms
@@ -251,13 +255,54 @@ public enum CipherEnum implements Serializable {
 		return cnames.toArray(new String[cnt]);		
     }
 
- 
+    /***
+     * getByteCipherDict()
+     * @return a HashMap Map<byte,CipherEnum>
+     */
+    public static Map<Byte,CipherEnum> getByteCipherDict() {
 
- 
+        Map<Byte,CipherEnum>  map = new HashMap<Byte,CipherEnum> ();
+        for (CipherEnum cipherEnum : CipherEnum.values())  {
+            Byte b = Byte.valueOf(((byte)cipherEnum.getValue()));
+            map.put(b, cipherEnum);
+        }
+        return map;
+    }
+
+
+    /***
+     * parsePipeText parses a ;, concatenated string into it's parts and converts
+     * substrings to CipherEnums
+     * @param pipeText concatenated pipe text
+     * @return an arreay of CipherEnum
+     */
+    public static CipherEnum[] parsePipeText(String pipeText) {
+        CipherEnum cipher = CipherEnum.Aes;
+        List<CipherEnum> cipherList = new ArrayList<CipherEnum>();
+        pipeText = (pipeText == null) ? "" : pipeText;
+
+        int pipeCnt = 0;
+        String[] algos = pipeText.split(Constants.COOL_CRYPT_SPLIT);
+        for (String algo : algos)
+        {
+            cipher = CipherEnum.valueOf(algo);
+            cipherList.add(cipher);
+            if ((++pipeCnt) >= 8)
+                break;
+        }
+
+        return cipherList.toArray(CipherEnum[]::new);
+    }
+
+    public static CipherEnum fromSymmCipherEnum(SymmCipherEnum symmCipherEnum) {
+        return symmCipherEnum.toCipherEnum();
+    }
+
+
     /**
      * getEnum
      * @param ch column character
-     * @return the enum {@link COLUMN}
+     * @return the enum {@link CipherEnum}
      */
     public static CipherEnum getEnum(char ch) {
         for (CipherEnum cipherEnum : CipherEnum.values()) {

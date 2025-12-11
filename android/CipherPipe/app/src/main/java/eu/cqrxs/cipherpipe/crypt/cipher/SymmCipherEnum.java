@@ -8,7 +8,7 @@
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
  */
 
-package eu.cqrxs.cipherpipe.enums;
+package eu.cqrxs.cipherpipe.crypt.cipher;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.crypto.Cipher;
 
 /**
  * SymmCipherEnum represents the enumerator for all symmetric cipher algorithms
@@ -102,6 +104,7 @@ public enum SymmCipherEnum implements Serializable {
         }
         return 'A';    // Aes
     }
+
     /**
      * getChar
      *
@@ -109,6 +112,10 @@ public enum SymmCipherEnum implements Serializable {
      */
     public char getChar() {
         return getSymmCipherChar();
+    }
+
+    public CipherEnum toCipherEnum() {
+        return SymmCipherEnum.toCipherEnum(this);
     }
 
     public static CipherEnum toCipherEnum(SymmCipherEnum symmCipher) {
