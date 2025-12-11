@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.HexFormat;
 import java.util.List;
 
+import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
 import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
 import eu.cqrxs.cipherpipe.util.Constants;
 
@@ -27,6 +28,28 @@ public class CryptHelper {
         ByteBuffer byteBuffer = ByteBuffer.allocate(tarByteSize);
         byteBuffer.put(byteArray0);
         byteBuffer.put(byteArray1);
+
+        return byteBuffer.array();
+    }
+
+    public static byte[] tarBytes(byte[] byteArray0, byte[] byteArray1, byte[] byteArray2) {
+        int tarByteSize = byteArray0.length + byteArray1.length + byteArray2.length;
+        ByteBuffer byteBuffer = ByteBuffer.allocate(tarByteSize);
+        byteBuffer.put(byteArray0);
+        byteBuffer.put(byteArray1);
+        byteBuffer.put(byteArray2);
+
+        return byteBuffer.array();
+    }
+
+    public static byte[] tarBytes(byte[] byteArray0, byte[] byteArray1,
+                                  byte[] byteArray2, byte[] byteArray3) {
+        int tarByteSize = byteArray0.length + byteArray1.length + byteArray2.length + byteArray3.length;
+        ByteBuffer byteBuffer = ByteBuffer.allocate(tarByteSize);
+        byteBuffer.put(byteArray0);
+        byteBuffer.put(byteArray1);
+        byteBuffer.put(byteArray2);
+        byteBuffer.put(byteArray3);
 
         return byteBuffer.array();
     }
@@ -131,7 +154,7 @@ public class CryptHelper {
         if (key == null || key.length() == 0)
             throw new IllegalArgumentException("key");
 
-        byte[] keyBytes = KeyHash.Hex.hash(key).getBytes();
+        byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
         byte[] outBytes = new byte[keyLen];
         if (keyBytes.length >= keyLen) {
             ByteBuffer bb = ByteBuffer.wrap(keyBytes);
@@ -164,70 +187,65 @@ public class CryptHelper {
     }
 
 
-        /// <summary>
-        /// GetUserKeyBytes gets symmetric chiffre private byte[KeyLen] encryption / decryption key
-        /// </summary>
-        /// <param name="key">user key, default email address</param>
-        /// <param name="keyHash">user hash</param>
-        /// <param name="keyLen">length of user key bytes, maximum length <see cref="Constants.MAX_KEY_LEN"/></param>
-        /// <returns>Array of byte with length KeyLen</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+       /***
+        *
+        * @param key
+        * @param keyHash
+        * @param keyLen
+        * @return
+        */
+        public static byte[] GetUserKeyBytes(String key, String keyHash, int keyLen)  {
+            if (key == null || key.length() == 0)
+                throw new IllegalArgumentException("key");
 
-    /***
-     *
-     * @param key
-     * @param keyHash
-     * @param keyLen
-     * @return
-
-    public static byte[] GetUserKeyBytes(String key, String keyHash, int keyLen)
-        {
-            if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
-
-            byte[] keyBytes = EnDeCodeHelper.GetBytes(key);
+            byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
             // keyHash = (string.IsNullOrEmpty(keyHash)) ? EnDeCodeHelper.KeyToHex(key) : keyHash;
-            byte[] hashBytes = string.IsNullOrEmpty(keyHash) ? EnDeCodeHelper.GetBytes(Hex16.ToHex16(keyBytes)) : EnDeCodeHelper.GetBytes(keyHash);
+            byte[] hashBytes = new byte[0];
+            if (keyHash == null || keyHash.length() == 0)
+                hashBytes = ((new Hex16Coder()).encodeBytesToString(keyBytes)).getBytes(Charset.forName("UTF-8"));
+            else
+                hashBytes = keyHash.getBytes(Charset.forName("UTF-8"));
 
             int keyByteCnt = -1;
             keyLen = (keyLen > Constants.MAX_KEY_LEN) ? Constants.MAX_KEY_LEN : keyLen;
-            string keyByteHashString = key;
+            String keyByteHashString = key;
             byte[] tmpKey = new byte[keyLen];
 
-            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes);
-            keyByteCnt = keyHashBytes.Length;
+            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes, true);
+            keyByteCnt = keyHashBytes.length;
             byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
 
             if (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(KeyHashBytes(hashBytes, keyBytes));
-                keyByteCnt = keyHashTarBytes.Length;
+                keyHashTarBytes = tarBytes(keyHashBytes,
+                        KeyHashBytes(hashBytes, keyBytes, true));
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
             if (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(
-                        KeyHashBytes(hashBytes, keyBytes),
-                        KeyHashBytes(keyBytes, hashBytes)
-                );
-                keyByteCnt = keyHashTarBytes.Length;
+                keyHashTarBytes = tarBytes(keyHashBytes,
+                                    KeyHashBytes(hashBytes, keyBytes, true),
+                                    KeyHashBytes(keyBytes, hashBytes, true));
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
             while (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(keyHashBytes);
-                keyByteCnt = keyHashTarBytes.Length;
+                keyHashTarBytes = tarBytes(keyHashBytes, keyHashBytes);
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
             if (keyLen <= keyByteCnt)
             {
                 // Array.Copy(keyHashBytes, 0, tmpKey, 0, keyLen);
-                for (int bytIdx = 0; bytIdx < keyLen; bytIdx++)
+                int bytIdx = 0;
+                for (bytIdx = 0; bytIdx < keyLen; bytIdx++)
                     tmpKey[bytIdx] = keyHashBytes[bytIdx];
             }
 
@@ -236,58 +254,61 @@ public class CryptHelper {
         }
 
 
-        public static byte[] GetKeyBytesFromBytes(byte[] keyBytes, int keyLen = 32)
-        {
-            if (keyBytes == null || keyBytes.Length == 0)
-                throw new ArgumentNullException("keyBytes");
+        /***
+         *
+         *
+         */
+        public static byte[] GetKeyBytesFromBytes(byte[] keyBytes, int keyLen)  {
+            if (keyBytes == null || keyBytes.length == 0)
+                throw new IllegalArgumentException("keyBytes");
 
-            byte[] hashBytes = EnDeCodeHelper.GetBytes(Hex16.ToHex16(keyBytes));
+            byte[] hashBytes = ((new Hex16Coder()).encodeBytesToString(keyBytes)).getBytes(Charset.forName("UTF-8"));
 
             int keyByteCnt = -1;
             keyLen = (keyLen > Constants.MAX_KEY_LEN) ? Constants.MAX_KEY_LEN : keyLen;
             byte[] tmpKey = new byte[keyLen];
 
-            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes);
-            keyByteCnt = keyHashBytes.Length;
+            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes, true);
+            keyByteCnt = keyHashBytes.length;
             byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
 
             if (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(KeyHashBytes(hashBytes, keyBytes));
-                keyByteCnt = keyHashTarBytes.Length;
+                keyHashTarBytes = tarBytes(keyHashBytes, KeyHashBytes(hashBytes, keyBytes, true));
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
             if (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(
-                        KeyHashBytes(hashBytes, keyBytes),
-                        KeyHashBytes(keyBytes, hashBytes)
+                keyHashTarBytes = tarBytes(keyHashBytes,
+                        KeyHashBytes(hashBytes, keyBytes, true),
+                        KeyHashBytes(keyBytes, hashBytes, true)
                 );
-                keyByteCnt = keyHashTarBytes.Length;
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
             while (keyByteCnt < keyLen)
             {
-                keyHashTarBytes = keyHashBytes.TarBytes(keyHashBytes);
-                keyByteCnt = keyHashTarBytes.Length;
+                keyHashTarBytes = tarBytes(keyHashBytes, keyHashBytes);
+                keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
-                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+                System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
             if (keyLen <= keyByteCnt)
             {
                 // Array.Copy(keyHashBytes, 0, tmpKey, 0, keyLen);
-                for (int bytIdx = 0; bytIdx < keyLen; bytIdx++)
+                int bytIdx = 0;
+                for (bytIdx = 0; bytIdx < keyLen; bytIdx++)
                     tmpKey[bytIdx] = keyHashBytes[bytIdx];
             }
 
             return tmpKey;
 
         }
-     */
 
         // #endregion GetUserKeyBytes
 }

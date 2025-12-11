@@ -20,7 +20,7 @@ public class Constants {
 	//region c constants´
 	public final static int BACKLOG = 8;
 	public final static int CHAT_PORT = 7777;
-	public final static int MAX_KEY_LEN = 4096;
+	public final static int MAX_KEY_LEN = 1024;
 	public final static int MAX_PIPE_LEN = 8;
 	public final static int MAX_SERVER_SOCKET_ADDRESSES = 16;
 	public final static int CLOSING_TIMEOUT = 6000;
