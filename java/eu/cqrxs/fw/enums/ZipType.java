@@ -1,0 +1,226 @@
+/**
+ * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
+ * @version          V 1.0.1
+ * @since            API 27 Oreo 8.1
+ *
+ *
+ * Coded 2021-2025 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
+ */
+
+package eu.cqrxs.fw.enums;
+
+import java.io.Serializable;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import eu.cqrxs.fw.util.*;
+
+// import kotlin.NotImplementedError;
+
+/**
+ * ZipType represents the enumerator for all Encoding to ascii algorithms
+ */
+public enum ZipType implements Serializable {
+    None(0x00),
+	Zip(0x10),
+	GZip(0x20),
+	BZip2(0x30),
+	Z7(0x40);
+	
+
+    /**
+     * NOTE: Enum constructor must have private or package scope. You can not use the public access modifier.
+     */
+    ZipType(int value) {
+        this.value = value;
+    }
+
+    private final int value;
+
+    /**
+     * getValue
+     * @return (@link int) value
+     */
+    public int getValue() { return value; }
+
+
+    public byte[] zip(byte[] plainBytes) {
+        throw new NotImplementedError("zipping not implemented");
+    }
+
+    public byte[] unzip(byte[] zippedBytes) {
+        throw new NotImplementedError("unzipping not implemented");
+
+    }
+
+    /**
+     * getName
+     * @return name of enum
+     */
+    public String getName() {
+		int xval = getValue();
+		switch (xval) {
+			case 0x00:
+				return "None";
+			case 0x10:
+				return "Zip";
+			case 0x20:
+				return "GZip";
+			case 0x30:
+				return "BZip2";
+			case 0x40:
+				return "Z7";
+			default:
+				break;
+		}
+		return "None";
+	}
+
+
+	public static String[] getNames() {
+		int cnt = 0;
+		List<String> zipTypeList = new ArrayList<>();
+		for (ZipType zipType : ZipType.values())  {
+			zipTypeList.add(zipType.getName());
+			cnt++;
+		}
+		
+		return zipTypeList.toArray(new String[cnt]);		
+    }
+
+	public static ZipType getZipTypeFromString(String stringToZipType) {
+		if (stringToZipType != null && stringToZipType != "") {
+			switch (stringToZipType) {
+				case "zip":
+				case "Zip":
+				case "ZIP":
+					return ZipType.Zip;
+					
+				case "gz":
+				case "Gz":
+				case "GZ":
+				case "gzip":
+				case "Gzip":
+				case "GZip":
+				case "GZIP":
+					return ZipType.GZip;
+					
+				case "bz":
+				case "Bz":
+				case "BZ":
+				case "bz2":
+				case "Bz2":
+				case "BZ2":
+				case "bzip":
+				case "Bzip":
+				case "BZip":
+				case "BZIP":
+				case "bzip2":
+				case "Bzip2":
+				case "BZip2":
+				case "BZIP2":
+					return ZipType.BZip2;
+					
+				case "7z":
+				case "7Z":
+				case "z7":
+				case "Z7":
+				case "7zip":
+				case "7Zip":
+				case "7ZIP":
+					return ZipType.Z7;
+					
+				default:										
+					break;
+			}
+		}
+		return ZipType.None;
+	}
+
+
+	public static Set<ZipType> getZipTypes() {
+		Set<ZipType> allElementsInZipType = EnumSet.allOf(ZipType.class);
+		return allElementsInZipType;
+	}
+
+	 public static String getZipTypeExtension(ZipType zipType) {
+		 switch (zipType.getValue()) {
+			 case 0x10:
+				 return ".zip";
+			 case 0x20:
+				 return ".gz";
+			 case 0x30:
+				 return ".bz2";
+			 case 0x40:
+				 return ".7z";
+			 case 0x00:
+			 default:
+				 break;
+		 }
+		 return "";
+	 }
+
+    /**
+     * getEnum
+     * @param eName zip type name
+     * @return the enum {@link ZipType}
+     */
+    public static ZipType getEnum(String eName) {
+        for (ZipType zipType : ZipType.values()) {
+            if (zipType.getName() == eName)
+                return zipType;
+        }
+        return ZipType.None;
+    }
+
+	
+	
+
+	/*
+	public static string Hash(this KeyHash hash, string stringToHash) {
+		switch (hash) {
+			case KeyHash.SCrypt:
+				return SCrypt.HashString(stringToHash);
+			case KeyHash.BCrypt:
+				return BCrypt.HashString(stringToHash);
+			case KeyHash.OpenBSDCrypt:
+				return OpenBSDCrypt.HashString(stringToHash);
+			case KeyHash.MD5:
+				return MD5Sum.HashString(stringToHash, "");
+			case KeyHash.Sha1:
+				return Sha1.HashString(stringToHash);
+			case KeyHash.Sha256:
+				return Sha256Sum.HashString(stringToHash, "");
+			case KeyHash.Sha384:
+				return Sha384.HashString(stringToHash);
+			case KeyHash.Sha512:
+				return Sha512Sum.HashString(stringToHash);
+			case KeyHash.Whirlpool: 
+				return Whirlpool.HashString(stringToHash);
+			case KeyHash.Ascon256: 
+				return Ascon256.HashString(stringToHash);
+			case KeyHash.Blake2xs:
+				return Blake2xs.HashString(stringToHash);
+			case KeyHash.CShake:
+				return CShake.HashString(stringToHash);
+			case KeyHash.Dstu7564:
+				return Dstu7564.HashString(stringToHash);
+			case KeyHash.RipeMD256:
+				return RipeMD256.HashString(stringToHash);
+			case KeyHash.Xoodyak:                    
+				return Zodiac.HashString(stringToHash);
+			case KeyHash.Hex:
+			default:
+				return Hex16.ToHex16(Encoding.UTF8.GetBytes(stringToHash));
+		}
+	}
+	*/
+ 
+ 
+
+
+}
+
