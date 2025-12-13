@@ -8,8 +8,9 @@
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
  */
 
-package eu.cqrxs.cipherpipe.enums;
+package eu.cqrxs.cipherpipe.zip;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
@@ -46,11 +47,21 @@ public enum ZipType implements Serializable {
     public int getValue() { return value; }
 
 
-    public byte[] zip(byte[] plainBytes) {
-        throw new NotImplementedError("zipping not implemented");
+    public byte[] zip(byte[] plainBytes) throws IOException {
+        switch(this) {
+            case GZip: return GZ.gzip(plainBytes);
+            case None: return plainBytes;
+            default: break;
+        }
+        throw new NotImplementedError("unzipping not implemented");
     }
 
     public byte[] unzip(byte[] zippedBytes) {
+        switch(this) {
+            case GZip: return GZ.gunzip(zippedBytes);
+            case None: return zippedBytes;
+            default: break;
+        }
         throw new NotImplementedError("unzipping not implemented");
 
     }

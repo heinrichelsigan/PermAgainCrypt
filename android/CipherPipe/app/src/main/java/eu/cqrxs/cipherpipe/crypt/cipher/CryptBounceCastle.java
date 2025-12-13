@@ -1,23 +1,11 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
-import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
-
-import androidx.core.content.res.TypedArrayUtils;
-
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
-import org.bouncycastle.crypto.*;
+
+        import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
@@ -30,13 +18,9 @@ import org.bouncycastle.crypto.paddings.BlockCipherPadding;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.bouncycastle.jcajce.provider.symmetric.AES;
 
-import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
-import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
-import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
-import eu.cqrxs.cipherpipe.enums.ZipType;
-import eu.cqrxs.cipherpipe.util.Constants;
+        import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
+        import eu.cqrxs.cipherpipe.util.Constants;
 
 
 /**

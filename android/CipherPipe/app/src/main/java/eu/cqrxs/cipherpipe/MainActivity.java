@@ -17,16 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.IOException;
 import java.util.SortedMap;
 
 import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
 import eu.cqrxs.cipherpipe.crypt.cipher.CipherPipe;
-import eu.cqrxs.cipherpipe.enums.*;
 import eu.cqrxs.cipherpipe.crypt.hash.*;
 import eu.cqrxs.cipherpipe.crypt.encoding.*;
-
-
+import eu.cqrxs.cipherpipe.zip.ZipType;
 
 
 public class MainActivity extends AppCompatActivity {

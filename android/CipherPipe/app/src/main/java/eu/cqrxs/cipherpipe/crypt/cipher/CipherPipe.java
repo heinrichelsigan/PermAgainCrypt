@@ -1,29 +1,19 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
 
-import androidx.core.content.res.TypedArrayUtils;
-
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
+        import java.util.List;
+        import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
-import org.bouncycastle.crypto.*;
-import org.bouncycastle.crypto.engines.*;
-import org.bouncycastle.crypto.BlockCipher;
 
-import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
-import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
-import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
-import eu.cqrxs.cipherpipe.enums.ZipType;
+        import org.bouncycastle.crypto.*;
+
+        import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
+        import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
+import eu.cqrxs.cipherpipe.zip.ZipType;
 import eu.cqrxs.cipherpipe.util.Constants;
 
 
@@ -435,7 +425,7 @@ public class CipherPipe {
      * @return encrypted byte[]
      */
     public byte[] merryGoRoundEncrpyt(byte[] inBytes, String secretKey, String hashIv, ZipType zipBefore)
-            throws InvalidCipherTextException {
+            throws InvalidCipherTextException, IOException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
@@ -556,7 +546,7 @@ public class CipherPipe {
             String hashIv,
             EncodeEnum encoding,
             ZipType zipBefore,
-            KeyHash keyHash) throws InvalidCipherTextException
+            KeyHash keyHash) throws InvalidCipherTextException, IOException
     {
         // hashIv if empty hash secretKey with keyHash hashing variant
         hashIv = (hashIv == null || hashIv.length() == 0) ? keyHash.hash(cryptKey) : hashIv;
@@ -644,7 +634,7 @@ public class CipherPipe {
 
 
     public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
-            throws InvalidCipherTextException {
+            throws InvalidCipherTextException, IOException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
@@ -810,7 +800,7 @@ public class CipherPipe {
                                               EncodeEnum encoding,
                                               ZipType zipBefore,
                                               KeyHash keyHash)
-                                        throws InvalidCipherTextException {
+                                        throws InvalidCipherTextException, IOException {
         // construct symmetric cipher pipeline with cryptKey and pass pipeString as out param
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 
