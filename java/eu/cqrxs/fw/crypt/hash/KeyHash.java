@@ -122,7 +122,7 @@ public enum KeyHash implements Serializable {
 			int xval = getValue();
 			switch (xval) {
 				case 0x0:
-					return eu.cqrxs.cipherpipe.crypt.hash.Hex.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Hex.hashString(instr);
 				// case 0x1:
 				// return OpenBSDCrypt.hash(instr);
 				// case 0x2:
@@ -130,27 +130,27 @@ public enum KeyHash implements Serializable {
 				// case 0x3:
 				// return´SCrypt.hash(instr);
 				case 0x4:
-					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.MD5.hashString(instr);
 				case 0x5:
-					return eu.cqrxs.cipherpipe.crypt.hash.Sha1.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Sha1.hashString(instr);
 				case 0x6:
-					return eu.cqrxs.cipherpipe.crypt.hash.Sha256.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Sha256.hashString(instr);
 				case 0x7:
-					return eu.cqrxs.cipherpipe.crypt.hash.Sha384.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Sha384.hashString(instr);
 				case 0x8:
-				  return eu.cqrxs.cipherpipe.crypt.hash.Sha512.hashString(instr);
+				  return eu.cqrxs.fw.crypt.hash.Sha512.hashString(instr);
 				case 0x9:
-					return eu.cqrxs.cipherpipe.crypt.hash.Whirlpool.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Whirlpool.hashString(instr);
 				// case 0xa:
 				// 	return "Ascon256";
 				case 0xb:
-					return eu.cqrxs.cipherpipe.crypt.hash.Blake2xs.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Blake2xs.hashString(instr);
 				case 0xc:
-					return eu.cqrxs.cipherpipe.crypt.hash.CShake.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.CShake.hashString(instr);
 				case 0xd:
-					return eu.cqrxs.cipherpipe.crypt.hash.Dstu7564.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.Dstu7564.hashString(instr);
 				case 0xe:
-					return eu.cqrxs.cipherpipe.crypt.hash.RipeMD256.hashString(instr);
+					return eu.cqrxs.fw.crypt.hash.RipeMD256.hashString(instr);
 				// case 0xf:
 				// return "Xoodyak";
 				default:
@@ -315,47 +315,6 @@ public enum KeyHash implements Serializable {
         return KeyHash.Hex;
     }
 
-	
-	/*
-	public static string Hash(this KeyHash hash, string stringToHash) {
-		switch (hash) {
-			case KeyHash.SCrypt:
-				return SCrypt.HashString(stringToHash);
-			case KeyHash.BCrypt:
-				return BCrypt.HashString(stringToHash);
-			case KeyHash.OpenBSDCrypt:
-				return OpenBSDCrypt.HashString(stringToHash);
-			case KeyHash.MD5:
-				return MD5Sum.HashString(stringToHash, "");
-			case KeyHash.Sha1:
-				return Sha1.HashString(stringToHash);
-			case KeyHash.Sha256:
-				return Sha256Sum.HashString(stringToHash, "");
-			case KeyHash.Sha384:
-				return Sha384.HashString(stringToHash);
-			case KeyHash.Sha512:
-				return Sha512Sum.HashString(stringToHash);
-			case KeyHash.Whirlpool: 
-				return Whirlpool.HashString(stringToHash);
-			case KeyHash.Ascon256: 
-				return Ascon256.HashString(stringToHash);
-			case KeyHash.Blake2xs:
-				return Blake2xs.HashString(stringToHash);
-			case KeyHash.CShake:
-				return CShake.HashString(stringToHash);
-			case KeyHash.Dstu7564:
-				return Dstu7564.HashString(stringToHash);
-			case KeyHash.RipeMD256:
-				return RipeMD256.HashString(stringToHash);
-			case KeyHash.Xoodyak:                    
-				return Zodiac.HashString(stringToHash);
-			case KeyHash.Hex:
-			default:
-				return Hex16.ToHex16(Encoding.UTF8.GetBytes(stringToHash));
-		}
-	}
-	*/
- 
  
 }
 

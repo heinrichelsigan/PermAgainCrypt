@@ -6,11 +6,6 @@ using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Gui.Controls;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms

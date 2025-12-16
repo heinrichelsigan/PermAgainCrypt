@@ -20,8 +20,6 @@ echo "compiling now with javac CqrXs.Eu "
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\util\CException.java eu\cqrxs\fw\util\NotImplementedError.java eu\cqrxs\fw\util\Constants.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\util\CException.java eu\cqrxs\fw\util\NotImplementedError.java eu\cqrxs\fw\util\Constants.java
 
-
-
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\net\NetworkAddresses.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\fw\net\NetworkAddresses.java
 
@@ -45,8 +43,9 @@ javac.exe  -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrx
 echo "javac.exe  -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\fw\util\CException.java eu\cqrxs\fw\util\Constants.java eu\cqrxs\fw\util\ContextLazy.java"
 javac.exe  -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\fw\util\CException.java eu\cqrxs\fw\util\Constants.java eu\cqrxs\fw\util\ContextLazy.java
 
+echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\zip\GZ.java  eu\cqrxs\fw\zip\ZipType.java"
+javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\zip\GZ.java  eu\cqrxs\fw\zip\ZipType.java
 
-REM  eu\cqrxs\fw\crypt\endecoding\Base16Coder.java
 
 echo "build finished"
 

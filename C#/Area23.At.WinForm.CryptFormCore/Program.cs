@@ -1,27 +1,29 @@
 #define CLR2COMPATIBILITY
-using Area23.At.Framework.Core.Crypt.Cipher;
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Gui.Forms;
-using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 
 namespace Area23.At.WinForm.CryptFormCore
 {
 
+    #region enum FormMode
     public enum FormMode
     {
         Simple = 0,
         MultiComponent = 1,
         Complex = 2
     }
+    #endregion enum FormMode
 
     #region program
 
+    /// <summary>
+    /// Main Program
+    /// </summary>
     public static class Program
     {
 
+        #region static fields
         public static string ProgName { get => Constants.APP_NAME_WINFORM; }
 
         internal static Mutex? mutex;
@@ -29,6 +31,9 @@ namespace Area23.At.WinForm.CryptFormCore
         internal static SystemColorMode colorMode = SystemColorMode.System;
         internal static FormMode formMode = FormMode.MultiComponent;
         // internal static CipherPipe? ciperPipe;
+        #endregion static fields
+
+        #region Main
 
         /// <summary>
         ///  The main entry point for the application.
@@ -67,16 +72,16 @@ namespace Area23.At.WinForm.CryptFormCore
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             // instanciate a new EncryptForm
-            System.Windows.Forms.Form form = (formMode == FormMode.Simple) ? new EncryptForm() : new EncryptFormMultiControls();
+            EncryptFormBase formBase = (formMode == FormMode.Simple) ? new EncryptForm() : new EncryptFormMultiControls();
 
             // Run application
-            Application.Run(form);
+            Application.Run(formBase);
 
             // Release, Close, Dispose Mutal Exclusion
             ReleaseCloseDisposeMutex();
         }
 
-        #endregion program
+        #endregion Main
 
         #region ReleaseCloseDisposeMutex
 
@@ -133,4 +138,7 @@ namespace Area23.At.WinForm.CryptFormCore
 
         #endregion ReleaseCloseDisposeMutex
     }
+
+    #endregion program
+
 }

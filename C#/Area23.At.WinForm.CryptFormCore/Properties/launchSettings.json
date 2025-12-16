@@ -1,8 +1,7 @@
 {
   "profiles": {
     "CryptFormCore": {
-      "commandName": "Project",
-      "commandLineArgs": " darken"
+      "commandName": "Project"
     }
   }
 }

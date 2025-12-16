@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 import eu.cqrxs.fw.util.*;
 
-import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.fw.util.Constants;
 
 /**
  * CipherEnum represents the enumerator for all cipher algorithms
