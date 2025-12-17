@@ -1,5 +1,6 @@
 ﻿using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using System.ComponentModel;
 
 namespace Area23.At.WinForm.CryptFormCore.Sound
 {
@@ -15,8 +16,8 @@ namespace Area23.At.WinForm.CryptFormCore.Sound
         /// <param name="soundName">unique qualified name for sound</param>
         internal static bool PlaySoundFromResource(string soundName)
         {
-            bool played = false;            
-            lock(atomicLock)
+            bool played = false;
+            lock (atomicLock)
             {
                 UnmanagedMemoryStream stream = (UnmanagedMemoryStream)Resources.ResourceManager.GetStream(soundName);
 
@@ -51,12 +52,18 @@ namespace Area23.At.WinForm.CryptFormCore.Sound
             return played;
         }
 
-        internal static async Task<bool> PlaySoundFromResourcesAsync(string soundName)
-        {
-            return await Task.Run(() => PlaySoundFromResource(soundName));
-        }
 
         #endregion Media Methods
     }
+
+    internal static class Playable_Extensions
+    {
+
+        internal static async Task<bool> PlaySoundFromResourcesAsync(this Control control, string soundName)
+        {
+            return await Task.Run(() => IPlayable.PlaySoundFromResource(soundName));
+        }
+    }
+
 
 }

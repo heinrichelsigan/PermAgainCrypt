@@ -659,13 +659,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                         if (!isVerified)
                         {
                             await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
-                            await IPlayable.PlaySoundFromResourcesAsync("sound_hammer");
+                            await this.PlaySoundFromResourcesAsync("sound_hammer");
                             await SetPictureBoxImageAsync(pictureBoxOutFile, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
                         }
                         else
                         {
                             await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
-                            await IPlayable.PlaySoundFromResourcesAsync("sound_laser");
+                            await this.PlaySoundFromResourcesAsync("sound_laser");
                             await SetPictureBoxImageAsync(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
 
@@ -1205,18 +1205,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 case ToolTipIcon.Error:
                     toolHeader = "Error";
                     await SetLabelBackColorAsync(labelInfoMessage, ColorTranslator.FromHtml("#bab510"));
-                    await IPlayable.PlaySoundFromResourcesAsync("sound_error");
+                    await this.PlaySoundFromResourcesAsync("sound_error");
                     break;
                 case ToolTipIcon.Warning:
                     await SetLabelBackColorAsync(labelInfoMessage, Color.LightYellow);
                     toolHeader = "Warning";
-                    await IPlayable.PlaySoundFromResourcesAsync("sound_warning");
+                    await this.PlaySoundFromResourcesAsync("sound_warning");
                     break;
                 case ToolTipIcon.Info:
                 default:
                     await SetLabelBackColorAsync(labelInfoMessage, SystemColors.Info);
                     toolHeader = "Info";
-                    await IPlayable.PlaySoundFromResourcesAsync("sound_info");
+                    await this.PlaySoundFromResourcesAsync("sound_info");
                     break;
             }
 
