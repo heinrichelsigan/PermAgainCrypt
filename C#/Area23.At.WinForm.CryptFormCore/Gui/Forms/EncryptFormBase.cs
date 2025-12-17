@@ -6,10 +6,11 @@ using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using Area23.At.WinForm.CryptFormCore.Sound;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 {
-    public class EncryptFormBase : System.Windows.Forms.Form
+    public class EncryptFormBase : System.Windows.Forms.Form, IPlayable
     {
         protected internal Cursor NormalCursor, NoDropCursor;
         protected internal System.Windows.Forms.DragDropEffects _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
@@ -642,53 +643,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         
         #endregion verify output file
 
-        #region Media Methods
-
-        /// <summary>
-        /// PlaySoundFromResource - plays a sound embedded in application ressource file
-        /// </summary>
-        /// <param name="soundName">unique qualified name for sound</param>
-        protected static bool PlaySoundFromResource(string soundName)
-        {
-            bool played = false;
-            if (true)
-            {
-                UnmanagedMemoryStream stream = (UnmanagedMemoryStream)Resources.ResourceManager.GetStream(soundName);
-
-
-                if (stream != null)
-                {
-                    try
-                    {
-                        // Construct the sound player
-                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(stream);
-                        player.Play();
-                        played = true;
-                        stream.Close();
-                    }
-                    catch (Exception exSound)
-                    {
-                        Area23Log.LogOriginMsgEx("EncryptForm", $"PlaySoundFromResource(string soundName = {soundName})", exSound);
-                        played = false;
-                    }
-                    //fixed (byte* bufferPtr = &bytes[0])
-                    //{
-                    //    System.IO.UnmanagedMemoryStream ums = new UnmanagedMemoryStream(bufferPtr, bytes.Length);
-                    //    SoundPlayer player = new SoundPlayer(ums);                        
-                    //    player.Play();
-                    //}
-                }
-            }
-
-            return played;
-        }
-
-        protected virtual async Task<bool> PlaySoundFromResourcesAsync(string soundName)
-        {
-            return await Task.Run(() => PlaySoundFromResource(soundName));
-        }
-
-        #endregion Media Methods
 
     }
 }

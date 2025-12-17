@@ -2,6 +2,7 @@
 using Area23.At.Framework.Core.Util;
 using Area23.At.WinForm.CryptFormCore.Helper;
 using Area23.At.WinForm.CryptFormCore.Properties;
+using Area23.At.WinForm.CryptFormCore.Sound;
 using System.ComponentModel;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
@@ -10,7 +11,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
     /// <summary>
     /// GroupBoxFiles - handles drag and drop events and show cipherpipe image
     /// </summary>
-    public partial class GroupBoxFiles : GroupBox
+    public partial class GroupBoxFiles : GroupBox, IPlayable
     {
 
         internal Cursor NormalCursor, NoDropCursor;
@@ -307,6 +308,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                         
                 if (File.Exists(filePath))
                 {
+                    Task.Run(() => IPlayable.PlaySoundFromResource("sound_click"));
+
                     string fPath = filePath.ToLower();
                     if (fPath.EndsWith(".base16", StringComparison.OrdinalIgnoreCase) ||
                         fPath.EndsWith(".hex16", StringComparison.CurrentCultureIgnoreCase) ||
@@ -316,7 +319,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                         fPath.Contains(".xx", StringComparison.CurrentCultureIgnoreCase) ||
                         fPath.Contains(".base64", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        ProcessCmd.Execute("notepad", filePath);
+                        ProcessCmd.Execute("notepad", filePath);                        
                         return;
                     }
                     
@@ -337,6 +340,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// <param name="e"><see cref="EventArgs">e</see></param>
         internal void ResetPictureBoxFiles(object sender, EventArgs e)
         {
+            Task.Run(() => IPlayable.PlaySoundFromResource("sound_volatage"));
             System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 1125 };
             resetPictureBoxFileTimer.Elapsed += (s, en) =>
             {
@@ -498,6 +502,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                 {
                     if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
                     {
+                        Task.Run(() => IPlayable.PlaySoundFromResource("sound_breakpoint"));
                         EventHandler<Area23EventArgs<string>> handler = FileAdded;
                         Area23EventArgs<string> area23EventArgs = new Area23EventArgs<string>(file);
                         handler?.Invoke(this, area23EventArgs);
