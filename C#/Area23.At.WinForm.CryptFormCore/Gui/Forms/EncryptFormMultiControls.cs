@@ -439,7 +439,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             break;
                     }
                     this.textBoxPipe.Text += cipherEnum.ToString() + ";";
-                    resetPictureBoxFiles(sender, e);
+                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
                 }
                 else
                 {
@@ -534,18 +534,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             this.textBoxPipe.Text = string.Empty;
             this.textBoxSrc.Text = string.Empty;
             this.textBoxOut.Text = string.Empty;
-            this.groupBoxFiles.labelOutputFile.Text = string.Empty;
-            this.groupBoxFiles.labelOutputFile.Visible = false;
-            this.groupBoxFiles.pictureBoxFileOut.Image = Properties.Resources.image_file;
-            this.groupBoxFiles.pictureBoxFileOut.Tag = null;
-            this.groupBoxFiles.pictureBoxFileOut.Visible = false;
+            this.groupBoxFiles.ResetPictureBoxFiles(sender, e);
+            
             await this.SetEncodingAsync(menuEncBase64);
             this.SetCompression(null, "None");
             await this.SetHashAsync(menuHashHex, radioButtonListHash);
-            this.groupBoxFiles.labelFileIn.Text = "[no file selected]";
-            this.groupBoxFiles.pictureBoxFileIn.Tag = null;
-            this.groupBoxFiles.pictureBoxFileIn.Image = Properties.Resources.image_file;
-            this.groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
+            await SetStatusLabelTextAsync(this.statusLabelSource, "");
+            await SetStatusLabelTextAsync(this.statusLabelDestination, "");
+            await SetStatusLabelTextAsync(this.statusLabelMsg, "");
+            await SetInfoMessageAsync("reset", ToolTipIcon.Info, 6000);
+
         }
 
         #endregion ButtonPictureBoxClickEvents
@@ -813,33 +811,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #endregion EncryptDecrypt_Click        
 
+        //TODO: DragNDrop moved to GroupBoxFiles
         #region DragNDrop
-
-        /// <summary>
-        /// Drag_Enter - drag enter event for file drop
-        /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">DragEventArgs e</param>
-        internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
-            string[] files = new string[1];
-
-            if (e != null && e.Data != null)
-            {
-                if (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) || e.Data.GetDataPresent(typeof(string[])))
-                {
-                    if (((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null) && files.Length > 0)
-                    {
-                        DragEnterOver(files, DragNDropState.DragEnter, e);
-                    }
-                    else
-                    {
-                        e.Effect = DragDropEffects.None;
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// DragEnterOver - handles drag enter and drag over events
@@ -874,79 +847,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
                 Cursor.Current = (isDragMode) ? NormalCursor : NoDropCursor;
             }
-        }
-
-        /// <summary>
-        /// Drag_Leave - drag leave event for file drop
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal void Drag_Leave(object sender, EventArgs e)
-        {
-            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
-            isDragMode = false;
-            Cursor.Current = DefaultCursor;
-            _dragDropEffect = DragDropEffects.None;
-            SetGBoxText(this.groupBoxFiles, "Files Group Box");
-        }
-
-        /// <summary>
-        /// Drag_Drop - drag drop event for file drop
-        /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">DragEventArgs e</param>
-        internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
-        {
-            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
-            string[] files = new string[1];
-
-            if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) ||
-                e.Data.GetDataPresent(typeof(string[]))))
-            {
-                if ((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null)
-                {
-                    if (HashFiles == null || HashFiles.Count == 0)
-                        HashFiles = new HashSet<string>(files);
-                    else
-                        foreach (string file in files)
-                        {
-                            if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
-                                if (!HashFiles.Contains(file))
-                                    HashFiles.Add(file);
-                        }
-
-                    Drop_Files(files);
-                }
-
-            }
-            return;
-        }
-
-        /// <summary>
-        /// Drop_Files - handles dropped files
-        /// </summary>
-        /// <param name="files"></param>
-        internal void Drop_Files(string[] files)
-        {
-            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
-            string ext = null;
-            if (isDragMode && files != null && files.Length > 0)
-            {
-                foreach (string file in files)
-                {
-                    if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
-                    {
-                        FileAddedAction(file);
-                        ext = Path.GetExtension(file).Replace(".", "");
-                        _dragDropEffect = System.Windows.Forms.DragDropEffects.None;
-                        isDragMode = false;
-                        break;
-                    }
-                }
-
-            }
-
-            Cursor.Current = DefaultCursor;
         }
 
         #endregion DragNDrop
@@ -1082,7 +982,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-
         /// <summary>
         /// SaveBytesDialog saves byte array to file with save file dialog 
         /// </summary>
@@ -1130,8 +1029,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
             return false;
         }
-
-
 
         /// <summary>
         /// SaveBytesNoDialog saves byte array to file in temporary directory
@@ -1181,9 +1078,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             return false;
         }
 
-
         /// <summary>
-        /// 
+        /// menuMainSave_Click - saves a file
         /// </summary>
         /// <param name="sender">object sender</param>
         /// <param name="e">EventArgs e</param>
@@ -1306,35 +1202,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 setInfoMessageTimer.Start();
             }
 
-        }
-
-        private void pictureOutBoxFile_Click(object sender, EventArgs e)
-        {
-            if (groupBoxFiles.pictureBoxFileOut != null && groupBoxFiles.pictureBoxFileOut.Visible)
-            {
-                string filePath = groupBoxFiles.pictureBoxFileOut.Tag.ToString() ?? "";
-                if (!string.IsNullOrEmpty(filePath) &&
-                    !filePath.StartsWith("{") && !filePath.EndsWith("}") &&
-                        File.Exists(filePath))
-                {
-                    ProcessCmd.Execute("explorer", groupBoxFiles.pictureBoxFileOut.Tag.ToString());
-                }
-            }
-        }
-
-        protected void resetPictureBoxFiles(object sender, EventArgs e)
-        {
-            System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 2225 };
-            resetPictureBoxFileTimer.Elapsed += (s, en) =>
-            {
-                Task.Run(new System.Action(() =>
-                {
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", true);
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileOut, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", false);
-                }));
-                resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
-            };
-            resetPictureBoxFileTimer.Start();
         }
 
         #endregion Media Methods

@@ -6,6 +6,10 @@ using System.ComponentModel;
 
 namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 {
+    
+    /// <summary>
+    /// GroupBoxFiles - handles drag and drop events and show cipherpipe image
+    /// </summary>
     public partial class GroupBoxFiles : GroupBox
     {
 
@@ -277,7 +281,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 
         #endregion thread safe delegates
 
-
+        /// <summary>
+        /// PictureBoxFileInOut_Click opens the file with standard windows program associated
+        /// in case of ascii encodings, opens file with notepad 
+        /// </summary>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="EventArgs">e</see></param>
         protected internal void PictureBoxFileInOut_Click(object sender, EventArgs e)
         {
             if (sender is PictureBox pb && pb != null && pb.Visible)
@@ -321,15 +330,24 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             }
         }
 
+        /// <summary>
+        /// ResetPictureBoxFiles resets input and output file <see cref="PictureBox"/> to default images
+        /// </summary>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="EventArgs">e</see></param>
         internal void ResetPictureBoxFiles(object sender, EventArgs e)
         {
-            System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 2225 };
+            System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 1125 };
             resetPictureBoxFileTimer.Elapsed += (s, en) =>
             {
                 Task.Run(new System.Action(() =>
                 {
-                    SetPictureBoxImage(this.pictureBoxFileIn, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", true);
-                    SetPictureBoxImage(this.pictureBoxFileOut, Area23.At.WinForm.CryptFormCore.Properties.Resources.file, "", false);
+                    SetLabelVisibleText(labelOutputFile, false, "");
+                    SetLabelVisibleText(labelFileIn, true, "[no file selected]");
+                    
+                    SetPictureBoxImage(this.pictureBoxRunningPipe, Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);
+                    SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.file, "", true);
+                    SetPictureBoxImage(this.pictureBoxFileOut, Properties.Resources.file, "", false);
                 }));
                 resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
             };
@@ -337,14 +355,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         }
 
 
-
         #region DragNDrop
 
         /// <summary>
         /// Drag_Enter - drag enter event for file drop
         /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">DragEventArgs e</param>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="DragEventArgs">e</see></param>
         internal virtual void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -366,7 +383,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             }
         }
 
-
+        /// <summary>
+        /// Drag_Over standard implementation on <see cref="Control.DragOver"/>
+        /// </summary>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="DragEventArgs">e</see></param>
         internal virtual void Drag_Over(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] files = new string[1];
@@ -379,7 +400,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                 }
             }
         }
-
 
         /// <summary>
         /// DragEnterOver - handles drag enter and drag over events
@@ -419,8 +439,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// <summary>
         /// Drag_Leave - drag leave event for file drop
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="EventArgs">e</see></param>
         internal virtual void Drag_Leave(object sender, EventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -433,8 +453,8 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// <summary>
         /// Drag_Drop - drag drop event for file drop
         /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">DragEventArgs e</param>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="DragEventArgs">e</see></param>
         internal virtual void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -464,8 +484,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
 
         /// <summary>
         /// Drop_Files - handles dropped files
+        /// TODO: <see cref="Drop_Files(string[])"/> handles only first file, 
+        /// but should handle all
         /// </summary>
-        /// <param name="files"></param>
+        /// <param name="files">array of files to drop</param>
         internal virtual void Drop_Files(string[] files)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
@@ -492,6 +514,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             Cursor.Current = DefaultCursor;
         }
 
+        /// <summary>
+        /// Give_FeedBack - standard implementation of <see cref="Control.GiveFeedback"/>
+        /// </summary>
+        /// <param name="sender"><see cref="object">sender</see></param>
+        /// <param name="e"><see cref="GiveFeedbackEventArgs">e</see></param>
         internal virtual void Give_FeedBack(object sender, System.Windows.Forms.GiveFeedbackEventArgs e)
         {
             if (e != null)
