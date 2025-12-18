@@ -53,9 +53,12 @@ https://github.com/heinrichelsigan/PermAgainCrypt/releases/
 ## WinFormCore:
 <img width="800" height="726" alt="image" src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/PermAgainCrypt_WinForm.gif" />
 
-## Console Application:
+## Console Application
+
 <img width="1132" height="818" alt="image" src="https://github.com/user-attachments/assets/bdda016b-5daa-436a-a9f0-4f981e54b688" />
 
+Console application let you execute cipherpipe as standard console programm. 
+options can be set by argument parameters.
 
 
 

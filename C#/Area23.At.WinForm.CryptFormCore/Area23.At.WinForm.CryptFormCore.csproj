@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.22000.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,8 +10,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.25.1209</AssemblyVersion>
-    <FileVersion>2.25.1209</FileVersion>
+    <AssemblyVersion>2.25.1217</AssemblyVersion>
+    <FileVersion>2.25.1217</FileVersion>
     <Description>Symmetric Crypt Pipe WinForm  Heinrich Elsigan
 he@area23.at</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
