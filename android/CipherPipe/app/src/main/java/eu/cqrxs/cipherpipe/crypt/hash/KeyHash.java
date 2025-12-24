@@ -12,7 +12,6 @@ package eu.cqrxs.cipherpipe.crypt.hash;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
