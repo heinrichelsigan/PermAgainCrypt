@@ -15,7 +15,7 @@ package eu.cqrxs.cipherpipe.util;
 /**
  * Util provides only static fields
  */
-public class Constants {
+public final class Constants {
 
 	//region c constants´
 	public final static int BACKLOG = 8;

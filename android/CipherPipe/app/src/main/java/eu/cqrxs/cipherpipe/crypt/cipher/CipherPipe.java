@@ -1,3 +1,12 @@
+/**
+ * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
+ * @version          V 1.0.1
+ * @since            API 27 Oreo 8.1
+ *
+ * Coded 2021-2025 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+.*/
+
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
 
@@ -81,7 +90,7 @@ public class CipherPipe {
     /**
      * CipherPipe constructor with following parameters
      * @param cipherEnums an array of {@link CipherEnum}
-     * @param maxpipe maximum pipeline size {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum pipeline size MAX_PIPE_LEN {@link Constants}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -106,7 +115,7 @@ public class CipherPipe {
     /**
      *  CipherPipe constructor with an array of <see cref="T:String[]"/> cipherAlgos as inpipe
      * @param cipherAlgos array of String[] as inpipe
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum length {@link Constants}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -139,7 +148,7 @@ public class CipherPipe {
     /**
      * CipherPipe ctor with array of user key bytes
      * @param keyBytes user key bytes
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum length {@link Constants}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -247,7 +256,7 @@ public class CipherPipe {
      * @param inBytes array of bytes
      * @param cipherAlgo {@link CipherEnum}
      * @param secretKey users secret key for encryption
-     * @param hash users key hashed
+     * @param hashedKey users key hashed
      * @return byte array of encrypted bytes
      */
     public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String secretKey, String hashedKey)
@@ -635,10 +644,10 @@ public class CipherPipe {
 
     public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        if ((secretKey == null && cipherKey == null) || (secretKey.isEmpty() && cipherKey.isEmpty()))
             throw new IllegalArgumentException("seretkey");
 
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        cipherKey = (secretKey != null && !secretKey.isEmpty()) ? secretKey : cipherKey;
         cipherHash = keyHash.hash(secretKey);
         zType = zipBefore;
         kHash = keyHash;
@@ -759,8 +768,8 @@ public class CipherPipe {
      * @param zipBefore zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
      * @return encrypted String<
-     * @throws InvalidCipherTextException
-     * @throws IOException
+     * @throws InvalidCipherTextException invalid cipher text
+     * @throws IOException input / output Exception
      */
     public static String EncrpytToString(String inString, String cryptKey,
                                          EncodeEnum encoding,

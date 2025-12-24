@@ -122,12 +122,12 @@ public enum KeyHash implements Serializable {
 			switch (xval) {
 				case 0x0:
 					return eu.cqrxs.cipherpipe.crypt.hash.Hex.hashString(instr);
-				// case 0x1:
-				// return OpenBSDCrypt.hash(instr);
-				// case 0x2:
-				// 				return BCrypt.hash(instr);
-				// case 0x3:
-				// return´SCrypt.hash(instr);
+				case 0x1:
+				    return eu.cqrxs.cipherpipe.crypt.hash.OpenBSDCrypt.hashString(instr);
+				case 0x2:
+                    return eu.cqrxs.cipherpipe.crypt.hash.BCrypt.hashString(instr);
+				case 0x3:
+				    return  eu.cqrxs.cipherpipe.crypt.hash.SCrypt.hashString(instr);
 				case 0x4:
 					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
 				case 0x5:
