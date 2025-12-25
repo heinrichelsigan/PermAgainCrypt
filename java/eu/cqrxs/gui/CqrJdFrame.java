@@ -29,35 +29,180 @@ public class CqrJdFrame extends JFrame
 
 
 	public void AddMenus(JMenuBar jBar) {
+				
+		/* Menu Main */		
+		menuMain = new JMenu();
+		menuMain.setText("Main");
+		menuMain.setActionCommand("Main");
+		menuMain.setFont(new Font("Dialog", Font.PLAIN, 12));
+		menuMain.setMnemonic((int)'M');
+		jBar.add(menuMain);
 		
-		menuFile = new JMenu();
-		menuFile.setText("File");
-		menuFile.setActionCommand("File");
-		menuFile.setFont(new Font("Dialog", Font.PLAIN, 12));
-		menuFile.setMnemonic((int)'F');
-		jBar.add(menuFile);
+		menuMain_itemOpen = new JMenuItem();
+		menuMain_itemOpen.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemOpen.setText("Open...");
+		menuMain_itemOpen.setActionCommand("Open...");
+		menuMain_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+		menuMain_itemOpen.setMnemonic((int)'O');
+		menuMain.add(menuMain_itemOpen);
 		
-		menuFile_itemOpen = new JMenuItem();
-		menuFile_itemOpen.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuFile_itemOpen.setText("Open...");
-		menuFile_itemOpen.setActionCommand("Open...");
-		menuFile_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
-		menuFile_itemOpen.setMnemonic((int)'O');
-		menuFile.add(menuFile_itemOpen);
-		
-		menuFile_itemSave = new JMenuItem();
-		menuFile_itemSave.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuFile_itemSave.setText("Save");
-		menuFile_itemSave.setActionCommand("Save");
-		menuFile_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
-		menuFile_itemSave.setMnemonic((int)'S');
-		menuFile.add(menuFile_itemSave);
+		menuMain_itemSave = new JMenuItem();
+		menuMain_itemSave.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemSave.setText("Save");
+		menuMain_itemSave.setActionCommand("Save");
+		menuMain_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+		menuMain_itemSave.setMnemonic((int)'S');
+		menuMain.add(menuMain_itemSave);
 
-		menuFile_itemExit.setText("Exit");
-		menuFile_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.ALT_MASK));
-		menuFile_itemExit.setActionCommand("Exit");
-		menuFile_itemExit.setMnemonic((int)'X');
-		menuFile.add(menuFile_itemExit);
+		menuMain_itemSetPipe = new JMenuItem();
+		menuMain_itemSetPipe.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemSetPipe.setText("Set Pipe");
+		menuMain_itemSetPipe.setActionCommand("SetPipe");
+		menuMain.add(menuMain_itemSetPipe);
+
+		menuMain_itemHashKey = new JMenuItem();
+		menuMain_itemHashKey.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemHashKey.setText("Hash Key");
+		menuMain_itemHashKey.setActionCommand("HashKey");
+		menuMain.add(menuMain_itemHashKey);
+
+		menuMain_itemHashPipe = new JMenuItem();
+		menuMain_itemHashPipe.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemHashPipe.setText("Hash Pipe");
+		menuMain_itemHashPipe.setActionCommand("HashPipe");
+		menuMain.add(menuMain_itemHashPipe);
+
+		menuMain_itemEncrypt = new JMenuItem();
+		menuMain_itemEncrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemEncrypt.setText("Encrypt");
+		menuMain_itemEncrypt.setActionCommand("Encrypt");
+		menuMain.add(menuMain_itemEncrypt);
+
+		menuMain_itemDecrypt = new JMenuItem();
+		menuMain_itemDecrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemDecrypt.setText("Decrypt");
+		menuMain_itemDecrypt.setActionCommand("Decrypt");
+		menuMain.add(menuMain_itemDecrypt);
+
+		menuMain_itemRandomText = new JMenuItem();
+		menuMain_itemRandomText.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemRandomText.setText("Decrypt");
+		menuMain_itemRandomText.setActionCommand("Decrypt");
+		menuMain.add(menuMain_itemRandomText);
+		
+		menuMain_itemReset = new JMenuItem();
+		menuMain_itemReset.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuMain_itemReset.setText("Decrypt");
+		menuMain_itemReset.setActionCommand("Decrypt");
+		menuMain.add(menuMain_itemReset);
+
+		menuMain_itemExit.setText("Exit");
+		menuMain_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.ALT_MASK));
+		menuMain_itemExit.setActionCommand("Exit");
+		menuMain_itemExit.setMnemonic((int)'X');
+		menuMain.add(menuMain_itemExit);
+		
+		/* Menu Compression */
+		menuZip =  new JMenu();
+		menuZip.setText("Compress");
+		menuZip.setActionCommand("compress");
+		jBar.add(menuZip);
+				
+		menuZip_itemNone = new JMenuItem();
+		menuZip_itemNone.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuZip_itemNone.setText("None");
+		menuZip_itemNone.setActionCommand("None");
+		menuZip_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemNone.setMnemonic((int)'N');
+		menuZip.add(menuZip_itemNone);
+		
+		menuZip_itemGz = new JMenuItem();
+		menuZip_itemGz.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuZip_itemGz.setText("Gzip");
+		menuZip_itemGz.setActionCommand("Gzip");
+		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemGz.setMnemonic((int)'G');
+		menuZip.add(menuZip_itemGz);
+		
+		menuZip_itemBz = new JMenuItem();
+		menuZip_itemBz.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuZip_itemBz.setText("Bzip"); 
+		menuZip_itemBz.setActionCommand("Bzip");
+		menuZip_itemBz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemBz.setMnemonic((int)'B');
+		menuZip.add(menuZip_itemBz);
+				
+		menuZip_itemZip = new JMenuItem();
+		menuZip_itemZip.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuZip_itemZip.setText("Zip");
+		menuZip_itemZip.setActionCommand("Zip");
+		menuZip_itemZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemZip.setMnemonic((int)'Z');
+		menuZip.add(menuZip_itemZip);		
+		
+		menuZip_item7z = new JMenuItem();
+		menuZip_item7z.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuZip_item7z.setText("7z");
+		menuZip_item7z.setActionCommand("7z");
+		menuZip_item7z.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_item7z.setEnabled(false);
+		menuZip_item7z.setMnemonic((int)'7');
+		menuZip.add(menuZip_item7z);
+		
+		menuEncoding = new JMenu();
+		menuEncoding.setText("Encoding");
+		menuEncoding.setActionCommand("Encoding");
+		jBar.add(menuEncoding);
+		
+		menuEncoding_itemNone = new JMenuItem();
+		menuEncoding_itemNone.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemNone.setText("None");
+		menuEncoding_itemNone.setActionCommand("None");
+		// menuEncoding_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemNone.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemNone);
+		
+		menuEncoding_itemBase16 = new JMenuItem();
+		menuEncoding_itemBase16.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemBase16.setText("Base16");
+		menuEncoding_itemBase16.setActionCommand("Base16");
+		// menuEncoding_itemBase16.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemBase16.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemBase16);
+		
+		menuEncoding_itemHex16 = new JMenuItem();
+		menuEncoding_itemHex16.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemHex16.setText("Hex16");
+		menuEncoding_itemHex16.setActionCommand("Hex16");
+		// menuEncoding_itemHex16.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemHex16.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemHex16);
+		
+		menuEncoding_itemUu = new JMenuItem();
+		menuEncoding_itemUu.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemUu.setText("Uu");
+		menuEncoding_itemUu.setActionCommand("Uu");
+		// menuEncoding_itemUu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemUu.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemUu);
+		
+		
+		menuEncoding_itemXx = new JMenuItem();
+		menuEncoding_itemXx.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemXx.setText("Uu");
+		menuEncoding_itemXx.setActionCommand("Uu");
+		// menuEncoding_itemXx.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemXx.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemXx);
+			
+			
+		menuEncoding_itemBase64 = new JMenuItem();
+		menuEncoding_itemBase64.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemBase64.setText("Base64");
+		menuEncoding_itemBase64.setActionCommand("Base64");
+		// menuEncoding_itemBase64.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		// menuEncoding_itemBase64.setMnemonic((int)'L');
+		menuEncoding.add(menuEncoding_itemBase64);
 		
 		
 		menuView = new JMenu();
@@ -269,7 +414,7 @@ public class CqrJdFrame extends JFrame
 		//{{REGISTER_LISTENERS
 		SymAction lSymAction = new SymAction();
 		
-		menuFile_itemExit.addActionListener(lSymAction);
+		menuMain_itemExit.addActionListener(lSymAction);
 		
 		menuView_itemLeftRight.addActionListener(lSymAction);
 		menuView_itemTopBottom.addActionListener(lSymAction);
@@ -300,10 +445,16 @@ public class CqrJdFrame extends JFrame
 	
 	JMenuBar jMenuBar = new JMenuBar();
 	// JMenuBar jMenuBar = new JMenuBar();
-	JMenu menuFile;
-	JMenuItem menuFile_itemOpen;
-	JMenuItem menuFile_itemSave;
-	JMenuItem menuFile_itemExit = new JMenuItem();
+	JMenu menuMain, menuZip, menuEncoding, menuHash, menuOptions;
+	JMenuItem menuMain_itemOpen, menuMain_itemSave, 
+				menuMain_itemSetPipe, menuMain_itemHashKey, menuMain_itemHashPipe, 
+				menuMain_itemEncrypt, menuMain_itemDecrypt, menuMain_itemRandomText, menuMain_itemReset,
+				menuMain_itemExit = new JMenuItem();
+
+	JMenuItem menuZip_item7z, menuZip_itemGz, menuZip_itemBz, menuZip_itemZip, menuZip_itemNone;
+	
+	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16, menuEncoding_itemUu, menuEncoding_itemXx, menuEncoding_itemBase64;
+	
 	JMenu menuView;
 	JMenuItem menuView_itemLeftRight;
 	JMenuItem menuView_itemTopBottom;
@@ -345,7 +496,7 @@ public class CqrJdFrame extends JFrame
 		{
 			Object object = event.getSource();
 
-			if (object == menuFile_itemExit)
+			if (object == menuMain_itemExit)
 				appExit(event);
 			
 			else if (object == menuView_itemLeftRight)

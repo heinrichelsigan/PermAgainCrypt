@@ -1,12 +1,10 @@
 /**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
+ * @author           <a href="mailto:heinrich.elsigan@gmail.com">Heinrich Elsigan</a>
+ * @version          V 2.25.1224
+ * @since            API 34
  *
- *
- * Coded 2021-2025 by
- * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
- */
+ * Coded 2021-2028 by <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+.*/
 
 package eu.cqrxs.fw.crypt.hash;
 
@@ -84,7 +82,7 @@ public enum KeyHash implements Serializable {
 				return "Sha512";
 			case 0x9:
 				return "Whirlpool";
-			case 0xa:
+			case 0xa:	
 				return "Ascon256";
 			case 0xb:
 				return "Blake2xs";
@@ -123,12 +121,12 @@ public enum KeyHash implements Serializable {
 			switch (xval) {
 				case 0x0:
 					return eu.cqrxs.fw.crypt.hash.Hex.hashString(instr);
-				// case 0x1:
-				// return OpenBSDCrypt.hash(instr);
-				// case 0x2:
-				// 				return BCrypt.hash(instr);
-				// case 0x3:
-				// return´SCrypt.hash(instr);
+				case 0x1:
+					return eu.cqrxs.fw.crypt.hash.OpenBSDCrypt.hashString(instr);
+				case 0x2:
+					return eu.cqrxs.fw.crypt.hash.BCrypt.hashString(instr);
+				case 0x3:
+					return eu.cqrxs.fw.crypt.hash.SCrypt.hashString(instr);
 				case 0x4:
 					return eu.cqrxs.fw.crypt.hash.MD5.hashString(instr);
 				case 0x5:

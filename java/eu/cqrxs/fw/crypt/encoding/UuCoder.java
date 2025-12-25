@@ -1,7 +1,7 @@
 /**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
+ * @author           <a href="mailto:heinrich.elsigan@gmail.com">Heinrich Elsigan</a>
+ * @version          V 2.25.1224
+ * @since            API 34
  *
  * Coded 2021-2033 by <a href="mailto:he@area23.at">Heinrich Elsigan</a>
  * <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
@@ -48,8 +48,8 @@ public class UuCoder extends EnDeCoder {
         if (inBytes == null || inBytes.length < 1)
             throw new IllegalArgumentException("public static string encodeBytesToString(byte[] inBytes == NULL)");
 
-        eu.cqrxs.cipherpipe.crypt.encoding.uu.UUEncoder uue =
-                new eu.cqrxs.cipherpipe.crypt.encoding.uu.UUEncoder();
+        eu.cqrxs.fw.crypt.encoding.uu.UUEncoder uue =
+                new eu.cqrxs.fw.crypt.encoding.uu.UUEncoder();
         String uuEncString = uue.encode(inBytes);
         return uuEncString;
     }
@@ -59,14 +59,14 @@ public class UuCoder extends EnDeCoder {
      * @param encodedString: an uu encoded String
      * @return binary byte array
      * @exception IllegalArgumentException is thrown when uu encoded String is null or empty
-     * @exception IOException is thrown when eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder.decodeBuffer failes.
+     * @exception IOException is thrown when eu.cqrxs.fw.crypt.encoding.uu.UUDecoder.decodeBuffer failes.
      */
     public byte[] decodeStringToBytes(String encodedString) throws IOException {
         if (encodedString == null || encodedString.length() == 0)
             throw new IllegalArgumentException("public static byte[] decodeStringToBytes(String encodedString), encodedString == NULL || encodedString == \"\"");
 
-        eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder uud =
-                new eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder();
+        eu.cqrxs.fw.crypt.encoding.uu.UUDecoder uud =
+                new eu.cqrxs.fw.crypt.encoding.uu.UUDecoder();
         /*
             uud.mode = 664;
             uud.bufferName = "aString";
@@ -92,8 +92,8 @@ public class UuCoder extends EnDeCoder {
             throw new IllegalArgumentException("public static byte[] encode(String inString), inString == NULL || encodedString == \"\"");
 
         byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
-        eu.cqrxs.cipherpipe.crypt.encoding.uu.UUEncoder uue =
-                new eu.cqrxs.cipherpipe.crypt.encoding.uu.UUEncoder();
+        eu.cqrxs.fw.crypt.encoding.uu.UUEncoder uue =
+                new eu.cqrxs.fw.crypt.encoding.uu.UUEncoder();
         String uuEncString = uue.encode(inBytes);
         return uuEncString;
     }
@@ -109,8 +109,8 @@ public class UuCoder extends EnDeCoder {
         if (encodedString == null || encodedString.length() == 0)
             throw new IllegalArgumentException("public static byte[] decode(String encodedString), encodedString == NULL || encodedString == \"\"");
 
-        eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder uud =
-                new eu.cqrxs.cipherpipe.crypt.encoding.uu.UUDecoder();
+        eu.cqrxs.fw.crypt.encoding.uu.UUDecoder uud =
+                new eu.cqrxs.fw.crypt.encoding.uu.UUDecoder();
         /* 
             uud.mode = 664; 
             uud.bufferName = "aString"; 
