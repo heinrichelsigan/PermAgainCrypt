@@ -312,10 +312,5 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-    class SymAction implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            Object object = event.getSource();
-        }
-    }
 
 }

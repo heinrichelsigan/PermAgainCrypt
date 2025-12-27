@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net10.0-windows10.0.22000.0</TargetFramework>
+	<TargetFramework>net10.0-windows8.0</TargetFramework>
 	<IsTrimmable>true</IsTrimmable>
 	<UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -10,8 +10,8 @@
     <Copyright>Copyleft © 2000-2040</Copyright>
 	<PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.25.1225</AssemblyVersion>
-    <FileVersion>2.25.1225</FileVersion>
+    <AssemblyVersion>2.25.1227</AssemblyVersion>
+    <FileVersion>2.25.1227</FileVersion>
 	<IsTrimmable>true</IsTrimmable>
 	<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
 	<PlatformTarget>AnyCPU</PlatformTarget>
@@ -23,7 +23,7 @@
     <DocumentationFile>Properties\Area23Framework.xml</DocumentationFile>
     <NuGetAuditMode>all</NuGetAuditMode>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

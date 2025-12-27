@@ -1,7 +1,7 @@
 <Project Sdk="MSTest.Sdk/3.6.4">
 
   <PropertyGroup>
-    <TargetFramework>net10.0-windows10.0.22000.0</TargetFramework>
+    <TargetFramework>net10.0-windows8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -19,9 +19,10 @@ for EncodingType CipherPipe en-/decoding
 for ZipType CipherPipe un-/zipping
 </Description>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.25.1225</AssemblyVersion>
-    <FileVersion>2.25.1225</FileVersion>
+    <AssemblyVersion>2.25.1227</AssemblyVersion>
+    <FileVersion>2.25.1227</FileVersion>
     <StartupObject></StartupObject>
+    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
