@@ -22,15 +22,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.*;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
 
-public class CqrJDialog extends JDialog {
+public class CqrJDialog extends JDialog implements MouseListener  {
     		
 	JPanel jPanelCenter = new JPanel();
 	JLabel jLabel;
 	JButton jButtonExit = new JButton();
+	JTextField jTextField = new JTextField();
 	File file;
 	BufferedImage img;
 	ImageIcon icon;
+	static final String NEWLINE = System.getProperty("line.separator");
 	
 	public CqrJDialog() throws IOException {
 		
@@ -86,12 +90,17 @@ public class CqrJDialog extends JDialog {
 		jPanelCenter.add(jLabel);
 		getContentPane().add(jPanelCenter);
 			
+		jTextField = new JTextField();
+		jTextField.setBounds(120, 600, 600, 48);
+		getContentPane().add(jTextField);
 		jButtonExit = new JButton();
 		jButtonExit.setText("Exit");
 		getContentPane().add(jButtonExit);
 		jButtonExit.setBounds(24, 600, 76, 48);
 		jButtonExit.setActionCommand("jexit");
-	
+		addMouseListener(this);
+		jPanelCenter.addMouseListener(this);
+		
 		// setVisible(true);
 		try {
 			setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);	
@@ -118,5 +127,34 @@ public class CqrJDialog extends JDialog {
 		// We don't log exit events ;)
 		System.exit(0);
 	}
+	
+	public void eventOutput(String eventDescription, MouseEvent e) {
+        jTextField.setText(eventDescription + " detected on "
+                + e.getComponent().getClass().getName()
+                + ".");        
+    }
+     
+    public void mousePressed(MouseEvent e) {
+        eventOutput("Mouse pressed (# of clicks: "
+                + e.getClickCount() + ")", e);
+    }
+     
+    public void mouseReleased(MouseEvent e) {
+        eventOutput("Mouse released (# of clicks: "
+                + e.getClickCount() + ")", e);
+    }
+     
+    public void mouseEntered(MouseEvent e) {
+        eventOutput("Mouse entered", e);
+    }
+     
+    public void mouseExited(MouseEvent e) {
+        eventOutput("Mouse exited", e);
+    }
+     
+    public void mouseClicked(MouseEvent e) {
+        eventOutput("Mouse clicked (# of clicks: "
+                + e.getClickCount() + ")", e);
+    }
 
 }

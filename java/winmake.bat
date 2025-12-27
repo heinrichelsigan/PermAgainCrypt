@@ -1,14 +1,21 @@
 @echo off
 
 REM 
+
+REM set Path=%Path%;"C:\Program Files\Android\Android Studio\jbr\bin"
+REM set Path=%Path%;%USERPROFILE%\.jdks\graalvm-jdk-21.0.2\bin
+REM set Path=%Path%;%USERPROFILE%\.jdks\corretto-23.0.1\bin
+REM set Path=%Path%;%USERPROFILE%\.jdks\liberica-full-21.0.2\bin
+REM set Path=%Path%;%USERPROFILE%\.jdks\semeru-21.0.2\bin
+
 REM Path=%Path%;"C:\Program Files\Android\Android Studio\jbr\bin"
 REM SET CLASSPATH = %CLASSPATH%;"C:\Program Files\Android\Android Studio\jbr\lib"
 
 echo Setting Path and CLASSPATH
-SET Path=%Path%;C:\Users\heinrich.elsigan\.jdks\openjdk-25\bin
+SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
 
-	SET CLASSPATH = %CLASSPATH%;C:\Users\heinrich.elsigan\.jdks\openjdk-25\lib
-	SET MYCLASSPATH=%CLASSPATH%;.\;.\bcprov-jdk18on-1.79.jar;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;	
+SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\openjdk-25\lib
+SET MYCLASSPATH=%CLASSPATH%;.\;.\bcprov-jdk18on-1.79.jar;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;	
 
 echo "cleaning classes from last build in eu/cqrxs/ eu/cqrxs/gui/ "
 echo "del /s /f /q *.class"
@@ -23,8 +30,8 @@ javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\util\CExceptio
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\net\NetworkAddresses.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\fw\net\NetworkAddresses.java
 
-echo "javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java"
-javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
+echo "javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java"
+javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\ImageTest.java
 
 

@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
             encodingStrings = EncodeEnum.getNames();
             zipStrings = ZipType.getNames();
             algoStrings = CipherEnum.getNames();
-        } catch (Exception exi) {}
+        } catch (Exception exi) {
+        }
         btnSetPipe = (Button) findViewById(R.id.btnSetPipe);
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
@@ -119,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
                     pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 
                 showMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s",
-                        pipeSting, encodeType.getName(),  keyHash.getName(), zipType.getName()), 2, false);
+                        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
                 try {
                     showMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-                            key, hashed, encodeType.getName(),  keyHash.getName(), zipType.getName()), 4, false);
+                            key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
                     encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
 
                     showTextDestination.setText(encrypted);
@@ -153,21 +154,21 @@ public class MainActivity extends AppCompatActivity {
                 }
                 CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
 
-                String plain ="";
+                String plain = "";
                 String encrypted = editTextSource.getText().toString();
                 CipherEnum[] cipherEnums = pipe.getOutPipe();
                 String pipeSting = "";
                 for (int ci = 0; ci < cipherEnums.length; ci++)
                     pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
                 showMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-                                pipeSting, encodeType.getName(),  keyHash.getName(), zipType.getName()), 1, true);
+                        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
 
                 String decrypted = "";
                 try {
                     decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
                     showTextDestination.setText(decrypted);
                     showMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-                            key, hashed, encodeType.getName(),  keyHash.getName(), zipType.getName()), 4, true);
+                            key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
                 } catch (Exception ex) {
                     showTextDestination.setText(ex.toString());
                 }
@@ -205,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception exh) {
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ;
@@ -228,6 +230,7 @@ public class MainActivity extends AppCompatActivity {
                 selectEncodeType = parent.getSelectedItem().toString();
                 encodeType = EncodeEnum.getEnum(selectEncodeType);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ;
@@ -262,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 } else
                     showCipherPipe.setText(currentPipe + cipher.getName() + ";");
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ;
@@ -284,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedZip = parent.getSelectedItem().toString();
                 zipType = ZipType.getEnum(selectedZip);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 ;
@@ -307,98 +312,10 @@ public class MainActivity extends AppCompatActivity {
         toast.show();
     }
 
-
-/*
-
-
-    public String[]  getContactList() {
-        int phoneCnt = 0;
-        sortedPhoneMap = new TreeMap<String, String>();
-        sortedTreePhonmeMap = new TreeMap<String, String>();
-        List<String> phonebook = new ArrayList<>();
-
-        ContentResolver cr = getContentResolver();
-        Cursor cur = null;
-        try {
-            cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
-        } catch (Exception exQueryContract1) {
-            Log.i(TAG, "getContactList: " + exQueryContract1.toString() );
+    class SymAction implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            Object object = event.getSource();
         }
-
-        if ((cur != null ? cur.getCount() : 0) > 0) {
-            while (cur != null && cur.moveToNext()) {
-                String contactIdStr = "";
-                String contactNameStr = "";
-                String contactRawId = "";
-                int rawPhoneId = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NAME_RAW_CONTACT_ID);
-                if (rawPhoneId > -1) {
-                    contactRawId = cur.getString(rawPhoneId);
-                }
-                int contactId = cur.getColumnIndex(ContactsContract.Contacts._ID);
-                if (contactId > -1) {
-                    String id = cur.getString(contactId);
-                    contactIdStr = cur.getString(contactId);
-                }
-
-                int contactNameId = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-                if (contactNameId > -1) {
-                    contactNameStr = cur.getString(contactNameId);
-                }
-
-                int contactNumberId = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
-
-                if (cur.getInt(contactNumberId) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{contactIdStr}, null);
-                    while (pCur.moveToNext()) {
-                        int contactPhoneNumberId = pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER);
-
-                        if (contactPhoneNumberId > -1) {
-
-                            String phoneNo = pCur.getString(contactPhoneNumberId);
-
-                            Log.i(TAG, "rawId: " + contactRawId);
-                            Log.i(TAG, "contactId: " + contactIdStr);
-                            Log.i(TAG, "Name: " + contactNameStr);
-                            Log.i(TAG, "Phone Number: " + phoneNo);
-
-                            if ((phoneNo != null && phoneNo.length() > 5) &&
-                                    (phoneNo.startsWith("00") || phoneNo.startsWith("+") || phoneNo.startsWith("0"))) {
-
-                                String phoneNrTrim = phoneNo.replace(" ", "");
-                                phoneNrTrim = phoneNrTrim.replace("-", "");
-                                phoneNrTrim = phoneNrTrim.replace("/", "");
-                                // if (!phonebook.contains(phoneNrTrim)) {
-
-                                if (!sortedTreePhonmeMap.containsKey(phoneNrTrim)) {
-                                    sortedTreePhonmeMap.put(phoneNrTrim, contactNameStr+ " | " + phoneNrTrim);
-                                    sortedPhoneMap.put(phoneNrTrim + " | " + contactNameStr, contactNameStr+ " | " + phoneNrTrim);
-                                    phonebook.add(phoneNrTrim + " | " + contactNameStr);
-                                    phoneCnt++;
-                                }
-                            }
-                        }
-                    }
-                    pCur.close();
-                }
-            }
-        }
-        if (cur != null) {
-            cur.close();
-        }
-
-        sortedTreePhonmeMap = new TreeMap<String, String>(new PhoneComparator(sortedPhoneMap));
-        sortedTreePhonmeMap.putAll(sortedPhoneMap);
-
-        // return phonebook.toArray(new String[phoneCnt]);
-        return sortedTreePhonmeMap.keySet().toArray(new String[phoneCnt]);
     }
-
-*/
-
 
 }

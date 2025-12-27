@@ -30,7 +30,7 @@ echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/net/Netwo
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/net/NetworkAddresses.java
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation gui/*.java "
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
 javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\ImageTest.java
 
 

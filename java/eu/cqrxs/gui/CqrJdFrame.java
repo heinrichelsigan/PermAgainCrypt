@@ -11,6 +11,8 @@ import eu.cqrxs.gui.CqrJDialog;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.InputStream;
+import java.io.BufferedInputStream;
 import java.lang.*;
 import java.net.http.*;
 import java.net.*;
@@ -20,8 +22,57 @@ import java.util.Set;
 import javax.swing.*;
 
 
-public class CqrJdFrame extends JFrame
-{
+public class CqrJdFrame extends JFrame {
+
+	public static CqrJdFrame cqrJdFrame;
+	URL keyUrl, hashUrl, addAlgoUrl, fileInUrl, fileOutUrl;
+	/// at/net/res/img/crypt/file.png");/
+	 
+	
+	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
+	JComboBox jComboBox = new JComboBox(), jComboBox_Hash = new JComboBox(), jComboBox_Zip = new JComboBox(), jComboBox_Algo= new JComboBox(), jComboBox_Encoding = new JComboBox();
+	
+	JButton jButton = new JButton(), jButton_key = new JButton(), jButton_setPipe = new JButton(), jButton_hash = new JButton(), 
+			jButton_hashPipe = new JButton(), jButton_addAlgo = new JButton(), 
+			jButton_encrypt = new JButton(), jButton_decrypt = new JButton(), jButton_randomText = new JButton(), jButton_resetForm = new JButton();
+	JPanel jPanelCenter = new JPanel();
+	JTextArea jTextAreaSource = new JTextArea(), jTextAreaDestination = new JTextArea();
+	CqrJDialog cqrJDialog;
+	ImageViewer imKey = new ImageViewer(), imgHash = new ImageViewer(), imgAddAlgo = new ImageViewer(),  
+				imgInFile = new ImageViewer(),  imgOutFile = new ImageViewer();
+	
+	JMenuBar jMenuBar = new JMenuBar();
+	// JMenuBar jMenuBar = new JMenuBar();
+	JMenu menuMain, menuZip, menuEncoding, menuHash, menuOptions, menuHelp = new JMenu();
+	
+	JMenuItem menuMain_itemOpen, menuMain_itemSave, 
+				menuMain_itemSetPipe, menuMain_itemHashKey, menuMain_itemHashPipe, 
+				menuMain_itemEncrypt, menuMain_itemDecrypt, menuMain_itemRandomText, menuMain_itemReset,
+				menuMain_itemExit = new JMenuItem();
+
+	JMenuItem menuZip_item7z, menuZip_itemGz, menuZip_itemBz, menuZip_itemZip, menuZip_itemNone;
+	
+	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16, menuEncoding_itemUu, menuEncoding_itemXx, menuEncoding_itemBase64;
+	
+	JMenuItem menuHash_Ascon256, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSBCrypt,
+				menuHash_RipeMD256, menuHash_Sha1, menuHash_Sha256, menuHash_Sha512, menuHash_SCrypt, menuHash_Whirlpool, menuHash_Xoodyak;
+
+	JMenu menuOptions_menuWarnings, menuOptions_verifyEncryption, menuOptions_menuFileSettings;
+	JMenuItem menuOptions_menuWarnings_itemWarnOnEmptyPipe, menuOptions_menuWarnings_itemWarnOnDoubleZipping;
+	
+	JMenuItem menuHelp_itemAbout = new JMenuItem(), menuHelp_itemHelp = new JMenuItem();		
+	//}}
+
+	public static void main(String args[]) {
+		
+		cqrJdFrame = new CqrJdFrame();
+		cqrJdFrame.setLayout(null);
+		cqrJdFrame.setSize(1024,768);
+		cqrJdFrame.Init(cqrJdFrame);
+		cqrJdFrame.setVisible(true);
+		cqrJdFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
 
 	public CqrJdFrame() {
 
@@ -86,14 +137,14 @@ public class CqrJdFrame extends JFrame
 
 		menuMain_itemRandomText = new JMenuItem();
 		menuMain_itemRandomText.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuMain_itemRandomText.setText("Decrypt");
-		menuMain_itemRandomText.setActionCommand("Decrypt");
+		menuMain_itemRandomText.setText("Random Text");
+		menuMain_itemRandomText.setActionCommand("RandomText");
 		menuMain.add(menuMain_itemRandomText);
 		
 		menuMain_itemReset = new JMenuItem();
 		menuMain_itemReset.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuMain_itemReset.setText("Decrypt");
-		menuMain_itemReset.setActionCommand("Decrypt");
+		menuMain_itemReset.setText("Reset");
+		menuMain_itemReset.setActionCommand("Reset");
 		menuMain.add(menuMain_itemReset);
 
 		menuMain_itemExit.setText("Exit");
@@ -205,154 +256,127 @@ public class CqrJdFrame extends JFrame
 		menuEncoding.add(menuEncoding_itemBase64);
 		
 		
-		menuView = new JMenu();
-		menuView.setText("View");
-		menuView.setActionCommand("View");
-		menuView.setMnemonic((int)'V');
-		jBar.add(menuView);
+		menuHash = new JMenu();
+		menuHash.setText("Hash");
+		menuHash.setActionCommand("Hash");
+		jBar.add(menuHash);
+		
+		menuHash_Ascon256 = new JMenuItem();
+		menuHash_Ascon256.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Ascon256.setText("Ascon256");
+		menuHash_Ascon256.setActionCommand("Ascon256");
+		menuHash.add(menuHash_Ascon256);
+		
+		menuHash_Blake2xs = new JMenuItem();
+		menuHash_Blake2xs.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Blake2xs.setText("Blake2xs");
+		menuHash_Blake2xs.setActionCommand("Blake2xs");
+		menuHash.add(menuHash_Blake2xs);
+		
+		menuHash_BCrypt = new JMenuItem();
+		menuHash_BCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_BCrypt.setText("BCrypt");
+		menuHash_BCrypt.setActionCommand("BCrypt");
+		menuHash.add(menuHash_BCrypt);
+		
+		menuHash_CShake = new JMenuItem();
+		menuHash_CShake.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_CShake.setText("CShake");
+		menuHash_CShake.setActionCommand("CShake");
+		menuHash.add(menuHash_CShake);
+		
+		menuHash_BCrypt = new JMenuItem();
+		menuHash_BCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_BCrypt.setText("BCrypt");
+		menuHash_BCrypt.setActionCommand("BCrypt");
+		menuHash.add(menuHash_BCrypt);
+		
+		menuHash_MD5 = new JMenuItem();
+		menuHash_MD5.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_MD5.setText("MD5");
+		menuHash_MD5.setActionCommand("MD5");
+		menuHash.add(menuHash_MD5);
+		
+		menuHash_Hex = new JMenuItem();
+		menuHash_Hex.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Hex.setText("Hex");
+		menuHash_Hex.setActionCommand("Hex");
+		menuHash.add(menuHash_Hex);
+		
+		menuHash_OpenBSBCrypt = new JMenuItem();
+		menuHash_OpenBSBCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_OpenBSBCrypt.setText("OpenBSBCrypt");
+		menuHash_OpenBSBCrypt.setActionCommand("OpenBSBCrypt");
+		menuHash.add(menuHash_OpenBSBCrypt);
+		
+		menuHash_RipeMD256 = new JMenuItem();
+		menuHash_RipeMD256.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_RipeMD256.setText("RipeMD256");
+		menuHash_RipeMD256.setActionCommand("RipeMD256");
+		menuHash.add(menuHash_RipeMD256);
+		
+		menuHash_Sha1 = new JMenuItem();
+		menuHash_Sha1.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Sha1.setText("Sha1");
+		menuHash_Sha1.setActionCommand("Sha1");
+		menuHash.add(menuHash_Sha1);		
+		
+		menuHash_Sha256 = new JMenuItem();
+		menuHash_Sha256.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Sha256.setText("Sha256");
+		menuHash_Sha256.setActionCommand("Sha256");
+		menuHash.add(menuHash_Sha256);
+		
+		menuHash_Sha512 = new JMenuItem();
+		menuHash_Sha512.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Sha512.setText("Sha512");
+		menuHash_Sha512.setActionCommand("Sha512");
+		menuHash.add(menuHash_Sha512);
+		
+		menuHash_SCrypt = new JMenuItem();
+		menuHash_SCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_SCrypt.setText("SCrypt");
+		menuHash_SCrypt.setActionCommand("SCrypt");
+		menuHash.add(menuHash_SCrypt);
 				
-		menuView_itemLeftRight = new JMenuItem();
-		menuView_itemLeftRight.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuView_itemLeftRight.setText("Left-Right");
-		menuView_itemLeftRight.setActionCommand("LeftRight");
-		menuView_itemLeftRight.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
-		menuView_itemLeftRight.setMnemonic((int)'L');
-		menuView.add(menuView_itemLeftRight);
+		menuHash_Whirlpool = new JMenuItem();
+		menuHash_Whirlpool.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Whirlpool.setText("Whirlpool");
+		menuHash_Whirlpool.setActionCommand("Whirlpool");
+		menuHash.add(menuHash_Whirlpool);
 		
-		menuView_itemTopBottom = new JMenuItem();
-		menuView_itemTopBottom.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuView_itemTopBottom.setText("Top-Bottom");
-		menuView_itemTopBottom.setActionCommand("TopBottom");
-		menuView_itemTopBottom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
-		menuView_itemTopBottom.setMnemonic((int)'T');
-		menuView.add(menuView_itemTopBottom);
+		menuHash_Xoodyak = new JMenuItem();
+		menuHash_Xoodyak.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Xoodyak.setText("Xoodyak");
+		menuHash_Xoodyak.setActionCommand("Xoodyak");
+		menuHash.add(menuHash_Whirlpool);
 		
+		menuOptions = new JMenu();
+		menuOptions.setText("Options");
+		menuOptions.setActionCommand("Options");
+		jBar.add(menuOptions);
 		
-		menuView_item1View = new JMenuItem();
-		menuView_item1View.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuView_item1View.setText("1-View");
-		menuView_item1View.setActionCommand("1View");
-		menuView_item1View.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, Event.CTRL_MASK));
-		menuView_item1View.setMnemonic((int)'1');
-		menuView.add(menuView_item1View);
+		menuOptions_menuWarnings = new JMenu();
+		menuOptions_menuWarnings.setText("Warnings");
+		menuOptions_menuWarnings.setActionCommand("Warnings");
+		menuOptions.add(menuOptions_menuWarnings);
 		
-		
-		menuIPAddrs = new JMenu();
-		menuIPAddrs.setText("Network");
-		menuIPAddrs.setActionCommand("Network");
-		menuIPAddrs.setMnemonic((int)'N');
-		jBar.add(menuIPAddrs);
-		
-		menuIPAddrs_menuMyIps = new JMenu();
-		menuIPAddrs_menuMyIps.setText("My IP's");
-		menuIPAddrs_menuMyIps.setActionCommand("MyIPs");
-		// menuIPAddrs_menuMyIps.setMnemonic((int)'M');
-		menuIPAddrs.add(menuIPAddrs_menuMyIps);
-	    
-        HashSet<InetAddress> myAddrs;
-        try {
-            myAddrs = new HashSet<InetAddress>(eu.cqrxs.fw.net.NetworkAddresses.getNetworkInterfaces());
-            for (InetAddress inetAddr : myAddrs) {
-                menuIPAddrs_menuMyAnIp = new JMenuItem();
-                String sip = (String)inetAddr.toString();
-                menuIPAddrs_menuMyAnIp.setText(sip);
-                menuIPAddrs_menuMyAnIp.setActionCommand(sip);
-                menuIPAddrs_menuMyIps.add(menuIPAddrs_menuMyAnIp);
-            }
-        } catch (SocketException sockEx) {
-            System.err.println(sockEx.toString());
-        }
-
-
-
-		menuIPAddrs_menuFriendIps = new JMenu();
-		menuIPAddrs_menuFriendIps.setText("Friend IP's");
-		menuIPAddrs_menuFriendIps.setActionCommand("FriendIPs");
-		menuIPAddrs_menuFriendIps.setMnemonic((int)'F');
-		menuIPAddrs.add(menuIPAddrs_menuFriendIps);
-		
-		menuIPAddrs_menuProxies = new JMenu();
-		menuIPAddrs_menuProxies.setText("Proxy IP's");
-		menuIPAddrs_menuProxies.setActionCommand("ProxyIPs");
-		menuIPAddrs_menuProxies.setMnemonic((int)'P');
-		menuIPAddrs.add(menuIPAddrs_menuProxies);
-		
-		menuIPAddrs_itemIPv6Secure = new JMenuItem();
-		menuIPAddrs_itemIPv6Secure.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuIPAddrs_itemIPv6Secure.setText("IPv6 Secure");
-		menuIPAddrs_itemIPv6Secure.setActionCommand("IPv6secure");		
-		menuIPAddrs_itemIPv6Secure.setMnemonic((int)'6');
-		menuIPAddrs.add(menuIPAddrs_itemIPv6Secure);
-		
-		
-		menuChat = new JMenu();
-		menuChat.setText("Chat");
-		menuChat.setActionCommand("Chat");
-		menuChat.setMnemonic((int)'H');
-		jBar.add(menuChat);
-		
-		menuChat_itemSend = new JMenuItem();
-		menuChat_itemSend.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuChat_itemSend.setText("Send");
-		menuChat_itemSend.setActionCommand("Send");
-		menuChat_itemSend.setMnemonic((int)'S');
-		menuChat.add(menuChat_itemSend);
-		
-		menuChat_itemRefresh = new JMenuItem();
-		menuChat_itemRefresh.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuChat_itemRefresh.setText("Re-Fresh");
-		menuChat_itemRefresh.setActionCommand("ReFresh");
-		menuChat_itemRefresh.setMnemonic((int)'F');
-		menuChat.add(menuChat_itemRefresh);
-		
-		menuChat_itemClear = new JMenuItem();
-		menuChat_itemClear.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuChat_itemClear.setText("Clear");
-		menuChat_itemClear.setActionCommand("Clear");
-		// menuChat_itemClear.setMnemonic((int)'C');
-		menuChat.add(menuChat_itemClear);
-		
-		
-		menuContacts = new JMenu();
-		menuContacts.setText("Contacts");
-		menuContacts.setActionCommand("Contacts");
-		menuContacts.setMnemonic((int)'C');
-		jBar.add(menuContacts);
-		
-		menuContacts_itemMy = new JMenuItem();
-		menuContacts_itemMy.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuContacts_itemMy.setText("My Contact");
-		menuContacts_itemMy.setActionCommand("My Contact");
-		menuContacts_itemMy.setMnemonic((int)'M');
-		menuContacts.add(menuContacts_itemMy);
-		
-		menuContacts_itemAdd = new JMenuItem();
-		menuContacts_itemAdd.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuContacts_itemAdd.setText("Add Contact");
-		menuContacts_itemAdd.setActionCommand("AddContact");
-		menuContacts_itemAdd.setMnemonic((int)'A');
-		menuContacts.add(menuContacts_itemAdd);
+		menuOptions_menuWarnings_itemWarnOnEmptyPipe = new JMenuItem();
+		menuOptions_menuWarnings_itemWarnOnEmptyPipe.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuOptions_menuWarnings_itemWarnOnEmptyPipe.setText("Warn on empty pipe");
+		menuOptions_menuWarnings_itemWarnOnEmptyPipe.setActionCommand("WarnOnEmptyPipe");
+		menuOptions_menuWarnings.add(menuOptions_menuWarnings_itemWarnOnEmptyPipe);
 				
-		menuContacts_itemImport = new JMenuItem();
-		menuContacts_itemImport.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuContacts_itemImport.setText("Import Contacts");
-		menuContacts_itemImport.setActionCommand("ImportContacts");
-		menuContacts_itemImport.setMnemonic((int)'I');
-		menuContacts.add(menuContacts_itemImport);
-		
-		
-		menuContacts_itemView = new JMenuItem();
-		menuContacts_itemView.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuContacts_itemView.setText("View Contacts");
-		menuContacts_itemView.setActionCommand("ViewContacts");
-		menuContacts_itemView.setMnemonic((int)'V');
-		menuContacts.add(menuContacts_itemView);
-		
+		menuOptions_menuWarnings_itemWarnOnDoubleZipping = new JMenuItem();
+		menuOptions_menuWarnings_itemWarnOnDoubleZipping.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuOptions_menuWarnings_itemWarnOnDoubleZipping.setText("Warn on double zipping");
+		menuOptions_menuWarnings_itemWarnOnDoubleZipping.setActionCommand("WarnOnDoubleZipping");
+		menuOptions_menuWarnings.add(menuOptions_menuWarnings_itemWarnOnDoubleZipping);
 		
 		menuHelp = new JMenu();
-		menuHelp.setText("Help");
-		menuHelp.setActionCommand("Help");
-		menuHelp.setMnemonic((int)'H');		
+		menuHelp.setText("?");
+		menuHelp.setActionCommand("?");
+		menuHelp.setMnemonic((int)'?');		
 		jBar.add(menuHelp);
 		
 		menuHelp_itemAbout = new JMenuItem();
@@ -362,18 +386,32 @@ public class CqrJdFrame extends JFrame
 		menuHelp_itemAbout.setMnemonic((int)'A');
 		menuHelp.add(menuHelp_itemAbout);
 		
+		menuHelp_itemHelp = new JMenuItem();
+		menuHelp_itemHelp.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHelp_itemHelp.setText("Help");
+		menuHelp_itemHelp.setActionCommand("Help");
+		menuHelp_itemHelp.setMnemonic((int)'H');
+		menuHelp.add(menuHelp_itemHelp);
+		
 	}
 	
 
-	public void Init(JFrame jf)
-	{
+	public void Init(JFrame jf) {
 		// symantec.itools.lang.Context.setApplet(this);
 		
 		// getRootPane().putClientProperty("defeatSystemEventQueueCheck", Boolean.TRUE);
-		
+		try {
+			keyUrl = new URL("https://area23.at/net/res/img/symbol/key_ring.gif");
+			hashUrl = new URL("https://area23.at/net/res/img/crypt/a_hash.png");
+			addAlgoUrl = new URL("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif");
+			fileInUrl = new URL("https://area23.at/net/res/img/crypt/file.png");
+		} catch (MalformedURLException mue) {
+			mue.printStackTrace();
+		}
 
 		jf.setLayout(null);
-		jf.setSize(800, 680);
+		jf.setSize(1024, 768);
+		jf.setResizable(false);
 		
 		jMenuBar = new JMenuBar();
 		AddMenus(jMenuBar);
@@ -401,10 +439,10 @@ public class CqrJdFrame extends JFrame
 		
 		jf.getContentPane().add(jPanelCenter);
 		
-		JButton1.setText("jbutton");
-		jf.getContentPane().add(JButton1);
-		JButton1.setBounds(24,600,76,48);
-		JButton1.setActionCommand("jbutton");
+		jButton.setText("jbutton");
+		jf.getContentPane().add(jButton);
+		jButton.setBounds(24,600,76,48);
+		jButton.setActionCommand("jbutton");
 		
 		
 		
@@ -415,120 +453,57 @@ public class CqrJdFrame extends JFrame
 		SymAction lSymAction = new SymAction();
 		
 		menuMain_itemExit.addActionListener(lSymAction);
-		
-		menuView_itemLeftRight.addActionListener(lSymAction);
-		menuView_itemTopBottom.addActionListener(lSymAction);
-		menuView_item1View.addActionListener(lSymAction);
-		
-		menuChat_itemSend.addActionListener(lSymAction);
-		menuChat_itemRefresh.addActionListener(lSymAction);
-		menuChat_itemClear.addActionListener(lSymAction);
-		
-		menuContacts_itemMy.addActionListener(lSymAction);
-		menuContacts_itemAdd.addActionListener(lSymAction);
-		menuContacts_itemImport.addActionListener(lSymAction);
-		menuContacts_itemView.addActionListener(lSymAction);
-		
+		menuHelp_itemHelp.addActionListener(lSymAction);
 		menuHelp_itemAbout.addActionListener(lSymAction);
 		
-		JButton1.addActionListener(lSymAction);
-		//}}
+		jButton.addActionListener(lSymAction);
 	}
 
-	//{{DECLARE_CONTROLS
-	public static CqrJdFrame cqrJdFrame;
-	JComboBox jComboBox = new JComboBox();
-	JPanel jPanelCenter = new JPanel();
-	JButton JButton1 = new JButton();
-	JTextArea jTextAreaSource = new JTextArea(), jTextAreaDestination = new JTextArea();
-	CqrJDialog cqrJDialog;
-	
-	JMenuBar jMenuBar = new JMenuBar();
-	// JMenuBar jMenuBar = new JMenuBar();
-	JMenu menuMain, menuZip, menuEncoding, menuHash, menuOptions;
-	JMenuItem menuMain_itemOpen, menuMain_itemSave, 
-				menuMain_itemSetPipe, menuMain_itemHashKey, menuMain_itemHashPipe, 
-				menuMain_itemEncrypt, menuMain_itemDecrypt, menuMain_itemRandomText, menuMain_itemReset,
-				menuMain_itemExit = new JMenuItem();
 
-	JMenuItem menuZip_item7z, menuZip_itemGz, menuZip_itemBz, menuZip_itemZip, menuZip_itemNone;
+	// class SymMouse extends java.awt.event.MouseAdapter 
+	class SymMouse implements MouseListener {
+		public void mousePressed(MouseEvent e) {
+			Object object = e.getSource();
+			if (object != null) {
+				
+			}		
+		}
+		public void mouseClicked(MouseEvent e) {
+		}
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {        
+		}
+		public void mouseReleased(MouseEvent e) {
+		}
 	
-	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16, menuEncoding_itemUu, menuEncoding_itemXx, menuEncoding_itemBase64;
-	
-	JMenu menuView;
-	JMenuItem menuView_itemLeftRight;
-	JMenuItem menuView_itemTopBottom;
-	JMenuItem menuView_item1View;
-	JMenu menuIPAddrs;
-	JMenu menuIPAddrs_menuMyIps;
-	JMenuItem menuIPAddrs_menuMyAnIp;
-	JMenu menuIPAddrs_menuFriendIps;
-	JMenu menuIPAddrs_menuProxies;
-	JMenuItem menuIPAddrs_itemIPv6Secure;
-	JMenu menuChat;
-	JMenuItem menuChat_itemSend;
-	JMenuItem menuChat_itemRefresh;
-	JMenuItem menuChat_itemClear;
-	JMenu menuContacts;
-	JMenuItem menuContacts_itemMy;
-	JMenuItem menuContacts_itemAdd;
-	JMenuItem menuContacts_itemImport;
-	JMenuItem menuContacts_itemView;
-	
-	JMenu menuHelp = new JMenu();
-	JMenuItem menuHelp_itemAbout = new JMenuItem();
-	//}}
-
-	public static void main(String args[]) {
-		
-		cqrJdFrame = new CqrJdFrame();
-		cqrJdFrame.setLayout(null);
-		cqrJdFrame.setSize(480,360);
-		cqrJdFrame.Init(cqrJdFrame);
-		cqrJdFrame.setVisible(true);
-		cqrJdFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
 
-	class SymAction implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event)
-		{
+	class SymAction implements ActionListener {
+		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
 
 			if (object == menuMain_itemExit)
-				appExit(event);
-			
-			else if (object == menuView_itemLeftRight)
-				viewChange(event, "LeftRight");
-			else if (object == menuView_itemTopBottom)
-				viewChange(event, "TopBottom");
-			else if (object == menuView_item1View)
-				viewChange(event, "1View");
-			
-			else if (object == menuChat_itemSend) 
-				chatCommand(event, "Send");
-			else if (object == menuChat_itemRefresh) 
-				chatCommand(event, "Refresh");
-			else if (object == menuChat_itemClear) 
-				chatCommand(event, "Clear");
-			
-			else if (object == menuContacts_itemMy) 
-				addEditContact(event, 0);
-			else if (object == menuContacts_itemAdd) 
-				addEditContact(event, 1);
-			else if (object == menuContacts_itemImport) 
-				addEditContact(event, -1);
-			else if (object == menuContacts_itemView) 
-				viewContact(event);
-			
+				appExit(event);					
 			else if (object == menuHelp_itemAbout)
 				about(event);
+			else if (object == menuHelp_itemHelp)
+				helpClick(event);
 			
-			else if (object == JButton1)
-				JButton1_actionPerformed(event);
-			
+			else if (object == jButton)
+				jButton_actionPerformed(event);			
 		}
+	}
+
+
+	class ItemChangeListener implements ItemListener {
+		@Override
+		public void itemStateChanged(ItemEvent event) {
+			if (event.getStateChange() == ItemEvent.SELECTED) {
+				Object item = event.getItem();
+				// do something with object
+			}
+		}       
 	}
 
 	public void MakeWebRequest() {
@@ -566,6 +541,7 @@ public class CqrJdFrame extends JFrame
 			jTextAreaDestination.append("Headers: " + response.headers().allValues("content-type"));
 			jTextAreaDestination.append("Body: \n " + response.body());  
 		} catch (Exception ioEx) {
+			ioEx.printStackTrace();
 			jTextAreaDestination.append("Exception: " + ioEx + "\n");		
 		}
 		
@@ -576,56 +552,6 @@ public class CqrJdFrame extends JFrame
 		System.exit(0);
 	}
 
-	public void viewChange(ActionEvent event, String whichView) {
-		jTextAreaSource.append("View menu, view changed to " + whichView + ", event: " + event + "\n");
-	
-		if (whichView == "LeftRight") {
-			
-			jPanelCenter.remove(jTextAreaSource);
-			jPanelCenter.remove(jTextAreaDestination);
-			
-			jPanelCenter.setBounds(48, 72, 640, 400);
-			jPanelCenter.setLayout(new GridLayout(1, 2));
-			jPanelCenter.setBackground(Color.BLACK);  
-			jPanelCenter.add(jTextAreaSource);
-			jTextAreaSource.setBounds(1,1,632,236);
-			jTextAreaSource.setBackground(Color.GRAY);  
-			jTextAreaSource.append("jMenuBar.getUI() == "  + jMenuBar.getUI() + "\n");		
-			jPanelCenter.add(jTextAreaDestination);
-			jTextAreaDestination.setBounds(1,240,632,236);
-			jTextAreaDestination.setBackground(Color.YELLOW);  
-		}
-		else if (whichView == "TopBottom") {
-			jPanelCenter.remove(jTextAreaSource);
-			jPanelCenter.remove(jTextAreaDestination);
-			
-			jPanelCenter.setBounds(48, 72, 640, 400);
-			jPanelCenter.setLayout(new GridLayout(2, 1));
-			jPanelCenter.setBackground(Color.BLACK);  
-			jPanelCenter.add(jTextAreaSource);
-			jTextAreaSource.setBounds(1,1,632,236);
-			jTextAreaSource.setBackground(Color.GRAY);  
-			jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() +  "\n");		
-			jPanelCenter.add(jTextAreaDestination);
-			jTextAreaDestination.setBounds(1,240,632,236);
-			jTextAreaDestination.setBackground(Color.YELLOW);
-		} else {
-			jPanelCenter.remove(jTextAreaSource);
-			jPanelCenter.remove(jTextAreaDestination);
-			
-			jPanelCenter.setBounds(48, 72, 640, 400);
-			jPanelCenter.setLayout(new GridLayout(1, 1));
-			jPanelCenter.setBackground(Color.BLACK);  
-			jPanelCenter.add(jTextAreaSource);
-			jTextAreaSource.setBounds(1,1,632,236);
-			jTextAreaSource.setBackground(Color.GRAY);  
-			jTextAreaSource.append("jMenuBar.getUI() == "  + jMenuBar.getUI() + "\n");		
-			// jPanelCenter.add(jTextAreaDestination);
-			// jTextAreaDestination.setBounds(1,240,632,236);
-			// jTextAreaDestination.setBackground(Color.YELLOW)	
-		}
-	}
-	
 	
 	
 	public void chatCommand(ActionEvent event, String whichCommand) { 
@@ -664,18 +590,67 @@ public class CqrJdFrame extends JFrame
                 cqrJDialog = new CqrJDialog();
 
 			cqrJDialog.showDialog(cqrJdFrame);
+			// cqrJDialog.mousePressed(
 		} catch (Exception exIO) {
+			exIO.printStackTrace();
 		}
 	}
 	
+	public void helpClick(ActionEvent event) {
+	
+		String os = System.getProperty("os.name").toLowerCase();
+		Runtime rt = Runtime.getRuntime();
+		String url = "https://io.cqrxs.eu/help";
+		boolean success = false;
+		
+		if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(url));
+				success = true;            
+            } catch (URISyntaxException e) {
+				e.printStackTrace();
+			} catch (Exception ex) {
+                ex.printStackTrace();
+			}
+		}
+		if (!success) {
+			try {
+				if (os.indexOf("win") >= 0)	
+					rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+				else if (os.indexOf("mac") >= 0) 
+					rt.exec("open " + url);
+				else // if (os.indexOf("x") >=0 || os.indexOf("bsd") >= 0)
+					rt.exec("xdg-open "  + url);	
+			} catch (Exception rtException) {
+				rtException.printStackTrace();
+			}
+		}		
+	}
 
-	void JButton1_actionPerformed(ActionEvent event)
-	{
+	void jButton_actionPerformed(ActionEvent event) {
 		// to do: code goes here.
 		 MakeWebRequest();
 		try {
 			jTextAreaSource.setText("hallo");
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
+	
+	Image setJarIncludedImage(String imgstr) {
+		Image img = null;
+		try {
+			InputStream is = getClass().getResourceAsStream(imgstr);
+			BufferedInputStream bis = new BufferedInputStream(is);
+			// a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
+			byte[] byBuf = new byte[10000];  // is.read(byBuf);  or something like that...
+			int byteRead = bis.read(byBuf, 0, 10000);
+			img = Toolkit.getDefaultToolkit().createImage(byBuf);
+ 	 	} catch(Exception e) {
+			e.printStackTrace();
+ 		}
+		return img;
+	}
+	
 }
