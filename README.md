@@ -103,3 +103,10 @@ Examples:
 U:\source\PermAgainCrypt\Deploy\console\x86>
 ```
 
+# [Java](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/java)
+
+<img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-28_javaProtorype.gif?raw=true" />
+
+# [Android](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/android)
+
+
