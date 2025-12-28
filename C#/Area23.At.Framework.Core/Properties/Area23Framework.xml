@@ -2911,7 +2911,7 @@
             <param name="gifFrames">An array of Bitmap images to include as frames in the GIF. The order of images determines the frame
             sequence. Cannot be null or empty.</param>
         </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.IO.MemoryStream@,System.Drawing.Image,System.Nullable{System.TimeSpan})">
+        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.Drawing.Image,System.Nullable{System.TimeSpan})">
             <summary>
             Adds a frame to this animation.
             </summary>
