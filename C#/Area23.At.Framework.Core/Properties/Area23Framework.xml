@@ -2865,59 +2865,6 @@
             <param name="tvalue">T value to find</param>
             <returns>is tarray is null, null, if not fount an empty index array int[0], else inidices array int[]</returns>
         </member>
-        <member name="T:Area23.At.Framework.Core.Util.GifEncoder">
-            <summary>   
-            This encoder is taken from <see href="https://github.com/DataDink/Bumpkit" />
-            <seealso href="https://github.com/DataDink/Bumpkit/blob/master/BumpKit/BumpKit/GifEncoder.cs">GifEncoder.cs</seealso>
-            <seealso href="https://github.com/DataDink/Bumpkit?tab=Unlicense-1-ov-file">Unlicense license of DataDink/Bumpkit</seealso>
-            Encodes multiple images as an animated gif to a stream. <br />
-            ALWAYS ALWAYS ALWAYS wire this up   in a using block <br />
-            Disposing the encoder will complete the file. <br />
-            Uses default .net GIF encoding and adds animation headers.
-            </summary>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Image,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
-            <summary>
-            GifEncoder
-            </summary>
-            <param name="img">img</param>
-            <param name="repeatCount">repeat n times</param>
-            <param name="frameDelay">deley betweeen frames</param>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Bitmap,System.Nullable{System.Int32},System.Nullable{System.TimeSpan},System.Drawing.Bitmap[])">
-            <summary>
-            2025-12-04 4th December Release  v2.25.1204
-            Added new ctor in GifEncoder  for creating animated gifs
-            <code>
-            GifEncoder gifAnimEncoder = new GifEncoder(gifStartImage, 1, ts, bitmaps.ToArray());
-            Bitmap animGif = gifAnimEncoder.AnimBitmap;
-            animGif.Save("h:\\tmp\\"+DateTime.Now.ToString("mmss") + ".gif");</code>
-            </summary>
-            <param name="bmp">start basic image</param>
-            <param name="repeatCount">repeat count</param>
-            <param name="frameDelay">delay between gif frames</param>
-            <param name="gifFrames"><see cref="T:Image[]">Image[]</see></param>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.#ctor(System.Drawing.Bitmap[],System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
-            <summary>
-            Initializes a new instance of the GifEncoder class with the specified frames, optional repeat count, and
-            optional frame delay.
-            </summary>
-            <remarks>The first image in the gifFrames array is used as the initial frame of the GIF. All
-            provided frames are added in the order specified. The resulting GIF is finalized upon construction and
-            cannot be modified after initialization.</remarks>
-            <param name="repeatCount">The number of times the GIF animation should repeat. If null, the animation will loop indefinitely.</param>
-            <param name="frameDelay">The delay between frames, specified as a TimeSpan. If null, a default delay is used.</param>
-            <param name="gifFrames">An array of Bitmap images to include as frames in the GIF. The order of images determines the frame
-            sequence. Cannot be null or empty.</param>
-        </member>
-        <member name="M:Area23.At.Framework.Core.Util.GifEncoder.AddFrame(System.Drawing.Image,System.Nullable{System.TimeSpan})">
-            <summary>
-            Adds a frame to this animation.
-            </summary>
-            <param name="img">The image to add</param>
-            <param name="frameDelay">TimeSpan for delay</param>
-        </member>
         <member name="T:Area23.At.Framework.Core.Util.JsonHelper">
             <summary>
             JsonHelper class for reading and writing json serialized store file.

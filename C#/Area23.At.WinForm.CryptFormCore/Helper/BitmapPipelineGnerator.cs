@@ -119,7 +119,7 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 }
             }
             bitmaps.Add(new Bitmap(mergeimg, 640, 108));
-
+            gifStartImage = new Bitmap(mergeimg, 640, 108);
 
             if (this.CiffrePipe.EncodeType != Framework.Core.Crypt.EnDeCoding.EncodingType.None)
             {
@@ -138,15 +138,17 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                     g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
                 }
                 bitmaps.Add(new Bitmap(mergeimg, 640, 108));
+                gifStartImage = new Bitmap(mergeimg, 640, 108);
             }
 
-            TimeSpan ts = new TimeSpan(0, 0, 0, 0, 125);
-            GifEncoder gifAnimEncoder = new GifEncoder(bitmaps.ToArray(), 1, ts);
-            Bitmap animGif = new Bitmap(gifAnimEncoder._memoryStream, false);
+            //TimeSpan ts = new TimeSpan(0, 0, 0, 0, 125);
+            //GifEncoder gifAnimEncoder = new GifEncoder(bitmaps.ToArray(), 1, ts);
+            //Bitmap animGif = new Bitmap(gifAnimEncoder._memoryStream, false);
+            //return animGif;
             // animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("yyyy-MM-DD_hhmmss") + ".gif");
             // gifAnimEncoder.Dispose();
-
-            return animGif;
+            return gifStartImage;
+            
         }
 
 

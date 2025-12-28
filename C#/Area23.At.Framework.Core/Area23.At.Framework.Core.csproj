@@ -61,7 +61,8 @@
     <Compile Remove="Crypt\Hash\Sparkle.cs" />
     <Compile Remove="Crypt\Msg\CType.cs" />
     <Compile Remove="Crypt\Cipher\Crpyt.cs" />
-    <Compile Remove="Crypt\EnDeCoding\DeEnCoder.cs" />  
+    <Compile Remove="Crypt\EnDeCoding\DeEnCoder.cs" />
+    <Compile Remove="Util\GifEncoder.cs" />  
     <Compile Remove="Util\HttpContextWrapper.cs" />
   </ItemGroup>
 
