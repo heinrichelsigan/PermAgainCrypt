@@ -11,11 +11,14 @@ REM set Path=%Path%;%USERPROFILE%\.jdks\semeru-21.0.2\bin
 REM Path=%Path%;"C:\Program Files\Android\Android Studio\jbr\bin"
 REM SET CLASSPATH = %CLASSPATH%;"C:\Program Files\Android\Android Studio\jbr\lib"
 
+echo Setting bouncy-castle jar
+REM SET BCJAR=bcprov-jdk18on-1.79.jar
+SET BCJAR=bcprov-lts8on-2.73.10.jar
 echo Setting Path and CLASSPATH
 SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
 
 SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\openjdk-25\lib
-SET MYCLASSPATH=%CLASSPATH%;.\;.\bcprov-jdk18on-1.79.jar;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;	
+SET MYCLASSPATH=%CLASSPATH%;.\;.\%BCJAR%;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;	
 
 echo "cleaning classes from last build in eu/cqrxs/ eu/cqrxs/gui/ "
 echo "del /s /f /q *.class"
@@ -29,11 +32,6 @@ javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\util\CExceptio
 
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\net\NetworkAddresses.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\fw\net\NetworkAddresses.java
-
-echo "javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java"
-javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
-javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\ImageTest.java
-
 
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\fw\crypt\encoding\uu\CEFormatException.java eu\cqrxs\fw\crypt\encoding\uu\CEStreamExhausted.java eu\cqrxs\fw\crypt\encoding\uu\CharacterDecoder.java eu\cqrxs\fw\crypt\encoding\uu\CharacterEncoder.java  eu\cqrxs\fw\crypt\encoding\uu\UUDecoder.java  eu\cqrxs\fw\crypt\encoding\uu\UUEncoder.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\fw\crypt\encoding\uu\CEFormatException.java eu\cqrxs\fw\crypt\encoding\uu\CEStreamExhausted.java eu\cqrxs\fw\crypt\encoding\uu\CharacterDecoder.java eu\cqrxs\fw\crypt\encoding\uu\CharacterEncoder.java  eu\cqrxs\fw\crypt\encoding\uu\UUDecoder.java  eu\cqrxs\fw\crypt\encoding\uu\UUEncoder.java
@@ -53,7 +51,15 @@ javac.exe  -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrx
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\zip\GZ.java  eu\cqrxs\fw\zip\ZipType.java"
 javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\fw\zip\GZ.java  eu\cqrxs\fw\zip\ZipType.java
 
+echo "javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java"
+javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\PropertyChangeSupport.java eu\cqrxs\gui\ImageViewer.java eu\cqrxs\gui\CqrJDialog.java eu\cqrxs\gui\CqrJdFrame.java
+javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\gui\ImageTest.java
+
 
 echo "build finished"
+
+pause
+
+java.exe -classpath %MYCLASSPATH% eu\cqrxs\gui\CqrJdFrame.java
 
 pause

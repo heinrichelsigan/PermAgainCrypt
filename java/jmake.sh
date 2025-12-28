@@ -6,8 +6,12 @@
 # set Path=%Path%;c:/Users/heinr/.jdks/liberica-full-21.0.2/bin
 # set Path=%Path%;c:/Users/heinr/.jdks/semeru-21.0.2/bin
 
+echo "setting bouncy castle jar and MYCLASSPATH"
+# BCJAR=bcprov-jdk18on-1.79.jar
+BCJAR=bcprov-lts8on-2.73.10.jar
+
 # CLASSPATH = %CLASSPATH%;C:/Users/heinrich.elsigan/.jdks/openjdk-25/lib
-MYCLASSPATH="$CLASSPATH:./:./bcprov-jdk18on-1.79.jar:./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/fw/net/:./eu/cqrxs/fw/util/:./eu/cqrxs/fw/crypt/:./eu/cqrxs/fw/crypt/encoding/:./eu/cqrxs/fw/crypt/cipher/:./eu/cqrxs/fw/crypt/hash/:"
+MYCLASSPATH="$CLASSPATH:./:./$BCJAR:./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/fw/net/:./eu/cqrxs/fw/util/:./eu/cqrxs/fw/crypt/:./eu/cqrxs/fw/crypt/encoding/:./eu/cqrxs/fw/crypt/cipher/:./eu/cqrxs/fw/crypt/hash/:"
 
 echo "$0: cleaning classes from last build in eu/cqrxs/ eu/cqrxs/cqrframe/ eu/cqrxs/gui/ "
 echo -n "$0: rm -f "
@@ -49,9 +53,9 @@ javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation   eu/cqrxs/fw/
 echo "javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/zip/GZ.java  eu/cqrxs/fw/zip/ZipType.java"
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/zip/GZ.java  eu/cqrxs/fw/zip/ZipType.java
 
-echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/cqrframe/CqrFrame.java eu/cqrxs/cqrframe/CqrMenuBar.java "
-javac -classpath $MYCLASSPATH -Xlint:deprecation  eu/cqrxs/cqrframe/CqrFrame.java 
-javac -classpath $MYCLASSPATH -Xlint:deprecation  eu/cqrxs/cqrframe/CqrMenuBar.java
+# echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/cqrframe/CqrFrame.java eu/cqrxs/cqrframe/CqrMenuBar.java "
+# javac -classpath $MYCLASSPATH -Xlint:deprecation  eu/cqrxs/cqrframe/CqrFrame.java 
+# javac -classpath $MYCLASSPATH -Xlint:deprecation  eu/cqrxs/cqrframe/CqrMenuBar.java
 
 # javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/JFrameApp.java
 
