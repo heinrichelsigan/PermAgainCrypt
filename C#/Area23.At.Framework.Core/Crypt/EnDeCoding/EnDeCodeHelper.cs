@@ -103,7 +103,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// <param name="inBytes">inBytes to encdode</param>
         /// <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
         /// "Base64" is default.</param>
-        /// <param name="fromPlain">Only for uu: true, if <see cref="inBytes"/> represent a binary without encryption</param>
+        /// <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]"/> represent a binary without encryption</param>
         /// <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
         /// <returns>encoded string</returns>
         public static string EncodeBytes(byte[] inBytes, EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)
@@ -144,9 +144,9 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// <param name="cipherText">encoded (encrypted) text string</param>
         /// <param name="encodingType"><see cref="EncodingType"/> could be 
         /// "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64". "Base64" is default.</param>
-        /// <param name="fromPlain">Only for uu: true, if <see cref="encryptBytes"/> represent a binary without encryption</param>
+        /// <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]"/> represent a binary without encryption</param>
         /// <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
-        /// <returns>binary byte array</returns>
+        /// <returns><see cref="T:byte[]">binary byte array</see></returns>
         public static byte[] DecodeText(string cipherText, /* out string errMsg, */ EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)
         {
             Area23Log.LogOriginMsg("EnDeCodeHelper", 

@@ -92,13 +92,10 @@ namespace EU.CqrXs.Console.Core
 
                 // Nothing todo on io params
                 if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
-                else // Help => Usage()
-                    if (optEnum == OptEnum.Help)
-                    Usage();
-                else // Usage with error message
-                    if (optEnum == OptEnum.Usage)
-                    Usage(optStr);
-                else // fetch passphrase or Key or Qey (decrypt key) from optEnum and optStr
+                else // Help => Usage("") Usage => Usage(optStr)
+                    if (optEnum == OptEnum.Help || optEnum == OptEnum.Usage)
+                    Usage((optEnum == OptEnum.Help) ? "" : optStr);
+                else // fetch  or Key or Qey (decrypt key) from optEnum and optStr
                     if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
                     passKey = optStr;
                 else // prefetch SymmCipherMode

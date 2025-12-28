@@ -209,7 +209,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// Serpent Encrypt String method
         /// </summary>
-        /// <param name="inString">plain string to encrypt</param>
+        /// <param name="inPlainString">plain string to encrypt</param>
         /// <returns>base64 encoded encrypted string</returns>
         public static string EncryptString(string inPlainString)
         {

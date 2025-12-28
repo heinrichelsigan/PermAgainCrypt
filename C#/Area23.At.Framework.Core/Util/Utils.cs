@@ -99,7 +99,7 @@ namespace Area23.At.Framework.Core.Util
         /// SerializeToXml gemeric to xml serialize
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="t">object to serialize</param>
+        /// <param name="obj">object to serialize</param>
         /// <returns>xml serialized string</returns>
         public static string SerializeToXml<T>(T obj)
         {

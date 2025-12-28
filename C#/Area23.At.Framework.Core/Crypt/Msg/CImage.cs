@@ -91,7 +91,7 @@ namespace Area23.At.Framework.Core.Crypt.Msg
         /// <param name="image"> <see cref="Image"/>  <see cref="Bitmap"/></param>
         /// <param name="fileName">fileName for the image,
         /// if fileName is null or empty
-        /// then a name <see cref="Extensions.Area23DateTimeWithMillis(DateTime)"/></param> + "_image." + extension based mime type will be given
+        /// then a name <see cref="Util.Extensions.Area23DateTimeWithMillis(DateTime)"/></param> + "_image." + extension based mime type will be given
         public CImage(Image image, string fileName = "")
         {
             CImage cImage = FromDrawingImage(image, fileName);			

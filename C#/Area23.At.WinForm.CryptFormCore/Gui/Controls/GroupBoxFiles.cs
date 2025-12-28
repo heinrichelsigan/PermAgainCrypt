@@ -31,6 +31,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         public GroupBoxFiles()
         {
             InitializeComponent();
+            //this.DragDrop += new DragEventHandler(async (sender, e) => await Drag_Drop(sender, e));
+            //this.DragEnter += new DragEventHandler(async (sender, e) => await Drag_Enter(sender, e));
+            //this.DragOver += new DragEventHandler(async (sender, e) => await Drag_Over(sender, e));
+            //this.DragLeave += new EventHandler(async (sender, e) => await Drag_Leave(sender, e));
+            //this.GiveFeedback += new GiveFeedbackEventHandler(async (sender, e) => await Give_FeedBack(sender, e));
             NormalCursor = DefaultCursor;
             iconFileWork = new Icon(Properties.Resources.icon_file_working, new Size(32, 32));
             NoDropCursor = new Cursor(iconFileWork.Handle);
@@ -41,246 +46,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             base.OnPaint(pe);
         }
 
-        #region thread safe delegates
-
-        internal delegate void SetGroupBoxTextCallback(string headerText);
-        internal delegate void SetLabelVisibleTextCallback(System.Windows.Forms.Label label, bool visible, string text);
-        internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, string tagTxt, bool show);
-
-
-        /// <summary>
-        /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads
-        /// </summary>
-        /// <param name="text">text header for GroupBox</param>
-        internal virtual void SetGBoxText(string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (this != null)
-            {
-                if (this.InvokeRequired)
-                {
-                    SetGroupBoxTextCallback setGroupBoxText = delegate (string hText)
-                    {
-                        if (this != null && hText != null)
-                            this.Text = hText;
-                    };
-                    try
-                    {
-                        Invoke(setGroupBoxText, new object[] { textToSet });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (this != null && textToSet != null)
-                        this.Text = textToSet;
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetGBoxTextAsync delegate to set a <see cref="string">string text</see>/ to <see cref="GroupBox">this</see> across threads
-        /// </summary>
-        /// <param name="text">text header for GroupBox</param>
-        /// <returns>void Task for async method</returns>
-        internal virtual async Task SetGBoxTextAsync(string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (this != null)
-            {
-                if (this.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (this != null && textToSet != null)
-                                this.Text = textToSet;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (this != null && textToSet != null)
-                        this.Text = textToSet;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// SetLabelText delegate to set a text to <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>
-        /// <param name="visible"><see cref="bool" /></param>
-        /// <param name="text"><see cref="string" /></param>
-        internal virtual void SetLabelVisibleText(Label label, bool visible, string text)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    SetLabelVisibleTextCallback setLabelVisibleText = delegate (Label lbl, bool vsble, string labelText) 
-                    {
-                        if (lbl != null && (!vsble || labelText != null))
-                        {
-                            lbl.Text = labelText ?? "";
-                            lbl.Visible = vsble;
-                        }
-                    };
-                    try
-                    {
-                        Invoke(setLabelVisibleText, new object[] { label, visible, text });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelTextVisible visible={visible}; Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (label != null && (!visible || text != null))
-                    {
-                        label.Text = text ?? "";
-                        label.Visible = visible;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetLabelVisibleTextAsync delegate to set a text to <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>
-        /// <param name="visible"><see cref="bool"/></param>
-        /// <param name="text"><see cref="string" /></param>
-        /// <returns>void Task for async method</returns>
-        internal virtual async Task SetLabelVisibleTextAsync(Label label, bool visible, string text)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (label != null && (!visible || text != null))
-                            {
-                                label.Text = text ?? "";
-                                label.Visible = visible;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelTextVisibleAsync visible={visible}; Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (label != null && (!visible || text != null))
-                    {
-                        label.Text = text ?? "";
-                        label.Visible = visible;
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// SetPictureBoxImage delegate to set an <see cref="Image"/> in <see cref="PictureBox"/> across threads
-        /// </summary>
-        /// <param name="pictBox">the PictureBox</param>
-        /// <param name="image">the Image</param>
-        /// <param name="visible">true, if visible, false if invisible</param>
-        internal virtual void SetPictureBoxImage(PictureBox pictBox, Image image, string tagText = "", bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (pictBox.InvokeRequired)
-                {
-                    SetPictureBoxCallback setPictureBoxDelegate = delegate (PictureBox pBox, Image img, string tagTxt, bool showing)
-                    {
-                        if (pBox != null && img != null && tagTxt != null)
-                        {
-                            pBox.Image = img;
-                            pBox.Tag = tagTxt;
-                            pBox.Visible = showing;
-                        }
-                    };
-                    try
-                    {
-                        Invoke(setPictureBoxDelegate, new object[] { pictBox, image, tagText, visible });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\", tag: \"{tagText}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (pictBox != null && tagText != null && image != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Tag = tagText;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetPictureBoxImageAsync delegate to set an <see cref="Image"/> in <see cref="PictureBox"/> across threads
-        /// </summary>
-        /// <param name="pictBox">the PictureBox</param>
-        /// <param name="image">the Image</param>
-        /// <param name="visible">true, if visible, false if invisible</param>
-        /// <returns>void Task for async method</returns>
-        internal virtual async Task SetPictureBoxImageAsync(PictureBox pictBox, Image image, string tagText = "", bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (pictBox.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (pictBox != null && image != null && tagText != null)
-                            {
-                                pictBox.Image = image;
-                                pictBox.Tag = tagText;
-                                pictBox.Visible = visible;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\", tag: \"{tagText}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (pictBox != null && image != null && tagText != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Tag = tagText;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
-        }
-
-        #endregion thread safe delegates
 
         /// <summary>
         /// PictureBoxFileInOut_Click opens the file with standard windows program associated
@@ -338,20 +103,25 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="EventArgs">e</see></param>
-        internal void ResetPictureBoxFiles(object sender, EventArgs e)
+        internal async Task ResetPictureBoxFilesAsync(object sender, EventArgs e)
         {
-            Task.Run(() => IPlayable.PlaySoundFromResource("sound_volatage"));
+            await this.PlaySoundFromResourcesAsync("sound_volatage");            
             System.Timers.Timer resetPictureBoxFileTimer = new System.Timers.Timer { Interval = 1125 };
             resetPictureBoxFileTimer.Elapsed += (s, en) =>
             {
-                Task.Run(new System.Action(() =>
+                Task.Run(new System.Action(async () =>
                 {
-                    SetLabelVisibleText(labelOutputFile, false, "");
-                    SetLabelVisibleText(labelFileIn, true, "[no file selected]");
-                    
-                    SetPictureBoxImage(this.pictureBoxRunningPipe, Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);
-                    SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.file, "", true);
-                    SetPictureBoxImage(this.pictureBoxFileOut, Properties.Resources.file, "", false);
+                    // SetLabelVisibleText(labelOutputFile, false, "");
+                    // SetLabelVisibleText(labelFileIn, true, "[no file selected]");
+
+                    await labelOutputFile.SetTextVisibleAsync("", false);
+                    await labelFileIn.SetTextVisibleAsync("[no file selected]", true);
+                    await pictureBoxRunningPipe.SetBitmapTagVisibleAsync(Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);
+                    await pictureBoxFileIn.SetBitmapTagVisibleAsync(Properties.Resources.file, "", true);
+                    await pictureBoxFileOut.SetBitmapTagVisibleAsync(Properties.Resources.file, "", false);
+                    // SetPictureBoxImage(this.pictureBoxRunningPipe, Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);
+                    // SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.file, "", true);
+                    // SetPictureBoxImage(this.pictureBoxFileOut, Properties.Resources.file, "", false);
                 }));
                 resetPictureBoxFileTimer.Stop(); // Stop the timer(otherwise keeps on calling)
             };
@@ -366,7 +136,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="DragEventArgs">e</see></param>
-        internal virtual void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
+        internal virtual async Task Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
@@ -377,7 +147,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                 {
                     if (((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null) && files.Length > 0)
                     {
-                        DragEnterOver(files, DragNDropState.DragEnter, e);
+                        await DragEnterOver(files, DragNDropState.DragEnter, e);
                     }
                     else
                     {
@@ -392,7 +162,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="DragEventArgs">e</see></param>
-        internal virtual void Drag_Over(object sender, System.Windows.Forms.DragEventArgs e)
+        internal virtual async Task Drag_Over(object sender, System.Windows.Forms.DragEventArgs e)
         {
             string[] files = new string[1];
 
@@ -400,7 +170,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             {
                 if (((files = (string[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop)) != null) && files.Length > 0)
                 {
-                    DragEnterOver(files, DragNDropState.DragOver, e);
+                    await DragEnterOver(files, DragNDropState.DragOver, e);
                 }
             }
         }
@@ -411,7 +181,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// <param name="files"></param>
         /// <param name="dragNDropState"></param>
         /// <param name="e">DragEventArgs e</param>
-        public virtual void DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
+        public virtual async Task DragEnterOver(string[] files, DragNDropState dragNDropState, System.Windows.Forms.DragEventArgs e)
         {
             lock (_Lock)
             {
@@ -421,13 +191,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                     isDragMode = true;
 
                 _dragDropEffect = e.Effect;
-                if (e.Effect != System.Windows.Forms.DragDropEffects.None)
-                {
-                    string textSet = Path.GetFileName(files[0]) ?? files[0] ?? "";
-                    textSet += dragNDropState.ToString() + ": " + _dragDropEffect;
-                    SetGBoxText(textSet);
-                }
+            }
 
+            if (e.Effect != System.Windows.Forms.DragDropEffects.None)
+            {
+                string textSet = Path.GetFileName(files[0]) ?? files[0] ?? "";
+                textSet += dragNDropState.ToString() + ": " + _dragDropEffect;
+                await this.SetTextAsync(textSet);
+            }
+
+            lock (_Lock)
+            {
                 if (NormalCursor == null || NoDropCursor == null)
                 {
                     iconFileWork = new Icon(Properties.Resources.icon_file_working, new Size(32, 32));
@@ -445,13 +219,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="EventArgs">e</see></param>
-        internal virtual void Drag_Leave(object sender, EventArgs e)
+        internal virtual async Task Drag_Leave(object sender, EventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
-            SetGBoxText("Files Group Box");
+            await this.SetTextAsync("Files Group Box");
         }
 
         /// <summary>
@@ -459,7 +233,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="DragEventArgs">e</see></param>
-        internal virtual void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
+        internal virtual async Task Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string[] files = new string[1];
@@ -479,7 +253,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                                     HashFiles.Add(file);
                         }
 
-                    Drop_Files(files);
+                    await Drop_Files(files);
                 }
 
             }
@@ -492,7 +266,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// but should handle all
         /// </summary>
         /// <param name="files">array of files to drop</param>
-        internal virtual void Drop_Files(string[] files)
+        internal virtual async Task Drop_Files(string[] files)
         {
             this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             string ext = null;
@@ -502,8 +276,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
                 {
                     if (!string.IsNullOrEmpty(file) && System.IO.File.Exists(file))
                     {
-                        Task.Run(() => IPlayable.PlaySoundFromResource("sound_breakpoint"));
-                        EventHandler<Area23EventArgs<string>> handler = FileAdded;
+                        await this.PlaySoundFromResourcesAsync("sound_breakpoint");
+                        // Task.Run(() => IPlayable.PlaySoundFromResource("sound_breakpoint\"));
+                        EventHandler <Area23EventArgs<string>> handler = FileAdded;
                         Area23EventArgs<string> area23EventArgs = new Area23EventArgs<string>(file);
                         handler?.Invoke(this, area23EventArgs);
 
@@ -524,7 +299,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
         /// </summary>
         /// <param name="sender"><see cref="object">sender</see></param>
         /// <param name="e"><see cref="GiveFeedbackEventArgs">e</see></param>
-        internal virtual void Give_FeedBack(object sender, System.Windows.Forms.GiveFeedbackEventArgs e)
+        internal virtual async Task Give_FeedBack(object sender, System.Windows.Forms.GiveFeedbackEventArgs e)
         {
             if (e != null)
             {

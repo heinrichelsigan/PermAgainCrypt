@@ -326,7 +326,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncNone.BackColor = SystemColors.Menu;
             menuEncNone.Name = "menuEncNone";
-            menuEncNone.Size = new Size(180, 22);
+            menuEncNone.Size = new Size(122, 22);
             menuEncNone.Text = "None";
             menuEncNone.ToolTipText = "no encoding, let it be binary as it is";
             // 
@@ -334,7 +334,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncBase16.BackColor = SystemColors.Menu;
             menuEncBase16.Name = "menuEncBase16";
-            menuEncBase16.Size = new Size(180, 22);
+            menuEncBase16.Size = new Size(122, 22);
             menuEncBase16.Text = "Base16";
             menuEncBase16.ToolTipText = "base16 en-/decoding";
             // 
@@ -342,7 +342,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncHex16.BackColor = SystemColors.Menu;
             menuEncHex16.Name = "menuEncHex16";
-            menuEncHex16.Size = new Size(180, 22);
+            menuEncHex16.Size = new Size(122, 22);
             menuEncHex16.Text = "Hex16";
             menuEncHex16.ToolTipText = "hexadecimal half byte encoding";
             // 
@@ -350,7 +350,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncBase32.BackColor = SystemColors.Menu;
             menuEncBase32.Name = "menuEncBase32";
-            menuEncBase32.Size = new Size(180, 22);
+            menuEncBase32.Size = new Size(122, 22);
             menuEncBase32.Text = "Base32";
             menuEncBase32.ToolTipText = "base32 en-/decoding";
             // 
@@ -358,7 +358,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncHex32.BackColor = SystemColors.Menu;
             menuEncHex32.Name = "menuEncHex32";
-            menuEncHex32.Size = new Size(180, 22);
+            menuEncHex32.Size = new Size(122, 22);
             menuEncHex32.Text = "Hex32";
             // 
             // menuEncBase64
@@ -367,7 +367,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuEncBase64.Checked = true;
             menuEncBase64.CheckState = CheckState.Checked;
             menuEncBase64.Name = "menuEncBase64";
-            menuEncBase64.Size = new Size(180, 22);
+            menuEncBase64.Size = new Size(122, 22);
             menuEncBase64.Text = "Base64";
             menuEncBase64.ToolTipText = "base64 mime en-/decoding";
             // 
@@ -375,14 +375,14 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuEncUu.BackColor = SystemColors.Menu;
             menuEncUu.Name = "menuEncUu";
-            menuEncUu.Size = new Size(180, 22);
+            menuEncUu.Size = new Size(122, 22);
             menuEncUu.Text = "Uu";
             menuEncUu.ToolTipText = "unix 2 unix en-/decoding, see uuencode, uudecode";
             // 
             // menuEncXx
             // 
             menuEncXx.Name = "menuEncXx";
-            menuEncXx.Size = new Size(180, 22);
+            menuEncXx.Size = new Size(122, 22);
             menuEncXx.Text = "Xx";
             // 
             // menuHash
@@ -397,42 +397,42 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuHashAscon256.BackColor = SystemColors.ControlLight;
             menuHashAscon256.Name = "menuHashAscon256";
-            menuHashAscon256.Size = new Size(180, 22);
+            menuHashAscon256.Size = new Size(170, 22);
             menuHashAscon256.Text = "Ascon256";
             // 
             // menuHashBlake2xs
             // 
             menuHashBlake2xs.BackColor = SystemColors.ControlLight;
             menuHashBlake2xs.Name = "menuHashBlake2xs";
-            menuHashBlake2xs.Size = new Size(180, 22);
+            menuHashBlake2xs.Size = new Size(170, 22);
             menuHashBlake2xs.Text = "Blake2xs";
             // 
             // menuHashBCrypt
             // 
             menuHashBCrypt.BackColor = SystemColors.ControlLight;
             menuHashBCrypt.Name = "menuHashBCrypt";
-            menuHashBCrypt.Size = new Size(180, 22);
+            menuHashBCrypt.Size = new Size(170, 22);
             menuHashBCrypt.Text = "B-Crypt";
             // 
             // menuHashCShake
             // 
             menuHashCShake.BackColor = SystemColors.ControlLight;
             menuHashCShake.Name = "menuHashCShake";
-            menuHashCShake.Size = new Size(180, 22);
+            menuHashCShake.Size = new Size(170, 22);
             menuHashCShake.Text = "CShake";
             // 
             // menuHashDstu7564
             // 
             menuHashDstu7564.BackColor = SystemColors.ControlLight;
             menuHashDstu7564.Name = "menuHashDstu7564";
-            menuHashDstu7564.Size = new Size(180, 22);
+            menuHashDstu7564.Size = new Size(170, 22);
             menuHashDstu7564.Text = "Dstu7564";
             // 
             // menuHashMD5
             // 
             menuHashMD5.BackColor = SystemColors.Menu;
             menuHashMD5.Name = "menuHashMD5";
-            menuHashMD5.Size = new Size(180, 22);
+            menuHashMD5.Size = new Size(170, 22);
             menuHashMD5.Tag = "";
             menuHashMD5.Text = "MD5";
             // 
@@ -442,21 +442,21 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashHex.Checked = true;
             menuHashHex.CheckState = CheckState.Checked;
             menuHashHex.Name = "menuHashHex";
-            menuHashHex.Size = new Size(180, 22);
+            menuHashHex.Size = new Size(170, 22);
             menuHashHex.Text = "Hex";
             // 
             // menuHashOpenBSDCrypt
             // 
             menuHashOpenBSDCrypt.BackColor = SystemColors.ControlLight;
             menuHashOpenBSDCrypt.Name = "menuHashOpenBSDCrypt";
-            menuHashOpenBSDCrypt.Size = new Size(180, 22);
+            menuHashOpenBSDCrypt.Size = new Size(170, 22);
             menuHashOpenBSDCrypt.Text = "OpenBSDCrypt";
             // 
             // menuHashRipeMD256
             // 
             menuHashRipeMD256.BackColor = SystemColors.ControlLight;
             menuHashRipeMD256.Name = "menuHashRipeMD256";
-            menuHashRipeMD256.Size = new Size(180, 22);
+            menuHashRipeMD256.Size = new Size(170, 22);
             menuHashRipeMD256.Text = "RipeMD256";
             // 
             // menuHashSha1
@@ -464,42 +464,42 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashSha1.BackColor = SystemColors.Menu;
             menuHashSha1.MergeAction = MergeAction.Insert;
             menuHashSha1.Name = "menuHashSha1";
-            menuHashSha1.Size = new Size(180, 22);
+            menuHashSha1.Size = new Size(170, 22);
             menuHashSha1.Text = "Sha1";
             // 
             // menuHashSha256
             // 
             menuHashSha256.BackColor = SystemColors.Menu;
             menuHashSha256.Name = "menuHashSha256";
-            menuHashSha256.Size = new Size(180, 22);
+            menuHashSha256.Size = new Size(170, 22);
             menuHashSha256.Text = "Sha256";
             // 
             // menuHashSha512
             // 
             menuHashSha512.BackColor = SystemColors.Menu;
             menuHashSha512.Name = "menuHashSha512";
-            menuHashSha512.Size = new Size(180, 22);
+            menuHashSha512.Size = new Size(170, 22);
             menuHashSha512.Text = "Sha512";
             // 
             // menuHashSCrypt
             // 
             menuHashSCrypt.BackColor = SystemColors.ControlLight;
             menuHashSCrypt.Name = "menuHashSCrypt";
-            menuHashSCrypt.Size = new Size(180, 22);
+            menuHashSCrypt.Size = new Size(170, 22);
             menuHashSCrypt.Text = "S-Crypt";
             // 
             // menuHashWhirlpool
             // 
             menuHashWhirlpool.BackColor = SystemColors.ControlLight;
             menuHashWhirlpool.Name = "menuHashWhirlpool";
-            menuHashWhirlpool.Size = new Size(180, 22);
+            menuHashWhirlpool.Size = new Size(170, 22);
             menuHashWhirlpool.Text = "Whirlpool";
             // 
             // menuHashXoodyak
             // 
             menuHashXoodyak.BackColor = SystemColors.ControlLight;
             menuHashXoodyak.Name = "menuHashXoodyak";
-            menuHashXoodyak.Size = new Size(180, 22);
+            menuHashXoodyak.Size = new Size(170, 22);
             menuHashXoodyak.Text = "Xoodyak";
             // 
             // optionsToolStripMenuItem
@@ -641,7 +641,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(180, 22);
+            menuAbout.Size = new Size(161, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -649,7 +649,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(180, 22);
+            menuHelpHelp.Size = new Size(161, 22);
             menuHelpHelp.Text = "Help";
             // 
             // comboBoxAlgo

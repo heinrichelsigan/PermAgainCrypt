@@ -62,7 +62,7 @@ namespace Area23.At.Framework.Core.Crypt
 
         /// <summary>
         /// loads json serialized Settings data string from 
-        /// <see cref="LibPaths.AppDirPath"/> + <see cref="Constants.JSON_SAVE_FILE"/>
+        /// <see cref="Util.LibPaths.SystemDirPath"/> + <see cref="Constants.JSON_SAVE_FILE"/>
         /// and deserialize it to singleton instance <see cref="CryptSettings"/> of <seealso cref="Lazy{Settings}"/>
         /// </summary>
         /// <param name="jsonFileName">fileName of serialized json</param>
@@ -102,7 +102,7 @@ namespace Area23.At.Framework.Core.Crypt
         /// saves json serialized data string to 
         /// <see cref="LibPaths.SystemDirPath"/> + <see cref="Constants.JSON_SAVE_FILE"/>
         /// </summary>
-        /// <param name="CryptSettings">settings to save</param>
+        /// <param name="settings">settings to save</param>
         /// <param name="jsonFileName">filename, where writing serialized json</param>
         /// <returns>true on successfully save</returns>
         public static bool Save(CryptSettings? settings = null, string? jsonFileName = null)

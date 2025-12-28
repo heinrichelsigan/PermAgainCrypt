@@ -590,7 +590,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <param name="cryptedEncodedMsg">encrypted message</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="pipeStrig">out parameter for setting hash to compare entities encryption</param>
+        /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
         /// <param name="decoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
         /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>

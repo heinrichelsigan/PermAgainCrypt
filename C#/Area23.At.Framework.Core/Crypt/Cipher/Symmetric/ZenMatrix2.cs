@@ -102,7 +102,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// initializes a <see cref="ZenMatrix"/> with an array of key bytes
         /// </summary>
-        /// <param name="keyBytes">array of key bytes</param>
+        /// <param name="keyBytes2"><see cref="T:byte[]">array of key bytes</see></param>
         /// <param name="fullSymmetric">
         /// fullSymmetric means that zen matrix is it's inverse element 
         /// and decrypts back to plain text, when encrypting twice or ²</param> 
@@ -136,7 +136,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// Generates ZenMatrix with key bytes
         /// </summary>
-        /// <param name="keyBytes">must have at least 4 bytes and will be truncated after 16 bytes
+        /// <param name="keyBytes2">must have at least 4 bytes and will be truncated after 16 bytes
         /// only the first 16 bytes will be taken from keyBytes for <see cref="ZenMatrix"/>
         /// </param>
         /// <returns>true, if init was with same key successfull</returns>
@@ -391,7 +391,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Decrypt member function
         /// </summary>
-        /// <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
+        /// <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
         /// <returns>decrypted plain byte[] data</returns>
         public override byte[] Decrypt(byte[] ecdata)
         {
@@ -448,7 +448,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         }
 
         /// <summary>
-        /// MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="MatrixPermutationKey"/> in case of encrypt,
+        /// MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="MatrixPermutationKey2"/> in case of encrypt,
         /// through <see cref="InverseMatrix2"/> in case of decryption.
         /// </summary>
         /// <param name="inByte"><see cref="byte"/> in byte to map</param>

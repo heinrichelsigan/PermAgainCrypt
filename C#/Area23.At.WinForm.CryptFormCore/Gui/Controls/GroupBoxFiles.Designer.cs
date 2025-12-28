@@ -130,12 +130,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Controls
             this.Size = new Size(988, 156);
             this.TabIndex = 20;
             this.TabStop = false;
-            this.Text = "Files (drag files into)";
-            this.DragDrop += Drag_Drop;
-            this.DragEnter += Drag_Enter;
-            this.DragOver += Drag_Over;
-            this.DragLeave += Drag_Leave;
-            this.GiveFeedback += Give_FeedBack;
+            this.Text = "Files (drag files into)";            
+            this.DragDrop += new DragEventHandler(async (sender, e) => await Drag_Drop(sender, e));
+            this.DragEnter += new DragEventHandler(async (sender, e) => await Drag_Enter(sender, e));
+            this.DragOver += new DragEventHandler(async (sender, e) => await Drag_Over(sender, e));
+            this.DragLeave += new EventHandler(async (sender, e) => await Drag_Leave(sender, e));
+            this.GiveFeedback += new GiveFeedbackEventHandler(async (sender, e) => await Give_FeedBack(sender, e));
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileIn).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxFileOut).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).EndInit();

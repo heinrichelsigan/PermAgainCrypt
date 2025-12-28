@@ -157,7 +157,6 @@
             </summary>
             <param name="key">secret key to generate pipe</param>
             <param name="hash">hash value of secret key</param>
-            <param name="maxpipe"></param>
             <param name="encType"></param>
             <param name="zpType"></param>
             <param name="kh"></param>
@@ -700,7 +699,7 @@
             <summary>
             Serpent Encrypt String method
             </summary>
-            <param name="inString">plain string to encrypt</param>
+            <param name="inPlainString">plain string to encrypt</param>
             <returns>base64 encoded encrypted string</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.Serpent.DecryptString(System.String)">
@@ -884,7 +883,7 @@
             <param name="cryptedEncodedMsg">encrypted message</param>
             <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
             and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-            <param name="pipeStrig">out parameter for setting hash to compare entities encryption</param>
+            <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
             <param name="decoding"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text></param>
             <param name="unzipAfter"><see cref="T:Area23.At.Framework.Core.Zip.ZipType"/> and <see cref="M:Area23.At.Framework.Core.Zip.ZipTypeExtensions.Unzip(Area23.At.Framework.Core.Zip.ZipType,System.Byte[])"/></param>
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
@@ -1099,7 +1098,7 @@
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
-            <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
+            <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix.BuildInverseMatrix(System.SByte[],System.Int32)">
@@ -1166,7 +1165,7 @@
             <summary>
             initializes a <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix"/> with an array of key bytes
             </summary>
-            <param name="keyBytes">array of key bytes</param>
+            <param name="keyBytes2"><see cref="T:byte[]">array of key bytes</see></param>
             <param name="fullSymmetric">
             fullSymmetric means that zen matrix is it's inverse element 
             and decrypts back to plain text, when encrypting twice or ²</param> 
@@ -1180,7 +1179,7 @@
             <summary>
             Generates ZenMatrix with key bytes
             </summary>
-            <param name="keyBytes">must have at least 4 bytes and will be truncated after 16 bytes
+            <param name="keyBytes2">must have at least 4 bytes and will be truncated after 16 bytes
             only the first 16 bytes will be taken from keyBytes for <see cref="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix"/>
             </param>
             <returns>true, if init was with same key successfull</returns>
@@ -1209,7 +1208,7 @@
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
-            <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
+            <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.SByte[],System.Int32)">
@@ -1221,7 +1220,7 @@
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)">
             <summary>
-            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="!:MatrixPermutationKey"/> in case of encrypt,
+            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/> in case of encrypt,
             through <see cref="P:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2"/> in case of decryption.
             </summary>
             <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
@@ -1243,7 +1242,7 @@
         <member name="M:Area23.At.Framework.Core.Crypt.CryptSettings.Load(System.String)">
             <summary>
             loads json serialized Settings data string from 
-            <see cref="!:LibPaths.AppDirPath"/> + <see cref="F:Area23.At.Framework.Core.Util.Constants.JSON_SAVE_FILE"/>
+            <see cref="P:Area23.At.Framework.Core.Util.LibPaths.SystemDirPath"/> + <see cref="F:Area23.At.Framework.Core.Util.Constants.JSON_SAVE_FILE"/>
             and deserialize it to singleton instance <see cref="T:Area23.At.Framework.Core.Crypt.CryptSettings"/> of <seealso cref="T:System.Lazy`1"/>
             </summary>
             <param name="jsonFileName">fileName of serialized json</param>
@@ -1255,7 +1254,7 @@
             saves json serialized data string to 
             <see cref="P:Area23.At.Framework.Core.Util.LibPaths.SystemDirPath"/> + <see cref="F:Area23.At.Framework.Core.Util.Constants.JSON_SAVE_FILE"/>
             </summary>
-            <param name="CryptSettings">settings to save</param>
+            <param name="settings">settings to save</param>
             <param name="jsonFileName">filename, where writing serialized json</param>
             <returns>true on successfully save</returns>
         </member>
@@ -1408,7 +1407,7 @@
             <param name="inBytes">inBytes to encdode</param>
             <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
             "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="!:inBytes"/> represent a binary without encryption</param>
+            <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]"/> represent a binary without encryption</param>
             <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
             <returns>encoded string</returns>
         </member>
@@ -1428,9 +1427,9 @@
             <param name="cipherText">encoded (encrypted) text string</param>
             <param name="encodingType"><see cref="T:Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType"/> could be 
             "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64". "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="!:encryptBytes"/> represent a binary without encryption</param>
+            <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]"/> represent a binary without encryption</param>
             <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
-            <returns>binary byte array</returns>
+            <returns><see cref="T:byte[]">binary byte array</see></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.EnDeCodeHelper.DecodeText(System.String,System.String)">
             <summary>
@@ -1583,8 +1582,8 @@
             <summary>
             Decodes a hex string to byte[]
             </summary>
-            <param name="hexString">hex16 encoded string</param>
-            <returns></returns>
+            <param name="encodedString">hex16 encoded string</param>
+            <returns><see cref="T:byte[]"/></returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.EnDeCoding.Uu">
             <summary>
@@ -1598,7 +1597,7 @@
             <summary>
             Encodes byte[] to valid encode formatted string
             </summary>
-            <param name="inBytes">byte array to encode</param>
+            <param name="data"><see cref="T:byte[]">byte array to encode</see></param>
             <returns>encoded string</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.EnDeCoding.Uu.Decode(System.String)">
@@ -1774,7 +1773,7 @@
             Thanx to the legion of <see href="https://bouncycastle.org/" />
             </summary>
             <param name="keyBytes">keyBytes to hash encrypt</param>
-            <returns><see cref="!:Array&lt;Byte&gt;">byte[]</see></returns>
+            <returns><see cref="T:byte[]">byte[]</see></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
@@ -1831,7 +1830,7 @@
             Hashes a file
             </summary>
             <param name="filePath">full(unc) path to file</param>
-            <param name="fileName">optional filename to add after hash</param>
+            <param name="showFileName">flag, if show filename after hash</param>
             <returns>Sha512 hash of file with optional fileName at end</returns>
             <exception cref="T:System.ArgumentNullException">thrown, when filePath == null | filePath == "" | !File.Exists(filePath)</exception>        
         </member>
@@ -2055,7 +2054,7 @@
             <param name="image"> <see cref="T:System.Drawing.Image"/>  <see cref="T:System.Drawing.Bitmap"/></param>
             <param name="fileName">fileName for the image,
             if fileName is null or empty
-            then a name <see cref="!:Extensions.Area23DateTimeWithMillis(DateTime)"/></param> + "_image." + extension based mime type will be given
+            then a name <see cref="M:Area23.At.Framework.Core.Util.Extensions.Area23DateTimeWithMillis(System.DateTime)"/></param> + "_image." + extension based mime type will be given
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Msg.CImage.ToDrawingBitmap">
             <summary>
@@ -2126,10 +2125,10 @@
             <summary>
             Cerialize
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="serTyoe"></param>
-            <param name="t"></param>
-            <returns></returns>
+            <typeparam name="T">class to serialize</typeparam>
+            <param name="serType">cerialized type</param>
+            <param name="t">instance to serialize</param>
+            <returns>serialized string</returns>
         </member>
         <member name="T:Area23.At.Framework.Core.Net.NameService.DnsHelper">
             <summary>
@@ -2666,7 +2665,7 @@
             otherwise if <see cref="F:System.Boolean.FalseString"/>, then <see cref="M:System.String.LastIndexOf(System.String)">main.LastIndexOf(patternStart)</see> will be executed.
             </param>
             <param name="markStartEnd">if <see cref="M:System.String.IsNullOrEmpty(System.String)">!string.IsNullOrEmpty(markStartEnd)</see> 
-            then start position of substring will be set to <see cref="!:String.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
+            then start position of substring will be set to <see cref="M:System.String.IndexOf(System.String)">string.IndexOf(markStartEnd)</see>
             </param>
             <param name="patternEnd">end pattern for substring, <see cref="M:System.String.LastIndexOf(System.String)">main.IndexOf(patternEnd)</see></param>
             <param name="lastIndex">default <see cref="F:System.Boolean.FalseString"/>
@@ -2765,6 +2764,48 @@
             </summary>
             <param name="strInput">this <see cref="T:System.String">string input</see> to json validate</param>
             <returns>true, if it's a valid serialized json string, otherwise false</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.SetBackColorAsync(System.Windows.Forms.Label,System.Drawing.Color)">
+            <summary>
+            SetBackColorAsync extension delegate to set <see cref="T:System.Drawing.Color">Backcolor</see> for <see cref="T:System.Windows.Forms.Label"/> across threads
+            </summary>
+            <param name="label">extension method for this label</param>
+            <param name="backColor"><see cref="T:System.Drawing.Color">backColor</see></param>
+            <returns>void Task for async method</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.SetTextVisibleAsync(System.Windows.Forms.Label,System.String,System.Boolean)">
+            <summary>
+            SetTextVisibleAsync extension method delegate to set a text to <see cref="T:System.Windows.Forms.Label"/> across threads
+            </summary>
+            <param name="label">the label</param>       
+            <param name="text"><see cref="T:System.String" /></param>
+            <param name="visible"><see cref="T:System.Boolean"/>, default to true</param>
+            <returns>void Task for async method</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.SetImageTagVisibleAsync(System.Windows.Forms.PictureBox,System.Drawing.Image,System.String,System.Boolean)">
+            <summary>
+            SetImageTagVisibleAsync extension method to set an <see cref="T:System.Drawing.Image"/> in <see cref="T:System.Windows.Forms.PictureBox"/> across threads
+            </summary>
+            <param name="pictBox">the PictureBox</param>
+            <param name="image">the Image</param>
+            <param name="tagText">image tag</param>
+            <param name="visible">true, if visible, false if invisible</param>
+            <returns>void Task for async method</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.SetTextAsync(System.Windows.Forms.GroupBox,System.String)">
+            <summary>
+            SetTextAsync extension method delegate to set a <see cref="T:System.String">string text</see>/ to <see cref="T:System.Windows.Forms.GroupBox">this</see> across threads
+            </summary>
+            <param name="text">text header for GroupBox</param>
+            <returns>void Task for async method</returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Util.Extensions.SetTextAsync(System.Windows.Forms.ToolStripStatusLabel,System.String)">
+            <summary>
+            SetTextAsync extension method for System.Windows.Forms.ToolStripStatusLabel to set text in a thread safe manner
+            </summary>
+            <param name="tsLabel">ToolStripStatusLabel</param>
+            <param name="text">text to set</param>
+            <returns></returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Extensions.ReverseToString``1(System.Collections.Generic.Stack{``0})">
             <summary>
@@ -3210,7 +3251,7 @@
             SerializeToXml gemeric to xml serialize
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="t">object to serialize</param>
+            <param name="obj">object to serialize</param>
             <returns>xml serialized string</returns>
         </member>
         <member name="M:Area23.At.Framework.Core.Util.Utils.DeserializeFromXml``1(System.String)">

@@ -140,10 +140,11 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 bitmaps.Add(new Bitmap(mergeimg, 640, 108));
             }
 
-            TimeSpan ts = new TimeSpan(0, 0, 0, 0, 500);
+            TimeSpan ts = new TimeSpan(0, 0, 0, 0, 125);
             GifEncoder gifAnimEncoder = new GifEncoder(bitmaps.ToArray(), 1, ts);
-            Bitmap animGif = gifAnimEncoder.AnimBitmap;
+            Image animGif = gifAnimEncoder.AnimImage;
             // animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("yyyy-MM-DD_hhmmss") + ".gif");
+            
 
             return animGif;
         }

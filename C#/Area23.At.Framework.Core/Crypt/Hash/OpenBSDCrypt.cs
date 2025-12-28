@@ -22,7 +22,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
         /// Thanx to the legion of <see href="https://bouncycastle.org/" />
         /// </summary>
         /// <param name="keyBytes">keyBytes to hash encrypt</param>
-        /// <returns><see cref="Array{Byte}">byte[]</see></returns>
+        /// <returns><see cref="T:byte[]">byte[]</see></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
         public static byte[] OpenBSDCryptHash(byte[] keyBytes)

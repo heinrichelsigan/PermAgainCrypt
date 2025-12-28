@@ -2,3 +2,18 @@
 
 # CS1591: Missing XML comment for publicly visible type or member
 dotnet_diagnostic.CS1591.severity = silent
+
+# IL2026: Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
+dotnet_diagnostic.IL2026.severity = silent
+
+# CS8600: Converting null literal or possible null value to non-nullable type.
+dotnet_diagnostic.CS8600.severity = silent
+
+# CS8601: Possible null reference assignment.
+dotnet_diagnostic.CS8601.severity = silent
+
+# CS8603: Possible null reference return.
+dotnet_diagnostic.CS8603.severity = silent
+
+# CS8604: Possible null reference argument.
+dotnet_diagnostic.CS8604.severity = silent

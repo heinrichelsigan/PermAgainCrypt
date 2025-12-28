@@ -652,7 +652,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
         /// <summary>
         /// MatrixSymChiffer Decrypt member function
         /// </summary>
-        /// <param name="cdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
+        /// <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
         /// <returns>decrypted plain byte[] data</returns>
         public virtual byte[] Decrypt(byte[] ecdata)
         {

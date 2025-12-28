@@ -213,7 +213,6 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
         /// </summary>
         /// <param name="key">secret key to generate pipe</param>
         /// <param name="hash">hash value of secret key</param>
-        /// <param name="maxpipe"></param>
         /// <param name="encType"></param>
         /// <param name="zpType"></param>
         /// <param name="kh"></param>

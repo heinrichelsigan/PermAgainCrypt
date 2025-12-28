@@ -31,8 +31,8 @@
         /// <summary>
         /// Decodes a hex string to byte[]
         /// </summary>
-        /// <param name="hexString">hex16 encoded string</param>
-        /// <returns></returns>
+        /// <param name="encodedString">hex16 encoded string</param>
+        /// <returns><see cref="T:byte[]"/></returns>
         public byte[] Decode(string encodedString)
         {
             return RawString.FromRawString(encodedString);

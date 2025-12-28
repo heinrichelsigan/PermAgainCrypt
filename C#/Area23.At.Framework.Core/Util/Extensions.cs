@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
+// using static System.Net.Mime.MediaTypeNames;
 
 
 namespace Area23.At.Framework.Core.Util
@@ -532,7 +532,7 @@ namespace Area23.At.Framework.Core.Util
         /// otherwise if <see cref="System.Boolean.FalseString"/>, then <see cref="string.LastIndexOf(string)">main.LastIndexOf(patternStart)</see> will be executed.
         /// </param>
         /// <param name="markStartEnd">if <see cref="string.IsNullOrEmpty(string?)">!string.IsNullOrEmpty(markStartEnd)</see> 
-        /// then start position of substring will be set to <see cref="String.IndexOf(string)>">string.IndexOf(markStartEnd)</see>
+        /// then start position of substring will be set to <see cref="String.IndexOf(string)">string.IndexOf(markStartEnd)</see>
         /// </param>
         /// <param name="patternEnd">end pattern for substring, <see cref="string.LastIndexOf(string)">main.IndexOf(patternEnd)</see></param>
         /// <param name="lastIndex">default <see cref="System.Boolean.FalseString"/>
@@ -913,6 +913,208 @@ namespace Area23.At.Framework.Core.Util
         }
 
         #endregion System.Net extension methods
+
+        #region async invoke gui extensions
+
+        /// <summary>
+        /// SetBackColorAsync extension delegate to set <see cref="Color">Backcolor</see> for <see cref="Label"/> across threads
+        /// </summary>
+        /// <param name="label">extension method for this label</param>
+        /// <param name="backColor"><see cref="Color">backColor</see></param>
+        /// <returns>void Task for async method</returns>
+        public static async Task SetBackColorAsync(this Label label, Color backColor)
+        {
+            if (label != null)
+            {
+                if (label.InvokeRequired)
+                {
+                    try
+                    {
+                        await label.InvokeAsync(() =>
+                        {
+                            if (label != null)
+                                label.BackColor = backColor;
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        string labelName = (label != null && !string.IsNullOrEmpty(label.Name)) ? label.Name : "Label";
+                        if (label != null && label.Parent != null && !string.IsNullOrEmpty(label.Parent.Name))
+                            labelName = label.Parent.Name;
+                        Area23Log.LogOriginMsgEx(labelName, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (label != null)
+                        label.BackColor = backColor;
+                }
+            }
+        }
+
+        /// <summary>
+        /// SetTextVisibleAsync extension method delegate to set a text to <see cref="Label"/> across threads
+        /// </summary>
+        /// <param name="label">the label</param>       
+        /// <param name="text"><see cref="string" /></param>
+        /// <param name="visible"><see cref="bool"/>, default to true</param>
+        /// <returns>void Task for async method</returns>
+        public static async Task SetTextVisibleAsync(this Label label, string text, bool visible = true)
+        {
+            if (label != null)
+            {
+                if (label.InvokeRequired)
+                {
+                    try
+                    {
+                        await label.InvokeAsync(() =>
+                        {
+                            if (label != null && (!visible || text != null))
+                            {
+                                label.Text = text ?? "";
+                                label.Visible = visible;
+                            }
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        string nameLabel = (label != null && !string.IsNullOrEmpty(label.Name)) ? label.Name : "Label";
+                        if (label != null && label.Parent != null && !string.IsNullOrEmpty(label.Parent.Name))
+                            nameLabel = label.Parent.Name;
+                        Area23Log.LogOriginMsgEx(nameLabel, $"Exception in delegate SetLabelTextVisibleAsync visible={visible}; Text: \"{text}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (label != null && (!visible || text != null))
+                    {
+                        label.Text = text ?? "";
+                        label.Visible = visible;
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// SetImageTagVisibleAsync extension method to set an <see cref="Image"/> in <see cref="PictureBox"/> across threads
+        /// </summary>
+        /// <param name="pictBox">the PictureBox</param>
+        /// <param name="image">the Image</param>
+        /// <param name="tagText">image tag</param>
+        /// <param name="visible">true, if visible, false if invisible</param>
+        /// <returns>void Task for async method</returns>
+        public static async Task SetImageTagVisibleAsync(this PictureBox pictBox, System.Drawing.Image image, string tagText = "", bool visible = true)
+        {
+            if (pictBox != null && image != null)
+            {
+                if (pictBox.InvokeRequired)
+                {
+                    try
+                    {
+                        await pictBox.InvokeAsync(() =>
+                        {
+                            if (pictBox != null && image != null && tagText != null)
+                            {
+                                pictBox.Image = image;
+                                pictBox.Tag = tagText;
+                                pictBox.Visible = visible;
+                            }
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        string picName = (pictBox != null && !string.IsNullOrEmpty(pictBox.Name)) ? pictBox.Name : "PictureBox";
+                        Area23Log.LogOriginMsgEx(picName, $"Exception in delegate SetPictureBoxImage image: \"{image}\", tag: \"{tagText}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (pictBox != null && image != null && tagText != null)
+                    {
+                        pictBox.Image = image;
+                        pictBox.Tag = tagText;
+                        pictBox.Visible = visible;
+                    }
+                }
+            }
+        }
+
+        public static async Task SetBitmapTagVisibleAsync(this PictureBox pictBox, Bitmap bmp, string tagText, bool visible = true) 
+            => await SetImageTagVisibleAsync(pictBox, (System.Drawing.Image)bmp, tagText, visible);
+
+
+        /// <summary>
+        /// SetTextAsync extension method delegate to set a <see cref="string">string text</see>/ to <see cref="GroupBox">this</see> across threads
+        /// </summary>
+        /// <param name="text">text header for GroupBox</param>
+        /// <returns>void Task for async method</returns>
+        public static async Task SetTextAsync(this System.Windows.Forms.GroupBox groupBox, string text)
+        {
+            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
+            if (groupBox != null)
+            {
+                if (groupBox.InvokeRequired)
+                {
+                    try
+                    {
+                        await groupBox.InvokeAsync(() =>
+                        {
+                            if (groupBox != null && textToSet != null)
+                                groupBox.Text = textToSet;
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        string gBoxName = (groupBox != null && !string.IsNullOrEmpty(groupBox.Name)) ? groupBox.Name : "GroupBox";
+                        Area23Log.LogOriginMsgEx(gBoxName, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (groupBox != null && textToSet != null)
+                        groupBox.Text = textToSet;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// SetTextAsync extension method for System.Windows.Forms.ToolStripStatusLabel to set text in a thread safe manner
+        /// </summary>
+        /// <param name="tsLabel">ToolStripStatusLabel</param>
+        /// <param name="text">text to set</param>
+        /// <returns></returns>
+        public static async Task SetTextAsync(this System.Windows.Forms.ToolStripStatusLabel tsLabel, string text)
+        {
+            if (tsLabel != null)
+            {
+                ToolStrip? tsParent = tsLabel.GetCurrentParent();
+                if (tsParent != null && tsParent.InvokeRequired)
+                {
+                    try
+                    {
+                        await tsParent.InvokeAsync(() =>
+                        {
+                            if (tsLabel != null && text != null)
+                                tsLabel.Text = text;
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        string tsLabelName = (tsLabel != null && !string.IsNullOrEmpty(tsLabel.Name)) ? tsLabel.Name : "ToolStripStatusLabel";
+                        Area23Log.LogOriginMsgEx(tsLabelName, $"Exception in delegate SetStatusLabelTextCallback Text: \"{text}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (tsLabel != null && text != null)
+                        tsLabel.Text = text;
+                }
+            }
+        }
+
+        #endregion async invoke gui extensions
 
         #region genericsT_extensions
 

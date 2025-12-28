@@ -66,7 +66,7 @@ namespace Area23.At.Framework.Core.Crypt.EnDeCoding
         /// <summary>
         /// Encodes byte[] to valid encode formatted string
         /// </summary>
-        /// <param name="inBytes">byte array to encode</param>
+        /// <param name="data"><see cref="T:byte[]">byte array to encode</see></param>
         /// <returns>encoded string</returns>
         public string Encode(byte[] data) => Uu.ToUu(data);
 

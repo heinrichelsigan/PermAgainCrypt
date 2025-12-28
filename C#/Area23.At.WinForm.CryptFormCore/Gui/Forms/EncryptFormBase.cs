@@ -19,8 +19,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal CipherPipe? CPipe;
 
         protected internal static HashSet<string> HashFiles = new HashSet<string>();
-        protected internal delegate void SetLabelVisibleCallback(System.Windows.Forms.Label label, bool visible);
-        protected internal delegate void SetLabelTextCallback(System.Windows.Forms.Label label, string text);
+        protected internal delegate void SetLabelTextVisibleCallback(System.Windows.Forms.Label label, string text, bool visible = true);
         protected internal delegate void SetLabelBackColorCallback(System.Windows.Forms.Label label, Color backColor);
         protected internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
         protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, string tagTxt, bool show);
@@ -33,88 +32,29 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region delegates and async delegates to set GUI controls from any thread not only GUI thread
 
-        /// <summary>
-        /// SetLabelVisible delegate to set a text to <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>
-        /// <param name="visible">bool visible</param>
-        protected internal virtual void SetLabelVisible(Label label, bool visible)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    SetLabelVisibleCallback setLabelVisible = delegate (Label lbl, bool isVisible)
-                    {
-                        if (lbl != null)
-                            lbl.Visible = isVisible;
-                    };
-                    try
-                    {
-                        Invoke(setLabelVisible, new object[] { label, visible });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelVisible visible: \"{visible}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (this != null && label != null)
-                        label.Visible = visible;
-                }
-            }
-        }
-
-        protected internal virtual async Task SetLabelVisibleAsync(Label label, bool visible)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {                    
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (this != null && label != null)
-                                label.Visible = visible;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelVisible visible: \"{visible}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (this != null && label != null)
-                        label.Visible = visible;
-                }
-            }
-        }
 
         /// <summary>
         /// SetLabelText delegate to set a text to <see cref="Label"/> across threads
         /// </summary>
         /// <param name="label">the label</param>
         /// <param name="text"><see cref="string">text</see>/param>
-        protected internal virtual void SetLabelText(Label label, string text)
+        protected internal virtual void SetLabelTextVisible(Label label, string text, bool visible = true)
         {
             if (label != null)
             {
                 if (label.InvokeRequired)
                 {
-                    SetLabelTextCallback setLabelText = delegate (Label lbl, string labelText)
+                    SetLabelTextVisibleCallback setLabelVisibleText = delegate (Label lbl, string labelText, bool labelVisible)
                     {
-                        if (lbl != null && labelText != null)
+                        if (lbl != null)
                         {
-                            lbl.Text = labelText;
-                            lbl.Visible = true;
+                            lbl.Text = labelText ?? "";
+                            lbl.Visible = labelVisible;
                         }
                     };
                     try
                     {
-                        Invoke(setLabelText, new object[] { label, text });
+                        Invoke(setLabelVisibleText, new object[] { label, text, visible });
                     }
                     catch (System.Exception exDelegate)
                     {
@@ -123,49 +63,10 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
                 else
                 {
-                    if (text != null && label != null)
+                    if (label != null)
                     {
-                        label.Text = text;
-                        label.Visible = true;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetLabelTextAsync delegate to set a text to <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>
-        /// <param name="text"><see cref="string">text</see>/param>
-        /// <returns>void Task for async method</returns>
-        protected internal virtual async Task SetLabelTextAsync(Label label, string text)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (label != null && text != null)
-                            {
-                                label.Text = text;
-                                label.Visible = true;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelText Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (text != null && label != null)
-                    {
-                        label.Text = text;
-                        label.Visible = true;
+                        label.Text = text ?? "";
+                        label.Visible = visible;
                     }
                 }
             }
@@ -203,39 +104,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 }
             }
         }
-
-        /// <summary>
-        /// SetLabelBackColorAsync delegate to set <see cref="Color">Backcolor</see> for <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>
-        /// <param name="backColor"><see cref="Color">backColor</see>/param>
-        /// <returns>void Task for async method</returns>
-        protected internal virtual async Task SetLabelBackColorAsync(Label label, Color backColor)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (label != null)
-                                label.BackColor = backColor;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (label != null)
-                        label.BackColor = backColor;
-                }
-            }
-        }
+        
 
         /// <summary>
         /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads
@@ -256,39 +125,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     try
                     {
                         Invoke(setGroupBoxText, new object[] { groupBox, textToSet });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (groupBox != null && textToSet != null)
-                        groupBox.Text = textToSet;
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetGBoxTextAsync delegate to set a text to <see cref="GroupBox"/> across threads
-        /// </summary>
-        /// <param name="text">text header for GroupBox</param>
-        /// <returns>void Task for async method</returns>
-        protected internal virtual async Task SetGBoxTextAsync(GroupBox groupBox, string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (groupBox != null)
-            {
-                if (groupBox.InvokeRequired)
-                {                    
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (groupBox != null && textToSet != null)
-                                groupBox.Text = textToSet;
-                        });
                     }
                     catch (System.Exception exDelegate)
                     {
@@ -345,52 +181,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             }
         }
 
-        /// <summary>
-        /// SetPictureBoxImageAsync delegate to set an <see cref="Image"/> in <see cref="PictureBox"/> across threads
-        /// </summary>
-        /// <param name="pictBox">the PictureBox</param>
-        /// <param name="image">the Image</param>
-        /// <param name="visible">true, if visible, false if invisible</param>
-        /// <returns>void Task for async method</returns>
-        protected internal virtual async Task SetPictureBoxImageAsync(PictureBox pictBox, Image image, string tagText = "", bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (pictBox.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (pictBox != null && image != null && tagText != null)
-                            {
-                                pictBox.Image = image;
-                                pictBox.Tag = tagText;
-                                pictBox.Visible = visible;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetPictureBoxImage image: \"{image}\", tag: \"{tagText}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (pictBox != null && image != null && tagText != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Tag = tagText;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
-        }
-        
         protected internal virtual void SetPictureBox(PictureBox pictBox, Bitmap bmp, string tagText, bool visible = true) => SetPictureBoxImage(pictBox, (Image)bmp, tagText, visible);
-
-        protected internal virtual async Task SetPictureBoxAsync(PictureBox pictBox, Bitmap bmp, string tagText, bool visible = true) => await SetPictureBoxImageAsync(pictBox, (Image)bmp, tagText, visible);
-
 
         protected internal virtual void SetStatusLabelText(System.Windows.Forms.ToolStripStatusLabel tsLabel, string text)
         {            
@@ -402,7 +193,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     SetStatusLabelTextCallback setStatusLabelTextCallback = delegate (ToolStripStatusLabel tlbl, string msg)
                     {
                         if (tlbl != null)
-                            tlbl.Text = msg;
+                            tlbl.Text = msg ?? "";
                     };
                     try
                     {
@@ -416,35 +207,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 else
                 {
                     if (this != null && tsLabel != null)
-                        tsLabel.Text = text;
-                }
-            }
-        }
-
-        protected internal virtual async Task SetStatusLabelTextAsync(System.Windows.Forms.ToolStripStatusLabel tsLabel, string text)
-        {
-            if (tsLabel != null)
-            {
-                ToolStrip? tsParent = tsLabel.GetCurrentParent();
-                if (tsParent != null && tsParent.InvokeRequired)
-                {
-                    try
-                    {
-                        await InvokeAsync(() =>
-                        {
-                            if (tsLabel != null && text != null)
-                                tsLabel.Text = text;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetStatusLabelTextCallback Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (tsLabel != null && text != null)
-                        tsLabel.Text = text;
+                        tsLabel.Text = text ?? "";
                 }
             }
         }
