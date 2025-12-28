@@ -22,7 +22,8 @@ import org.bouncycastle.crypto.BlockCipher;
 import eu.cqrxs.fw.crypt.encoding.EncodeEnum;
 import eu.cqrxs.fw.crypt.encoding.Hex16Coder;
 import eu.cqrxs.fw.crypt.hash.KeyHash;
-import eu.cqrxs.fw.enums.ZipType;
+import eu.cqrxs.fw.zip.ZipType;
+import eu.cqrxs.fw.zip.*;
 import eu.cqrxs.fw.util.Constants;
 import eu.cqrxs.fw.util.*;
 
@@ -450,8 +451,12 @@ public class CipherPipe {
         //#endif
         if (zipBefore != ZipType.None)
         {
-            encryptedBytes = zipBefore.zip(inBytes);
-            inBytes = encryptedBytes;
+            	try {
+			encryptedBytes = zipBefore.zip(inBytes);
+            		inBytes = encryptedBytes;
+		} catch (Exception exZip) {
+			exZip.printStackTrace();
+		}
         }
 
         for (CipherEnum cipher : inPipe)
@@ -497,13 +502,15 @@ public class CipherPipe {
             {
                 decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
                 cipherBytes = decryptedBytes;
-                //#if DEBUG
-                //                    stageDictionary.Add(cipher, cipherBytes);
-                //#endif
             }
 
-        if (unzipAfter != ZipType.None)
-            decryptedBytes = unzipAfter.unzip(cipherBytes);
+        if (unzipAfter != ZipType.None) {
+		try {
+            		decryptedBytes = unzipAfter.unzip(cipherBytes);
+		} catch (Exception exUnzip) {
+			exUnzip.printStackTrace();
+		}
+	}
 
         return decryptedBytes;
     }

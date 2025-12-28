@@ -35,7 +35,8 @@ import org.bouncycastle.jcajce.provider.symmetric.AES;
 import eu.cqrxs.fw.crypt.encoding.EncodeEnum;
 import eu.cqrxs.fw.crypt.encoding.Hex16Coder;
 import eu.cqrxs.fw.crypt.hash.KeyHash;
-import eu.cqrxs.fw.enums.ZipType;
+import eu.cqrxs.fw.zip.ZipType;
+import eu.cqrxs.fw.zip.*;
 import eu.cqrxs.fw.util.Constants;
 import eu.cqrxs.fw.util.*;
 
