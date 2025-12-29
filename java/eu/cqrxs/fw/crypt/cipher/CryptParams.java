@@ -188,6 +188,8 @@ public class CryptParams {
                 blockCipher = new org.bouncycastle.crypto.engines.TnepresEngine();
                 break;
             case XTea:
+				size = 128;
+                keyLen = 16;
                 blockCipher = new org.bouncycastle.crypto.engines.XTEAEngine();
                 break;
             case ZenMatrix:
