@@ -13,6 +13,7 @@ import eu.cqrxs.gui.CqrJdFrame;
 import eu.cqrxs.gui.*;
 import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.gui.ImageViewer;
+import eu.cqrxs.fw.util.Constants;
 import eu.cqrxs.fw.crypt.hash.KeyHash;
 import eu.cqrxs.fw.crypt.hash.*;
 import eu.cqrxs.fw.zip.ZipType;
@@ -955,6 +956,7 @@ public class CqrJdFrame extends JFrame {
 		String hashed = keyHash.hash(key);
 		jTextField_Hash.setText(hashed);
 		String cipherPipeString = jTextField_Pipe.getText();
+		String pipeString = "";
 		CipherEnum[] ciphers = new CipherEnum[0];
 		if (cipherPipeString.length() > 0) {
 			ciphers = CipherEnum.parsePipeText(cipherPipeString);
@@ -963,15 +965,16 @@ public class CqrJdFrame extends JFrame {
 
 		String encrypted = "";
 		CipherEnum[] cipherEnums = pipe.getInPipe();
-		String pipeSting = "";
 		for (int ci = 0; ci < cipherEnums.length; ci++)
-			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+			pipeString = pipeString + cipherEnums[ci].getName() + ";";
+        
+		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
+		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
 
-		// showMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
-		// 		pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
 		try {
-			// showMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
-			// 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
+			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
+			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
+
 			encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
 			jTextAreaDestination.setText(encrypted);
 		} catch (Exception ex) {
@@ -999,15 +1002,18 @@ public class CqrJdFrame extends JFrame {
 		String pipeSting = "";
 		for (int ci = 0; ci < cipherEnums.length; ci++)
 			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
-		// showMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-		//        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
+		
+        dbgMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
+		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
 
 		String decrypted = "";
 		try {
 			decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
 			jTextAreaDestination.setText(decrypted);
-			// showMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-			//        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+
+			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+
 		} catch (Exception ex) {
 			jTextAreaDestination.setText(ex.toString());
 			ex.printStackTrace();
@@ -1030,4 +1036,9 @@ public class CqrJdFrame extends JFrame {
 		return img;
 	}
 	
+    void dbgMsg(String s, int level, boolean ignoreDbg) {
+		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
+            System.out.println(level + ": \t" + s);
+        }
+    }
 }

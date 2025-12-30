@@ -118,6 +118,9 @@ public enum KeyHash implements Serializable {
     public String hash(String instr) {
 		try {
 			int xval = getValue();
+            if (Constants.DEBUG)
+                System.out.
+                            println("KeyHash: " + xval + " " + getName());
 			switch (xval) {
 				case 0x0:
 					return eu.cqrxs.fw.crypt.hash.Hex.hashString(instr);
@@ -144,7 +147,7 @@ public enum KeyHash implements Serializable {
 				case 0xb:
 					return eu.cqrxs.fw.crypt.hash.Blake2xs.hashString(instr);
 				case 0xc:
-					return eu.cqrxs.fw.crypt.hash.CShake.hashString(instr);
+                    return eu.cqrxs.fw.crypt.hash.CShake.hashString(instr);
 				case 0xd:
 					return eu.cqrxs.fw.crypt.hash.Dstu7564.hashString(instr);
 				case 0xe:

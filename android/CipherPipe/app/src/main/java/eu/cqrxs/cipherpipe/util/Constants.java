@@ -195,7 +195,7 @@ public final class Constants {
 	public final static String CQR_CHAT_FILE = "cqr{0}chat.json";
 	public final static String PREVIOUS_EXCEPTION = "previous_exception";
 	public final static String LAST_EXCEPTION = "last_exception";
-	public final static String COOL_CRYPT_SPLIT = "[+-;,:→\t ]";
+	public final static String COOL_CRYPT_SPLIT = "[;:→\t]";
 
 	public final static String UNKNOWN = "UnKnown";
 	public final static String DEFAULT_MIMETYPE = "application/octet-stream";

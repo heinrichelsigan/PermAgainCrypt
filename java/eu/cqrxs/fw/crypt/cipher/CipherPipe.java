@@ -186,17 +186,6 @@ public class CipherPipe {
         encodeType = encType;
         kHash = kh;
 
-        //if (inPipe.Length > maxpipe)
-        //{
-        //    List<String> pipElems = new List<String>(inPipe.Length);
-        //    foreach (var cipherEnum in inPipe)
-        //        pipElems.Add(cipherEnum.ToString());
-        //    throw new ArgumentException($"Pipe \"{String.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-        //}
-
-        // foreach (CipherEnum cipherE in inPipe)
-        // pipeString += cipherE.GetCipherChar();
-
     }
 
     /**
@@ -445,27 +434,20 @@ public class CipherPipe {
 
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        //#if DEBUG
-        //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-        //            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
-        //#endif
         if (zipBefore != ZipType.None)
         {
-            	try {
-			encryptedBytes = zipBefore.zip(inBytes);
-            		inBytes = encryptedBytes;
-		} catch (Exception exZip) {
-			exZip.printStackTrace();
-		}
+            try {
+			    encryptedBytes = zipBefore.zip(inBytes);
+            	inBytes = encryptedBytes;
+		    } catch (Exception exZip) {
+			    exZip.printStackTrace();
+		    }
         }
 
         for (CipherEnum cipher : inPipe)
         {
             encryptedBytes = encryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
             inBytes = encryptedBytes;
-            //#if DEBUG
-            //                stageDictionary.Add(cipher, encryptedBytes);
-            //#endif
         }
 
         return encryptedBytes;
@@ -491,10 +473,6 @@ public class CipherPipe {
 
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
-        //#if DEBUG
-        //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-        //            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
-        //#endif
         if (getOutPipe() == null || getOutPipe().length == 0)
             System.arraycopy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.length);
         else
@@ -506,7 +484,7 @@ public class CipherPipe {
 
         if (unzipAfter != ZipType.None) {
 		try {
-            		decryptedBytes = unzipAfter.unzip(cipherBytes);
+           	decryptedBytes = unzipAfter.unzip(cipherBytes);
 		} catch (Exception exUnzip) {
 			exUnzip.printStackTrace();
 		}
@@ -609,9 +587,12 @@ public class CipherPipe {
                 new String(decryptedBytes, StandardCharsets.UTF_8);
 
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
-        int idx = decrypted.length() - 1;
-        while (decrypted.charAt(decrypted.length() - 1) == '\0')
-            decrypted = decrypted.substring(0, decrypted.length() - 1);
+	for (int ix = 0; ix < decrypted.length(); ix++) {
+		if (decrypted.charAt(ix) == '\0' && ix > 0) {
+			decrypted = decrypted.substring(0, ix);
+			break; 
+		}
+	}
 
         return decrypted;
     }

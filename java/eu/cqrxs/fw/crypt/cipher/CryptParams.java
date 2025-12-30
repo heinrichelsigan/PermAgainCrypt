@@ -146,7 +146,7 @@ public class CryptParams {
                 break;
             case RC2:
                 size = 128;
-				keyLen = 32;
+		        keyLen = 32;
                 blockCipher = new org.bouncycastle.crypto.engines.RC2Engine();
                 break;
             case RC532:
@@ -154,13 +154,13 @@ public class CryptParams {
                 break;
             case RC564:
                 size = 64;
-				keyLen = 32;
+		        keyLen = 32;
                 blockCipher = new org.bouncycastle.crypto.engines.RC564Engine();
                 break;
             case RC6:
                 blockCipher = new org.bouncycastle.crypto.engines.RC6Engine();
                 break;
-			case Rijndael:
+	        case Rijndael:
 				blockCipher = new org.bouncycastle.crypto.engines.RijndaelEngine();
 				break;
             case Seed:
