@@ -13,11 +13,13 @@ package eu.cqrxs.fw.crypt.encoding;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import eu.cqrxs.fw.util.*;
+import eu.cqrxs.fw.crypt.encoding.*;
 
 // import kotlin.NotImplementedError;
 
@@ -94,7 +96,9 @@ public enum EncodeEnum implements Serializable {
             case 0x300:
                 return new Hex16Coder().encode(inString);
             case 0x400:
-                throw new NotImplementedError("base32 not implemented");
+				// throw new NotImplementedError("base32 not implemented");
+				byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
+				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                 				
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
@@ -105,7 +109,7 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().encode(inString);
             case 0x900:
                 throw new NotImplementedError("xx not implemented");
-                // return new XxEncoder().encode(inString);
+                // return XxEncoder.Encode(inString);
             default:
                 break;
         }
@@ -130,7 +134,9 @@ public enum EncodeEnum implements Serializable {
             case 0x300:
                 return new Hex16Coder().decode(encodedString);
             case 0x400:
-                throw new NotImplementedError("base32 not implemented");
+                // throw new NotImplementedError("base32 not implemented");
+				byte[] outBytes = org.bouncycastle.util.encoders.Base32.decode(encodedString);
+				return outBytes.toString();
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
@@ -141,8 +147,8 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().decode(encodedString);
             case 0x900:
                 throw new NotImplementedError("xx not implemented");
-                // return new XxEncoder().encode(inString);
-            default:
+                // return XxEncoder.Decode(encodedString);
+			default:
                 break;
         }
         return encodedString;
@@ -169,7 +175,7 @@ public enum EncodeEnum implements Serializable {
             case 0x300:
                 return new Hex16Coder().encodeBytesToString(inBytes);
             case 0x400:
-                throw new NotImplementedError("base32 not implemented");
+				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
@@ -180,7 +186,7 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().encodeBytesToString(inBytes);
             case 0x900:
                 throw new NotImplementedError("xx not implemented");
-                // return new XxEncoder().encode(inString);
+                // return XxEncoder.EncodeBytesToString(inBytes);
             default:
                 break;
         }
@@ -208,7 +214,8 @@ public enum EncodeEnum implements Serializable {
             case 0x300:
                 return new Hex16Coder().decodeStringToBytes(encodedString);
             case 0x400:
-                throw new NotImplementedError("base32 not implemented");
+				// throw new NotImplementedError("base32 not implemented");
+				return org.bouncycastle.util.encoders.Base32.decode(encodedString);
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
@@ -224,8 +231,8 @@ public enum EncodeEnum implements Serializable {
             case 0x800:
                 return new Base64Coder().decodeStringToBytes(encodedString);
             case 0x900:
-                throw new NotImplementedError("xx not implemented");
-                // return new XxEncoder().encode(inString);
+                throw new NotImplementedError("xx not implemented");				
+				// return XxEncoder.DecodeStringToBytes(inString);				
             default:
                 break;
         }

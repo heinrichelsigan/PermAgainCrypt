@@ -1,19 +1,10 @@
-/**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
- *
- * Coded 2021-2027 by <a href="mailto:he@area23.at">Heinrich Elsigan</a>
- * <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
- */
-package eu.cqrxs.cipherpipe.crypt.encoding;
-
+import java.beans.Encoder;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class XxEncoder extends java.beans.Encoder {
+public class XxEncoder extends Encoder {
     @Override
     Map<Integer, String> getEncodingTable() {
         String encodingMatrixRaw = "+ - 0 1 2 3 4 5 " +
@@ -34,13 +25,7 @@ public class XxEncoder extends java.beans.Encoder {
         return "+";
     }
 
-    public static string Encode(String inString) {
-        new XxEncoder().encode(inString());
-    }
-
-
-
     public static void main(String[] args) {
-        System.out.println("KQ: " + new XxEncoder().encode(args[0]));
+        System.out.println("KQ: " + new XxEncoder().encode("Thi"));
     }
 }
