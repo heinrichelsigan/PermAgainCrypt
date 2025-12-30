@@ -1,4 +1,4 @@
-﻿%
+%
 There was once a programmer who was attached to the court of the
 warlord of Wu.  The warlord asked the programmer: "Which is easier to design:
 an accounting package or an operating system?"

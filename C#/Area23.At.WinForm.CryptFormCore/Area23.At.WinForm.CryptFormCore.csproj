@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows8.0</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -17,7 +17,7 @@ he@area23.at</Description>
     <StartupObject>Area23.At.WinForm.CryptFormCore.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
     <PackageIcon>CryptPenacle.png</PackageIcon>
-    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

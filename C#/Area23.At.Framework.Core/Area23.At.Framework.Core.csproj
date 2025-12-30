@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net10.0-windows8.0</TargetFramework>
+	<TargetFramework>net10.0-windows7.0</TargetFramework>
 	<IsTrimmable>true</IsTrimmable>
 	<UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -23,7 +23,7 @@
     <DocumentationFile>Properties\Area23Framework.xml</DocumentationFile>
     <NuGetAuditMode>all</NuGetAuditMode>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

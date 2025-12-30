@@ -2443,7 +2443,7 @@
         </member>
         <member name="P:Area23.At.Framework.Core.Util.Constants.AppLogFile">
             <summary>
-            AppLogFile - logfile with <see cref="M:Area23.At.Framework.Core.Util.Extensions.Area23Date(System.DateTime)"/> prefix
+            AppLogFile - logfile with <see cref="!:DateTimeExtensions.Area23Date(DateTime)"/> prefix
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Util.Constants.Locale">

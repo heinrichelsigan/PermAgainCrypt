@@ -34,6 +34,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             buttonReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboBoxEncoding_SelectedIndexChanged(sender, e));
             radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) => await RadioButtonListHash_SelectedIndexChanged(sender, e));
+            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await ComboBoxCompression_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
             groupBoxFiles.FileRequired += GroupBoxFileRequired;
 
@@ -49,23 +50,17 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
             }
 
-            ToolStripItem[] mHashes = new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+            ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
+            foreach (var zipMenuItem in menuZips)
+            {
+                zipMenuItem.Click += new System.EventHandler(async (sender, e) => await menuCompression_Click(sender, e));
+            }
+
+            ToolStripMenuItem[] mHashes = new ToolStripMenuItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
             foreach (var hashMenuItem in mHashes)
             {
                 hashMenuItem.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
             }
-
-        }
-
-        /// <summary>
-        /// EncryptFormMultiControls_Load - form load event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal void EncryptFormMultiControls_Load(object sender, EventArgs e)
-        {
-            this.labelInfoMessage.Visible = false;
-            this.textBoxKey.Text = GetEmailFromRegistry();
 
             this.comboBoxCompression.Items.Clear();
             foreach (ZipType zipType in ZipTypeExtensions.GetZipTypes())
@@ -81,11 +76,24 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 this.comboBoxEncoding.Items.Add(encodingType.ToString());
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
 
+
+        }
+
+        /// <summary>
+        /// EncryptFormMultiControls_Load - form load event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal void EncryptFormMultiControls_Load(object sender, EventArgs e)
+        {
+            this.labelInfoMessage.Visible = false;
+            this.textBoxKey.Text = GetEmailFromRegistry();
+            radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
+
             groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             groupBoxFiles.pictureBoxRunningPipe.Visible = true;
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
-
-            radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
+            
             Hash_Click(sender, e);
         }
 
@@ -93,16 +101,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
 
         #region MenuCompressionEncodingZipHash
 
-        protected internal void menuCompression_Click(object sender, EventArgs e) => SetCompression((ToolStripMenuItem)sender, null);
+        protected internal async Task menuCompression_Click(object sender, EventArgs e) => await SetCompressionAsync((ToolStripMenuItem)sender, null);
 
-        protected internal void ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => SetCompression(null, comboBoxCompression.SelectedItem);
+        protected internal async Task ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => await SetCompressionAsync(null, comboBoxCompression.SelectedItem);
 
         /// <summary>
         /// SetCompression – sets compression type from menu or combobox
         /// </summary>
         /// <param name="mi">selected compression ToolStripMenuItem</param>
         /// <param name="comboItem">selected compression combobox item</param>
-        protected internal void SetCompression(ToolStripMenuItem? mi = null, object? comboItem = null)
+        protected internal async Task SetCompressionAsync(ToolStripMenuItem? mi = null, object? comboItem = null)
         {
             ZipType zipType = (mi != null) ? ZipTypeExtensions.GetZipType(mi.Name ?? "None") :
                 (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None") :
@@ -538,7 +546,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             await this.groupBoxFiles.ResetPictureBoxFilesAsync(sender, e);
             
             await this.SetEncodingAsync(menuEncBase64);
-            this.SetCompression(null, "None");
+            await this.SetCompressionAsync(null, "None");
             await this.SetHashAsync(menuHashHex, radioButtonListHash);
             await this.statusLabelSource.SetTextAsync("");
             await this.statusLabelDestination.SetTextAsync("");
@@ -940,7 +948,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             if (miZip.Name.Replace("zmenu", "").Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
                                miZip.Text.Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase))
                             {
-                                SetCompression((ToolStripMenuItem)miZip, null);
+                                SetCompressionAsync((ToolStripMenuItem)miZip, null).ConfigureAwait(true);
                                 break;
                             }
                         }

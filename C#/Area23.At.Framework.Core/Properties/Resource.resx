@@ -123,6 +123,10 @@
   <data name="build_with" xml:space="preserve">
     <value>VisualStudio 2022 C# 10.0</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
   <data name="github_uri" xml:space="preserve">
     <value>https://github.com/heinrichelsigan/area23.at/</value>
   </data>
@@ -170,7 +174,7 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         IAAbAAAFYiAgjmRpnmiqrmzrvnAsz3S9CoJ9CoaRu7igcGgY+Fq8nnLJVBh/Kt5gSq1WFc5jtIjter/Y
         53YALnvFKKnZjE4XrfBpWJtKMu+9LDQ67OOKdDoASXuCg4WGiYqLjI2OjyMhADs=
 </value>
-  </data> 
+  </data>
   <data name="ImageClickToUpload" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAO8AAACUCAYAAAB7lX67AAAABGdBTUEAALGPC/xhBQAAAYFpQ0NQSUND
@@ -370,9 +374,5 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         LSfH142dtt0K8y4wAEvhzlIUYw3cgtzkuVU3HFhcNam5qsgaRdaaoD9ruT9yZ8B71ZiXSvgVU5LNoLv8
         OVa6zTa4f/yX0T9nos19HbLBNgAAAABJRU5ErkJggg==
 </value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

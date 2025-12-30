@@ -157,7 +157,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuFileOpen.BackColor = SystemColors.Menu;
             menuFileOpen.Name = "menuFileOpen";
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
-            menuFileOpen.Size = new Size(180, 22);
+            menuFileOpen.Size = new Size(162, 22);
             menuFileOpen.Text = "Open";
             menuFileOpen.Click += menuFileOpen_Click;
             // 
@@ -166,20 +166,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainSave.BackColor = SystemColors.Menu;
             menuMainSave.Name = "menuMainSave";
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuMainSave.Size = new Size(180, 22);
+            menuMainSave.Size = new Size(162, 22);
             menuMainSave.Text = "Save";
             menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(177, 6);
+            toolStripSeparator2.Size = new Size(159, 6);
             // 
             // menuMainSetPipe
             // 
             menuMainSetPipe.BackColor = SystemColors.Menu;
             menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(180, 22);
+            menuMainSetPipe.Size = new Size(162, 22);
             menuMainSetPipe.Text = "Set Pipe";
             menuMainSetPipe.Click += SetPipeline_Click;
             // 
@@ -187,7 +187,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainHashKey.BackColor = SystemColors.Menu;
             menuMainHashKey.Name = "menuMainHashKey";
-            menuMainHashKey.Size = new Size(180, 22);
+            menuMainHashKey.Size = new Size(162, 22);
             menuMainHashKey.Text = "Hash Key";
             menuMainHashKey.Click += Hash_Click;
             // 
@@ -195,34 +195,34 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainHashPipe.BackColor = SystemColors.Menu;
             menuMainHashPipe.Name = "menuMainHashPipe";
-            menuMainHashPipe.Size = new Size(180, 22);
+            menuMainHashPipe.Size = new Size(162, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(177, 6);
+            toolStripSeparator3.Size = new Size(159, 6);
             // 
             // menuMainEncrypt
             // 
             menuMainEncrypt.BackColor = SystemColors.Menu;
             menuMainEncrypt.Name = "menuMainEncrypt";
-            menuMainEncrypt.Size = new Size(180, 22);
+            menuMainEncrypt.Size = new Size(162, 22);
             menuMainEncrypt.Text = "Encrypt";
             // 
             // menuMainDecrypt
             // 
             menuMainDecrypt.BackColor = SystemColors.Menu;
             menuMainDecrypt.Name = "menuMainDecrypt";
-            menuMainDecrypt.Size = new Size(180, 22);
+            menuMainDecrypt.Size = new Size(162, 22);
             menuMainDecrypt.Text = "Decrypt";
             // 
             // menuMainRandomText
             // 
             menuMainRandomText.BackColor = SystemColors.Menu;
             menuMainRandomText.Name = "menuMainRandomText";
-            menuMainRandomText.Size = new Size(180, 22);
+            menuMainRandomText.Size = new Size(162, 22);
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
@@ -230,20 +230,20 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuMainReset.BackColor = SystemColors.Menu;
             menuMainReset.Name = "menuMainReset";
-            menuMainReset.Size = new Size(180, 22);
+            menuMainReset.Size = new Size(162, 22);
             menuMainReset.Text = "Reset";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(159, 6);
             // 
             // menuFileExit
             // 
             menuFileExit.BackColor = SystemColors.Menu;
             menuFileExit.Name = "menuFileExit";
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
-            menuFileExit.Size = new Size(180, 22);
+            menuFileExit.Size = new Size(162, 22);
             menuFileExit.Text = "Exit";
             menuFileExit.Click += menuFileExit_Click;
             // 
@@ -262,7 +262,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
             zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
-            zmenu7z.Click += menuCompression_Click;
             // 
             // zmenuBZip2
             // 
@@ -271,7 +270,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
             zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
-            zmenuBZip2.Click += menuCompression_Click;
             // 
             // zmenuGZip
             // 
@@ -280,7 +278,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
             zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
-            zmenuGZip.Click += menuCompression_Click;
             // 
             // zmenuZip
             // 
@@ -289,7 +286,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
             zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
-            zmenuZip.Click += menuCompression_Click;
             // 
             // zmenuNone
             // 
@@ -300,7 +296,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
             zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
-            zmenuNone.Click += menuCompression_Click;
             // 
             // menuEncoding
             // 
@@ -630,7 +625,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(180, 22);
+            menuAbout.Size = new Size(161, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -638,7 +633,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(180, 22);
+            menuHelpHelp.Size = new Size(161, 22);
             menuHelpHelp.Text = "Help";
             // 
             // comboBoxAlgo
@@ -657,11 +652,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // textBoxKey
             // 
             textBoxKey.BackColor = SystemColors.ControlLightLight;
-            textBoxKey.Font = new Font("Lucida Sans Typewriter", 11F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxKey.Location = new Point(48, 30);
+            textBoxKey.AutoSize = false;
+            textBoxKey.Font = new Font("Lucida Sans Typewriter", 10F);
+            textBoxKey.Location = new Point(48, 28);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(823, 25);
+            textBoxKey.Size = new Size(669, 27);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
             textBoxKey.TextChanged += textBoxKey_TextChanged;
@@ -670,7 +666,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             pictureBoxKey.BackColor = SystemColors.Control;
             pictureBoxKey.Image = Properties.Resources.key_ring;
-            pictureBoxKey.Location = new Point(8, 28);
+            pictureBoxKey.Location = new Point(8, 27);
             pictureBoxKey.Margin = new Padding(1);
             pictureBoxKey.Name = "pictureBoxKey";
             pictureBoxKey.Size = new Size(30, 30);
@@ -683,7 +679,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBoxHash.BackColor = SystemColors.Control;
             pictureBoxHash.Image = Properties.Resources.a_hash1;
-            pictureBoxHash.Location = new Point(8, 69);
+            pictureBoxHash.Location = new Point(8, 68);
             pictureBoxHash.Margin = new Padding(1);
             pictureBoxHash.Name = "pictureBoxHash";
             pictureBoxHash.Size = new Size(32, 30);
@@ -694,22 +690,23 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // textBoxHash
             // 
             textBoxHash.BackColor = SystemColors.Control;
-            textBoxHash.Font = new Font("Lucida Sans Typewriter", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBoxHash.AutoSize = false;
+            textBoxHash.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxHash.Location = new Point(48, 69);
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(823, 23);
+            textBoxHash.Size = new Size(948, 27);
             textBoxHash.TabIndex = 7;
             // 
             // buttonSetPipeline
             // 
             buttonSetPipeline.BackColor = SystemColors.Control;
             buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonSetPipeline.Location = new Point(876, 30);
+            buttonSetPipeline.Location = new Point(876, 28);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
-            buttonSetPipeline.Size = new Size(120, 30);
+            buttonSetPipeline.Size = new Size(120, 27);
             buttonSetPipeline.TabIndex = 5;
             buttonSetPipeline.Text = "Set Pipeline";
             buttonSetPipeline.UseVisualStyleBackColor = false;
@@ -827,7 +824,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             comboBoxCompression.Name = "comboBoxCompression";
             comboBoxCompression.Size = new Size(96, 23);
             comboBoxCompression.TabIndex = 11;
-            comboBoxCompression.SelectedIndexChanged += ComboBoxCompression_SelectedIndexChanged;
             // 
             // comboBoxEncoding
             // 
@@ -860,7 +856,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             buttonHashPipe.BackColor = SystemColors.Control;
             buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonHashPipe.Location = new Point(876, 69);
+            buttonHashPipe.Location = new Point(738, 28);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
             buttonHashPipe.Size = new Size(120, 27);

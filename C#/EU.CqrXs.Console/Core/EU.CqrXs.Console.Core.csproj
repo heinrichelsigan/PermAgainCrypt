@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0-windows8.0</TargetFramework>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishAot>False</PublishAot>
@@ -11,7 +11,7 @@
 	<StripSymbols>False</StripSymbols>
     <StartupObject>EU.CqrXs.Console.Core.Program</StartupObject>
     <ApplicationIcon>SatIcon.ico</ApplicationIcon>
-    <SupportedOSPlatformVersion>8.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <PublishTrimmed>True</PublishTrimmed>
     <Title>EU.CqrXs.Core.Console</Title>
     <Description>EU.CqrXs.Core.Console</Description>
@@ -25,14 +25,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>embedded</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <WarningLevel>8</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-    <WarningLevel>8</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
 
