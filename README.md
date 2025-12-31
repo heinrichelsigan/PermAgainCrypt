@@ -107,6 +107,16 @@ U:\source\PermAgainCrypt\Deploy\console\x86>
 
 <img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-28_javaProtorype.gif?raw=true" />
 
+## Java C# compare encoding / decoding
+
+RC564 is not well implemented by me in java.
+ZenMatrix isn't already ported by me to java.
+BZip2 and Zip aren't already ported by me to java.
+Ascon256 and Xoodyak hash aren't ported by bouncy-castle to java.
+<img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-31_Screenshot%20Java_CSharp.png?raw=true" />
+
+<img src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/Screenshot%202025-12-29_Java_CSharp_Compare_Pipe6.png" />
+
 # [Android](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/android)
 
 
