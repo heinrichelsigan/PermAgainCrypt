@@ -27,7 +27,7 @@ import eu.cqrxs.fw.zip.*;
 import eu.cqrxs.fw.util.Constants;
 import eu.cqrxs.fw.util.*;
 
-/*
+/**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
  */
 public class CipherPipe {
@@ -453,7 +453,7 @@ public class CipherPipe {
         return encryptedBytes;
     }
 
-    /***
+    /**
      * decrpytRoundGoMerry against clock turn -
      *    starts merry to turn arround from right to left against clock hour cycle
      * @param cipherBytes encrypted byte array
@@ -483,12 +483,12 @@ public class CipherPipe {
             }
 
         if (unzipAfter != ZipType.None) {
-		try {
-           	decryptedBytes = unzipAfter.unzip(cipherBytes);
-		} catch (Exception exUnzip) {
-			exUnzip.printStackTrace();
+			try {
+				decryptedBytes = unzipAfter.unzip(cipherBytes);
+			} catch (Exception exUnzip) {
+				exUnzip.printStackTrace();
+			}
 		}
-	}
 
         return decryptedBytes;
     }
@@ -556,16 +556,20 @@ public class CipherPipe {
         return encryptedBytes;
     }
 
-    /// <summary>
-    /// decrypt encoded encrypted text
-    /// </summary>
-    /// <param name="cryptedEncodedMsg">encoded encrypted ASCII String</param>
-    /// <param name="cryptKey">prviate key for encryption</param>
-    /// <param name="hashIv">private hash for encryption</param>
-    /// <param name="decoding"><see cref="EncodeEnum"/></param>
-    /// <param name="unzipAfter"><see cref="ZipType"/></param>
-    /// <param name="keyHash"><see cref="KeyHash"/></param>
-    /// <returns>decrypted UTF8 String, containing no binary data</returns>
+
+	/**
+     *  decryptTextRoundsGo
+     * @param cryptedEncodedMsg encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+	 * @throws IOException
+     */
     public String decryptTextRoundsGo(
             String cryptedEncodedMsg,
             String cryptKey,
@@ -577,7 +581,6 @@ public class CipherPipe {
 
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
 
-
         // perform multi crypt pipe stages
         byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash);
 
@@ -587,26 +590,28 @@ public class CipherPipe {
                 new String(decryptedBytes, StandardCharsets.UTF_8);
 
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
-	for (int ix = 0; ix < decrypted.length(); ix++) {
-		if (decrypted.charAt(ix) == '\0' && ix > 0) {
-			decrypted = decrypted.substring(0, ix);
-			break; 
+		for (int ix = 0; ix < decrypted.length(); ix++) {
+			if (decrypted.charAt(ix) == '\0' && ix > 0) {
+				decrypted = decrypted.substring(0, ix);
+				break; 
+			}
 		}
-	}
 
         return decrypted;
     }
 
-    /// <summary>
-    /// DecryptFileBytesRoundsGo
-    /// </summary>
-    /// <param name="cipherBytes"></param>
-    /// <param name="cryptKey">prviate key for encryption</param>
-    /// <param name="hashIv">private hash for encryption</param>
-    /// <param name="decoding"><see cref="EncodeEnum">decoding type</see> for decodinng</param>
-    /// <param name="unzipAfter"><see cref="ZipType"/></param>
-    /// <param name="keyHash"><see cref="KeyHash"/></param>
-    /// <returns>plain data byte[]</returns>
+    /**
+     *  decodeDecrpytBytes
+     * @param cipherBytes encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+     */
     public byte[] decryptFileBytesRoundsGo(
             byte[] cipherBytes,
             String cryptKey,
@@ -629,7 +634,14 @@ public class CipherPipe {
         return decryptedBytes;
     }
 
-
+	/**
+     * encrpytGoRounds encrypts a data byte[] array
+     * @param inBytes binary data
+     * @param secretKey prviate key for encryption
+     * @param zipBefore {@link ZipType}
+     * @param keyHash {@link KeyHash}
+     * @return encrypted binary data bytes
+     */
     public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -643,6 +655,14 @@ public class CipherPipe {
     }
 
 
+	/**
+     * decrpytRoundsGo decrypts encrypted bytes
+     * @param cipherBytes encrypted binary data
+     * @param secretKey prviate key for encryption
+     * @param unzipAfter {@link ZipType}
+     * @param keyHash {@link KeyHash}
+     * @return decrypted bytes
+     */
     public byte[] decrpytRoundsGo(byte[] cipherBytes, String secretKey, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -670,6 +690,20 @@ public class CipherPipe {
         return cryptedEncoded;
     }
 
+    /**
+     *  encryptEncodeBytes
+     * @param inBytes String to encrypt multiple times
+     * @param secretKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash	 
+     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param zipBefore zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return encrypted byte array
+     * @throws InvalidCipherTextException
+     * @throws IllegalArgumentException
+	 * @throws IOException
+     */
     public byte[] encryptEncodeBytes(byte[] inBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
@@ -717,7 +751,20 @@ public class CipherPipe {
         return outBytes;
     }
 
-
+    /**
+     *  decodeDecrpytBytes
+     * @param encodedBytes encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+     * @throws IllegalArgumentException
+	 * @throws IOException
+     */
     public byte[] decodeDecrpytBytes(byte[] encodedBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
@@ -748,7 +795,7 @@ public class CipherPipe {
 
 
     /**
-     *  EncrpytToStringd
+     *  encrpytToString
      * @param inString String to encrypt multiple times
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
@@ -759,7 +806,7 @@ public class CipherPipe {
      * @throws InvalidCipherTextException
      * @throws IOException
      */
-    public static String EncrpytToString(String inString, String cryptKey,
+    public static String encrpytToString(String inString, String cryptKey,
                                          EncodeEnum encoding,
                                          ZipType zipBefore,
                                          KeyHash keyHash)

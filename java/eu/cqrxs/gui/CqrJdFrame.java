@@ -44,7 +44,7 @@ public class CqrJdFrame extends JFrame {
 
 	public static CqrJdFrame cqrJdFrame;
 	protected static byte[] openFileBytes, saveFileBytes;
-	URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileOutUrl;
+	URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl, pipeUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -57,6 +57,7 @@ public class CqrJdFrame extends JFrame {
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
+	JLabel jLabel_fileIn = new JLabel(), jLabel_fileOut = new JLabel();		
 	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
@@ -483,6 +484,8 @@ public class CqrJdFrame extends JFrame {
 			addAlgoUrl = new URL("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif");
 			xUrl = new URL("https://area23.at/net/res/img/symbol/close_delete.gif");
 			fileInUrl = new URL("https://area23.at/net/res/img/crypt/file.png");
+			fileEnCryptedUrl = new URL("https://area23.at/net/res/img/crypt/encrypted.png");
+			fileDeCryptedUrl = new URL("https://area23.at/net/res/img/crypt/decrypted.png");
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}
@@ -594,6 +597,38 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Encoding.addItemListener(new EncodeChangeListener());
 		jf.getContentPane().add(jComboBox_Encoding);
 		
+		try {
+			imInFile = new ImageViewer();
+			imInFile.setImageURL(fileInUrl);
+			imInFile.setBounds(8, 144 ,60,60);	
+			imInFile.addMouseListener(aSymMouse);			
+			jf.getContentPane().add(imInFile);
+		} catch (Exception ex) {
+			ex.printStackTrace();			
+		}
+		jLabel_fileIn = new JLabel();
+		jLabel_fileIn.setFont(cryptFont);
+		jLabel_fileIn.setBounds(8, 208, 120, 24);
+		jLabel_fileIn.setText("[No input file loaded]");
+		jLabel_fileIn.setFont(cryptFont);		
+		jf.getContentPane().add(jLabel_fileIn);
+
+		try {
+			imOutFile = new ImageViewer();
+			imOutFile.setImageURL(fileInUrl);
+			imOutFile.setBounds(912, 144, 60, 60);		
+			imOutFile.addMouseListener(aSymMouse);
+			jf.getContentPane().add(imOutFile);
+		} catch (Exception ex) {
+			ex.printStackTrace();			
+		}					
+		
+		jLabel_fileOut = new JLabel();
+		jLabel_fileOut.setFont(cryptFont);
+		jLabel_fileOut.setBounds(884, 208, 120, 24);
+		jLabel_fileIn.setText("[No output file processed]");		
+		jf.getContentPane().add(jLabel_fileOut);				
+				
 		
 		jButton_encrypt = new JButton();
 		jButton_encrypt.setFont(cryptFont);
@@ -742,6 +777,14 @@ public class CqrJdFrame extends JFrame {
 			else if (object == imX) {
 				jTextField_Pipe.setText("");
 			}
+			else if (object == imInFile) {
+				if (openFileBytes == null || openFileBytes.length < 1) 
+					open_action();
+			}
+			else if (object == imOutFile) {
+				if (saveFileBytes == null || saveFileBytes.length < 1) 
+					save_action();
+			}
 			else {
 				
 			}
@@ -777,9 +820,9 @@ public class CqrJdFrame extends JFrame {
 			else if (object == menuMain_itemHashKey)
 				hashKey_action();
 			else if (object == menuMain_itemOpen)
-				open_action(event);
+				open_action();
 			else if (object == menuMain_itemSave)
-				save_action(event);
+				save_action();
 			
 			else if (object == jButton_encrypt || object == menuMain_itemEncrypt)
 				encrypt_action(event);
@@ -796,7 +839,7 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 
-	protected void open_action(ActionEvent event) {                                 
+	protected void open_action() {                                 
 		
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
 		JFileChooser chooser = new JFileChooser();
@@ -810,10 +853,18 @@ public class CqrJdFrame extends JFrame {
 		
 		File f = chooser.getSelectedFile();
 		String filename = f.getAbsolutePath();
+		for (int r = (filename.length() -1); r <=0 ; r--) {
+			if (filename.charAt(r) == java.io.File.separatorChar) {
+				filename = filename.substring(r);
+				break;
+			}
+		}
+		
 		
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());
 			saveFileBytes = new byte[0];
+			jLabel_fileIn.setText(filename);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			JOptionPane.showMessageDialog(null, e);
@@ -822,7 +873,7 @@ public class CqrJdFrame extends JFrame {
     }   
 
 
-	protected void save_action(ActionEvent event) {     
+	protected void save_action() {     
 		
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
 		JFileChooser chooser = new JFileChooser();
@@ -930,6 +981,7 @@ public class CqrJdFrame extends JFrame {
 		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
 		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
 
+		// ryptEncodeBytes
 		try {
 			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
 			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
