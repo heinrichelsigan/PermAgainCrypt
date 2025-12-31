@@ -11,6 +11,9 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
     /// hex shifting and position swapping reduced to 0x0 .. 0xf mapping matrix
     /// Implements <see cref="Org.BouncyCastle.Crypto.IBlockCipher">Org.BouncyCastle.Crypto.IBlockCipher</see>
     ///
+    /// I would never introduce such a cipher in real world applications, 
+    /// only for students how the simplest blockcipher works
+    /// 
     /// probably already invented, but created by zen@area23.at (Heinrich Elsigan)
     /// Everything under the namespace `Area23.At.Framework.Library.Crypt.Cipher` is licensed under the MIT License.
     /// <see href="https://opensource.org/license/mit">opensource.org/license/mit</see>
