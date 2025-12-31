@@ -27,8 +27,8 @@ done
 
 
 
-echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/util/CException.java eu/cqrxs/fw/util/NotImplementedError.java eu/cqrxs/fw/util/Constants.java"
-javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/util/CException.java eu/cqrxs/fw/util/NotImplementedError.java eu/cqrxs/fw/util/Constants.java
+echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/util/CException.java eu/cqrxs/fw/util/NotImplementedError.java eu/cqrxs/fw/util/Constants.java eu/cqrxs/fw/util/Fortune.java"
+javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/util/CException.java eu/cqrxs/fw/util/NotImplementedError.java eu/cqrxs/fw/util/Constants.java eu/cqrxs/fw/util/Fortune.java
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/net/NetworkAddresses.java"
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/net/NetworkAddresses.java
@@ -60,7 +60,7 @@ javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/fw/zip/GZ.java  eu/cqr
 # javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/JFrameApp.java
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation gui/*.java "
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/fw/util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java
 javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/gui/ImageTest.java
 
 echo "build finished"

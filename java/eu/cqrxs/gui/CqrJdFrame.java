@@ -22,32 +22,37 @@ import eu.cqrxs.fw.crypt.cipher.CipherEnum;
 import eu.cqrxs.fw.crypt.cipher.*;
 import eu.cqrxs.fw.crypt.encoding.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.lang.*;
+import java.lang.IllegalStateException;
 import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class CqrJdFrame extends JFrame {
 
 	public static CqrJdFrame cqrJdFrame;
+	protected static byte[] openFileBytes, saveFileBytes;
 	URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileOutUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
-	public KeyHash keyHash = KeyHash.Hex;
-	public ZipType zipType = ZipType.None;
-	public CipherEnum cipherEnum = CipherEnum.Aes;
-	public String cipherString, encodeString;
-	public EncodeEnum encodeType = EncodeEnum.Base64;
-	
+	protected KeyHash keyHash = KeyHash.Hex;
+	protected ZipType zipType = ZipType.None;
+	protected CipherEnum cipherEnum = CipherEnum.Aes;
+	protected String cipherString, encodeString;
+	protected EncodeEnum encodeType = EncodeEnum.Base64;
+		
 	Font menuFont, cryptFont;  
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
@@ -640,6 +645,8 @@ public class CqrJdFrame extends JFrame {
 									
 		jf.setVisible(true);
 		
+		menuMain_itemOpen.addActionListener(lSymAction);
+		menuMain_itemSave.addActionListener(lSymAction);
 		menuMain_itemDecrypt.addActionListener(lSymAction);
 		menuMain_itemEncrypt.addActionListener(lSymAction);
 		menuMain_itemSetPipe.addActionListener(lSymAction);
@@ -653,7 +660,7 @@ public class CqrJdFrame extends JFrame {
 		
 	}
 
-	class HashChangeListener implements ItemListener {
+	protected class HashChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -677,7 +684,7 @@ public class CqrJdFrame extends JFrame {
 		}       
 	}
 	
-	class ZipChangeListener implements ItemListener {
+	protected class ZipChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -691,7 +698,7 @@ public class CqrJdFrame extends JFrame {
 		}       
 	}
 	
-	class CipherChangeListener implements ItemListener {
+	protected class CipherChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -705,7 +712,7 @@ public class CqrJdFrame extends JFrame {
 		}       
 	}
 	
-	class EncodeChangeListener implements ItemListener {
+	protected class EncodeChangeListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent event) {
 			if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -719,7 +726,7 @@ public class CqrJdFrame extends JFrame {
 		}       
 	}
 
-	class SymMouse extends java.awt.event.MouseAdapter {
+	protected class SymMouse extends java.awt.event.MouseAdapter {
 		public void mouseClicked(java.awt.event.MouseEvent event) {
 			Object object = event.getSource();
 			if (object == imAddAlgo) {
@@ -741,7 +748,7 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 	// class SymMouse extends java.awt.event.MouseAdapter 
-	class SymMouse1 implements MouseListener {
+	protected class SymMouse1 implements MouseListener {
 		public void mousePressed(MouseEvent e) {
 			Object object = e.getSource();
 			if (object != null) {
@@ -757,7 +764,7 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 
-	class SymAction implements ActionListener {
+	protected class SymAction implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			Object object = event.getSource();
 
@@ -769,6 +776,10 @@ public class CqrJdFrame extends JFrame {
 				help_action(event);
 			else if (object == menuMain_itemHashKey)
 				hashKey_action();
+			else if (object == menuMain_itemOpen)
+				open_action(event);
+			else if (object == menuMain_itemSave)
+				save_action(event);
 			
 			else if (object == jButton_encrypt || object == menuMain_itemEncrypt)
 				encrypt_action(event);
@@ -777,7 +788,7 @@ public class CqrJdFrame extends JFrame {
 			else if (object == jButton_setPipe || object == menuMain_itemSetPipe)
 				setPipe_action(event);			
 			else if (object == jButton_hashPipe || object == menuMain_itemHashPipe)
-				jButton_hashPipe_action(event);
+				hashPipe_action(event);
 			else if (object == jButton_randomText || object == menuMain_itemRandomText)
 				randomText_action(event);
 			else if (object == jButton_resetForm || object == menuMain_itemReset)
@@ -785,8 +796,269 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 
+	protected void open_action(ActionEvent event) {                                 
+		
+		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File(initDirectory));
+		// chooser.setFileFilter(new FileNameExtensionFilter("all files", "*.*"));
+		int fileDialogResult = chooser.showOpenDialog(null);
+		if (fileDialogResult == JFileChooser.CANCEL_OPTION || fileDialogResult == JFileChooser.ERROR_OPTION) {
+			dbgMsg("open_action JFileChooser returned: " + fileDialogResult, 2, true);
+			return;
+		}
+		
+		File f = chooser.getSelectedFile();
+		String filename = f.getAbsolutePath();
+		
+		try{
+			openFileBytes = Files.readAllBytes(f.toPath());
+			saveFileBytes = new byte[0];
+			jButton_encrypt.requestFocus();
+		} catch (Exception e){
+			JOptionPane.showMessageDialog(null, e);
+			e.printStackTrace();
+		}                
+    }   
 
-	public void MakeWebRequest() {
+
+	protected void save_action(ActionEvent event) {     
+		
+		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
+		JFileChooser chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File(initDirectory));
+		chooser.setFileFilter(new FileNameExtensionFilter("all files", "*.*"));
+		int fileDialogResult = chooser.showSaveDialog(cqrJdFrame);
+	
+		File f = chooser.getSelectedFile();	
+		
+		Path filePath = f.toPath();
+		try {
+			if (saveFileBytes != null && saveFileBytes.length > 0) {
+				Files.write(filePath, saveFileBytes);
+			}
+			else 
+				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex);
+			ex.printStackTrace();
+		}
+			
+	}
+	
+
+	protected void setPipe_action(ActionEvent event) {
+		try {
+			String key = jTextField_Key.getText().toString();
+			String hashed = keyHash.hash(key);
+			jTextField_Hash.setText(hashed);
+
+			CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash);
+
+			CipherEnum[] cipherEnums = pipe.getInPipe();
+			String pipeSting = "";
+			for (int ci = 0; ci < cipherEnums.length; ci++)
+				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+			jTextField_Pipe.setText(pipeSting);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void hashKey_action() {
+		String keyValue = "";
+		try {
+				keyValue = jTextField_Key.getText().toString();
+		} catch (Exception exi) {
+				keyValue = "zen@area23.at";
+		}
+		String hashed = "";
+		try {
+				hashed = keyHash.hash(keyValue);
+				jTextField_Hash.setText(hashed);
+		} catch (Exception exh) {
+		}
+	}
+	
+	protected void hashPipe_action(ActionEvent event) {
+		// to do: code goes here.
+		try {
+			jTextAreaSource.setText("jButton_hashPipe_action");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
+	protected void randomText_action(ActionEvent event) {
+		String currentFortune = eu.cqrxs.fw.util.Fortune.getFortune();
+		jTextAreaSource.setText(currentFortune);
+	}
+	
+	protected void resetForm_action(ActionEvent event) {		
+		try {
+			jTextAreaSource.setText("");
+			jTextAreaDestination.setText("");
+			jTextField_Pipe.setText("");
+			jTextField_Hash.setText("");
+			jTextField_Key.setText("zen@area23.at");
+			// TODO: reset JComboBoxes
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void encrypt_action(ActionEvent event) {
+		
+		String plain = jTextAreaSource.getText();
+		String key = jTextField_Key.getText();
+		String hashed = keyHash.hash(key);
+		jTextField_Hash.setText(hashed);
+		String cipherPipeString = jTextField_Pipe.getText();
+		String pipeString = "";
+		CipherEnum[] ciphers = new CipherEnum[0];
+		if (cipherPipeString.length() > 0) {
+			ciphers = CipherEnum.parsePipeText(cipherPipeString);
+		}
+		CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+
+		String encrypted = "";
+		CipherEnum[] cipherEnums = pipe.getInPipe();
+		for (int ci = 0; ci < cipherEnums.length; ci++)
+			pipeString = pipeString + cipherEnums[ci].getName() + ";";
+        
+		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
+		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
+
+		try {
+			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
+			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
+
+			encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+			jTextAreaDestination.setText(encrypted);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			jTextAreaDestination.setText(ex.toString());
+		}
+	}
+	
+	protected void decrypt_action(ActionEvent event) {
+
+		String encrypted = jTextAreaSource.getText();
+		String key = jTextField_Key.getText();
+		String hashed = keyHash.hash(key);
+		jTextField_Hash.setText(hashed);
+		String cipherPipeString = jTextField_Pipe.getText();
+		CipherEnum[] ciphers = new CipherEnum[0];
+		if (cipherPipeString.length() > 0) {
+			ciphers = CipherEnum.parsePipeText(cipherPipeString);
+		}
+
+		CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+
+		String plain = "";
+		CipherEnum[] cipherEnums = pipe.getOutPipe();
+		String pipeSting = "";
+		for (int ci = 0; ci < cipherEnums.length; ci++)
+			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+		
+        dbgMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
+		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
+
+		String decrypted = "";
+		try {
+			decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+			jTextAreaDestination.setText(decrypted);
+
+			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+
+		} catch (Exception ex) {
+			jTextAreaDestination.setText(ex.toString());
+			ex.printStackTrace();
+		}
+	}
+	
+	
+	protected void about_action(ActionEvent event) {
+	
+		jTextAreaSource.append("About menu clicked, event: " + event + "\n");
+		
+        try {
+            if (new File("eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
+			    cqrJDialog = new CqrJDialog("eu/cqrxs/gui/cqrxs-eu.jpg");
+            else if (new File("cqrxs-eu.jpg").isFile()) 
+			    cqrJDialog = new CqrJDialog("cqrxs-eu.jpg");
+            else
+                cqrJDialog = new CqrJDialog();
+
+			cqrJDialog.showDialog(cqrJdFrame);
+			// cqrJDialog.mousePressed(
+		} catch (Exception exIO) {
+			exIO.printStackTrace();
+		}
+	}
+	
+	protected void help_action(ActionEvent event) {
+	
+		String os = System.getProperty("os.name").toLowerCase();
+		Runtime rt = Runtime.getRuntime();
+		String url = "https://io.cqrxs.eu/help";
+		boolean success = false;
+		
+		if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.browse(new URI(url));
+				success = true;            
+            } catch (URISyntaxException e) {
+				e.printStackTrace();
+			} catch (Exception ex) {
+                ex.printStackTrace();
+			}
+		}
+		if (!success) {
+			try {
+				if (os.indexOf("win") >= 0)	
+					rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+				else if (os.indexOf("mac") >= 0) 
+					rt.exec("open " + url);
+				else // if (os.indexOf("x") >=0 || os.indexOf("bsd") >= 0)
+					rt.exec("xdg-open "  + url);	
+			} catch (Exception rtException) {
+				rtException.printStackTrace();
+			}
+		}		
+	}
+
+	protected void exit_action(ActionEvent event) {
+		// We don't log exit events ;)
+		System.exit(0);
+	}
+	
+	
+    protected void dbgMsg(String s, int level, boolean ignoreDbg) {
+		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
+            System.out.println(level + ": \t" + s);
+        }
+    }
+	
+	protected Image setJarIncludedImage(String imgstr) {
+		Image img = null;
+		try {
+			InputStream is = getClass().getResourceAsStream(imgstr);
+			BufferedInputStream bis = new BufferedInputStream(is);
+			// a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
+			byte[] byBuf = new byte[10000];  // is.read(byBuf);  or something like that...
+			int byteRead = bis.read(byBuf, 0, 10000);
+			img = Toolkit.getDefaultToolkit().createImage(byBuf);
+ 	 	} catch(Exception e) {
+			e.printStackTrace();
+ 		}
+		return img;
+	}
+	
+	protected void MakeWebRequest() {
 		
 		HttpClient client = HttpClient.newBuilder()         
          .connectTimeout(Duration.ofSeconds(10))
@@ -827,218 +1099,4 @@ public class CqrJdFrame extends JFrame {
 		
 	}
 
-
-	public void exit_action(ActionEvent event) {
-		// We don't log exit events ;)
-		System.exit(0);
-	}
-	
-	public void about_action(ActionEvent event) {
-	
-		jTextAreaSource.append("About menu clicked, event: " + event + "\n");
-		
-        try {
-            if (new File("eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
-			    cqrJDialog = new CqrJDialog("eu/cqrxs/gui/cqrxs-eu.jpg");
-            else if (new File("cqrxs-eu.jpg").isFile()) 
-			    cqrJDialog = new CqrJDialog("cqrxs-eu.jpg");
-            else
-                cqrJDialog = new CqrJDialog();
-
-			cqrJDialog.showDialog(cqrJdFrame);
-			// cqrJDialog.mousePressed(
-		} catch (Exception exIO) {
-			exIO.printStackTrace();
-		}
-	}
-	
-	public void help_action(ActionEvent event) {
-	
-		String os = System.getProperty("os.name").toLowerCase();
-		Runtime rt = Runtime.getRuntime();
-		String url = "https://io.cqrxs.eu/help";
-		boolean success = false;
-		
-		if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.browse(new URI(url));
-				success = true;            
-            } catch (URISyntaxException e) {
-				e.printStackTrace();
-			} catch (Exception ex) {
-                ex.printStackTrace();
-			}
-		}
-		if (!success) {
-			try {
-				if (os.indexOf("win") >= 0)	
-					rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-				else if (os.indexOf("mac") >= 0) 
-					rt.exec("open " + url);
-				else // if (os.indexOf("x") >=0 || os.indexOf("bsd") >= 0)
-					rt.exec("xdg-open "  + url);	
-			} catch (Exception rtException) {
-				rtException.printStackTrace();
-			}
-		}		
-	}
-
-	void setPipe_action(ActionEvent event) {
-		try {
-			String key = jTextField_Key.getText().toString();
-			String hashed = keyHash.hash(key);
-			jTextField_Hash.setText(hashed);
-
-			CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash);
-
-			CipherEnum[] cipherEnums = pipe.getInPipe();
-			String pipeSting = "";
-			for (int ci = 0; ci < cipherEnums.length; ci++)
-				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
-			jTextField_Pipe.setText(pipeSting);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	void hashKey_action() {
-		String keyValue = "";
-		try {
-				keyValue = jTextField_Key.getText().toString();
-		} catch (Exception exi) {
-				keyValue = "zen@area23.at";
-		}
-		String hashed = "";
-		try {
-				hashed = keyHash.hash(keyValue);
-				jTextField_Hash.setText(hashed);
-		} catch (Exception exh) {
-		}
-	}
-	
-	void jButton_hashPipe_action(ActionEvent event) {
-		// to do: code goes here.
-		try {
-			jTextAreaSource.setText("jButton_hashPipe_action");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-		
-	void randomText_action(ActionEvent event) {
-		// to do: code goes here.
-		try {
-			jTextAreaSource.setText("randomText_action");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	void resetForm_action(ActionEvent event) {		
-		try {
-			jTextAreaSource.setText("");
-			jTextAreaDestination.setText("");
-			jTextField_Pipe.setText("");
-			jTextField_Hash.setText("");
-			jTextField_Key.setText("zen@area23.at");
-			// TODO: reset JComboBoxes
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	void encrypt_action(ActionEvent event) {
-		
-		String plain = jTextAreaSource.getText();
-		String key = jTextField_Key.getText();
-		String hashed = keyHash.hash(key);
-		jTextField_Hash.setText(hashed);
-		String cipherPipeString = jTextField_Pipe.getText();
-		String pipeString = "";
-		CipherEnum[] ciphers = new CipherEnum[0];
-		if (cipherPipeString.length() > 0) {
-			ciphers = CipherEnum.parsePipeText(cipherPipeString);
-		}
-		CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
-
-		String encrypted = "";
-		CipherEnum[] cipherEnums = pipe.getInPipe();
-		for (int ci = 0; ci < cipherEnums.length; ci++)
-			pipeString = pipeString + cipherEnums[ci].getName() + ";";
-        
-		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
-		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
-
-		try {
-			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
-			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
-
-			encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
-			jTextAreaDestination.setText(encrypted);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			jTextAreaDestination.setText(ex.toString());
-		}
-	}
-	
-	void decrypt_action(ActionEvent event) {
-
-		String encrypted = jTextAreaSource.getText();
-		String key = jTextField_Key.getText();
-		String hashed = keyHash.hash(key);
-		jTextField_Hash.setText(hashed);
-		String cipherPipeString = jTextField_Pipe.getText();
-		CipherEnum[] ciphers = new CipherEnum[0];
-		if (cipherPipeString.length() > 0) {
-			ciphers = CipherEnum.parsePipeText(cipherPipeString);
-		}
-
-		CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
-
-		String plain = "";
-		CipherEnum[] cipherEnums = pipe.getOutPipe();
-		String pipeSting = "";
-		for (int ci = 0; ci < cipherEnums.length; ci++)
-			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
-		
-        dbgMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
-
-		String decrypted = "";
-		try {
-			decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
-			jTextAreaDestination.setText(decrypted);
-
-			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
-
-		} catch (Exception ex) {
-			jTextAreaDestination.setText(ex.toString());
-			ex.printStackTrace();
-		}
-	}
-	
-	
-	Image setJarIncludedImage(String imgstr) {
-		Image img = null;
-		try {
-			InputStream is = getClass().getResourceAsStream(imgstr);
-			BufferedInputStream bis = new BufferedInputStream(is);
-			// a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
-			byte[] byBuf = new byte[10000];  // is.read(byBuf);  or something like that...
-			int byteRead = bis.read(byBuf, 0, 10000);
-			img = Toolkit.getDefaultToolkit().createImage(byBuf);
- 	 	} catch(Exception e) {
-			e.printStackTrace();
- 		}
-		return img;
-	}
-	
-    void dbgMsg(String s, int level, boolean ignoreDbg) {
-		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
-            System.out.println(level + ": \t" + s);
-        }
-    }
 }

@@ -176,7 +176,7 @@ public class CryptBounceCastle  {
     public byte[] encrypt(byte[] plainData)  throws InvalidCipherTextException {
         var cipher = CryptoBlockCipher;
         // plainData = (CryptoBlockCipher.AlgorithmName == "RC564") ? EnDeCodeHelper.GetBytesFromBytes(plainData) : plainData;
-        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);
+        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);		
 
         switch (mode)
         {
@@ -209,9 +209,11 @@ public class CryptBounceCastle  {
                 break;
         }
 
-        KeyParameter keyParam = /* (CryptoBlockCipher.getAlgorithmName() == "RC564") ?
-            new org.bouncycastle.crypto.params.RC5Parameters(key, 2) : */
-                new org.bouncycastle.crypto.params.KeyParameter(key);
+        CipherParameters keyParam;
+		if (CryptoBlockCipher.getAlgorithmName() == "RC564") 
+            keyParam = new org.bouncycastle.crypto.params.RC5Parameters(key, 2);
+		else 
+			keyParam = new org.bouncycastle.crypto.params.KeyParameter(key);
         CipherParameters keyParamIV = new org.bouncycastle.crypto.params.ParametersWithIV(keyParam, iv);
 
         // if (Mode == "ECB")
@@ -274,12 +276,13 @@ public class CryptBounceCastle  {
         }
         // cipherMode.Reset()
 
-
-        KeyParameter keyParam = /* (CryptoBlockCipher.getAlgorithmName() == "RC564") ?
-                new org.bouncycastle.crypto.params.RC5Parameters(key, 2) : */
-                new org.bouncycastle.crypto.params.KeyParameter(key);
+		CipherParameters keyParam;
+		if (CryptoBlockCipher.getAlgorithmName() == "RC564") 
+            keyParam = new org.bouncycastle.crypto.params.RC5Parameters(key, 2);
+		else 
+			keyParam = new org.bouncycastle.crypto.params.KeyParameter(key);
+        
         CipherParameters keyParamIV = new ParametersWithIV(keyParam, iv);
-
 
         // Decrypt
         //if (Mode == "ECB")
@@ -302,7 +305,7 @@ public class CryptBounceCastle  {
         }
         catch (Exception exDecrypt)
         {
-            // Area23Log.LogOriginMsgEx("CryptBounceCastle", $"CryptBounceCastle {cipherMode.AlgorithmName}: Exceptíon on decrypting final block", exDecrypt);
+			eu.cqrxs.fw.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on decrypting final block" + exDecrypt.toString(), false);
             try
             {
                 plainData = new byte[outputSize];
@@ -310,7 +313,7 @@ public class CryptBounceCastle  {
             }
             catch (Exception exDecrypt2)
             {
-                // Area23Log.LogOriginMsgEx("CryptBounceCastle", $"CryptBounceCastle {cipherMode.AlgorithmName}: Exceptíon on 2x decrypting final block", exDecrypt2);
+				eu.cqrxs.fw.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on 2x decrypting final block: " + exDecrypt2.toString(), false);
                 // plainData = new byte[outputSize];
                 bs = cipherMode.doFinal(plainData, result);
             }

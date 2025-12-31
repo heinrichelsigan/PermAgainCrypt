@@ -7,10 +7,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 {
 
     /// <summary>
-    /// More complex sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
+    /// More complex but still lightweight sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
     /// position swaps and byte mappings are seperated in 2 matrizes 
     /// and maybe I will add ZenMatrix3 l8r, to multiply and divide byte values with a 3rd matrix 
     /// for mapping sbyte[1] => byte[1] 0xf => 0xab and generate 
+    /// 
+    /// I would never introduce such a cipher in real world applications, 
+    /// only for students how the simplest blockcipher works
     /// 
     /// maybe this encryption is already invented, but created at Git by zen@area23.at (Heinrich Elsigan)
     /// </summary>
