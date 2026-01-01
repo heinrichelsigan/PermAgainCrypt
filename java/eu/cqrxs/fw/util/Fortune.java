@@ -40,7 +40,9 @@ public class Fortune {
 		"Those who can't write, write manuals.\n",
 		"Those who can't LaTex, write manuals in word\n",
 		"This file will self-destruct in five minutes.\n",
-		"* * * * * THIS TERMINAL IS IN USE * * * * *\n"
+		"* * * * * THIS TERMINAL IS IN USE * * * * *\n",
+        "I'm a Lisp variable -- bind me!\n",
+        "Be warned that typing \fBkillall \fIname\fP may not have the desired\neffect on non-Linux systems, especially when done by a privileged user.\n\t-- From the killall manual page\n"
 	};
 	
 	public static String[] getFortunes() {

@@ -257,21 +257,25 @@ public class CipherPipe {
             throw new IllegalArgumentException("hashedKey");
 
         byte[] encryptBytes = inBytes;
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
 
         switch (cipherAlgo)
         {
             /*
-            AesNet aesNet = new AesNet(secretKey, hash);
-            encryptBytes = aesNet.Encrypt(inBytes);
+            case CipherEnum.AesNet:
+                AesNet aesNet = new AesNet(secretKey, hash);
+                encryptBytes = aesNet.Encrypt(inBytes);
             break;
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 encryptBytes = des3.Encrypt(inBytes);
                 break;
+            */
             case CipherEnum.RC564:
-                RC564.RC564GenWithKey(secretKey, hash, true);
-                encryptBytes = RC564.Encrypt(inBytes);
+                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
+                encryptBytes = cryptRC564.encrypt(inBytes);
                 break;
+            /*
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
@@ -302,7 +306,7 @@ public class CipherPipe {
             case Noekeon:
             case RC2:
             case RC532:
-            case RC564:
+            // case RC564:
             case RC6:
             case Rijndael:
             case Seed:
@@ -315,7 +319,6 @@ public class CipherPipe {
             case ZenMatrix:
             case ZenMatrix2:
             default:
-                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
                 // TODO: full port standard bouncycastle wrapper to java
@@ -343,7 +346,8 @@ public class CipherPipe {
             throw new IllegalArgumentException("hash");
         // bool sameKey = true;
 
-        byte[] decryptBytes = cipherBytes;
+        byte[] decryptBytes = cipherBytes; 
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
 
         switch (cipherAlgo)
         {
@@ -356,10 +360,12 @@ public class CipherPipe {
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 decryptBytes = des3.Decrypt(cipherBytes);
                 break;
+            */
             case CipherEnum.RC564:
-                RC564.RC564GenWithKey(secretKey, hash, true);
-                decryptBytes = RC564.Decrypt(cipherBytes);
+                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
+                decryptBytes = cryptRC564.decrypt(cipherBytes);
                 break;
+            /*
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
@@ -389,7 +395,7 @@ public class CipherPipe {
             case Noekeon:
             case RC2:
             case RC532:
-            case RC564:
+            // case RC564:
             case RC6:
             case Rijndael:
             case Seed:
@@ -402,7 +408,6 @@ public class CipherPipe {
             case ZenMatrix:
             case ZenMatrix2:
             default:
-                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 decryptBytes = cryptBounceCastle.decrypt(cipherBytes);
                 // TODO: full port standard bouncycastle wrapper to java
