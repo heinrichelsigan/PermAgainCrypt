@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class CqrJDialog extends JDialog implements MouseListener  {
+public class CqrJDialog extends JDialog { /* implements MouseListener  { */
     		
 	JPanel jPanelCenter = new JPanel();
 	JLabel jLabel;
@@ -49,7 +49,7 @@ public class CqrJDialog extends JDialog implements MouseListener  {
         Init();
 	}
 	
-	public CqrJDialog(String filename) throws IOException {
+ 	public CqrJDialog(String filename) throws IOException {
 		
 		if (filename == null || filename.length() == 0)			
 			filename = "cqrxs-eu.jpg";
@@ -79,27 +79,27 @@ public class CqrJDialog extends JDialog implements MouseListener  {
 	public void Init() {
 		
 		setLayout(null);		
-		setSize(800, 680);			
+		setSize(820, 600);			
 			
         icon = new ImageIcon(img);
-		jPanelCenter.setBounds(24, 20, 752, 560);
+		jPanelCenter.setBounds(24, 20, 752, 400);
 		jPanelCenter.setLayout(new FlowLayout());
-		jPanelCenter.setBackground(Color.GRAY);  		
+		jPanelCenter.setBackground(Color.BLUE);  		
 		JLabel jLabel = new JLabel();
 		jLabel.setIcon(icon);
 		jPanelCenter.add(jLabel);
 		getContentPane().add(jPanelCenter);
 			
 		jTextField = new JTextField();
-		jTextField.setBounds(120, 600, 600, 48);
+		jTextField.setBounds(144, 440, 600, 27);
 		getContentPane().add(jTextField);
 		jButtonExit = new JButton();
 		jButtonExit.setText("Exit");
 		getContentPane().add(jButtonExit);
-		jButtonExit.setBounds(24, 600, 76, 48);
+		jButtonExit.setBounds(24, 440, 96, 27);
 		jButtonExit.setActionCommand("jexit");
-		addMouseListener(this);
-		jPanelCenter.addMouseListener(this);
+		// addMouseListener(this);
+		// jPanelCenter.addMouseListener(this);
 		
 		// setVisible(true);
 		try {
@@ -127,7 +127,7 @@ public class CqrJDialog extends JDialog implements MouseListener  {
 		// We don't log exit events ;)
 		System.exit(0);
 	}
-	
+	/*
 	public void eventOutput(String eventDescription, MouseEvent e) {
         jTextField.setText(eventDescription + " detected on "
                 + e.getComponent().getClass().getName()
@@ -156,5 +156,5 @@ public class CqrJDialog extends JDialog implements MouseListener  {
         eventOutput("Mouse clicked (# of clicks: "
                 + e.getClickCount() + ")", e);
     }
-
+	*/
 }
