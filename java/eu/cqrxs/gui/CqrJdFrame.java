@@ -52,7 +52,7 @@ public class CqrJdFrame extends JFrame {
 	protected KeyHash keyHash = KeyHash.Hex;
 	protected ZipType zipType = ZipType.None;
 	protected CipherEnum cipherEnum = CipherEnum.Aes;
-	protected String cipherString, encodeString;
+	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
 		
 	Font menuFont, cryptFont;  
@@ -859,10 +859,12 @@ public class CqrJdFrame extends JFrame {
 		
 		File f = chooser.getSelectedFile();
 		String filename = f.getAbsolutePath();
-		for (int r = (filename.length() -1); r <=0 ; r--) {
-			if (filename.charAt(r) == java.io.File.separatorChar) {
-				filename = filename.substring(r);
-				break;
+        openFileName = filename;
+		for (int r = (filename.length() -1); r > -1 ; r--) {
+			if (filename.charAt(r) == '\\'  || filename.charAt(r) == '/') {
+				openFileName = filename.substring(r + 1, filename.length());
+				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
+                break;
 			}
 		}
 		
@@ -870,7 +872,7 @@ public class CqrJdFrame extends JFrame {
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());
 			saveFileBytes = new byte[0];
-			jLabel_fileIn.setText(filename);
+			jLabel_fileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			JOptionPane.showMessageDialog(null, e);
@@ -884,15 +886,27 @@ public class CqrJdFrame extends JFrame {
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new File(initDirectory));
-		chooser.setFileFilter(new FileNameExtensionFilter("all files", "*.*"));
+		chooser.setFileFilter(new FileNameExtensionFilter("save file", saveFileSuffix));
 		int fileDialogResult = chooser.showSaveDialog(cqrJdFrame);
+		if (fileDialogResult == JFileChooser.CANCEL_OPTION || fileDialogResult == JFileChooser.ERROR_OPTION) {
+			dbgMsg("save_action JFileChooser returned: " + fileDialogResult, 2, true);
+			return;
+        }
 	
 		File f = chooser.getSelectedFile();	
 		
 		Path filePath = f.toPath();
+		String filename = f.getAbsolutePath();
+		for (int r = (filename.length() -1); r <=0 ; r--) {
+			if (filename.charAt(r) == '\\'  || filename.charAt(r) == '/') {
+				saveFileName = filename.substring(r);
+				break;
+			}
+        }
 		try {
 			if (saveFileBytes != null && saveFileBytes.length > 0) {
 				Files.write(filePath, saveFileBytes);
+			    jLabel_fileIn.setText(saveFileName);
 			}
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
@@ -987,13 +1001,25 @@ public class CqrJdFrame extends JFrame {
 		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
 		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
 
-		// ryptEncodeBytes
+		saveFileName = "";
 		try {
 			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
 			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
 
-			encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
-			jTextAreaDestination.setText(encrypted);
+            if (openFileBytes != null  || openFileBytes.length > 0) {
+                saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
+                saveFileSuffix = "";
+                saveFileSuffix += (pipe.getPipeString().length() > 0) ? "." + keyHash.getName() : "";
+                saveFileSuffix += (zipType != ZipType.None) ? ".gz" : "";
+                saveFileSuffix += (pipe.getPipeString().length() > 0) ?  "." + pipe.getPipeString() : "";
+                saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
+                save_action();
+            }
+
+			if (plain != null && plain.length() > 0) {
+		    	encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+			    jTextAreaDestination.setText(encrypted);
+            }
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			jTextAreaDestination.setText(ex.toString());
@@ -1024,12 +1050,30 @@ public class CqrJdFrame extends JFrame {
 		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
 
 		String decrypted = "";
+        saveFileName = "";
 		try {
-			decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
-			jTextAreaDestination.setText(decrypted);
-
 			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
 			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+
+            if (openFileBytes != null && openFileBytes.length > 0) {
+                saveFileBytes = pipe.decodeDecrpytBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
+                int ptCnt = 0;
+                for (int ix = 0; ix < openFileName.length(); ix++) {
+                    if (openFileName.charAt(ix) == '.') {
+                        if (++ptCnt == 2) {
+                            saveFileName = openFileName.substring(0, ix - 1);
+                            break;
+                        }
+                    }
+                }
+                save_action();
+            }   
+
+			if (encrypted != null && encrypted.length() > 0) {
+                decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+			    jTextAreaDestination.setText(decrypted);
+            }
+
 
 		} catch (Exception ex) {
 			jTextAreaDestination.setText(ex.toString());
