@@ -15,7 +15,7 @@ package eu.cqrxs.cipherpipe.util;
 /**
  * Util provides only static fields
  */
-public final class Constants {
+public class Constants {
 
 	//region c constants´
 	public final static int BACKLOG = 8;
@@ -31,6 +31,7 @@ public final class Constants {
 	public final static int BGWORKWE_BUSYWAITING_SLEEP = 360000;
 	public final static boolean CQR_ENCRYPT = true;
 	public final static boolean ZEN_MATRIX_SYMMETRIC = false;
+    public final static boolean DEBUG = true;
 
 	public final static char ANNOUNCE = ':';
 	public final static char DATE_DELIM = '-';

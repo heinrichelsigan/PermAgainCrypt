@@ -11,6 +11,8 @@ package eu.cqrxs.cipherpipe.crypt.hash;
 
 import org.bouncycastle.crypto.Digest;
 
+import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.cipherpipe.crypt.cipher.CryptHelper;
 import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
@@ -30,18 +32,22 @@ public class Dstu7564 {
         if (inBytes == null || inBytes.length == 0)
             throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 
+		if (Constants.DEBUG) {
+            System.out.println("Dstu7564: instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t");
+        }
+
         String hexString = "";
-        Digest digest = new org.bouncycastle.crypto.digests.DSTU7564Digest(inBytes.length);
+        Digest digest = new org.bouncycastle.crypto.digests.DSTU7564Digest(256);
         byte[] resBuf = new byte[digest.getDigestSize()];
-        // digest.update(inBytes);
         digest.update(inBytes, 0, inBytes.length);
         digest.doFinal(resBuf, 0);
-        HexFormat hex = HexFormat.of();
+        		
+		HexFormat hex = HexFormat.of();
         hexString = hex.formatHex(resBuf);
-        // for (int wc = 0; wc < inBytes.Length; wc++)
-        //    hexString += string.Format("{0:x2}", inBytes[wc]);
 
-        // string strUtf8 = System.Text.Encoding.UTF8.GetString(inBytes);
+		if (Constants.DEBUG) 
+			System.out.println("Dstu7564 bytes.length=" +resBuf.length + " \thexstring=" + hexString);
+
         return hexString;
     }
 

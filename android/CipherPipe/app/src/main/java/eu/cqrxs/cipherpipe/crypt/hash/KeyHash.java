@@ -1,21 +1,21 @@
 /**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
+ * @author           <a href="mailto:heinrich.elsigan@gmail.com">Heinrich Elsigan</a>
+ * @version          V 2.25.1224
+ * @since            API 34
  *
- *
- * Coded 2021-2025 by
- * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
- */
+ * Coded 2021-2028 by <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+.*/
 
 package eu.cqrxs.cipherpipe.crypt.hash;
 
 import java.io.Serializable;
 import java.lang.String;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import eu.cqrxs.cipherpipe.util.*;
 
 /**
  * KeyHash represents the enumerator for all Encoding to ascii algorithms
@@ -82,7 +82,7 @@ public enum KeyHash implements Serializable {
 				return "Sha512";
 			case 0x9:
 				return "Whirlpool";
-			case 0xa:
+			case 0xa:	
 				return "Ascon256";
 			case 0xb:
 				return "Blake2xs";
@@ -118,15 +118,18 @@ public enum KeyHash implements Serializable {
     public String hash(String instr) {
 		try {
 			int xval = getValue();
+            if (Constants.DEBUG)
+                System.out.
+                            println("KeyHash: " + xval + " " + getName());
 			switch (xval) {
 				case 0x0:
 					return eu.cqrxs.cipherpipe.crypt.hash.Hex.hashString(instr);
 				case 0x1:
-				    return eu.cqrxs.cipherpipe.crypt.hash.OpenBSDCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.OpenBSDCrypt.hashString(instr);
 				case 0x2:
-                    return eu.cqrxs.cipherpipe.crypt.hash.BCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.BCrypt.hashString(instr);
 				case 0x3:
-				    return  eu.cqrxs.cipherpipe.crypt.hash.SCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.SCrypt.hashString(instr);
 				case 0x4:
 					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
 				case 0x5:
@@ -144,7 +147,7 @@ public enum KeyHash implements Serializable {
 				case 0xb:
 					return eu.cqrxs.cipherpipe.crypt.hash.Blake2xs.hashString(instr);
 				case 0xc:
-					return eu.cqrxs.cipherpipe.crypt.hash.CShake.hashString(instr);
+                    return eu.cqrxs.cipherpipe.crypt.hash.CShake.hashString(instr);
 				case 0xd:
 					return eu.cqrxs.cipherpipe.crypt.hash.Dstu7564.hashString(instr);
 				case 0xe:
@@ -313,47 +316,6 @@ public enum KeyHash implements Serializable {
         return KeyHash.Hex;
     }
 
-	
-	/*
-	public static string Hash(this KeyHash hash, string stringToHash) {
-		switch (hash) {
-			case KeyHash.SCrypt:
-				return SCrypt.HashString(stringToHash);
-			case KeyHash.BCrypt:
-				return BCrypt.HashString(stringToHash);
-			case KeyHash.OpenBSDCrypt:
-				return OpenBSDCrypt.HashString(stringToHash);
-			case KeyHash.MD5:
-				return MD5Sum.HashString(stringToHash, "");
-			case KeyHash.Sha1:
-				return Sha1.HashString(stringToHash);
-			case KeyHash.Sha256:
-				return Sha256Sum.HashString(stringToHash, "");
-			case KeyHash.Sha384:
-				return Sha384.HashString(stringToHash);
-			case KeyHash.Sha512:
-				return Sha512Sum.HashString(stringToHash);
-			case KeyHash.Whirlpool: 
-				return Whirlpool.HashString(stringToHash);
-			case KeyHash.Ascon256: 
-				return Ascon256.HashString(stringToHash);
-			case KeyHash.Blake2xs:
-				return Blake2xs.HashString(stringToHash);
-			case KeyHash.CShake:
-				return CShake.HashString(stringToHash);
-			case KeyHash.Dstu7564:
-				return Dstu7564.HashString(stringToHash);
-			case KeyHash.RipeMD256:
-				return RipeMD256.HashString(stringToHash);
-			case KeyHash.Xoodyak:                    
-				return Zodiac.HashString(stringToHash);
-			case KeyHash.Hex:
-			default:
-				return Hex16.ToHex16(Encoding.UTF8.GetBytes(stringToHash));
-		}
-	}
-	*/
- 
  
 }
 

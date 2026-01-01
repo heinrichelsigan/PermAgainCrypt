@@ -8,7 +8,7 @@
  */
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
-import androidx.core.content.res.TypedArrayUtils;
+// import androidx.core.content.res.TypedArrayUtils;
 
 // import com.google.common.primitives.Bytes;
 import java.util.Arrays;
@@ -24,6 +24,8 @@ import java.util.List;
 import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
 import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
 import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.cipherpipe.util.*;
+
 
 /**
  * CryptHelper

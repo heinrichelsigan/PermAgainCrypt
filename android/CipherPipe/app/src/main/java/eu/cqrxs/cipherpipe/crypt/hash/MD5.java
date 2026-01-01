@@ -21,6 +21,7 @@ import java.util.EnumSet;
 import java.util.HexFormat;
 import java.util.List;
 import java.util.Set;
+import eu.cqrxs.cipherpipe.util.*;
 
 public class MD5 {
 

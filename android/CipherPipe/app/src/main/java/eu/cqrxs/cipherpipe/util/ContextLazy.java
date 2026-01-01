@@ -8,11 +8,13 @@
  */
 package eu.cqrxs.cipherpipe.util;
 
-import android.content.Context;
+// import android.content.Context;
 /*
 import com.google.gson.annotations.JsonAdapter;
  */
-import org.jetbrains.annotations.Nullable;
+// import org.jetbrains.annotations.Nullable;
+// import javax.naming.Context;
+// import javax.naming.InitialContext;
 import java.io.Serializable;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.ArrayList;
@@ -21,25 +23,26 @@ import eu.cqrxs.cipherpipe.util.Constants;
 /**
   * ContextLazy - provides a lazy singelton for application context
   *
-  */
+
 public class ContextLazy {
     private static ContextLazy instance;
-    private Context mContext;
+    private InitialContext mContext;
 	
-	public static ContextLazy getInstance(Context context) {
+	public static ContextLazy getInstance(InitialContext context) {
 		if (instance == null) {
 			// instance = new ContextLazy(context);
-			instance = new ContextLazy(context.getApplicationContext());
+			instance = new ContextLazy(context);			
 		}
 		return instance;
 	}
 
-    public static Context getLastContext() {
-        return (instance != null) ? instance.mContext : (Context)null;
+    public static InitialContext getLastContext() {
+        return (instance != null) ? instance.mContext : (InitialContext)null;
     }
 
-    private ContextLazy(Context context) {
+    private ContextLazy(InitialContext context) {
         mContext = context;
     }
 
 }
+ */

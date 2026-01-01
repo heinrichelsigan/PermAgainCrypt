@@ -1,9 +1,7 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
-import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
-
-import androidx.core.content.res.TypedArrayUtils;
-
+// import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
+// import androidx.core.content.res.TypedArrayUtils;
 // import com.google.common.primitives.Bytes;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +19,7 @@ import org.bouncycastle.crypto.BlockCipher;
 import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
 import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
 import eu.cqrxs.cipherpipe.util.Constants;
-
+import eu.cqrxs.cipherpipe.util.*;
 
 
 public class CryptParams {
@@ -70,7 +68,6 @@ public class CryptParams {
 
         switch (cipher) {
             case Aes:
-            case Rijndael:
             case AesNet: // TODO: Implement interface IBlockCipher in AesNet
                 blockCipher = new org.bouncycastle.crypto.engines.AESEngine();
                 break;
@@ -93,9 +90,9 @@ public class CryptParams {
                 blockCipher = new org.bouncycastle.crypto.engines.TwofishEngine();
                 break;
             case Fish3:
-            case ThreeFish256:
-                blockCipher = new org.bouncycastle.crypto.engines.ThreefishEngine(size);
-                break;
+			case ThreeFish256:
+				blockCipher = new org.bouncycastle.crypto.engines.ThreefishEngine(size);
+                break;                            
             case Camellia:
                 size = 128;
                 keyLen = 16;
@@ -149,6 +146,7 @@ public class CryptParams {
                 break;
             case RC2:
                 size = 128;
+		        keyLen = 32;
                 blockCipher = new org.bouncycastle.crypto.engines.RC2Engine();
                 break;
             case RC532:
@@ -156,11 +154,15 @@ public class CryptParams {
                 break;
             case RC564:
                 size = 64;
+		        keyLen = 32;
                 blockCipher = new org.bouncycastle.crypto.engines.RC564Engine();
                 break;
             case RC6:
                 blockCipher = new org.bouncycastle.crypto.engines.RC6Engine();
                 break;
+	        case Rijndael:
+				blockCipher = new org.bouncycastle.crypto.engines.RijndaelEngine();
+				break;
             case Seed:
                 blockCipher = new org.bouncycastle.crypto.engines.SEEDEngine();
                 size = 128;
@@ -190,6 +192,8 @@ public class CryptParams {
                 blockCipher = new org.bouncycastle.crypto.engines.TnepresEngine();
                 break;
             case XTea:
+				size = 128;
+                keyLen = 16;
                 blockCipher = new org.bouncycastle.crypto.engines.XTEAEngine();
                 break;
             case ZenMatrix:

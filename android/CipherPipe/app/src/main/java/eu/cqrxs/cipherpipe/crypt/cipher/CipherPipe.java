@@ -1,32 +1,33 @@
-/**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
- *
- * Coded 2021-2025 by
- * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
-.*/
-
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
 
+// import androidx.core.content.res.TypedArrayUtils;
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-        import java.util.List;
-        import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HexFormat;
+import java.util.List;
+import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.engines.*;
+import org.bouncycastle.crypto.BlockCipher;
 
-        import org.bouncycastle.crypto.*;
-
-        import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
-        import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
+import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
+import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
+import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
 import eu.cqrxs.cipherpipe.zip.ZipType;
+import eu.cqrxs.cipherpipe.zip.*;
 import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.cipherpipe.util.*;
 
-
-/*
+/**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
  */
 public class CipherPipe {
@@ -90,7 +91,7 @@ public class CipherPipe {
     /**
      * CipherPipe constructor with following parameters
      * @param cipherEnums an array of {@link CipherEnum}
-     * @param maxpipe maximum pipeline size MAX_PIPE_LEN {@link Constants}
+     * @param maxpipe maximum pipeline size {@link Constants.MAX_PIPE_LEN}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -115,7 +116,7 @@ public class CipherPipe {
     /**
      *  CipherPipe constructor with an array of <see cref="T:String[]"/> cipherAlgos as inpipe
      * @param cipherAlgos array of String[] as inpipe
-     * @param maxpipe maximum length {@link Constants}
+     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -148,7 +149,7 @@ public class CipherPipe {
     /**
      * CipherPipe ctor with array of user key bytes
      * @param keyBytes user key bytes
-     * @param maxpipe maximum length {@link Constants}
+     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -184,17 +185,6 @@ public class CipherPipe {
         zType = zpType;
         encodeType = encType;
         kHash = kh;
-
-        //if (inPipe.Length > maxpipe)
-        //{
-        //    List<String> pipElems = new List<String>(inPipe.Length);
-        //    foreach (var cipherEnum in inPipe)
-        //        pipElems.Add(cipherEnum.ToString());
-        //    throw new ArgumentException($"Pipe \"{String.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-        //}
-
-        // foreach (CipherEnum cipherE in inPipe)
-        // pipeString += cipherE.GetCipherChar();
 
     }
 
@@ -256,7 +246,7 @@ public class CipherPipe {
      * @param inBytes array of bytes
      * @param cipherAlgo {@link CipherEnum}
      * @param secretKey users secret key for encryption
-     * @param hashedKey users key hashed
+     * @param hash users key hashed
      * @return byte array of encrypted bytes
      */
     public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String secretKey, String hashedKey)
@@ -267,21 +257,24 @@ public class CipherPipe {
             throw new IllegalArgumentException("hashedKey");
 
         byte[] encryptBytes = inBytes;
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
 
         switch (cipherAlgo)
         {
             /*
-            AesNet aesNet = new AesNet(secretKey, hash);
-            encryptBytes = aesNet.Encrypt(inBytes);
+            case CipherEnum.AesNet:
+                AesNet aesNet = new AesNet(secretKey, hash);
+                encryptBytes = aesNet.Encrypt(inBytes);
             break;
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 encryptBytes = des3.Encrypt(inBytes);
-                break;
+                break; 
             case CipherEnum.RC564:
-                RC564.RC564GenWithKey(secretKey, hash, true);
-                encryptBytes = RC564.Encrypt(inBytes);
+                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
+                encryptBytes = cryptRC564.encrypt(inBytes);
                 break;
+
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
@@ -312,7 +305,7 @@ public class CipherPipe {
             case Noekeon:
             case RC2:
             case RC532:
-            case RC564:
+			case RC564:
             case RC6:
             case Rijndael:
             case Seed:
@@ -325,7 +318,6 @@ public class CipherPipe {
             case ZenMatrix:
             case ZenMatrix2:
             default:
-                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
                 // TODO: full port standard bouncycastle wrapper to java
@@ -353,7 +345,8 @@ public class CipherPipe {
             throw new IllegalArgumentException("hash");
         // bool sameKey = true;
 
-        byte[] decryptBytes = cipherBytes;
+        byte[] decryptBytes = cipherBytes; 
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
 
         switch (cipherAlgo)
         {
@@ -365,10 +358,10 @@ public class CipherPipe {
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 decryptBytes = des3.Decrypt(cipherBytes);
-                break;
+                break
             case CipherEnum.RC564:
-                RC564.RC564GenWithKey(secretKey, hash, true);
-                decryptBytes = RC564.Decrypt(cipherBytes);
+                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
+                decryptBytes = cryptRC564.decrypt(cipherBytes);
                 break;
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
@@ -412,7 +405,6 @@ public class CipherPipe {
             case ZenMatrix:
             case ZenMatrix2:
             default:
-                CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 decryptBytes = cryptBounceCastle.decrypt(cipherBytes);
                 // TODO: full port standard bouncycastle wrapper to java
@@ -434,7 +426,7 @@ public class CipherPipe {
      * @return encrypted byte[]
      */
     public byte[] merryGoRoundEncrpyt(byte[] inBytes, String secretKey, String hashIv, ZipType zipBefore)
-            throws InvalidCipherTextException, IOException {
+            throws InvalidCipherTextException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
@@ -444,29 +436,26 @@ public class CipherPipe {
 
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        //#if DEBUG
-        //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-        //            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
-        //#endif
         if (zipBefore != ZipType.None)
         {
-            encryptedBytes = zipBefore.zip(inBytes);
-            inBytes = encryptedBytes;
+            try {
+			    encryptedBytes = zipBefore.zip(inBytes);
+            	inBytes = encryptedBytes;
+		    } catch (Exception exZip) {
+			    exZip.printStackTrace();
+		    }
         }
 
         for (CipherEnum cipher : inPipe)
         {
             encryptedBytes = encryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
             inBytes = encryptedBytes;
-            //#if DEBUG
-            //                stageDictionary.Add(cipher, encryptedBytes);
-            //#endif
         }
 
         return encryptedBytes;
     }
 
-    /***
+    /**
      * decrpytRoundGoMerry against clock turn -
      *    starts merry to turn arround from right to left against clock hour cycle
      * @param cipherBytes encrypted byte array
@@ -486,10 +475,6 @@ public class CipherPipe {
 
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
-        //#if DEBUG
-        //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-        //            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
-        //#endif
         if (getOutPipe() == null || getOutPipe().length == 0)
             System.arraycopy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.length);
         else
@@ -497,13 +482,15 @@ public class CipherPipe {
             {
                 decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
                 cipherBytes = decryptedBytes;
-                //#if DEBUG
-                //                    stageDictionary.Add(cipher, cipherBytes);
-                //#endif
             }
 
-        if (unzipAfter != ZipType.None)
-            decryptedBytes = unzipAfter.unzip(cipherBytes);
+        if (unzipAfter != ZipType.None) {
+			try {
+				decryptedBytes = unzipAfter.unzip(cipherBytes);
+			} catch (Exception exUnzip) {
+				exUnzip.printStackTrace();
+			}
+		}
 
         return decryptedBytes;
     }
@@ -555,7 +542,7 @@ public class CipherPipe {
             String hashIv,
             EncodeEnum encoding,
             ZipType zipBefore,
-            KeyHash keyHash) throws InvalidCipherTextException, IOException
+            KeyHash keyHash) throws InvalidCipherTextException
     {
         // hashIv if empty hash secretKey with keyHash hashing variant
         hashIv = (hashIv == null || hashIv.length() == 0) ? keyHash.hash(cryptKey) : hashIv;
@@ -571,16 +558,20 @@ public class CipherPipe {
         return encryptedBytes;
     }
 
-    /// <summary>
-    /// decrypt encoded encrypted text
-    /// </summary>
-    /// <param name="cryptedEncodedMsg">encoded encrypted ASCII String</param>
-    /// <param name="cryptKey">prviate key for encryption</param>
-    /// <param name="hashIv">private hash for encryption</param>
-    /// <param name="decoding"><see cref="EncodeEnum"/></param>
-    /// <param name="unzipAfter"><see cref="ZipType"/></param>
-    /// <param name="keyHash"><see cref="KeyHash"/></param>
-    /// <returns>decrypted UTF8 String, containing no binary data</returns>
+
+	/**
+     *  decryptTextRoundsGo
+     * @param cryptedEncodedMsg encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+	 * @throws IOException
+     */
     public String decryptTextRoundsGo(
             String cryptedEncodedMsg,
             String cryptKey,
@@ -592,7 +583,6 @@ public class CipherPipe {
 
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
 
-
         // perform multi crypt pipe stages
         byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash);
 
@@ -602,23 +592,28 @@ public class CipherPipe {
                 new String(decryptedBytes, StandardCharsets.UTF_8);
 
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
-        int idx = decrypted.length() - 1;
-        while (decrypted.charAt(decrypted.length() - 1) == '\0')
-            decrypted = decrypted.substring(0, decrypted.length() - 1);
+		for (int ix = 0; ix < decrypted.length(); ix++) {
+			if (decrypted.charAt(ix) == '\0' && ix > 0) {
+				decrypted = decrypted.substring(0, ix);
+				break; 
+			}
+		}
 
         return decrypted;
     }
 
-    /// <summary>
-    /// DecryptFileBytesRoundsGo
-    /// </summary>
-    /// <param name="cipherBytes"></param>
-    /// <param name="cryptKey">prviate key for encryption</param>
-    /// <param name="hashIv">private hash for encryption</param>
-    /// <param name="decoding"><see cref="EncodeEnum">decoding type</see> for decodinng</param>
-    /// <param name="unzipAfter"><see cref="ZipType"/></param>
-    /// <param name="keyHash"><see cref="KeyHash"/></param>
-    /// <returns>plain data byte[]</returns>
+    /**
+     *  decodeDecrpytBytes
+     * @param cipherBytes encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+     */
     public byte[] decryptFileBytesRoundsGo(
             byte[] cipherBytes,
             String cryptKey,
@@ -641,13 +636,20 @@ public class CipherPipe {
         return decryptedBytes;
     }
 
-
+	/**
+     * encrpytGoRounds encrypts a data byte[] array
+     * @param inBytes binary data
+     * @param secretKey prviate key for encryption
+     * @param zipBefore {@link ZipType}
+     * @param keyHash {@link KeyHash}
+     * @return encrypted binary data bytes
+     */
     public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
-            throws InvalidCipherTextException, IOException {
-        if ((secretKey == null && cipherKey == null) || (secretKey.isEmpty() && cipherKey.isEmpty()))
+            throws InvalidCipherTextException {
+        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
-        cipherKey = (secretKey != null && !secretKey.isEmpty()) ? secretKey : cipherKey;
+        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         cipherHash = keyHash.hash(secretKey);
         zType = zipBefore;
         kHash = keyHash;
@@ -655,6 +657,14 @@ public class CipherPipe {
     }
 
 
+	/**
+     * decrpytRoundsGo decrypts encrypted bytes
+     * @param cipherBytes encrypted binary data
+     * @param secretKey prviate key for encryption
+     * @param unzipAfter {@link ZipType}
+     * @param keyHash {@link KeyHash}
+     * @return decrypted bytes
+     */
     public byte[] decrpytRoundsGo(byte[] cipherBytes, String secretKey, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException {
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -682,6 +692,20 @@ public class CipherPipe {
         return cryptedEncoded;
     }
 
+    /**
+     *  encryptEncodeBytes
+     * @param inBytes String to encrypt multiple times
+     * @param secretKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash	 
+     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param zipBefore zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return encrypted byte array
+     * @throws InvalidCipherTextException
+     * @throws IllegalArgumentException
+	 * @throws IOException
+     */
     public byte[] encryptEncodeBytes(byte[] inBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
@@ -729,7 +753,20 @@ public class CipherPipe {
         return outBytes;
     }
 
-
+    /**
+     *  decodeDecrpytBytes
+     * @param encodedBytes encoded byte array
+     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
+	 * @param hashIV key hash
+     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
+     * @param unzipAfter zip bytes with {@link ZipType}
+     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @return plain bytes
+     * @throws InvalidCipherTextException
+     * @throws IllegalArgumentException
+	 * @throws IOException
+     */
     public byte[] decodeDecrpytBytes(byte[] encodedBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
@@ -760,7 +797,7 @@ public class CipherPipe {
 
 
     /**
-     *  EncrpytToStringd
+     *  encrpytToString
      * @param inString String to encrypt multiple times
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
@@ -768,10 +805,10 @@ public class CipherPipe {
      * @param zipBefore zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
      * @return encrypted String<
-     * @throws InvalidCipherTextException invalid cipher text
-     * @throws IOException input / output Exception
+     * @throws InvalidCipherTextException
+     * @throws IOException
      */
-    public static String EncrpytToString(String inString, String cryptKey,
+    public static String encrpytToString(String inString, String cryptKey,
                                          EncodeEnum encoding,
                                          ZipType zipBefore,
                                          KeyHash keyHash)
@@ -809,7 +846,7 @@ public class CipherPipe {
                                               EncodeEnum encoding,
                                               ZipType zipBefore,
                                               KeyHash keyHash)
-                                        throws InvalidCipherTextException, IOException {
+                                        throws InvalidCipherTextException {
         // construct symmetric cipher pipeline with cryptKey and pass pipeString as out param
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 

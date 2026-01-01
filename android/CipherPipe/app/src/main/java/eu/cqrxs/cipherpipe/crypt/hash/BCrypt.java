@@ -1,11 +1,10 @@
 /**
- * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
- * @version          V 1.0.1
- * @since            API 27 Oreo 8.1
+ * @author           <a href="mailto:heinrich.elsigan@gmail.com">Heinrich Elsigan</a>
+ * @version          V 2.25.1224
+ * @since            API 34
  *
- * Coded 2021-2025 by
- * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
- */
+ * Coded 2021-2028 by <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+.*/
  
 package eu.cqrxs.cipherpipe.crypt.hash;
 

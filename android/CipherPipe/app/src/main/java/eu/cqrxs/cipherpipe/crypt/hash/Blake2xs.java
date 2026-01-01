@@ -34,15 +34,11 @@ public class Blake2xs {
         String hexString = "";
         Digest digest = new org.bouncycastle.crypto.digests.Blake2xsDigest();
         byte[] resBuf = new byte[digest.getDigestSize()];
-        // digest.update(inBytes);
         digest.update(inBytes, 0, inBytes.length);
         digest.doFinal(resBuf, 0);
         HexFormat hex = HexFormat.of();
         hexString = hex.formatHex(resBuf);
-        // for (int wc = 0; wc < inBytes.Length; wc++)
-        //    hexString += string.Format("{0:x2}", inBytes[wc]);
 
-        // string strUtf8 = System.Text.Encoding.UTF8.GetString(inBytes);
         return hexString;
     }
 

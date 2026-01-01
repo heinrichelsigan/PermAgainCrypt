@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import eu.cqrxs.cipherpipe.util.*;
 
 import javax.crypto.Cipher;
 

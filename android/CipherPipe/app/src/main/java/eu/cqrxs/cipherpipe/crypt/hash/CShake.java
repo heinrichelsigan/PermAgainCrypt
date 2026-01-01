@@ -12,6 +12,11 @@ package eu.cqrxs.cipherpipe.crypt.hash;
 
 import org.bouncycastle.crypto.Digest;
 
+import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.cipherpipe.crypt.hash.Hex;
+import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
+import eu.cqrxs.cipherpipe.crypt.cipher.CryptHelper;
+import java.nio.charset.StandardCharsets;
 import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
@@ -31,18 +36,28 @@ public class CShake {
         if (inBytes == null || inBytes.length == 0)
             throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 
+		if (Constants.DEBUG)
+            System.out.println("CShake instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t");
+
         String hexString = "";
-        Digest digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(inBytes.length, inBytes, inBytes);
+        Digest digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(256, inBytes, CryptHelper.GetKeyBytesFromBytes(inBytes, 32));
         byte[] resBuf = new byte[digest.getDigestSize()];
         // digest.update(inBytes);
         digest.update(inBytes, 0, inBytes.length);
         digest.doFinal(resBuf, 0);
-        HexFormat hex = HexFormat.of();
-        hexString = hex.formatHex(resBuf);
-        // for (int wc = 0; wc < inBytes.Length; wc++)
-        //    hexString += string.Format("{0:x2}", inBytes[wc]);
 
-        // string strUtf8 = System.Text.Encoding.UTF8.GetString(inBytes);
+        String hexs = (new Hex16Coder()).encodeBytesToString(resBuf);
+
+		try {
+			HexFormat hex = HexFormat.of();
+			hexString = hex.formatHex(resBuf);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+        if (Constants.DEBUG) 
+			System.out.println("CShake bytes.length=" +resBuf.length + " \thexstring=" + hexString + " \thexs=" + hexs);
+
         return hexString;
     }
 

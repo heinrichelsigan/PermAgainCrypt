@@ -1,15 +1,14 @@
-/**
+/*
  * @author           <a href="mailto:heinrich.elsigan@area23.at">Heinrich Elsigan</a>
  * @version          V 1.0.1
  * @since            API 27 Oreo 8.1
  *
- * Coded 2021-2025 by
+ *
+ * Coded 2021-2027 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
-.*/
-
+ */
+ 
 package eu.cqrxs.cipherpipe.zip;
-
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -62,23 +61,27 @@ public class GZ  {
             throw new RuntimeException("Failed to zip content", e);
         }
     }
-
-
+	
 
     /**
      * gunzip gunzips a byte array (same as gzip -d )
      * @param gzBytes gzipped byte[]
      * @return unzipped plain byte[]
      */
-    public static byte[] gunzip(byte[] gzBytes) {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try{
-            IOUtils.copy(new GZIPInputStream(new ByteArrayInputStream(gzBytes)), out);
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
-        return out.toByteArray();
-    }
+	public static byte[] gunzip(final byte[] bytes) throws IOException {
+		if (bytes == null || bytes.length == 0) {
+			throw new IllegalArgumentException("Cannot unzip null or empty byte array");
+		}
+		try (final GZIPInputStream gunzipStream = new GZIPInputStream(new ByteArrayInputStream(bytes))) {
+			final ByteArrayOutputStream byteArrayOutStream = new ByteArrayOutputStream();
+			final byte[] data = new byte[16384];
+			int nRead;
+			while ((nRead = gunzipStream.read(data)) != -1) {
+				byteArrayOutStream.write(data, 0, nRead);
+			}
+			return byteArrayOutStream.toByteArray();
+		}
+	}
 
     /**
      * gunzips a gzipped byte[] to a plain text String

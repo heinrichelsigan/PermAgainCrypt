@@ -1,11 +1,23 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
+// import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
+
+// import androidx.core.content.res.TypedArrayUtils;
+
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
-        import org.bouncycastle.crypto.*;
+import java.util.Arrays;
+import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.HexFormat;
+import java.util.List;
+import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;
@@ -18,10 +30,16 @@ import org.bouncycastle.crypto.paddings.BlockCipherPadding;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
+import org.bouncycastle.jcajce.provider.symmetric.AES;
 
-        import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
-        import eu.cqrxs.cipherpipe.util.Constants;
-
+import eu.cqrxs.cipherpipe.crypt.encoding.EncodeEnum;
+import eu.cqrxs.cipherpipe.crypt.encoding.Hex16Coder;
+import eu.cqrxs.cipherpipe.crypt.encoding.EnDeCodeHelper;
+import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
+import eu.cqrxs.cipherpipe.zip.ZipType;
+import eu.cqrxs.cipherpipe.zip.*;
+import eu.cqrxs.cipherpipe.util.Constants;
+import eu.cqrxs.cipherpipe.util.*;
 
 /**
  * CryptBouncyCastle generic crypt wrapper class
@@ -35,10 +53,6 @@ public class CryptBounceCastle  {
 
     private byte[] tmpIv;
     private byte[] tmpKey;
-
-
-    // internal String PrivateUserKey { get => privateKey; }
-    // internal String PrivateUserHostKey { get => privateHash; }
 
     byte[] key;
     byte[] iv;
@@ -86,7 +100,7 @@ public class CryptBounceCastle  {
      */
     public CryptBounceCastle(CryptParams cparams, boolean init)  {
         CryptoBlockCipher = (cparams.blockCipher == null) ? new AESEngine() : cparams.blockCipher;
-        if ((CryptoBlockCipher.getAlgorithmName() == "RC564"))
+        if (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64")
             CryptoBlockCipher = new RC564Engine();
         CryptoBlockCipherPadding = new org.bouncycastle.crypto.paddings.ZeroBytePadding();
         keyLen = cparams.keyLen;
@@ -130,7 +144,7 @@ public class CryptBounceCastle  {
 
 
     /**
-     * GetUserKeyBytes gets symmetric cipher private byte[KeyLen] encryption / decryption key
+     * getUserKeyBytes gets symmetric cipher private byte[KeyLen] encryption / decryption key
      * @param secretKey user secret key, default email address
      * @param secretHash user host ip address
      * @return array of bytes with length keyLen
@@ -151,15 +165,16 @@ public class CryptBounceCastle  {
 
 
     /***
-     *  Generic CryptBounceCastle Encrypt member function
+     *  Generic CryptBounceCastle encrypt member function
      *  difference between out parameter encryptedData and return value, are 2 different encryption methods, but with the same result at the end
      * @param plainData plain data byte[] array
      * @return encrypted byte[] array
      */
     public byte[] encrypt(byte[] plainData)  throws InvalidCipherTextException {
         var cipher = CryptoBlockCipher;
-        // plainData = (CryptoBlockCipher.AlgorithmName == "RC564") ? EnDeCodeHelper.GetBytesFromBytes(plainData) : plainData;
-        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);
+		plainData = (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") ?
+			EnDeCodeHelper.getBytesFromBytes(plainData, 64, true) : plainData;
+        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);		
 
         switch (mode)
         {
@@ -192,9 +207,11 @@ public class CryptBounceCastle  {
                 break;
         }
 
-        KeyParameter keyParam = /* (CryptoBlockCipher.getAlgorithmName() == "RC564") ?
-            new org.bouncycastle.crypto.params.RC5Parameters(key, 2) : */
-                new org.bouncycastle.crypto.params.KeyParameter(key);
+        CipherParameters keyParam;
+		if (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") 
+            keyParam = new org.bouncycastle.crypto.params.RC5Parameters(key, 2);
+		else 
+			keyParam = new org.bouncycastle.crypto.params.KeyParameter(key);
         CipherParameters keyParamIV = new org.bouncycastle.crypto.params.ParametersWithIV(keyParam, iv);
 
         // if (Mode == "ECB")
@@ -216,7 +233,7 @@ public class CryptBounceCastle  {
     }
 
     /**
-     * Generic CryptBounceCastle Decrypt member function
+     * Generic CryptBounceCastle decrypt member function
      * difference between out parameter decryptedData and return value, are 2 different decryption methods, but with the same result at the end
      * @param cipherData encrypted byte[] arrey
      * @return decrypted plain byte[] data
@@ -257,12 +274,13 @@ public class CryptBounceCastle  {
         }
         // cipherMode.Reset()
 
-
-        KeyParameter keyParam = /* (CryptoBlockCipher.getAlgorithmName() == "RC564") ?
-                new org.bouncycastle.crypto.params.RC5Parameters(key, 2) : */
-                new org.bouncycastle.crypto.params.KeyParameter(key);
+		CipherParameters keyParam;
+		if (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") 
+            keyParam = new org.bouncycastle.crypto.params.RC5Parameters(key, 2);
+		else 
+			keyParam = new org.bouncycastle.crypto.params.KeyParameter(key);
+        
         CipherParameters keyParamIV = new ParametersWithIV(keyParam, iv);
-
 
         // Decrypt
         //if (Mode == "ECB")
@@ -285,7 +303,7 @@ public class CryptBounceCastle  {
         }
         catch (Exception exDecrypt)
         {
-            // Area23Log.LogOriginMsgEx("CryptBounceCastle", $"CryptBounceCastle {cipherMode.AlgorithmName}: Exceptíon on decrypting final block", exDecrypt);
+			eu.cqrxs.cipherpipe.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on decrypting final block" + exDecrypt.toString(), false);
             try
             {
                 plainData = new byte[outputSize];
@@ -293,20 +311,20 @@ public class CryptBounceCastle  {
             }
             catch (Exception exDecrypt2)
             {
-                // Area23Log.LogOriginMsgEx("CryptBounceCastle", $"CryptBounceCastle {cipherMode.AlgorithmName}: Exceptíon on 2x decrypting final block", exDecrypt2);
+				eu.cqrxs.cipherpipe.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on 2x decrypting final block: " + exDecrypt2.toString(), false);
                 // plainData = new byte[outputSize];
                 bs = cipherMode.doFinal(plainData, result);
             }
         }
 
-        // if (CryptoBlockCipher.AlgorithmName == "RC564")
-        //     return EnDeCodeHelper.GetBytesTrimNulls(plainData);
+		if (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") 
+			return EnDeCodeHelper.getBytesTrimNulls(plainData);
 
         return plainData;
     }
 
     /***
-     *  Generic CryptBounceCastle Encrypt String method
+     * Generic CryptBounceCastle encryptString method
      * @param inString plain String to encrypt
      * @param encodingType {@link EncodeEnum} beware to use uu in TestWebForm in C#
      *                                       because Form validation thinks,
@@ -323,7 +341,7 @@ public class CryptBounceCastle  {
 
 
     /***
-     * Generic CryptBounceCastle decrypt String method
+     * Generic CryptBounceCastle decryptString method
      * @param inCryptString encoded encrypted String, default base64 encoded
      * @param encodingType {@link EncodeEnum}
      * @return plain text decrypted String

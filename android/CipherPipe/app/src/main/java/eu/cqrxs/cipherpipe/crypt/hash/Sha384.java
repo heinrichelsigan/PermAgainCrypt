@@ -12,9 +12,15 @@ package eu.cqrxs.cipherpipe.crypt.hash;
 
 import org.bouncycastle.crypto.Digest;
 
+import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
+import java.security.Key;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HexFormat;
+import java.util.List;
+import java.util.Set;
 
 public class Sha384 {
 
@@ -24,15 +30,18 @@ public class Sha384 {
         if (inBytes == null || inBytes.length == 0)
             throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 
+        String hexString = "";
         Digest digest = new org.bouncycastle.crypto.digests.SHA384Digest();
         byte[] resBuf = new byte[digest.getDigestSize()];
         // digest.update(inBytes);
         digest.update(inBytes, 0, inBytes.length);
         digest.doFinal(resBuf, 0);
-
         HexFormat hex = HexFormat.of();
-        String hexString = hex.formatHex(resBuf);
+        hexString = hex.formatHex(resBuf);
+        // for (int wc = 0; wc < inBytes.Length; wc++)
+        //    hexString += string.Format("{0:x2}", inBytes[wc]);
 
+        // string strUtf8 = System.Text.Encoding.UTF8.GetString(inBytes);
         return hexString;
     }
 
