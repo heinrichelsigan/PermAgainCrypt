@@ -1006,6 +1006,11 @@ public class CqrJdFrame extends JFrame {
 			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
 			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
 
+			if (plain != null && plain.length() > 0) {
+		    	encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+			    jTextAreaDestination.setText(encrypted);
+            }
+            /*
             if (openFileBytes != null  || openFileBytes.length > 0) {
                 saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 saveFileSuffix = "";
@@ -1015,14 +1020,10 @@ public class CqrJdFrame extends JFrame {
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
                 save_action();
             }
-
-			if (plain != null && plain.length() > 0) {
-		    	encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
-			    jTextAreaDestination.setText(encrypted);
-            }
+            */
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			jTextAreaDestination.setText(ex.toString());
+			// jTextAreaDestination.setText(ex.toString());
 		}
 	}
 	
@@ -1054,7 +1055,12 @@ public class CqrJdFrame extends JFrame {
 		try {
 			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
 			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
-
+			
+            if (encrypted != null && encrypted.length() > 0) {
+                decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+			    jTextAreaDestination.setText(decrypted);
+            }
+            /*
             if (openFileBytes != null && openFileBytes.length > 0) {
                 saveFileBytes = pipe.decodeDecrpytBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 int ptCnt = 0;
@@ -1067,16 +1073,10 @@ public class CqrJdFrame extends JFrame {
                     }
                 }
                 save_action();
-            }   
-
-			if (encrypted != null && encrypted.length() > 0) {
-                decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
-			    jTextAreaDestination.setText(decrypted);
-            }
-
-
+            } 
+            */
 		} catch (Exception ex) {
-			jTextAreaDestination.setText(ex.toString());
+			// jTextAreaDestination.setText(ex.toString());
 			ex.printStackTrace();
 		}
 	}
