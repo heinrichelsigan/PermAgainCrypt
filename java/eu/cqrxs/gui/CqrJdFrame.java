@@ -82,7 +82,7 @@ public class CqrJdFrame extends JFrame {
 	
 	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16, menuEncoding_itemUu, menuEncoding_itemXx, menuEncoding_itemBase64;
 	
-	JMenuItem menuHash_Ascon256, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSBCrypt,
+	JMenuItem menuHash_Ascon256, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSDCrypt,
 				menuHash_RipeMD256, menuHash_Sha1, menuHash_Sha256, menuHash_Sha512, menuHash_SCrypt, menuHash_Whirlpool, menuHash_Xoodyak;
 
 	JMenu menuOptions_menuWarnings, menuOptions_verifyEncryption, menuOptions_menuFileSettings;
@@ -350,13 +350,15 @@ public class CqrJdFrame extends JFrame {
 		menuHash_BCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_BCrypt.setText("BCrypt");
 		menuHash_BCrypt.setActionCommand("BCrypt");
-		menuHash_BCrypt.addActionListener(aSymAction);
+		menuHash_BCrypt.setFont(menuFont);
+		menuHash_BCrypt.addActionListener(aSymAction);		
 		menuHash.add(menuHash_BCrypt);
 				
 		menuHash_Blake2xs = new JMenuItem();
 		menuHash_Blake2xs.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Blake2xs.setText("Blake2xs");
 		menuHash_Blake2xs.setActionCommand("Blake2xs");
+		menuHash_Blake2xs.setFont(menuFont);
 		menuHash_Blake2xs.addActionListener(aSymAction);
 		menuHash.add(menuHash_Blake2xs);
 
@@ -364,6 +366,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_CShake.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_CShake.setText("CShake");
 		menuHash_CShake.setActionCommand("CShake");
+		menuHash_CShake.setFont(menuFont);
 		menuHash_CShake.addActionListener(aSymAction);
 		menuHash.add(menuHash_CShake);
 		
@@ -371,6 +374,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Hex.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Hex.setText("Hex");
 		menuHash_Hex.setActionCommand("Hex");
+		menuHash_Hex.setFont(menuFont);
 		menuHash_Hex.addActionListener(aSymAction);
 		menuHash.add(menuHash_Hex);
 		
@@ -378,20 +382,23 @@ public class CqrJdFrame extends JFrame {
 		menuHash_MD5.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_MD5.setText("MD5");
 		menuHash_MD5.setActionCommand("MD5");
+		menuHash_MD5.setFont(menuFont);
 		menuHash_MD5.addActionListener(aSymAction);
 		menuHash.add(menuHash_MD5);				
 		
-		menuHash_OpenBSBCrypt = new JMenuItem();
-		menuHash_OpenBSBCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuHash_OpenBSBCrypt.setText("OpenBSBCrypt");
-		menuHash_OpenBSBCrypt.setActionCommand("OpenBSBCrypt");
-		menuHash_OpenBSBCrypt.addActionListener(aSymAction);
-		menuHash.add(menuHash_OpenBSBCrypt);
+		menuHash_OpenBSDCrypt = new JMenuItem();
+		menuHash_OpenBSDCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_OpenBSDCrypt.setText("OpenBSDCrypt");
+		menuHash_OpenBSDCrypt.setActionCommand("OpenBSDCrypt");
+		menuHash_OpenBSDCrypt.setFont(menuFont);
+		menuHash_OpenBSDCrypt.addActionListener(aSymAction);
+		menuHash.add(menuHash_OpenBSDCrypt);
 		
 		menuHash_RipeMD256 = new JMenuItem();
 		menuHash_RipeMD256.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_RipeMD256.setText("RipeMD256");
 		menuHash_RipeMD256.setActionCommand("RipeMD256");
+		menuHash_RipeMD256.setFont(menuFont);
 		menuHash_RipeMD256.addActionListener(aSymAction);
 		menuHash.add(menuHash_RipeMD256);
 						
@@ -399,6 +406,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_SCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_SCrypt.setText("SCrypt");
 		menuHash_SCrypt.setActionCommand("SCrypt");
+		menuHash_SCrypt.setFont(menuFont);
 		menuHash_SCrypt.addActionListener(aSymAction);
 		menuHash.add(menuHash_SCrypt);
 		
@@ -406,6 +414,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Sha1.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Sha1.setText("Sha1");
 		menuHash_Sha1.setActionCommand("Sha1");
+		menuHash_Sha1.setFont(menuFont);
 		menuHash_Sha1.addActionListener(aSymAction);
 		menuHash.add(menuHash_Sha1);		
 		
@@ -413,6 +422,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Sha256.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Sha256.setText("Sha256");
 		menuHash_Sha256.setActionCommand("Sha256");
+		menuHash_Sha256.setFont(menuFont);
 		menuHash_Sha256.addActionListener(aSymAction);
 		menuHash.add(menuHash_Sha256);
 		
@@ -420,6 +430,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Sha512.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Sha512.setText("Sha512");
 		menuHash_Sha512.setActionCommand("Sha512");
+		menuHash_Sha512.setFont(menuFont);
 		menuHash_Sha512.addActionListener(aSymAction);
 		menuHash.add(menuHash_Sha512);
 				
@@ -427,6 +438,7 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Whirlpool.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Whirlpool.setText("Whirlpool");
 		menuHash_Whirlpool.setActionCommand("Whirlpool");
+		menuHash_Whirlpool.setFont(menuFont);
 		menuHash_Whirlpool.addActionListener(aSymAction);
 		menuHash.add(menuHash_Whirlpool);
 		
@@ -876,8 +888,8 @@ public class CqrJdFrame extends JFrame {
 				selectItemByString(jComboBox_Hash, menuHash, "Hex"); 	
 			else if (object == menuHash_MD5) 
 				selectItemByString(jComboBox_Hash, menuHash, "MD5"); 
-			else if (object == menuHash_OpenBSBCrypt) 	
-				selectItemByString(jComboBox_Hash, menuHash, "OpenBSBCrypt"); 
+			else if (object == menuHash_OpenBSDCrypt) 	
+				selectItemByString(jComboBox_Hash, menuHash, "OpenBSDCrypt"); 
 			else if (object == menuHash_RipeMD256) 
 				selectItemByString(jComboBox_Hash, menuHash, "RipeMD256");	
 			else if (object == menuHash_SCrypt) 
