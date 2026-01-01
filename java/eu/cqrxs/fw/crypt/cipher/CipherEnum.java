@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import eu.cqrxs.fw.util.*;
@@ -162,6 +164,7 @@ public enum CipherEnum implements Serializable {
 
 	public static Set<CipherEnum> getCipherEnums() {
 		Set<CipherEnum> allElementsInCipherEnum = EnumSet.allOf(CipherEnum.class);
+		// allElementsInCipherEnum.stream().sorted().collect(Collectors.toList());
 		return allElementsInCipherEnum;
 	}
 
@@ -230,6 +233,12 @@ public enum CipherEnum implements Serializable {
 			cnames.add(cipherEnum.getName());
 			cnt++;
 		}
+		Collections.sort(cnames, new Comparator<String>() {
+            @Override
+            public int compare(String s0, String s1) {                
+                return s0.compareToIgnoreCase(s1);
+            }
+        });
 		
 		return cnames.toArray(new String[cnt]);		
     }

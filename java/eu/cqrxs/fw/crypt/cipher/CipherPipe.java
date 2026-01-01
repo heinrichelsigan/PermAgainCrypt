@@ -269,13 +269,12 @@ public class CipherPipe {
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 encryptBytes = des3.Encrypt(inBytes);
-                break;
-            */
+                break; 
             case CipherEnum.RC564:
                 CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
                 encryptBytes = cryptRC564.encrypt(inBytes);
                 break;
-            /*
+
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
@@ -306,7 +305,7 @@ public class CipherPipe {
             case Noekeon:
             case RC2:
             case RC532:
-            // case RC564:
+			case RC564:
             case RC6:
             case Rijndael:
             case Seed:
@@ -359,13 +358,11 @@ public class CipherPipe {
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 decryptBytes = des3.Decrypt(cipherBytes);
-                break;
-            */
+                break
             case CipherEnum.RC564:
                 CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
                 decryptBytes = cryptRC564.decrypt(cipherBytes);
                 break;
-            /*
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
@@ -395,7 +392,7 @@ public class CipherPipe {
             case Noekeon:
             case RC2:
             case RC532:
-            // case RC564:
+            case RC564:
             case RC6:
             case Rijndael:
             case Seed:

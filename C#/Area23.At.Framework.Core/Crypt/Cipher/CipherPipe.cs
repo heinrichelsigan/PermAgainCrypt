@@ -295,10 +295,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     Des3Net des3 = new Des3Net(secretKey, hash);
                     encryptBytes = des3.Encrypt(inBytes);
                     break;
-                case CipherEnum.RC564:
-                    RC564.RC564GenWithKey(secretKey, hash, true);
-                    encryptBytes = RC564.Encrypt(inBytes);
-                    break;
+                //case CipherEnum.RC564:
+                //    RC564.RC564GenWithKey(secretKey, hash, true);
+                //    encryptBytes = RC564.Encrypt(inBytes);
+                //    break;
                 case CipherEnum.Rsa:
                     AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                     encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
@@ -327,7 +327,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Noekeon:
                 case CipherEnum.RC2:
                 case CipherEnum.RC532:
-                // case CipherEnum.RC564:
+                case CipherEnum.RC564:
                 case CipherEnum.RC6:
                 case CipherEnum.Rijndael:
                 case CipherEnum.Seed:
@@ -378,10 +378,10 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                     Des3Net des3 = new Des3Net(secretKey, hash);
                     decryptBytes = des3.Decrypt(cipherBytes);
                     break;
-                case CipherEnum.RC564:
-                    RC564.RC564GenWithKey(secretKey, hash, true);
-                    decryptBytes = RC564.Decrypt(cipherBytes);
-                    break;
+                //case CipherEnum.RC564:
+                //    RC564.RC564GenWithKey(secretKey, hash, true);
+                //    decryptBytes = RC564.Decrypt(cipherBytes);
+                //    break;
                 case CipherEnum.Rsa:
                     AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                     decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
@@ -410,7 +410,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 case CipherEnum.Noekeon:
                 case CipherEnum.RC2:
                 case CipherEnum.RC532:
-                // case CipherEnum.RC564:
+                case CipherEnum.RC564:
                 case CipherEnum.RC6:
                 case CipherEnum.Rijndael:
                 case CipherEnum.Seed:
