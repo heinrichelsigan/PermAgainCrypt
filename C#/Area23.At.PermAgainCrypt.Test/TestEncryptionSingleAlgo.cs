@@ -3,10 +3,7 @@ using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Util;
 using Area23.At.Framework.Core.Zip;
-using Org.BouncyCastle.Crypto;
-using System.Configuration;
 using System.Reflection;
-using System.Xml.Linq;
 
 namespace Area23.At.PermAgainCrypt.Test
 {

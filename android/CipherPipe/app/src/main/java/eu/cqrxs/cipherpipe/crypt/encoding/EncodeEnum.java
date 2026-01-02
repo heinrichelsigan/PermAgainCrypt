@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+import eu.cqrxs.cipherpipe.crypt.hash.KeyHash;
 import eu.cqrxs.cipherpipe.util.*;
 import eu.cqrxs.cipherpipe.crypt.encoding.*;
 
@@ -250,6 +252,19 @@ public enum EncodeEnum implements Serializable {
         }
 
         return encodingTypeList.toArray(new String[cnt]);
+    }
+
+
+
+    public static EncodeEnum[] getEncodeEnumArray() {
+        int cnt = 0;
+        List<EncodeEnum> encodings = new ArrayList<EncodeEnum>();
+        for (EncodeEnum ncoding  : EncodeEnum.values()) {
+            encodings.add(ncoding);
+            cnt++;
+        }
+
+        return encodings.toArray(EncodeEnum[]::new);
     }
 
     public static Set<EncodeEnum> getEncodingTypes() {

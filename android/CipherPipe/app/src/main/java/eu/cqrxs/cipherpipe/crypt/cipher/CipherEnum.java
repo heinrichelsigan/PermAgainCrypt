@@ -169,6 +169,21 @@ public enum CipherEnum implements Serializable {
 	}
 
 
+
+
+    public static CipherEnum[] getCipherEnumArray() {
+        int cnt = 0;
+        List<CipherEnum> ciphs = new ArrayList<CipherEnum>();
+        for (CipherEnum cipherEnum : CipherEnum.values())  {
+            ciphs.add(cipherEnum);
+            cnt++;
+        }
+
+        return ciphs.toArray(CipherEnum[]::new);
+    }
+
+
+
     /**
      * getName
      * @return name of enum

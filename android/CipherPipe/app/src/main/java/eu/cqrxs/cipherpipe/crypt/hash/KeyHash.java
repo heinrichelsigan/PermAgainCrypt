@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
+import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
 import eu.cqrxs.cipherpipe.util.*;
 
 /**
@@ -254,8 +256,20 @@ public enum KeyHash implements Serializable {
 	}
 
 
+    public static KeyHash[] getKeyHashArray() {
+        int cnt = 0;
+        List<KeyHash> khashes = new ArrayList<KeyHash>();
+        for (KeyHash khash  : KeyHash.values()) {
+            khashes.add(khash);
+            cnt++;
+        }
 
-	public static Set<KeyHash> getKeyHashes() {
+        return khashes.toArray(KeyHash[]::new);
+    }
+
+
+
+    public static Set<KeyHash> getKeyHashes() {
 		Set<KeyHash> allElementsInKeyHash = EnumSet.allOf(KeyHash.class);
 		return allElementsInKeyHash;
 	}
