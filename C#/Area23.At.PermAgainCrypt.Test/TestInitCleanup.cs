@@ -36,6 +36,7 @@ namespace Area23.At.PermAgainCrypt.Test
         public void TestCleanup()
         {
             // This method is called after each test method.
+            Area23Log.LogOriginMsg("TestInitCleanup", "TestCleanup");
         }
 
     }
