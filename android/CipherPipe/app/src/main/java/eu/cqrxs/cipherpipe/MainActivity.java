@@ -37,7 +37,7 @@ import eu.cqrxs.cipherpipe.zip.ZipType;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnEncrypt, btnDecrypt, btnSetPipe, btnRandText, btnReset;
+    Button btnEncrypt, btnDecrypt, btnSetPipe, btnHashPipe, btnRandText, btnReset;
     EditText editEncryptKey, showCipherPipe, editTextSource, showTextDestination, editKeyHash;
     Spinner spinnerHash, spinnerZip, spinnerAlgos, spinnerEncode;
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             showTextDestination.setText(exi.toString());
         }
         btnSetPipe = (Button) findViewById(R.id.btnSetPipe);
+        btnHashPipe = (Button) findViewById(R.id.btnHashPipe);
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
         btnRandText = (Button) findViewById(R.id.btnRandText);
@@ -89,6 +90,23 @@ public class MainActivity extends AppCompatActivity {
                 editKeyHash.setText(hashed);
 
                 CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash);
+
+                CipherEnum[] cipherEnums = pipe.getInPipe();
+                String pipeSting = "";
+                for (int ci = 0; ci < cipherEnums.length; ci++)
+                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
+                showCipherPipe.setText(pipeSting);
+            }
+        });
+
+        btnHashPipe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String key = editEncryptKey.getText().toString();
+                String hashed = keyHash.hash(key);
+                editKeyHash.setText(hashed);
+
+                CipherPipe pipe = new CipherPipe(hashed, key, encodeType, zipType, keyHash);
 
                 CipherEnum[] cipherEnums = pipe.getInPipe();
                 String pipeSting = "";

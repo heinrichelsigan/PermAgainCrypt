@@ -38,6 +38,8 @@
     <string name="msg_perfect">Perfect</string>
     <string name="msg_gameOver">Game Over</string>
     <string name="msg_levelCompleted">Level completed!</string>
+    <string name="warnOnEmptyPipe" translatable="false">warn on empty pipe</string>
+    <string name="warnOnDoubleZip" translatable="false">warn on double zip</string>
 
     <string name="setPipe" translatable="false">set pipe</string>
     <string name="hashPipe" translatable="false">hash pipe</string>

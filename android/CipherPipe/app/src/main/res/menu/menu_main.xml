@@ -1,0 +1,69 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="eu.cqrxs.cipherpipe">
+    <item
+        android:id="@+id/action_start"
+        android:orderInCategory="100"
+        android:title="@string/action_start"
+        android:enabled="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save"
+        android:orderInCategory="150"
+        android:title="@string/action_save"
+        android:enabled="true"
+        app:showAsAction="never" />
+    <group android:id="@+id/group_load"  android:visible="true">
+        <item
+            android:id="@+id/action_load"
+            android:orderInCategory="200"
+            android:title="@string/action_load"
+            app:showAsAction="collapseActionView">
+
+        </item>
+    </group>
+    <group android:id="@+id/group_layout"  android:visible="true">
+        <item
+            android:id="@+id/action_options"
+            android:orderInCategory="400"
+            android:title="@string/action_options"
+            app:showAsAction="collapseActionView">
+            <menu>
+                <item android:id="@+id/action_warnOnEmptyPipe"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:orderInCategory="1200"
+                    android:title="@string/warnOnEmptyPipe"
+                    android:enabled="true" />
+                <item android:id="@+id/action_warnOnDoubleZip"
+                    android:checkable="true"
+                    android:checked="false"
+                    android:orderInCategory="1200"
+                    android:title="@string/warnOnDoubleZip"
+                    android:enabled="true" />
+            </menu>
+        </item>
+    </group>
+    <item
+        android:id="@+id/action_screenshot"
+        android:orderInCategory="9000"
+        android:title="@string/action_screenshot"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="9100"
+        android:title="@string/action_help"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="9200"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_exit"
+        android:orderInCategory="9900"
+        android:title="@string/action_exit"
+        android:enabled="true"
+        app:showAsAction="never" />
+</menu>
