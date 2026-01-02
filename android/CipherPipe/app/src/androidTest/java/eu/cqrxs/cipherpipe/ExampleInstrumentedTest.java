@@ -26,7 +26,9 @@ import eu.cqrxs.cipherpipe.zip.ZipType;
 
 /**
  * TestEncryptionTwoAlgos validate 2 encryptions pipe steps
- *
+ * Tests:
+ *     useAppContext
+ *     testAllEncryptionTwoAlgosString
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
@@ -41,7 +43,7 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void testAllEncryptionTwoAlgosBytes() {
+    public void testAllEncryptionTwoAlgosString() {
         String className = "TestEncryptionTwoAlgos";
         String methodBase = "TestAllEncryptionTwoAlgosBytes";
         Email = eu.cqrxs.cipherpipe.util.Constants.AUTHOR_EMAIL;
