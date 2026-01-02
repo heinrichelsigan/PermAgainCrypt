@@ -37,7 +37,7 @@ import eu.cqrxs.cipherpipe.zip.ZipType;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnEncrypt, btnDecrypt, btnSetPipe;
+    Button btnEncrypt, btnDecrypt, btnSetPipe, btnRandText, btnReset;
     EditText editEncryptKey, showCipherPipe, editTextSource, showTextDestination, editKeyHash;
     Spinner spinnerHash, spinnerZip, spinnerAlgos, spinnerEncode;
     String[] hashStrings, encodingStrings, zipStrings, algoStrings;
@@ -63,15 +63,19 @@ public class MainActivity extends AppCompatActivity {
             zipStrings = ZipType.getNames();
             algoStrings = CipherEnum.getNames();
         } catch (Exception exi) {
+            showTextDestination.setText(exi.toString());
         }
         btnSetPipe = (Button) findViewById(R.id.btnSetPipe);
         btnEncrypt = (Button) findViewById(R.id.btnEncrypt);
         btnDecrypt = (Button) findViewById(R.id.btnDecrypt);
+        btnRandText = (Button) findViewById(R.id.btnRandText);
+        btnReset = (Button) findViewById(R.id.btnReset);
         editEncryptKey = (EditText) findViewById(R.id.editEncryptKey);
+        editKeyHash = (EditText) findViewById(R.id.editKeyHash);
         showCipherPipe = (EditText) findViewById(R.id.showCipherPipe);
         editTextSource = (EditText) findViewById(R.id.editTextSource);
         showTextDestination = (EditText) findViewById(R.id.showTextDestination);
-        editKeyHash = (EditText) findViewById(R.id.editKeyHash);
+
         spinnerHash = (Spinner) findViewById(R.id.spinnerHash);
         spinnerZip = (Spinner) findViewById(R.id.spinnerZip);
         spinnerAlgos = (Spinner) findViewById(R.id.spinnerAlgos);
@@ -94,13 +98,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnRandText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fortune = eu.cqrxs.cipherpipe.util.Fortune.getFortune();
+                editTextSource.setText(fortune);
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                editEncryptKey.setText("");
+                editKeyHash.setText("");
+                showCipherPipe.setText("");
+                editTextSource.setText("");
+                showTextDestination.setText("");
+            }
+        });
+
         btnEncrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextSource = (EditText) findViewById(R.id.editTextSource);
-                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
-                showCipherPipe = (EditText) findViewById(R.id.showCipherPipe);
-
+                ;
                 String key = editEncryptKey.getText().toString();
                 String hashed = keyHash.hash(key);
                 editKeyHash.setText(hashed);
@@ -111,41 +132,24 @@ public class MainActivity extends AppCompatActivity {
                     ciphers = CipherEnum.parsePipeText(cipherPipeString);
                 }
                 CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
-
                 String plain = editTextSource.getText().toString();
-                String encrypted = "";
-                CipherEnum[] cipherEnums = pipe.getInPipe();
-                String pipeSting = "";
-                for (int ci = 0; ci < cipherEnums.length; ci++)
-                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 
-                showMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s",
-                        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
-                try {
-                    showMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-                            key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
-                    encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+                String pipeSting = pipe.getPipeString();
+                showMsg(String.format("pipe[%s] encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+                        pipeSting, key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
 
-                    showTextDestination.setText(encrypted);
-                } catch (Exception ex) {
-                    showTextDestination.setText(ex.toString());
-                }
-
+                String encrypted = encryptString(plain, key, hashed, pipe);
+                showTextDestination.setText(encrypted);
             }
         });
 
         btnDecrypt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editTextSource = (EditText) findViewById(R.id.editTextSource);
-                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
-                editTextSource = (EditText) findViewById(R.id.editTextSource);
-                showTextDestination = (EditText) findViewById(R.id.showTextDestination);
 
                 String key = editEncryptKey.getText().toString();
                 String hashed = keyHash.hash(key);
                 editKeyHash.setText(hashed);
-
 
                 String cipherPipeString = showCipherPipe.getText().toString();
                 CipherEnum[] ciphers = new CipherEnum[0];
@@ -154,24 +158,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
 
-                String plain = "";
                 String encrypted = editTextSource.getText().toString();
                 CipherEnum[] cipherEnums = pipe.getOutPipe();
-                String pipeSting = "";
-                for (int ci = 0; ci < cipherEnums.length; ci++)
-                    pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
-                showMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-                        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
 
-                String decrypted = "";
-                try {
-                    decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
-                    showTextDestination.setText(decrypted);
-                    showMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-                            key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
-                } catch (Exception ex) {
-                    showTextDestination.setText(ex.toString());
-                }
+                String pipeSting = pipe.getPipeString();
+                showMsg(String.format("pipe[%s] decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+                        pipeSting, key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+
+                String decrypted = decryptedString(encrypted, key, hashed, pipe);
+                showTextDestination.setText(decrypted);
             }
         });
 
@@ -209,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // parent.setSelection(6);
                 ;
             }
         });
@@ -300,6 +296,29 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+
+    public String encryptString(String plain, String key, String hashed, CipherPipe pipe) {
+
+        String encrypted = "";
+        try {
+            encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+        } catch (Exception exi) {
+            showTextDestination.setText(exi.toString());
+        }
+        return encrypted;
+    }
+
+    public String decryptedString(String encrypted, String key, String hashed, CipherPipe pipe) {
+
+        String decrypted = "";
+        try {
+            decrypted =  pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+        } catch (Exception exi) {
+            showTextDestination.setText(exi.toString());
+        }
+        return decrypted;
     }
 
 

@@ -40,9 +40,12 @@
     <string name="msg_levelCompleted">Level completed!</string>
 
     <string name="setPipe" translatable="false">set pipe</string>
+    <string name="hashPipe" translatable="false">hash pipe</string>
     <string name="encrypt" translatable="false">encrypt</string>
 	<string name="decrypt" translatable="false">decrypt</string>
-	<string name="none" translatable="false" />
+    <string name="reset" translatable="false">reset</string>
+    <string name="randText" translatable="false">random text</string>
+ 	<string name="none" translatable="false" />
 	<string name="enter_source_text"  translatable="false">enter text source</string>
 	<string name="select_encóding" translatable="false">select encóding</string>
 	<string name="show_cipher_pipe" translatable="false">cipher pipe</string>
@@ -56,6 +59,8 @@
 	<string name="enter_encrypt_key" translatable="false">enter encrypt key</string>
     <string name="enter_phone_number" translatable="false">enter phone number</string>
     <string name="show_text_destination" translatable="false">show text destination</string>
+    <string name="pipe_tooltip" translatable="false">cipher pipe</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
