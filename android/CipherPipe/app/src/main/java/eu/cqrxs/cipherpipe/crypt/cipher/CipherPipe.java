@@ -198,7 +198,7 @@ public class CipherPipe {
      */
     public CipherPipe(String key, String hash, EncodeEnum encType, ZipType zpType, KeyHash kh) {
 
-        this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh);
+        this(CryptHelper.getKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh);
         cipherKey = key;
         cipherHash = hash;
     }

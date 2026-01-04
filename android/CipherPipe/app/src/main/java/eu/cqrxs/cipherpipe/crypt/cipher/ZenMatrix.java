@@ -1,9 +1,7 @@
 package eu.cqrxs.cipherpipe.crypt.cipher;
 
 // import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
-
 // import androidx.core.content.res.TypedArrayUtils;
-
 // import com.google.common.primitives.Bytes;
 
 import android.renderscript.RSInvalidStateException;
@@ -13,6 +11,7 @@ import com.google.ai.client.generativeai.common.InvalidStateException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
@@ -85,10 +84,10 @@ public class ZenMatrix { /* implements BlockCipher  { */
         return _inverseMatrix;
     }
 
-	public HashSet<Byte> permutationKeyHash;
-	/*
-        #region IBlockCipher interface
-    */
+	public HashSet<byte> permutationKeyHash;
+
+    /* #region IBlockCipher interface */
+
         public String getAlgorithmName()  {
             return SYMMCIPHERALGONAME;
         }
@@ -129,18 +128,16 @@ public class ZenMatrix { /* implements BlockCipher  { */
             initialised = true;
         }
 
-        /*
-        /// <summary>
-        /// Processes one BLOCK with BLOCK_SIZE <see cref="BLOCK_SIZE"/>
-        /// </summary>
-        /// <param name="inBuf"></param>
-        /// <param name="inOff"></param>
-        /// <param name="outBuf"></param>
-        /// <param name="outOff"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidDataException"></exception>
-        public int orocessBlock(byte[] inBuf, int inOff, byte[] outBuf, int outOff)
-        {
+        /**
+         * Processes one BLOCK with BLOCK_SIZE <see cref="BLOCK_SIZE"/>
+         * @param inBuf in bytes buffer
+         * @param inOff in bytes offset
+         * @param outBuf out bytes buffer
+         * @param outOff out bytes offset
+         * @return BLOCKSIZE of processed bytes or when no bytes processed ß
+         * @throws RuntimeException
+         */
+        public int orocessBlock(byte[] inBuf, int inOff, byte[] outBuf, int outOff)  {
             if (privateBytes == null)
                 throw new RuntimeException(SYMMCIPHERALGONAME + " engine not initialised");
 
@@ -152,14 +149,12 @@ public class ZenMatrix { /* implements BlockCipher  { */
             if (outOff >= outBuf.length || outOff + BLOCK_SIZE > outBuf.length)
                 throw new RuntimeException("Cannot process next " + BLOCK_SIZE + " bytes, because inOff (" + outOff + ") + BLOCK_SIZE (" + BLOCK_SIZE + ") > outBuf.length (" + outBuf.length + ")");
 
-            if (inOff < inBuf.length && inOff + BLOCK_SIZE <= inBuf.length && outOff < outBuf.length && outOff + BLOCK_SIZE <= outBuf.length)
-            {
+            if (inOff < inBuf.length && inOff + BLOCK_SIZE <= inBuf.length && outOff < outBuf.length && outOff + BLOCK_SIZE <= outBuf.length) {
                 byte[] inOffBuf = new byte[inBuf.length - inOff];
                 System.arraycopy(inBuf, inOff, inOffBuf, 0, inOffBuf.length);
 
-                if (forEncryption)
-                {
-                    byte[] padBytes = PadBuffer(inOffBuf);
+                if (forEncryption)  {
+                    byte[] padBytes = padBuffer(inOffBuf);
                     inOffBuf = padBytes;
                 }
 
@@ -168,12 +163,11 @@ public class ZenMatrix { /* implements BlockCipher  { */
 
                 byte[] processed = new byte[BLOCK_SIZE];
 
-                for (aCnt = 0, bCnt = 0; aCnt < BLOCK_SIZE; aCnt++)
-                {
+                for (aCnt = 0, bCnt = 0; aCnt < BLOCK_SIZE; aCnt++)  {
                     byte b = inOffBuf[aCnt];
                     byte mappedByte;
                     mapByteValue(b, mappedByte, forEncryption);
-                    sbyte sm = forEncryption ? MatrixPermutationKey[aCnt % 0x10] : InverseMatrix[aCnt % 0x10];
+                    byte sm = forEncryption ? matrixPermutationKey[aCnt % 0x10] : _inverseMatrix[aCnt % 0x10];
                     int pos = bCnt + ((int)sm) % 0x10;
                     processed[pos] = mappedByte;
                     if (aCnt != 0 && aCnt % 0x10 == 0)
@@ -185,7 +179,7 @@ public class ZenMatrix { /* implements BlockCipher  { */
                 //    outBytes = PadBuffer(processed);
                 // Array.Copy(outBytes, 0, outBuf, outOff, BLOCK_SIZE);
 
-                Array.Copy(processed, 0, outBuf, outOff, BLOCK_SIZE);
+                System.arraycopy(processed, 0, outBuf, outOff, BLOCK_SIZE);
 
                 return BLOCK_SIZE;
             }
@@ -193,8 +187,7 @@ public class ZenMatrix { /* implements BlockCipher  { */
             return 0;
         }
 
-        public int ProcessBlock(ReadOnlySpan<byte> input, Span<byte> output)
-        {
+        public int processBlock(ReadOnlySpan<byte> input, Span<byte> output) {
             int aCnt = 0, bCnt = 0;
             byte[] buffer = input.ToArray();
             if (forEncryption)                                  // add padding buffer to match BLOCK_SIZE
@@ -229,120 +222,106 @@ public class ZenMatrix { /* implements BlockCipher  { */
             return BLOCK_SIZE;
         }
 
-        #endregion IBlockCipher interface
+        /* #endregion IBlockCipher interface */
 
 
-        #region ctor_init_gen_reverse
+        /* #region ctor_init_gen_reverse */
 
-        /// <summary>
-        /// public constructor
-        /// </summary>
-        public ZenMatrix(int bs = 16)
-        {
-            for (int i = 0; i < BLOCK_SIZES.Length; i++)
-            {
+        /**
+         * public constructor
+         * @param bs
+        */
+        public ZenMatrix(int bs)  {
+            for (int i = 0; i < BLOCK_SIZES.length; i++)  {
                 if (bs == BLOCK_SIZES[i])
                     BLOCK_SIZE = BLOCK_SIZES[i];
             }
-            sbyte sbcnt = 0x0;
-            MatrixPermutationKey = new sbyte[ZEN_SIZE];
-            foreach (sbyte s in MatrixPermutationBase)
-            {
+            byte sbcnt = 0x0;
+            matrixPermutationKey = new byte[ZEN_SIZE];
+            for (byte s : matrixPermutationBase)  {
                 privateBytes[sbcnt % ZEN_SIZE] = (byte)0x0;
-                MatrixPermutationKey[sbcnt++] = s;
+                matrixPermutationKey[sbcnt++] = s;
             }
-            PermutationKeyHash = new HashSet<sbyte>(MatrixPermutationBase);
-            _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
+            permutationKeyHash = new HashSet<byte>(matrixPermutationBase);
+            _inverseMatrix = buildInverseMatrix(matrixPermutationKey);
         }
 
-        public ZenMatrix(string secretKey = "", KeyHash keyHash = KeyHash.Hex, bool fullSymmetric = false) : this(16)
-        {
-            if (string.IsNullOrEmpty(secretKey))
-                throw new ArgumentNullException("secretKey");
+        public ZenMatrix(String secretKey, KeyHash keyHash, boolean fullSymmetric)  {
+            this(16);
+            if (secretKey.isEmpty())
+                throw new IllegalArgumentException("secretKey");
 
-            string hashIV = keyHash.Hash(secretKey);
-            byte[] keyBytes = CryptHelper.GetUserKeyBytes(secretKey, hashIV, 0x10);
+            String hashIV = keyHash.hash(secretKey);
+            byte[] keyBytes = CryptHelper.getUserKeyBytes(secretKey, hashIV, 0x10);
 
-            ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
-        }
-
-
-        /// <summary>
-        /// initializes a <see cref="ZenMatrix"/> with secret user key string and hash iv
-        /// </summary>
-        /// <param name="secretKey">user's secret key</param>
-        /// <param name="hashIV">private key hash iv string</param>
-        /// <param name="fullSymmetric">
-        /// fullSymmetric means that zen matrix is it's inverse element 
-        /// and decrypts back to plain text, when encrypting twice or ²</param>       
-        /// <exception cref="ApplicationException"></exception>
-        public ZenMatrix(string secretKey = "", string hashIV = "", bool fullSymmetric = false, KeyHash keyHash = KeyHash.Hex) : this(16)
-        {
-            if (string.IsNullOrEmpty(secretKey))
-                throw new ArgumentNullException("secretKey");
-
-            hashIV = string.IsNullOrEmpty(hashIV) ? keyHash.Hash(secretKey) : hashIV;
-            byte[] keyBytes = CryptHelper.GetUserKeyBytes(secretKey, hashIV, 0x10);
-
-            ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
+            genBuildWithBytes(keyBytes, fullSymmetric);
         }
 
 
-        /// <summary>
-        /// initializes a <see cref="ZenMatrix"/> with an array of key bytes
-        /// </summary>
-        /// <param name="keyBytes">array of key bytes</param>
-        /// <param name="fullSymmetric">
-        /// fullSymmetric means that zen matrix is it's inverse element 
-        /// and decrypts back to plain text, when encrypting twice or ²</param> 
-        public ZenMatrix(byte[] keyBytes, bool fullSymmetric = false) : this(16)
-        {
-            ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
+        /**
+         * initializes a {@link ZenMatrix} with secret user key string and hash iv
+         * @param secretKey user's secret key
+         * @param hashIV private key hash iv string
+         * @param fullSymmetric fullSymmetric means that zen matrix is it's inverse element and decrypts back to plain text, when encrypting twice or ²
+         * @param keyHash {@link KeyHash} is used, when hash iv is null or empty to get new hash iv from user key
+         */
+        public ZenMatrix(String secretKey, String hashIV, boolean fullSymmetric, KeyHash keyHash) {
+            this(16);
+            if (secretKey.isEmpty()
+                throw new IllegalArgumentException("secretKey is null or empty");
+
+            hashIV = hashIV.isEmpty() ? keyHash.hash(secretKey) : hashIV;
+            byte[] keyBytes = CryptHelper.getUserKeyBytes(secretKey, hashIV, 0x10);
+
+            genBuildWithBytes(keyBytes, fullSymmetric);
         }
 
-        /// <summary>
-        /// InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
-        /// </summary>
-        private void InitMatrixSymChiffer()
-        {
-            sbyte sbcnt = 0x0;
-            MatrixPermutationKey = new sbyte[0x10];
-            foreach (sbyte s in MatrixPermutationBase)
-            {
-                privateBytes[sbcnt % 0x10] = (byte)0x0;
-                MatrixPermutationKey[sbcnt++] = s;
+        /***
+         * initializes a {@link ZenMatrix} with an array of key bytes
+         * @param keyBytes user key bytes to init algorithm instance
+         * @param fullSymmetric if true inverse matrix is same as encrypt matrix V * M * M = V * M * MInverse = V
+         */
+        public ZenMatrix(byte[] keyBytes, boolean fullSymmetric) {
+                this(16);
+                genBuildWithBytes(keyBytes, fullSymmetric);
+        }
+
+
+        /**
+         *  InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
+         */
+        private void initMatrixSymChiffer()  {
+                byte sbcnt = 0x0;
+                matrixPermutationKey = new byte[0x10];
+                for (sbyte s : matrixPermutationBase)  {
+                    privateBytes[sbcnt % 0x10] = (byte)0x0;
+                    matrixPermutationKey[sbcnt++] = s;
+                }
+                permutationKeyHash = new HashSet<byte>(matrixPermutationBase);
+                _inverseMatrix = buildInverseMatrix(matrixPermutationKey);
             }
-            PermutationKeyHash = new HashSet<sbyte>(MatrixPermutationBase);
-            _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
-        }
 
 
-
-        /// <summary>
-        /// Generates ZenMatrix with key bytes
-        /// </summary>
-        /// <param name="keyBytes">must have at least 4 bytes and will be truncated after 16 bytes
-        /// only the first 16 bytes will be taken from keyBytes for <see cref="ZenMatrix"/>
-        /// </param>
-        /// <returns>true, if init was with same key successfull</returns>
-        /// <param name="fullSymmetric">
-        /// fullSymmetric means that zen matrix is it's inverse element 
-        /// and decrypts back to plain text, when encrypting twice or ²</param>       
-        /// <exception cref="ApplicationException"></exception>
-        protected virtual void ZenMatrixGenWithBytes(byte[] keyBytes, bool fullSymmetric = false)
-        {
-            if ((keyBytes == null || keyBytes.Length < 4))
-                throw new ApplicationException("byte[] keyBytes is null or keyBytes.Length < 4");
+        /**
+         * Generates / builds a ZenMatrix with key bytes
+         * @param keyBytes users keybytes created by users key and key hash iv
+         *                  must have at least 4 bytes and will be truncated after
+         *                  16 bytes only the first 16 bytes will be taken from keyBytes for {@link ZenMatrix}
+         * @param fullSymmetric fullSymmetric means that zen matrix is it's inverse element and decrypts back to plain text, when encrypting twice or ²
+         * @return true, if init with key bytes was successful
+         */
+        protected virtual void genBuildWithBytes(byte[] keyBytes, boolean fullSymmetric)  {
+            if ((keyBytes == null || keyBytes.length < 4))
+                throw new RuntimeException("byte[] keyBytes is null or keyBytes.Length < 4");
 
             // InitMatrixSymChiffer();
-
             int ba = 0, bb = 0;
-            Array.Copy(keyBytes, 0, privateBytes, 0, Math.Min(keyBytes.Length, 0x10));
+            System.arraycopy(keyBytes, 0, privateBytes, 0, Math.min(keyBytes.length, 0x10));
 
-            PermutationKeyHash = new HashSet<sbyte>();
+            permutationKeyHash = new HashSet<byte>();
 
             // MatrixDict is only needed, when (fullSymmetric == true)
-            Dictionary<sbyte, sbyte> MatrixDict = new Dictionary<sbyte, sbyte>();
+            HashMap<byte, byte> matrixDict = new HashMap<byte, byte>();
 
             // Simplest method to fill deterministic up privateBytes from keyBytes with keyBytes.Length < 16
             // for (int i = keyBytes.Length; i < 0x10; i++)
@@ -354,140 +333,128 @@ public class ZenMatrix { /* implements BlockCipher  { */
             // }
             //
 
-            foreach (byte keyByte in new List<byte>(privateBytes))
+            for (byte keyByte : privateBytes)
             {
-                sbyte b = (sbyte)(keyByte % 0x10);
+                byte b = (byte)(keyByte % 0x10);
                 for (int i = 0; i < 0x20; i++)
                 {
-                    if (PermutationKeyHash.Contains(b) || ((int)b) == ba)
-                        b = (i >= 0x10) ? ((sbyte)((Convert.ToInt32(keyByte) + i) % 0x10)) :
-                                ((sbyte)((Convert.ToInt32(keyByte) + MagicOrder[i]) % 0x10));
+                    if (permutationKeyHash.contains(b) || ((int)b) == ba)
+                        b = (i >= 0x10) ? ((byte)(((int)(keyByte) + i) % 0x10)) :
+                                ((byte)(((int)(keyByte) + magicOrder[i]) % 0x10));
                     else break;
                 }
 
-                if (!PermutationKeyHash.Contains(b))
+                if (!permutationKeyHash.contains(b))
                 {
                     bb = (int)b;
                     if (ba != bb)
                     {
                         if (fullSymmetric)
                         {
-                            if (!MatrixDict.Keys.Contains(b) && !MatrixDict.Keys.Contains((sbyte)ba))
-                            {
-                                MatrixDict.Add((sbyte)ba, (sbyte)bb);
-                                MatrixDict.Add((sbyte)bb, (sbyte)ba);
+                            if (!matrixDict.keySet().contains(b) && !matrixDict.values().contains((sbyte)ba)) {
+                                matrixDict.put((byte)ba, (byte)bb);
+                                matrixDict.put((byte)bb, (byte)ba);
                             }
                         }
 
-                        PermutationKeyHash.Add(b);
-                        MatrixPermutationKey = MatrixPermutationKey.SwapTPositions<sbyte>(ba, bb);
+                        permutationKeyHash.add(b);
+                        // TODO:
+                        //matrixPermutationKey = matrixPermutationKey.SwapTPositions<sbyte>(ba, bb);
                         ba++;
                     }
                 }
             }
 
-            if (fullSymmetric)
-            {
-                #region fullSymmetric => InverseMatrix = MatrixPermutationKey;
-                if (MatrixDict.Count < 0x0f)
-                {
-                    for (int k = 0; k < 0x10; k++)
-                    {
-                        if (!MatrixDict.Keys.Contains((sbyte)k))
-                        {
-                            for (int l = 0x0f; l >= 0; l--)
-                            {
-                                if (MatrixDict.Values.Contains((sbyte)l))
+            if (fullSymmetric) {
+                /* #region fullSymmetric => InverseMatrix = MatrixPermutationKey; */
+                if (matrixDict.count < 0x0f)  {
+                    for (int k = 0; k < 0x10; k++) {
+                        if (!matrixDict.keySet().contains((byte)k)) {
+                            for (int l = 0x0f; l >= 0; l--)  {
+                                if (matrixDict.values().contains(((byte)l))
                                     continue;
 
-                                MatrixDict.Add((sbyte)k, (sbyte)l);
-                                if (!MatrixDict.Keys.Contains((sbyte)l))
-                                    MatrixDict.Add((sbyte)l, (sbyte)k);
+                                matrixDict.put((byte)k, (byte)l);
+                                if (!matrixDict.keySet().contains((byte)l))
+                                    matrixDict.put((byte)l, (byte)k);
                                 break;
                             }
                         }
                     }
                 }
-                if (MatrixDict.Count == 0x10)
-                {
-                    sbyte bKey, bValue;
-                    PermutationKeyHash.Clear();
-                    for (int n = 0; n < 0x10; n++)
-                    {
-                        bKey = (sbyte)n;
-                        bValue = (sbyte)MatrixDict[bKey];
-                        PermutationKeyHash.Add(bValue);
-                        MatrixPermutationKey[(int)bKey] = bValue;
-                        MatrixPermutationKey[(int)bValue] = bKey;
+                if (matrixDict.size() == 0x10) {
+                    byte bKey, bValue;
+                    permutationKeyHash.Clear();
+                    for (int n = 0; n < 0x10; n++) {
+                        bKey = (byte)n;
+                        bValue = (byte)matrixDict[bKey];
+                        permutationKeyHash.add(bValue);
+                        matrixPermutationKey[(int)bKey] = bValue;,
+                        matrixPermutationKey[(int)bValue] = bKey;
                     }
                 }
-                #endregion fullSymmetric => InverseMatrix = MatrixPermutationKey;
+                /* #endregion fullSymmetric => InverseMatrix = MatrixPermutationKey; */
 
-                _inverseMatrix = MatrixPermutationKey;
-            }
-            else
-            {
-                #region bugfix for missing permutations                
-                sbyte[] strikeBytes = {  (sbyte)0x0, (sbyte)0x1, (sbyte)0x2, (sbyte)0x3, (sbyte)0x4, (sbyte)0x5, (sbyte)0x6, (sbyte)0x7,
-                                        (sbyte)0x8, (sbyte)0x9, (sbyte)0xa, (sbyte)0xb, (sbyte)0xc, (sbyte)0xd, (sbyte)0xe, (sbyte)0xf  };
-                HashSet<sbyte> strikeList = new HashSet<sbyte>(strikeBytes);
+                _inverseMatrix = matrixPermutationKey;
+            }  else  {
+                /* #region bugfix for missing permutations */
+                byte[] strikeBytes = {  (byte)0x0, (byte)0x1, (byte)0x2, (byte)0x3, (byte)0x4, (byte)0x5, (byte)0x6, (byte)0x7,
+                                        (byte)0x8, (byte)0x9, (byte)0xa, (byte)0xb, (byte)0xc, (byte)0xd, (byte)0xe, (byte)0xf  };
+                HashSet<byte> strikeList = new HashSet<byte>(strikeBytes);
 
-                for (int i = 0; i < 0x10; i++)
-                {
-                    if ((PermutationKeyHash.Count <= i) && strikeList.Count > 0)
-                        PermutationKeyHash.Add((sbyte)strikeList.ElementAt(0));
+                for (int i = 0; i < 0x10; i++)  {
+                    if ((permutationKeyHash.size() <= i) && strikeList.size() > 0)
+                        permutationKeyHash.add((byte)strikeList[ß]);
 
-                    sbyte inByte = (sbyte)i;
-                    if ((int)PermutationKeyHash.ElementAt(i) != i)
-                    {
-                        inByte = PermutationKeyHash.ElementAt(i);
-                        MatrixPermutationKey[i] = inByte;
+                    byte inByte = (byte)i;
+                    if ((int)permutationKeyHash[1] != i)  {
+                        inByte = permutationKeyHash[1]M
+                        matrixPermutationKey[i] = inByte;
                     }
-                    if (strikeList.Contains(inByte))
-                        strikeList.Remove(inByte);
+                    if (strikeList.contains(inByte))
+                        strikeList.remove(inByte);
                 }
 
-                _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
-                #endregion bugfix for missing permutations
+                _inverseMatrix = buildInverseMatrix(matrixPermutationKey];
+                /* #endregion bugfix for missing permutations */
             }
 
-            string perm = string.Empty, kbs = string.Empty;
+            String perm = "", kbs = "";
 
             for (int j = 0; j < 0x10; j++)
-                perm += MatrixPermutationKey[j].ToString("x1");
-            for (int j = 0; j < keyBytes.Length; j++)
-                kbs += keyBytes[j].ToString("x2");
+                perm += String.format("%x", matrixPermutationKey[j]);
+            for (int j = 0; j < keyBytes.length; j++)
+                kbs += String.format("%x2", keyBytes[j]);
 
 
             initialised = true;
-            Area23Log.LogOriginMsg("ZenMatrix", perm + " KeyBytes = " + kbs);
+            (new eu.cqrxs.cipherpipe.util.DbgWriter()).msg("ZenMatrix" +  perm + " KeyBytes = " + kbs, 2, true);
         }
 
 
         #endregion ctor_init_gen_reverse
 
-        #region ProcessEncryptDecryptBytes
+        /* #region ProcessEncryptDecryptBytes */
 
-        /// <summary>
-        /// ProcessBytes processes bytes for encryption or decryption depending on <see cref="forEncryption"/>
-        ///     processes the next len=16 bytes to encrypt, starting at offSet
-        ///     or processes the next len=16 bytes to decrypt, starting at offSet
-        /// </summary>
-        /// <param name="inBytes">in bytes array to encrypt</param>
-        /// <param name="offSet">starting offSet</param>
-        /// <param name="len">len of byte block (default 16)</param>
-        /// <returns>byte[len] (default: 16) segment of encrypted bytes</returns>
-        protected internal virtual byte[] ProcessBytes(byte[] inBytes, int offSet = 0, int len = 0x10)
-        {
+
+
+        /***
+         * ProcessBytes processes bytes for encryption or decryption depending on {@link forEncryption}
+         *         processes the next len=16 bytes to encrypt, starting at offSet
+         *         or processes the next len=16 bytes to decrypt, starting at offSet
+         * @param inBytes bytes array to encrypt
+         * @param offSet starting offSet
+         * @param len of byte block (default 16)
+         * @return byte[len] (default: 16) segment of encrypted bytes
+         */
+        protected  byte[] ProcessBytes(byte[] inBytes, int offSet, int len) {
             int aCnt = 0, bCnt = 0;
-            if (offSet < inBytes.Length && offSet + len <= inBytes.Length)
-            {
+            if (offSet < inBytes.length && offSet + len <= inBytes.length) {
                 byte[] processed = new byte[len];
-                for (aCnt = 0, bCnt = offSet; bCnt < offSet + len; aCnt++, bCnt++)
-                {
+                for (aCnt = 0, bCnt = offSet; bCnt < offSet + len; aCnt++, bCnt++) {
                     byte b = inBytes[bCnt];
-                    MapByteValue(ref b, out byte mappedByte, forEncryption);
-                    sbyte pos = (forEncryption) ? MatrixPermutationKey[aCnt % 0x10] : InverseMatrix[aCnt % 0x10];
+                    napByteValue(ref b, out byte mappedByte, forEncryption);
+                    byte pos = (forEncryption) ? matrixPermutationKey[aCnt % 0x10] : inverseMatrix[aCnt % 0x10];
                     processed[(int)pos] = mappedByte;
                 }
 
@@ -499,43 +466,44 @@ public class ZenMatrix { /* implements BlockCipher  { */
 
 
 
-        #endregion ProcessEncryptDecryptBytes
+        /* #endregion ProcessEncryptDecryptBytes */
 
-        #region encrypt decrypt
+        /* #region encrypt decrypt */
+/// <summary>
 
-        /// <summary>
-        /// in case of encryption, 
-        ///     pads 0 or random buffer at end of inBytes,
-        ///     so that inBytes % BLOCK_SIZE == 0 
-        /// in case of decryption,
-        ///     trims remaining padding buffer from inBytes
-        /// encryption or decryption are triggered via <see cref="forEncryption"/>
-        /// </summary>
-        /// <param name="inBytes">input bytes to pad </param>
-        /// <param name="useRandom">use random padding</param>
-        /// <returns>padded or unpadded out bytes</returns>
-        public virtual byte[] PadBuffer(byte[] inBytes, bool useRandom = false)
-        {
-            int ilen = inBytes.Length;                          // length of data bytes
+/// <param name="inBytes"></param>
+/// <param name="useRandom"</param>
+/// <returns></returns>
+
+        /**
+         * in case of encryption,
+         *         pads 0 or random buffer at end of inBytes,
+         *         so that inBytes % BLOCK_SIZE == 0
+         *         in case of decryption,
+         *         trims remaining padding buffer from inBytes
+         *         encryption or decryption are triggered via {@link forEncryption}
+         * @param inBytes input bytes to pad
+         * @param useRandom >use random padding
+         * @return padded or unpadded out bytes
+         */
+        public byte[] padBuffer(byte[] inBytes, boolean useRandom) {
+            int ilen = inBytes.length;                          // length of data bytes
             int oSize = (BLOCK_SIZE - (ilen % BLOCK_SIZE));     // oSize is rounded up to next number % BLOCK_SIZE == 0
             byte[] outBytes;
 
-            if (forEncryption)                                  // add buffer for encryption to inbytes
-            {
+            if (forEncryption)  {                               // add buffer for encryption to inbytes
                 long olen = ((long)(ilen + oSize));             // olen is (long)(ilen + oSize)
                 byte[] padbuf = new byte[oSize];                // padding buffer 
                 outBytes = new byte[olen];                      // out bytes with random padding bytes at end            
 
                 if (!useRandom)
-                    for (int ic = 0; ic < padbuf.Length; padbuf[ic++] = (byte)0) ;
-                else
-                {
-                    Random rnd = new Random(ilen);
-                    rnd.NextBytes(padbuf);
+                    for (int ic = 0; ic < padbuf.length; padbuf[ic++] = (byte)0) ;
+                else  {
+                    java.util.Random rnd = new java.util.Random(ilen);
+                    rnd.nextBytes(padbuf);
                 }
 
-                for (int i = 0, j = 0; i < olen; i++)
-                {
+                for (int i = 0, j = 0; i < olen; i++) {
                     // outBytes[i] = (i < ilen) ? inBytes[i] : ((i == ilen || i == (olen - 1)) ? (byte)0x0 : buf[j++]);
                     if (i < ilen)
                         outBytes[i] = inBytes[i];               // copy full inBytes to outBytes
@@ -546,18 +514,14 @@ public class ZenMatrix { /* implements BlockCipher  { */
                     else if (i == (olen - 1))
                         outBytes[i] = (byte)0x0;                // terminate outBytes with NULL
                 }
-            }
-            else                                                // truncate padding buffer to get trimmed decrypted output
-            {
-                int olen = inBytes.Length;
-                bool last0 = false;
+            } else {                                            // truncate padding buffer to get trimmed decrypted output
 
-                for (olen = ilen; (olen > 0 && !last0); olen--)
-                {
-                    if (olen < (ilen - 2))
-                    {
-                        if ((inBytes[olen - 1] == (byte)0x0) && inBytes[olen - 2] != (byte)0x0)
-                        {
+                int olen = inBytes.length;
+                boolean last0 = false;
+
+                for (olen = ilen; (olen > 0 && !last0); olen--) {
+                    if (olen < (ilen - 2))  {
+                        if ((inBytes[olen - 1] == (byte)0x0) && inBytes[olen - 2] != (byte)0x0)  {
                             last0 = true;
                             break;
                         }
@@ -565,7 +529,7 @@ public class ZenMatrix { /* implements BlockCipher  { */
                 }
 
                 outBytes = (olen > 1) ? new byte[olen] : new byte[ilen];
-                Array.Copy(inBytes, 0, outBytes, 0, outBytes.Length);
+                System.arraycopy(inBytes, 0, outBytes, 0, outBytes.length);
             }
 
             return outBytes;
@@ -573,28 +537,32 @@ public class ZenMatrix { /* implements BlockCipher  { */
         }
 
         /// <summary>
-        /// MatrixSymChiffer Encrypt member function
+        ///
         /// </summary>
-        /// <param name="pdata">plain data as <see cref="T:byte[]"/></param>
-        /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
-        public virtual byte[] Encrypt(byte[] pdata) {
+        /// <param name="pdata"> <see cref="T:byte[]"/></param>
+        /// <returns <see cref="T:byte[]">bytes</see></returns>
+
+        /**
+         * MatrixSymChiffer Encrypt member function
+         * @param pdata plain data as
+         * @return encrypted data
+         */
+        public byte[] Encrypt(byte[] pdata) {
             // Check arguments.
-            if (pdata == null || pdata.Length <= 0)
-                throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
+            if (pdata == null || pdata.length <= 0)
+                throw new IllegalArgumentException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
 
             forEncryption = true;
-            byte[] obytes = PadBuffer(pdata, false);
+            byte[] obytes = padBuffer(pdata, false);
 
             List<byte> encryptedBytes = new List<byte>();
-            for (int i = 0; i < obytes.Length; i += 0x10)
-            {
-                foreach (byte pb in ProcessBytes(obytes, i, 0x10))
-                {
-                    encryptedBytes.Add(pb);
+            for (int i = 0; i < obytes.length; i += 0x10)  {
+                for (byte pb : ProcessBytes(obytes, i, 0x10))  {
+                    encryptedBytes.add(pb);
                 }
             }
 
-            return encryptedBytes.ToArray();
+            return encryptedBytes.toArray();
         }
 
         /// <summary>

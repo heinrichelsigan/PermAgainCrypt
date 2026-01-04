@@ -59,7 +59,7 @@ public class CqrJdFrame extends JFrame {
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
-	JLabel jLabel_fileIn = new JLabel(), jLabel_fileOut = new JLabel();		
+	JLabel jLabel_fileIn, jLabel_fileOut, jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
 	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
@@ -675,36 +675,44 @@ public class CqrJdFrame extends JFrame {
 		
 		jButton_encrypt = new JButton();
 		jButton_encrypt.setFont(cryptFont);
-		jButton_encrypt.setBounds(8, 360, 120, 25);
+		jButton_encrypt.setBounds(8, 244, 120, 25);
 		jButton_encrypt.setText("Encrypt");
 		jButton_encrypt.addActionListener(lSymAction);
 		getContentPane().add(jButton_encrypt);
 		
 		jButton_decrypt = new JButton();
 		jButton_decrypt.setFont(cryptFont);
-		jButton_decrypt.setBounds(142, 360, 120, 25);
+		jButton_decrypt.setBounds(142, 244, 120, 25);
 		jButton_decrypt.setText("Decrypt");
 		jButton_decrypt.addActionListener(lSymAction);
 		getContentPane().add(jButton_decrypt);
 		
 		jButton_randomText = new JButton();
 		jButton_randomText.setFont(cryptFont);
-		jButton_randomText.setBounds(368, 360, 120, 25);
+		jButton_randomText.setBounds(368, 244, 120, 25);
 		jButton_randomText.setText("Random Text");
 		jButton_randomText.addActionListener(lSymAction);
 		getContentPane().add(jButton_randomText);
 				
+		jLabel_infoMessage = new JLabel();
+		jLabel_infoMessage.setFont(cryptFont);
+		jLabel_infoMessage.setBounds(512, 244, 468, 25);
+		jLabel_infoMessage.setText("");
+		jLabel_infoMessage.setBackground(Color.YELLOW);
+		getContentPane().add(jLabel_infoMessage);
+				
 		jButton_resetForm = new JButton();
 		jButton_resetForm.setFont(cryptFont);
-		jButton_resetForm.setBounds(876, 360, 120, 25);
+		jButton_resetForm.setBounds(876, 244, 120, 25);
 		jButton_resetForm.setText("Reset Form");
 		jButton_resetForm.addActionListener(lSymAction);
 		getContentPane().add(jButton_resetForm);
 		
 		
 		jTextAreaSource = new JTextArea();
-		jTextAreaSource.setBounds(8, 396, 480, 292);
+		jTextAreaSource.setBounds(8, 280, 480, 400);
 		jTextAreaSource.setBackground(Color.WHITE);  
+		jTextAreaSource.setFont(cryptFont);
 		jTextAreaSource.setLineWrap(true);
 		jTextAreaSource.setFont(cryptFont);
 		// jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");		
@@ -712,15 +720,28 @@ public class CqrJdFrame extends JFrame {
 		getContentPane().add(jTextAreaSource);
 				
 		jTextAreaDestination = new JTextArea();
-		jTextAreaDestination.setBounds(516,396,480,292);
+		jTextAreaDestination.setBounds(516, 280, 480, 400);
 		jTextAreaDestination.setLineWrap(true);
-		jTextAreaDestination.setBackground(Color.GRAY);  
+		jTextAreaDestination.setFont(cryptFont);
+		jTextAreaDestination.setEditable(false);
 		jTextAreaDestination.setEditable(false);
 		// jTextAreaDestination.setEnabled(false);
 		// scrollDestination = new JScrollPane (jTextAreaDestination, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);	
         // scrollDestination.setHorizontalScrollBarPolicy();			
 		getContentPane().add(jTextAreaDestination);
-									
+		
+		jLabel_statusSource = new JLabel();
+		jLabel_statusSource.setBounds(8, 684, 120, 25);
+		jLabel_statusSource.setFont(cryptFont);
+		jLabel_statusSource.setText("");
+		getContentPane().add(jLabel_statusSource);
+		
+		jLabel_statusDestination = new JLabel();
+		jLabel_statusDestination.setBounds(876, 684, 120, 25);
+		jLabel_statusDestination.setFont(cryptFont);
+		jLabel_statusDestination.setText("");
+		getContentPane().add(jLabel_statusDestination);
+		
 		setVisible(true);	
 		
 	}
@@ -946,18 +967,26 @@ public class CqrJdFrame extends JFrame {
 				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
                 break;
 			}
-		}
-		
+		}		
 		
 		try{
-			openFileBytes = Files.readAllBytes(f.toPath());
+			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
 			jLabel_fileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
+			setInfoMsg("Exception during file open.");
 			JOptionPane.showMessageDialog(null, e);
 			e.printStackTrace();
 		}                
+		
+		if (openFileBytes.length < 2048)
+			jLabel_statusSource.setText(openFileBytes.length + " bytes");
+		if (openFileBytes.length > 2048 && openFileBytes.length < 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / 1024) + " KB.");
+		if (openFileBytes.length > 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / (1024*1024)) + " MB.");
+				
     }   
 
 
@@ -991,7 +1020,9 @@ public class CqrJdFrame extends JFrame {
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
 		} catch (Exception ex) {
+			setInfoMsg("Exception during file save.");
 			JOptionPane.showMessageDialog(null, ex);
+			
 			ex.printStackTrace();
 		}
 			
@@ -1012,6 +1043,9 @@ public class CqrJdFrame extends JFrame {
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
 			
+			
+			setInfoMsg("Set pipe to: " + pipe.getPipeString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1026,8 +1060,9 @@ public class CqrJdFrame extends JFrame {
 		}
 		String hashed = "";
 		try {
-				hashed = keyHash.hash(keyValue);
-				jTextField_Hash.setText(hashed);
+			hashed = keyHash.hash(keyValue);
+			jTextField_Hash.setText(hashed);
+			setInfoMsg("Hashed key " + keyValue);
 		} catch (Exception exh) {
 		}
 	}
@@ -1046,6 +1081,8 @@ public class CqrJdFrame extends JFrame {
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
 			
+			setInfoMsg("Hashed pipe to: " + pipe.getPipeString());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1054,6 +1091,12 @@ public class CqrJdFrame extends JFrame {
 	protected void randomText_action(ActionEvent event) {
 		String currentFortune = eu.cqrxs.fw.util.Fortune.getFortune();
 		jTextAreaSource.setText(currentFortune);
+		if (currentFortune.length() < 2048)
+			jLabel_statusSource.setText(currentFortune.length() + " bytes");
+		if (currentFortune.length()  > 2048 && currentFortune.length() < 1048576)
+			jLabel_statusSource.setText((int)(currentFortune.length() / 1024) + " KB");
+		if (currentFortune.length()> 1048576)
+			jLabel_statusSource.setText((int)(currentFortune.length() / (1024*1024)) + " MB");
 	}
 	
 	protected void resetForm_action(ActionEvent event) {		
@@ -1063,7 +1106,12 @@ public class CqrJdFrame extends JFrame {
 			jTextField_Pipe.setText("");
 			jTextField_Hash.setText("");
 			jTextField_Key.setText("zen@area23.at");
-			// TODO: reset JComboBoxes
+			// TODO: reset JComboBoxes jComboBox_Algo
+			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
+			selectItemByString(jComboBox_Hash, menuHash, "Hex");
+			selectItemByString(jComboBox_Zip, menuZip, "None");
+			
+			setInfoMsg("Form cleared.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1097,8 +1145,24 @@ public class CqrJdFrame extends JFrame {
 			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
 
 			if (plain != null && plain.length() > 0) {
-		    	encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+		    	
+				if (plain.length() < 2048)
+					jLabel_statusSource.setText(plain.length() + " bytes");
+				if (plain.length()  > 2048 && plain.length() < 1048576)
+					jLabel_statusSource.setText((int)(plain.length() / 1024) + " KB");
+				if (plain.length()> 1048576)
+					jLabel_statusSource.setText((int)(plain.length() / (1024*1024)) + " MB");
+				
+				encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
 			    jTextAreaDestination.setText(encrypted);
+								
+				setInfoMsg("source text encrypted");
+				if (encrypted.length() < 2048)
+					jLabel_statusDestination.setText(encrypted.length() + " bytes");
+				if (encrypted.length() > 2048 && encrypted.length() < 1048576)
+					jLabel_statusDestination.setText((int)(encrypted.length() / 1024) + " KB.");
+				if (encrypted.length() > 1048576)
+					jLabel_statusDestination.setText((int)(encrypted.length() / (1024*1024)) + " MB.");
             }
             /*
             if (openFileBytes != null  || openFileBytes.length > 0) {
@@ -1113,6 +1177,7 @@ public class CqrJdFrame extends JFrame {
             */
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			setInfoMsg("Exception during encrypt.");
 			// jTextAreaDestination.setText(ex.toString());
 		}
 	}
@@ -1147,8 +1212,25 @@ public class CqrJdFrame extends JFrame {
 			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
 			
             if (encrypted != null && encrypted.length() > 0) {
-                decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+                
+				if (encrypted.length() < 2048)
+					jLabel_statusSource.setText(encrypted.length() + " bytes");
+				if (encrypted.length()  > 2048 && encrypted.length() < 1048576)
+					jLabel_statusSource.setText((int)(encrypted.length() / 1024) + " KB");
+				if (encrypted.length()> 1048576)
+					jLabel_statusSource.setText((int)(encrypted.length() / (1024*1024)) + " MB");
+				
+				decrypted = pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
 			    jTextAreaDestination.setText(decrypted);
+				
+				if (decrypted.length() < 2048)
+					jLabel_statusDestination.setText(decrypted.length() + " bytes");
+				if (decrypted.length() > 2048 && decrypted.length() < 1048576)
+					jLabel_statusDestination.setText((int)(encrypted.length() / 1024) + " KB.");
+				if (decrypted.length() > 1048576)
+					jLabel_statusDestination.setText((int)(decrypted.length() / (1024*1024)) + " MB.");
+				
+				setInfoMsg("source text decrypted");
             }
             /*
             if (openFileBytes != null && openFileBytes.length > 0) {
@@ -1168,6 +1250,7 @@ public class CqrJdFrame extends JFrame {
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());
 			ex.printStackTrace();
+			setInfoMsg("Exception during decrypt.");
 		}
 	}
 	
@@ -1313,5 +1396,9 @@ public class CqrJdFrame extends JFrame {
 		
 		return;
 	}	
+
+	protected void setInfoMsg(String msg) {
+		jLabel_infoMessage.setText(msg);
+	}
 
 }

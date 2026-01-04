@@ -82,8 +82,7 @@ public class CryptHelper {
      * @param hashedKey users private secret key hash
      * @return doubled concatendated string of (secretKey + hash)
      */
-    public static String PrivateKeyWithUserHash(String secKey, String hashedKey)
-    {
+    public static String PrivateKeyWithUserHash(String secKey, String hashedKey) {
         if (secKey == null || secKey.length() < 1)
             throw new IllegalArgumentException("secKey");
 
@@ -103,8 +102,7 @@ public class CryptHelper {
      * @return doubled concatendated string of (secretKey + hash)
      * @Exception IllegalArgumentException
      */
-    public static byte[] KeyUserHashBytes(String key, String keyHash, boolean merge)
-    {
+    public static byte[] KeyUserHashBytes(String key, String keyHash, boolean merge)  {
         if (key == null || key.length() < 1)
             throw new IllegalArgumentException("key");
 
@@ -114,7 +112,7 @@ public class CryptHelper {
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
         byte[] hashBytes = keyHash.getBytes(Charset.forName("UTF-8"));
 
-        return KeyHashBytes(keyBytes, hashBytes, merge);
+        return keyHashBytes(keyBytes, hashBytes, merge);
     }
 
     /***
@@ -124,7 +122,7 @@ public class CryptHelper {
      * @param merge
      * @return merged byte array
      */
-    public static byte[] KeyHashBytes(byte[] keyBytes, byte[] hashBytes, boolean merge) {
+    public static byte[] keyHashBytes(byte[] keyBytes, byte[] hashBytes, boolean merge) {
         if (keyBytes == null || keyBytes.length == 0)
             throw new IllegalArgumentException("keyBytes");
 
@@ -137,8 +135,7 @@ public class CryptHelper {
         List<Byte> outBytes = new ArrayList<Byte>();
 
         int kb = 0, hb = 0;
-        for (int ob = 0; (ob < (keyBytes.length + hashBytes.length)); ob++)
-        {
+        for (int ob = 0; (ob < (keyBytes.length + hashBytes.length)); ob++)  {
             if (kb < keyBytes.length)
                 outBytes.add(keyBytes[kb++]);
             if (hb < hashBytes.length)
@@ -161,7 +158,14 @@ public class CryptHelper {
     }
 
 
-    public static byte[] GetKeyBytesSimple(String key, String keyHash, int keyLen) {
+    /**
+     * getKeyBytesSimple gets simplö user key bytes from users key and key hash
+     * @param key users secret key
+     * @param keyHash hashed users key
+     * @param keyLen length that keybytes should have afterwards
+     * @return generated user keybyte array from key and hash
+     */
+    public static byte[] getKeyBytesSimple(String key, String keyHash, int keyLen) {
         if (key == null || key.length() == 0)
             throw new IllegalArgumentException("key");
 
@@ -187,25 +191,28 @@ public class CryptHelper {
         if (bigBytes.length >= keyLen) {
             ByteBuffer bytebuf = ByteBuffer.wrap(bigBytes);
             bytebuf.get(outBytes, 0, keyLen);
-            // System.arraycopy()
             return outBytes;
         }
 
-        byte[] hugeBytes = tarBytes(bigBytes, bigBytes);
+        byte[] hugeBytes = bigBytes:
+        while (hugeBytes.length < keyLen)
+            hugeBytes = tarBytes(hugeBytes, bigBytes);
 
-        // return GetUserKeyBytes(key, keyHash, keyLen);
-        return hugeBytes;
+        // if (hugeBytes.length > keyLen)
+        System.arraycopy(hugeBytes, 0, outBytes, 0, keyLen);
+
+        return outBytes;
     }
 
 
        /***
-        *
-        * @param key
-        * @param keyHash
-        * @param keyLen
-        * @return
+        * getUserKeyBytes
+        * @param key users secret key
+        * @param keyHash hashed key
+        * @param keyLen total length of new generated key bytes
+        * @return user keybytes {@link byte[]}
         */
-        public static byte[] GetUserKeyBytes(String key, String keyHash, int keyLen)  {
+        public static byte[] getUserKeyBytes(String key, String keyHash, int keyLen)  {
             if (key == null || key.length() == 0)
                 throw new IllegalArgumentException("key");
 
@@ -222,7 +229,7 @@ public class CryptHelper {
             String keyByteHashString = key;
             byte[] tmpKey = new byte[keyLen];
 
-            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes, true);
+            byte[] keyHashBytes = keyHashBytes(keyBytes, hashBytes, true);
             keyByteCnt = keyHashBytes.length;
             byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
 
@@ -265,11 +272,13 @@ public class CryptHelper {
         }
 
 
-        /***
-         *
-         *
+        /**
+         * getKeyBytesFromBytes
+         * @param keyBytes users keybytes
+         * @param keyLen maximum length, that wil be needed for stretching key bytes
+         * @return key bytes stretched to length by adding one or many different key hashes
          */
-        public static byte[] GetKeyBytesFromBytes(byte[] keyBytes, int keyLen)  {
+        public static byte[] getKeyBytesFromBytes(byte[] keyBytes, int keyLen)  {
             if (keyBytes == null || keyBytes.length == 0)
                 throw new IllegalArgumentException("keyBytes");
 
@@ -283,15 +292,13 @@ public class CryptHelper {
             keyByteCnt = keyHashBytes.length;
             byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
 
-            if (keyByteCnt < keyLen)
-            {
+            if (keyByteCnt < keyLen) {
                 keyHashTarBytes = tarBytes(keyHashBytes, KeyHashBytes(hashBytes, keyBytes, true));
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
-            if (keyByteCnt < keyLen)
-            {
+            if (keyByteCnt < keyLen) {
                 keyHashTarBytes = tarBytes(keyHashBytes,
                         KeyHashBytes(hashBytes, keyBytes, true),
                         KeyHashBytes(keyBytes, hashBytes, true)
@@ -301,16 +308,14 @@ public class CryptHelper {
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
-            while (keyByteCnt < keyLen)
-            {
+            while (keyByteCnt < keyLen)  {
                 keyHashTarBytes = tarBytes(keyHashBytes, keyHashBytes);
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
 
-            if (keyLen <= keyByteCnt)
-            {
+            if (keyLen <= keyByteCnt)  {
                 // Array.Copy(keyHashBytes, 0, tmpKey, 0, keyLen);
                 int bytIdx = 0;
                 for (bytIdx = 0; bytIdx < keyLen; bytIdx++)
@@ -318,7 +323,6 @@ public class CryptHelper {
             }
 
             return tmpKey;
-
         }
 
         // #endregion GetUserKeyBytes
