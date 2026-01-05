@@ -163,11 +163,12 @@ public class CipherPipe {
 
         HashSet<Byte> hashBytes = new HashSet<Byte>();
         for (int i = 0; i < keyBytes.length && pipeList.size() < maxpipe; i++) {
-            byte bb = (byte)((int)((int)keyBytes[i] % 32));
+            byte bb = (byte)((int)((int)keyBytes[i] % 0x1d));
             Byte cb = Byte.valueOf(bb);
             if (!hashBytes.contains(cb)) {
                 hashBytes.add(cb);
                 CipherEnum cipherEnm = CipherEnum.getByteCipherDict().get(cb);
+				System.out.println("keybyts[" + i + "}="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName());
                 pipeList.add(cipherEnm);
             }
         }

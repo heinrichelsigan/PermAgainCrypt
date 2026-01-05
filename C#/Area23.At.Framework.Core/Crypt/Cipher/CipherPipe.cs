@@ -184,8 +184,11 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
                 if (!hashBytes.Contains(cb))
                 {
                     hashBytes.Add(cb);
-                    pipeList.Add(CipherEnumExtensions.ByteCipherDict[cb]);
-                }
+                    CipherEnum cipherEnm = CipherEnumExtensions.ByteCipherDict[cb];
+                    pipeList.Add(cipherEnm);
+                    String x = "keybyts[" + i + "]=" + keyBytes[i] + " byte cb = " + (int)cb + " CipherEnum: " + cipherEnm;
+                    Console.Error.WriteLine(x);
+                }                
             }
            
             inPipe = pipeList.ToArray();

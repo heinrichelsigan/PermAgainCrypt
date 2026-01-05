@@ -173,37 +173,28 @@ public class CryptHelper {
 
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
         byte[] outBytes = new byte[keyLen];
-        if (keyBytes.length >= keyLen) {
-            ByteBuffer bb = ByteBuffer.wrap(keyBytes);
-            bb.get(outBytes, 0, keyLen);
-            // System.arraycopy()
+        if (keyBytes.length >= keyLen) {            
+			System.arraycopy(keyBytes, 0, outBytes, 0, keyLen);			
             return outBytes;
         }
 
         byte[] smallBytes = tarBytes(keyBytes, keyHash.getBytes(Charset.forName("UTF-8")));
 
         if (smallBytes.length >= keyLen) {
-            ByteBuffer bybu = ByteBuffer.wrap(smallBytes);
-            bybu.get(outBytes, 0, keyLen);
+            System.arraycopy(smallBytes, 0, outBytes, 0, keyLen);			
             // System.arraycopy()
             return outBytes;
         }
         byte[] bigBytes = tarBytes(smallBytes,
                 tarBytes(keyHash.getBytes(Charset.forName("UTF-8")), keyBytes));
         if (bigBytes.length >= keyLen) {
-            ByteBuffer bytebuf = ByteBuffer.wrap(bigBytes);
-            bytebuf.get(outBytes, 0, keyLen);
+            System.arraycopy(bigBytes, 0, outBytes, 0, keyLen);			
+            // System.arraycopy()
             return outBytes;
         }
 
-        byte[] hugeBytes = bigBytes;
-        while (hugeBytes.length < keyLen)
-            hugeBytes = tarBytes(hugeBytes, bigBytes);
-
-        // if (hugeBytes.length > keyLen)
-        System.arraycopy(hugeBytes, 0, outBytes, 0, keyLen);
-
-        return outBytes;
+		// return outBytes;
+		return getUserKeyBytes(key, keyHash, keyLen);                
     }
 
 
