@@ -123,21 +123,8 @@
   <data name="build_with" xml:space="preserve">
     <value>VisualStudio 2022 C# 10.0</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="github_uri" xml:space="preserve">
     <value>https://github.com/heinrichelsigan/area23.at/</value>
-  </data>
-  <data name="help_text" xml:space="preserve">
-    <value>&lt;h1&gt;Area23.At.Framework.Library&lt;/h1&gt;
-&lt;p&gt;C# .Net Samples for apache2 mod_mono
-by Heinrich Elsigan (&lt;a href="mailto:he@area23.at"&gt;heinrich.elsigan@area23.at&lt;/a&gt;).
-&lt;/p&gt;
-&lt;hr /&gt;
-Code is open source under GPL 3 and publicly accessible via &lt;a href="https://github.com/" target="_blank"&gt;GitHub&lt;/a&gt; repository &lt;a href="https://github.com/heinrichelsigan/area23.at/" target="_blank"&gt;github.com/heinrichelsigan/area23.at&lt;/a&gt;.
-&lt;br /&gt;</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ImageAesArrow" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -374,5 +361,18 @@ Code is open source under GPL 3 and publicly accessible via &lt;a href="https://
         LSfH142dtt0K8y4wAEvhzlIUYw3cgtzkuVU3HFhcNam5qsgaRdaaoD9ruT9yZ8B71ZiXSvgVU5LNoLv8
         OVa6zTa4f/yX0T9nos19HbLBNgAAAABJRU5ErkJggg==
 </value>
+  </data>
+  <data name="help_text" xml:space="preserve">
+    <value>&lt;h1&gt;Area23.At.Framework.Library&lt;/h1&gt;
+&lt;p&gt;C# .Net Samples for apache2 mod_mono
+by Heinrich Elsigan (&lt;a href="mailto:he@area23.at"&gt;heinrich.elsigan@area23.at&lt;/a&gt;).
+&lt;/p&gt;
+&lt;hr /&gt;
+Code is open source under GPL 3 and publicly accessible via &lt;a href="https://github.com/" target="_blank"&gt;GitHub&lt;/a&gt; repository &lt;a href="https://github.com/heinrichelsigan/area23.at/" target="_blank"&gt;github.com/heinrichelsigan/area23.at&lt;/a&gt;.
+&lt;br /&gt;</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="fortune_u8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>fortune_u8.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
 </root>

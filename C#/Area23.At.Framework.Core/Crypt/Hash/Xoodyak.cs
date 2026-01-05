@@ -5,12 +5,12 @@ using Org.BouncyCastle.Utilities.Encoders;
 namespace Area23.At.Framework.Core.Crypt.Hash
 {
     /// <summary>
-    /// <see cref="Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
+    /// <see cref="Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
     /// </summary>
-    public static class Blake2xs
+    public static class Xoodyak
     {
         /// <summary>
-        /// <see cref="Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
+        /// <see cref="Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
         /// </summary>
         /// <param name="stringToHash"></param>
         /// <returns></returns>
@@ -22,7 +22,7 @@ namespace Area23.At.Framework.Core.Crypt.Hash
 
             string resStr = string.Empty;
             byte[] bytes = EnDeCodeHelper.GetBytes(stringToHash);
-            IDigest digest = new Org.BouncyCastle.Crypto.Digests.Blake2xsDigest(32, bytes);
+            IDigest digest = new Org.BouncyCastle.Crypto.Digests.XoodyakDigest();
             byte[] resBuf = new byte[digest.GetDigestSize()];
             digest.BlockUpdate(bytes, 0, bytes.Length);
             digest.DoFinal(resBuf, 0);

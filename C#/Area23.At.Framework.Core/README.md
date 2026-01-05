@@ -73,7 +73,7 @@ Usage:  EU.CqrXs.Console.Core.exe
          algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,ThreeFish256,
+            BlowFish,Fish2,Fish3,
             Gost28147,Idea,Noekeon,
             RC2,RC532,RC564,RC6,
             Seed,SkipJack,Serpent,SM4,
@@ -86,7 +86,7 @@ Usage:  EU.CqrXs.Console.Core.exe
       -p --pass=Passphrase
     -k | --key=passKey encrypt
     -q | --qey=passKey decrypt
-    -h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    -h | --hash={Blake2xs|BCrypt|CShake|Dstu7564|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|TupleHash|TupleHash|Whirlpool}
     -S | --SymmCipher
     -? | --gethelp
 

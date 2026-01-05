@@ -384,8 +384,8 @@
         </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet">
             <summary>
-            AesNet native .Net Aes RijndaelManaged without bouncy castle
-            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aes?view=net-8.0" />
+            AesNet native .Net AesCng without bouncy castle
+            <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aescng?view=net-8.0" />
             </summary>
         </member>
         <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.Encrypt(System.Byte[])">
@@ -404,14 +404,14 @@
             <returns>Array of plain data byte</returns>
             <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.EncryptString(System.String)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.EncryptString(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Encrypts a string
             </summary>
             <param name="inPlainString">plain text string</param>
             <returns>Base64 encoded encrypted byte[]</returns>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.DecryptString(System.String)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.Symmetric.AesNet.DecryptString(System.String,Area23.At.Framework.Core.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Decrypts a string, that is truely a base64 encoded encrypted byte[]
             </summary>
@@ -1811,17 +1811,30 @@
             <param name="fileName">optional filename to add after hash</param>
             <returns>Sha512 hash with optional fileName</returns>
         </member>
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.TupleHash">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.TupleHash" />
+            </summary>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.TupleHash.HashString(System.String)">
+            <summary>
+            <see cref="T:Org.BouncyCastle.Crypto.Digests.TupleHash" />
+            </summary>
+            <param name="stringToHash">string to be hased</param>
+            <returns>hashed hex string</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Hash.Whirlpool">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Digests.WhirlpoolDigest" />
             </summary>
         </member>
-        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Zodiac">
+        <member name="T:Area23.At.Framework.Core.Crypt.Hash.Xoodyak">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
             </summary>
         </member>
-        <member name="M:Area23.At.Framework.Core.Crypt.Hash.Zodiac.HashString(System.String)">
+        <member name="M:Area23.At.Framework.Core.Crypt.Hash.Xoodyak.HashString(System.String)">
             <summary>
             <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
             </summary>
@@ -2206,16 +2219,20 @@
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.fortune_u8">
              <summary>
-               Looks up a localized string similar to %
-            There was once a programmer who was attached to the court of the
-            warlord of Wu.  The warlord asked the programmer: &quot;Which is easier to design:
-            an accounting package or an operating system?&quot;
-            &quot;An operating system,&quot; replied the programmer.
-            The warlord uttered an exclamation of disbelief.  &quot;Surely an
-            accounting package is trivial next to the complexity of an operating
-            system,&quot; he said.
-            &quot;Not so,&quot; said the programmer, &quot;when designing an accounting package,
-            the programmer operates as a mediator between  [rest of string was truncated]&quot;;.
+               Looks up a localized string similar to 7:30, Channel 5: The Bionic Dog (Action/Adventure)
+            	The Bionic Dog drinks too much and kicks over the National
+            	Redwood Forest.
+            
+            7:30, Channel 8: The Bionic Dog (Action/Adventure)
+            	The Bionic Dog gets a hormonal short-circuit and violates the
+            	Mann Act with an interstate Greyhound bus.
+            %
+            A &quot;critic&quot; is a man who creates nothing and thereby feels qualified to
+            judge the work of creative men. There is logic in this; he is unbiased
+            -- he hates all creative people equally.
+            		-- Robert Heinlein
+            %
+            Ther [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.github_uri">

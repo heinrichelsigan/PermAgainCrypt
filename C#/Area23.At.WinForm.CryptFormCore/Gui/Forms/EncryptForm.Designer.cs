@@ -63,7 +63,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuEncUu = new ToolStripMenuItem();
             menuEncXx = new ToolStripMenuItem();
             menuHash = new ToolStripMenuItem();
-            menuHashAscon256 = new ToolStripMenuItem();
+            menuHashOct = new ToolStripMenuItem();
             menuHashBlake2xs = new ToolStripMenuItem();
             menuHashBCrypt = new ToolStripMenuItem();
             menuHashCShake = new ToolStripMenuItem();
@@ -77,7 +77,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashSha512 = new ToolStripMenuItem();
             menuHashSCrypt = new ToolStripMenuItem();
             menuHashWhirlpool = new ToolStripMenuItem();
-            menuHashXoodyak = new ToolStripMenuItem();
+            menuHashTupleHash = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
             menuOptionsItemsWarnings = new ToolStripMenuItem();
             warnOnEmptyPipeToolStripMenuItem = new ToolStripMenuItem();
@@ -387,18 +387,18 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // menuHash
             // 
-            menuHash.DropDownItems.AddRange(new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak });
+            menuHash.DropDownItems.AddRange(new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash });
             menuHash.Font = new Font("Lucida Sans Typewriter", 10F);
             menuHash.Name = "menuHash";
             menuHash.Size = new Size(51, 20);
             menuHash.Text = "Hash";
             // 
-            // menuHashAscon256
+            // menuHashOct
             // 
-            menuHashAscon256.BackColor = SystemColors.ControlLight;
-            menuHashAscon256.Name = "menuHashAscon256";
-            menuHashAscon256.Size = new Size(170, 22);
-            menuHashAscon256.Text = "Ascon256";
+            menuHashOct.BackColor = SystemColors.ControlLight;
+            menuHashOct.Name = "menuHashOct";
+            menuHashOct.Size = new Size(170, 22);
+            menuHashOct.Text = "Oct";
             // 
             // menuHashBlake2xs
             // 
@@ -495,12 +495,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashWhirlpool.Size = new Size(170, 22);
             menuHashWhirlpool.Text = "Whirlpool";
             // 
-            // menuHashXoodyak
+            // menuHashTupleHash
             // 
-            menuHashXoodyak.BackColor = SystemColors.ControlLight;
-            menuHashXoodyak.Name = "menuHashXoodyak";
-            menuHashXoodyak.Size = new Size(170, 22);
-            menuHashXoodyak.Text = "Xoodyak";
+            menuHashTupleHash.BackColor = SystemColors.ControlLight;
+            menuHashTupleHash.Name = "menuHashTupleHash";
+            menuHashTupleHash.Size = new Size(170, 22);
+            menuHashTupleHash.Text = "TupleHash";
             // 
             // optionsToolStripMenuItem
             // 
@@ -978,7 +978,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             radioButtonListHash.Font = new Font("Lucida Sans Typewriter", 9F);
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
-            radioButtonListHash.Items.AddRange(new object[] { "Ascon256", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool", "Xoodyak" });
+            radioButtonListHash.Items.AddRange(new object[] { "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "Oct", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "TupleHash", "Sha512", "Whirlpool" });
             radioButtonListHash.Location = new Point(8, 73);
             radioButtonListHash.Margin = new Padding(2);
             radioButtonListHash.MultiColumn = true;
@@ -1174,13 +1174,13 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         internal  ToolStripMenuItem menuHelp;
         internal  ToolStripMenuItem menuAbout;
         internal  ToolStripMenuItem menuHelpHelp;
-        internal  ToolStripMenuItem menuHashAscon256;
+        internal  ToolStripMenuItem menuHashOct;
         internal  ToolStripMenuItem menuHashRipeMD256;
         internal  ToolStripMenuItem menuHashWhirlpool;
         internal  ToolStripMenuItem menuHashBlake2xs;
         internal  ToolStripMenuItem menuHashDstu7564;
         internal  ToolStripMenuItem menuHashCShake;
-        internal  ToolStripMenuItem menuHashXoodyak;
+        internal  ToolStripMenuItem menuHashTupleHash;
         private Label labelInfoMessage;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel statusLabelSource;

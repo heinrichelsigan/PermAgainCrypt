@@ -47,7 +47,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
             }
 
-            ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+            ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
             foreach (ToolStripMenuItem hashMenu in menuHashes)
             {
                 hashMenu.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
@@ -273,12 +273,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHashSha256.Checked = false;
             menuHashSha512.Checked = false;
             menuHashWhirlpool.Checked = false;
-            menuHashAscon256.Checked = false;
+            menuHashOct.Checked = false;
             menuHashBlake2xs.Checked = false;
             menuHashCShake.Checked = false;
             menuHashDstu7564.Checked = false;
             menuHashRipeMD256.Checked = false;
-            menuHashXoodyak.Checked = false;
+            menuHashTupleHash.Checked = false;
 
             string hashPattern = "Hex";
             if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
@@ -314,12 +314,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     case KeyHash.Sha256: menuHashSha256.Checked = true; break;
                     case KeyHash.Sha512: menuHashSha512.Checked = true; break;
                     case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
-                    case KeyHash.Ascon256: menuHashAscon256.Checked = true; break;
+                    case KeyHash.Oct: menuHashOct.Checked = true; break;
                     case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
                     case KeyHash.CShake: menuHashCShake.Checked = true; break;
                     case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
                     case KeyHash.RipeMD256: menuHashRipeMD256.Checked = true; break;
-                    case KeyHash.Xoodyak: menuHashXoodyak.Checked = true; break;
+                    case KeyHash.TupleHash: menuHashTupleHash.Checked = true; break;
                     case KeyHash.Hex: menuHashHex.Checked = true; break;
                     default:
                         Area23Log.LogOriginMsg("EncryptForm Hash", $"RadioButtonList: {radioButtonList.SelectedItem.ToString()} => KeyHash = {aKeyHash.ToString()}.");
@@ -347,12 +347,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             if (menuHashSha256.Checked) return KeyHash.Sha256;
             if (menuHashSha512.Checked) return KeyHash.Sha512;
             if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;
-            if (menuHashAscon256.Checked) return KeyHash.Ascon256;
+            if (menuHashOct.Checked) return KeyHash.Oct;
             if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
             if (menuHashCShake.Checked) return KeyHash.CShake;
             if (menuHashDstu7564.Checked) return KeyHash.Dstu7564;
             if (menuHashRipeMD256.Checked) return KeyHash.RipeMD256;
-            if (menuHashXoodyak.Checked) return KeyHash.Xoodyak;
+            if (menuHashTupleHash.Checked) return KeyHash.TupleHash;
 
             menuHashHex.Checked = true;
             return KeyHash.Hex;
@@ -416,9 +416,9 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                             SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
                             break;
                         case CipherEnum.Fish3:
-                        case CipherEnum.ThreeFish256:
-                            SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
-                            break;
+                        //case CipherEnum.ThreeFish256:
+                        //    SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
+                        //    break;
                         case CipherEnum.Serpent:
                             SetPictureBoxImage(this.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
                             break;
@@ -986,7 +986,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                     var cpip = GetCPipeFromFileName(fileName);
                     if (cpip != null)
                     {
-                        ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashAscon256, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashXoodyak };
+                        ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
                         ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
                         ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
 

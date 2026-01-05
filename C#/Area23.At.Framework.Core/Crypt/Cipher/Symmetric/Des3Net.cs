@@ -142,7 +142,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
             Des3.Key = DesKey;
             Des3.IV = DesIv;
             Des3.Mode = CipherMode.ECB;
-            Des3.Padding = PaddingMode.Zeros;
+            Des3.Padding = PaddingMode.PKCS7;
         }
 
         #endregion ctor
@@ -160,7 +160,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
 				throw new ArgumentNullException("inBytes");
 			
 			if (Des3 == null)
-				Des3 = new TripleDESCryptoServiceProvider() { Key = DesKey, IV = DesIv, Mode = CipherMode.ECB, Padding = PaddingMode.Zeros };
+				Des3 = new TripleDESCryptoServiceProvider() { Key = DesKey, IV = DesIv, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 };
             
 			CryptTrans = Des3.CreateEncryptor();
 			

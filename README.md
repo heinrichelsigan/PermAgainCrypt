@@ -73,7 +73,7 @@ Usage:  EU.CqrXs.Console.Core.exe
          algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,ThreeFish256,
+            BlowFish,Fish2,Fish3,
             Gost28147,Idea,Noekeon,
             RC2,RC532,RC564,RC6,
             Seed,SkipJack,Serpent,SM4,
@@ -86,7 +86,7 @@ Usage:  EU.CqrXs.Console.Core.exe
       -p --pass=Passphrase
     -k | --key=passKey encrypt
     -q | --qey=passKey decrypt
-    -h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    -h | --hash={Blake2xs|BCrypt|CShake|Dstu7564|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|TupleHash|Whirlpool}
     -S | --SymmCipher
     -? | --gethelp
 
@@ -112,7 +112,7 @@ U:\source\PermAgainCrypt\Deploy\console\x86>
 RC564 is not well implemented by me in java.
 ZenMatrix isn't already ported by me to java.
 BZip2 and Zip aren't already ported by me to java.
-Ascon256 and Xoodyak hash aren't ported by bouncy-castle to java.
+Ascon256 and Xoodyak have currently every replaced by Oct and TupleHash
 <img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-31_Screenshot%20Java_CSharp.png?raw=true" />
 
 <img src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/Screenshot%202025-12-29_Java_CSharp_Compare_Pipe6.png" />

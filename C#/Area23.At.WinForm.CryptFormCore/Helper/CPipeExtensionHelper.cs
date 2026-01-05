@@ -2,8 +2,10 @@
 using Area23.At.Framework.Core.Crypt.EnDeCoding;
 using Area23.At.Framework.Core.Crypt.Hash;
 using Area23.At.Framework.Core.Zip;
+using Org.BouncyCastle.Tls;
 using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Text;
 
 namespace Area23.At.WinForm.CryptFormCore.Helper
@@ -160,6 +162,91 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
             return origFileName;                       
         }
 
+
+        internal static string StripCiphersInFileName(this string fileName)
+        {
+            // Count dots
+            int dotCnt = 0, dotIdx = -1;
+            string fname = fileName, origFileName = fileName;
+            do
+            {
+                if ((dotIdx = fname.IndexOf(".")) >= 0)
+                {
+                    dotCnt++;
+                    fname = fname.Substring(dotIdx + 1);
+                }
+
+            } while (dotIdx >= 0);
+
+            ZipType zipTyp = ZipType.None;
+            KeyHash kHash = KeyHash.Hex;
+            EncodingType eType = EncodingType.None;
+
+            foreach (EncodingType encTyp in EncodingTypesExtensions.GetEncodingTypes())
+            {
+                if (fileName.EndsWith("." + encTyp.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    eType = encTyp;
+                    origFileName = fileName.Replace("." + encTyp.ToString(), "").Replace("." + encTyp.ToString().ToLower(), "");
+                    break;
+                }
+            }
+            
+            List<CipherEnum> cipherEnums = new List<CipherEnum>();
+            string pipeRestString = origFileName.Substring(origFileName.LastIndexOf("."));
+            foreach (char ch in pipeRestString)
+            {
+                foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
+                {
+                    if (cipher.GetCipherChar() == ch)
+                        cipherEnums.Add(cipher);
+                }
+            }
+
+            if (cipherEnums.Count > 0)
+            {
+                CipherPipe cPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+                if (origFileName.Contains("." + cPipe.PipeString))
+                {
+                    origFileName = origFileName.Replace("." + cPipe.PipeString, "");
+                }
+            }
+            
+            foreach (ZipType zType in ZipTypeExtensions.GetZipTypes())
+            {
+                if (zType != ZipType.None)
+                {
+                    if (origFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                        zipTyp = zType;
+                    else if (origFileName.Contains("." + zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                        zipTyp = zType;                        
+                }
+                if (zipTyp != ZipType.None)
+                {
+                    if (origFileName.EndsWith(zipTyp.GetZipTypeExtension()) ||
+                        origFileName.EndsWith(zipTyp.GetZipTypeExtension().ToLower()))
+                    {
+                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension(), "")
+                            .Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                        break;
+                    }
+                }
+            }
+
+
+            foreach (KeyHash kh in KeyHash_Extensions.GetHashTypes())
+            {
+                if (origFileName.EndsWith("." + kh.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    kHash = kh;
+                    origFileName = origFileName.Replace("." + kh.ToString(), "").Replace("." + kh.ToString().ToLower(), "");
+
+                    break;
+                }
+            }
+
+            return origFileName;
+        }
 
     }
 }

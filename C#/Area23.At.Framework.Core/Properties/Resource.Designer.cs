@@ -79,16 +79,20 @@ namespace Area23.At.Framework.Core.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to %
-        ///There was once a programmer who was attached to the court of the
-        ///warlord of Wu.  The warlord asked the programmer: &quot;Which is easier to design:
-        ///an accounting package or an operating system?&quot;
-        ///&quot;An operating system,&quot; replied the programmer.
-        ///The warlord uttered an exclamation of disbelief.  &quot;Surely an
-        ///accounting package is trivial next to the complexity of an operating
-        ///system,&quot; he said.
-        ///&quot;Not so,&quot; said the programmer, &quot;when designing an accounting package,
-        ///the programmer operates as a mediator between  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to 7:30, Channel 5: The Bionic Dog (Action/Adventure)
+        ///	The Bionic Dog drinks too much and kicks over the National
+        ///	Redwood Forest.
+        ///
+        ///7:30, Channel 8: The Bionic Dog (Action/Adventure)
+        ///	The Bionic Dog gets a hormonal short-circuit and violates the
+        ///	Mann Act with an interstate Greyhound bus.
+        ///%
+        ///A &quot;critic&quot; is a man who creates nothing and thereby feels qualified to
+        ///judge the work of creative men. There is logic in this; he is unbiased
+        ///-- he hates all creative people equally.
+        ///		-- Robert Heinlein
+        ///%
+        ///Ther [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string fortune_u8 {
             get {

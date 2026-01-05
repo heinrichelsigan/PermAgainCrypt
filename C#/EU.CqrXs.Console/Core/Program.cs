@@ -52,7 +52,7 @@ namespace EU.CqrXs.Console.Core
     ///    |  -p --pass=Passphrase
     /// -k | --key=mykey
     /// -q | --qey=myqey    
-    /// -H | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    /// -H | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
     /// -S | --SymmCipher 
     /// -? | --gethelp
     /// </summary>
@@ -373,7 +373,7 @@ namespace EU.CqrXs.Console.Core
          algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,ThreeFish256,
+            BlowFish,Fish2,Fish3,
             Gost28147,Idea,Noekeon,
             RC2,RC532,RC564,RC6,
             Seed,SkipJack,Serpent,SM4,
@@ -386,7 +386,7 @@ namespace EU.CqrXs.Console.Core
       -p --pass=Passphrase    
     -k | --key=passKey encrypt
     -q | --qey=passKey decrypt
-    -h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
+    -h | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
     -S | --SymmCipher 
     -? | --gethelp");
 
