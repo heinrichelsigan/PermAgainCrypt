@@ -90,7 +90,7 @@ public class CryptParams {
                 blockCipher = new org.bouncycastle.crypto.engines.TwofishEngine();
                 break;
             case Fish3:
-			case ThreeFish256:
+			// case ThreeFish256:
 				blockCipher = new org.bouncycastle.crypto.engines.ThreefishEngine(size);
                 break;                            
             case Camellia:

@@ -100,7 +100,7 @@ namespace Area23.At.Framework.Core.Zip
             switch (zipType)
             {
                 case ZipType.BZip2:
-                    return BZip2.BZip(inBytes);
+                    return BZip2.BZip(inBytes, 4);
                 case ZipType.GZip:
                     return GZ.GZipBytes(inBytes);
                 case ZipType.Zip:

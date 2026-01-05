@@ -198,7 +198,7 @@ public class CipherPipe {
      */
     public CipherPipe(String key, String hash, EncodeEnum encType, ZipType zpType, KeyHash kh) {
 
-        this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh);
+        this(CryptHelper.getKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh);
         cipherKey = key;
         cipherHash = hash;
     }
@@ -279,13 +279,13 @@ public class CipherPipe {
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
                 break;
-            case CipherEnum.ZenMatrix:
-                encryptBytes = (new ZenMatrix(secretKey, hash, false)).Encrypt(inBytes);
+            */
+            case ZenMatrix:
+                encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes);
                 break;
-            case CipherEnum.ZenMatrix2:
-                encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-                break;
-             */
+            // case CipherEnum.ZenMatrix2:
+            //     encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+            //     break;
             case Aes:
             case AesNet:
             case AesLight:
@@ -315,8 +315,8 @@ public class CipherPipe {
             case Tea:
             case Tnepres:
             case XTea:
-            case ZenMatrix:
-            case ZenMatrix2:
+            // case ZenMatrix:
+            // case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
@@ -367,13 +367,13 @@ public class CipherPipe {
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
                 break;
-            case CipherEnum.ZenMatrix:
-                decryptBytes = (new ZenMatrix(secretKey, hash, false)).Decrypt(cipherBytes);
+            */
+            case ZenMatrix:
+                decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
-            case CipherEnum.ZenMatrix2:
-                decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-                break;
-             */
+            // case ZenMatrix2:
+            //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
+            //     break;
             case Aes:
             case AesLight:
             case Aria:
@@ -386,7 +386,6 @@ public class CipherPipe {
             case Dstu7624:
             case Fish2:
             case Fish3:
-            // case ThreeFish256:
             case Gost28147:
             case Idea:
             case Noekeon:
@@ -402,8 +401,8 @@ public class CipherPipe {
             case Tea:
             case Tnepres:
             case XTea:
-            case ZenMatrix:
-            case ZenMatrix2:
+            // case ZenMatrix:
+            // case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 decryptBytes = cryptBounceCastle.decrypt(cipherBytes);

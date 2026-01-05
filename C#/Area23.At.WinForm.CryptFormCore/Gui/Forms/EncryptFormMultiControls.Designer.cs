@@ -264,15 +264,16 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.Enabled = false;
             zmenu7z.Name = "zmenu7z";
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
-            zmenu7z.Size = new Size(169, 22);
+            zmenu7z.Size = new Size(180, 22);
             zmenu7z.Text = "7z";
             // 
             // zmenuBZip2
             // 
             zmenuBZip2.BackColor = SystemColors.Menu;
+            zmenuBZip2.Enabled = false;
             zmenuBZip2.Name = "zmenuBZip2";
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
-            zmenuBZip2.Size = new Size(169, 22);
+            zmenuBZip2.Size = new Size(180, 22);
             zmenuBZip2.Text = "BZip2";
             // 
             // zmenuGZip
@@ -280,25 +281,27 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.BackColor = SystemColors.Menu;
             zmenuGZip.Name = "zmenuGZip";
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
-            zmenuGZip.Size = new Size(169, 22);
+            zmenuGZip.Size = new Size(180, 22);
             zmenuGZip.Text = "GZip";
             // 
             // zmenuZip
             // 
             zmenuZip.BackColor = SystemColors.Menu;
             zmenuZip.Name = "zmenuZip";
+            zmenuZip.Enabled = true;
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
-            zmenuZip.Size = new Size(169, 22);
+            zmenuZip.Size = new Size(180, 22);
             zmenuZip.Text = "Zip";
             // 
             // zmenuNone
             // 
             zmenuNone.BackColor = SystemColors.Menu;
             zmenuNone.Checked = true;
+            zmenuNone.Enabled = true;
             zmenuNone.CheckState = CheckState.Checked;
             zmenuNone.Name = "zmenuNone";
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
-            zmenuNone.Size = new Size(169, 22);
+            zmenuNone.Size = new Size(180, 22);
             zmenuNone.Text = "None";
             // 
             // menuEncoding
@@ -638,7 +641,32 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
             menuHelpHelp.Size = new Size(161, 22);
-            menuHelpHelp.Text = "Help";                   
+            menuHelpHelp.Text = "Help";
+            // 
+            // comboBoxAlgo
+            // 
+            comboBoxAlgo.BackColor = SystemColors.Control;
+            comboBoxAlgo.DropDownWidth = 160;
+            comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxAlgo.FormattingEnabled = true;
+            comboBoxAlgo.Location = new Point(102, 6);
+            comboBoxAlgo.Margin = new Padding(1);
+            comboBoxAlgo.MaxDropDownItems = 32;
+            comboBoxAlgo.Name = "comboBoxAlgo";
+            comboBoxAlgo.Size = new Size(120, 23);
+            comboBoxAlgo.TabIndex = 12;
+            // 
+            // textBoxKey
+            // 
+            textBoxKey.BackColor = SystemColors.ControlLightLight;
+            textBoxKey.Font = new Font("Lucida Sans Typewriter", 10F);
+            textBoxKey.Location = new Point(48, 28);
+            textBoxKey.Margin = new Padding(1);
+            textBoxKey.Name = "textBoxKey";
+            textBoxKey.Size = new Size(688, 27);
+            textBoxKey.TabIndex = 4;
+            textBoxKey.Text = "ftp@ftp.cdrom.com";
+            textBoxKey.TextChanged += textBoxKey_TextChanged;
             // 
             // pictureBoxKey
             // 
@@ -651,61 +679,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             pictureBoxKey.TabIndex = 3;
             pictureBoxKey.TabStop = false;
             pictureBoxKey.Click += pictureBoxKey_Click;
-            // 
-            // textBoxKey
-            // 
-            textBoxKey.AutoSize = false;
-            textBoxKey.BackColor = SystemColors.ControlLightLight;
-            textBoxKey.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxKey.Location = new Point(48, 28);
-            textBoxKey.Margin = new Padding(1);
-            textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(688, 27);
-            textBoxKey.TabIndex = 4;
-            textBoxKey.Text = "ftp@ftp.cdrom.com";
-            textBoxKey.TextChanged += textBoxKey_TextChanged;
-            // 
-            // buttonSetPipeline
-            // 
-            buttonSetPipeline.BackColor = SystemColors.Control;
-            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonSetPipeline.Location = new Point(751, 28);
-            buttonSetPipeline.Margin = new Padding(1);
-            buttonSetPipeline.Name = "buttonSetPipeline";
-            buttonSetPipeline.Size = new Size(120, 27);
-            buttonSetPipeline.TabIndex = 5;
-            buttonSetPipeline.Text = "Set Pipeline";
-            buttonSetPipeline.UseVisualStyleBackColor = false;
-            buttonSetPipeline.Click += SetPipeline_Click;
-            // 
-            // buttonHashPipe
-            // 
-            buttonHashPipe.BackColor = SystemColors.Control;
-            buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonHashPipe.Location = new Point(876, 28);
-            buttonHashPipe.Margin = new Padding(1);
-            buttonHashPipe.Name = "buttonHashPipe";
-            buttonHashPipe.Size = new Size(120, 27);
-            buttonHashPipe.TabIndex = 6;
-            buttonHashPipe.Text = "Hash Pipe";
-            buttonHashPipe.UseVisualStyleBackColor = false;
-            buttonHashPipe.Click += Hash_Pipe_Click;
-            // 
-            // radioButtonListHash
-            // 
-            radioButtonListHash.BackColor = SystemColors.Control;            
-            radioButtonListHash.BorderStyle = BorderStyle.None;
-            radioButtonListHash.Font = new Font("Lucida Sans Typewriter", 9F);
-            radioButtonListHash.FormattingEnabled = true;
-            radioButtonListHash.HorizontalExtent = 1;
-            radioButtonListHash.Items.AddRange(new object[] { "Oct", "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "Whirlpool", "TupleHash" });
-            radioButtonListHash.Location = new Point(8, 64);
-            radioButtonListHash.Margin = new Padding(1);
-            radioButtonListHash.MultiColumn = true;
-            radioButtonListHash.Name = "radioButtonListHash";
-            radioButtonListHash.Size = new Size(988, 34);
-            radioButtonListHash.Sorted = true;
-            radioButtonListHash.TabIndex = 7;
             // 
             // pictureBoxHash
             // 
@@ -722,7 +695,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // textBoxHash
             // 
-            textBoxHash.AutoSize = false;
             textBoxHash.BackColor = SystemColors.Control;
             textBoxHash.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBoxHash.Location = new Point(48, 109);
@@ -732,47 +704,30 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxHash.Size = new Size(948, 27);
             textBoxHash.TabIndex = 9;
             // 
-            // panelPipe
+            // buttonSetPipeline
             // 
-            panelPipe.BackColor = SystemColors.GradientActiveCaption;
-            panelPipe.Controls.Add(comboBoxAlgo);
-            panelPipe.Controls.Add(pictureBoxAddAlgo);
-            panelPipe.Controls.Add(textBoxPipe);
-            panelPipe.Controls.Add(pictureBoxDelete);
-            panelPipe.Controls.Add(comboBoxCompression);
-            panelPipe.Controls.Add(comboBoxEncoding);
-            panelPipe.Location = new Point(4, 144);
-            panelPipe.Margin = new Padding(2);
-            panelPipe.Name = "panelPipe";
-            panelPipe.Padding = new Padding(1);
-            panelPipe.Size = new Size(996, 36);
-            panelPipe.TabIndex = 10;
+            buttonSetPipeline.BackColor = SystemColors.Control;
+            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonSetPipeline.Location = new Point(751, 28);
+            buttonSetPipeline.Margin = new Padding(1);
+            buttonSetPipeline.Name = "buttonSetPipeline";
+            buttonSetPipeline.Size = new Size(120, 27);
+            buttonSetPipeline.TabIndex = 5;
+            buttonSetPipeline.Text = "Set Pipeline";
+            buttonSetPipeline.UseVisualStyleBackColor = false;
+            buttonSetPipeline.Click += SetPipeline_Click;
             // 
-            // comboBoxCompression
+            // buttonReset
             // 
-            comboBoxCompression.BackColor = SystemColors.Control;
-            comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxCompression.FormattingEnabled = true;
-            comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
-            comboBoxCompression.Location = new Point(4, 6);
-            comboBoxCompression.Margin = new Padding(1);
-            comboBoxCompression.MaxDropDownItems = 32;
-            comboBoxCompression.Name = "comboBoxCompression";
-            comboBoxCompression.Size = new Size(96, 23);
-            comboBoxCompression.TabIndex = 11;
-            // 
-            // comboBoxAlgo
-            // 
-            comboBoxAlgo.BackColor = SystemColors.Control;
-            comboBoxAlgo.DropDownWidth = 160;
-            comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxAlgo.FormattingEnabled = true;
-            comboBoxAlgo.Location = new Point(102, 6);
-            comboBoxAlgo.Margin = new Padding(1);
-            comboBoxAlgo.MaxDropDownItems = 32;
-            comboBoxAlgo.Name = "comboBoxAlgo";
-            comboBoxAlgo.Size = new Size(120, 23);
-            comboBoxAlgo.TabIndex = 12;
+            buttonReset.BackColor = SystemColors.Control;
+            buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
+            buttonReset.Location = new Point(876, 6);
+            buttonReset.Margin = new Padding(1);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(120, 27);
+            buttonReset.TabIndex = 25;
+            buttonReset.Text = "Reset Form";
+            buttonReset.UseVisualStyleBackColor = false;
             // 
             // pictureBoxAddAlgo
             // 
@@ -797,121 +752,6 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxPipe.ReadOnly = true;
             textBoxPipe.Size = new Size(578, 23);
             textBoxPipe.TabIndex = 14;
-            // 
-            // pictureBoxDelete
-            // 
-            pictureBoxDelete.BackColor = SystemColors.Control;
-            pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(837, 4);
-            pictureBoxDelete.Margin = new Padding(1);
-            pictureBoxDelete.Name = "pictureBoxDelete";
-            pictureBoxDelete.Size = new Size(27, 27);
-            pictureBoxDelete.TabIndex = 15;
-            pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += pictureBoxDelete_Click;            
-            // 
-            // comboBoxEncoding
-            // 
-            comboBoxEncoding.BackColor = SystemColors.Control;
-            comboBoxEncoding.DropDownWidth = 144;
-            comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxEncoding.FormattingEnabled = true;
-            comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(868, 6);
-            comboBoxEncoding.Margin = new Padding(1);
-            comboBoxEncoding.MaxDropDownItems = 32;
-            comboBoxEncoding.Name = "comboBoxEncoding";
-            comboBoxEncoding.Size = new Size(124, 23);
-            comboBoxEncoding.TabIndex = 16;
-            // 
-            // groupBoxFiles
-            // 
-            groupBoxFiles.AllowDrop = true;
-            groupBoxFiles.BackColor = SystemColors.Control;
-            groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
-            groupBoxFiles.Location = new Point(4, 184);
-            groupBoxFiles.Margin = new Padding(1);
-            groupBoxFiles.Name = "groupBoxFiles";
-            groupBoxFiles.Padding = new Padding(1);
-            groupBoxFiles.Size = new Size(996, 156);
-            groupBoxFiles.TabIndex = 18;
-            groupBoxFiles.TabStop = false;
-            groupBoxFiles.Text = "groupBoxFiles";
-            // 
-            // panel1
-            // 
-            panel1.BackColor = SystemColors.ControlLight;
-            panel1.Controls.Add(buttonDecrypt);
-            panel1.Controls.Add(buttonReset);
-            panel1.Controls.Add(buttonEncrypt);
-            panel1.Controls.Add(buttonRandomText);
-            panel1.Controls.Add(labelInfoMessage);
-            panel1.Location = new Point(4, 338);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(992, 39);
-            panel1.TabIndex = 20;
-            // 
-            // buttonEncrypt
-            // 
-            buttonEncrypt.BackColor = SystemColors.Control;
-            buttonEncrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonEncrypt.Location = new Point(4, 6);
-            buttonEncrypt.Margin = new Padding(1);
-            buttonEncrypt.Name = "buttonEncrypt";
-            buttonEncrypt.Size = new Size(120, 27);
-            buttonEncrypt.TabIndex = 21;
-            buttonEncrypt.Text = "Encrypt";
-            buttonEncrypt.UseVisualStyleBackColor = false;
-            // 
-            // buttonDecrypt
-            // 
-            buttonDecrypt.BackColor = SystemColors.Control;
-            buttonDecrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonDecrypt.Location = new Point(135, 6);
-            buttonDecrypt.Margin = new Padding(1);
-            buttonDecrypt.Name = "buttonDecrypt";
-            buttonDecrypt.Size = new Size(120, 27);
-            buttonDecrypt.TabIndex = 22;
-            buttonDecrypt.Text = "Decrypt";
-            buttonDecrypt.UseVisualStyleBackColor = false;
-            // 
-            // buttonRandomText
-            // 
-            buttonRandomText.BackColor = SystemColors.Control;
-            buttonRandomText.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonRandomText.Location = new Point(364, 6);
-            buttonRandomText.Margin = new Padding(1);
-            buttonRandomText.Name = "buttonRandomText";
-            buttonRandomText.Size = new Size(120, 27);
-            buttonRandomText.TabIndex = 23;
-            buttonRandomText.Text = "Random Text";
-            buttonRandomText.UseVisualStyleBackColor = false;
-            buttonRandomText.Click += RandomText_Click;
-            // 
-            // labelInfoMessage
-            // 
-            labelInfoMessage.BackColor = SystemColors.Info;
-            labelInfoMessage.Font = new Font("Lucida Fax", 9.25F);
-            labelInfoMessage.ForeColor = SystemColors.InfoText;
-            labelInfoMessage.Location = new Point(512, 6);
-            labelInfoMessage.Margin = new Padding(1);
-            labelInfoMessage.Name = "labelInfoMessage";
-            labelInfoMessage.Size = new Size(352, 27);
-            labelInfoMessage.TabIndex = 24;
-            labelInfoMessage.Text = "Info Message";
-            labelInfoMessage.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // buttonReset
-            // 
-            buttonReset.BackColor = SystemColors.Control;
-            buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonReset.Location = new Point(876, 6);
-            buttonReset.Margin = new Padding(1);
-            buttonReset.Name = "buttonReset";
-            buttonReset.Size = new Size(120, 27);
-            buttonReset.TabIndex = 25;
-            buttonReset.Text = "Reset Form";
-            buttonReset.UseVisualStyleBackColor = false;
             // 
             // textBoxSrc
             // 
@@ -939,7 +779,125 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxOut.ReadOnly = true;
             textBoxOut.ScrollBars = ScrollBars.Vertical;
             textBoxOut.Size = new Size(480, 307);
-            textBoxOut.TabIndex = 32;            
+            textBoxOut.TabIndex = 32;
+            // 
+            // buttonEncrypt
+            // 
+            buttonEncrypt.BackColor = SystemColors.Control;
+            buttonEncrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
+            buttonEncrypt.Location = new Point(4, 6);
+            buttonEncrypt.Margin = new Padding(1);
+            buttonEncrypt.Name = "buttonEncrypt";
+            buttonEncrypt.Size = new Size(120, 27);
+            buttonEncrypt.TabIndex = 21;
+            buttonEncrypt.Text = "Encrypt";
+            buttonEncrypt.UseVisualStyleBackColor = false;
+            // 
+            // buttonDecrypt
+            // 
+            buttonDecrypt.BackColor = SystemColors.Control;
+            buttonDecrypt.Font = new Font("Lucida Sans Typewriter", 9.75F);
+            buttonDecrypt.Location = new Point(135, 6);
+            buttonDecrypt.Margin = new Padding(1);
+            buttonDecrypt.Name = "buttonDecrypt";
+            buttonDecrypt.Size = new Size(120, 27);
+            buttonDecrypt.TabIndex = 22;
+            buttonDecrypt.Text = "Decrypt";
+            buttonDecrypt.UseVisualStyleBackColor = false;
+            // 
+            // pictureBoxDelete
+            // 
+            pictureBoxDelete.BackColor = SystemColors.Control;
+            pictureBoxDelete.Image = Properties.Resources.image_delete;
+            pictureBoxDelete.Location = new Point(837, 4);
+            pictureBoxDelete.Margin = new Padding(1);
+            pictureBoxDelete.Name = "pictureBoxDelete";
+            pictureBoxDelete.Size = new Size(27, 27);
+            pictureBoxDelete.TabIndex = 15;
+            pictureBoxDelete.TabStop = false;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;
+            // 
+            // comboBoxCompression
+            // 
+            comboBoxCompression.BackColor = SystemColors.Control;
+            comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxCompression.FormattingEnabled = true;
+            comboBoxCompression.Items.AddRange(new object[] { "None", "GZip", "Zip" });
+            comboBoxCompression.Location = new Point(4, 6);
+            comboBoxCompression.Margin = new Padding(1);
+            comboBoxCompression.MaxDropDownItems = 32;
+            comboBoxCompression.Name = "comboBoxCompression";
+            comboBoxCompression.Size = new Size(96, 23);
+            comboBoxCompression.TabIndex = 11;
+            // 
+            // comboBoxEncoding
+            // 
+            comboBoxEncoding.BackColor = SystemColors.Control;
+            comboBoxEncoding.DropDownWidth = 144;
+            comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxEncoding.FormattingEnabled = true;
+            comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
+            comboBoxEncoding.Location = new Point(868, 6);
+            comboBoxEncoding.Margin = new Padding(1);
+            comboBoxEncoding.MaxDropDownItems = 32;
+            comboBoxEncoding.Name = "comboBoxEncoding";
+            comboBoxEncoding.Size = new Size(124, 23);
+            comboBoxEncoding.TabIndex = 16;
+            // 
+            // buttonRandomText
+            // 
+            buttonRandomText.BackColor = SystemColors.Control;
+            buttonRandomText.Font = new Font("Lucida Sans Typewriter", 9.75F);
+            buttonRandomText.Location = new Point(364, 6);
+            buttonRandomText.Margin = new Padding(1);
+            buttonRandomText.Name = "buttonRandomText";
+            buttonRandomText.Size = new Size(120, 27);
+            buttonRandomText.TabIndex = 23;
+            buttonRandomText.Text = "Random Text";
+            buttonRandomText.UseVisualStyleBackColor = false;
+            buttonRandomText.Click += RandomText_Click;
+            // 
+            // buttonHashPipe
+            // 
+            buttonHashPipe.BackColor = SystemColors.Control;
+            buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonHashPipe.Location = new Point(876, 28);
+            buttonHashPipe.Margin = new Padding(1);
+            buttonHashPipe.Name = "buttonHashPipe";
+            buttonHashPipe.Size = new Size(120, 27);
+            buttonHashPipe.TabIndex = 6;
+            buttonHashPipe.Text = "Hash Pipe";
+            buttonHashPipe.UseVisualStyleBackColor = false;
+            buttonHashPipe.Click += Hash_Pipe_Click;
+            // 
+            // radioButtonListHash
+            // 
+            radioButtonListHash.BackColor = SystemColors.Control;
+            radioButtonListHash.BorderStyle = BorderStyle.None;
+            radioButtonListHash.Font = new Font("Lucida Sans Typewriter", 9F);
+            radioButtonListHash.FormattingEnabled = true;
+            radioButtonListHash.HorizontalExtent = 1;
+            radioButtonListHash.Items.AddRange(new object[] { "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "Oct", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "TupleHash", "Whirlpool" });
+            radioButtonListHash.Location = new Point(8, 64);
+            radioButtonListHash.Margin = new Padding(1);
+            radioButtonListHash.MultiColumn = true;
+            radioButtonListHash.Name = "radioButtonListHash";
+            radioButtonListHash.Size = new Size(988, 34);
+            radioButtonListHash.Sorted = true;
+            radioButtonListHash.TabIndex = 7;
+            // 
+            // labelInfoMessage
+            // 
+            labelInfoMessage.BackColor = SystemColors.Info;
+            labelInfoMessage.Font = new Font("Lucida Fax", 9.25F);
+            labelInfoMessage.ForeColor = SystemColors.InfoText;
+            labelInfoMessage.Location = new Point(512, 6);
+            labelInfoMessage.Margin = new Padding(1);
+            labelInfoMessage.Name = "labelInfoMessage";
+            labelInfoMessage.Size = new Size(352, 27);
+            labelInfoMessage.TabIndex = 24;
+            labelInfoMessage.Text = "Info Message";
+            labelInfoMessage.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // statusStrip
             // 
@@ -980,7 +938,50 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             progressBar.Location = new Point(8, 692);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(989, 12);
-            progressBar.TabIndex = 45;                       
+            progressBar.TabIndex = 45;
+            // 
+            // groupBoxFiles
+            // 
+            groupBoxFiles.AllowDrop = true;
+            groupBoxFiles.BackColor = SystemColors.Control;
+            groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
+            groupBoxFiles.Location = new Point(4, 184);
+            groupBoxFiles.Margin = new Padding(1);
+            groupBoxFiles.Name = "groupBoxFiles";
+            groupBoxFiles.Padding = new Padding(1);
+            groupBoxFiles.Size = new Size(996, 156);
+            groupBoxFiles.TabIndex = 18;
+            groupBoxFiles.TabStop = false;
+            groupBoxFiles.Text = "groupBoxFiles";
+            // 
+            // panelPipe
+            // 
+            panelPipe.BackColor = SystemColors.GradientActiveCaption;
+            panelPipe.Controls.Add(comboBoxAlgo);
+            panelPipe.Controls.Add(pictureBoxAddAlgo);
+            panelPipe.Controls.Add(textBoxPipe);
+            panelPipe.Controls.Add(pictureBoxDelete);
+            panelPipe.Controls.Add(comboBoxCompression);
+            panelPipe.Controls.Add(comboBoxEncoding);
+            panelPipe.Location = new Point(4, 144);
+            panelPipe.Margin = new Padding(2);
+            panelPipe.Name = "panelPipe";
+            panelPipe.Padding = new Padding(1);
+            panelPipe.Size = new Size(996, 36);
+            panelPipe.TabIndex = 10;
+            // 
+            // panel1
+            // 
+            panel1.BackColor = SystemColors.ControlLight;
+            panel1.Controls.Add(buttonDecrypt);
+            panel1.Controls.Add(buttonReset);
+            panel1.Controls.Add(buttonEncrypt);
+            panel1.Controls.Add(buttonRandomText);
+            panel1.Controls.Add(labelInfoMessage);
+            panel1.Location = new Point(4, 338);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(992, 39);
+            panel1.TabIndex = 20;
             // 
             // EncryptFormMultiControls
             // 

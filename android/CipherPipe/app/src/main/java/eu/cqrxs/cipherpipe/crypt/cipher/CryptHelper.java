@@ -194,7 +194,7 @@ public class CryptHelper {
             return outBytes;
         }
 
-        byte[] hugeBytes = bigBytes:
+        byte[] hugeBytes = bigBytes;
         while (hugeBytes.length < keyLen)
             hugeBytes = tarBytes(hugeBytes, bigBytes);
 
@@ -236,7 +236,7 @@ public class CryptHelper {
             if (keyByteCnt < keyLen)
             {
                 keyHashTarBytes = tarBytes(keyHashBytes,
-                        KeyHashBytes(hashBytes, keyBytes, true));
+                        keyHashBytes(hashBytes, keyBytes, true));
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
@@ -244,8 +244,8 @@ public class CryptHelper {
             if (keyByteCnt < keyLen)
             {
                 keyHashTarBytes = tarBytes(keyHashBytes,
-                                    KeyHashBytes(hashBytes, keyBytes, true),
-                                    KeyHashBytes(keyBytes, hashBytes, true));
+                                    keyHashBytes(hashBytes, keyBytes, true),
+                                    keyHashBytes(keyBytes, hashBytes, true));
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
@@ -288,20 +288,20 @@ public class CryptHelper {
             keyLen = (keyLen > Constants.MAX_KEY_LEN) ? Constants.MAX_KEY_LEN : keyLen;
             byte[] tmpKey = new byte[keyLen];
 
-            byte[] keyHashBytes = KeyHashBytes(keyBytes, hashBytes, true);
+            byte[] keyHashBytes = keyHashBytes(keyBytes, hashBytes, true);
             keyByteCnt = keyHashBytes.length;
             byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
 
             if (keyByteCnt < keyLen) {
-                keyHashTarBytes = tarBytes(keyHashBytes, KeyHashBytes(hashBytes, keyBytes, true));
+                keyHashTarBytes = tarBytes(keyHashBytes, keyHashBytes(hashBytes, keyBytes, true));
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];
                 System.arraycopy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
             }
             if (keyByteCnt < keyLen) {
                 keyHashTarBytes = tarBytes(keyHashBytes,
-                        KeyHashBytes(hashBytes, keyBytes, true),
-                        KeyHashBytes(keyBytes, hashBytes, true)
+                        keyHashBytes(hashBytes, keyBytes, true),
+                        keyHashBytes(keyBytes, hashBytes, true)
                 );
                 keyByteCnt = keyHashTarBytes.length;
                 keyHashBytes = new byte[keyByteCnt];

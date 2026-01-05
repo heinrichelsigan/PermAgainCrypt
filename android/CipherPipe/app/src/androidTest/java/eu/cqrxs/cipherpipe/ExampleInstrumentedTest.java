@@ -58,7 +58,7 @@ public class ExampleInstrumentedTest {
         CipherEnum[] cipherEnums = CipherEnum.getCipherEnumArray();
         ZipType[] zTypes = new ZipType[]{ZipType.None, ZipType.Zip, ZipType.GZip, ZipType.BZip2};
         KeyHash kHash = KeyHash.Hex;
-        KeyHash[] kHashes = KeyHash.getKeyHashArray();
+        KeyHash[] kHashes = KeyHash.getKeyHashes().toArray(KeyHash[]::new);
         ZipType zType = ZipType.None;
         EncodeEnum[] encodingTypes = EncodeEnum.getEncodeEnumArray();
         EncodeEnum encType = EncodeEnum.Base64;

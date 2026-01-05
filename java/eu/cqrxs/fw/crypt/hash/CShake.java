@@ -40,7 +40,7 @@ public class CShake {
             System.out.println("CShake instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t");
 
         String hexString = "";
-        Digest digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(256, inBytes, CryptHelper.GetKeyBytesFromBytes(inBytes, 32));
+        Digest digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(256, inBytes, CryptHelper.getKeyBytesFromBytes(inBytes, 32));
         byte[] resBuf = new byte[digest.getDigestSize()];
         // digest.update(inBytes);
         digest.update(inBytes, 0, inBytes.length);

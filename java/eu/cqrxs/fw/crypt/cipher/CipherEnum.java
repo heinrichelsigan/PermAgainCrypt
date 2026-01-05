@@ -59,14 +59,16 @@ public enum CipherEnum implements Serializable {
 	CamelliaLight(0x19),
 	Dstu7624(0x1a),
 	AesLight(0x1b),
-	ThreeFish256(0x1c),
+	ZenMatrix(0x1c),
 
 	Des3Net(0x1d),
 	AesNet(0x1e),
-	ZenMatrix(0x1f),
-	ZenMatrix2(0x20),
+	ZenMatrix2(0x1f),
 
-	Rsa(0x21);
+    Rsa(0x21)
+	/* DH(0x22) */
+	;
+
 
     /**
      * NOTE: Enum constructor must have private or package scope. You can not use the public access modifier.
@@ -94,14 +96,12 @@ public enum CipherEnum implements Serializable {
 		switch (xvalue) {
 			case 0x0: 	return 'A'; 	// Aes
 			case 0x1b: 	return 'L'; 	// AesLight
-			case 0x1e: 	return 'E'; 	// AesNet
 			case 0x11: 	return 'j'; 	// Rijndael
 			case 0x18: 	return 'a'; 	// Aria
 			
 			case 0x1: 	return 'b'; 	// BlowFish
 			case 0x5: 	return 'f'; 	// Fish2
-			case 0x6: 	return 'F'; 	// Fish3
-			case 0x1c: 	return '3'; 	// ThreeFish256
+			case 0x6: 	return 'F'; 	// Fish3			
 			
 			case 0x2: 	return 'C'; 	// Camellia
 			case 0x19: 	return 'l';		// CamelliaLight
@@ -110,7 +110,7 @@ public enum CipherEnum implements Serializable {
 			
 			case 0x17: 	return '$'; 	// Des
 			case 0x4: 	return 'D'; 	// Des3
-			case 0x1d: 	return 'e';		// Des3Net
+			
 			case 0x1a: 	return 'd';		// Dstu7624
 					
 			case 0x7: 	return 'g'; 	// Gost28147
@@ -131,8 +131,10 @@ public enum CipherEnum implements Serializable {
 			case 0x16: 	return 'T'; 	// Tnepres
 			case 0xe: 	return 'X'; 	// XTea
 			
-			case 0x1f: 	return 'z';		// ZenMatrix
-            case 0x20: 	return 'Z'; 	// ZenMatrix2
+			case 0x1c: 	return 'z';		// ZenMatrix
+			case 0x1d: 	return 'e';		// Des3Net
+			case 0x1e: 	return 'E'; 	// AesNet
+            case 0x1f: 	return 'Z'; 	// ZenMatrix2
 			
 			case 0x21: return '%'; 		// RSA asymmetric cipher
 			
@@ -177,15 +179,13 @@ public enum CipherEnum implements Serializable {
 		int xvalue = this.getValue();
 		switch (xvalue) {
 			case 0x0: 	return "Aes"; 			// Aes
-			case 0x1b: 	return "AesLight"; 		// AesLight
-			case 0x1e: 	return "AesNet"; 		// AesNet
+			case 0x1b: 	return "AesLight"; 		// AesLight		
 			case 0x11: 	return "Rijndael";		// Rijndael
 			case 0x18: 	return "Aria"; 			// Aria
 			
 			case 0x1: 	return "BlowFish"; 		// BlowFish
 			case 0x5: 	return "Fish2"; 		// Fish2
 			case 0x6: 	return "Fish3"; 		// Fish3
-			case 0x1c: 	return "ThreeFish256"; 	// ThreeFish256
 			
 			case 0x2: 	return "Camellia"; 		// Camellia
 			case 0x19: 	return "CamelliaLight";	// CamelliaLight
@@ -193,8 +193,7 @@ public enum CipherEnum implements Serializable {
 			case 0x3: 	return "Cast6"; 		// Cast6
 			
 			case 0x17: 	return "Des"; 			// Des
-			case 0x4: 	return "Des3"; 			// Des3
-			case 0x1d: 	return "Des3Net";		// Des3Net
+			case 0x4: 	return "Des3"; 			// Des3			
 			case 0x1a: 	return "Dstu7624";		// Dstu7624
 					
 			case 0x7: 	return "Gost28147"; 	// Gost28147
@@ -215,8 +214,10 @@ public enum CipherEnum implements Serializable {
 			case 0x16: 	return "Tnepres"; 		// Tnepres
 			case 0xe: 	return "XTea"; 			// XTea
 			
-			case 0x1f: 	return "ZenMatrix";		// ZenMatrix
-            case 0x20: 	return "ZenMatrix2"; 	// ZenMatrix2
+			case 0x1c: 	return "ZenMatrix";		// ZenMatrix
+			case 0x1d: 	return "Des3Net";		// Des3Net
+            case 0x1e: 	return "AesNet"; 		// AesNet
+			case 0x1f: 	return "ZenMatrix2"; 	// ZenMatrix2
 			
 			case 0x21: 	return "Rsa"; 			// Rsa asymmetric cipher
 			

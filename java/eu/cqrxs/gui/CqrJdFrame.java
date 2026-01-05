@@ -1164,6 +1164,7 @@ public class CqrJdFrame extends JFrame {
 					jLabel_statusDestination.setText((int)(encrypted.length() / (1024*1024)) + " MB.");
             }
             if (openFileBytes != null  || openFileBytes.length > 0) {
+				
                 saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 saveFileSuffix = "";
                 saveFileSuffix += (pipe.getPipeString().length() > 0) ? "." + keyHash.getName() : "";
@@ -1172,7 +1173,10 @@ public class CqrJdFrame extends JFrame {
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
                 saveFileName = openFileName + saveFileSuffix;       
                 saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
-                if (saveFileBytes.length < 2048)
+				
+				jLabel_fileOut.setText(saveFileName); 
+                
+				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
                 if (saveFileBytes.length > 2048 && saveFileBytes.length < 1048576) 
                     jLabel_statusDestination.setText((int)(saveFileBytes.length / 1024) + " KB."); 
@@ -1243,12 +1247,23 @@ public class CqrJdFrame extends JFrame {
                 for (int ix = 0; ix < openFileName.length(); ix++) {
                     if (openFileName.charAt(ix) == '.') {
                         if (++ptCnt == 2) {
-                            saveFileName = openFileName.substring(0, ix - 1);
+                            saveFileName = openFileName.substring(0, ix);
                             break;
                         }
                     }
                 }
-                save_action();
+				saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
+				
+				jLabel_fileOut.setText(saveFileName); 
+                
+				if (saveFileBytes.length < 2048)
+                    jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
+                if (saveFileBytes.length > 2048 && saveFileBytes.length < 1048576) 
+                    jLabel_statusDestination.setText((int)(saveFileBytes.length / 1024) + " KB."); 
+                if (saveFileBytes.length > 1048576) 
+                    jLabel_statusDestination.setText((int)(saveFileBytes.length / (1024*1024)) + " MB.");
+                
+					save_action();
             } 
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());
@@ -1424,8 +1439,7 @@ public class CqrJdFrame extends JFrame {
          try { 
              if (fbytes != null && fbytes.length > 0) { 
                 Files.write(fpath, fbytes); 
-                dbgMsg("filea: " + fbytes.length + " bytes writtem.", 1, true);
-                jLabel_fileOut.setText(fonly); 
+                dbgMsg("filea: " + fbytes.length + " bytes writtem.", 1, true);                
             } else 
                 throw new java.lang.IllegalStateException("fbytes is null or len == 0"); 
         } catch (Exception ex) { 

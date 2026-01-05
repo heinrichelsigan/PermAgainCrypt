@@ -155,7 +155,7 @@ public class CryptBounceCastle  {
 
         String keyByteHashString = privateKey;
         tmpKey = new byte[keyLen];
-        tmpKey = CryptHelper.GetUserKeyBytes(privateKey, privateHash, keyLen);
+        tmpKey = CryptHelper.getUserKeyBytes(privateKey, privateHash, keyLen);
         if (tmpKey.length < keyLen)
             throw new IllegalArgumentException("key tmpKey.ToHexString() is shorten then KeyLen " + keyLen);
 

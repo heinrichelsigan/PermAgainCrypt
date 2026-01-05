@@ -147,10 +147,11 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
                 zipType = ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None");
                 switch (zipType)
                 {
-                    case ZipType.BZip2: zmenuBZip2.Checked = true; break;
+                    
                     case ZipType.GZip: zmenuGZip.Checked = true; break;
                     case ZipType.Zip: zmenuZip.Checked = true; break;
                     case ZipType.Z7:
+                    case ZipType.BZip2: // zmenuBZip2.Checked = true; break;
                     case ZipType.None:
                     default:
                         zmenuNone.Checked = true;
