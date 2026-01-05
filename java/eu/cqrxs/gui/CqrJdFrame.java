@@ -1,4 +1,4 @@
-/*
+/**
  *
  * @author           Heinrich Elsigan
  * @version          V 0.2
@@ -995,7 +995,7 @@ public class CqrJdFrame extends JFrame {
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new File(initDirectory));
-		chooser.setFileFilter(new FileNameExtensionFilter("save file", saveFileSuffix));
+        // chooser.setFileFilter(new FileNameExtensionFilter("save file", saveFileSuffix));
 		int fileDialogResult = chooser.showSaveDialog(cqrJdFrame);
 		if (fileDialogResult == JFileChooser.CANCEL_OPTION || fileDialogResult == JFileChooser.ERROR_OPTION) {
 			dbgMsg("save_action JFileChooser returned: " + fileDialogResult, 2, true);
@@ -1138,7 +1138,6 @@ public class CqrJdFrame extends JFrame {
         
 		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
 		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
-
 		saveFileName = "";
 		try {
 			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
@@ -1164,7 +1163,6 @@ public class CqrJdFrame extends JFrame {
 				if (encrypted.length() > 1048576)
 					jLabel_statusDestination.setText((int)(encrypted.length() / (1024*1024)) + " MB.");
             }
-            /*
             if (openFileBytes != null  || openFileBytes.length > 0) {
                 saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 saveFileSuffix = "";
@@ -1172,9 +1170,16 @@ public class CqrJdFrame extends JFrame {
                 saveFileSuffix += (zipType != ZipType.None) ? ".gz" : "";
                 saveFileSuffix += (pipe.getPipeString().length() > 0) ?  "." + pipe.getPipeString() : "";
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
-                save_action();
+                saveFileName = openFileName + saveFileSuffix;       
+                saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
+                if (saveFileBytes.length < 2048)
+                    jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
+                if (saveFileBytes.length > 2048 && saveFileBytes.length < 1048576) 
+                    jLabel_statusDestination.setText((int)(saveFileBytes.length / 1024) + " KB."); 
+                if (saveFileBytes.length > 1048576) 
+                    jLabel_statusDestination.setText((int)(saveFileBytes.length / (1024*1024)) + " MB.");
+
             }
-            */
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			setInfoMsg("Exception during encrypt.");
@@ -1232,7 +1237,6 @@ public class CqrJdFrame extends JFrame {
 				
 				setInfoMsg("source text decrypted");
             }
-            /*
             if (openFileBytes != null && openFileBytes.length > 0) {
                 saveFileBytes = pipe.decodeDecrpytBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 int ptCnt = 0;
@@ -1246,7 +1250,6 @@ public class CqrJdFrame extends JFrame {
                 }
                 save_action();
             } 
-            */
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());
 			ex.printStackTrace();
@@ -1396,6 +1399,42 @@ public class CqrJdFrame extends JFrame {
 		
 		return;
 	}	
+
+    protected String saveFileToTemp(String fname, byte[] fbytes) {
+        String temp = System.getenv("TEMP");
+        if (temp.isEmpty()) 
+            temp = System.getenv("TMP");
+        if (temp.isEmpty()) 
+            temp = System.getenv("temp");
+        if (temp.isEmpty()) 
+            temp = ".";
+    
+        String psep = File.pathSeparator;
+        String fonly = fname;
+        int idx = 0;
+        while ((idx = fonly.indexOf(File.pathSeparator)) > -1) {
+            int len = fonly.length();
+            fonly = fonly.substring(idx + 1, len -1);
+        }
+
+        String spath = temp + psep + fonly;
+        dbgMsg("fname=" + fname + " fonly=" + fonly + " spath = " + spath, 1, true); 
+        Path fpath = java.nio.file.Paths.get(spath);
+
+         try { 
+             if (fbytes != null && fbytes.length > 0) { 
+                Files.write(fpath, fbytes); 
+                dbgMsg("filea: " + fbytes.length + " bytes writtem.", 1, true);
+                jLabel_fileOut.setText(fonly); 
+            } else 
+                throw new java.lang.IllegalStateException("fbytes is null or len == 0"); 
+        } catch (Exception ex) { 
+            setInfoMsg("Exception during file save.");
+        }
+            
+        return fonly;
+
+    }
 
 	protected void setInfoMsg(String msg) {
 		jLabel_infoMessage.setText(msg);

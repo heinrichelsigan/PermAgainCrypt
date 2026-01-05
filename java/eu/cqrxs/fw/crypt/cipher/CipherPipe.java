@@ -299,7 +299,7 @@ public class CipherPipe {
             case Dstu7624:
             case Fish2:
             case Fish3:
-            case ThreeFish256:
+            // case ThreeFish256:
             case Gost28147:
             case Idea:
             case Noekeon:
@@ -386,7 +386,7 @@ public class CipherPipe {
             case Dstu7624:
             case Fish2:
             case Fish3:
-            case ThreeFish256:
+            // case ThreeFish256:
             case Gost28147:
             case Idea:
             case Noekeon:

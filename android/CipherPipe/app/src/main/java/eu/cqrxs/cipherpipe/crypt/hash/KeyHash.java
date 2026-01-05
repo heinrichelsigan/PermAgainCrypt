@@ -15,30 +15,29 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-
-import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
 import eu.cqrxs.cipherpipe.util.*;
 
 /**
  * KeyHash represents the enumerator for all Encoding to ascii algorithms
  */
 public enum KeyHash implements Serializable {
-    Hex(0x0),
-	OpenBSDCrypt(0x1),
-	BCrypt(0x2),
-	SCrypt(0x3),
-	MD5(0x4),
-	Sha1(0x5),
+    
+	Hex(0x0),
+	Sha1(0x1),
+	OpenBSDCrypt(0x2),
+	BCrypt(0x3),
+	SCrypt(0x4),
+	MD5(0x5),	
 	Sha256(0x6),
 	Sha384(0x7),
-	Sha512(0x8),
-	Whirlpool(0x9),
-	Ascon256(0xa),
+	Oct(0x8),
+	Sha512(0x9),
+	Whirlpool(0xa),
 	Blake2xs(0xb),
 	CShake(0xc),
 	Dstu7564(0xd),
 	RipeMD256(0xe),
-	Xoodyak(0xf);
+	TupleHash(0xf);
 	
 
     /**
@@ -67,25 +66,25 @@ public enum KeyHash implements Serializable {
 			case 0x0:
 				return "Hex";
 			case 0x1:
-				return "OpenBSDCrypt";
+				return "Sha1";				
 			case 0x2:
-				return "BCrypt";
+				return "OpenBSDCrypt";
 			case 0x3:
-				return "SCrypt";
+				return "BCrypt";
 			case 0x4:
-				return "MD5";
+				return "SCrypt";
 			case 0x5:
-				return "Sha1";
+				return "MD5";
 			case 0x6:
 				return "Sha256";
 			case 0x7:
 				return "Sha384";
 			case 0x8:
-				return "Sha512";
+				return "Oct";
 			case 0x9:
+				return "Sha512";
+			case 0xa:
 				return "Whirlpool";
-			case 0xa:	
-				return "Ascon256";
 			case 0xb:
 				return "Blake2xs";
 			case 0xc:
@@ -95,7 +94,7 @@ public enum KeyHash implements Serializable {
 			case 0xe:
 				return "RipeMD256";
 			case 0xf:
-				return "Xoodyak";
+				return "TupleHash";
 			default:
 				break;
 		}
@@ -127,25 +126,25 @@ public enum KeyHash implements Serializable {
 				case 0x0:
 					return eu.cqrxs.cipherpipe.crypt.hash.Hex.hashString(instr);
 				case 0x1:
-					return eu.cqrxs.cipherpipe.crypt.hash.OpenBSDCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.Sha1.hashString(instr);					
 				case 0x2:
-					return eu.cqrxs.cipherpipe.crypt.hash.BCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.OpenBSDCrypt.hashString(instr);
 				case 0x3:
-					return eu.cqrxs.cipherpipe.crypt.hash.SCrypt.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.BCrypt.hashString(instr);
 				case 0x4:
-					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.SCrypt.hashString(instr);
 				case 0x5:
-					return eu.cqrxs.cipherpipe.crypt.hash.Sha1.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.MD5.hashString(instr);
 				case 0x6:
 					return eu.cqrxs.cipherpipe.crypt.hash.Sha256.hashString(instr);
 				case 0x7:
 					return eu.cqrxs.cipherpipe.crypt.hash.Sha384.hashString(instr);
 				case 0x8:
-				  return eu.cqrxs.cipherpipe.crypt.hash.Sha512.hashString(instr);
+					return eu.cqrxs.cipherpipe.crypt.hash.Oct.hashString(instr);
 				case 0x9:
+				  return eu.cqrxs.cipherpipe.crypt.hash.Sha512.hashString(instr);
+				case 0xa:
 					return eu.cqrxs.cipherpipe.crypt.hash.Whirlpool.hashString(instr);
-				// case 0xa:
-				// 	return "Ascon256";
 				case 0xb:
 					return eu.cqrxs.cipherpipe.crypt.hash.Blake2xs.hashString(instr);
 				case 0xc:
@@ -154,8 +153,8 @@ public enum KeyHash implements Serializable {
 					return eu.cqrxs.cipherpipe.crypt.hash.Dstu7564.hashString(instr);
 				case 0xe:
 					return eu.cqrxs.cipherpipe.crypt.hash.RipeMD256.hashString(instr);
-				// case 0xf:
-				// return "Xoodyak";
+				case 0xf:
+					return eu.cqrxs.cipherpipe.crypt.hash.TupleHash.hashString(instr);
 				default:
 					break;
 			}
@@ -178,6 +177,11 @@ public enum KeyHash implements Serializable {
 				case "bsdcrypt": 
 				case "openbsdcrypt": 
 				case "OpenBSDCrypt": return KeyHash.OpenBSDCrypt;
+				
+				case "Oct": 
+				case "Octal":
+				case "octal":
+				case "oct": return KeyHash.Oct;
 				
 				case "md5": 
 				case "Md5": 
@@ -202,18 +206,8 @@ public enum KeyHash implements Serializable {
 				case "whirlpool":
 				case "Whirlpool":
 				case "WhirlPool":return KeyHash.Whirlpool;
-				
-				case "ascon":
-				case "Ascon":
-				case "ascon256":
-				case "Ascon256":				
-				case "asconhash":
-				case "Asconhash":
-				case "AsconHash":
-				case "asconhash256": 
-				case "Asconhash256": 
-				case "AsconHash256": return KeyHash.Ascon256;
-				
+					
+			
 				case "blake2":
 				case "Blake2":
 				case "blake2xs": 
@@ -235,12 +229,10 @@ public enum KeyHash implements Serializable {
 				case "ripemd256": 
 				case "RipeMD256": return KeyHash.RipeMD256;
 				
-				case "zodiak":
-				case "Zodiak":
-				case "xoodyac":
-				case "Xoodyac":
-				case "xoodyak":
-				case "Xoodyak": return KeyHash.Xoodyak;
+				case "TupleHash":
+				case "zuplehash":
+				case "2hash":
+				case "hash2": return KeyHash.TupleHash;
 				
 				case "hex16":
 				case "Hex16":
@@ -256,20 +248,8 @@ public enum KeyHash implements Serializable {
 	}
 
 
-    public static KeyHash[] getKeyHashArray() {
-        int cnt = 0;
-        List<KeyHash> khashes = new ArrayList<KeyHash>();
-        for (KeyHash khash  : KeyHash.values()) {
-            khashes.add(khash);
-            cnt++;
-        }
 
-        return khashes.toArray(KeyHash[]::new);
-    }
-
-
-
-    public static Set<KeyHash> getKeyHashes() {
+	public static Set<KeyHash> getKeyHashes() {
 		Set<KeyHash> allElementsInKeyHash = EnumSet.allOf(KeyHash.class);
 		return allElementsInKeyHash;
 	}
@@ -280,25 +260,25 @@ public enum KeyHash implements Serializable {
 			case 0x0:
 				return ".hex";
 			case 0x1:
-				return ".openbsdcrypt";
-			case 0x2:
-				return ".bcrypt";
-			case 0x3:
-				return ".scrypt";
-			case 0x4:
-				return ".md5";
-			case 0x5:
 				return ".sha1";
+			case 0x2:
+				return ".openbsdcrypt";
+			case 0x3:
+				return ".bcrypt";
+			case 0x4:
+				return ".scrypt";
+			case 0x5:
+				return ".md5";
 			case 0x6:
 				return ".sha256";
 			case 0x7:
 				return ".sha384";
 			case 0x8:
-				return ".sha512";
+				return ".oct";
 			case 0x9:
-				return ".whirlpool";
+				return ".sha512";
 			case 0xa:
-				return ".ascon256";
+				return ".whirlpool";
 			case 0xb:
 				return ".blake2xs";
 			case 0xc:
@@ -308,7 +288,7 @@ public enum KeyHash implements Serializable {
 			case 0xe:
 				return ".ripemd256";
 			case 0xf:
-				return ".xoodyak";
+				return ".tuplehash";
 			default:
 				break;
 		}
