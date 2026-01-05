@@ -1409,15 +1409,15 @@ public class CqrJdFrame extends JFrame {
         if (temp.isEmpty()) 
             temp = ".";
     
-        String psep = File.pathSeparator;
+        String dirSep = (File.pathSeparatorChar == ':') ? "/" : "\\";
         String fonly = fname;
         int idx = 0;
-        while ((idx = fonly.indexOf(File.pathSeparator)) > -1) {
+        while ((idx = fonly.indexOf(dirSep)) > -1) {
             int len = fonly.length();
             fonly = fonly.substring(idx + 1, len -1);
         }
 
-        String spath = temp + psep + fonly;
+        String spath = temp + dirSep + fonly;
         dbgMsg("fname=" + fname + " fonly=" + fonly + " spath = " + spath, 1, true); 
         Path fpath = java.nio.file.Paths.get(spath);
 
