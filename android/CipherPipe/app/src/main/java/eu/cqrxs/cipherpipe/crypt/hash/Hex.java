@@ -33,10 +33,19 @@ public class Hex {
 			throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 
 		String hexString = "";
-		HexFormat hex = HexFormat.of();
-		hexString = hex.formatHex(inBytes);
-		// for (int wc = 0; wc < inBytes.Length; wc++)
-		//    hexString += string.Format("{0:x2}", inBytes[wc]);
+        for (int wc = 0; wc < inBytes.length; wc++)
+            hexString += String.format("%x2", inBytes[wc]);
+
+        if (hexString != null && !hexString.isEmpty())
+            return hexString;
+
+        try {
+            HexFormat hex = HexFormat.of();
+            hexString = hex.formatHex(inBytes, 0, inBytes.length - 1);
+        } catch (Exception exi) {
+            DbgWriter.msg("Exception: " + exi.toString(), true);
+            hexString = "";
+        }
 
 		// string strUtf8 = System.Text.Encoding.UTF8.GetString(inBytes);
 		return hexString;

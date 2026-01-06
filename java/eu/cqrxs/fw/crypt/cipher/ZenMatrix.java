@@ -68,7 +68,7 @@ public class ZenMatrix implements BlockCipher  {
 
     private final static String SYMMCIPHERALGONAME = "ZenMatrix";
     public final static int ZEN_SIZE = 0x10;
-    static int BLOCK_SIZE = 256;
+    static int BLOCK_SIZE = 16;
     final static int[] BLOCK_SIZES = { 16, 64, 128, 256, 1024, 4096, 16384, 65536 };
     boolean initialised = false;
     boolean forEncryption;
@@ -88,8 +88,7 @@ public class ZenMatrix implements BlockCipher  {
     public byte[] matrixPermutationKey;
     protected byte[] _inverseMatrix = new byte[0];
 
-    protected byte[] getInverseMatrix()
-    {
+    protected byte[] getInverseMatrix() {
         if (_inverseMatrix == null ||
                 _inverseMatrix.length < 0x10 ||
                 (_inverseMatrix[0] == (byte)0x0 && _inverseMatrix[1] == (byte)0x0 && _inverseMatrix[0xf] == (byte)0x0) ||
@@ -246,9 +245,8 @@ public class ZenMatrix implements BlockCipher  {
             return BLOCK_SIZE;
         }
         */
+		
     /* #endregion IBlockCipher interface */
-
-
     /* #region ctor_init_gen_reverse */
 
     /**
@@ -464,25 +462,22 @@ public class ZenMatrix implements BlockCipher  {
             /* #endregion bugfix for missing permutations */
         }
 
-        String perm = "", kbs = "";
+        String kbs = "keybytes: ", perm = " ; map; ";
 
-        for (int j = 0; j < 0x10; j++)
-            perm += String.format("%x", matrixPermutationKey[j]);
         for (int j = 0; j < keyBytes.length; j++)
             kbs += String.format("%x2", keyBytes[j]);
 
+        for (int j = 0; j < 0x10; j++)
+            perm += String.format("%x", matrixPermutationKey[j]);
+
 
         initialised = true;
-        (new eu.cqrxs.fw.util.DbgWriter()).msg("ZenMatrix" +  perm + " KeyBytes = " + kbs, 2, true);
+        (new eu.cqrxs.cipherpipe.util.DbgWriter()).msg("ZenMatrix" +  perm + " KeyBytes = " + kbs, 2, true);
     }
 
 
     /* #endregion ctor_init_gen_reverse */
-
-
     /* #region ProcessEncryptDecryptBytes */
-
-
 
     /***
      * ProcessBytes processes bytes for encryption or decryption depending on {@link forEncryption}
@@ -493,7 +488,7 @@ public class ZenMatrix implements BlockCipher  {
      * @param len of byte block (default 16)
      * @return byte[len] (default: 16) segment of encrypted bytes
      */
-    protected  byte[] processBytes(byte[] inBytes, int offSet, int len) {
+    protected byte[] processBytes(byte[] inBytes, int offSet, int len) {
         int aCnt = 0, bCnt = 0;
         if (offSet < inBytes.length && offSet + len <= inBytes.length) {
             byte[] processed = new byte[len];
@@ -511,9 +506,7 @@ public class ZenMatrix implements BlockCipher  {
     }
 
 
-
     /* #endregion ProcessEncryptDecryptBytes */
-
     /* #region encrypt decrypt */
 
     /**
@@ -612,8 +605,7 @@ public class ZenMatrix implements BlockCipher  {
      * @param ecdata encrypted byte array
      * @return decrypted plain bytes
      */
-    public  byte[] decrypt(byte[] ecdata)
-    {
+    public byte[] decrypt(byte[] ecdata)  {   
         if (ecdata == null || ecdata.length <= 0)
             throw new IllegalArgumentException("ZenMatrix byte[] Encrypt(byte[] ecdata): ArgumentNullException ecdata = null or lenght 0.");
 
@@ -641,10 +633,7 @@ public class ZenMatrix implements BlockCipher  {
 
 
     /* #endregion encrypt decrypt */
-
-
     /* #region static helpers swap byte and SwapT{T} generic */
-
 
 
     /**
@@ -666,7 +655,6 @@ public class ZenMatrix implements BlockCipher  {
         String msg = "byte[] matrix is null or matrix.Length != " + String.valueOf(size) + ".";
         throw new NotImplementedError("ZenMatrix");
     }
-
 
     /**
      * MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="MatrixPermutationKey"/> in case of encrypt,
@@ -705,6 +693,13 @@ public class ZenMatrix implements BlockCipher  {
         return outSBytes;
     }
 
+
+	/***
+	 * swap values in array by index positions i, j
+	 * @param arr {@link byte[]} array
+	 * @param i first position index to swap
+	 * @param j second (last) position index to swap
+	 */
     static void swap(byte[] arr, int i, int j) {
         // error checking
         if (arr == null || i == j) {
@@ -719,7 +714,12 @@ public class ZenMatrix implements BlockCipher  {
         arr[j] = t;
     }
 
-
+	/***
+	 * swapValue swap values of byte b, byte d in array
+	 * @param arr {@link byte[]} array
+	 * @param b first byte value to swap with byte d
+	 * @param d second (last) byte value  to swap with b
+	 */
     static void swapValue(byte[] arr, byte b, byte d) {
         // error checking
         if (arr == null || b == d) {
@@ -742,7 +742,6 @@ public class ZenMatrix implements BlockCipher  {
             arr[j] = t;
         }
     }
-
 
 
     /* #endregion static helpers swap byte and SwapT{T} generic */
