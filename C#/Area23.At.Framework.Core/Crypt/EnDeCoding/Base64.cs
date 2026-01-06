@@ -39,6 +39,7 @@
         public static string ToBase64(byte[] inBytes)
         {
             string os = Convert.ToBase64String(inBytes, 0, inBytes.Length, Base64FormattingOptions.None);
+            // string os = Convert.ToBase64String(inBytes, 0, inBytes.Length, Base64FormattingOptions.InsertLineBreaks);
             return os;
         }
 

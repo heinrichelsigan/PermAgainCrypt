@@ -178,7 +178,7 @@ namespace Area23.At.Framework.Core.Crypt.Cipher
 
     
 
-public static CipherEnum[] FromString(string pipeText)
+        public static CipherEnum[] FromString(string pipeText)
         {
             CipherPipe cp = new CipherPipe(pipeText);
             return cp.InPipe;

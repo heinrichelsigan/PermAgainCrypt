@@ -580,8 +580,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
-            BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-            SetPictureBoxImage(pictureBoxRunningPipe, bGen.GenerateEncryptPipeImage());
+            SetPictureBoxImage(pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
 
             DateTime start = DateTime.Now;
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
@@ -728,8 +727,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
-            BitmapPipelineGnerator bGen = new BitmapPipelineGnerator(cPipe);
-            SetPictureBoxImage(pictureBoxRunningPipe, bGen.GenerateDecryptPipeImage());
+            SetPictureBoxImage(pictureBoxRunningPipe, cPipe.GenerateDecryptPipeImage());
 
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
             {

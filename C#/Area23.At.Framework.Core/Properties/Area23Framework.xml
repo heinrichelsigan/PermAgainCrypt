@@ -293,6 +293,18 @@
             <param name="keyHash"><see cref="T:Area23.At.Framework.Core.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
             <returns>Decrypted stirng</returns>
         </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.GenerateEncryptPipeImage">
+            <summary>
+            GenerateEncryptPipeImage - generates image for symmetric cipher encryption pipeline
+            </summary>
+            <returns><see cref="T:System.Drawing.Image">the image</see></returns>
+        </member>
+        <member name="M:Area23.At.Framework.Core.Crypt.Cipher.CipherPipe.GenerateDecryptPipeImage">
+            <summary>
+            GenerateDecryptPipeImage generates an image for decrypt symmetric cipher pipeline 
+            </summary>
+            <returns><see cref="T:System.Drawing.Image">the image</see></returns>
+        </member>
         <member name="T:Area23.At.Framework.Core.Crypt.Cipher.CryptHelper">
             <summary>
             static class CryptHelper provides static helper methods for encryption / decryption
@@ -2212,9 +2224,134 @@
               Looks up a localized string similar to Area23.At.Framework.Core.
             </summary>
         </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_0">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_1">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_2">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_3">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_4">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_5">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_6">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_7">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_9">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_a">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_b">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_c">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_d">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_e">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.arrow_right_f">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.Blank_640x96">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.BlankDecrypt_640x108_png">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.BlankEncrypt">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.BlankEncrypt_640x108">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.BlankEncrypt_640x96">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.block_arrow_right_compress">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.block_arrow_right_zip">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.build_with">
             <summary>
               Looks up a localized string similar to VisualStudio 2022 C# 10.0.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.compress_right_end_0">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.encoding_right_0">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:Area23.At.Framework.Core.Properties.Resource.encoding_right_end_0">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
         <member name="P:Area23.At.Framework.Core.Properties.Resource.fortune_u8">
