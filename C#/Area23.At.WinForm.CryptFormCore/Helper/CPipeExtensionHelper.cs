@@ -217,20 +217,28 @@ namespace Area23.At.WinForm.CryptFormCore.Helper
                 if (zType != ZipType.None)
                 {
                     if (origFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
-                        zipTyp = zType;
-                    else if (origFileName.Contains("." + zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
-                        zipTyp = zType;                        
-                }
-                if (zipTyp != ZipType.None)
-                {
-                    if (origFileName.EndsWith(zipTyp.GetZipTypeExtension()) ||
-                        origFileName.EndsWith(zipTyp.GetZipTypeExtension().ToLower()))
                     {
-                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension(), "")
-                            .Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                        zipTyp = zType;
+                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension(), "");
                         break;
                     }
-                }
+                    if (origFileName.EndsWith(zipTyp.GetZipTypeExtension().ToLower())) 
+                    {
+                        zipTyp = zType;
+                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                        break;
+                    }
+                    if (origFileName.Contains("." + zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        zipTyp = zType;
+                        int idx = origFileName.IndexOf("." + zipTyp.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase);
+                        string first = origFileName.Substring(0, idx);
+                        string rest = origFileName.Substring(idx + zipTyp.GetZipTypeExtension().Length + 1);
+                        origFileName = first + rest;
+                        break;
+                    }
+                        
+                }               
             }
 
 
