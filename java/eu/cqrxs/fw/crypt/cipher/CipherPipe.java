@@ -5,11 +5,11 @@ package eu.cqrxs.fw.crypt.cipher;
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -725,7 +725,7 @@ public class CipherPipe {
         if (encType != EncodeEnum.None)
         {
             String cryptedEncoded = encType.encodeBytesToString(outBytes);
-            encryptedBytes = cryptedEncoded.getBytes();
+            encryptedBytes = cryptedEncoded.getBytes(Charset.forName("UTF-8"));
         }
         else
             encryptedBytes = outBytes;
@@ -783,7 +783,7 @@ public class CipherPipe {
         byte[] cipherBytes = new byte[0];
         if (encType != EncodeEnum.None)
         {
-            String encoded = encodedBytes.toString();
+            String encoded =  new String(encodedBytes, StandardCharsets.UTF_8);
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
         else
@@ -817,7 +817,7 @@ public class CipherPipe {
         CipherPipe cyptPipe = new CipherPipe(cryptKey);
 
         // Transform String to bytes
-        byte[] inBytes = inString.getBytes();
+        byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
         // perform multi crypt pipe stages
         byte[] encryptedBytes = cyptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash);
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
@@ -851,7 +851,7 @@ public class CipherPipe {
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 
         // Transform String to bytes
-        byte[] inBytes = inString.getBytes();
+        byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
         // perform multi crypt pipe stages
         byte[] encryptedBytes = cryptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash);
 

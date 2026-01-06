@@ -1163,7 +1163,7 @@ public class CqrJdFrame extends JFrame {
 				if (encrypted.length() > 1048576)
 					jLabel_statusDestination.setText((int)(encrypted.length() / (1024*1024)) + " MB.");
             }
-            if (openFileBytes != null  || openFileBytes.length > 0) {
+            if (openFileBytes != null  && openFileBytes.length > 0) {
 				
                 saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, hashed, encodeType, zipType, keyHash);
                 saveFileSuffix = "";
