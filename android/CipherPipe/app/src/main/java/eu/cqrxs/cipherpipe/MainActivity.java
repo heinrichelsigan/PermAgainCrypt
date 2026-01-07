@@ -341,8 +341,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void showMsg(String text, int gravity, boolean showLong) {
-        Toast toast = new Toast(getBaseContext());
-        toast.setDuration(showLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getBaseContext(), "Info Message", showLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
         toast.setText(text);
         toast.setGravity(4, 40, 40);
         toast.setMargin(0.8F, 0.4F);
