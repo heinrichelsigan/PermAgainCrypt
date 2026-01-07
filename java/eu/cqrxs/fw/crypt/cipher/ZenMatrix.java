@@ -664,8 +664,8 @@ public class ZenMatrix implements BlockCipher  {
             outSBytes[0] = outByte;
         }
 
-		String s = "OutBytes: " + String.valueOf(outSBytes[0]) + " " + String.valueOf(outSBytes[1]) + " "  + String.valueOf(outSBytes[2])  + " "  + String.valueOf(outSBytes[3]);
-		(new DbgWriter()).msg(s, true);
+		// String s = "OutBytes: " + String.valueOf(outSBytes[0]) + " " + String.valueOf(outSBytes[1]) + " "  + String.valueOf(outSBytes[2])  + " "  + String.valueOf(outSBytes[3]);
+		// (new DbgWriter()).msg(s, true);
 
         return outSBytes;
     }
