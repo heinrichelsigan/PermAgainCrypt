@@ -282,7 +282,7 @@ public class CipherPipe {
                 break;
             */
             case ZenMatrix:
-                encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes);
+                encryptBytes = (new ZenMatrix(secretKey, hashedKey, true, KeyHash.Hex)).encrypt(inBytes);
                 break;
             // case CipherEnum.ZenMatrix2:
             //     encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
@@ -370,7 +370,7 @@ public class CipherPipe {
                 break;
             */
             case ZenMatrix:
-                decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
+                decryptBytes = (new ZenMatrix(secretKey, hash, true, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
             // case ZenMatrix2:
             //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
