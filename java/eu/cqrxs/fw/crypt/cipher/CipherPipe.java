@@ -270,19 +270,14 @@ public class CipherPipe {
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 encryptBytes = des3.Encrypt(inBytes);
-                break; 
-            case CipherEnum.RC564:
-                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
-                encryptBytes = cryptRC564.encrypt(inBytes);
-                break;
-
+                break;             
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
                 break;
             */
             case ZenMatrix:
-                encryptBytes = (new ZenMatrix(secretKey, hashedKey, true, KeyHash.Hex)).encrypt(inBytes);
+                encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes);
                 break;
             // case CipherEnum.ZenMatrix2:
             //     encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
@@ -360,17 +355,13 @@ public class CipherPipe {
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 decryptBytes = des3.Decrypt(cipherBytes);
                 break
-            case CipherEnum.RC564:
-                CryptRC564 cryptRC564 = new CryptRC564(cpParams, true);
-                decryptBytes = cryptRC564.decrypt(cipherBytes);
-                break;
             case CipherEnum.Rsa:
                 AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                 decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
                 break;
             */
             case ZenMatrix:
-                decryptBytes = (new ZenMatrix(secretKey, hash, true, KeyHash.Hex)).decrypt(cipherBytes);
+                decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
             // case ZenMatrix2:
             //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
