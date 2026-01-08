@@ -41,6 +41,9 @@ import java.io.PushbackInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 
 /**
  * This class defines the decoding half of character encoders.
@@ -193,7 +196,7 @@ public abstract class CharacterDecoder {
      * @exception CEFormatException An error has occurred while decoding
      */
     public byte[] decodeBuffer(String inputString) throws IOException { 
-        byte inputBuffer[] = inputString.getBytes(); 
+        byte inputBuffer[] = inputString.getBytes(StandardCharsets.US_ASCII); 
         ByteArrayInputStream inStream = new ByteArrayInputStream(inputBuffer); 
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         decodeBuffer(inStream, outStream);
