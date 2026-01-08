@@ -440,6 +440,13 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 }
             }
 
+            string perm = string.Empty, kbs = string.Empty;
+            for (int j = 0; j < 0x10; j++)
+                perm += j.ToString("x1") + " => " + MatrixPermutationKey[j].ToString("x1") + "\n";
+            for (int j = 0; j < keyBytes.Length; j++)
+                kbs += keyBytes[j].ToString("x2");
+            Area23Log.LogOriginMsg("ZenMatrix", perm + " KeyBytes = " + kbs);
+
             if (fullSymmetric)
             {
                 #region fullSymmetric => InverseMatrix = MatrixPermutationKey;
@@ -505,16 +512,15 @@ namespace Area23.At.Framework.Core.Crypt.Cipher.Symmetric
                 #endregion bugfix for missing permutations
             }
 
-            string perm = string.Empty, kbs = string.Empty;
-
+            perm = string.Empty; kbs = string.Empty;
             for (int j = 0; j < 0x10; j++)
-                perm += MatrixPermutationKey[j].ToString("x1");
+                perm += j.ToString("x1") + " => " + MatrixPermutationKey[j].ToString("x1") + "\n";
             for (int j = 0; j < keyBytes.Length; j++)
                 kbs += keyBytes[j].ToString("x2");
-
+            Area23Log.LogOriginMsg("ZenMatrix", perm + " KeyBytes = " + kbs);
 
             initialised = true;
-            Area23Log.LogOriginMsg("ZenMatrix", perm + " KeyBytes = " + kbs);
+            
         }
 
 
