@@ -27,7 +27,7 @@
 /*
 package jdk.unsupported;
 package sun.misc;
- cqrxs.eu.cipherpipe.crypt.endecoding;
+ cqrxs.eu.fw.crypt.endecoding;
  */
 package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 

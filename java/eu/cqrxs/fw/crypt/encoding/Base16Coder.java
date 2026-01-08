@@ -83,7 +83,7 @@ public class Base16Coder extends EnDeCoder  {
 
 		return data;
 
-		// byte[] decodedBytes  = hexString.getBytes();
+		// byte[] decodedBytes  = hexString.getBytes(Charset.forName("UTF-8"));
 		// return decodedBytes;
 	}
 

@@ -208,7 +208,7 @@ public enum EncodeEnum implements Serializable {
         int xvalue = getValue();
         switch (xvalue) {
             case 0:
-                return encodedString.getBytes();
+                return encodedString.getBytes(Charset.forName("UTF-8"));
             case 0x200:
                 return new Base16Coder().decodeStringToBytes(encodedString);
             case 0x300:
@@ -236,7 +236,7 @@ public enum EncodeEnum implements Serializable {
             default:
                 break;
         }
-        return encodedString.getBytes();
+        return encodedString.getBytes(Charset.forName("UTF-8"));
     }
 
 

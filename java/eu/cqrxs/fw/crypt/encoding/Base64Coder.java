@@ -95,7 +95,7 @@ public class Base64Coder extends EnDeCoder  {
         if (inString == null || inString.length() == 0)
             throw new IllegalArgumentException("public static byte[] encode(String inString), inString == NULL || encodedString == \"\"");
 
-        String encoded = Base64.getEncoder().encodeToString(inString.getBytes());
+        String encoded = Base64.getEncoder().encodeToString(inString.getBytes(Charset.forName("UTF-8")));
         return encoded;
     }
 

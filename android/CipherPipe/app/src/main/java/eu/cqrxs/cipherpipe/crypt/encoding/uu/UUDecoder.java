@@ -44,6 +44,7 @@ import java.io.IOException;
 import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * This class implements a Berkeley uu character decoder. This decoder
@@ -279,11 +280,19 @@ public class UUDecoder extends CharacterDecoder {
      */
     protected void decodeBufferSuffix(PushbackInputStream inStream, OutputStream outStream) throws IOException  {
         int     c;
+        StringBuffer x = new StringBuffer();
 
         c = inStream.read(decoderBuffer);
+        if ((int)decoderBuffer[0] == 14 && (int)decoderBuffer[1] == 4 &&
+            ((int)decoderBuffer[2] == 42 || (int)decoderBuffer[2] == 32) &&
+            (int)decoderBuffer[3] == 10)
+            return;
+
         if ((decoderBuffer[0] != 'e') || (decoderBuffer[1] != 'n') ||
             (decoderBuffer[2] != 'd')) {
-            throw new CEFormatException("UUDecoder: Missing 'end' line.");
+            String decoded = new String(decoderBuffer, StandardCharsets.US_ASCII); 
+            for (int dc = 0; dc < decoderBuffer.length; decoded += " " + String.valueOf((int)(decoderBuffer[dc++])));
+            throw new CEFormatException("UUDecoder: Missing 'end' line; c=" + String.valueOf(c) + ";decoderBuffer.length=" + decoderBuffer.length + "; decoderBuffer=" +  decoded);
         }
     }
 
