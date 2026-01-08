@@ -23,14 +23,11 @@
  * questions.
  */
  
-
-   
 /*
 package jdk.unsupported;
 package sun.misc;
 */
 package eu.cqrxs.cipherpipe.crypt.encoding.uu;
-
 
 import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterEncoder;
 import eu.cqrxs.cipherpipe.crypt.encoding.uu.CharacterDecoder;
