@@ -94,6 +94,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuRaw = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuAbout = new ToolStripMenuItem();
+            menuHelpCharHexDecOctBin = new ToolStripMenuItem();
             menuHelpHelp = new ToolStripMenuItem();
             comboBoxAlgo = new ComboBox();
             enumOptionsBindingSource = new BindingSource(components);
@@ -264,7 +265,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenu7z.Enabled = false;
             zmenu7z.Name = "zmenu7z";
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
-            zmenu7z.Size = new Size(180, 22);
+            zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
             // 
             // zmenuBZip2
@@ -273,7 +274,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuBZip2.Enabled = false;
             zmenuBZip2.Name = "zmenuBZip2";
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
-            zmenuBZip2.Size = new Size(180, 22);
+            zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
             // 
             // zmenuGZip
@@ -281,27 +282,25 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             zmenuGZip.BackColor = SystemColors.Menu;
             zmenuGZip.Name = "zmenuGZip";
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
-            zmenuGZip.Size = new Size(180, 22);
+            zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
             // 
             // zmenuZip
             // 
             zmenuZip.BackColor = SystemColors.Menu;
             zmenuZip.Name = "zmenuZip";
-            zmenuZip.Enabled = true;
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
-            zmenuZip.Size = new Size(180, 22);
+            zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
             // 
             // zmenuNone
             // 
             zmenuNone.BackColor = SystemColors.Menu;
             zmenuNone.Checked = true;
-            zmenuNone.Enabled = true;
             zmenuNone.CheckState = CheckState.Checked;
             zmenuNone.Name = "zmenuNone";
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
-            zmenuNone.Size = new Size(180, 22);
+            zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
             // 
             // menuEncoding
@@ -622,7 +621,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             // menuHelp
             // 
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpCharHexDecOctBin, menuHelpHelp });
             menuHelp.Font = new Font("Lucida Sans Typewriter", 10F);
             menuHelp.Name = "menuHelp";
             menuHelp.Size = new Size(27, 20);
@@ -632,15 +631,22 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(161, 22);
+            menuAbout.Size = new Size(234, 22);
             menuAbout.Text = "About";
+            // 
+            // menuHelpCharHexDecOctBin
+            // 
+            menuHelpCharHexDecOctBin.BackColor = SystemColors.MenuBar;
+            menuHelpCharHexDecOctBin.Name = "menuHelpCharHexDecOctBin";
+            menuHelpCharHexDecOctBin.Size = new Size(234, 22);
+            menuHelpCharHexDecOctBin.Text = "Char-Hex-Dec-Oct-Bin";
             // 
             // menuHelpHelp
             // 
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(161, 22);
+            menuHelpHelp.Size = new Size(234, 22);
             menuHelpHelp.Text = "Help";
             // 
             // comboBoxAlgo
@@ -663,7 +669,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxKey.Location = new Point(48, 28);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(688, 27);
+            textBoxKey.Size = new Size(688, 23);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
             textBoxKey.TextChanged += textBoxKey_TextChanged;
@@ -701,7 +707,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(948, 27);
+            textBoxHash.Size = new Size(948, 22);
             textBoxHash.TabIndex = 9;
             // 
             // buttonSetPipeline
@@ -1126,6 +1132,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         private Controls.GroupBoxFiles groupBoxFiles;
         private Panel panelPipe;
         private Panel panel1;
+        internal ToolStripMenuItem menuHelpCharHexDecOctBin;
     }
 
 

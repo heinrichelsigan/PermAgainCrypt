@@ -51,6 +51,7 @@ he@area23.at</Description>
   </ItemGroup>
     
 	<ItemGroup>
+        <Compile Update="Gui\Forms\CharHexDecOctBinDialog.cs" />
         <Compile Update="Gui\Forms\EncryptFormMultiControls.cs">
           <SubType>Form</SubType>
         </Compile>

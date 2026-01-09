@@ -43,6 +43,7 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
             menuMainReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
+            menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) => await menuCharHexDecOctBin_Click(sender, e));
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
@@ -968,6 +969,12 @@ namespace Area23.At.WinForm.CryptFormCore.Gui.Forms
         protected internal override async Task menuHelp_Click(object sender, EventArgs e)
         {
             await base.menuHelp_Click(sender, e);
+        }
+
+        protected internal virtual async Task menuCharHexDecOctBin_Click(object sender, EventArgs e)
+        {
+            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();            
+            await dia.ShowDialogAsync();
         }
 
         /// <summary>
