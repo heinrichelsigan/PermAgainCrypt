@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/net/addr" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/net/server6" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/crypt/encoding" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/crypt/encoding" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/crypt/hash" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/crypt/cipher" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/util" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/zip" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/console" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/eu/cqrxs/gui" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bcprov-lts8on-2.73.10" level="project" />
+  </component>
+</module>
