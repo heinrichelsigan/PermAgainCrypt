@@ -23,7 +23,7 @@
  * questions.
  */
 
-package eu.cqrxs.ciperpipe.crypt.encoding.uu;
+package eu.cqrxs.cipherpipe.crypt.encoding.uu;
 
 /*
 package sun.misc;
