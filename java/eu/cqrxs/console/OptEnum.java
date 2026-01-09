@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import eu.cqrxs.console.OptEnum;
-import eu.cqrxs.fw.util.NotImplementedError;
+// import eu.cqrxs.fw.util.*;
 
 /**
  * OptEnum different option types
@@ -86,6 +86,7 @@ public enum OptEnum implements Serializable {
 	public static OptEnum getOptionFromString(String stringOp) {
 		if (stringOp != null && stringOp != "") 
 			return getEnum(stringOp);
+		return OptEnum.Usage;
 	}
 
 

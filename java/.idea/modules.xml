@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PermAgainCrypt.iml" filepath="$PROJECT_DIR$/PermAgainCrypt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eu/eu.iml" filepath="$PROJECT_DIR$/eu/eu.iml" />
+    </modules>
+  </component>
+</project>

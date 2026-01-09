@@ -13,14 +13,14 @@ import eu.cqrxs.gui.CqrJdFrame;
 import eu.cqrxs.gui.*;
 import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.gui.ImageViewer;
-import eu.cqrxs.fw.util.Constants;
-import eu.cqrxs.fw.crypt.hash.KeyHash;
-import eu.cqrxs.fw.crypt.hash.*;
-import eu.cqrxs.fw.zip.ZipType;
-import eu.cqrxs.fw.zip.GZ;
-import eu.cqrxs.fw.crypt.cipher.CipherEnum;
-import eu.cqrxs.fw.crypt.cipher.*;
-import eu.cqrxs.fw.crypt.encoding.*;
+import eu.cqrxs.util.Constants;
+import eu.cqrxs.crypt.hash.KeyHash;
+import eu.cqrxs.crypt.hash.*;
+import eu.cqrxs.zip.ZipType;
+import eu.cqrxs.zip.GZ;
+import eu.cqrxs.crypt.cipher.CipherEnum;
+import eu.cqrxs.crypt.cipher.*;
+import eu.cqrxs.crypt.encoding.EncodeEnum;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1089,7 +1089,7 @@ public class CqrJdFrame extends JFrame {
 	}
 		
 	protected void randomText_action(ActionEvent event) {
-		String currentFortune = eu.cqrxs.fw.util.Fortune.getFortune();
+		String currentFortune = eu.cqrxs.util.Fortune.getFortune();
 		jTextAreaSource.setText(currentFortune);
 		if (currentFortune.length() < 2048)
 			jLabel_statusSource.setText(currentFortune.length() + " bytes");
