@@ -1,0 +1,188 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net10.0-windows7.0</TargetFramework>
+	<IsTrimmable>true</IsTrimmable>
+	<UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <Copyright>Copyleft © 2000-2040</Copyright>
+	<PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
+    <AssemblyVersion>2.26.110</AssemblyVersion>
+    <FileVersion>2.26.110</FileVersion>
+	<IsTrimmable>true</IsTrimmable>
+	<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
+	<PlatformTarget>AnyCPU</PlatformTarget>
+    <IncludeSymbols>true</IncludeSymbols>
+    <Title>EU.CqrXs [minimalistic]</Title>
+    <Description>EU.CqrXs is a reduced Area23.At.Framework.Core framework with minimalistic helper methods</Description>
+    <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>Properties\Area23Framework.xml</DocumentationFile>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+    <DebugType>embedded</DebugType>
+    <DefineConstants>$(DefineConstants);HTTPBINDING</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>4</WarningLevel>
+    <DebugType>embedded</DebugType>
+    <DefineConstants>$(DefineConstants);HTTPBINDING</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="CqrXs\Cipher\**" />
+    <Compile Remove="CqrXs\**" />
+    <Compile Remove="CqrXs\Crypt\CqrJd\**" />
+    <Compile Remove="CqrXs\EnDeCoding\**" />
+    <Compile Remove="CqrXs\Resources\**" />
+    <EmbeddedResource Remove="CqrXs\Cipher\**" />
+    <EmbeddedResource Remove="CqrXs\**" />
+    <EmbeddedResource Remove="CqrXs\Crypt\CqrJd\**" />
+    <EmbeddedResource Remove="CqrXs\EnDeCoding\**" />
+    <EmbeddedResource Remove="CqrXs\Resources\**" />
+    <None Remove="CqrXs\Cipher\**" />
+    <None Remove="CqrXs\CqrXs\**" />
+    <None Remove="CqrXs\Crypt\CqrJd\**" />
+    <None Remove="CqrXs\EnDeCoding\**" />
+    <None Remove="CqrXs\Resources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="CqrXs\Crypt\Cipher\Symmetric\RC564.cs" />
+    <Compile Remove="CqrXs\Crypt\Cipher\Symmetric\Serpent.cs" />
+    <Compile Remove="CqrXs\Crypt\Hash\PasswdCrypt.cs" />
+    <Compile Remove="CqrXs\Crypt\Hash\Sparkle.cs" />
+    <Compile Remove="CqrXs\Crypt\Cipher\Crpyt.cs" />
+    <Compile Remove="CqrXs\Util\GifEncoder.cs" />  
+    <Compile Remove="CqrXs\Util\HttpContextWrapper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="CqrXs\Crypt\CException.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Asymmetric\DH.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Asymmetric\Dsa.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Asymmetric\Rsa.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\CipherEnum.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\CipherPipe.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\CryptHelper.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\CryptParams.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\AesNet.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\CryptBounceCastle.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\CryptParamsPrefered.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\Des3Net.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\FishRequiresAesEngineException.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\SymmCipherEnum.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\SymmCipherPipe.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\SymmCrypt.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\ZenMatrix.cs" />
+    <Compile Include="CqrXs\Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
+    <Compile Include="CqrXs\Crypt\CqrSettings.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Base16.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Base32.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Base64.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\DeEnCoder.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\EncodingType.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\EnDeCodeHelper.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\EnDeCoder.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Hex16.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Hex32.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\IDecodable.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\RawString.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Uu.cs" />
+    <Compile Include="CqrXs\Crypt\EnDeCoding\Xx.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Ascon256.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\BCrypt.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Blake2xs.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\CShake.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Dstu7564.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\KeyHash.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\MD5Sum.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\OpenBSDCrypt.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\RipeMD256.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\SCrypt.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Sha1.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Sha256Sum.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Sha384.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Sha512Sum.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\TupleHash.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Whirlpool.cs" />
+    <Compile Include="CqrXs\Crypt\Hash\Xoodyak.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\CContact.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\CFile.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\CImage.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\CMsg.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\CryptMsg.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\IMsgAble.cs" />
+    <Compile Include="CqrXs\Crypt\Msg\SerType.cs" />
+    <Compile Include="CqrXs\Properties\Resource.Designer.cs" />
+    <Compile Include="CqrXs\Util\Area23EventArgs.cs" />
+    <Compile Include="CqrXs\Util\Area23Log.cs" />
+    <Compile Include="CqrXs\Util\Constants.cs" />
+    <Compile Include="CqrXs\Util\Extensions.cs" />
+    <Compile Include="CqrXs\Util\JsonHelper.cs" />
+    <Compile Include="CqrXs\Util\LibPaths.cs" />
+    <Compile Include="CqrXs\Util\MimeSignature.cs" />
+    <Compile Include="CqrXs\Util\MimeType.cs" />
+    <Compile Include="CqrXs\Util\ProcessCmd.cs" />
+    <Compile Include="CqrXs\Util\RegistryAccessor.cs" />
+    <Compile Include="CqrXs\Util\ResReader.cs" />
+    <Compile Include="CqrXs\Util\SLog.cs" />
+    <Compile Include="CqrXs\Util\Utils.cs" />
+    <Compile Include="CqrXs\Zip\BZip2.cs" />
+    <Compile Include="CqrXs\Zip\GZ.cs" />
+    <Compile Include="CqrXs\Zip\WinZip.cs" />
+    <Compile Include="CqrXs\Zip\ZipType.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="CqrXs\Properties\fortune_u8.txt">
+      <LastGenOutput>fortunes.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CqrXs\Properties\Resource.resx" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="CqrXs\Properties\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="CqrXs\Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="CqrXs\Resources\Blank_640x96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="10.0.0" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
+    <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="protobuf-net" Version="3.2.56" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>

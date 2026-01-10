@@ -1,0 +1,92 @@
+﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.EnDeCoding;
+using EU.CqrXs.Crypt.Hash;
+using EU.CqrXs.Util;
+using EU.CqrXs.Zip;
+using System.Reflection;
+
+namespace EU.CqrXs.Test
+{
+    /// <summary>
+    /// TestCompression test zipping <see cref="ZipType">enum ZipType</see>
+    /// ZipType.GZip, ZipType.BZip2, ZipType.Zip 
+    /// </summary>
+    [TestClass]
+    public sealed class TestCompression
+    {
+
+        [TestMethod]
+        public void TestAllCompression()
+        {
+            string className = "TestCompression";
+            string methodBase = "TestAllCompression";
+            try
+            {
+                className = MethodBase.GetCurrentMethod().DeclaringType.Name;
+                methodBase = MethodBase.GetCurrentMethod().Name;
+            }
+            catch
+            {
+                className = this.GetType().BaseType.Name;
+                methodBase = "TestAllCompression";
+            }
+            Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[started]");
+
+            
+            DateTime startOp = DateTime.Now, midOp = DateTime.Now, endOp = DateTime.Now;
+            TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
+            string fileByesTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
+            string fileTextTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
+
+            Assert.IsTrue(File.Exists(fileTextTest));
+            CipherEnum[] cipherEnums = new CipherEnum[] { CipherEnum.Des3 };
+            ZipType[] zTypes = new ZipType[] { ZipType.GZip, ZipType.BZip2, ZipType.Zip };
+            KeyHash kHash = KeyHash.Hex;
+            // ZipType zType = ZipType.None;            
+            EncodingType[] encodingTypes = new EncodingType[] { EncodingType.Uu, EncodingType.Xx, EncodingType.Base32, EncodingType.Base64, EncodingType.Hex32, EncodingType.Hex16 };
+            CipherPipe pipe = new CipherPipe(cipherEnums); //  new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
+            string plainText = File.ReadAllText(fileTextTest);
+            foreach (EncodingType encType in encodingTypes)
+            {
+                foreach (ZipType zType in zTypes)
+                {
+                    try
+                    {
+                        startOp = DateTime.Now;
+                        string cipherText = pipe.EncrpytTextGoRounds(plainText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                    encType, zType, kHash);
+                        Assert.IsNotNull(cipherText);
+
+                        midOp = DateTime.Now;
+                        encOpTime = midOp.Subtract(startOp);
+                        string deCodedText = pipe.DecryptTextRoundsGo(cipherText, Constants.AUTHOR_EMAIL, KeyHash.Hex.Hash(Constants.AUTHOR_EMAIL),
+                                                encType, zType, kHash);
+                        Assert.AreEqual<string>(deCodedText, plainText);
+
+                        endOp = DateTime.Now;
+                        decOpTime = endOp.Subtract(midOp);
+                        allOpTime = endOp.Subtract(startOp);
+
+                        if (string.IsNullOrEmpty(deCodedText) || !deCodedText.Equals(plainText, StringComparison.Ordinal))
+                        {
+                            Console.WriteLine($"{zType}/{encType} \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [failed]");
+                            Console.WriteLine($"                 \tdeCodedText Length=[{deCodedText.Length}] != plainText Length[{plainText.Length}]");
+                            Assert.Fail();
+                        }
+                        Console.WriteLine($"{zType}/{encType}  \tzipped in {encOpTime.ToString("ss'.'ffff")} \tunzipped in {decOpTime.ToString("ss'.'ffff")} \ttotal {allOpTime.ToString("ss'.'ffff")} [passed]");
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"{zType}/{encType} \tException: {e.GetType()} \t{e.Message}\r\n      \t{e.StackTrace}");
+                    }
+
+                }
+            }
+
+            Console.WriteLine($"{DateTime.Now.Area23DateTimeWithSeconds()} \t{className}.{methodBase}() \t[finished]");
+            return;
+        }
+
+
+    }
+}
