@@ -1,4 +1,6 @@
-﻿namespace EU.CqrXs.Gui.Forms
+﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+
+namespace EU.CqrXs.Gui.Forms
 {
     partial class CharHexDecOctBinDialog
     {
@@ -32,10 +34,13 @@
             textBoxChar = new TextBox();
             labelHex = new Label();
             textBoxHex = new TextBox();
+            plusButton = new Button();
             labelDec = new Label();
             textBoxDec = new TextBox();
+            minusButton = new Button();
             labelOct = new Label();
             textBoxOct = new TextBox();
+            shiftButton = new Button();
             labelBin = new Label();
             textBoxBin = new TextBox();
             clearButton = new Button();
@@ -45,21 +50,25 @@
             // 
             // tableLayoutPanel
             // 
-            tableLayoutPanel.ColumnCount = 2;
+            tableLayoutPanel.ColumnCount = 3;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 75F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
             tableLayoutPanel.Controls.Add(labelChar, 0, 0);
             tableLayoutPanel.Controls.Add(textBoxChar, 1, 0);
             tableLayoutPanel.Controls.Add(labelHex, 0, 1);
             tableLayoutPanel.Controls.Add(textBoxHex, 1, 1);
+            tableLayoutPanel.Controls.Add(plusButton, 2, 1);
             tableLayoutPanel.Controls.Add(labelDec, 0, 2);
             tableLayoutPanel.Controls.Add(textBoxDec, 1, 2);
+            tableLayoutPanel.Controls.Add(minusButton, 2, 2);
             tableLayoutPanel.Controls.Add(labelOct, 0, 3);
             tableLayoutPanel.Controls.Add(textBoxOct, 1, 3);
+            tableLayoutPanel.Controls.Add(shiftButton, 2, 3);
             tableLayoutPanel.Controls.Add(labelBin, 0, 4);
             tableLayoutPanel.Controls.Add(textBoxBin, 1, 4);
             tableLayoutPanel.Controls.Add(clearButton, 0, 6);
-            tableLayoutPanel.Controls.Add(okButton, 1, 6);
+            tableLayoutPanel.Controls.Add(okButton, 2, 6);
             tableLayoutPanel.Dock = DockStyle.Fill;
             tableLayoutPanel.Location = new Point(4, 2);
             tableLayoutPanel.Margin = new Padding(4, 2, 4, 2);
@@ -72,6 +81,7 @@
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel.Size = new Size(472, 356);
             tableLayoutPanel.TabIndex = 0;
             // 
@@ -95,7 +105,7 @@
             textBoxChar.Location = new Point(120, 2);
             textBoxChar.Margin = new Padding(2);
             textBoxChar.Name = "textBoxChar";
-            textBoxChar.Size = new Size(350, 26);
+            textBoxChar.Size = new Size(255, 26);
             textBoxChar.TabIndex = 11;
             textBoxChar.TextChanged += Text_Changed;
             // 
@@ -119,9 +129,21 @@
             textBoxHex.Location = new Point(120, 55);
             textBoxHex.Margin = new Padding(2);
             textBoxHex.Name = "textBoxHex";
-            textBoxHex.Size = new Size(350, 26);
+            textBoxHex.Size = new Size(255, 26);
             textBoxHex.TabIndex = 13;
             textBoxHex.TextChanged += Text_Changed;
+            // 
+            // plusButton
+            // 
+            plusButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            plusButton.Font = new Font("Microsoft Sans Serif", 12F);
+            plusButton.Location = new Point(396, 55);
+            plusButton.Margin = new Padding(4, 2, 4, 2);
+            plusButton.Name = "plusButton";
+            plusButton.Size = new Size(72, 32);
+            plusButton.TabIndex = 14;
+            plusButton.Text = "+";
+            plusButton.Click += plusButton_Click;
             // 
             // labelDec
             // 
@@ -132,7 +154,7 @@
             labelDec.MaximumSize = new Size(0, 20);
             labelDec.Name = "labelDec";
             labelDec.Size = new Size(110, 20);
-            labelDec.TabIndex = 14;
+            labelDec.TabIndex = 15;
             labelDec.Text = "Decimal";
             labelDec.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -143,9 +165,21 @@
             textBoxDec.Location = new Point(120, 108);
             textBoxDec.Margin = new Padding(2);
             textBoxDec.Name = "textBoxDec";
-            textBoxDec.Size = new Size(350, 26);
-            textBoxDec.TabIndex = 15;
+            textBoxDec.Size = new Size(255, 26);
+            textBoxDec.TabIndex = 16;
             textBoxDec.TextChanged += Text_Changed;
+            // 
+            // minusButton
+            // 
+            minusButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            minusButton.Font = new Font("Microsoft Sans Serif", 12F);
+            minusButton.Location = new Point(396, 108);
+            minusButton.Margin = new Padding(4, 2, 4, 2);
+            minusButton.Name = "minusButton";
+            minusButton.Size = new Size(72, 32);
+            minusButton.TabIndex = 17;
+            minusButton.Text = "-";
+            minusButton.Click += minusButton_Click;
             // 
             // labelOct
             // 
@@ -156,7 +190,7 @@
             labelOct.MaximumSize = new Size(0, 20);
             labelOct.Name = "labelOct";
             labelOct.Size = new Size(110, 20);
-            labelOct.TabIndex = 16;
+            labelOct.TabIndex = 18;
             labelOct.Text = "Octal";
             labelOct.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -167,9 +201,21 @@
             textBoxOct.Location = new Point(120, 161);
             textBoxOct.Margin = new Padding(2);
             textBoxOct.Name = "textBoxOct";
-            textBoxOct.Size = new Size(350, 26);
-            textBoxOct.TabIndex = 17;
+            textBoxOct.Size = new Size(255, 26);
+            textBoxOct.TabIndex = 19;
             textBoxOct.TextChanged += Text_Changed;
+            // 
+            // shiftButton
+            // 
+            shiftButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            shiftButton.Font = new Font("Microsoft Sans Serif", 12F);
+            shiftButton.Location = new Point(396, 161);
+            shiftButton.Margin = new Padding(4, 2, 4, 2);
+            shiftButton.Name = "shiftButton";
+            shiftButton.Size = new Size(72, 32);
+            shiftButton.TabIndex = 17;
+            shiftButton.Text = ">>";
+            shiftButton.Click += shiftButton_Click;
             // 
             // labelBin
             // 
@@ -180,7 +226,7 @@
             labelBin.MaximumSize = new Size(0, 20);
             labelBin.Name = "labelBin";
             labelBin.Size = new Size(110, 20);
-            labelBin.TabIndex = 18;
+            labelBin.TabIndex = 21;
             labelBin.Text = "Dual-Bin";
             labelBin.TextAlign = ContentAlignment.MiddleRight;
             // 
@@ -191,19 +237,18 @@
             textBoxBin.Location = new Point(120, 214);
             textBoxBin.Margin = new Padding(2);
             textBoxBin.Name = "textBoxBin";
-            textBoxBin.Size = new Size(350, 26);
-            textBoxBin.TabIndex = 19;
+            textBoxBin.Size = new Size(255, 26);
+            textBoxBin.TabIndex = 22;
             textBoxBin.TextChanged += Text_Changed;
             // 
             // clearButton
             // 
             clearButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            clearButton.DialogResult = DialogResult.Cancel;
             clearButton.Font = new Font("Microsoft Sans Serif", 12F);
-            clearButton.Location = new Point(18, 322);
+            clearButton.Location = new Point(18, 325);
             clearButton.Margin = new Padding(4, 2, 4, 2);
             clearButton.Name = "clearButton";
-            clearButton.Size = new Size(96, 32);
+            clearButton.Size = new Size(96, 29);
             clearButton.TabIndex = 22;
             clearButton.Text = "Clear";
             clearButton.Click += clearButton_Click;
@@ -213,22 +258,22 @@
             okButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             okButton.DialogResult = DialogResult.Cancel;
             okButton.Font = new Font("Microsoft Sans Serif", 12F);
-            okButton.Location = new Point(372, 322);
+            okButton.Location = new Point(381, 325);
             okButton.Margin = new Padding(4, 2, 4, 2);
             okButton.Name = "okButton";
-            okButton.Size = new Size(96, 32);
+            okButton.Size = new Size(87, 29);
             okButton.TabIndex = 24;
-            okButton.Text = "&OK";
+            okButton.Text = "OK";
+            okButton.Click += okButton_Click;
             // 
             // CharHexDecOctBinDialog
             // 
-            AcceptButton = okButton;
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(9F, 18F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(480, 360);
             Controls.Add(tableLayoutPanel);
-            Font = new Font("Microsoft Sans Serif", 9.25F);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Font = new Font("Microsoft Sans Serif", 11F);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 2, 4, 2);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -259,6 +304,9 @@
         private System.Windows.Forms.TextBox textBoxOct;
         private System.Windows.Forms.TextBox textBoxBin;
 
+        private System.Windows.Forms.Button shiftButton;
+        private System.Windows.Forms.Button plusButton;
+        private System.Windows.Forms.Button minusButton;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button okButton;
     }

@@ -24,8 +24,10 @@ namespace EU.CqrXs.Gui.Forms
             InitializeComponent();
             instances++;
             this.Text = String.Format("Char-Hex-Dec-Oct-Bin Dialog {0}", instances);
-            ClearDialog();
-
+            ClearDialog();            
+            tNum = 0x40;
+            tChar = (char)tNum;
+            ShowMappings(tNum, tChar);
         }
 
 
@@ -64,11 +66,12 @@ namespace EU.CqrXs.Gui.Forms
 
         protected string MapBin(uint num)
         {
-            string b = "", s = string.Format("x2", num);
-            s = s.Replace("0x", "");
+            string b = "", s = $"{num:x}";
             s = s.Replace("x", "");
-            s = (s.Length == 2) ? s : "0" + s;
-            b = MapBin(s[0]) + " " + MapBin(s[1]);
+            for (int bc = 0; bc < s.Length; bc++)
+            {
+                b += (bc == 0) ? MapBin(s[0]) : " " + MapBin(s[bc]);
+            }            
             return b;
         }
 
@@ -205,15 +208,15 @@ namespace EU.CqrXs.Gui.Forms
                                 }
                             }
                             break;
-                        case "textBoxOct":
-                            string os = this.textBoxOct.Text;
-                            if (!string.IsNullOrEmpty(t.Text) && t.Text.Length >= 2)
+                        case "textBoxOct":                            
+                            if (!string.IsNullOrEmpty(textBoxOct.Text) && textBoxOct.Text.Length >= 2)
                             {
-                                iNum = Convert.ToUInt32(os[0]);
-                                if (os.Length > 1)
-                                    iNum += (8 * Convert.ToUInt32(os[1]));
-                                if (os.Length > 2)
-                                    iNum += 64 * Convert.ToUInt32(os[2]);
+                                string os = this.textBoxOct.Text;
+                                iNum = 0;
+                                int equalizer = os.Length - 1;
+                                for (int oc = os.Length - 1; oc >= 0 ; oc--)
+                                    iNum += (uint)Math.Pow(8, (equalizer - oc)) * Convert.ToUInt32(os[oc].ToString(), 8);
+                                
                                 if (iNum != tNum)
                                 {
                                     tNum = iNum;
@@ -251,11 +254,51 @@ namespace EU.CqrXs.Gui.Forms
             }
         }
 
+        private void plusButton_Click(object sender, EventArgs e)
+        {
+            tNum++;
+            tChar = (char)tNum;
+            ShowMappings(tNum, tChar);
+        }
+
+        private void minusButton_Click(object sender, EventArgs e)
+        {
+            tNum--;
+            tChar = (char)tNum;
+            ShowMappings(tNum, tChar);
+        }
+
+        private void shiftButton_Click(object sender, EventArgs e)
+        {
+            if (tNum < 255)
+                tNum = tNum << 1;
+            else if (tNum < 1024)
+                tNum = 1024;     
+            else if (tNum < 4096)
+                tNum = 4096;
+            else if (tNum < 8192)
+                tNum = 8192;
+            else if (tNum < 16384)
+                tNum = 16384;
+            else if (tNum < 32768)
+                tNum = 32768;
+            else if (tNum < 65536)
+                tNum = 65536;
+            else if (tNum < 65536 + 32768)
+                tNum = 65536 + 32768;
+            tChar = (char)tNum;
+            ShowMappings(tNum, tChar);
+        }
+
         private void clearButton_Click(object sender, EventArgs e)
         {
             ClearDialog();
         }
 
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
 
 
     }
