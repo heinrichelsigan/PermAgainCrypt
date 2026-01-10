@@ -64,14 +64,5 @@ namespace EU.CqrXs.Gui.Forms
         public string AssemblyCompany { get => Application.CompanyName.ToString();  }
         #endregion
 
-        private void logoPictureBox_MouseHover(object sender, EventArgs e)
-        {
-            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle2;
-        }
-
-        private void logoPictureBox_MouseLeave(object sender, EventArgs e)
-        {
-            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle1;
-        }
     }
 }

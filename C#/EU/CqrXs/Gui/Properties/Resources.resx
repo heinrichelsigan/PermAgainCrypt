@@ -132,9 +132,6 @@
   <data name="2025-20-21_JollyRogerJoker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\huge\2025-20-21_JollyRogerJoker.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChiffrePentacle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChiffrePentacle1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="heinrichelsigan" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\huge\heinrichelsigan.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -150,10 +147,6 @@
   </data>
   <data name="TripleDes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Algos\TripleDes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ChiffreDisk" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\huge\ChiffreDisk.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-    <comment>ChiffreDisk</comment>
   </data>
   <data name="blowfish" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Algos\blowfish.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -249,9 +242,6 @@
   </data>
   <data name="img_excel" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\symbols\img_excel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="ChiffrePentacle" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\huge\ChiffrePentacle.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CryptPipe1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\arrows\process\CryptPipe1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -369,9 +359,6 @@
   <data name="image_pdf" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\symbols\image_pdf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="ChiffrePentacle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\ChiffrePentacle2.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="WinForms_EncryptPipe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WinjForms_EncryptPipe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>WinForms_EncryptPipe</comment>
@@ -381,6 +368,9 @@
     <comment>PermEncryptAgain__EncryptPipe</comment>
   </data>
   <data name="image_file" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\EU\CqrXs\Gui\Resources\symbols\image_file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\symbols\image_file.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ChiffrePentacle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\huge\ChiffrePentacle1.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
