@@ -108,7 +108,6 @@ namespace EU.CqrXs.Gui.Forms
             textBoxPipe = new TextBox();
             labelFileIn = new Label();
             pictureBoxOutFile = new PictureBox();
-            textBoxSrc = new TextBox();
             textBoxOut = new TextBox();
             buttonEncrypt = new Button();
             buttonDecrypt = new Button();
@@ -128,6 +127,11 @@ namespace EU.CqrXs.Gui.Forms
             statusLabelMsg = new ToolStripStatusLabel();
             statusLabelDestination = new ToolStripStatusLabel();
             progressBar = new ProgressBar();
+            tabControlSrc = new TabControl();
+            tabPageAscii = new TabPage();
+            textBoxSrc = new TextBox();
+            tabPageHex = new TabPage();
+            textBoxSrcHex = new TextBox();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -140,6 +144,9 @@ namespace EU.CqrXs.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
+            tabControlSrc.SuspendLayout();
+            tabPageAscii.SuspendLayout();
+            tabPageHex.SuspendLayout();
             SuspendLayout();
             // 
             // menuStripEncrypt
@@ -797,19 +804,6 @@ namespace EU.CqrXs.Gui.Forms
             pictureBoxOutFile.Click += pictureOutBoxFile_Click;
             pictureBoxOutFile.DoubleClick += pictureOutBoxFile_Click;
             // 
-            // textBoxSrc
-            // 
-            textBoxSrc.BackColor = SystemColors.ControlLight;
-            textBoxSrc.Font = new Font("Lucida Console", 8F);
-            textBoxSrc.Location = new Point(8, 381);
-            textBoxSrc.Margin = new Padding(2);
-            textBoxSrc.MaxLength = 1048576;
-            textBoxSrc.Multiline = true;
-            textBoxSrc.Name = "textBoxSrc";
-            textBoxSrc.ScrollBars = ScrollBars.Vertical;
-            textBoxSrc.Size = new Size(480, 292);
-            textBoxSrc.TabIndex = 42;
-            // 
             // textBoxOut
             // 
             textBoxOut.BackColor = SystemColors.Control;
@@ -978,7 +972,7 @@ namespace EU.CqrXs.Gui.Forms
             radioButtonListHash.Font = new Font("Lucida Sans Typewriter", 9F);
             radioButtonListHash.FormattingEnabled = true;
             radioButtonListHash.HorizontalExtent = 1;
-            radioButtonListHash.Items.AddRange(new object[] { "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "Oct", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "TupleHash", "Sha512", "Whirlpool" });
+            radioButtonListHash.Items.AddRange(new object[] { "BCrypt", "Blake2xs", "CShake", "Dstu7564", "Hex", "MD5", "Oct", "OpenBSDCrypt", "RipeMD256", "SCrypt", "Sha1", "Sha256", "Sha512", "TupleHash", "Whirlpool" });
             radioButtonListHash.Location = new Point(8, 73);
             radioButtonListHash.Margin = new Padding(2);
             radioButtonListHash.MultiColumn = true;
@@ -1041,12 +1035,79 @@ namespace EU.CqrXs.Gui.Forms
             progressBar.Size = new Size(989, 26);
             progressBar.TabIndex = 45;
             // 
+            // tabControlSrc
+            // 
+            tabControlSrc.Controls.Add(tabPageAscii);
+            tabControlSrc.Controls.Add(tabPageHex);
+            tabControlSrc.Location = new Point(12, 382);
+            tabControlSrc.Margin = new Padding(1);
+            tabControlSrc.Name = "tabControlSrc";
+            tabControlSrc.SelectedIndex = 0;
+            tabControlSrc.Size = new Size(480, 284);
+            tabControlSrc.TabIndex = 40;
+            tabControlSrc.SelectedIndexChanged += tabControlSrc_SelectedIndexChanged;
+            // 
+            // tabPageAscii
+            // 
+            tabPageAscii.Controls.Add(textBoxSrc);
+            tabPageAscii.Location = new Point(4, 25);
+            tabPageAscii.Margin = new Padding(1);
+            tabPageAscii.Name = "tabPageAscii";
+            tabPageAscii.Padding = new Padding(1);
+            tabPageAscii.Size = new Size(472, 255);
+            tabPageAscii.TabIndex = 41;
+            tabPageAscii.Text = "Ascii Text";
+            tabPageAscii.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSrc
+            // 
+            textBoxSrc.BackColor = SystemColors.ControlLight;
+            textBoxSrc.Dock = DockStyle.Fill;
+            textBoxSrc.Font = new Font("Lucida Console", 8F);
+            textBoxSrc.Location = new Point(1, 1);
+            textBoxSrc.Margin = new Padding(1);
+            textBoxSrc.MaxLength = 1048576;
+            textBoxSrc.Multiline = true;
+            textBoxSrc.Name = "textBoxSrc";
+            textBoxSrc.ScrollBars = ScrollBars.Vertical;
+            textBoxSrc.Size = new Size(470, 253);
+            textBoxSrc.TabIndex = 42;
+            // 
+            // tabPageHex
+            // 
+            tabPageHex.Controls.Add(textBoxSrcHex);
+            tabPageHex.Location = new Point(4, 24);
+            tabPageHex.Margin = new Padding(1);
+            tabPageHex.Name = "tabPageHex";
+            tabPageHex.Padding = new Padding(1);
+            tabPageHex.Size = new Size(472, 256);
+            tabPageHex.TabIndex = 43;
+            tabPageHex.Text = "Hex View";
+            tabPageHex.UseVisualStyleBackColor = true;
+            // 
+            // textBoxSrcHex
+            // 
+            textBoxSrcHex.BackColor = SystemColors.Control;
+            textBoxSrcHex.BorderStyle = BorderStyle.FixedSingle;
+            textBoxSrcHex.Dock = DockStyle.Fill;
+            textBoxSrcHex.Font = new Font("Lucida Console", 9F);
+            textBoxSrcHex.Location = new Point(1, 1);
+            textBoxSrcHex.Margin = new Padding(1);
+            textBoxSrcHex.MaxLength = 1048576;
+            textBoxSrcHex.Multiline = true;
+            textBoxSrcHex.Name = "textBoxSrcHex";
+            textBoxSrcHex.ReadOnly = true;
+            textBoxSrcHex.ScrollBars = ScrollBars.Vertical;
+            textBoxSrcHex.Size = new Size(470, 254);
+            textBoxSrcHex.TabIndex = 44;
+            // 
             // EncryptForm
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1008, 729);
+            Controls.Add(tabControlSrc);
             Controls.Add(progressBar);
             Controls.Add(statusStrip);
             Controls.Add(labelInfoMessage);
@@ -1060,7 +1121,6 @@ namespace EU.CqrXs.Gui.Forms
             Controls.Add(buttonDecrypt);
             Controls.Add(buttonEncrypt);
             Controls.Add(textBoxOut);
-            Controls.Add(textBoxSrc);
             Controls.Add(textBoxPipe);
             Controls.Add(pictureBoxAddAlgo);
             Controls.Add(buttonReset);
@@ -1099,6 +1159,11 @@ namespace EU.CqrXs.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
+            tabControlSrc.ResumeLayout(false);
+            tabPageAscii.ResumeLayout(false);
+            tabPageAscii.PerformLayout();
+            tabPageHex.ResumeLayout(false);
+            tabPageHex.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1138,7 +1203,6 @@ namespace EU.CqrXs.Gui.Forms
         protected internal TextBox textBoxPipe;
         protected internal Label labelFileIn;
         protected internal PictureBox pictureBoxOutFile;
-        protected internal TextBox textBoxSrc;
         protected internal TextBox textBoxOut;
         protected internal ToolStripMenuItem menuMainSave;
         protected internal ToolStripSeparator toolStripSeparator2;
@@ -1200,6 +1264,11 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
         private Panel panelOutLabel;
         protected internal Label labelOutputFile;
+        private TabControl tabControlSrc;
+        private TabPage tabPageAscii;
+        protected internal TextBox textBoxSrc;
+        private TabPage tabPageHex;
+        protected internal TextBox textBoxSrcHex;
     }
 
 

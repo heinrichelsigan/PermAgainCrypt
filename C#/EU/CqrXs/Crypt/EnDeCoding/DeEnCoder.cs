@@ -62,12 +62,12 @@ namespace EU.CqrXs.Crypt.EnDeCoding
         }
 
         /// <summary>
-        /// EncodedTextToBytes transforms an encoded text string into a <see cref="byte[]">býte array</see>
+        /// EncodedTextToBytes transforms an encoded text string into a <see cref="T:byte[]">býte array</see>
         /// </summary>
         /// <param name="cipherText">encoded (encrypted) text string</param>
         /// <param name="encodingType"><see cref="EncodingType"/> could be 
         /// "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64". "Base64" is default.</param>
-        /// <param name="fromPlain">Only for uu: true, if <see cref="encryptBytes"/> represent a binary without encryption</param>
+        /// <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]">encryptBytes</see> represent a binary without encryption</param>
         /// <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
         /// <returns>binary byte array</returns>
         public static byte[] DecodeText(string cipherText, /* out string errMsg, */ EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)

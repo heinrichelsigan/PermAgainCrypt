@@ -518,6 +518,7 @@ namespace EU.CqrXs.Gui.Forms
                 Random rand = new Random(DateTime.Now.Millisecond + DateTime.Now.Second);
                 int rIdx = rand.Next(0, fortunes.Length - 1);
                 this.textBoxSrc.Text = fortunes[rIdx];
+                tabControlSrc_SelectedIndexChanged(sender, new EventArgs());
             }
         }
 
@@ -774,12 +775,12 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
-                    
+
                     byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     string miniPipe = (string.IsNullOrEmpty(cPipe.PipeString)) ? "" : "." + cPipe.PipeString;
                     string outFileDecrypt = (fileName.Contains(GetHash().GetExtension())) ? fileName.Replace(GetHash().GetExtension(), "") : fileName;
                     outFileDecrypt = outFileDecrypt.Replace(GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension(), "");
-                    
+
                     bool saved = SaveBytesDialog(outBytes, ref outFileDecrypt);
                     if (saved)
                     {
@@ -953,7 +954,7 @@ namespace EU.CqrXs.Gui.Forms
         /// </summary>
         /// <param name="fileName"></param>
         internal void FileAddedAction(string fileName)
-        {            
+        {
             FileInfo fi = new FileInfo(fileName);
             if (fi.Exists && fi.Length > 0)
             {
@@ -1176,7 +1177,7 @@ namespace EU.CqrXs.Gui.Forms
                     toolHeader = "Info";
                     IPlayable.PlaySoundFromResource("sound_info");
                     break;
-            }            
+            }
 
             if (duration > 0)
             {
@@ -1186,7 +1187,7 @@ namespace EU.CqrXs.Gui.Forms
                     Task.Run(new System.Action(() =>
                     {
                         SetLabelBackColor(labelInfoMessage, SystemColors.Info);
-                        SetLabelTextVisible(labelInfoMessage, "", false);                        
+                        SetLabelTextVisible(labelInfoMessage, "", false);
                     }));
                     setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
                 };
@@ -1226,7 +1227,7 @@ namespace EU.CqrXs.Gui.Forms
                     Task.Run(new System.Action(async () =>
                     {
                         await labelInfoMessage.SetBackColorAsync(SystemColors.Info);
-                        await labelInfoMessage.SetTextVisibleAsync("", false);                        
+                        await labelInfoMessage.SetTextVisibleAsync("", false);
                     }));
                     setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
                 };
@@ -1266,5 +1267,28 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion Media Methods
 
+
+        private void tabControlSrc_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (sender != null &&
+                tabControlSrc.SelectedTab.Name.EndsWith("Hex", StringComparison.InvariantCultureIgnoreCase) &&
+                !string.IsNullOrEmpty(this.textBoxSrc.Text))
+            {
+                this.textBoxSrcHex.Clear();
+                string hexString = Hex16.ToHex16(System.Text.Encoding.UTF8.GetBytes(this.textBoxSrc.Text));
+                for (int hi = 0; hi < hexString.Length; hi++)
+                {
+                    if (hi > 0)
+                    {
+                        if (hi % 40 == 0)
+                            this.textBoxSrcHex.Text += Environment.NewLine;
+                        else if (hi % 2 == 0)
+                            this.textBoxSrcHex.Text += " ";
+                    }
+                    this.textBoxSrcHex.Text += hexString[hi].ToString();
+                }
+                // this.textBoxSrcHex.Focus();
+            }
+        }
     }
 }

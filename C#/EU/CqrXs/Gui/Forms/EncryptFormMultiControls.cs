@@ -29,6 +29,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             InitializeComponent();
 
+            tabControlWithHexDest.AsciiTextReadonly = true;
             buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
             buttonDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
             buttonReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
@@ -94,7 +95,7 @@ namespace EU.CqrXs.Gui.Forms
             groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
             groupBoxFiles.pictureBoxRunningPipe.Visible = true;
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
-            
+
             Hash_Click(sender, e);
         }
 
@@ -148,7 +149,7 @@ namespace EU.CqrXs.Gui.Forms
                 zipType = ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None");
                 switch (zipType)
                 {
-                    
+
                     case ZipType.GZip: zmenuGZip.Checked = true; break;
                     case ZipType.Zip: zmenuZip.Checked = true; break;
                     case ZipType.Z7:
@@ -529,7 +530,7 @@ namespace EU.CqrXs.Gui.Forms
             {
                 Random rand = new Random(DateTime.Now.Millisecond + DateTime.Now.Second);
                 int rIdx = rand.Next(0, fortunes.Length - 1);
-                this.textBoxSrc.Text = fortunes[rIdx];
+                this.tabControlWithHexSrc.AsciiText = fortunes[rIdx];
             }
         }
 
@@ -543,10 +544,10 @@ namespace EU.CqrXs.Gui.Forms
             this.textBoxHash.Text = string.Empty;
             this.textBoxKey.Text = string.Empty;
             this.textBoxPipe.Text = string.Empty;
-            this.textBoxSrc.Text = string.Empty;
-            this.textBoxOut.Text = string.Empty;
+            this.tabControlWithHexSrc.AsciiText = string.Empty;
+            this.tabControlWithHexDest.AsciiText = string.Empty;
             await this.groupBoxFiles.ResetPictureBoxFilesAsync(sender, e);
-            
+
             await this.SetEncodingAsync(menuEncBase64);
             await this.SetCompressionAsync(null, "None");
             await this.SetHashAsync(menuHashHex, radioButtonListHash);
@@ -593,20 +594,20 @@ namespace EU.CqrXs.Gui.Forms
             SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
 
             DateTime start = DateTime.Now;
-            if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
+            if (!string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
             {
-                this.textBoxOut.Text = "";
+                this.tabControlWithHexDest.AsciiText = "";
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting encryption plain text", ToolTipIcon.Info, -1);
                 try
                 {
-                    await this.statusLabelSource.SetTextAsync($"source chars: {textBoxSrc.Text.Length}");
+                    await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
                     if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                         await SetEncodingAsync(menuEncBase64);
 
-                    string encrypted = cPipe.EncrpytTextGoRounds(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.textBoxOut.Text = encrypted;
-                    await this.statusLabelDestination.SetTextAsync($"destination chars: {this.textBoxOut.Text.Length}");
+                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    this.tabControlWithHexDest.AsciiText = encrypted;
+                    await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
                     await SetInfoMessageAsync("Encryption finished", ToolTipIcon.Info, 5000);
                 }
                 catch (Exception ex)
@@ -624,7 +625,7 @@ namespace EU.CqrXs.Gui.Forms
                 string fileName = FileMatches();
                 if (string.IsNullOrEmpty(fileName))
                 {
-                    if (string.IsNullOrEmpty(this.textBoxSrc.Text))
+                    if (string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
                     {
                         await SetInfoMessageAsync("No file found to encrypt", ToolTipIcon.Warning, 6000);
                         await this.statusLabelSource.SetTextAsync("No file found to encrypt");
@@ -654,7 +655,7 @@ namespace EU.CqrXs.Gui.Forms
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await this.statusLabelMsg.SetTextAsync("encryption time: " + DateTime.Now.Subtract(start).ToString());
                     await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
-                    
+
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(encodedBytes, ref outFilePath) :
                                 SaveBytesDialog(encodedBytes, ref outFilePath);
@@ -741,26 +742,26 @@ namespace EU.CqrXs.Gui.Forms
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
-            
-            await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());            
 
-            if (!string.IsNullOrEmpty(this.textBoxSrc.Text))
+            await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());
+
+            if (!string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
             {
-                this.textBoxOut.Text = "";
+                this.tabControlWithHexDest.AsciiText= "";
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting decryption of cipher text", ToolTipIcon.Info, -1);
 
                 try
                 {
-                    await this.statusLabelSource.SetTextAsync($"source chars: {textBoxSrc.Text.Length}");
+                    await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
                     if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                         await SetEncodingAsync(menuEncBase64);
 
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    string decrypted = cPipe.DecryptTextRoundsGo(this.textBoxSrc.Text, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.textBoxOut.Text = decrypted;
+                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    this.tabControlWithHexDest.AsciiText = decrypted;
                     await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
-                    await this.statusLabelDestination.SetTextAsync($"destination chars: {this.textBoxOut.Text.Length}");
+                    await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
                 }
                 catch (Exception ex)
                 {
@@ -788,11 +789,11 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
-                    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);                    
+                    byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
                     byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
 
                     string outFileDecrypt = fileName.StripCiphersInFileName();
-                    
+
 
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(outBytes, ref outFileDecrypt) :
@@ -887,12 +888,12 @@ namespace EU.CqrXs.Gui.Forms
         /// </summary>
         /// <param name="fileName"></param>
         internal void FileAddedAction(string fileName)
-        {            
+        {
             FileInfo fi = new FileInfo(fileName);
             if (fi.Exists && fi.Length > 0)
             {
-                this.textBoxSrc.Text = string.Empty;
-                this.textBoxOut.Text = string.Empty;
+                this.tabControlWithHexSrc.AsciiText = string.Empty;
+                this.tabControlWithHexDest.AsciiText = string.Empty;
                 SetGBoxText(this.groupBoxFiles, "Files Group Box");
 
                 groupBoxFiles.pictureBoxFileIn.Image = fileName.GetImageThumbnailFromFile();
@@ -973,7 +974,7 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal virtual async Task menuCharHexDecOctBin_Click(object sender, EventArgs e)
         {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();            
+            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
             await dia.ShowDialogAsync();
         }
 
@@ -1162,7 +1163,7 @@ namespace EU.CqrXs.Gui.Forms
                     toolHeader = "Info";
                     IPlayable.PlaySoundFromResource("sound_info");
                     break;
-            }            
+            }
 
             if (duration > 0)
             {
@@ -1222,6 +1223,7 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         #endregion Media Methods
+
 
     }
 }

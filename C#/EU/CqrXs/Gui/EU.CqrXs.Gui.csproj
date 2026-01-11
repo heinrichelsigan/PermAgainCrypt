@@ -10,10 +10,9 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.26.110</AssemblyVersion>
-    <FileVersion>2.26.110</FileVersion>
-    <Description>Symmetric Crypt Pipe WinForm  Heinrich Elsigan
-he@area23.at</Description>
+    <AssemblyVersion>2.26.111</AssemblyVersion>
+    <FileVersion>2.26.111</FileVersion>
+    <Description>Symmetric Crypt Pipe WinForm Heinrich Elsigan he@area23.at</Description>
     <StartupObject>EU.CqrXs.Gui.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
     <PackageIcon>CryptPenacle.png</PackageIcon>
@@ -51,6 +50,9 @@ he@area23.at</Description>
   </ItemGroup>
     
 	<ItemGroup>
+        <Compile Update="Controls\TabConrolWithHex.cs">
+          <SubType>Component</SubType>
+        </Compile>
         <Compile Update="Forms\CharHexDecOctBinDialog.cs" />
         <Compile Update="Forms\EncryptFormMultiControls.cs">
           <SubType>Form</SubType>
@@ -64,6 +66,11 @@ he@area23.at</Description>
           <DependentUpon>Resources.resx</DependentUpon>
         </Compile>
         <Compile Update="Forms\TransparentBadge.cs" />
+        <Compile Update="Properties\Settings.Designer.cs">
+          <DesignTimeSharedInput>True</DesignTimeSharedInput>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
     </ItemGroup>
     
 	<ItemGroup>
@@ -88,6 +95,13 @@ he@area23.at</Description>
     
 	<ItemGroup>
 	  <ProjectReference Include="..\..\EU.CqrXs.csproj" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 
 </Project>

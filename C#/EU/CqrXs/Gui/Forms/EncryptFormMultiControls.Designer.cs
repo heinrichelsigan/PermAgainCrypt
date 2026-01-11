@@ -106,8 +106,6 @@ namespace EU.CqrXs.Gui.Forms
             buttonReset = new Button();
             pictureBoxAddAlgo = new PictureBox();
             textBoxPipe = new TextBox();
-            textBoxSrc = new TextBox();
-            textBoxOut = new TextBox();
             buttonEncrypt = new Button();
             buttonDecrypt = new Button();
             pictureBoxDelete = new PictureBox();
@@ -125,6 +123,8 @@ namespace EU.CqrXs.Gui.Forms
             groupBoxFiles = new EU.CqrXs.Gui.Controls.GroupBoxFiles();
             panelPipe = new Panel();
             panel1 = new Panel();
+            tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
+            tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -759,34 +759,6 @@ namespace EU.CqrXs.Gui.Forms
             textBoxPipe.Size = new Size(578, 23);
             textBoxPipe.TabIndex = 14;
             // 
-            // textBoxSrc
-            // 
-            textBoxSrc.BackColor = SystemColors.ControlLight;
-            textBoxSrc.Font = new Font("Lucida Console", 8F);
-            textBoxSrc.Location = new Point(8, 381);
-            textBoxSrc.Margin = new Padding(1);
-            textBoxSrc.MaxLength = 1048576;
-            textBoxSrc.Multiline = true;
-            textBoxSrc.Name = "textBoxSrc";
-            textBoxSrc.ScrollBars = ScrollBars.Vertical;
-            textBoxSrc.Size = new Size(480, 307);
-            textBoxSrc.TabIndex = 31;
-            // 
-            // textBoxOut
-            // 
-            textBoxOut.BackColor = SystemColors.Control;
-            textBoxOut.BorderStyle = BorderStyle.FixedSingle;
-            textBoxOut.Font = new Font("Lucida Console", 8F);
-            textBoxOut.Location = new Point(516, 381);
-            textBoxOut.Margin = new Padding(1);
-            textBoxOut.MaxLength = 1048576;
-            textBoxOut.Multiline = true;
-            textBoxOut.Name = "textBoxOut";
-            textBoxOut.ReadOnly = true;
-            textBoxOut.ScrollBars = ScrollBars.Vertical;
-            textBoxOut.Size = new Size(480, 307);
-            textBoxOut.TabIndex = 32;
-            // 
             // buttonEncrypt
             // 
             buttonEncrypt.BackColor = SystemColors.Control;
@@ -989,12 +961,38 @@ namespace EU.CqrXs.Gui.Forms
             panel1.Size = new Size(992, 39);
             panel1.TabIndex = 20;
             // 
+            // tabControlWithHexSrc
+            // 
+            tabControlWithHexSrc.Font = new Font("Lucida Sans Typewriter", 9F);
+            tabControlWithHexSrc.ItemSize = new Size(72, 19);
+            tabControlWithHexSrc.Location = new Point(12, 380);
+            tabControlWithHexSrc.Margin = new Padding(1);
+            tabControlWithHexSrc.Name = "tabControlWithHexSrc";
+            tabControlWithHexSrc.Padding = new Point(1, 1);
+            tabControlWithHexSrc.SelectedIndex = 0;
+            tabControlWithHexSrc.Size = new Size(480, 306);
+            tabControlWithHexSrc.TabIndex = 40;
+            // 
+            // tabControlWithHexDest
+            // 
+            tabControlWithHexDest.Font = new Font("Lucida Sans Typewriter", 9F);
+            tabControlWithHexDest.ItemSize = new Size(72, 19);
+            tabControlWithHexDest.Location = new Point(516, 380);
+            tabControlWithHexDest.Margin = new Padding(1);
+            tabControlWithHexDest.Name = "tabControlWithHexDest";
+            tabControlWithHexDest.Padding = new Point(1, 1);
+            tabControlWithHexDest.SelectedIndex = 0;
+            tabControlWithHexDest.Size = new Size(480, 306);
+            tabControlWithHexDest.TabIndex = 46;
+            // 
             // EncryptFormMultiControls
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1008, 729);
+            Controls.Add(tabControlWithHexDest);
+            Controls.Add(tabControlWithHexSrc);
             Controls.Add(panel1);
             Controls.Add(panelPipe);
             Controls.Add(groupBoxFiles);
@@ -1002,8 +1000,6 @@ namespace EU.CqrXs.Gui.Forms
             Controls.Add(statusStrip);
             Controls.Add(radioButtonListHash);
             Controls.Add(buttonHashPipe);
-            Controls.Add(textBoxOut);
-            Controls.Add(textBoxSrc);
             Controls.Add(buttonSetPipeline);
             Controls.Add(textBoxHash);
             Controls.Add(pictureBoxHash);
@@ -1069,8 +1065,6 @@ namespace EU.CqrXs.Gui.Forms
         protected internal Button buttonReset;
         protected internal PictureBox pictureBoxAddAlgo;
         protected internal TextBox textBoxPipe;
-        protected internal TextBox textBoxSrc;
-        protected internal TextBox textBoxOut;
         protected internal ToolStripMenuItem menuMainSave;
         protected internal ToolStripSeparator toolStripSeparator2;
         protected internal ToolStripMenuItem menuMainEncrypt;
@@ -1133,6 +1127,8 @@ namespace EU.CqrXs.Gui.Forms
         private Panel panelPipe;
         private Panel panel1;
         internal ToolStripMenuItem menuHelpCharHexDecOctBin;
+        private Controls.TabControlWithHex tabControlWithHexSrc;
+        private Controls.TabControlWithHex tabControlWithHexDest;
     }
 
 
