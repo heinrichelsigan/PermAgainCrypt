@@ -33,22 +33,22 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <summary>
         /// ZType is current <see cref="ZipType"/>
         /// </summary>
-        public ZipType ZType { get => zType; internal set => zType = value; }
+        public ZipType ZType { get => zType; set => zType = value; }
 
         /// <summary>
         /// Current <see cref="EncodeType"/> 
         /// </summary>
-        public EncodingType EncodeType { get => encodeType; internal set => encodeType = value; }
+        public EncodingType EncodeType { get => encodeType; set => encodeType = value; }
 
         /// <summary>
         /// KHash is <see cref="KeyHash"/>
         /// </summary>
-        public KeyHash KHash { get => kHash; internal set => kHash = value; }
+        public KeyHash KHash { get => kHash; set => kHash = value; }
 
         /// <summary>
         /// InPipe is current encryption pipe
         /// </summary>
-        public CipherEnum[] InPipe { get => inPipe; internal set => inPipe = value; }
+        public CipherEnum[] InPipe { get => inPipe; set => inPipe = value; }
 
         /// <summary>
         /// OutPipe will always be generated from <see cref="InPipe"/>

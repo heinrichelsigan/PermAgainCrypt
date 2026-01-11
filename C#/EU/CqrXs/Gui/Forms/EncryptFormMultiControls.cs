@@ -18,6 +18,8 @@ namespace EU.CqrXs.Gui.Forms
     public partial class EncryptFormMultiControls : EncryptFormBase
     {
 
+        protected internal CipherPipe? cPipe = null;
+
         #region ctor and load
 
         /// <summary>
@@ -92,7 +94,7 @@ namespace EU.CqrXs.Gui.Forms
             this.textBoxKey.Text = GetEmailFromRegistry();
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
 
-            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            groupBoxFiles.pictureBoxRunningPipe.Image = Resources.BlankEncrypt_640x108;
             groupBoxFiles.pictureBoxRunningPipe.Visible = true;
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
 
@@ -160,6 +162,11 @@ namespace EU.CqrXs.Gui.Forms
                         comboBoxCompression.SelectedItem = ZipType.None.ToString();
                         break;
                 }
+            }
+            if (cPipe != null)
+            {
+                cPipe.ZType = zipType;
+                this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe?.GenerateEncryptPipeImage();
             }
             SetInfoMessage($"ZipType {zipType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
@@ -241,6 +248,11 @@ namespace EU.CqrXs.Gui.Forms
                     default: menuEncBase64.Checked = true; break;
                 }
             }
+            if (cPipe != null)
+            {
+                cPipe.EncodeType = encodingType;
+                this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe?.GenerateEncryptPipeImage();
+            }            
             await SetInfoMessageAsync($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
 
@@ -342,6 +354,11 @@ namespace EU.CqrXs.Gui.Forms
             }
 
             Hash_Click(this, new EventArgs());
+            if (cPipe != null)
+            {
+                cPipe.KHash = aKeyHash;
+                this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe?.GenerateEncryptPipeImage();
+            }
             await SetInfoMessageAsync($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
         }
 
@@ -415,10 +432,10 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">EventArgs e</param>
         protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
-            CipherEnum[] cipherAlgors = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
+            CipherEnum[] cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
             {
-                if (cipherAlgors.Length < 8)
+                if (cipherAlgos.Length < 8)
                 {
                     switch (cipherEnum)
                     {
@@ -451,6 +468,9 @@ namespace EU.CqrXs.Gui.Forms
                             break;
                     }
                     this.textBoxPipe.Text += cipherEnum.ToString() + ";";
+                    cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
+                    cPipe = new CipherPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash());
+                    this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
                     SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
                 }
                 else
@@ -468,6 +488,13 @@ namespace EU.CqrXs.Gui.Forms
         private void pictureBoxDelete_Click(object sender, EventArgs e)
         {
             this.textBoxPipe.Text = "";
+            if (cPipe != null)
+            {
+                cPipe.InPipe = Array.Empty<CipherEnum>();
+                this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
+            }
+            else 
+                this.groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.BlankEncrypt_640x108;
         }
 
         /// <summary>
@@ -487,11 +514,12 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            CipherPipe cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash());
+            cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
             }
+            this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
         }
 
         /// <summary>
@@ -511,11 +539,12 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+            cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
             }
+            this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
         }
 
         /// <summary>
@@ -546,6 +575,7 @@ namespace EU.CqrXs.Gui.Forms
             this.textBoxPipe.Text = string.Empty;
             this.tabControlWithHexSrc.AsciiText = string.Empty;
             this.tabControlWithHexDest.AsciiText = string.Empty;
+            cPipe = null;
             await this.groupBoxFiles.ResetPictureBoxFilesAsync(sender, e);
 
             await this.SetEncodingAsync(menuEncBase64);
@@ -589,7 +619,7 @@ namespace EU.CqrXs.Gui.Forms
                     return;
             }
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
 
             SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
 
@@ -645,7 +675,6 @@ namespace EU.CqrXs.Gui.Forms
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 try
                 {
-                    // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
 
                     byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
@@ -673,18 +702,15 @@ namespace EU.CqrXs.Gui.Forms
                             await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
                             await this.PlaySoundFromResourcesAsync("sound_hammer");
                             await groupBoxFiles.pictureBoxFileOut.SetImageTagVisibleAsync(Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
-                            // await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
                         }
                         else
                         {
                             await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
-                            await this.PlaySoundFromResourcesAsync("sound_laser");
+                            // await this.PlaySoundFromResourcesAsync("sound_laser");
                             await groupBoxFiles.pictureBoxFileOut.SetImageTagVisibleAsync(outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
-                            // await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
 
                         await groupBoxFiles.labelOutputFile.SetTextVisibleAsync(outFileName, true);
-                        // await groupBoxFiles.SetLabelVisibleTextAsync(groupBoxFiles.labelOutputFile, true, outFileName);
 
 
                         HashFiles.Add(outFilePath);
@@ -740,7 +766,7 @@ namespace EU.CqrXs.Gui.Forms
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
             groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateDecryptPipeImage();
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());
@@ -757,7 +783,6 @@ namespace EU.CqrXs.Gui.Forms
                     if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                         await SetEncodingAsync(menuEncBase64);
 
-                    // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
                     this.tabControlWithHexDest.AsciiText = decrypted;
                     await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
@@ -788,12 +813,10 @@ namespace EU.CqrXs.Gui.Forms
 
                 try
                 {
-                    // CipherPipe cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text);
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
                     byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
 
                     string outFileDecrypt = fileName.StripCiphersInFileName();
-
 
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(outBytes, ref outFileDecrypt) :
@@ -802,9 +825,7 @@ namespace EU.CqrXs.Gui.Forms
                     {
                         HashFiles.Add(outFileDecrypt);
                         await groupBoxFiles.pictureBoxFileOut.SetImageTagVisibleAsync(outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
-                        // await groupBoxFiles.SetPictureBoxImageAsync(groupBoxFiles.pictureBoxFileOut, outFileDecrypt.GetImageThumbnailFromFile(), outFileDecrypt, true);
                         await groupBoxFiles.labelOutputFile.SetTextVisibleAsync(Path.GetFileName(outFileDecrypt), true);
-                        // await groupBoxFiles.SetLabelVisibleTextAsync(groupBoxFiles.labelOutputFile, true,);
                         await SetInfoMessageAsync("file decrypted", ToolTipIcon.Info, -1);
                     }
                     else
@@ -916,8 +937,8 @@ namespace EU.CqrXs.Gui.Forms
 
                 if (menuItemCreatePipeSettingsFromFileName.Checked)
                 {
-                    var cpip = GetCPipeFromFileName(fileName);
-                    if (cpip != null)
+                    cPipe = GetCPipeFromFileName(fileName);
+                    if (cPipe != null)
                     {
                         ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
                         ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
@@ -925,8 +946,8 @@ namespace EU.CqrXs.Gui.Forms
 
                         foreach (var miHash in menuHashes)
                         {
-                            if (miHash.Name.Replace("menuHash", "").Equals(cpip.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                                miHash.Text.Equals(cpip.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            if (miHash.Name.Replace("menuHash", "").Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                                miHash.Text.Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
                             {
                                 SetHashAsync((ToolStripMenuItem)miHash, radioButtonListHash).ConfigureAwait(false);
 
@@ -935,8 +956,8 @@ namespace EU.CqrXs.Gui.Forms
                         }
                         foreach (var miEnc in menuEncodings)
                         {
-                            if (miEnc.Name.Replace("menuEnc", "").Equals(cpip.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                                miEnc.Text.Equals(cpip.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            if (miEnc.Name.Replace("menuEnc", "").Equals(cPipe.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                                miEnc.Text.Equals(cPipe.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase))
                             {
                                 SetEncodingAsync((ToolStripMenuItem)miEnc, null).ConfigureAwait(true);
                                 break;
@@ -944,8 +965,8 @@ namespace EU.CqrXs.Gui.Forms
                         }
                         foreach (var miZip in menuZips)
                         {
-                            if (miZip.Name.Replace("zmenu", "").Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                               miZip.Text.Equals(cpip.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                            if (miZip.Name.Replace("zmenu", "").Equals(cPipe.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
+                               miZip.Text.Equals(cPipe.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase))
                             {
                                 SetCompressionAsync((ToolStripMenuItem)miZip, null).ConfigureAwait(true);
                                 break;
@@ -953,10 +974,11 @@ namespace EU.CqrXs.Gui.Forms
                         }
 
                         this.textBoxPipe.Text = "";
-                        foreach (CipherEnum cipher in cpip.InPipe)
+                        foreach (CipherEnum cipher in cPipe.InPipe)
                         {
                             this.textBoxPipe.Text += cipher.ToString() + ";";
                         }
+                        this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
                     }
                 }
 
@@ -985,7 +1007,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
-            this.groupBoxFiles.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.groupBoxFiles.pictureBoxRunningPipe.Image = Resources.BlankEncrypt_640x108;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;

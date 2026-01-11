@@ -892,7 +892,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // pictureBoxRunningPipe
             // 
-            pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
+            pictureBoxRunningPipe.Image = Properties.Resources.BlankEncrypt_640x108;
             pictureBoxRunningPipe.Location = new Point(180, 6);
             pictureBoxRunningPipe.Margin = new Padding(1);
             pictureBoxRunningPipe.Name = "pictureBoxRunningPipe";

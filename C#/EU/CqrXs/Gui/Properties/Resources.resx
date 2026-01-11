@@ -273,4 +273,13 @@
   <data name="sound_killer_state" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\sounds\sound_killer_state.mp3;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Blank_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Blank_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlankEncrypt_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlankEncrypt_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlankDecrypt_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlankDecrypt_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

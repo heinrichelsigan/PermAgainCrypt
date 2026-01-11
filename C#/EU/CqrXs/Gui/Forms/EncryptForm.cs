@@ -79,7 +79,7 @@ namespace EU.CqrXs.Gui.Forms
                 this.comboBoxEncoding.Items.Add(encodingType.ToString());
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
 
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             this.pictureBoxRunningPipe.Visible = true;
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
 
@@ -545,7 +545,7 @@ namespace EU.CqrXs.Gui.Forms
             this.labelFileIn.Text = "[no file selected]";
             this.pictureBoxFileIn.Tag = null;
             this.pictureBoxFileIn.Image = Properties.Resources.image_file;
-            this.pictureBoxRunningPipe.Image = Properties.Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Properties.Resources.Blank_640x108;
         }
 
         #endregion ButtonPictureBoxClickEvents
@@ -814,7 +814,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">DragEventArgs e</param>
         internal void Drag_Enter(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             string[] files = new string[1];
 
             if (e != null && e.Data != null)
@@ -875,7 +875,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e"></param>
         internal void Drag_Leave(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             isDragMode = false;
             Cursor.Current = DefaultCursor;
             _dragDropEffect = DragDropEffects.None;
@@ -889,7 +889,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">DragEventArgs e</param>
         internal void Drag_Drop(object sender, System.Windows.Forms.DragEventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             string[] files = new string[1];
 
             if (e != null && e.Data != null && (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop) ||
@@ -920,7 +920,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="files"></param>
         internal void Drop_Files(string[] files)
         {
-            pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             string ext = null;
             if (isDragMode && files != null && files.Length > 0)
             {
@@ -1043,7 +1043,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">EventArgs e</param>
         internal void menuFileOpen_Click(object sender, EventArgs e)
         {
-            this.pictureBoxRunningPipe.Image = Resources.CryptPipe1;
+            this.pictureBoxRunningPipe.Image = Resources.Blank_640x108;
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Title = "Open File";
             dialog.CheckFileExists = true;

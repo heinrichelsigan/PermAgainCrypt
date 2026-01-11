@@ -1,6 +1,5 @@
 ﻿using EU.CqrXs.Util;
 using EU.CqrXs.Gui.Properties;
-using System.ComponentModel;
 
 namespace EU.CqrXs.Gui.Sound
 {
