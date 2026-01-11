@@ -116,7 +116,7 @@ namespace EU.CqrXs.Gui.Controls
 
                     await labelOutputFile.SetTextVisibleAsync("", false);
                     await labelFileIn.SetTextVisibleAsync("[no file selected]", true);
-                    await pictureBoxRunningPipe.SetBitmapTagVisibleAsync(Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);
+                    await pictureBoxRunningPipe.SetBitmapTagVisibleAsync(Properties.Resources.Blank_640x96, "DeCryptPipeLine", true);
                     await pictureBoxFileIn.SetBitmapTagVisibleAsync(Properties.Resources.file, "", true);
                     await pictureBoxFileOut.SetBitmapTagVisibleAsync(Properties.Resources.file, "", false);
                     // SetPictureBoxImage(this.pictureBoxRunningPipe, Properties.Resources.BlankEncrypt_640x96, "DeCryptPipeLine", true);

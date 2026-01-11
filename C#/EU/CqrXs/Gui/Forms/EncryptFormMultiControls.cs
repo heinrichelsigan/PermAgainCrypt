@@ -737,11 +737,11 @@ namespace EU.CqrXs.Gui.Forms
 
             DateTime start = DateTime.Now;
 
-            groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.PipeLineDecrypt;
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+            groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateDecryptPipeImage();
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());
 

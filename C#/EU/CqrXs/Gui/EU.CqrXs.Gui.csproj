@@ -30,8 +30,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\arrows\process\**" />
+    <Compile Remove="Resources\huge\**" />
     <Compile Remove="res\**" />
+    <EmbeddedResource Remove="Resources\arrows\process\**" />
+    <EmbeddedResource Remove="Resources\huge\**" />
     <EmbeddedResource Remove="res\**" />
+    <None Remove="Resources\arrows\process\**" />
+    <None Remove="Resources\huge\**" />
     <None Remove="res\**" />
   </ItemGroup>
 
@@ -47,6 +53,7 @@
 
   <ItemGroup>
     <None Remove="Program.cs.txt" />
+    <None Remove="Resources\ChiffrePentacle2.gif" />
   </ItemGroup>
     
 	<ItemGroup>

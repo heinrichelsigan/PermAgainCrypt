@@ -16,7 +16,7 @@ namespace EU.CqrXs.Gui.Forms
             this.labelCopyright.Text = AssemblyCopyright;
             this.labelCompanyName.Text = AssemblyCompany;
             this.textBoxDescription.Text = AssemblyDescription;
-            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle1;
+            this.logoPictureBox.Image = Properties.Resources.ChiffrePentacle;
         }
 
         #region Assembly Attribute Accessors

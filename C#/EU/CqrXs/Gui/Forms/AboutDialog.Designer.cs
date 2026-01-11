@@ -68,7 +68,7 @@
             // logoPictureBox
             // 
             logoPictureBox.Dock = DockStyle.Fill;
-            logoPictureBox.Image = Properties.Resources.ChiffrePentacle1;
+            logoPictureBox.Image = Properties.Resources.ChiffrePentacle;
             logoPictureBox.Location = new Point(4, 2);
             logoPictureBox.Margin = new Padding(4, 2, 4, 2);
             logoPictureBox.Name = "logoPictureBox";

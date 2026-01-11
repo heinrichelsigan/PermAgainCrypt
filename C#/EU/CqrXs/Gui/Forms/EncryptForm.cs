@@ -720,14 +720,11 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            DateTime start = DateTime.Now;
-
-            this.pictureBoxRunningPipe.Image = Properties.Resources.PipeLineDecrypt;
-            Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
-
+            DateTime start = DateTime.Now;            
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
             CipherPipe cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
-
+            this.pictureBoxRunningPipe.Image = cPipe.GenerateDecryptPipeImage();
+            Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
             SetPictureBoxImage(pictureBoxRunningPipe, cPipe.GenerateDecryptPipeImage());
 
             if (!string.IsNullOrEmpty(this.textBoxSrc.Text))

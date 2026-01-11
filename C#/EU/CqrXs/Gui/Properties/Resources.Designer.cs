@@ -63,79 +63,9 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap _2025_20_21_JollyRogerJoker {
-            get {
-                object obj = ResourceManager.GetObject("2025-20-21_JollyRogerJoker", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_hash {
-            get {
-                object obj = ResourceManager.GetObject("a_hash", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap a_hash1 {
             get {
                 object obj = ResourceManager.GetObject("a_hash1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_right {
-            get {
-                object obj = ResourceManager.GetObject("a_right", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_right_hover {
-            get {
-                object obj = ResourceManager.GetObject("a_right_hover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_right_key {
-            get {
-                object obj = ResourceManager.GetObject("a_right_key", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_right_key1 {
-            get {
-                object obj = ResourceManager.GetObject("a_right_key1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap a_right_key2 {
-            get {
-                object obj = ResourceManager.GetObject("a_right_key2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,39 +83,9 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap arrow_right_hover {
-            get {
-                object obj = ResourceManager.GetObject("arrow_right_hover", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Blank_640x96 {
             get {
                 object obj = ResourceManager.GetObject("Blank_640x96", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BlankDecrypt_640x96 {
-            get {
-                object obj = ResourceManager.GetObject("BlankDecrypt_640x96", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap BlankEncrypt_640x96 {
-            get {
-                object obj = ResourceManager.GetObject("BlankEncrypt_640x96", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,59 +103,9 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ChiffreCryptDisk {
+        internal static System.Drawing.Bitmap ChiffrePentacle {
             get {
-                object obj = ResourceManager.GetObject("ChiffreCryptDisk", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ChiffrePentacle1 {
-            get {
-                object obj = ResourceManager.GetObject("ChiffrePentacle1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap close_delete {
-            get {
-                object obj = ResourceManager.GetObject("close_delete", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap close_delete1 {
-            get {
-                object obj = ResourceManager.GetObject("close_delete1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CryptPenacle {
-            get {
-                object obj = ResourceManager.GetObject("CryptPenacle", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap CryptPipe {
-            get {
-                object obj = ResourceManager.GetObject("CryptPipe", resourceCulture);
+                object obj = ResourceManager.GetObject("ChiffrePentacle", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -273,79 +123,9 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap decrypted {
-            get {
-                object obj = ResourceManager.GetObject("decrypted", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap DeCryptPipeLlne {
-            get {
-                object obj = ResourceManager.GetObject("DeCryptPipeLlne", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Des {
             get {
                 object obj = ResourceManager.GetObject("Des", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap encrypted {
-            get {
-                object obj = ResourceManager.GetObject("encrypted", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnCryptPipe {
-            get {
-                object obj = ResourceManager.GetObject("EnCryptPipe", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnCryptPipe1 {
-            get {
-                object obj = ResourceManager.GetObject("EnCryptPipe1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnCryptPipe2 {
-            get {
-                object obj = ResourceManager.GetObject("EnCryptPipe2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap EnCryptPipeline {
-            get {
-                object obj = ResourceManager.GetObject("EnCryptPipeline", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -371,31 +151,11 @@ namespace EU.CqrXs.Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap heinrichelsigan {
-            get {
-                object obj = ResourceManager.GetObject("heinrichelsigan", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to https://cqrxs.eu/help/.
         /// </summary>
         internal static string HelpUrl {
             get {
                 return ResourceManager.GetString("HelpUrl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon icon_delete {
-            get {
-                object obj = ResourceManager.GetObject("icon_delete", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -522,16 +282,6 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap img_success1 {
-            get {
-                object obj = ResourceManager.GetObject("img_success1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap img_visio {
             get {
                 object obj = ResourceManager.GetObject("img_visio", resourceCulture);
@@ -565,36 +315,6 @@ namespace EU.CqrXs.Gui.Properties {
         internal static System.Drawing.Bitmap key_ring {
             get {
                 object obj = ResourceManager.GetObject("key_ring", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap PermEncryptAgain__EncryptPipe {
-            get {
-                object obj = ResourceManager.GetObject("PermEncryptAgain__EncryptPipe", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap PipeDecrypt {
-            get {
-                object obj = ResourceManager.GetObject("PipeDecrypt", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap PipeLineDecrypt {
-            get {
-                object obj = ResourceManager.GetObject("PipeLineDecrypt", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -740,26 +460,6 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap TransparentMenuImage {
-            get {
-                object obj = ResourceManager.GetObject("TransparentMenuImage", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TransparentMenuImage1 {
-            get {
-                object obj = ResourceManager.GetObject("TransparentMenuImage1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap TripleDes {
             get {
                 object obj = ResourceManager.GetObject("TripleDes", resourceCulture);
@@ -773,26 +473,6 @@ namespace EU.CqrXs.Gui.Properties {
         internal static System.Drawing.Bitmap TwoFish {
             get {
                 object obj = ResourceManager.GetObject("TwoFish", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap WinFormAboutDialog {
-            get {
-                object obj = ResourceManager.GetObject("WinFormAboutDialog", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap WinForms_EncryptPipe {
-            get {
-                object obj = ResourceManager.GetObject("WinForms_EncryptPipe", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
