@@ -1201,7 +1201,12 @@ namespace EU.CqrXs.Gui.Forms
                 default:
                     await labelInfoMessage.SetBackColorAsync(SystemColors.Info);
                     toolHeader = "Info";
-                    await this.PlaySoundFromResourcesAsync("sound_info");
+                    switch (++Program.ProgramCount %  23) 
+                    {
+                        case 17: IPlayable.PlaySoundFromResource("sound_killer_state"); break;
+                        case 19: await this.PlaySoundFromResourcesAsync("sound_sputnik"); break;
+                        default: await this.PlaySoundFromResourcesAsync("sound_info"); break;
+                    }
                     break;
             }
 

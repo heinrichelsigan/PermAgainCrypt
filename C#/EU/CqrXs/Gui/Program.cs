@@ -4,8 +4,7 @@ using EU.CqrXs.Gui.Forms;
 
 
 namespace EU.CqrXs.Gui
-{
-
+{    
     #region enum FormMode
     public enum FormMode
     {
@@ -25,7 +24,7 @@ namespace EU.CqrXs.Gui
 
         #region static fields
         public static string ProgName { get => Constants.APP_NAME_WINFORM; }
-
+        public static ulong ProgramCount = 0x0;
         internal static Mutex? mutex;
 
         internal static SystemColorMode colorMode = SystemColorMode.System;

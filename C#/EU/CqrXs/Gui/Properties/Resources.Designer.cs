@@ -395,6 +395,15 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_killer_state {
+            get {
+                return ResourceManager.GetStream("sound_killer_state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
         internal static System.IO.UnmanagedMemoryStream sound_laser {
             get {
                 return ResourceManager.GetStream("sound_laser", resourceCulture);
@@ -407,6 +416,15 @@ namespace EU.CqrXs.Gui.Properties {
         internal static System.IO.UnmanagedMemoryStream sound_push {
             get {
                 return ResourceManager.GetStream("sound_push", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream sound_sputnik {
+            get {
+                return ResourceManager.GetStream("sound_sputnik", resourceCulture);
             }
         }
         

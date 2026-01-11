@@ -54,6 +54,11 @@
   <ItemGroup>
     <None Remove="Program.cs.txt" />
     <None Remove="Resources\ChiffrePentacle2.gif" />
+    <None Remove="Resources\sounds\sound_pluckpcm.wav" />
+    <None Remove="Resources\sounds\sound_romans.wav" />
+    <None Remove="Resources\sounds\sound_soft.wav" />
+    <None Remove="Resources\sounds\sound_state_kills.m4a" />
+    <None Remove="Resources\sounds\sound_train.wav" />
   </ItemGroup>
     
 	<ItemGroup>

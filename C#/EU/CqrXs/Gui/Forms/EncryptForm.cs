@@ -665,8 +665,9 @@ namespace EU.CqrXs.Gui.Forms
                         }
                         else
                         {
-                            await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
-                            await this.PlaySoundFromResourcesAsync("sound_laser");
+                            await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);                            
+                            // await this.PlaySoundFromResourcesAsync("sound_laser");
+
                             await pictureBoxOutFile.SetImageTagVisibleAsync(outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                             // await SetPictureBoxImageAsync(pictureBoxOutFile, outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
                         }
@@ -1211,8 +1212,13 @@ namespace EU.CqrXs.Gui.Forms
                 case ToolTipIcon.Info:
                 default:
                     await labelInfoMessage.SetBackColorAsync(SystemColors.Info);
-                    toolHeader = "Info";
-                    await this.PlaySoundFromResourcesAsync("sound_info");
+                    toolHeader = "Info";                    
+                    if (++Program.ProgramCount % 7 == 4)
+                        await this.PlaySoundFromResourcesAsync("sound_state_kills");
+                    else if (Program.ProgramCount % 11 == 6)
+                        await this.PlaySoundFromResourcesAsync("sound_sputnik");
+                    else
+                        await this.PlaySoundFromResourcesAsync("sound_info");     
                     break;
             }
 
