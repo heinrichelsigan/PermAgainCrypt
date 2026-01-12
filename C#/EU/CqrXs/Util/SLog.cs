@@ -36,7 +36,7 @@ namespace EU.CqrXs.Util
         /// <summary>
         /// private static ctor of SLog
         /// </summary>
-        static SLog() {; }
+        static SLog() { ; }
 
 
         public static void SetLogFileByAppName(string appName = "")

@@ -1015,7 +1015,7 @@ namespace EU.CqrXs.Gui.Forms
             MaximumSize = new Size(1024, 768);
             MinimizeBox = false;
             Name = "EncryptFormMultiControls";
-            Opacity = 0.92D;
+            Opacity = 0.96D;            
             Text = "EncryptFormMultiControls";
             FormClosed += menuFileExit_Close;
             Load += EncryptFormMultiControls_Load;

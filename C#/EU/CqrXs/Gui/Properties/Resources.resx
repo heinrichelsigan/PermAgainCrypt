@@ -282,4 +282,10 @@
   <data name="BlankDecrypt_640x108" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BlankDecrypt_640x108.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="TextLengthTooLarge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextLengthTooLarge.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextLengthTooHuge" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextLengthTooHuge.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

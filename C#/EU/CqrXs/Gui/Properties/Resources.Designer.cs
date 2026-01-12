@@ -498,6 +498,26 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap TextLengthTooHuge {
+            get {
+                object obj = ResourceManager.GetObject("TextLengthTooHuge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TextLengthTooLarge {
+            get {
+                object obj = ResourceManager.GetObject("TextLengthTooLarge", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ThreeFish {
             get {
                 object obj = ResourceManager.GetObject("ThreeFish", resourceCulture);

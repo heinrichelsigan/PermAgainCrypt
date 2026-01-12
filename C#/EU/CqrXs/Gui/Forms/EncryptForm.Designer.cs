@@ -127,6 +127,7 @@ namespace EU.CqrXs.Gui.Forms
             statusLabelMsg = new ToolStripStatusLabel();
             statusLabelDestination = new ToolStripStatusLabel();
             progressBar = new ProgressBar();
+            panelTabView = new Panel();
             tabControlSrc = new TabControl();
             tabPageAscii = new TabPage();
             textBoxSrc = new TextBox();
@@ -144,6 +145,7 @@ namespace EU.CqrXs.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxRunningPipe).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
+            panelTabView.SuspendLayout();
             tabControlSrc.SuspendLayout();
             tabPageAscii.SuspendLayout();
             tabPageHex.SuspendLayout();
@@ -1010,7 +1012,7 @@ namespace EU.CqrXs.Gui.Forms
             statusLabelSource.Font = new Font("Lucida Sans Typewriter", 9F);
             statusLabelSource.Name = "statusLabelSource";
             statusLabelSource.Size = new Size(216, 17);
-            statusLabelSource.Text = "statusLabelSource";
+            statusLabelSource.Text = " ";
             // 
             // statusLabelMsg
             // 
@@ -1035,17 +1037,29 @@ namespace EU.CqrXs.Gui.Forms
             progressBar.Size = new Size(989, 26);
             progressBar.TabIndex = 45;
             // 
+            // panelTabView
+            // 
+            panelTabView.BackColor = SystemColors.Control;
+            panelTabView.BackgroundImage = Properties.Resources.TextLengthTooLarge;
+            panelTabView.BackgroundImageLayout = ImageLayout.Stretch;
+            panelTabView.Controls.Add(tabControlSrc);
+            panelTabView.Location = new Point(12, 381);
+            panelTabView.Margin = new Padding(1);
+            panelTabView.Name = "panelTabView";
+            panelTabView.Size = new Size(484, 294);
+            panelTabView.TabIndex = 46;
+            // 
             // tabControlSrc
             // 
             tabControlSrc.Controls.Add(tabPageAscii);
             tabControlSrc.Controls.Add(tabPageHex);
-            tabControlSrc.Location = new Point(12, 382);
+            tabControlSrc.Dock = DockStyle.Fill;
+            tabControlSrc.Location = new Point(0, 0);
             tabControlSrc.Margin = new Padding(1);
             tabControlSrc.Name = "tabControlSrc";
             tabControlSrc.SelectedIndex = 0;
-            tabControlSrc.Size = new Size(480, 284);
-            tabControlSrc.TabIndex = 40;
-            tabControlSrc.SelectedIndexChanged += tabControlSrc_SelectedIndexChanged;
+            tabControlSrc.Size = new Size(484, 294);
+            tabControlSrc.TabIndex = 41;
             // 
             // tabPageAscii
             // 
@@ -1054,14 +1068,14 @@ namespace EU.CqrXs.Gui.Forms
             tabPageAscii.Margin = new Padding(1);
             tabPageAscii.Name = "tabPageAscii";
             tabPageAscii.Padding = new Padding(1);
-            tabPageAscii.Size = new Size(472, 255);
+            tabPageAscii.Size = new Size(476, 265);
             tabPageAscii.TabIndex = 41;
             tabPageAscii.Text = "Ascii Text";
             tabPageAscii.UseVisualStyleBackColor = true;
             // 
             // textBoxSrc
             // 
-            textBoxSrc.BackColor = SystemColors.ControlLight;
+            textBoxSrc.BackColor = SystemColors.ButtonHighlight;
             textBoxSrc.Dock = DockStyle.Fill;
             textBoxSrc.Font = new Font("Lucida Console", 8F);
             textBoxSrc.Location = new Point(1, 1);
@@ -1070,7 +1084,7 @@ namespace EU.CqrXs.Gui.Forms
             textBoxSrc.Multiline = true;
             textBoxSrc.Name = "textBoxSrc";
             textBoxSrc.ScrollBars = ScrollBars.Vertical;
-            textBoxSrc.Size = new Size(470, 253);
+            textBoxSrc.Size = new Size(474, 263);
             textBoxSrc.TabIndex = 42;
             // 
             // tabPageHex
@@ -1080,7 +1094,7 @@ namespace EU.CqrXs.Gui.Forms
             tabPageHex.Margin = new Padding(1);
             tabPageHex.Name = "tabPageHex";
             tabPageHex.Padding = new Padding(1);
-            tabPageHex.Size = new Size(472, 256);
+            tabPageHex.Size = new Size(476, 266);
             tabPageHex.TabIndex = 43;
             tabPageHex.Text = "Hex View";
             tabPageHex.UseVisualStyleBackColor = true;
@@ -1088,7 +1102,7 @@ namespace EU.CqrXs.Gui.Forms
             // textBoxSrcHex
             // 
             textBoxSrcHex.BackColor = SystemColors.Control;
-            textBoxSrcHex.BorderStyle = BorderStyle.FixedSingle;
+            textBoxSrcHex.BorderStyle = BorderStyle.None;
             textBoxSrcHex.Dock = DockStyle.Fill;
             textBoxSrcHex.Font = new Font("Lucida Console", 9F);
             textBoxSrcHex.Location = new Point(1, 1);
@@ -1098,7 +1112,7 @@ namespace EU.CqrXs.Gui.Forms
             textBoxSrcHex.Name = "textBoxSrcHex";
             textBoxSrcHex.ReadOnly = true;
             textBoxSrcHex.ScrollBars = ScrollBars.Vertical;
-            textBoxSrcHex.Size = new Size(470, 254);
+            textBoxSrcHex.Size = new Size(474, 264);
             textBoxSrcHex.TabIndex = 44;
             // 
             // EncryptForm
@@ -1107,7 +1121,7 @@ namespace EU.CqrXs.Gui.Forms
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1008, 729);
-            Controls.Add(tabControlSrc);
+            Controls.Add(panelTabView);
             Controls.Add(progressBar);
             Controls.Add(statusStrip);
             Controls.Add(labelInfoMessage);
@@ -1141,6 +1155,7 @@ namespace EU.CqrXs.Gui.Forms
             Name = "EncryptForm";
             Opacity = 0.92D;
             Text = "EncryptForm";
+            TransparencyKey = SystemColors.ButtonHighlight;
             FormClosed += menuFileExit_Close;
             Load += EncryptForm_Load;
             menuStripEncrypt.ResumeLayout(false);
@@ -1159,6 +1174,7 @@ namespace EU.CqrXs.Gui.Forms
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).EndInit();
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
+            panelTabView.ResumeLayout(false);
             tabControlSrc.ResumeLayout(false);
             tabPageAscii.ResumeLayout(false);
             tabPageAscii.PerformLayout();
@@ -1264,6 +1280,7 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
         private Panel panelOutLabel;
         protected internal Label labelOutputFile;
+        private Panel panelTabView;
         private TabControl tabControlSrc;
         private TabPage tabPageAscii;
         protected internal TextBox textBoxSrc;

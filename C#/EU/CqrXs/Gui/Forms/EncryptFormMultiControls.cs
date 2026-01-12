@@ -155,7 +155,7 @@ namespace EU.CqrXs.Gui.Forms
                     case ZipType.GZip: zmenuGZip.Checked = true; break;
                     case ZipType.Zip: zmenuZip.Checked = true; break;
                     case ZipType.Z7:
-                    case ZipType.BZip2: // zmenuBZip2.Checked = true; break;
+                    case ZipType.BZip2: zmenuBZip2.Checked = true; break;
                     case ZipType.None:
                     default:
                         zmenuNone.Checked = true;
