@@ -57,15 +57,15 @@ public enum OptEnum implements Serializable {
   		public int getValue() { return value; }
 
 
-    	/**
-    	 * getName
-    	 * @return name of enum
-     	 */
- 	public String getName() {
+	/**
+	 * getName
+	 * @return name of enum
+	 */
+	public String getName() {
 		int evalue = getValue();
-        	for (OptEnum optEnum : OptEnum.values()) 
- 	           	if (optEnum.getValue() == evalue)
-                		return optEnum.getName();
+			for (OptEnum optEnum : OptEnum.values())
+				if (optEnum.getValue() == evalue)
+						return optEnum.toString();
 		return "Usage";
 	}
 
@@ -79,7 +79,7 @@ public enum OptEnum implements Serializable {
 		}
 		
 		return optEnumList.toArray(new String[cnt]);		
-    	}
+	}
 
 	public static OptEnum getOptionFromString(String stringOp) {
 		if (stringOp != null && stringOp != "") 

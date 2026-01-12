@@ -10,20 +10,12 @@
 package eu.cqrxs.console;
 
 import eu.cqrxs.console.OptEnum;
-import eu.cqrxs.crypt.cipher.CryptHelper;
-import eu.cqrxs.crypt.cipher.CryptParams;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.util.NotImplementedError;
-import eu.cqrxs.util.CException;
-import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.GZ;
-
-import java.io.File;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -32,10 +24,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.bouncycastle.crypto.*;
-import org.bouncycastle.crypto.engines.*;
-import org.bouncycastle.crypto.BlockCipher;
 
 
 /***
@@ -59,7 +47,7 @@ import org.bouncycastle.crypto.BlockCipher;
  *  -? | --gethelp
  *
  */
-public class ConsoleApp {
+public class CryptConsole  {
     static boolean useSymmCipher = false;
     final static String sepChar = java.nio.file.FileSystems.getDefault().getSeparator();
     static String progName = "";
@@ -78,9 +66,9 @@ public class ConsoleApp {
      * Main entry method
      * @oaram args {@link String[]}
      */
-    static void Main(String[] args) {
+    public static void main(String[] args) {
         try {
-            progName = ConsoleApp.class
+            progName = CryptConsole.class
                     .getProtectionDomain()
                     .getCodeSource()
                     .getLocation()
@@ -88,23 +76,24 @@ public class ConsoleApp {
                     .getPath();
         } catch (Exception e) {
             e.printStackTrace();
+            progName = "CryptConsole.java";
         }
 
-
-        if (args.length <= 1)
-            usage(null);
+        // if (args.length < 1)
+            // usage("");
         encodingType = EncodeEnum.None;
         Constants.DirCreate = false;
         Constants.NOLog = true;
         OptEnum optEnum = OptEnum.Usage;
-        String[] optArgs = new String[2];
         HashMap<OptEnum, String> dict = new HashMap<OptEnum, String>();
-        String[] algos = new ArrayList<String>().toArray(new String[0]);
-
+        String[] algos = new String[0];
+        String[] optArgs = new String[2];
         for (int i = 0; i < args.length; i++) {
             // string optStr = GetOption(... => out OptEnum optEnum)
-            optEnum = getOptArg(args[i], optArgs);
-            String optStr = optArgs[0];
+            optArgs = getOptArg(args[i]);
+            optEnum = OptEnum.getOptionFromString(optArgs[0]);
+            String optStr = optArgs[1];
+            // System.out.println("argv[" + i+ "] = " + args[i] + " " + optEnum.toString() + " option=" +  optStr);
             // Nothing todo on io params
             if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
             else // Help => usage()
@@ -168,6 +157,7 @@ public class ConsoleApp {
                 case OptEnum.Encode:
                 case OptEnum.Decode:
                     encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
+                    System.out.println("optVar=" + optVar + " optStr=" + optStr + " encodingType = " + encodingType.toString());
                     break;
                 case OptEnum.Hash:
                     keyHash = KeyHash.getKeyHashFromString(optStr);
@@ -187,10 +177,20 @@ public class ConsoleApp {
             }
         }
 
+        CipherPipe pipe;
         // Create cipher pipe for en-/decryption
-        CipherPipe pipe = (algos.length > 0) ?
-                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
-                new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
+        if (passKey == null || passKey.length() == 0) {
+            pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
+            System.out.println("Created pipe without passkey: " + pipe.getPipeString());
+        } else {
+            if (algos.length > 0) {
+                pipe = new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
+                System.out.println("Created pipe withput passkey; pipe=" + pipe.getPipeString());
+            } else {
+                pipe = new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
+                System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
+            }
+        }
 
         String outString = "";
         if (!reverseDirection) { // encrypt
@@ -201,17 +201,18 @@ public class ConsoleApp {
 
             // CipherPipe encrypt encode
             try {
-                outString = pipe.encrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
+                passKey = (passKey.length() == 0) ? " " : passKey;
+                outBytes = pipe.encryptEncodeBytes(inBytes,
+                            passKey,  keyHash.hash(passKey), encodingType, zipType, keyHash);
             } catch (Exception exi) {
                 exi.printStackTrace();
             }
+            outString = new String(outBytes);
             System.out.println("\r\nCipherPipe:" +
                     "\n\tKeyHash    \t= " + pipe.getKeyHash() +
                     "\n\tZipType    \t= " + pipe.getZipType() +
                     "\n\tEncodeEnum \t= " + pipe.getEncodeType() +
                     "\n\tPipeString \t= " + pipe.getPipeString());
-            outBytes = outString.getBytes(Charset.forName("UTF-8"));
-
         } else { // decrypt
 
             String inString = new String(inBytes);
@@ -221,7 +222,10 @@ public class ConsoleApp {
 
             // CipherPipe decode decrypt
             try {
-                outBytes = pipe.decodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
+                passKey = (passKey.length() == 0) ? " " : passKey;
+                outBytes = pipe.decodeDecrpytBytes(inBytes,
+                        passKey, keyHash.hash(passKey),
+                        encodingType, zipType, keyHash);
             } catch (Exception exi) {
                 exi.printStackTrace();
             }
@@ -235,7 +239,7 @@ public class ConsoleApp {
 
         inBytes = outBytes;
 
-        if (outName != null && !outName.isEmpty())
+        if (outName != null && outName.length() > 0)
             System.out.println(outName.getBytes(Charset.forName("UTF-8")));
         else
         if (outFile != null) {
@@ -247,7 +251,7 @@ public class ConsoleApp {
             }
         }
         else
-        if (outEnviron != null && !outEnviron.isEmpty()) {
+        if (outEnviron != null && outEnviron.length() > 0) {
             String os = System.getProperty("os.name").toLowerCase();
             Runtime rt = Runtime.getRuntime();
             try {
@@ -270,146 +274,147 @@ public class ConsoleApp {
     /***
      * getOptArg gets an option by argument
      * @param argument the argument
-     * @param optArgs array of option arguments
-     * @return {@link OptEnum}
+     * @return {@link OptCon}
      */
-    public static OptEnum getOptArg(String argument, String[] optArgs) {
-        if (optArgs == null || optArgs.length == 0)
-            optArgs = new String[1];
-        OptEnum optEnum = OptEnum.Usage;
-        if (argument == null || argument.length() < 2 ||
-                argument.charAt(0) != '-' || argument.charAt(0) != '/')   {
-            optEnum = OptEnum.Usage;
-            return optEnum;
+    public static String[] getOptArg(String argument) {
+        String[] optArgs = new String[2];
+        optArgs[0] = OptEnum.Usage.toString();
+        optArgs[1] = "";
+
+        // System.out.println("getOptArg(String argument = " + argument +  ") ...");
+        if (argument == null || argument.length() < 2)   {
+            return optArgs;
         }
-        optArgs[0] = argument;
-        String arg = argument.substring(1);
-        String optArg = optArgs[0];
+        String optArg = argument;
+
+        String arg = (argument.charAt(1) == '-') ? argument.substring(2) :
+                argument.substring(1);
 
         if (arg.contains("="))
-            optArg = arg.substring(arg.indexOf('=' + 1));
+            optArg = arg.substring(arg.indexOf('='));
         else if (arg.contains(":"))
-            optArg =  arg.substring(arg.indexOf(':' + 1));
+            optArg =  arg.substring(arg.indexOf(':'));
+
+        // System.out.println("arg=" + arg +  " optArg=" + optArg);
 
         switch (arg.charAt(0)) {
             case 'I':
             case 'i':
-                optEnum = OptEnum.InParam;
+                optArgs[0] = OptEnum.InParam.toString();
                 inName = optArg;
-                if (inName.isEmpty())
+                if (inName == null || inName.length() == 0)
                     ; // Else
                 else
-                if (arg.toLowerCase().contains("file") || Files.exists(Paths.get(inName)) ||
-                        Files.exists(Paths.get(dirPath + sepChar + inName))) {
-                if (Files.exists(Paths.get(dirPath + sepChar + inName))) {
-                    inFile = new java.io.File(dirPath + sepChar + inName);
-                    try {
-                        inBytes = Files.readAllBytes(inFile.toPath());
-                    } catch (Exception exx) {
-                        exx.printStackTrace();
-                    }
-                } else if (Files.exists(Paths.get(inName))) {
-                    inFile = new java.io.File(inName);
-                    try {
-                        inBytes = Files.readAllBytes(inFile.toPath());
-                    } catch (Exception exx) {
-                        exx.printStackTrace();
+                    if (arg.toLowerCase().contains("file") || Files.exists(Paths.get(inName)) ||
+                            Files.exists(Paths.get(dirPath + sepChar + inName))) {
+                    if (Files.exists(Paths.get(dirPath + sepChar + inName))) {
+                        inFile = new java.io.File(dirPath + sepChar + inName);
+                        try {
+                            inBytes = Files.readAllBytes(inFile.toPath());
+                        } catch (Exception exx) {
+                            exx.printStackTrace();
+                        }
+                    } else if (Files.exists(Paths.get(inName))) {
+                        inFile = new java.io.File(inName);
+                        try {
+                            inBytes = Files.readAllBytes(inFile.toPath());
+                        } catch (Exception exx) {
+                            exx.printStackTrace();
+                        }
                     }
                 }
-            }
-                    else
-            if (arg.toLowerCase().contains("text") || !inName.isEmpty()) {
-                String inStr = System.getenv(inName.replace("$", "").replace("%", ""));
-                if (inStr == null || inStr.length() == 0 || inStr.isEmpty())
-                    inStr = inName;
-                inBytes = inStr.getBytes(Charset.forName("UTF-8"));
-            }
-            else
-                usage("unrecognized option: " + argument + ".");
-            optArgs[0] = optArg;
-            return optEnum;
+                else
+                    if (arg.toLowerCase().contains("text") || inName.length() > 0) {
+                        String inStr = System.getenv(inName.replace("$", "").replace("%", ""));
+                    if (inStr == null || inStr.length() == 0)
+                        inStr = inName;
+                    inBytes = inStr.getBytes(Charset.forName("UTF-8"));
+                }
+                else
+                    usage("unrecognized option: " + argument + ".");
+                optArgs[1] = optArg;
+                return optArgs;
             case 'O':
             case 'o':
-                optEnum = OptEnum.OutP;
+                optArgs[0] =  OptEnum.OutP.toString();
                 outName = optArg;
-                if (outName.isEmpty())
+                if (outName == null || outName.length() == 0)
                     ; // to stdout
                 else
-                if (arg.toLowerCase().contains("file") ||
-                        optArg.contains(sepChar) ||
-                        optArg.contains(".") ||
-                        !outName.isEmpty())
-                    outFile = new java.io.File(outName);
+                    if (arg.toLowerCase().contains("file") ||
+                            optArg.contains(sepChar) ||
+                            optArg.contains(".") ||
+                            outName.length() > 0)
+                        outFile = new java.io.File(outName);
                 else
-                if (!outName.isEmpty() || arg.toLowerCase().contains("text") ||
+                    if (outName.length() > 0 || arg.toLowerCase().contains("text") ||
                         optArg.charAt(0) == '$' || optArg.charAt(0) == '%')
                     outEnviron = optArg;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[1] = optArg;
+                return optArgs;
             case 'Z':
             case 'z':
-                optEnum = OptEnum.Zip;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Zip.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'U':
             case 'u':
                 reverseDirection = true;
-                optEnum = OptEnum.Unzip;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Unzip.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'E':
             case 'e':
-                optEnum = OptEnum.Encode;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Encode.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'd':
                 reverseDirection = true;
-                optEnum = OptEnum.Decode;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Decode.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'C':
             case 'c':
-                optEnum = OptEnum.Crypt;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Crypt.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'D':
                 reverseDirection = true;
-                optEnum = OptEnum.Decrypt;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Decrypt.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'k':
             case 'K':
-                optEnum = OptEnum.Key;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Key.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'p':
             case 'P':
-                optEnum = OptEnum.Pass;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Pass.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'q':
             case 'Q':
                 reverseDirection = true;
-                optEnum = OptEnum.Qey;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Qey.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'h':
             case 'H':
-                optEnum = OptEnum.Hash;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Hash.toString();
+                optArgs[1] = optArg;
+                return optArgs;
             case 'S':
-                optEnum = OptEnum.SymmCipher;
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.SymmCipher.toString();
+            optArgs[1] = optArg;
+                return optArgs;
             case 'g':
             case 'G':
             case '?':
             default:
-                optEnum = OptEnum.Usage;
-                optArg = "unrecognized option: " + argument + ".";
-                optArgs[0] = optArg;
-                return optEnum;
+                optArgs[0] = OptEnum.Usage.toString();
+                optArgs[1] = "unrecognized option: " + argument + ".";
+                return optArgs;
         }
     }
 
@@ -419,11 +424,11 @@ public class ConsoleApp {
      * usage shows the usage of console application
      * @param errMsg error message
      */
-    static void usage(String errMsg) {
-        if (errMsg != null || !errMsg.isEmpty())
-            System.out.println(errMsg);
+    public static void usage(String errMsg) {
+        if (errMsg != null && errMsg.length() > 0)
+            System.err.println(errMsg);
 
-        System.out.println("Usage:\t" + progName + "\n" +
+        System.out.println("Usage:\t" + progName + " \n" +
                 "\t-i | --inFile= | --inText={string|EnviromentVariable} | --inStd \n" +
                 "\t-o | --outFile= | --outText=EnviromentVariable | --outStd \n" +
                 "\t-u | --unzip={gzip|bzip2} \n" +

@@ -597,7 +597,7 @@ public class CipherPipe {
      * @param cipherBytes encoded byte array
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-	 * @param hashIV key hash
+	 * @param hashIv key hash
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
