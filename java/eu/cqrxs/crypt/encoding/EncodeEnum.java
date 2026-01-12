@@ -286,97 +286,43 @@ public enum EncodeEnum implements Serializable {
 
 
     public static EncodeEnum getEncodingTypeFromString(String enCodingString) {
-        if (enCodingString != null && enCodingString != "") {
-            switch (enCodingString) {
-                case "raw":
-                case "Raw":
-                case "none":
-                case "None":
-                case "NONE":
-                case "null":
-                case "Null":
-                case "0":
-                    return EncodeEnum.None;
+        if (enCodingString != null && enCodingString.length() > 0) {
 
-                case "hex16":
-                case "Hex16":
-                case "HEX16":
-                case "hex":
-                case "Hex":
-                case "h16":
-                case "H16":
-                case "16":
-                    return EncodeEnum.Hex16;
+            if (enCodingString.charAt(0) == 'B' ||
+                    enCodingString.charAt(0) == 'b') {
 
-                case "base16":
-                case "Base16":
-                case "BASE16":
-                case "b16":
-                case "N16":
+                if (enCodingString.contains("16"))
                     return EncodeEnum.Base16;
-
-                case "base32":
-                case "Base32":
-                case "BASE32":
-                case "b32":
-                case "B32":
+                if (enCodingString.contains("32"))
                     return EncodeEnum.Base32;
+                if (enCodingString.contains("58"))
+                    return EncodeEnum.Base58;
 
-                case "hex32":
-                case "Hex32":
-                case "HEX32":
-                case "h32":
-                case "H32":
-                case "32":
+                return EncodeEnum.Base64;
+            } else if (enCodingString.charAt(0) == 'H' ||
+                    enCodingString.charAt(0) == 'h') {
+
+                if (enCodingString.contains("16"))
+                    return EncodeEnum.Hex16;
+                if (enCodingString.contains("32"))
                     return EncodeEnum.Hex32;
+            } else if (enCodingString.charAt(0) == 'X' ||
+                    enCodingString.charAt(0) == 'x') {
 
-                case "uu":
-                case "Uu":
-                case "UU":
-                case "uue":
-                case "Uue":
-                case "UUE":
-                case "uud":
-                case "Uud":
-                case "UUD":
-                case "uuencode":
-                case "UuEncode":
-                case "UUENCODE":
-                case "uudecode":
-                case "UuDecode":
-                case "UUDECODE":
-                    return EncodeEnum.Uu;
+                return EncodeEnum.Xx;
+            } else if (enCodingString.charAt(0) == 'U' ||
+                    enCodingString.charAt(0) == 'u') {
 
-                case "xx":
-                case "Xx":
-                case "XX":
-                case "xxe":
-                case "Xxe":
-                case "XXE":
-                case "xxd":
-                case "Xxd":
-                case "XXD":
-                case "xxencode":
-                case "XxEncode":
-                case "XXENCODE":
-                case "xxdecode":
-                case "XxDecode":
-                case "XXDECODE":
-                    return EncodeEnum.Xx;
+                return EncodeEnum.Uu;
+            } else if (enCodingString.charAt(0) == 'N' ||
+                    enCodingString.charAt(0) == 'n' ||
+                    enCodingString.charAt(0) == '0' ||
+                    enCodingString.charAt(0) == 'R' ||
+                    enCodingString.charAt(0) == 'r') {
 
-                case "base64":
-                case "Base64":
-                case "BASE64":
-                case "mime":
-                case "Mime":
-                case "MIME":
-                case "b64":
-                case "B64":
-                case "64":
-                    return EncodeEnum.Base64;
-                default:
-                    break;
+                return EncodeEnum.None;
             }
+
         }
         return EncodeEnum.None;
     }

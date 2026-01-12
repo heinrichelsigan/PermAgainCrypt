@@ -1,6 +1,5 @@
 package eu.cqrxs.crypt.cipher;
 
-
 // import androidx.core.content.res.TypedArrayUtils;
 // import com.google.common.primitives.Bytes;
 
@@ -20,10 +19,11 @@ import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
 
 import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.*;
+import eu.cqrxs.zip.GZ;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.*;
 
@@ -31,7 +31,6 @@ import eu.cqrxs.util.*;
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
  */
 public class CipherPipe {
-
 
     String cipherKey = "", cipherHash = "";
     ZipType zType = ZipType.None;
@@ -598,7 +597,7 @@ public class CipherPipe {
      * @param cipherBytes encoded byte array
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-	 * @param hashIV key hash
+	 * @param hashIv key hash
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
@@ -668,7 +667,8 @@ public class CipherPipe {
     }
 
 
-    public String encrpytEncode(byte[] inBytes, String secretKey, EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
+    public String encrpytEncode(byte[] inBytes, String secretKey,
+                                EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -697,7 +697,8 @@ public class CipherPipe {
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] encryptEncodeBytes(byte[] inBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
+    public byte[] encryptEncodeBytes(byte[] inBytes, String secretKey, String hashIV,
+                                    EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -727,7 +728,8 @@ public class CipherPipe {
 
 
 
-    public byte[] decodeDecrpyt(String encoded, String secretKey, EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
+    public byte[] decodeDecrpyt(String encoded, String secretKey,
+                                EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -758,7 +760,8 @@ public class CipherPipe {
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] decodeDecrpytBytes(byte[] encodedBytes, String secretKey, String hashIV, EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
+    public byte[] decodeDecrpytBytes(byte[] encodedBytes, String secretKey, String hashIV,
+                                     EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))

@@ -303,6 +303,8 @@ public class Constants {
 			"2sGnnAaPJgE8Iy2z08jS3rF9npK27A==" +
 			"-----END PRIVATE KEY-----";
 
-	
+	public static boolean DirCreate = false;
+	public static boolean NOLog = false;
+
 }
 

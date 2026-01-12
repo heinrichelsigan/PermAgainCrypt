@@ -3,7 +3,6 @@
  * @version          V 1.0.1
  * @since            API 27 Oreo 8.1
  *
- *
  * Coded 2021-2025 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
  */
@@ -19,28 +18,27 @@ import java.util.List;
 import java.util.Set;
 
 import eu.cqrxs.console.OptEnum;
-// import eu.cqrxs.fw.util.*;
 
 /**
  * OptEnum different option types
  */
 public enum OptEnum implements Serializable {
 	Usage(0x0),
-        InParam(0x1),
-        OutP(0x2),
-        Zip(0x3),
-        Unzip(0x4),
-        Encode(0x5),
-        Decode(0x6),
-        Crypt(0x7),
-        Key(0x8),
-        Decrypt(0x9),
-        HashSum(0xa),
-        Help(0xb),
-        Qey(0xc),
-        Pass(0xd),
-        Hash(0xe),
-        SymmCipher(0xf);
+	InParam(0x1),
+	OutP(0x2),
+	Zip(0x3),
+	Unzip(0x4),
+	Encode(0x5),
+	Decode(0x6),
+	Crypt(0x7),
+	Key(0x8),
+	Decrypt(0x9),
+	HashSum(0xa),
+	Help(0xb),
+	Qey(0xc),
+	Pass(0xd),
+	Hash(0xe),
+	SymmCipher(0xf);
 
 
     	/**
@@ -56,18 +54,18 @@ public enum OptEnum implements Serializable {
     	 * getValue
      	 * @return (@link int) value
     	 */
-  	public int getValue() { return value; }
+  		public int getValue() { return value; }
 
 
-    	/**
-    	 * getName
-    	 * @return name of enum
-     	 */
- 	public String getName() {
+	/**
+	 * getName
+	 * @return name of enum
+	 */
+	public String getName() {
 		int evalue = getValue();
-        	for (OptEnum optEnum : OptEnum.values()) 
- 	           	if (optEnum.getValue() == evalue)
-                		return optEnum.getName();
+			for (OptEnum optEnum : OptEnum.values())
+				if (optEnum.getValue() == evalue)
+						return optEnum.toString();
 		return "Usage";
 	}
 
@@ -81,7 +79,7 @@ public enum OptEnum implements Serializable {
 		}
 		
 		return optEnumList.toArray(new String[cnt]);		
-    	}
+	}
 
 	public static OptEnum getOptionFromString(String stringOp) {
 		if (stringOp != null && stringOp != "") 

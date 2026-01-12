@@ -19,6 +19,7 @@ import eu.cqrxs.crypt.hash.*;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
 import eu.cqrxs.crypt.cipher.CipherEnum;
+import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.cipher.*;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 
