@@ -286,7 +286,7 @@ public enum EncodeEnum implements Serializable {
 
 
     public static EncodeEnum getEncodingTypeFromString(String enCodingString) {
-        if (enCodingString != null && enCodingString != "") {
+        if (enCodingString != null && !enCodingString.isEmpty()) {
             switch (enCodingString) {
                 case "raw":
                 case "Raw":
