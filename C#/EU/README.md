@@ -61,8 +61,8 @@ Console application let you execute cipherpipe as standard console programm.
 options can be set by argument parameters.
 
 ```
-U:\source\PermAgainCrypt\Deploy\console\x86>EU.CqrXs.Console.Core.exe -?
-Usage:  EU.CqrXs.Console.Core.exe
+U:\source\PermAgainCrypt\Deploy\console\x86>EU.CqrXs.Console.exe -?
+Usage:  EU.CqrXs.Console.exe
     -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
     -o | --outFile= | --outText=EnviromentVariable | --outStd
     -u | --unzip={gzip|bzip2}
@@ -91,14 +91,14 @@ Usage:  EU.CqrXs.Console.Core.exe
     -? | --gethelp
 
 Examples:
-        EU.CqrXs.Console.Core.exe -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32
-        EU.CqrXs.Console.Core.exe -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg
+        EU.CqrXs.Console.exe -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32
+        EU.CqrXs.Console.exe -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg
 
-        EU.CqrXs.Console.Core.exe --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64
-        EU.CqrXs.Console.Core.exe -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg
+        EU.CqrXs.Console.exe --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64
+        EU.CqrXs.Console.exe -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg
 
-        EU.CqrXs.Console.Core.exe -i=README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=README.MD.SCrypt.zip.uu
-        EU.CqrXs.Console.Core.exe -i=README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=README_UNZIP.txt
+        EU.CqrXs.Console.exe -i=README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=README.MD.SCrypt.zip.uu
+        EU.CqrXs.Console.exe -i=README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=README_UNZIP.txt
 
 U:\source\PermAgainCrypt\Deploy\console\x86>
 ```

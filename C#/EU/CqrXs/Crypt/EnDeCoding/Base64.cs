@@ -1,4 +1,6 @@
-﻿namespace EU.CqrXs.Crypt.EnDeCoding
+﻿using EU.CqrXs.Util;
+
+namespace EU.CqrXs.Crypt.EnDeCoding
 {
     /// <summary>
     /// Base64 mime standard encoding
@@ -69,6 +71,8 @@
             } 
             catch(Exception ex)
             {
+                Area23Log.LogOriginMsg($"Base64.FromBase64", "need to trim error chars \"{error}\", " +
+                    $"because of Exception {ex.GetType().Name} with message: {ex.Message}", 2);
                 outBytes = Convert.FromBase64String(parsedString);
             }
             return outBytes;

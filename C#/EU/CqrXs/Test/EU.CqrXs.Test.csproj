@@ -36,6 +36,10 @@ for ZipType CipherPipe un-/zipping
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="App.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="README.MD">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

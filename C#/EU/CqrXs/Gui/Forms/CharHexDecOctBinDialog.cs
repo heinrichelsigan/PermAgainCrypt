@@ -1,4 +1,5 @@
 ﻿using EU.CqrXs.Crypt.EnDeCoding;
+using EU.CqrXs.Util;
 using System;
 using System.Globalization;
 using System.Numerics;
@@ -555,6 +556,7 @@ namespace EU.CqrXs.Gui.Forms
                 }
                 catch (Exception ex)
                 {
+                    Area23Log.LogOriginEx("CharHexDecOctBinDialog.SelectedChanged", ex, 2);
                     throw;
                 }
             }

@@ -408,6 +408,7 @@ namespace EU.CqrXs.Crypt.Msg
 			}
 			catch (Exception exImg)
 			{
+                Area23Log.LogOriginEx("CContact.CloneCopy", exImg, 2);
 			}
 			CImage? contactImage = source.ContactImage;
 			if (contactImage != null)
@@ -416,9 +417,10 @@ namespace EU.CqrXs.Crypt.Msg
 				{
 					destination.ContactImage = new CImage(contactImage.ToDrawingBitmap(), contactImage.ImageFileName);
 				}
-				catch (Exception exImg)
+				catch (Exception exImg2)
 				{
-				}
+                    Area23Log.LogOriginEx("CContact.CloneCopy", exImg2, 2);
+                }
 			}
 
             // destination.SerializedMsg = "";

@@ -53,6 +53,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             }
             catch (Exception e)
             {
+                Area23Log.LogOriginEx("AesNet.ctor", e, 2);
                 // TODO: what shell we do with the drunken sailor
                 AesKey = Convert.FromBase64String(Constants.AES_KEY);
                 AesIv = Encoding.UTF8.GetBytes(Constants.AES_IV);

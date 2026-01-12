@@ -20,6 +20,7 @@ namespace EU.CqrXs.Util
                 }
                 catch (Exception ex)
                 {
+                    Area23Log.LogOriginEx("ResReader.GetObject", ex, 1);
                     retVal = key;
                 }
             }
