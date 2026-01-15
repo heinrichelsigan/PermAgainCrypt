@@ -33,24 +33,38 @@ namespace EU.CqrXs.Gui.Forms
             InitializeComponent();
 
             tabControlWithHexDest.AsciiTextReadonly = true;
-            buttonEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
-            buttonDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
-            buttonReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
-            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboBoxEncoding_SelectedIndexChanged(sender, e));
-            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) => await RadioButtonListHash_SelectedIndexChanged(sender, e));
-            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await ComboBoxCompression_SelectedIndexChanged(sender, e));
+            buttonEncrypt.Click += new System.EventHandler(async (sender, e) 
+                => await Encrypt_Click(sender, e));
+            buttonDecrypt.Click += new System.EventHandler(async (sender, e)
+                => await Decrypt_Click(sender, e));
+            buttonReset.Click += new System.EventHandler(async (sender, e) 
+                => await Reset_Click(sender, e));
+            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => 
+                await comboBoxEncoding_SelectedIndexChanged(sender, e));
+            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) 
+                => await RadioButtonListHash_SelectedIndexChanged(sender, e));
+            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e) 
+                => await ComboBoxCompression_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
             groupBoxFiles.FileRequired += GroupBoxFileRequired;
 
-            menuMainEncrypt.Click += new System.EventHandler(async (sender, e) => await Encrypt_Click(sender, e));
-            menuMainDecrypt.Click += new System.EventHandler(async (sender, e) => await Decrypt_Click(sender, e));
-            menuMainReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
-            menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
-            menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
-            menuFileNew.Click += new System.EventHandler(async (sender, e) => await menuFileNew_Click(sender, e));            
+            menuMainEncrypt.Click += new System.EventHandler(async (sender, e) 
+                => await Encrypt_Click(sender, e));
+            menuMainDecrypt.Click += new System.EventHandler(async (sender, e) 
+                => await Decrypt_Click(sender, e));
+            menuMainReset.Click += new System.EventHandler(async (sender, e) 
+                => await Reset_Click(sender, e));
+            menuAbout.Click += new System.EventHandler(async (sender, e) 
+                => await menuAbout_Click(sender, e));
+            menuHelpHelp.Click += new System.EventHandler(async (sender, e) 
+                => await menuHelp_Click(sender, e));
+            menuFileNew.Click += new System.EventHandler(async (sender, e)
+                 => await menuFileNew_Click(sender, e));            
             try
-            {                
-                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) => await menuCharHexDecOctBin_AsyncClick(sender, e));
+            {
+                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) =>
+                    await menuCharHexDecOctBinAsync_Click(sender, e));
+
             } catch(Exception exBtnClick) {
                 Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
                     "Good luck and relation between Jews and Yankees", exBtnClick, 2);
@@ -58,21 +72,16 @@ namespace EU.CqrXs.Gui.Forms
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
-            {
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
-            }
 
             ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
             foreach (var zipMenuItem in menuZips)
-            {
                 zipMenuItem.Click += new System.EventHandler(async (sender, e) => await menuCompression_Click(sender, e));
-            }
+
 
             ToolStripMenuItem[] mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
             foreach (var hashMenuItem in mHashes)
-            {
                 hashMenuItem.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
-            }
 
             this.comboBoxCompression.Items.Clear();
             foreach (ZipType zipType in ZipTypeExtensions.GetZipTypes())
@@ -87,7 +96,6 @@ namespace EU.CqrXs.Gui.Forms
             foreach (EncodingType encodingType in EncodingTypesExtensions.GetEncodingTypes())
                 this.comboBoxEncoding.Items.Add(encodingType.ToString());
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
-
 
         }
 
@@ -1011,7 +1019,7 @@ namespace EU.CqrXs.Gui.Forms
         protected internal virtual void menuCharHexDecOctBin_Click(object sender, EventArgs e)
         {
             CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            await dia.ShowDialogAsync();
+            dia.ShowDialog();
         }
 
         /// <summary>
