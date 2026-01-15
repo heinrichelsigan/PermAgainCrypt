@@ -1,12 +1,13 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
-using EU.CqrXs.Util;
-using EU.CqrXs.Zip;
 using EU.CqrXs.Gui.Controls;
 using EU.CqrXs.Gui.Helper;
 using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
+using EU.CqrXs.Util;
+using EU.CqrXs.Zip;
+using System.Security.Cryptography;
 
 
 namespace EU.CqrXs.Gui.Forms
@@ -46,7 +47,14 @@ namespace EU.CqrXs.Gui.Forms
             menuMainReset.Click += new System.EventHandler(async (sender, e) => await Reset_Click(sender, e));
             menuAbout.Click += new System.EventHandler(async (sender, e) => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e) => await menuHelp_Click(sender, e));
-            menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) => await menuCharHexDecOctBin_Click(sender, e));
+            menuFileNew.Click += new System.EventHandler(async (sender, e) => await menuFileNew_Click(sender, e));            
+            try
+            {                
+                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) => await menuCharHexDecOctBin_AsyncClick(sender, e));
+            } catch(Exception exBtnClick) {
+                Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
+                    "Good luck and relation between Jews and Yankees", exBtnClick, 2);
+            }            
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
@@ -252,7 +260,7 @@ namespace EU.CqrXs.Gui.Forms
             {
                 cPipe.EncodeType = encodingType;
                 this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe?.GenerateEncryptPipeImage();
-            }            
+            }
             await SetInfoMessageAsync($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
         }
 
@@ -493,7 +501,7 @@ namespace EU.CqrXs.Gui.Forms
                 cPipe.InPipe = Array.Empty<CipherEnum>();
                 this.groupBoxFiles.pictureBoxRunningPipe.Image = cPipe.GenerateEncryptPipeImage();
             }
-            else 
+            else
                 this.groupBoxFiles.pictureBoxRunningPipe.Image = Properties.Resources.BlankEncrypt_640x108;
         }
 
@@ -773,7 +781,7 @@ namespace EU.CqrXs.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
             {
-                this.tabControlWithHexDest.AsciiText= "";
+                this.tabControlWithHexDest.AsciiText = "";
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting decryption of cipher text", ToolTipIcon.Info, -1);
 
@@ -994,10 +1002,33 @@ namespace EU.CqrXs.Gui.Forms
             await base.menuHelp_Click(sender, e);
         }
 
-        protected internal virtual async Task menuCharHexDecOctBin_Click(object sender, EventArgs e)
+        protected internal virtual async Task menuCharHexDecOctBinAsync_Click(object sender, EventArgs e)
         {
             CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
             await dia.ShowDialogAsync();
+        }
+
+        protected internal virtual void menuCharHexDecOctBin_Click(object sender, EventArgs e)
+        {
+            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
+            await dia.ShowDialogAsync();
+        }
+
+        /// <summary>
+        /// Shows a new encrypt form classic on menu new
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        protected internal virtual async Task menuFileNew_Click(object sender, EventArgs e)
+        {
+            EncryptForm encryptForm = new EncryptForm();
+            DialogResult result = await encryptForm.ShowDialogAsync();
+            if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
+                result == DialogResult.Ignore)
+            {
+                try { encryptForm.Close(); } catch { }
+            }
         }
 
         /// <summary>
@@ -1160,6 +1191,7 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion OpenSave    
 
+
         #region Media Methods
 
         protected internal void SetInfoMessage(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
@@ -1223,12 +1255,10 @@ namespace EU.CqrXs.Gui.Forms
                 default:
                     await labelInfoMessage.SetBackColorAsync(SystemColors.Info);
                     toolHeader = "Info";
-                    switch (++Program.ProgramCount %  23) 
-                    {
-                        case 17: IPlayable.PlaySoundFromResource("sound_killer_state"); break;
-                        case 19: await this.PlaySoundFromResourcesAsync("sound_sputnik"); break;
-                        default: await this.PlaySoundFromResourcesAsync("sound_info"); break;
-                    }
+                    if ((++Program.ProgramCount % 23) == 17)
+                        await this.PlaySoundFromResourcesAsync("sound_killer_state");
+                    else
+                        await this.PlaySoundFromResourcesAsync("sound_info");
                     break;
             }
 
@@ -1249,8 +1279,8 @@ namespace EU.CqrXs.Gui.Forms
 
         }
 
-        #endregion Media Methods
-
-
+        #endregion Media Methods^1
+        
     }
+
 }

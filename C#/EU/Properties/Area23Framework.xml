@@ -76,6 +76,40 @@
             HttpClientRequest encapsulation
             </summary>
         </member>
+        <member name="M:EU.Net.WebHttp.HttpClientRequest.GetResponseByUrl(System.String)">
+            <summary>
+            Gets an async <see cref="T:System.Threading.Tasks.Task`1"/> for an url
+            </summary>
+            <param name="url">url to fetch</param>
+            <returns><see cref="T:System.Threading.Tasks.Task`1"/></returns>
+        </member>
+        <member name="M:EU.Net.WebHttp.HttpClientRequest.PostUrlMsg(System.String,System.String)">
+            <summary>
+            Posts a message to the specified <see cref="T:System.String">url</see>
+            </summary>
+            <param name="url">url to connect</param>
+            <param name="msg">message to post</param>
+            <returns>true on http(s) POST success</returns>
+        </member>
+        <member name="M:EU.Net.WebHttp.HttpClientRequest.GetClientIP(System.String)">
+            <summary>
+            Gets the external gateway or host client IP address
+            </summary>
+            <param name="urlR">default: https://area23.at/net/R.aspx</param>
+            <returns>IP Address of client host or in case of SNAT IP Address of 1st internet provider gateway of client host</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:EU.Net.WebHttp.HttpClientRequest.GetLatestAtImages(System.String)">
+            <summary>
+            Gets latest images from .at or other specified top level domain 
+            searching duckduckgo, brave, qwant and yahoo image search engines
+            </summary>
+            <param name="topLvlDomain">top level domain suffix;
+            e.g. at, de, eu, edu, gov
+            you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
+            </param>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> of svg and img html tags</returns>
+        </member>
         <member name="T:EU.Net.WebHttp.TcpClientWebRequest">
             <summary>
             <see cref="T:EU.Net.WebHttp.TcpClientWebRequest"/> performs web request raw on tcp socket 
@@ -122,14 +156,6 @@
             <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
             <returns>downloaded string</returns>
         </member>
-        <member name="M:EU.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)">
-            <summary>
-            ExternalClientIpFromServer gets external network ip for client from server
-            </summary>
-            <param name="url">default: https://cqrxs.eu/net/R.aspx https://area23.at/net/R.aspx</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
-            <returns>external official gateway <see cref="T:System.Net.IPAddress">ip address</see> of client</returns>
-        </member>
         <member name="M:EU.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)">
             <summary>
             PostMessage posts message via <see cref="M:System.Net.WebClient.UploadString(System.String,System.String)"/>
@@ -140,6 +166,25 @@
             <param name="serverIp"></param>
             <param name="encoding"></param>
             <returns></returns>
+        </member>
+        <member name="M:EU.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)">
+            <summary>
+            ExternalClientIpFromServer gets external network ip for client from server
+            </summary>
+            <param name="url">default: https://cqrxs.eu/net/R.aspx https://area23.at/net/R.aspx</param>
+            <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
+            <returns>external official gateway <see cref="T:System.Net.IPAddress">ip address</see> of client</returns>
+        </member>
+        <member name="M:EU.Net.WebHttp.WebClientRequest.LatestAtImages(System.String)">
+            <summary>
+            Gets latest images from .at or other specified top level domain 
+            searching duckduckgo, brave, qwant and yahoo image search engines
+            </summary>
+            <param name="topLvlDomain">top level domain suffix;
+            e.g. at, de, eu, edu, gov
+            you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
+            </param>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> of svg and img html tags</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Asymmetric.DH">
             <summary>

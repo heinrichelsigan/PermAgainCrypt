@@ -183,27 +183,19 @@ namespace EU.CqrXs.Gui.Controls
                 lock (_Lock)
                 {                    
                     this.textBoxViewHex.Clear();
+                    BackColor = SystemColors.Control;
                     String ascii = this.textBoxAsciiText.Text;
-                    if (ascii.Length > 800)                    
-                        ascii = ascii.Substring(0, 400) + ascii.Substring(ascii.Length - 400);
-
-                    string hexString = Hex16.ToHex16(System.Text.Encoding.UTF8.GetBytes(ascii));
-                    for (int hi = 0; hi < hexString.Length; hi++)
+                    if (ascii.Length >= 8000)
                     {
-                        if (hi > 0)
-                        {
-                            if (hi == 400 && ascii.Length > 780)
-                            {
-                                this.textBoxViewHex.Text += Environment.NewLine + "--- file too long, showing 1st & last 4k lines --" + Environment.NewLine;
-                                this.textBoxViewHex.BackColor = SystemColors.ButtonHighlight;
-                            }
-                            if (hi % 40 == 0)
-                                this.textBoxViewHex.Text += Environment.NewLine;
-                            else if (hi % 2 == 0)
-                                this.textBoxViewHex.Text += " ";
-                        }
-                        this.textBoxViewHex.Text += hexString[hi].ToString();                        
+                        this.tabPageHex.Text = "Hex: 1st & last 2kb";
+                        ascii = ascii.Substring(0, 4000) +
+                                Environment.NewLine + "--- file too long, showing first & last 4k lines --" + Environment.NewLine +
+                                ascii.Substring(ascii.Length - 4000);
+                        this.textBoxViewHex.BackColor = SystemColors.ButtonHighlight;
                     }
+                    string hexString = Hex16.ToHex16(System.Text.Encoding.UTF8.GetBytes(ascii));
+                    this.textBoxViewHex.Text = hexString;
+
                 }
                 // this.textBoxSrcHex.Focus();
             }

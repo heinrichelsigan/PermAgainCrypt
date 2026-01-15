@@ -100,7 +100,7 @@ namespace EU.CqrXs.Zip
             switch (zipType)
             {
                 case ZipType.BZip2:
-                    return BZip2.BZip2Bytes(inBytes, 4);
+                    return BZip2.BZip(inBytes);
                 case ZipType.GZip:
                     return GZ.GZipBytes(inBytes);
                 case ZipType.Zip:
@@ -129,7 +129,7 @@ namespace EU.CqrXs.Zip
             switch (zipType)
             {
                 case ZipType.BZip2:
-                    return BZip2.BUnZip(compressedBytes);
+                    return BZip2.BUnZip2Bytes(compressedBytes);
                 case ZipType.GZip:
                     return GZ.GUnZipBytes(compressedBytes);
                 case ZipType.Zip:

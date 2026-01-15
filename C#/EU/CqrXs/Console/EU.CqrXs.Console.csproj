@@ -12,14 +12,14 @@
     <StartupObject>EU.CqrXs.Console.Program</StartupObject>
     <ApplicationIcon>SatIcon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-    <PublishTrimmed>True</PublishTrimmed>
+    <PublishTrimmed>False</PublishTrimmed>
     <Title>EU.CqrXs.Console</Title>
     <Description>EU.CqrXs.Console</Description>
     <Copyright>Copyright © 2000-2040 Copyleft https://cqrxs.eu</Copyright>
     <PackageProjectUrl>https://cqrxs.eu/download/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.112</AssemblyVersion>
-    <FileVersion>2.26.112</FileVersion>
+    <AssemblyVersion>2.26.115</AssemblyVersion>
+    <FileVersion>2.26.115</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

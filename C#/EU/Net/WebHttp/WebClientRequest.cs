@@ -1,5 +1,6 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.EnDeCoding;
+using EU.CqrXs.Util;
 using System.Net;
 using System.Text;
 
@@ -20,6 +21,18 @@ namespace EU.Net.WebHttp
 
         private static readonly WebHeaderCollection headers = new WebHeaderCollection();
         public static WebHeaderCollection Headers { get => headers; }
+
+        private static string topLevelDomain = "at";
+        private static string[] UrlImgs
+        {
+            get => new string[]
+                {
+                    $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd",
+                    $"https://duckduckgo.com/?q=site%3A.{topLevelDomain}&df=d&ia=images&iax=images",
+                    $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images",
+                    "https://images.search.yahoo.com/search/images;_ylt=AwriiQVEAWhpR94pfEiJzbkF?p=site%3A" + topLevelDomain + "&fr=yfp-t&imgt=day&fr2=p%3As%2Cv%3Ai"
+                };
+        }
 
         /// <summary>
         /// static constructor
@@ -96,6 +109,35 @@ namespace EU.Net.WebHttp
         }
 
         /// <summary>
+        /// PostMessage posts message via <see cref="WebClient.UploadString(string, string)"/>
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="url"></param>
+        /// <param name="hostname"></param>
+        /// <param name="serverIp"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
+        public static string PostMessage(string msg, string url, string hostname = "cqrxs.eu", string serverIp = "18.100.254.167", System.Text.Encoding? encoding = null)
+        {
+            encoding = encoding ?? Encoding.UTF8;            
+            wclient = new WebClient();
+            // TODO: Replace WebClient with one of:
+            // WebRequest webRequest = new WebRequest();
+            // HttpWebRequest httpWebRequest = new HttpWebRequest();
+            wclient.Encoding = encoding;
+            headers.Remove(HttpRequestHeader.Host);
+            headers.Add(HttpRequestHeader.Host, hostname);
+            headers.Remove(HttpRequestHeader.UserAgent);
+            headers.Add(HttpRequestHeader.UserAgent, serverIp);
+            wclient.Headers = headers;
+            wclient.BaseAddress = url;
+            string resp = wclient.UploadString(url, msg);
+
+            return resp;
+        }
+
+
+        /// <summary>
         /// ExternalClientIpFromServer gets external network ip for client from server
         /// </summary>
         /// <param name="url">default: https://cqrxs.eu/net/R.aspx https://area23.at/net/R.aspx</param>
@@ -116,28 +158,65 @@ namespace EU.Net.WebHttp
         }
 
         /// <summary>
-        /// PostMessage posts message via <see cref="WebClient.UploadString(string, string)"/>
+        /// Gets latest images from .at or other specified top level domain 
+        /// searching duckduckgo, brave, qwant and yahoo image search engines
         /// </summary>
-        /// <param name="msg"></param>
-        /// <param name="url"></param>
-        /// <param name="hostname"></param>
-        /// <param name="serverIp"></param>
-        /// <param name="encoding"></param>
-        /// <returns></returns>
-        public static string PostMessage(string msg, string url, string hostname = "cqrxs.eu", string serverIp = "18.100.254.167", System.Text.Encoding? encoding = null)
+        /// <param name="topLvlDomain">top level domain suffix;
+        /// e.g. at, de, eu, edu, gov
+        /// you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
+        /// </param>
+        /// <returns><see cref="List{String}"/> of svg and img html tags</returns>
+        public static List<string> LatestAtImages(string topLvlDomain)
         {
-            encoding = encoding ?? Encoding.UTF8;
-            wclient = new WebClient();
-            wclient.Encoding = encoding;
-            headers.Remove(HttpRequestHeader.Host);
-            headers.Add(HttpRequestHeader.Host, hostname);
-            headers.Remove(HttpRequestHeader.UserAgent);
-            headers.Add(HttpRequestHeader.UserAgent, serverIp);
-            wclient.Headers = headers;
-            wclient.BaseAddress = url;
-            string resp = wclient.UploadString(url, msg);
+            WebClient wc;
+            
+            List<string> imgList = new List<string>();
+            topLevelDomain = string.IsNullOrEmpty(topLvlDomain) ? "at" : topLvlDomain;
+            foreach (string url in UrlImgs)
+            {
+                bool isParsed = false;
+                try
+                {                    
+                    wc = GetWebClient(url, System.Text.Encoding.UTF8);
+                    string respToParse = wc.DownloadString(new Uri(url));
+                    
+                    while (!isParsed)
+                    {
+                        if (respToParse.Contains("<img", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            int imgIdx = respToParse.IndexOf("<img");
+                            if (imgIdx < 0)
+                                imgIdx = respToParse.IndexOf("<Img");
+                            if (imgIdx < 0)
+                                imgIdx = respToParse.IndexOf("<Img");
+                            respToParse = respToParse.Substring(imgIdx);
 
-            return resp;
+                            string imgToAdd = respToParse.Substring(0, respToParse.IndexOf(">") + 1);
+                            respToParse = respToParse.Substring(respToParse.IndexOf(">") + 1);
+                            imgList.Add(imgToAdd);
+                        }
+                        else if (respToParse.Contains("<svg"))
+                        {
+                            respToParse = respToParse.Substring(respToParse.IndexOf("<svg"));
+                            string svgToAdd = respToParse.Substring(0, respToParse.IndexOf("</svg>") + 1);
+                            respToParse = respToParse.Substring(respToParse.IndexOf("</svg>") + 1);
+                            imgList.Add(svgToAdd);
+                        }
+                        else
+                        {
+                            isParsed = true;
+                        }
+                    }
+                }
+                catch (Exception exHttpUrlGet)
+                {
+                    Area23Log.LogOriginMsgEx("WebClientRequest", "Error on getting latest images from url: " + url, exHttpUrlGet);
+                    isParsed = true;
+                }
+
+            }
+
+            return imgList.ToArray().Distinct().ToList();
         }
 
 

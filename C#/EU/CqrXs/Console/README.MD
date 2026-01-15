@@ -41,3 +41,4 @@ Examples:
         
     EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
     EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+
