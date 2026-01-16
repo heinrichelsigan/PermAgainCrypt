@@ -135,9 +135,13 @@
         <member name="T:EU.Net.WebHttp.WebClientRequest">
             <summary>
             WebClientRequest implements a static WebClient Request via <see cref="T:System.Net.WebClient"/>
-            and maily provides
+            and mainly provides
+            <see cref="M:EU.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)"/>
+            <see cref="M:EU.Net.WebHttp.WebClientRequest.LatestAtImages(System.String)"/>
+            via basic static methods
             <see cref="M:EU.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)"/>
             <see cref="M:EU.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)"/>
+            <see cref="M:EU.Net.WebHttp.WebClientRequest.DownloadBytes(System.String,System.String,System.Text.Encoding)"/>
             funtionality.
             </summary>
         </member>
@@ -155,6 +159,15 @@
             <param name="keyIv"></param>
             <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
             <returns>downloaded string</returns>
+        </member>
+        <member name="M:EU.Net.WebHttp.WebClientRequest.DownloadBytes(System.String,System.String,System.Text.Encoding)">
+            <summary>
+            DownloadBytes
+            </summary>
+            <param name="url"><see cref="T:string">uri</see></param>
+            <param name="filePath"><see cref="T:string">file path to write downloaded image</see></param>
+            <param name="encoding"></param>
+            <returns><see cref="T:FileInfo?" /> of downloaded image file</returns>
         </member>
         <member name="M:EU.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)">
             <summary>

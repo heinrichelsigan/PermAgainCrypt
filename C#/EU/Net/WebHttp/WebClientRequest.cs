@@ -9,13 +9,20 @@ namespace EU.Net.WebHttp
 
     /// <summary>
     /// WebClientRequest implements a static WebClient Request via <see cref="WebClient"/>
-    /// and maily provides
+    /// and mainly provides
+    /// <see cref="ExternalClientIpFromServer(string, Encoding?)"/>
+    /// <see cref="LatestAtImages(string)"/>
+    /// via basic static methods
     /// <see cref="DownloadString(string, string, string, Encoding?)"/>
     /// <see cref="PostMessage(string, string, string, string, Encoding?)"/>
+    /// <see cref="DownloadBytes(string, string, Encoding)"/>
     /// funtionality.
     /// </summary>
     public static class WebClientRequest
     {
+
+        #region fields and properties
+
         private static WebClient wclient;
         public static WebClient WClient { get => wclient; }
 
@@ -33,6 +40,8 @@ namespace EU.Net.WebHttp
                     "https://images.search.yahoo.com/search/images;_ylt=AwriiQVEAWhpR94pfEiJzbkF?p=site%3A" + topLevelDomain + "&fr=yfp-t&imgt=day&fr2=p%3As%2Cv%3Ai"
                 };
         }
+
+        #endregion fields and properties
 
         /// <summary>
         /// static constructor
@@ -56,7 +65,6 @@ namespace EU.Net.WebHttp
             // webclient.Credentials
 
         }
-
 
         #region GetWebClient
 
@@ -93,6 +101,8 @@ namespace EU.Net.WebHttp
 
         #endregion GetWebClient
 
+        #region basic methods
+
         /// <summary>
         /// DownloadString downloads a string from an uri
         /// </summary>
@@ -106,6 +116,36 @@ namespace EU.Net.WebHttp
             WebClient wc = GetWebClient(url, secretKey, keyIv, encoding);
             Uri uri = new Uri(url);
             return wc.DownloadString(uri);
+        }
+
+        /// <summary>
+        /// DownloadBytes
+        /// </summary>
+        /// <param name="url"><see cref="T:string">uri</see></param>
+        /// <param name="filePath"><see cref="T:string">file path to write downloaded image</see></param>
+        /// <param name="encoding"></param>
+        /// <returns><see cref="T:FileInfo?" /> of downloaded image file</returns>
+        public static FileInfo? DownloadBytes(string url, string filePath, System.Text.Encoding encoding)
+        {
+            WebClient wc;
+            Uri uri;
+            encoding = (encoding == null) ? System.Text.Encoding.UTF8 : encoding;
+
+            try
+            {
+                wc = GetWebClient(url, "", "", encoding);
+                uri = new Uri(url);
+                wc.DownloadFile(uri.ToString(), filePath);
+            }
+            catch (Exception exFile)
+            {
+                Area23Log.LogOriginMsgEx("WebClientRequest", 
+                    $"{exFile.GetType()} when downloading from: {url}", exFile);
+            }
+            if (File.Exists(filePath))
+                return new FileInfo(filePath);
+                
+            return null;
         }
 
         /// <summary>
@@ -136,6 +176,7 @@ namespace EU.Net.WebHttp
             return resp;
         }
 
+        #endregion basic methods
 
         /// <summary>
         /// ExternalClientIpFromServer gets external network ip for client from server
@@ -188,19 +229,19 @@ namespace EU.Net.WebHttp
                             if (imgIdx < 0)
                                 imgIdx = respToParse.IndexOf("<Img");
                             if (imgIdx < 0)
-                                imgIdx = respToParse.IndexOf("<Img");
+                                imgIdx = respToParse.IndexOf("<IMG");
                             respToParse = respToParse.Substring(imgIdx);
 
                             string imgToAdd = respToParse.Substring(0, respToParse.IndexOf(">") + 1);
-                            respToParse = respToParse.Substring(respToParse.IndexOf(">") + 1);
                             imgList.Add(imgToAdd);
+                            respToParse = respToParse.Substring(respToParse.IndexOf(">") + 1);                            
                         }
                         else if (respToParse.Contains("<svg"))
                         {
                             respToParse = respToParse.Substring(respToParse.IndexOf("<svg"));
                             string svgToAdd = respToParse.Substring(0, respToParse.IndexOf("</svg>") + 1);
-                            respToParse = respToParse.Substring(respToParse.IndexOf("</svg>") + 1);
                             imgList.Add(svgToAdd);
+                            respToParse = respToParse.Substring(respToParse.IndexOf("</svg>") + 1);                            
                         }
                         else
                         {
@@ -218,7 +259,6 @@ namespace EU.Net.WebHttp
 
             return imgList.ToArray().Distinct().ToList();
         }
-
 
     }
 

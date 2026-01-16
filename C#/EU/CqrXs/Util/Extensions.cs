@@ -85,7 +85,7 @@ namespace EU.CqrXs.Util
         /// <returns><see cref="string"/> formatted date time including seconds</returns>
         public static string Area23DateTimeWithSeconds(this DateTime dateTime)
         {
-            return dateTime.ToString("yyyy-MM-dd_HH:mm:ss");
+            return dateTime.ToString("yyyy-MM-dd_HHmmss.fff");
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace EU.CqrXs.Util
         /// <returns>formatted date time <see cref="string"/> </returns>
         public static string Area23DateTimeWithMillis(this DateTime dateTime)
         {
-            string formatted = string.Format("{0:yyyyMMdd_HHmmss}_{1}", dateTime, dateTime.Millisecond);
+            string formatted = string.Format("{0:yyyyMMdd_HHmmssfff}_{1}", dateTime, dateTime.Millisecond);
             // return formatted;
             return dateTime.ToString("yyyyMMdd_HHmmss_") + dateTime.Millisecond;
         }
