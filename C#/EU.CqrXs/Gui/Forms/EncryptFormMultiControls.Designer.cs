@@ -90,17 +90,17 @@ namespace EU.CqrXs.Gui.Forms
             menuOptionsMenuFileSettings = new ToolStripMenuItem();
             menuItemCreatePipeSettingsFromFileName = new ToolStripMenuItem();
             menuFileSettingsItemAutomaticallySaveToTemp = new ToolStripMenuItem();
-            menuOptionsMenuWindows = new ToolStripMenuItem();
-            menuOptionsMenuWindowsCharHexDecOctBin = new ToolStripMenuItem();
-            menuOptionsMenuWindowsitemAbout = new ToolStripMenuItem();
             menuSerialize = new ToolStripMenuItem();
             menuJson = new ToolStripMenuItem();
             menuXml = new ToolStripMenuItem();
             menuRaw = new ToolStripMenuItem();
+            toolStripMenuItem1 = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuAbout = new ToolStripMenuItem();
-            menuHelpUrlFetch = new ToolStripMenuItem();
             menuHelpHelp = new ToolStripMenuItem();
+            menuHelpUrlFetch = new ToolStripMenuItem();
+            menuOptionsMenuWindowsCharHexDecOctBin = new ToolStripMenuItem();
+            menuOptionsMenuWindowsitemAbout = new ToolStripMenuItem();
             comboBoxAlgo = new ComboBox();
             enumOptionsBindingSource = new BindingSource(components);
             textBoxKey = new TextBox();
@@ -130,7 +130,6 @@ namespace EU.CqrXs.Gui.Forms
             panel1 = new Panel();
             tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
-            toolStripMenuItem1 = new ToolStripMenuItem();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -288,7 +287,7 @@ namespace EU.CqrXs.Gui.Forms
             zmenu7z.Enabled = false;
             zmenu7z.Name = "zmenu7z";
             zmenu7z.ShortcutKeys = Keys.Control | Keys.D7;
-            zmenu7z.Size = new Size(180, 22);
+            zmenu7z.Size = new Size(169, 22);
             zmenu7z.Text = "7z";
             // 
             // zmenuBZip2
@@ -297,7 +296,7 @@ namespace EU.CqrXs.Gui.Forms
             zmenuBZip2.Enabled = false;
             zmenuBZip2.Name = "zmenuBZip2";
             zmenuBZip2.ShortcutKeys = Keys.Control | Keys.B;
-            zmenuBZip2.Size = new Size(180, 22);
+            zmenuBZip2.Size = new Size(169, 22);
             zmenuBZip2.Text = "BZip2";
             // 
             // zmenuGZip
@@ -305,7 +304,7 @@ namespace EU.CqrXs.Gui.Forms
             zmenuGZip.BackColor = SystemColors.Menu;
             zmenuGZip.Name = "zmenuGZip";
             zmenuGZip.ShortcutKeys = Keys.Control | Keys.G;
-            zmenuGZip.Size = new Size(180, 22);
+            zmenuGZip.Size = new Size(169, 22);
             zmenuGZip.Text = "GZip";
             // 
             // zmenuZip
@@ -313,7 +312,7 @@ namespace EU.CqrXs.Gui.Forms
             zmenuZip.BackColor = SystemColors.Menu;
             zmenuZip.Name = "zmenuZip";
             zmenuZip.ShortcutKeys = Keys.Control | Keys.Z;
-            zmenuZip.Size = new Size(180, 22);
+            zmenuZip.Size = new Size(169, 22);
             zmenuZip.Text = "Zip";
             // 
             // zmenuNone
@@ -323,7 +322,7 @@ namespace EU.CqrXs.Gui.Forms
             zmenuNone.CheckState = CheckState.Checked;
             zmenuNone.Name = "zmenuNone";
             zmenuNone.ShortcutKeys = Keys.Control | Keys.N;
-            zmenuNone.Size = new Size(180, 22);
+            zmenuNone.Size = new Size(169, 22);
             zmenuNone.Text = "None";
             // 
             // menuEncoding
@@ -517,7 +516,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // optionsToolStripMenuItem
             // 
-            optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuOptionsItemsWarnings, verifyEncryptionToolStripMenuItem, menuOptionsMenuFileSettings, menuOptionsMenuWindows });
+            optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuOptionsItemsWarnings, verifyEncryptionToolStripMenuItem, menuOptionsMenuFileSettings });
             optionsToolStripMenuItem.Font = new Font("Lucida Sans Typewriter", 10F);
             optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             optionsToolStripMenuItem.Size = new Size(75, 20);
@@ -603,7 +602,7 @@ namespace EU.CqrXs.Gui.Forms
             menuFileSettingsItemAutomaticallySaveToTemp.Name = "menuFileSettingsItemAutomaticallySaveToTemp";
             menuFileSettingsItemAutomaticallySaveToTemp.Size = new Size(346, 22);
             menuFileSettingsItemAutomaticallySaveToTemp.Text = "Automatically Save to Temp";
-            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";            
+            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";
             // 
             // menuSerialize
             // 
@@ -642,6 +641,12 @@ namespace EU.CqrXs.Gui.Forms
             menuRaw.Size = new Size(180, 22);
             menuRaw.Text = "Raw";
             // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(180, 22);
+            toolStripMenuItem1.Text = "?";
+            // 
             // menuHelp
             // 
             menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpUrlFetch });
@@ -657,6 +662,14 @@ namespace EU.CqrXs.Gui.Forms
             menuAbout.Size = new Size(180, 22);
             menuAbout.Text = "About";
             // 
+            // menuHelpHelp
+            // 
+            menuHelpHelp.BackColor = SystemColors.MenuBar;
+            menuHelpHelp.Name = "menuHelpHelp";
+            menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
+            menuHelpHelp.Size = new Size(180, 22);
+            menuHelpHelp.Text = "Help";
+            // 
             // menuHelpUrlFetch
             // 
             menuHelpUrlFetch.BackColor = SystemColors.MenuBar;
@@ -665,13 +678,15 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpUrlFetch.Text = "Url Fetch";
             menuHelpUrlFetch.Click += menuHelpUrlFetch_Click;
             // 
-            // menuHelpHelp
+            // menuOptionsMenuWindowsCharHexDecOctBin
             // 
-            menuHelpHelp.BackColor = SystemColors.MenuBar;
-            menuHelpHelp.Name = "menuHelpHelp";
-            menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(180, 22);
-            menuHelpHelp.Text = "Help";
+            menuOptionsMenuWindowsCharHexDecOctBin.Name = "menuOptionsMenuWindowsCharHexDecOctBin";
+            menuOptionsMenuWindowsCharHexDecOctBin.Size = new Size(32, 19);
+            // 
+            // menuOptionsMenuWindowsitemAbout
+            // 
+            menuOptionsMenuWindowsitemAbout.Name = "menuOptionsMenuWindowsitemAbout";
+            menuOptionsMenuWindowsitemAbout.Size = new Size(32, 19);
             // 
             // comboBoxAlgo
             // 
@@ -1013,12 +1028,6 @@ namespace EU.CqrXs.Gui.Forms
             tabControlWithHexDest.Size = new Size(478, 306);
             tabControlWithHexDest.TabIndex = 46;
             // 
-            // toolStripMenuItem1
-            // 
-            toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(180, 22);
-            toolStripMenuItem1.Text = "?";
-            // 
             // EncryptFormMultiControls
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
@@ -1164,7 +1173,6 @@ namespace EU.CqrXs.Gui.Forms
         private Controls.TabControlWithHex tabControlWithHexSrc;
         private Controls.TabControlWithHex tabControlWithHexDest;
         protected internal ToolStripMenuItem menuFileNew;
-        private ToolStripMenuItem menuOptionsMenuWindows;
         internal ToolStripMenuItem menuOptionsMenuWindowsCharHexDecOctBin;
         internal ToolStripMenuItem menuOptionsMenuWindowsitemAbout;
         protected internal ToolStripMenuItem menuMainDownloadImage;

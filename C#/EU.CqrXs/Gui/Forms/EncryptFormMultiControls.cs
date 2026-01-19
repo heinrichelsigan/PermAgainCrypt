@@ -1317,21 +1317,21 @@ namespace EU.CqrXs.Gui.Forms
             //RandomName rname = new RandomName();
             //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
             string topLevelDomain = ".at", url = ""; 
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFecth") == null) ? 
-                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFecth");
+            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ? 
+                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
             
-            switch (ufcnt++)
+            switch (++ufcnt)
             {                                
                 case 1:
-                    url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd";
+                    url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";
                     break;
                 case 2:
-                    url = $"https://duckduckgo.com/?q=site%3A.{topLevelDomain}&df=d&ia=images&iax=images";
+                    url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay";
                     break;
                 case 0:
                 default:
                     ufcnt %= 3;
-                    url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";                    
+                    url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd";
                     break;
             }
 
