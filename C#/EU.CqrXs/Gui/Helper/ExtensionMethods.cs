@@ -345,7 +345,8 @@ namespace EU.CqrXs.Gui.Helper
                 }
             }
 
-            foreach (ZipType zType in ZipTypeExtensions.GetZipTypes())
+            ZipType[] zipTypes = new ZipType[] { ZipType.GZip, ZipType.BZip2, ZipType.Zip, ZipType.None };
+            foreach (ZipType zType in zipTypes)
             {
                 if (zType != ZipType.None)
                 {
@@ -361,10 +362,10 @@ namespace EU.CqrXs.Gui.Helper
                         origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
                         break;
                     }
-                    if (origFileName.Contains("." + zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                    if (origFileName.Contains(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
                     {
                         zipTyp = zType;
-                        int idx = origFileName.IndexOf("." + zipTyp.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase);
+                        int idx = origFileName.IndexOf(zipTyp.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase);
                         string first = origFileName.Substring(0, idx);
                         string rest = origFileName.Substring(idx + zipTyp.GetZipTypeExtension().Length + 1);
                         origFileName = first + rest;
