@@ -1,0 +1,115 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>EU.CqrXs.Gui</RootNamespace>
+    <Copyright>Copyleft ©  2000 - 2040</Copyright>
+    <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
+    <AssemblyVersion>2.26.120</AssemblyVersion>
+	<FileVersion>2.26.120</FileVersion>
+    <Description>Symmetric Crypt Pipe WinForm Heinrich Elsigan he@area23.at</Description>
+    <StartupObject>EU.CqrXs.Gui.Program</StartupObject>
+    <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
+    <PackageIcon>CryptPenacle.png</PackageIcon>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Resources\arrows\process\**" />
+    <Compile Remove="Resources\huge\**" />
+    <Compile Remove="res\**" />
+    <EmbeddedResource Remove="Resources\arrows\process\**" />
+    <EmbeddedResource Remove="Resources\huge\**" />
+    <EmbeddedResource Remove="res\**" />
+    <None Remove="Resources\arrows\process\**" />
+    <None Remove="Resources\huge\**" />
+    <None Remove="res\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Forms\TransparentBadge.cs" />
+    <Compile Remove="Forms\TransparentBadge.Designer.cs" />
+    <Compile Remove="Helper\BitmapPipelineGnerator.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Gui\Forms\TransparentBadge.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Program.cs.txt" />
+    <None Remove="Resources\ChiffrePentacle2.gif" />
+    <None Remove="Resources\sounds\sound_pluckpcm.wav" />
+    <None Remove="Resources\sounds\sound_romans.wav" />
+    <None Remove="Resources\sounds\sound_soft.wav" />
+    <None Remove="Resources\sounds\sound_state_kills.m4a" />
+    <None Remove="Resources\sounds\sound_train.wav" />
+  </ItemGroup>
+    
+	<ItemGroup>
+        <Compile Update="Controls\TabConrolWithHex.cs">
+          <SubType>Component</SubType>
+        </Compile>
+        <Compile Update="Forms\UrlFetchDialog.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="Forms\CharHexDecOctBinDialog.cs" />
+        <Compile Update="Forms\EncryptFormMultiControls.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="Forms\EncryptForm.cs">
+          <SubType>Form</SubType>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Forms\TransparentBadge.cs" />
+    </ItemGroup>
+    
+	<ItemGroup>
+	  <EmbeddedResource Update="Forms\EncryptFormMultiControls.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+    
+	<ItemGroup>
+		<None Update="log\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <Folder Include="log\" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebView.WindowsForms" Version="10.0.30" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3650.58" />
+	</ItemGroup>
+    
+	<ItemGroup>
+	  <ProjectReference Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\EU.CqrXs\EU.CqrXs.csproj" />
+	</ItemGroup>
+
+</Project>
