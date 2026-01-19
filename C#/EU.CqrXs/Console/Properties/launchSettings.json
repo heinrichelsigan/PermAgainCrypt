@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.Console": {
       "commandName": "Project",
-      "commandLineArgs": " -i=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\x86\\2025-11-22_SAML_Klaerung.pdf.Hex.Base64 -H=Hex -q=heinrichelsigan -d=base64 -o=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\x86\\SAML.pdf"
+      "commandLineArgs": " -Yankee=yankee"
     }
   }
 }

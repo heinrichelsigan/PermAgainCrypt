@@ -1,6 +1,6 @@
 ﻿https://cqrxs.eu/download/EU.CqrXs.Console/README.MD
 
-S:\>EU.CqrXs.Console.exe -?
+EU.CqrXs.Console.exe -?
 Usage:  EU.CqrXs.Console.exe
     -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
     -o | --outFile= | --outText=EnviromentVariable | --outStd
@@ -27,18 +27,23 @@ Usage:  EU.CqrXs.Console.exe
     -q | --qey=passKey decrypt
     -h | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
     -S | --SymmCipher 
+    -Y | --YankeeTest
     -? | --gethelp
 
 Examples:
-    EU.CqrXs.Console.exe -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32
-    EU.CqrXs.Console.exe -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg
+
+    EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
+    EU.CqrXs.Console.exe -i=.\README_MD.base16 -d=base16 -o=.\READ_MD.txt
         
-    EU.CqrXs.Console.exe --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64
-    EU.CqrXs.Console.exe -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg
-        
+    EU.CqrXs.Console.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -i=.\README.MD.gz.BfF.base64 -d=base64 -D=BlowFish,Fish2,Fish3 -p=Hallo -u=gzip -o=.\READ_GUNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
+    EU.CqrXs.Console.exe -i=.\README.MD.Whirlpool.bz.Hex32 -d=hex32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\READ_BUNZIP.txt
+
     EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    EU.CqrXs.Console.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\README_UNZIP.txt
-        
-    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+    EU.CqrXs.Console.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\READ_UNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
+    EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -S -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
 

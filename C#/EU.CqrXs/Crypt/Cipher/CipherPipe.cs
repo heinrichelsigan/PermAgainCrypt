@@ -6,6 +6,7 @@ using EU.CqrXs.Zip;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using System.Globalization;
+using System.Security.Policy;
 
 namespace EU.CqrXs.Crypt.Cipher
 {
@@ -455,9 +456,12 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv, ZipType zipBefore = ZipType.None)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
-            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
+            string hash = hashIv ?? "";
+            if (string.IsNullOrEmpty(hash) && !string.IsNullOrEmpty(secretKey))
+                hash = (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
+
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
@@ -497,9 +501,12 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv, ZipType unzipAfter = ZipType.None)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
-            string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
+            string hash = hashIv ?? "";
+            if (string.IsNullOrEmpty(hash) && !string.IsNullOrEmpty(secretKey))
+                hash = (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
+
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
@@ -683,10 +690,11 @@ namespace EU.CqrXs.Crypt.Cipher
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
-            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
-            cipherHash = keyHash.Hash(secretKey);
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;            
+            cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
+            
             encodeType = encType;
             ZType = zipBefore;
             KHash = keyHash;
@@ -699,11 +707,13 @@ namespace EU.CqrXs.Crypt.Cipher
            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
-            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
-            cipherHash = hashIV;
+            if (string.IsNullOrEmpty(hashIV)) 
+                cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
+            else 
+                cipherHash = hashIV;
             encodeType = encType;
             ZType = zipBefore;
             KHash = keyHash;
@@ -728,15 +738,16 @@ namespace EU.CqrXs.Crypt.Cipher
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
-            cipherHash = keyHash.Hash(secretKey);
+            cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
+            
             encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
             byte[] cipherBytes = encodeType.GetEnCoder().Decode(encoded);
-            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, keyHash.Hash(secretKey), unzipAfter);
+            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, unzipAfter);
 
             return outBytes;
         }
@@ -746,10 +757,13 @@ namespace EU.CqrXs.Crypt.Cipher
            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("seretkey");
+                secretKey = "";
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
-            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
+            if (string.IsNullOrEmpty(hashIV))
+                cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
+            else
+                cipherHash = hashIV;
             cipherHash = hashIV;
             encodeType = encType;
             ZType = unzipAfter;
@@ -764,7 +778,7 @@ namespace EU.CqrXs.Crypt.Cipher
             else
                 cipherBytes = encodedBytes;
 
-            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, hashIV, unzipAfter);
+            byte[] outBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, unzipAfter);
 
             return outBytes;
         }
