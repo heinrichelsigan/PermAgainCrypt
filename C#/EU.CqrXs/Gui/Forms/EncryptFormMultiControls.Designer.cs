@@ -603,30 +603,7 @@ namespace EU.CqrXs.Gui.Forms
             menuFileSettingsItemAutomaticallySaveToTemp.Name = "menuFileSettingsItemAutomaticallySaveToTemp";
             menuFileSettingsItemAutomaticallySaveToTemp.Size = new Size(346, 22);
             menuFileSettingsItemAutomaticallySaveToTemp.Text = "Automatically Save to Temp";
-            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";
-            // 
-            // menuOptionsMenuWindows
-            // 
-            menuOptionsMenuWindows.BackColor = SystemColors.ControlLight;
-            menuOptionsMenuWindows.DropDownItems.AddRange(new ToolStripItem[] { menuOptionsMenuWindowsCharHexDecOctBin, menuOptionsMenuWindowsitemAbout });
-            menuOptionsMenuWindows.Name = "menuOptionsMenuWindows";
-            menuOptionsMenuWindows.Size = new Size(210, 22);
-            menuOptionsMenuWindows.Text = "Windows";
-            // 
-            // menuOptionsMenuWindowsCharHexDecOctBin
-            // 
-            menuOptionsMenuWindowsCharHexDecOctBin.BackColor = SystemColors.MenuBar;
-            menuOptionsMenuWindowsCharHexDecOctBin.Name = "menuOptionsMenuWindowsCharHexDecOctBin";
-            menuOptionsMenuWindowsCharHexDecOctBin.Size = new Size(234, 22);
-            menuOptionsMenuWindowsCharHexDecOctBin.Text = "Char-Hex-Dec-Oct-Bin";
-            // 
-            // menuOptionsMenuWindowsitemAbout
-            // 
-            menuOptionsMenuWindowsitemAbout.BackColor = SystemColors.MenuBar;
-            menuOptionsMenuWindowsitemAbout.Enabled = false;
-            menuOptionsMenuWindowsitemAbout.Name = "menuOptionsMenuWindowsitemAbout";
-            menuOptionsMenuWindowsitemAbout.Size = new Size(234, 22);
-            menuOptionsMenuWindowsitemAbout.Text = "About Dialog";
+            menuFileSettingsItemAutomaticallySaveToTemp.ToolTipText = "Don't show a save file dialog, when processimg files";            
             // 
             // menuSerialize
             // 

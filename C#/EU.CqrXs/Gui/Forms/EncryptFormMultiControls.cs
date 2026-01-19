@@ -72,7 +72,7 @@ namespace EU.CqrXs.Gui.Forms
             //catch (Exception exBtnClick)
             //{
             //    Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
-            //        "Good luck and relation between Jews and Yankees", exBtnClick, 2);
+            //        "unknown exception", exBtnClick, 2);
             //}
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
@@ -1314,9 +1314,29 @@ namespace EU.CqrXs.Gui.Forms
 
         private void menuHelpUrlFetch_Click(object sender, EventArgs e)
         {
-            RandomName rname = new RandomName();
-            UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
-            dia.Show();
+            //RandomName rname = new RandomName();
+            //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
+            string topLevelDomain = ".at", url = ""; 
+            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFecth") == null) ? 
+                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFecth");
+            
+            switch (ufcnt++)
+            {                                
+                case 1:
+                    url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd";
+                    break;
+                case 2:
+                    url = $"https://duckduckgo.com/?q=site%3A.{topLevelDomain}&df=d&ia=images&iax=images";
+                    break;
+                case 0:
+                default:
+                    ufcnt %= 3;
+                    url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";                    
+                    break;
+            }
+
+            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
+            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
         }
     }
 
