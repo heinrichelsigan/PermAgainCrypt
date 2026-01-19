@@ -16,6 +16,7 @@ namespace EU.CqrXs.Util
         private static string systemDirResPath = "";
         private static string logDirPath = "";
         private static string logFilePath = "";
+        private static string tempDirPath = "";
         private static string cqrServiceSoap = "", cqrServiceSoap12 = "", cqrSrvSoap = "", cqrSrvSoap12 = "";
         private static readonly char _sepCh;
         private static int daysave = -1;
@@ -300,6 +301,29 @@ namespace EU.CqrXs.Util
             }
         }
 
+        /// <summary>
+        /// Path to temp directory
+        /// </summary>
+        public static string TempDir
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(tempDirPath))
+                {
+                    tempDirPath = Environment.GetEnvironmentVariable("LOCALAPPDATA") ?? "";
+                    if (!string.IsNullOrEmpty(tempDirPath) && Directory.Exists(tempDirPath))
+                        tempDirPath = Path.Combine(tempDirPath, "Temp");
+                    else
+                        tempDirPath = Path.Combine(
+                            Environment.GetEnvironmentVariable("windir") ?? Environment.GetEnvironmentVariable("SystemRoot") ?? "C:\\Windows",
+                            "Temp");
+
+                    if (!Directory.Exists(tempDirPath))
+                        Directory.CreateDirectory(tempDirPath);
+                }
+                return tempDirPath;
+            }
+        }
 
         /// <summary>
         /// SystemDirResPath returns path to subdirector <see cref="Constants.RES_DIR"/> of base directory <see cref="SystemDirPath"/>.

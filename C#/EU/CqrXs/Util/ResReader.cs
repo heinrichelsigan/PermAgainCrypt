@@ -45,6 +45,7 @@ namespace EU.CqrXs.Util
                 }
                 catch (Exception ex)
                 {
+                    Area23Log.LogOriginMsgEx(typeof(ResReader).Name, $"{ex.GetType()} when reading key {key}", ex);
                     retVal = key;
                 }
             }

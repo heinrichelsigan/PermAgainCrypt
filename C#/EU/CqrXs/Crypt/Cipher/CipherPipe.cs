@@ -1,5 +1,4 @@
-﻿using EU.CqrXs.Crypt.Cipher;
-using EU.CqrXs.Crypt.Cipher.Symmetric;
+﻿using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
@@ -7,8 +6,6 @@ using EU.CqrXs.Zip;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using System.Globalization;
-using System.IO.Pipelines;
-using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher
 {

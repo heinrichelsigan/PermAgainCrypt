@@ -1,5 +1,4 @@
 ﻿using EU.CqrXs.Crypt.Hash;
-using EU.CqrXs.Util;
 using System.Configuration;
 using System.Text;
 
@@ -524,7 +523,7 @@ PMsi2xTrUPC6pAERVgu7wz02ka3WPOdlxfoG0o9s/BwJmhi5EEBqGB4CriR8R8AY
         public static bool DirCreate { get; set; } = true;
 
         /// <summary>
-        /// AppLogFile - logfile with <see cref="DateTimeExtensions.Area23Date(DateTime)"/> prefix
+        /// AppLogFile - logfile with <see cref="EU.CqrXs.Util.Extensions.Area23Date(DateTime)"/> prefix
         /// </summary>
         public static string AppLogFile { get => DateTime.UtcNow.Area23Date() + UNDER_SCORE + APP_NAME + LOG_EXT; }
 

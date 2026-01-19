@@ -7,7 +7,8 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Security.Cryptography;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace EU.CqrXs.Gui.Forms
@@ -20,6 +21,7 @@ namespace EU.CqrXs.Gui.Forms
     {
 
         protected internal CipherPipe? cPipe = null;
+        protected internal string simg = "";
 
         #region ctor and load
 
@@ -33,42 +35,44 @@ namespace EU.CqrXs.Gui.Forms
             InitializeComponent();
 
             tabControlWithHexDest.AsciiTextReadonly = true;
-            buttonEncrypt.Click += new System.EventHandler(async (sender, e) 
+            buttonEncrypt.Click += new System.EventHandler(async (sender, e)
                 => await Encrypt_Click(sender, e));
             buttonDecrypt.Click += new System.EventHandler(async (sender, e)
                 => await Decrypt_Click(sender, e));
-            buttonReset.Click += new System.EventHandler(async (sender, e) 
+            buttonReset.Click += new System.EventHandler(async (sender, e)
                 => await Reset_Click(sender, e));
-            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) => 
+            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) =>
                 await comboBoxEncoding_SelectedIndexChanged(sender, e));
-            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e) 
+            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e)
                 => await RadioButtonListHash_SelectedIndexChanged(sender, e));
-            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e) 
+            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e)
                 => await ComboBoxCompression_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
             groupBoxFiles.FileRequired += GroupBoxFileRequired;
 
-            menuMainEncrypt.Click += new System.EventHandler(async (sender, e) 
+            menuMainEncrypt.Click += new System.EventHandler(async (sender, e)
                 => await Encrypt_Click(sender, e));
-            menuMainDecrypt.Click += new System.EventHandler(async (sender, e) 
+            menuMainDecrypt.Click += new System.EventHandler(async (sender, e)
                 => await Decrypt_Click(sender, e));
-            menuMainReset.Click += new System.EventHandler(async (sender, e) 
+            menuMainReset.Click += new System.EventHandler(async (sender, e)
                 => await Reset_Click(sender, e));
-            menuAbout.Click += new System.EventHandler(async (sender, e) 
+            menuAbout.Click += new System.EventHandler(async (sender, e)
                 => await menuAbout_Click(sender, e));
-            menuHelpHelp.Click += new System.EventHandler(async (sender, e) 
+            menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
             menuFileNew.Click += new System.EventHandler(async (sender, e)
-                 => await menuFileNew_Click(sender, e));            
-            try
-            {
-                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) =>
-                    await menuCharHexDecOctBinAsync_Click(sender, e));
+                 => await menuFileNew_Click(sender, e));
+            //try
+            //{
+            //    menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) =>
+            //        await menuCharHexDecOctBinAsync_Click(sender, e));
 
-            } catch(Exception exBtnClick) {
-                Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
-                    "Good luck and relation between Jews and Yankees", exBtnClick, 2);
-            }            
+            //}
+            //catch (Exception exBtnClick)
+            //{
+            //    Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
+            //        "Good luck and relation between Jews and Yankees", exBtnClick, 2);
+            //}
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
@@ -1123,17 +1127,7 @@ namespace EU.CqrXs.Gui.Forms
             outFilePath = outFilePath ?? string.Empty;
             if (fileBytes != null && fileBytes.Length > 0)
             {
-                string tempFileDirectory = Environment.GetEnvironmentVariable("LOCALAPPDATA") ?? "";
-                if (string.IsNullOrEmpty(tempFileDirectory))
-                    tempFileDirectory = Path.Combine(
-                        Environment.GetEnvironmentVariable("windir") ?? Environment.GetEnvironmentVariable("SystemRoot") ?? "C:\\Windows",
-                        "Temp");
-                else tempFileDirectory = Path.Combine(tempFileDirectory, "Temp");
-
-                if (!Directory.Exists(tempFileDirectory))
-                    Directory.CreateDirectory(tempFileDirectory);
-
-                outFilePath = Path.Combine(tempFileDirectory, Path.GetFileName(outFilePath));
+                outFilePath = Path.Combine(LibPaths.TempDir, Path.GetFileName(outFilePath));
 
                 try
                 {
@@ -1287,8 +1281,47 @@ namespace EU.CqrXs.Gui.Forms
 
         }
 
-        #endregion Media Methods^1
-        
+        protected internal void LoadImage_Click(object sender, EventArgs e)
+        {
+            Random rand = new Random();
+            if (string.IsNullOrEmpty(simg) || File.Exists(simg)) {
+                simg = rand.GetHexString(8, true);
+            }
+
+            Bitmap mergeImage = new Bitmap(Resources.file);
+
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeImage))
+            {
+
+                Color color = ColorTranslator.FromHtml("#0000dd");
+                string drawString = simg;
+                Font drawFont = new Font("Microsoft Sans Serif", 7, FontStyle.Regular);
+                SolidBrush drawBrush = new SolidBrush(color);
+                float x = 2.0F;
+                float y = 2.5F;
+                StringFormat drawFormat = new StringFormat();
+                drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+            }
+
+            string simage = simg + ".png";
+            string imgFile = Path.Combine(LibPaths.TempDir, simage);
+            
+            mergeImage.Save(imgFile, ImageFormat.Png);
+            
+            FileInfo fi = new FileInfo(imgFile);            
+            Image picImg = imgFile.GetImageThumbnailFromFile();
+            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, picImg, fi.FullName, true);
+            SetLabelTextVisible(groupBoxFiles.labelFileIn, Path.GetFileName(fi.FullName), true);
+        }
+
+        #endregion Media Methods
+
+
+        private void menuHelpUrlFetch_Click(object sender, EventArgs e)
+        {
+            LoadImage_Click(sender, e);
+        }
     }
 
 }

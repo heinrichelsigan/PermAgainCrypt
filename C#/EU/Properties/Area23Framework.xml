@@ -1502,7 +1502,7 @@
             <param name="encryptBytes">encryptedBytes to encdode</param>
             <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
             "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="!:encryptBytes"/> represent a binary without encryption</param>
+            <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]">fromPlain</see> represent a binary without encryption</param>
             <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
             <returns>encoded encrypted string</returns>
         </member>
@@ -2645,7 +2645,7 @@
         </member>
         <member name="P:EU.CqrXs.Util.Constants.AppLogFile">
             <summary>
-            AppLogFile - logfile with <see cref="!:DateTimeExtensions.Area23Date(DateTime)"/> prefix
+            AppLogFile - logfile with <see cref="M:EU.CqrXs.Util.Extensions.Area23Date(System.DateTime)"/> prefix
             </summary>
         </member>
         <member name="P:EU.CqrXs.Util.Constants.Locale">
@@ -3089,6 +3089,11 @@
             otherwise applcation directory of base exe.
             </summary>
         </member>
+        <member name="P:EU.CqrXs.Util.LibPaths.TempDir">
+            <summary>
+            Path to temp directory
+            </summary>
+        </member>
         <member name="P:EU.CqrXs.Util.LibPaths.SystemDirResPath">
             <summary>
             SystemDirResPath returns path to subdirector <see cref="F:EU.CqrXs.Util.Constants.RES_DIR"/> of base directory <see cref="P:EU.CqrXs.Util.LibPaths.SystemDirPath"/>.
@@ -3318,49 +3323,6 @@
             GetFortunes from ressource file
             </summary>
             <returns></returns>
-        </member>
-        <member name="T:EU.CqrXs.Util.SLog">
-            <summary>
-            Most simple and tiny static logger
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.SLog.LogFile">
-            <summary>
-            LogFile
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.SLog.CheckedToday">
-            <summary>
-            static Checked today if logfiles and other needed resources exist for today
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.SLog.#cctor">
-            <summary>
-            private static ctor of SLog
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.SLog.Log(System.String,System.String)">
-            <summary>
-            Log - static logging method
-            </summary>
-            <param name="msg">message to log</param>
-            <param name="appName">application name</param>
-        </member>
-        <member name="M:EU.CqrXs.Util.SLog.Log(System.Exception,System.String)">
-            <summary>
-            Log - static logging method
-            </summary>
-            <param name="exLog"><see cref="T:System.Exception"/> to log</param>
-            <param name="appName">application name</param>
-        </member>
-        <member name="M:EU.CqrXs.Util.SLog.Log(System.String,System.Exception,System.String)">
-            <summary>
-            static log with <see cref="T:System.String">string prefix</see>, downcasted generic <see cref="T:System.Exception">Exception xZpd</see> 
-            and <see cref="T:System.String">string appName</see>
-            </summary>
-            <param name="prefix"><see cref="T:System.String"/> prefix</param>
-            <param name="exLog"><see cref="T:System.Exception">exLog</see></param>
-            <param name="appName"><see cref="T:System.String"/> appName</param>
         </member>
         <member name="T:EU.CqrXs.Util.Utils">
             <summary>

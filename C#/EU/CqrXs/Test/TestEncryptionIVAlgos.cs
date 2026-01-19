@@ -3,7 +3,9 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Configuration;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Reflection;
 
 namespace EU.CqrXs.Test
@@ -19,6 +21,40 @@ namespace EU.CqrXs.Test
     public sealed class TestEncryptionIVAlgos
     {
         internal static string Email = Constants.AUTHOR_EMAIL;
+
+        public byte[] GetImageBytes()
+        {
+            string simg = "";
+            Random rand = new Random();
+            if (string.IsNullOrEmpty(simg) || File.Exists(simg))
+            {
+                simg = rand.GetHexString(8, true);
+            }
+
+            Bitmap mergeImage = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif");
+
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeImage))
+            {
+
+                Color color = ColorTranslator.FromHtml("#0000dd");
+                string drawString = simg;
+                Font drawFont = new Font("Microsoft Sans Serif", 7, FontStyle.Regular);
+                SolidBrush drawBrush = new SolidBrush(color);
+                float x = 1.5F;
+                float y = 2.0F;
+                StringFormat drawFormat = new StringFormat();
+                drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
+                g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
+            }
+
+            string simage = simg + ".png";
+            string imgFile = Path.Combine(LibPaths.TempDir, simage);
+
+            mergeImage.Save(imgFile, ImageFormat.Png);
+
+            byte[] bytes = File.ReadAllBytes(imgFile);
+            return bytes;
+        }
 
         [TestMethod]
         public void TestEncryptionIVAlgorithmsBytes()
@@ -43,7 +79,6 @@ namespace EU.CqrXs.Test
             TimeSpan encOpTime = TimeSpan.Zero, decOpTime = TimeSpan.Zero, allOpTime = TimeSpan.Zero;
             string fileByesTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "2025-09-23_Stats.gif";
             string fileTextTest = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar + "README.MD";
-            string dirCsvOut = "";
             string fileCsvOut = AppContext.BaseDirectory + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyy-MM-dd_hh_") + $"{className}_{methodBase}.csv";
 
             Assert.IsTrue(File.Exists(fileTextTest));

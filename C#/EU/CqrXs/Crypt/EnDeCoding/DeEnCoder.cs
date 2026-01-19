@@ -47,7 +47,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
         /// <param name="encryptBytes">encryptedBytes to encdode</param>
         /// <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
         /// "Base64" is default.</param>
-        /// <param name="fromPlain">Only for uu: true, if <see cref="encryptBytes"/> represent a binary without encryption</param>
+        /// <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]">fromPlain</see> represent a binary without encryption</param>
         /// <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
         /// <returns>encoded encrypted string</returns>
         public static string EncodeBytes(byte[] encryptBytes, EncodingType encodingType = EncodingType.Base64, bool fromPlain = false, bool fromFile = false)
