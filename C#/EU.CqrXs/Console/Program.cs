@@ -4,7 +4,7 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using Org.BouncyCastle.Crypto;
+using System.Linq;
 using System.Text;
 
 
@@ -15,25 +15,22 @@ namespace EU.CqrXs.Console
     /// OptEnum different option types
     /// </summary>
     public enum OptEnum
-    {
+    {        
         Usage = 0x0,
         InParam = 0x1,
-        OutP = 0x2,
-        Zip = 0x3,
-        Unzip = 0x4,
-        Encode = 0x5,
-        Decode = 0x6,
-        Crypt = 0x7,
-        Key = 0x8,
-        Decrypt = 0x9,
-        HashSum = 0xa,
-        Help = 0xb,
-        Qey = 0xc,
-        Pass = 0xd,
-        Hash = 0xe,
-        SymmCipher = 0xf,
-        YankeeBatchTest = 0x10
+        Key = 0x2,
+        Hash = 0x3,
+        Zip = 0x4,
+        CipherAlgos = 0x5,
+        Encode = 0x6,
+        OutP = 0x7,
 
+        DeCrypt = 0x8, 
+        SymmCipher = 0x9,
+        
+        YankeeBatchTest = 0xa,
+        Verbose = 0xe,
+        Help = 0xf
     }
 
 
@@ -42,19 +39,16 @@ namespace EU.CqrXs.Console
     /// 
     /// EU.CqrXs.Console.Program 
     /// -i | --inFile= | --inText={string|EnviromentVariable} | --inStd    
-    /// -o | --outFile= | --outText=EnviromentVariable | --outStd
-    /// -u | --unzip={gzip|bzip2|zip}
-    /// -z | --zip={gzip|bzip2|zip}
-    /// -d | --decode={raw|hex16|hex32|base32|base64|uu}
-    /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
-    /// -C | --crypt={[aes,des3,blowfish,fish2,fish3]|key}
-    ///    |  -p --pass=Passphrase
-    /// -D | --decrypt={[aes,des3,blowfish,fish2,fish3]|key}
-    ///    |  -p --pass=Passphrase
     /// -k | --key=mykey
-    /// -q | --qey=myqey    
     /// -H | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
+    /// -z | --zip={gzip|bzip2|zip}
+    /// -C | --CipherAlgos={[aes,des3,blowfish,fish2,fish3]|key}
+    /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
+    /// -o | --outFile= | --outText=EnviromentVariable | --outStd        
+    /// 
+    /// -D | --Decrypt 
     /// -S | --SymmCipher 
+    /// 
     /// -Y | --YankeeTest
     /// -? | --gethelp
     /// </summary>
@@ -96,18 +90,22 @@ namespace EU.CqrXs.Console
                 // string optStr = GetOption(... => out OptEnum optEnum)
                 string optStr = GetOption(args[i], out OptEnum optEnum);
 
-                // Nothing todo on io params
-                if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
-                else // Help => Usage("") Usage => Usage(optStr)
-                    if (optEnum == OptEnum.Help || optEnum == OptEnum.Usage)
+                // Help => Usage("") Usage => Usage(optStr)
+                if (optEnum == OptEnum.Help || optEnum == OptEnum.Usage)
                     Usage((optEnum == OptEnum.Help) ? "" : optStr);
-                else // fetch  or Key or Qey (decrypt key) from optEnum and optStr
-                    if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
+                // Nothing todo on io params
+                else if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
+                // fetch  or Key or Qey (decrypt key) from optEnum and optStr
+                else if (optEnum == OptEnum.Key) 
                     passKey = optStr;
-                else // prefetch SymmCipherMode
-                    if (optEnum == OptEnum.SymmCipher)
+                // prefetch decrypt reverse direction
+                else if (optEnum == OptEnum.DeCrypt)
+                    reverseDirection = true;
+                // prefetch SymmCipherMode
+                else if (optEnum == OptEnum.SymmCipher)
                     useSymmCipher = true;
-                else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>();  
+                // otherwise add optEnum and optStr to Dictionary<OptEnum, string>();  
+                else
                     dict.Add(optEnum, optStr);
             }
             // read from stdin, when no inName specified
@@ -134,8 +132,10 @@ namespace EU.CqrXs.Console
                 string optStr = dict[optVar];
                 switch (optVar)
                 {
+                    case OptEnum.Hash:
+                        keyHash = KeyHash_Extensions.GetKeyHashFromString(optStr);
+                        break;
                     case OptEnum.Zip:
-                    case OptEnum.Unzip:
                         if (optStr.ToLower().Contains("gz") || optStr.ToLower().Contains("gunzip"))
                             zipType = ZipType.GZip;
                         else
@@ -148,15 +148,7 @@ namespace EU.CqrXs.Console
                             Usage("urecognized zip option: " + optStr);
 
                         break;
-                    case OptEnum.Encode:
-                    case OptEnum.Decode:
-                        encodingType = EncodingTypesExtensions.GetEnum(optStr);
-                        break;
-                    case OptEnum.Hash:
-                        keyHash = KeyHash_Extensions.GetKeyHashFromString(optStr);
-                        break;
-                    case OptEnum.Crypt:
-                    case OptEnum.Decrypt: // Usage on not existing or empty passphrase / key
+                    case OptEnum.CipherAlgos:
                         if (string.IsNullOrEmpty(passKey) || string.IsNullOrWhiteSpace(passKey))
                             Usage($"urecognized crypt option \"{optStr}\" without --pass=passPhrase ");
 
@@ -165,11 +157,35 @@ namespace EU.CqrXs.Console
                         {
                             optStr = optStr.Replace("(", "").Replace("{", "").Replace("[", "").Replace("]", "").Replace("}", "").Replace(")", "");
                             algos = optStr.Split(",;:".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                            if (useSymmCipher)
+                            {
+                                List<string> algoList = new List<string>();
+                                for (int ali = 0; ali < algos.Length; ali++)
+                                {
+                                    if (!Enum.TryParse<SymmCipherEnum>(algos[ali], out SymmCipherEnum symmCipherEnum))
+                                        continue;
+
+                                    foreach (SymmCipherEnum sci in SymmCipherEnumExtensions.GetSymmCipherTypes())
+                                    {
+                                        if (sci == symmCipherEnum)
+                                        {
+                                            algoList.Add(sci.ToString());
+                                            break;
+                                        }
+                                    }
+
+                                }
+                                algos = algoList.ToArray();
+                            }
                         }
                         break;
+                    case OptEnum.Encode:
+                        encodingType = EncodingTypesExtensions.GetEnum(optStr);
+                        break;
+                    
                     case OptEnum.YankeeBatchTest:
                         string batrun = Path.Combine(progDirectory, BATCH_FILE_TEST);
-                        if (File.Exists(batrun)) 
+                        if (System.IO.File.Exists(batrun)) 
                             ProcessCmd.Execute(batrun, " ", false);
                         System.Environment.Exit(0);
                         break;
@@ -182,10 +198,10 @@ namespace EU.CqrXs.Console
                             new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
                             new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
             SymmCipherPipe symmPipe;
-            if (useSymmCipher)
-            {
-
-            }
+            if (useSymmCipher) { } // TODO: only ctor symmPipe in useSymmCipher
+            symmPipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
+                        new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
+                        new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);            
             // System.Console.WriteLine($"CipherPipe: KeyHash={pipe.KHash} ZipTyoe={pipe.ZType} EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
 
             string outString = "";
@@ -193,22 +209,13 @@ namespace EU.CqrXs.Console
             {
                 System.Console.Write($" InPipe: ");
                 if (useSymmCipher)
-                {
-                    symmPipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                        new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
-                        new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-                    foreach (var symmCipher in symmPipe.InPipe)
-                        System.Console.Write($"{symmCipher}=>");
-                    System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
-                        $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+                {                    
+                    PrintSymmCipherPipe(symmPipe, reverseDirection);                    
                     outString = symmPipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
                 }
                 else
                 {
-                    foreach (CipherEnum cipher in pipe.InPipe)
-                        System.Console.Write($"{cipher}=>");
-                    System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipType={pipe.ZType} " +
-                        $"EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
+                    PrintCipherPipe(pipe, reverseDirection);
                     outString = pipe.EncrpytEncode(inBytes, passKey, encodingType, zipType, keyHash);
                 }
 
@@ -222,22 +229,13 @@ namespace EU.CqrXs.Console
 
                 System.Console.Write($"OutPipe: ");
                 if (useSymmCipher)
-                {
-                    symmPipe = (algos.Length > 0) ?
-                        new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
-                        new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-                    foreach (var symmCipher in symmPipe.OutPipe)
-                        System.Console.Write($"{symmCipher}=>");
-                    System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
-                        $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+                {                    
+                    PrintSymmCipherPipe(symmPipe, reverseDirection);
                     outBytes = symmPipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
                 }
                 else
                 {
-                    foreach (CipherEnum cipher in pipe.OutPipe)
-                        System.Console.Write($"{cipher}=>");
-                    System.Console.WriteLine($"\r\nCipherPipe: KeyHash={pipe.KHash} ZipType={pipe.ZType} " +
-                        $"EncodeType={pipe.EncodeType} PipeString={pipe.PipeString}");
+                    PrintCipherPipe(pipe, reverseDirection);                    
                     outBytes = pipe.DecodeDecrpyt(inString, passKey, encodingType, zipType, keyHash);
                 }
             }
@@ -290,7 +288,7 @@ namespace EU.CqrXs.Console
                     else
                         if (arg.ToLower().Contains("file") || File.Exists(inName) || File.Exists(Path.Combine(progDirectory, inName)))
                     {
-                        if (File.Exists(Path.Combine(progDirectory, inName)))
+                        if (System.IO.File.Exists(Path.Combine(progDirectory, inName)))
                         {
                             inFile = new FileInfo(Path.Combine(progDirectory, inName));
                             inBytes = File.ReadAllBytes(Path.Combine(progDirectory, inName));
@@ -330,43 +328,28 @@ namespace EU.CqrXs.Console
                 case 'Z':
                 case 'z':
                     optEnum = OptEnum.Zip;
-                    return optArg;
-                case 'U':
-                case 'u':
-                    reverseDirection = true; optEnum = OptEnum.Unzip;
-                    return optArg;
+                    return optArg;                
                 case 'E':
                 case 'e':
                     optEnum = OptEnum.Encode;
                     return optArg;
-                case 'd':
-                    reverseDirection = true; optEnum = OptEnum.Decode;
-                    return optArg;
                 case 'C':
                 case 'c':
-                    optEnum = OptEnum.Crypt;
-                    return optArg;
-                case 'D':
-                    reverseDirection = true; optEnum = OptEnum.Decrypt;
-                    return optArg;
+                    optEnum = OptEnum.CipherAlgos;
+                    return optArg;                
                 case 'k':
                 case 'K':
                     optEnum = OptEnum.Key;
-                    return optArg;
-                case 'p':
-                case 'P':
-                    optEnum = OptEnum.Pass;
-                    return optArg;
-                case 'q':
-                case 'Q':
-                    reverseDirection = true; optEnum = OptEnum.Qey;
-                    return optArg;
+                    return optArg;              
                 case 'h':
                 case 'H':
                     optEnum = OptEnum.Hash;
                     return optArg;
                 case 'S':
                     optEnum = OptEnum.SymmCipher;
+                    return optArg;
+                case 'D':
+                    optEnum = OptEnum.DeCrypt;
                     return optArg;
                 case 'y':
                 case 'Y':
@@ -403,13 +386,12 @@ namespace EU.CqrXs.Console
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine("Usage:\t" + Path.GetFileName(progName) + @"
-    -i | --inFile= | --inText={string|EnviromentVariable} | --inStd    
-    -o | --outFile= | --outText=EnviromentVariable | --outStd
-    -u | --unzip={gzip|bzip2}
-    -z | --zip={gzip|bzip2}
-    -d | --decode={raw|hex16|hex32|base32|base64|uu}
-    -e | --encode={raw|hex16|hex32|base32|base64|uu}
-      -c | --crypt={algo1,algo2,...}
+    -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd    
+        |
+    -k  | --key=passKey encrypt    
+    -H  | --Hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
+    -z  | --zip={gzip|bzip2|zip}
+    -C  | --CipherAlgost={algo1,algo2,...}
          algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
@@ -421,35 +403,60 @@ namespace EU.CqrXs.Console
             ZenMatrix,ZenMatrix2
         symmAlgo: 
             Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-      -p --pass=Passphrase
-    -D | --decrypt=={algo1,algo2,...}
-      -p --pass=Passphrase    
-    -k | --key=passKey encrypt
-    -q | --qey=passKey decrypt
-    -h | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
-    -S | --SymmCipher 
-    -Y | --YankeeTest
-    -? | --gethelp");
+    -S  | --SymmCipher 
+    -e  | --encode={raw|hex16|hex32|base32|base64|uu}
+    -D  | --Decrypt=Inverse_Pipe_Direction
+        |
+    -o  | --outFile= | --outText=EnviromentVariable | --outStd            
+        |
+    -Y  | --YankeeTest
+    -?  | --gethelp");
 
             System.Console.Out.WriteLine($"\nExamples: " + @"
 
     EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
-    EU.CqrXs.Console.exe -i=.\README_MD.base16 -d=base16 -o=.\READ_MD.txt
-        
-    EU.CqrXs.Console.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=.\README.MD.gz.BfF.base64
-    EU.CqrXs.Console.exe -i=.\README.MD.gz.BfF.base64 -d=base64 -D=BlowFish,Fish2,Fish3 -p=Hallo -u=gzip -o=.\READ_GUNZIP.txt
+    EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
 
     EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
-    EU.CqrXs.Console.exe -i=.\README.MD.Whirlpool.bz.Hex32 -d=hex32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\READ_BUNZIP.txt
+    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    EU.CqrXs.Console.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\READ_UNZIP.txt
+    REM EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
+    REM EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
+    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
+    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
 
     EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -S -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n");
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n");
 
             System.Environment.Exit(0);
         }
+
+        #region print only debug info
+        public static void PrintSymmCipherPipe(SymmCipherPipe symmPipe, bool outPipe = false)
+        {
+            SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutPipe : symmPipe.InPipe;
+            System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
+            foreach (var symmCipher in symmCiphers)
+                System.Console.Write($"{symmCipher}=>");
+
+            System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
+                $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+
+        }
+
+        public static void PrintCipherPipe(CipherPipe cipherPipe, bool outPipe = false)
+        {
+            CipherEnum[] ciphers = (outPipe) ? cipherPipe.OutPipe : cipherPipe.InPipe;
+            System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
+            foreach (CipherEnum cipher in ciphers)
+                System.Console.Write($"{cipher}=>");
+            System.Console.WriteLine($"\r\nCipherPipe: KeyHash={cipherPipe.KHash} ZipType={cipherPipe.ZType} " +
+                $"EncodeType={cipherPipe.EncodeType} PipeString={cipherPipe.PipeString}");
+        }
+        #endregion print only debug info
 
         #region static readonly strings
 
@@ -462,19 +469,19 @@ del /q README_MD.base16 README.MD.gz.BfF.base64 README.MD.Whirlpool.bz.Base32 RE
 @echo on
 
 EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
-EU.CqrXs.Console.exe -i=.\README_MD.base16 -d=base16 -o=.\READ_MD.txt
+EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
 
-EU.CqrXs.Console.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=.\README.MD.gz.BfF.base64
-EU.CqrXs.Console.exe -i=.\README.MD.gz.BfF.base64 -d=base64 -D=BlowFish,Fish2,Fish3 -p=Hallo -u=gzip -o=.\READ_GUNZIP.txt
+EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
+EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -k=Hallo -e=base64 -C=BlowFish,Fish2,Fish3 -z=gzip -o=.\READ_GUNZIP.txt
 
 EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
-EU.CqrXs.Console.exe -i=.\README.MD.Whirlpool.bz.Hex32 -d=hex32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\READ_BUNZIP.txt
+EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
 
-EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-EU.CqrXs.Console.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\READ_UNZIP.txt
+EU.CqrXs.Console.exe -i=.\README.MD  -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -e=uu -o=.\README.MD.SCrypt.zip.uu
+EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -o=.\READ_UNZIP.txt
 
 EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -S -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
 
 start notepad READ_MD.txt
 start notepad READ_GUNZIP.txt
@@ -490,14 +497,12 @@ REM pause\n\n";
 
 EU.CqrXs.Console.exe -?
 Usage:  EU.CqrXs.Console.exe
-    -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
-    -o | --outFile= | --outText=EnviromentVariable | --outStd
-    -u | --unzip={gzip|bzip2}
-    -z | --zip={gzip|bzip2}
-    -d | --decode={raw|hex16|hex32|base32|base64|uu}
-    -e | --encode={raw|hex16|hex32|base32|base64|uu}
-    -c | --crypt={algo1,algo2,...}
-         algo:
+        -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd    
+        -k  | --key=mykey
+        -H  | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
+        -z  | --zip={gzip|bzip2|zip}
+        -C  | --CipherAlgos={[aes,des3,blowfish,fish2,fish3]|key}
+        algo:
             Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
             Aria,Camellia,CamelliaLight,Cast5,Cast6,
             BlowFish,Fish2,Fish3,
@@ -508,32 +513,29 @@ Usage:  EU.CqrXs.Console.exe
             ZenMatrix,ZenMatrix2
         symmAlgo: 
             Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-      -p --pass=Passphrase
-    -D | --decrypt=={algo1,algo2,...}
-      -p --pass=Passphrase    
-    -k | --key=passKey encrypt
-    -q | --qey=passKey decrypt
-    -h | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
-    -S | --SymmCipher 
-    -Y | --YankeeTest
-    -? | --gethelp
+        -S  | --SymmCipher   
+        -e  | --encode={raw|hex16|hex32|base32|base64|uu}
+        -o  | --outFile= | --outText=EnviromentVariable | --outStd            
+        -D  | --Decrypt           
+        -Y  | --YankeeTest
+        -?  | --gethelp
 
 Examples:
-
+    
     EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
-    EU.CqrXs.Console.exe -i=.\README_MD.base16 -d=base16 -o=.\READ_MD.txt
-        
-    EU.CqrXs.Console.exe -i=.\README.MD -z=gzip  -c=BlowFish,Fish2,Fish3 -p=Hallo -e=base64 -o=.\README.MD.gz.BfF.base64
-    EU.CqrXs.Console.exe -i=.\README.MD.gz.BfF.base64 -d=base64 -D=BlowFish,Fish2,Fish3 -p=Hallo -u=gzip -o=.\READ_GUNZIP.txt
+    EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -k=Hallo -e=base64 -C=BlowFish,Fish2,Fish3 -z=gzip -o=.\READ_GUNZIP.txt
 
     EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
-    EU.CqrXs.Console.exe -i=.\README.MD.Whirlpool.bz.Hex32 -d=hex32 -q=heinrichelsigan.area23.at -H=Whirlpool -u=bz -o=.\READ_BUNZIP.txt
+    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    EU.CqrXs.Console.exe -i=.\README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=.\READ_UNZIP.txt
+    EU.CqrXs.Console.exe -i=.\README.MD  -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -e=uu -o=.\README.MD.SCrypt.zip.uu
+    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -o=.\READ_UNZIP.txt
 
     EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -i=.\README.MD.BCrypt.zip.xx -S -d=xx -q=io.cqrxs.eu -H=BCrypt -u=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n\n";
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n";
 
         #endregion static readonly strings
 
