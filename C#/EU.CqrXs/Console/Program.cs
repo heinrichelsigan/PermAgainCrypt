@@ -31,7 +31,8 @@ namespace EU.CqrXs.Console
         Qey = 0xc,
         Pass = 0xd,
         Hash = 0xe,
-        SymmCipher = 0xf,
+        SymmCipher = 0xf;
+        YankeeBatchTest = 0x10
 
         YankeeBatchTest = 0x10,        
         LoadImage = 0x20        
