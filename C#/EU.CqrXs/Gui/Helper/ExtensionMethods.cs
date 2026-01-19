@@ -356,10 +356,10 @@ namespace EU.CqrXs.Gui.Helper
                         origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension(), "");
                         break;
                     }
-                    if (origFileName.EndsWith(zipTyp.GetZipTypeExtension().ToLower()))
+                    if (origFileName.EndsWith(zType.GetZipTypeExtension()))
                     {
                         zipTyp = zType;
-                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                        origFileName = origFileName.Replace(zipTyp.GetZipTypeExtension(), "");
                         break;
                     }
                     if (origFileName.Contains(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
