@@ -46,7 +46,7 @@ for ZipType CipherPipe un-/zipping
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\EU.CqrXs\EU.CqrXs.csproj" />
+    <ProjectReference Include="..\EU.CqrXs.csproj" />
   </ItemGroup>
 
   <ItemGroup>

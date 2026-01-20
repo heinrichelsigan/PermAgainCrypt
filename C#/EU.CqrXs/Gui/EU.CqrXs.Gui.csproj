@@ -108,9 +108,8 @@
 	<ItemGroup>
 	  <Folder Include="log\" />
 	</ItemGroup>
-    
-	<ItemGroup>
-	  <ProjectReference Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\EU.CqrXs\EU.CqrXs.csproj" />
-	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\EU.CqrXs.csproj" />
+	</ItemGroup>
 </Project>
