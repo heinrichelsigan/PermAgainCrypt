@@ -59,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Console_Test.bat">
+    <None Update="Spooler_Test.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

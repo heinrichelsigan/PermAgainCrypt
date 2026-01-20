@@ -16,6 +16,7 @@ namespace EU.CqrXs.Zip
 
     public static class ZipTypeExtensions
     {
+        public static ZipType[] ZipTypes { get => new ZipType[] { ZipType.None, ZipType.GZip, ZipType.BZip2, ZipType.Zip }; }
 
         public static ZipType[] GetZipTypes()
         {

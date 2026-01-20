@@ -703,7 +703,7 @@ namespace EU.CqrXs.Crypt.Cipher
             return cryptedEncoded;
         }
 
-        public virtual byte[]  EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
+        public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
@@ -752,7 +752,6 @@ namespace EU.CqrXs.Crypt.Cipher
             return outBytes;
         }
 
-
         public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
@@ -783,6 +782,28 @@ namespace EU.CqrXs.Crypt.Cipher
             return outBytes;
         }
 
+
+        /// <summary>
+        /// Multi functional 
+        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// </summary>
+        /// <param name="inBytes">incoming bytes</param>
+        /// <param name="secretKey">user private key</param>
+        /// <param name="hashIV">hashed secret key</param>
+        /// <param name="directionDecrypt">true for decryption, false for encryption</param>
+        /// <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
+        /// <param name="zip">compression method to zip before or unzip after pipe processed</param>
+        /// <param name="keyHash">hashing type of hashing method to hash key</param>
+        /// <returns>transformed byte array</returns>
+        public virtual byte[] CryptCodeBytes(byte[] inBytes, string secretKey, string hashIV,
+            bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
+            ZipType zip= ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            return (!directionDecrypt) ?
+                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash) :
+                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash);
+        }
 
         #region static en-de-crypt members
 

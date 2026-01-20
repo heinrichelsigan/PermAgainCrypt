@@ -490,7 +490,6 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             else
                 encryptedBytes = outBytes;
 
-
             return encryptedBytes;
         }
 
@@ -522,20 +521,42 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             return outBytes;
         }
 
+        /// <summary>
+        /// Multi functional 
+        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// </summary>
+        /// <param name="inBytes">incoming bytes</param>
+        /// <param name="secretKey">user private key</param>
+        /// <param name="hashIV">hashed secret key</param>
+        /// <param name="directionDecrypt">true for decryption, false for encryption</param>
+        /// <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
+        /// <param name="zip">compression method to zip before or unzip after pipe processed</param>
+        /// <param name="keyHash">hashing type of hashing method to hash key</param>
+        /// <returns>transformed byte array</returns>
+        public override byte[] CryptCodeBytes(byte[] inBytes, string secretKey, string hashIV,
+            bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
+            ZipType zip = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        {
+            return (!directionDecrypt) ?
+                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash) :
+                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash);
+        }         
+        
         #region static en-de-crypt members
 
-        /// <summary>
-        /// EncrpytToStringd
-        /// </summary>
-        /// <param name="inString">string to encrypt multiple times</param>
-        /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
-        /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
-        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
-        /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
-        /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
-        /// <returns>encrypted string</returns>        
-        /// <returns></returns>
+            /// <summary>
+            /// EncrpytToStringd
+            /// </summary>
+            /// <param name="inString">string to encrypt multiple times</param>
+            /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+            /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+            /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
+            /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+            /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
+            /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
+            /// <returns>encrypted string</returns>        
+            /// <returns></returns>
         public static new string EncrpytToString(string inString, string cryptKey, out string pipeString,
             EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {

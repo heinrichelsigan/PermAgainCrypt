@@ -273,6 +273,21 @@
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
             <returns>plain data byte[]</returns>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+            <summary>
+            Multi functional 
+            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            </summary>
+            <param name="inBytes">incoming bytes</param>
+            <param name="secretKey">user private key</param>
+            <param name="hashIV">hashed secret key</param>
+            <param name="directionDecrypt">true for decryption, false for encryption</param>
+            <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
+            <param name="zip">compression method to zip before or unzip after pipe processed</param>
+            <param name="keyHash">hashing type of hashing method to hash key</param>
+            <returns>transformed byte array</returns>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytToString(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
             EncrpytToStringd
@@ -787,6 +802,21 @@
             <param name="hashIv">hash relational to secret kay</param>
             <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+            <summary>
+            Multi functional 
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            </summary>
+            <param name="inBytes">incoming bytes</param>
+            <param name="secretKey">user private key</param>
+            <param name="hashIV">hashed secret key</param>
+            <param name="directionDecrypt">true for decryption, false for encryption</param>
+            <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
+            <param name="zip">compression method to zip before or unzip after pipe processed</param>
+            <param name="keyHash">hashing type of hashing method to hash key</param>
+            <returns>transformed byte array</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncrpytToString(System.String,System.String,System.String@,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
