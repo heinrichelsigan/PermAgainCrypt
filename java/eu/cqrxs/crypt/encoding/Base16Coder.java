@@ -20,6 +20,8 @@ import java.util.stream.IntStream;
 /**
  * Base16 En-/Decoder
  *
+ * 2026-01-21 changed encoding output toUpperCase
+ *
  */
 public class Base16Coder extends EnDeCoder  {
 
@@ -41,7 +43,7 @@ public class Base16Coder extends EnDeCoder  {
 
 		String hexString = "";
 		HexFormat hex = HexFormat.of();
-		hexString = hex.formatHex(inBytes).toLowerCase();
+		hexString = hex.formatHex(inBytes).toUpperCase();
 
 		return hexString;
 	}
@@ -59,7 +61,7 @@ public class Base16Coder extends EnDeCoder  {
 
 		String hexString = "";
 		HexFormat hex = HexFormat.of();
-		hexString = hex.formatHex(inBytes).toLowerCase();
+		hexString = hex.formatHex(inBytes).toUpperCase();
 
 		return hexString;
 	}

@@ -108,8 +108,8 @@ public enum EncodeEnum implements Serializable {
             case 0x800:
                 return new Base64Coder().encode(inString);
             case 0x900:
-                throw new NotImplementedError("xx not implemented");
-                // return XxEncoder.Encode(inString);
+				// throw new NotImplementedError("xx not implemented");
+                return XxEncoder.Encode(inString);
             default:
                 break;
         }
@@ -146,8 +146,8 @@ public enum EncodeEnum implements Serializable {
             case 0x800:
                 return new Base64Coder().decode(encodedString);
             case 0x900:
-                throw new NotImplementedError("xx not implemented");
-                // return XxEncoder.Decode(encodedString);
+                // throw new NotImplementedError("xx not implemented");
+                return XxEncoder.Decode(encodedString);
 			default:
                 break;
         }
@@ -185,8 +185,8 @@ public enum EncodeEnum implements Serializable {
             case 0x800:
                 return new Base64Coder().encodeBytesToString(inBytes);
             case 0x900:
-                throw new NotImplementedError("xx not implemented");
-                // return XxEncoder.EncodeBytesToString(inBytes);
+                // throw new NotImplementedError("xx not implemented");
+                return XxEncoder.EncodeBytesToString(inBytes);
             default:
                 break;
         }
@@ -231,8 +231,8 @@ public enum EncodeEnum implements Serializable {
             case 0x800:
                 return new Base64Coder().decodeStringToBytes(encodedString);
             case 0x900:
-                throw new NotImplementedError("xx not implemented");				
-				// return XxEncoder.DecodeStringToBytes(inString);				
+                // throw new NotImplementedError("xx not implemented");				
+				return XxEncoder.DecodeStringToBytes(encodedString);				
             default:
                 break;
         }

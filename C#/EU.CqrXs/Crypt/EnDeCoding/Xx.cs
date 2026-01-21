@@ -274,7 +274,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                     invalidChars = "";
                 }
             }
-
+            
             MemoryStream inStream = new MemoryStream(), outStream = new MemoryStream();
             var writer = new StreamWriter(inStream);
             writer.Write(xxEncStr);
