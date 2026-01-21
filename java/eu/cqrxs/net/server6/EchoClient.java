@@ -2,13 +2,16 @@
 	source: EchoClient.java
 	mainclass: EchoClient
 */
-package eu.net.server6;
+package eu.cqrxs.net.server6;
 
 import java.util.*;
 import java.net.*;
 import java.lang.*;
 import java.io.*;
 
+/*
+ * Simple tcp echo client
+ */
 public class EchoClient {
 	
     Socket connection;                      // Socket
@@ -25,15 +28,23 @@ public class EchoClient {
 	final static int SOCKERR = 1;
 	final static int IOERR = 2;
 
-    public  EchoClient() {                    // Constructor
+	/**
+	 * Constructor of EchoClient
+	 */
+    public  EchoClient() {                    
 		super();
 	}
     
-	public int connect(String HNAME, int HPORT) {
+	/*
+	 * connect hostname port
+	 * @param hostname 
+	 * @param tcpport
+	 */
+	public int connect(String hostname, int srvport) {
         
 		try {                                      
 		
-            connection = new Socket(HNAME, HPORT);
+            connection = new Socket(hostname, srvport);
 			
         } catch (UnknownHostException ex){      		
 			return (SOCKERR);
@@ -54,6 +65,10 @@ public class EchoClient {
 		return (NOERR);
 	}
 
+	/*
+	 * close tcp connection to server	
+	 * by closing outStream, inStream and finally Socket connection
+	 */
 	public int close() {
 		
 		try { 
@@ -65,17 +80,22 @@ public class EchoClient {
 			return (IOERR);
 		}
 		
-        try{
+        try {
 			
 		    connection.close();
 			
 		} catch (Exception ex){
-				System.exit(SOCKERR);
+			System.exit(SOCKERR);
 		}
 		
 		return (NOERR);
 	}
 	 
+	/**
+	 * writeOut writes outPut String character by character and terminates it with \r\n
+	 * @param outPut {@link String}
+	 * @returns true on successful write, false on error
+	 */
     public boolean writeOut(String outPut) {
 		
 		try {
@@ -94,20 +114,24 @@ public class EchoClient {
 		return (true);
 	}
 	
+	/**
+	 * readIn reads byte wise from inStream on socket
+	 * @returns readed line without <CR> 13 <NL> 10 <EOF> -1
+	 */
 	public String readIn() { 
 	
 		boolean finished = false;
 		inByte = -1;
 		inPut = new StringBuffer();		
 		
-		System.err.println("Receiving:");
+		System.out.println("Receiving: ");
 		
 		do {
 			
 		    try {
 				
 				inByte = inStream.read();
-				System.err.print((char)inByte);
+				System.out.print((char)inByte);
 				
 				switch (inByte) {
 			    	case T_EOF:
@@ -130,6 +154,7 @@ public class EchoClient {
 		return ((inPut.toString()));
 	}
 	  
+	
 	public static void main(String[] args) throws Exception {
 				
 		if (args.length != 3) {
@@ -156,5 +181,7 @@ public class EchoClient {
 		if (client.close() != 0) {
 			System.err.println("Closing socket failed !");
 		}
+		
  	}
+	
 }	

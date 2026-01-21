@@ -672,7 +672,7 @@ public class CipherPipe {
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
+            throw new IllegalArgumentException("secretKey");
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         cipherHash = keyHash.hash(secretKey);
         encodeType = encType;

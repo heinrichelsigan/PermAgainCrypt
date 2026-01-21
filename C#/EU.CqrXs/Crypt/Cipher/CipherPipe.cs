@@ -67,7 +67,15 @@ namespace EU.CqrXs.Crypt.Cipher
             }
         }
 
-
+        public string PipeFullExtension 
+        { 
+            get
+            {
+                string miniPipe = (InPipe == null || InPipe.Length == 0) ? "" : "." + PipeString;
+                string miniPipeExt = (kHash.GetExtension() + zType.GetZipTypeExtension() + miniPipe + encodeType.GetEnCodingExtension());
+                return miniPipeExt;
+            } 
+        }
 
 
 

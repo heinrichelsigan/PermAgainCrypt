@@ -12,19 +12,25 @@ JAVACFLAGS=-Xlint:unchecked -Xlint:deprecation
 BCJAR=bcprov-lts8on-2.73.10.jar
 
 # MYCLASSPATH local java classpath
-MYCLASSPATH="./:./$(BCJAR):./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs//net/:./eu/cqrxs/util/:./eu/cqrxs/crypt/:./eu/cqrxs/crypt/encoding/:./eu/cqrxs/crypt/cipher/:./eu/cqrxs/crypt/hash/:"
+MYCLASSPATH="./:./$(BCJAR):./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/net/:./eu/cqrxs/util/:./eu/cqrxs/crypt/:./eu/cqrxs/crypt/encoding/:./eu/cqrxs/crypt/cipher/:./eu/cqrxs/crypt/hash/:"
 
 default: all
 
-all: cqrxs
+all: cqrxs console
 
 cqrxs:
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/util/CException.java eu/cqrxs/util/NotImplementedError.java eu/cqrxs/util/Constants.java eu/cqrxs/util/Fortune.java eu/cqrxs/crypt/encoding/uu/CEFormatException.java eu/cqrxs/crypt/encoding/uu/CEStreamExhausted.java eu/cqrxs/crypt/encoding/uu/CharacterDecoder.java eu/cqrxs/crypt/encoding/uu/CharacterEncoder.java  eu/cqrxs/crypt/encoding/uu/UUDecoder.java  eu/cqrxs/crypt/encoding/uu/UUEncoder.java eu/cqrxs/crypt/encoding/EnDeCodeHelper.java eu/cqrxs/crypt/encoding/EncodeEnum.java eu/cqrxs/crypt/encoding/EnDeCoder.java  eu/cqrxs/crypt/encoding/Base16Coder.java eu/cqrxs/crypt/encoding/Hex16Coder.java eu/cqrxs/crypt/encoding/Base64Coder.java  eu/cqrxs/crypt/encoding/UuCoder.java 
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/util/CException.java eu/cqrxs/util/NotImplementedError.java eu/cqrxs/util/Constants.java eu/cqrxs/util/Fortune.java eu/cqrxs/util/DbgWriter.java  
+	
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/encoding/uu/CEFormatException.java eu/cqrxs/crypt/encoding/uu/CEStreamExhausted.java eu/cqrxs/crypt/encoding/uu/CharacterDecoder.java eu/cqrxs/crypt/encoding/uu/CharacterEncoder.java  eu/cqrxs/crypt/encoding/uu/UUDecoder.java  eu/cqrxs/crypt/encoding/uu/UUEncoder.java eu/cqrxs/crypt/encoding/EnDeCodeHelper.java eu/cqrxs/crypt/encoding/EncodeEnum.java eu/cqrxs/crypt/encoding/EnDeCoder.java  eu/cqrxs/crypt/encoding/Base16Coder.java eu/cqrxs/crypt/encoding/Hex16Coder.java eu/cqrxs/crypt/encoding/Base64Coder.java  eu/cqrxs/crypt/encoding/UuCoder.java 
+	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/cipher/CipherEnum.java eu/cqrxs/crypt/cipher/CipherPipe.java eu/cqrxs/crypt/cipher/CryptBounceCastle.java eu/cqrxs/crypt/cipher/CryptHelper.java eu/cqrxs/crypt/cipher/CryptParams.java eu/cqrxs/crypt/cipher/SymmCipherEnum.java 
+	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs//crypt/hash/Hex.java eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/RipeMD256.java eu/cqrxs/crypt/hash/Sha1.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha384.java eu/cqrxs/crypt/hash/Sha512.java eu/cqrxs/crypt/hash/Whirlpool.java eu/cqrxs/crypt/hash/Dstu7564.java
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/util/CException.java eu/cqrxs/util/Constants.java eu/cqrxs/util/ContextLazy.java
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs//zip/GZ.java  eu/cqrxs/zip/ZipType.java
+	
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
+	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs//util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java
+	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/gui/ImageTest.java
 	echo "build finished"
 
@@ -40,7 +46,6 @@ run: cqrxs console
 	echo "run eu/cqrxs/console/ConsoleApp"
 	sleep 1
 	java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java 
-
 
 
 # clean cleans client6 server6_clone 

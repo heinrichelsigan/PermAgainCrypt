@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.EnDeCoding;
+using EU.CqrXs.Crypt.Hash;
+using EU.CqrXs.Zip;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing.Imaging;
 using System.Net;
@@ -1275,6 +1279,354 @@ namespace EU.CqrXs.Util
         }
 
         #endregion genericsT_extensions
+
+        #region cqrxs extensions
+
+        /// <summary>
+        /// IsPermAgainCryptFile 
+        /// </summary>
+        /// <param name="fileName">file name to parse</param>
+        /// <returns>
+        ///     true, when looking like perm again crypt file name,
+        ///     false, when normal standard extension
+        /// </returns>
+        public static bool IsPermAgainCryptFile(this string fileName)
+        {
+            // all chars, that a CipherPipe could have from CipherEnum[] segments
+            string pipeChars = "ALEabFfClc6$DedgIN25RrsS4JtTjX%!";
+            if (string.IsNullOrEmpty(fileName)) return false;
+
+            string ext = Path.GetExtension(fileName).StartsWith('.') 
+                ? Path.GetExtension(fileName)
+                : "." + Path.GetExtension(fileName);
+
+            if (ext.EndsWith(".uu", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".base16", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".base32", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".base58", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".base64", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".hex16", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".hex32", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.Contains(".gz", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.Contains(".bz", StringComparison.CurrentCultureIgnoreCase))
+                return true;
+
+            if (ext.EndsWith(".png", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".jpg", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".jpeg", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".gif", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".tif", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".bmp", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".exif", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".ico", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".docx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".dot", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".dotx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlsx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xls", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlt", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".pptx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".ppt", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsmx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsd", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vstx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsd", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsdx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".text", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".asc", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".md", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".cs", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".cshtml", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".c", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".h", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".java", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".jar", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".html", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".htm", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xhtml", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".aspx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".ascx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".asax", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".ashx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xml", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".mp3", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".mp4", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".mpeg", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".webm", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".wav", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".mpg", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".wmv", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".exe", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".dll", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".pdb", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".bat", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".com", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".sh", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".ps", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".pdf", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".rtf", StringComparison.CurrentCultureIgnoreCase))
+                return false;
+
+            string[] filesegments = fileName.Split(".".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            int lastIdx = filesegments.Length - 1;
+            // TODO: Better check with pipe
+            if (lastIdx > 2)
+            {
+                for (int j = lastIdx; j >= 1; j--)
+                {
+                    bool err = false;
+                    if (filesegments[j].Length > 0 && filesegments[j].Length != 3)
+                    {
+                        foreach (char c4 in filesegments[j])
+                        {
+                            if (!pipeChars.Contains(c4))
+                            {
+                                err = true; break;
+                            }
+                        }
+                    }
+                    if (!err)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool IsCompressedFile(this string fileExtension)
+        {
+            switch (fileExtension.Replace(".", "").ToLower())
+            {
+                case "gz":
+                case "tar":
+                case "tar.gz":
+                case "tgz":
+                case "bz":
+                case "bz2":
+                case "tar.bz":
+                case "tar.bz2":
+                case "tbz":
+                case "7z":
+                case "7zip":
+                case "zip":
+                case "rar":
+                case "jar":
+                case "mp4":
+                case "mp3":
+                case "arj":
+                case "z":
+                case "exe":
+                case "dll":
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Extension <see cref="string"/>.StripCipherPipeFromFileName(out CipherPipe? cipherPipe)
+        /// looks if a filename is <see cref="IsPermAgainCryptFile(string)"/> and if true,
+        /// extracts PipeString out of filename and creates the corresponding pipe.
+        /// </summary>
+        /// <param name="fileName">file name to examine</param>
+        /// <param name="cipherPipe">out parameter for <see cref="CipherPipe"/></param>
+        /// <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string StripCipherPipeFromFileName(this string fileName, out CipherPipe? cipherPipe)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            cipherPipe = null;
+            string strippedFileName = fileName;
+
+            if (!fileName.IsPermAgainCryptFile())
+                return strippedFileName;
+
+            KeyHash kHash = KeyHash.Hex;
+
+            EncodingType eType = EncodingType.None;
+            foreach (EncodingType encTyp in EncodingTypesExtensions.GetEncodingTypes())
+            {
+                if (fileName.EndsWith("." + encTyp.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    eType = encTyp;
+                    strippedFileName = fileName.Replace("." + encTyp.ToString(), "").Replace("." + encTyp.ToString().ToLower(), "");
+                    break;
+                }
+            }
+
+            bool cipherAfterZip = false;
+            ZipType zipTyp = ZipType.None;
+            foreach (ZipType zType in ZipTypeExtensions.GetZipTypes())
+            {
+                if (zType != ZipType.None)
+                {
+                    if (strippedFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                        zipTyp = zType;
+                    else if (strippedFileName.Contains(zType.GetZipTypeExtension() + ".", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        zipTyp = zType;
+                        cipherAfterZip = true;
+                    }
+                }
+                if (zipTyp != ZipType.None)
+                {
+                    strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "").Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                    break;
+                }
+            }
+
+
+            foreach (KeyHash kh in KeyHash_Extensions.GetHashTypes())
+            {
+                if (strippedFileName.Contains("." + kh.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    kHash = kh;
+                    strippedFileName = strippedFileName.Replace("." + kh.ToString(), "").Replace("." + kh.ToString().ToLower(), "");
+
+                    break;
+                }
+            }
+
+            List<CipherEnum> cipherEnums = new List<CipherEnum>();
+            if (cipherAfterZip)
+            {
+                string pipeRestString = strippedFileName.Substring(strippedFileName.LastIndexOf("."));
+                foreach (char ch in pipeRestString)
+                {
+                    foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
+                    {
+                        if (cipher.GetCipherChar() == ch)
+                            cipherEnums.Add(cipher);
+                    }
+                }
+
+                if (cipherEnums.Count > 0)
+                {
+                    CipherPipe cPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+                    if (strippedFileName.Contains("." + cPipe.PipeString))
+                    {
+                        cipherPipe = cPipe;
+                        strippedFileName = strippedFileName.Replace("." + cPipe.PipeString, "");
+                    }
+                }
+            }
+
+
+            if (cipherPipe == null)
+                cipherPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+
+
+            return strippedFileName;
+        }
+
+        /// <summary>
+        /// Extension <see cref="string"/>.StripCiphersInFileName() 
+        /// strips all <see cref="CipherEnum"/> and 
+        /// <seealso cref="SymmCipherEnum"/> characters
+        /// from current string.       
+        /// </summary>
+        /// <param name="fileName"><see cref="string"/> with extension</param>
+        /// <returns>stripped string</returns>
+        public static string StripCiphersInFileName(this string fileName)
+        {
+            // Count dots
+            int dotCnt = 0, dotIdx = -1;
+            string fname = fileName, strippedFileName = fileName;
+            do
+            {
+                if ((dotIdx = fname.IndexOf(".")) >= 0)
+                {
+                    dotCnt++;
+                    fname = fname.Substring(dotIdx + 1);
+                }
+
+            } while (dotIdx >= 0);
+
+            ZipType zipTyp = ZipType.None;
+            KeyHash kHash = KeyHash.Hex;
+            EncodingType eType = EncodingType.None;
+
+            foreach (EncodingType encTyp in EncodingTypesExtensions.GetEncodingTypes())
+            {
+                if (fileName.EndsWith("." + encTyp.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    eType = encTyp;
+                    strippedFileName = fileName.Replace("." + encTyp.ToString(), "").Replace("." + encTyp.ToString().ToLower(), "");
+                    break;
+                }
+            }
+
+            List<CipherEnum> cipherEnums = new List<CipherEnum>();
+            string pipeRestString = strippedFileName.Substring(strippedFileName.LastIndexOf("."));
+            foreach (char ch in pipeRestString)
+            {
+                foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
+                {
+                    if (cipher.GetCipherChar() == ch)
+                        cipherEnums.Add(cipher);
+                }
+            }
+
+            if (cipherEnums.Count > 0)
+            {
+                CipherPipe cPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+                if (strippedFileName.Contains("." + cPipe.PipeString))
+                {
+                    strippedFileName = strippedFileName.Replace("." + cPipe.PipeString, "");
+                }
+            }
+
+            ZipType[] zipTypes = new ZipType[] { ZipType.GZip, ZipType.BZip2, ZipType.Zip, ZipType.None };
+            foreach (ZipType zType in zipTypes)
+            {
+                if (zType != ZipType.None)
+                {
+                    if (strippedFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        zipTyp = zType;
+                        strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "");
+                        break;
+                    }
+                    if (strippedFileName.EndsWith(zType.GetZipTypeExtension()))
+                    {
+                        zipTyp = zType;
+                        strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "");
+                        break;
+                    }
+                    if (strippedFileName.Contains(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        zipTyp = zType;
+                        int idx = strippedFileName.IndexOf(zipTyp.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase);
+                        string first = strippedFileName.Substring(0, idx);
+                        string rest = strippedFileName.Substring(idx + zipTyp.GetZipTypeExtension().Length + 1);
+                        strippedFileName = first + rest;
+                        break;
+                    }
+
+                }
+            }
+
+
+            foreach (KeyHash kh in KeyHash_Extensions.GetHashTypes())
+            {
+                if (strippedFileName.EndsWith("." + kh.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    kHash = kh;
+                    strippedFileName = strippedFileName.Replace("." + kh.ToString(), "").Replace("." + kh.ToString().ToLower(), "");
+
+                    break;
+                }
+            }
+
+            return strippedFileName;
+        }
+
+        #endregion cqrxs extensions
 
     }
 

@@ -335,7 +335,7 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName));
 
-            string origName = fileName.GetFileNameAndCipherPipe(out CipherPipe? fPipe);
+            string origName = fileName.StripCipherPipeFromFileName(out CipherPipe? fPipe);
             if (fPipe != null && 
                 (!string.IsNullOrEmpty(fPipe.PipeString) || fPipe.ZType != ZipType.None || fPipe.EncodeType != EncodingType.None || fPipe.KHash != KeyHash.Hex))
             {

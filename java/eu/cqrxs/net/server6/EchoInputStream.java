@@ -2,7 +2,7 @@
 	soucre: EchoInputStream.java
 	class: EchoInputStream 
 */
-package eu.net.server6;
+package eu.cqrxs.net.server6;
 
 
 import java.net.*;

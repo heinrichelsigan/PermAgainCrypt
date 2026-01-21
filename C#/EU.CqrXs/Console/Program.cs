@@ -176,10 +176,11 @@ namespace EU.CqrXs.Console
         public static string GetOption(string argument, out OptEnum optEnum)
         {
             string optArg = "";
-            if (string.IsNullOrEmpty(argument) || argument.Length < 2 || argument[0] != '-' || argument[0] != '/')
+            if (string.IsNullOrEmpty(argument) || argument.Length < 2 || argument[0] != '-')
             {
                 optEnum = OptEnum.Usage;
-                return optArg;
+                if (argument[0] != '/')
+                    return optArg;
             }
             optArg = argument;
             string arg = argument.TrimStart("-/".ToCharArray());

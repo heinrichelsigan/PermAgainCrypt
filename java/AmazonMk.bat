@@ -15,9 +15,11 @@ echo Setting bouncy-castle jar
 REM SET BCJAR=bcprov-jdk18on-1.79.jar
 SET BCJAR=bcprov-lts8on-2.73.10.jar
 echo Setting Path and CLASSPATH
-SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
+REM SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
+SET Path=%Path%;%USERPROFILE%\.jdks\corretto-24.0.2\bin
 
-SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\openjdk-25\lib
+SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\corretto-24.0.2\lib
+REM ;%USERPROFILE%\.jdks\openjdk-25\lib
 SET MYCLASSPATH=%CLASSPATH%;.\;.\%BCJAR%;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\net\;eu\cqrxs\net\addr\;.\eu\cqrxs\net\server6;.\eu\cqrxs\util\;.\eu\cqrxs\crypt\;.\eu\cqrxs\crypt\encoding\;.\eu\cqrxs\crypt\cipher\;.\eu\cqrxs\crypt\hash\;	
 
 echo "cleaning classes from last build in eu/cqrxs/ eu/cqrxs/gui/ "

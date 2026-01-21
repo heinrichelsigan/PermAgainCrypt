@@ -3097,6 +3097,37 @@
             <param name="tvalue">T value to find</param>
             <returns>is tarray is null, null, if not fount an empty index array int[0], else inidices array int[]</returns>
         </member>
+        <member name="M:EU.CqrXs.Util.Extensions.IsPermAgainCryptFile(System.String)">
+            <summary>
+            IsPermAgainCryptFile 
+            </summary>
+            <param name="fileName">file name to parse</param>
+            <returns>
+                true, when looking like perm again crypt file name,
+                false, when normal standard extension
+            </returns>
+        </member>
+        <member name="M:EU.CqrXs.Util.Extensions.StripCipherPipeFromFileName(System.String,EU.CqrXs.Crypt.Cipher.CipherPipe@)">
+            <summary>
+            Extension <see cref="T:System.String"/>.StripCipherPipeFromFileName(out CipherPipe? cipherPipe)
+            looks if a filename is <see cref="M:EU.CqrXs.Util.Extensions.IsPermAgainCryptFile(System.String)"/> and if true,
+            extracts PipeString out of filename and creates the corresponding pipe.
+            </summary>
+            <param name="fileName">file name to examine</param>
+            <param name="cipherPipe">out parameter for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/></param>
+            <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="M:EU.CqrXs.Util.Extensions.StripCiphersInFileName(System.String)">
+            <summary>
+            Extension <see cref="T:System.String"/>.StripCiphersInFileName() 
+            strips all <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> and 
+            <seealso cref="!:SymmCipherEnum"/> characters
+            from current string.       
+            </summary>
+            <param name="fileName"><see cref="T:System.String"/> with extension</param>
+            <returns>stripped string</returns>
+        </member>
         <member name="T:EU.CqrXs.Util.JsonHelper">
             <summary>
             JsonHelper class for reading and writing json serialized store file.

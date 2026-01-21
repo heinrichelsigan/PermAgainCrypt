@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.SpoolTest": {
       "commandName": "Project",
-      "commandLineArgs": " "
+      "commandLineArgs": "--inDir=Spooler\\In --outDir=Spooler\\Out --Keys=Spooler\\keys.txt"
     }
   }
 }

@@ -320,7 +320,6 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
         }
 
-
         /// <summary>
         /// initializes a <see cref="ZenMatrix"/> with secret user key string and hash iv
         /// </summary>
@@ -340,7 +339,6 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
         }
-
 
         /// <summary>
         /// initializes a <see cref="ZenMatrix"/> with an array of key bytes
@@ -511,6 +509,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
                 #endregion bugfix for missing permutations
             }
+#if DEGUG
 
             perm = string.Empty; kbs = string.Empty;
             for (int j = 0; j < 0x10; j++)
@@ -518,13 +517,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             for (int j = 0; j < keyBytes.Length; j++)
                 kbs += keyBytes[j].ToString("x2");
             Area23Log.LogOriginMsg("ZenMatrix", perm + " KeyBytes = " + kbs);
-
+#endif
             initialised = true;
             
         }
 
 
-        #endregion ctor_init_gen_reverse
+#endregion ctor_init_gen_reverse
 
         #region ProcessEncryptDecryptBytes
 

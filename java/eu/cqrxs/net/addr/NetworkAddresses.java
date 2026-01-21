@@ -2,7 +2,7 @@
     class NetworkAddresses provides basic network interfaces and local addresses facility
 
 */
-package eu.net.addr;
+package eu.cqrxs.net.addr;
 
 import java.io.*;
 import java.net.InetAddress;

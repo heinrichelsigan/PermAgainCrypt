@@ -2,7 +2,7 @@
 	soucre: EchoServer.java
 	mainclass: EchoServer 
 */
-package eu.net.server6;
+package eu.cqrxs.net.server6;
 
 import java.net.*;
 import java.io.*;
@@ -36,12 +36,13 @@ public class EchoServer extends Thread implements Runnable {
 				server4Address = args[0];
 				System.out.println("server address set to " + server4Address);
 			} 
-      if (argslen > 1) {
-        multiAddr = true;
-        server6Address = args[1];
-        System.out.println("server address6 set to " + server6Address);
-      } 
-      if (argslen > 2) 
+		
+			if (argslen > 1) {
+				multiAddr = true;
+				server6Address = args[1];
+				System.out.println("server address6 set to " + server6Address);
+			} 
+			if (argslen > 2) 
 			  ipPort = (Integer.valueOf(args[argslen])).intValue();
 		}
 		
@@ -118,7 +119,7 @@ public class EchoServer extends Thread implements Runnable {
 					// String inBuffer = inStream.getRequest();
 					String outBuffer = serverHostIpName + "\t=>\t" + clientHostIpName + "\t" + inBuffer;
 					
-          System.out.println("Finished, now sending back to socket: \n" + outBuffer);
+					System.out.println("Finished, now sending back to socket: \n" + outBuffer);
 					
 					sendOut(outBuffer, outStream);
         
@@ -131,7 +132,7 @@ public class EchoServer extends Thread implements Runnable {
 				} catch(IOException ex) {			
 					System.err.println("IOException occured when closing socket.");
 				}
-          System.out.println("client socket close()");
+				System.out.println("client socket close()");
             
 			} while(true);
 			

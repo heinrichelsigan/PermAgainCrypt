@@ -44,8 +44,8 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 inBytes,
                 0,  
                 inBytes.Length,
-                Base64FormattingOptions.InsertLineBreaks
-                // Base64FormattingOptions.None
+                // Base64FormattingOptions.InsertLineBreaks
+                Base64FormattingOptions.None                
             );
             return os;
         }
