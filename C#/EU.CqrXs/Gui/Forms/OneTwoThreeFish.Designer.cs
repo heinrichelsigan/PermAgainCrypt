@@ -34,7 +34,6 @@ namespace EU.CqrXs.Gui.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OneTwoThreeFish));
             menuStripEncrypt = new MenuStrip();
             toolMenuMain = new ToolStripMenuItem();
-            menuFileNew = new ToolStripMenuItem();
             menuFileOpen = new ToolStripMenuItem();
             menuMainSave = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
@@ -64,22 +63,6 @@ namespace EU.CqrXs.Gui.Forms
             menuEncBase64 = new ToolStripMenuItem();
             menuEncUu = new ToolStripMenuItem();
             menuEncXx = new ToolStripMenuItem();
-            menuHash = new ToolStripMenuItem();
-            menuHashOct = new ToolStripMenuItem();
-            menuHashBlake2xs = new ToolStripMenuItem();
-            menuHashBCrypt = new ToolStripMenuItem();
-            menuHashCShake = new ToolStripMenuItem();
-            menuHashDstu7564 = new ToolStripMenuItem();
-            menuHashMD5 = new ToolStripMenuItem();
-            menuHashHex = new ToolStripMenuItem();
-            menuHashOpenBSDCrypt = new ToolStripMenuItem();
-            menuHashRipeMD256 = new ToolStripMenuItem();
-            menuHashSha1 = new ToolStripMenuItem();
-            menuHashSha256 = new ToolStripMenuItem();
-            menuHashSha512 = new ToolStripMenuItem();
-            menuHashSCrypt = new ToolStripMenuItem();
-            menuHashWhirlpool = new ToolStripMenuItem();
-            menuHashTupleHash = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
             menuOptionsItemsWarnings = new ToolStripMenuItem();
             warnOnEmptyPipeToolStripMenuItem = new ToolStripMenuItem();
@@ -150,7 +133,7 @@ namespace EU.CqrXs.Gui.Forms
             menuStripEncrypt.AllowMerge = false;
             menuStripEncrypt.BackColor = SystemColors.MenuBar;
             menuStripEncrypt.Font = new Font("Lucida Sans Typewriter", 9F);
-            menuStripEncrypt.Items.AddRange(new ToolStripItem[] { toolMenuMain, menuCompression, menuEncoding, menuHash, optionsToolStripMenuItem, menuSerialize, menuHelp });
+            menuStripEncrypt.Items.AddRange(new ToolStripItem[] { toolMenuMain, menuCompression, menuEncoding, optionsToolStripMenuItem, menuSerialize, menuHelp });
             menuStripEncrypt.Location = new Point(0, 0);
             menuStripEncrypt.Name = "menuStripEncrypt";
             menuStripEncrypt.Padding = new Padding(3, 2, 2, 2);
@@ -160,27 +143,18 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // toolMenuMain
             // 
-            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileNew, menuFileOpen, menuMainSave, toolStripSeparator2, menuMainSetPipe, menuMainHashKey, menuMainHashPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainDownloadImage, menuMainRandomText, menuMainReset, toolStripSeparator1, menuFileExit });
+            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileOpen, menuMainSave, toolStripSeparator2, menuMainSetPipe, menuMainHashKey, menuMainHashPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainDownloadImage, menuMainRandomText, menuMainReset, toolStripSeparator1, menuFileExit });
             toolMenuMain.Font = new Font("Lucida Sans Typewriter", 10F);
             toolMenuMain.Name = "toolMenuMain";
             toolMenuMain.Size = new Size(51, 20);
             toolMenuMain.Text = "Main";
-            // 
-            // menuFileNew
-            // 
-            menuFileNew.BackColor = SystemColors.Menu;
-            menuFileNew.Enabled = false;
-            menuFileNew.Name = "menuFileNew";
-            menuFileNew.ShortcutKeys = Keys.Control | Keys.N;
-            menuFileNew.Size = new Size(170, 22);
-            menuFileNew.Text = "New";
             // 
             // menuFileOpen
             // 
             menuFileOpen.BackColor = SystemColors.Menu;
             menuFileOpen.Name = "menuFileOpen";
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
-            menuFileOpen.Size = new Size(170, 22);
+            menuFileOpen.Size = new Size(180, 22);
             menuFileOpen.Text = "Open";
             menuFileOpen.Click += menuFileOpen_Click;
             // 
@@ -189,20 +163,20 @@ namespace EU.CqrXs.Gui.Forms
             menuMainSave.BackColor = SystemColors.Menu;
             menuMainSave.Name = "menuMainSave";
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuMainSave.Size = new Size(170, 22);
+            menuMainSave.Size = new Size(180, 22);
             menuMainSave.Text = "Save";
             menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(167, 6);
+            toolStripSeparator2.Size = new Size(177, 6);
             // 
             // menuMainSetPipe
             // 
             menuMainSetPipe.BackColor = SystemColors.Menu;
             menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(170, 22);
+            menuMainSetPipe.Size = new Size(180, 22);
             menuMainSetPipe.Text = "Set Pipe";
             menuMainSetPipe.Click += SetPipeline_Click;
             // 
@@ -210,7 +184,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainHashKey.BackColor = SystemColors.Menu;
             menuMainHashKey.Name = "menuMainHashKey";
-            menuMainHashKey.Size = new Size(170, 22);
+            menuMainHashKey.Size = new Size(180, 22);
             menuMainHashKey.Text = "Hash Key";
             menuMainHashKey.Click += Hash_Click;
             // 
@@ -218,34 +192,34 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainHashPipe.BackColor = SystemColors.Menu;
             menuMainHashPipe.Name = "menuMainHashPipe";
-            menuMainHashPipe.Size = new Size(170, 22);
+            menuMainHashPipe.Size = new Size(180, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(167, 6);
+            toolStripSeparator3.Size = new Size(177, 6);
             // 
             // menuMainEncrypt
             // 
             menuMainEncrypt.BackColor = SystemColors.Menu;
             menuMainEncrypt.Name = "menuMainEncrypt";
-            menuMainEncrypt.Size = new Size(170, 22);
+            menuMainEncrypt.Size = new Size(180, 22);
             menuMainEncrypt.Text = "Encrypt";
             // 
             // menuMainDecrypt
             // 
             menuMainDecrypt.BackColor = SystemColors.Menu;
             menuMainDecrypt.Name = "menuMainDecrypt";
-            menuMainDecrypt.Size = new Size(170, 22);
+            menuMainDecrypt.Size = new Size(180, 22);
             menuMainDecrypt.Text = "Decrypt";
             // 
             // menuMainDownloadImage
             // 
             menuMainDownloadImage.BackColor = SystemColors.Menu;
             menuMainDownloadImage.Name = "menuMainDownloadImage";
-            menuMainDownloadImage.Size = new Size(170, 22);
+            menuMainDownloadImage.Size = new Size(180, 22);
             menuMainDownloadImage.Text = "Ramdom Image";
             menuMainDownloadImage.Click += LoadImage_Click;
             // 
@@ -253,7 +227,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainRandomText.BackColor = SystemColors.Menu;
             menuMainRandomText.Name = "menuMainRandomText";
-            menuMainRandomText.Size = new Size(170, 22);
+            menuMainRandomText.Size = new Size(180, 22);
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
@@ -261,20 +235,20 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainReset.BackColor = SystemColors.Menu;
             menuMainReset.Name = "menuMainReset";
-            menuMainReset.Size = new Size(170, 22);
+            menuMainReset.Size = new Size(180, 22);
             menuMainReset.Text = "Reset";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(167, 6);
+            toolStripSeparator1.Size = new Size(177, 6);
             // 
             // menuFileExit
             // 
             menuFileExit.BackColor = SystemColors.Menu;
             menuFileExit.Name = "menuFileExit";
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
-            menuFileExit.Size = new Size(170, 22);
+            menuFileExit.Size = new Size(180, 22);
             menuFileExit.Text = "Exit";
             menuFileExit.Click += menuFileExit_Click;
             // 
@@ -401,123 +375,6 @@ namespace EU.CqrXs.Gui.Forms
             menuEncXx.Size = new Size(122, 22);
             menuEncXx.Text = "Xx";
             // 
-            // menuHash
-            // 
-            menuHash.DropDownItems.AddRange(new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash });
-            menuHash.Font = new Font("Lucida Sans Typewriter", 10F);
-            menuHash.Name = "menuHash";
-            menuHash.Size = new Size(51, 20);
-            menuHash.Text = "Hash";
-            // 
-            // menuHashOct
-            // 
-            menuHashOct.BackColor = SystemColors.ControlLight;
-            menuHashOct.Name = "menuHashOct";
-            menuHashOct.Size = new Size(170, 22);
-            menuHashOct.Text = "Ascon256";
-            // 
-            // menuHashBlake2xs
-            // 
-            menuHashBlake2xs.BackColor = SystemColors.ControlLight;
-            menuHashBlake2xs.Name = "menuHashBlake2xs";
-            menuHashBlake2xs.Size = new Size(170, 22);
-            menuHashBlake2xs.Text = "Blake2xs";
-            // 
-            // menuHashBCrypt
-            // 
-            menuHashBCrypt.BackColor = SystemColors.ControlLight;
-            menuHashBCrypt.Name = "menuHashBCrypt";
-            menuHashBCrypt.Size = new Size(170, 22);
-            menuHashBCrypt.Text = "B-Crypt";
-            // 
-            // menuHashCShake
-            // 
-            menuHashCShake.BackColor = SystemColors.ControlLight;
-            menuHashCShake.Name = "menuHashCShake";
-            menuHashCShake.Size = new Size(170, 22);
-            menuHashCShake.Text = "CShake";
-            // 
-            // menuHashDstu7564
-            // 
-            menuHashDstu7564.BackColor = SystemColors.ControlLight;
-            menuHashDstu7564.Name = "menuHashDstu7564";
-            menuHashDstu7564.Size = new Size(170, 22);
-            menuHashDstu7564.Text = "Dstu7564";
-            // 
-            // menuHashMD5
-            // 
-            menuHashMD5.BackColor = SystemColors.Menu;
-            menuHashMD5.Name = "menuHashMD5";
-            menuHashMD5.Size = new Size(170, 22);
-            menuHashMD5.Tag = "";
-            menuHashMD5.Text = "MD5";
-            // 
-            // menuHashHex
-            // 
-            menuHashHex.BackColor = SystemColors.Menu;
-            menuHashHex.Checked = true;
-            menuHashHex.CheckState = CheckState.Checked;
-            menuHashHex.Name = "menuHashHex";
-            menuHashHex.Size = new Size(170, 22);
-            menuHashHex.Text = "Hex";
-            // 
-            // menuHashOpenBSDCrypt
-            // 
-            menuHashOpenBSDCrypt.BackColor = SystemColors.ControlLight;
-            menuHashOpenBSDCrypt.Name = "menuHashOpenBSDCrypt";
-            menuHashOpenBSDCrypt.Size = new Size(170, 22);
-            menuHashOpenBSDCrypt.Text = "OpenBSDCrypt";
-            // 
-            // menuHashRipeMD256
-            // 
-            menuHashRipeMD256.BackColor = SystemColors.ControlLight;
-            menuHashRipeMD256.Name = "menuHashRipeMD256";
-            menuHashRipeMD256.Size = new Size(170, 22);
-            menuHashRipeMD256.Text = "RipeMD256";
-            // 
-            // menuHashSha1
-            // 
-            menuHashSha1.BackColor = SystemColors.Menu;
-            menuHashSha1.MergeAction = MergeAction.Insert;
-            menuHashSha1.Name = "menuHashSha1";
-            menuHashSha1.Size = new Size(170, 22);
-            menuHashSha1.Text = "Sha1";
-            // 
-            // menuHashSha256
-            // 
-            menuHashSha256.BackColor = SystemColors.Menu;
-            menuHashSha256.Name = "menuHashSha256";
-            menuHashSha256.Size = new Size(170, 22);
-            menuHashSha256.Text = "Sha256";
-            // 
-            // menuHashSha512
-            // 
-            menuHashSha512.BackColor = SystemColors.Menu;
-            menuHashSha512.Name = "menuHashSha512";
-            menuHashSha512.Size = new Size(170, 22);
-            menuHashSha512.Text = "Sha512";
-            // 
-            // menuHashSCrypt
-            // 
-            menuHashSCrypt.BackColor = SystemColors.ControlLight;
-            menuHashSCrypt.Name = "menuHashSCrypt";
-            menuHashSCrypt.Size = new Size(170, 22);
-            menuHashSCrypt.Text = "S-Crypt";
-            // 
-            // menuHashWhirlpool
-            // 
-            menuHashWhirlpool.BackColor = SystemColors.ControlLight;
-            menuHashWhirlpool.Name = "menuHashWhirlpool";
-            menuHashWhirlpool.Size = new Size(170, 22);
-            menuHashWhirlpool.Text = "Whirlpool";
-            // 
-            // menuHashTupleHash
-            // 
-            menuHashTupleHash.BackColor = SystemColors.ControlLight;
-            menuHashTupleHash.Name = "menuHashTupleHash";
-            menuHashTupleHash.Size = new Size(170, 22);
-            menuHashTupleHash.Text = "TupleHash";
-            // 
             // optionsToolStripMenuItem
             // 
             optionsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuOptionsItemsWarnings, verifyEncryptionToolStripMenuItem, menuOptionsMenuFileSettings });
@@ -624,7 +481,7 @@ namespace EU.CqrXs.Gui.Forms
             menuJson.Enabled = false;
             menuJson.Name = "menuJson";
             menuJson.ShortcutKeys = Keys.Control | Keys.J;
-            menuJson.Size = new Size(161, 22);
+            menuJson.Size = new Size(180, 22);
             menuJson.Text = "Json";
             // 
             // menuXml
@@ -633,7 +490,7 @@ namespace EU.CqrXs.Gui.Forms
             menuXml.Enabled = false;
             menuXml.Name = "menuXml";
             menuXml.ShortcutKeys = Keys.Control | Keys.X;
-            menuXml.Size = new Size(161, 22);
+            menuXml.Size = new Size(180, 22);
             menuXml.Text = "Xml";
             // 
             // menuRaw
@@ -642,13 +499,13 @@ namespace EU.CqrXs.Gui.Forms
             menuRaw.Enabled = false;
             menuRaw.Name = "menuRaw";
             menuRaw.ShortcutKeys = Keys.Control | Keys.R;
-            menuRaw.Size = new Size(161, 22);
+            menuRaw.Size = new Size(180, 22);
             menuRaw.Text = "Raw";
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(161, 22);
+            toolStripMenuItem1.Size = new Size(180, 22);
             toolStripMenuItem1.Text = "?";
             // 
             // menuHelp
@@ -663,7 +520,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(161, 22);
+            menuAbout.Size = new Size(180, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -671,14 +528,14 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(161, 22);
+            menuHelpHelp.Size = new Size(180, 22);
             menuHelpHelp.Text = "Help";
             // 
             // menuHelpUrlFetch
             // 
             menuHelpUrlFetch.BackColor = SystemColors.MenuBar;
             menuHelpUrlFetch.Name = "menuHelpUrlFetch";
-            menuHelpUrlFetch.Size = new Size(161, 22);
+            menuHelpUrlFetch.Size = new Size(180, 22);
             menuHelpUrlFetch.Text = "Url Fetch";
             menuHelpUrlFetch.Click += menuHelpUrlFetch_Click;
             // 
@@ -696,7 +553,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxKey.BackColor = SystemColors.ControlLightLight;
             textBoxKey.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxKey.Location = new Point(48, 28);
+            textBoxKey.Location = new Point(48, 26);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
             textBoxKey.Size = new Size(688, 23);
@@ -708,7 +565,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBoxKey.BackColor = SystemColors.Control;
             pictureBoxKey.Image = Properties.Resources.key_ring;
-            pictureBoxKey.Location = new Point(8, 27);
+            pictureBoxKey.Location = new Point(8, 23);
             pictureBoxKey.Margin = new Padding(1);
             pictureBoxKey.Name = "pictureBoxKey";
             pictureBoxKey.Size = new Size(30, 30);
@@ -720,11 +577,12 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBoxHash.BackColor = SystemColors.Control;
-            pictureBoxHash.Image = Properties.Resources.a_hash1;
-            pictureBoxHash.Location = new Point(6, 117);
+            pictureBoxHash.BackgroundImage = Properties.Resources.ThreeFish;
+            pictureBoxHash.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBoxHash.Location = new Point(6, 124);
             pictureBoxHash.Margin = new Padding(1);
             pictureBoxHash.Name = "pictureBoxHash";
-            pictureBoxHash.Size = new Size(32, 30);
+            pictureBoxHash.Size = new Size(36, 36);
             pictureBoxHash.TabIndex = 8;
             pictureBoxHash.TabStop = false;
             pictureBoxHash.Click += Hash_Click;
@@ -733,7 +591,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHash3.BackColor = SystemColors.Control;
             textBoxHash3.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHash3.Location = new Point(48, 120);
+            textBoxHash3.Location = new Point(48, 130);
             textBoxHash3.Margin = new Padding(1);
             textBoxHash3.Name = "textBoxHash3";
             textBoxHash3.ReadOnly = true;
@@ -744,7 +602,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             buttonSetPipeline.BackColor = SystemColors.Control;
             buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonSetPipeline.Location = new Point(751, 28);
+            buttonSetPipeline.Location = new Point(751, 24);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
             buttonSetPipeline.Size = new Size(120, 27);
@@ -857,7 +715,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             buttonHashPipe.BackColor = SystemColors.Control;
             buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonHashPipe.Location = new Point(876, 28);
+            buttonHashPipe.Location = new Point(876, 24);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
             buttonHashPipe.Size = new Size(120, 27);
@@ -918,7 +776,7 @@ namespace EU.CqrXs.Gui.Forms
             groupBoxFiles.AllowDrop = true;
             groupBoxFiles.BackColor = SystemColors.Control;
             groupBoxFiles.Font = new Font("Lucida Sans Typewriter", 8F);
-            groupBoxFiles.Location = new Point(4, 191);
+            groupBoxFiles.Location = new Point(4, 198);
             groupBoxFiles.Margin = new Padding(1);
             groupBoxFiles.Name = "groupBoxFiles";
             groupBoxFiles.Padding = new Padding(1);
@@ -935,7 +793,7 @@ namespace EU.CqrXs.Gui.Forms
             panelPipe.Controls.Add(pictureBoxDelete);
             panelPipe.Controls.Add(comboBoxCompression);
             panelPipe.Controls.Add(comboBoxEncoding);
-            panelPipe.Location = new Point(0, 153);
+            panelPipe.Location = new Point(0, 160);
             panelPipe.Margin = new Padding(2);
             panelPipe.Name = "panelPipe";
             panelPipe.Padding = new Padding(1);
@@ -951,7 +809,7 @@ namespace EU.CqrXs.Gui.Forms
             panel1.Controls.Add(buttonEncrypt);
             panel1.Controls.Add(buttonRandomText);
             panel1.Controls.Add(labelInfoMessage);
-            panel1.Location = new Point(0, 351);
+            panel1.Location = new Point(0, 356);
             panel1.Margin = new Padding(2);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(1);
@@ -962,7 +820,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             tabControlWithHexSrc.Font = new Font("Lucida Sans Typewriter", 9F);
             tabControlWithHexSrc.ItemSize = new Size(72, 19);
-            tabControlWithHexSrc.Location = new Point(4, 397);
+            tabControlWithHexSrc.Location = new Point(4, 400);
             tabControlWithHexSrc.Margin = new Padding(1);
             tabControlWithHexSrc.Name = "tabControlWithHexSrc";
             tabControlWithHexSrc.Padding = new Point(1, 1);
@@ -974,7 +832,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             tabControlWithHexDest.Font = new Font("Lucida Sans Typewriter", 9F);
             tabControlWithHexDest.ItemSize = new Size(72, 19);
-            tabControlWithHexDest.Location = new Point(518, 397);
+            tabControlWithHexDest.Location = new Point(518, 400);
             tabControlWithHexDest.Margin = new Padding(1);
             tabControlWithHexDest.Name = "tabControlWithHexDest";
             tabControlWithHexDest.Padding = new Point(1, 1);
@@ -986,11 +844,12 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackColor = SystemColors.Control;
-            pictureBox1.Image = Properties.Resources.a_hash1;
-            pictureBox1.Location = new Point(6, 59);
+            pictureBox1.BackgroundImage = Properties.Resources.blowfish;
+            pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox1.Location = new Point(6, 53);
             pictureBox1.Margin = new Padding(1);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(32, 30);
+            pictureBox1.Size = new Size(36, 36);
             pictureBox1.TabIndex = 47;
             pictureBox1.TabStop = false;
             // 
@@ -998,7 +857,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHash1.BackColor = SystemColors.Control;
             textBoxHash1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHash1.Location = new Point(48, 64);
+            textBoxHash1.Location = new Point(48, 60);
             textBoxHash1.Margin = new Padding(1);
             textBoxHash1.Name = "textBoxHash1";
             textBoxHash1.ReadOnly = true;
@@ -1009,7 +868,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHash2.BackColor = SystemColors.Control;
             textBoxHash2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHash2.Location = new Point(48, 90);
+            textBoxHash2.Location = new Point(48, 96);
             textBoxHash2.Margin = new Padding(1);
             textBoxHash2.Name = "textBoxHash2";
             textBoxHash2.ReadOnly = true;
@@ -1020,11 +879,12 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox2.BackColor = SystemColors.Control;
-            pictureBox2.Image = Properties.Resources.a_hash1;
-            pictureBox2.Location = new Point(6, 86);
+            pictureBox2.BackgroundImage = Properties.Resources.TwoFish;
+            pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
+            pictureBox2.Location = new Point(6, 90);
             pictureBox2.Margin = new Padding(1);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(32, 30);
+            pictureBox2.Size = new Size(36, 36);
             pictureBox2.TabIndex = 49;
             pictureBox2.TabStop = false;
             // 
@@ -1032,7 +892,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHashHash1.BackColor = SystemColors.Control;
             textBoxHashHash1.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHashHash1.Location = new Point(518, 64);
+            textBoxHashHash1.Location = new Point(518, 60);
             textBoxHashHash1.Margin = new Padding(1);
             textBoxHashHash1.Name = "textBoxHashHash1";
             textBoxHashHash1.ReadOnly = true;
@@ -1043,7 +903,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHashHash2.BackColor = SystemColors.Control;
             textBoxHashHash2.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHashHash2.Location = new Point(518, 90);
+            textBoxHashHash2.Location = new Point(518, 96);
             textBoxHashHash2.Margin = new Padding(1);
             textBoxHashHash2.Name = "textBoxHashHash2";
             textBoxHashHash2.ReadOnly = true;
@@ -1054,7 +914,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxHashHash3.BackColor = SystemColors.Control;
             textBoxHashHash3.Font = new Font("Lucida Sans Typewriter", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxHashHash3.Location = new Point(518, 120);
+            textBoxHashHash3.Location = new Point(518, 130);
             textBoxHashHash3.Margin = new Padding(1);
             textBoxHashHash3.Name = "textBoxHashHash3";
             textBoxHashHash3.ReadOnly = true;
@@ -1161,30 +1021,14 @@ namespace EU.CqrXs.Gui.Forms
         internal  ToolStripMenuItem menuMainHashPipe;
         internal  ToolStripMenuItem menuEncBase64;
         internal  ToolStripMenuItem menuEncUu;
-        internal  ToolStripMenuItem menuHash;
-        internal  ToolStripMenuItem menuHashBCrypt;
         internal  ToolStripMenuItem menuEncXx;
         internal  ToolStripMenuItem menuSerialize;
         internal  ToolStripMenuItem menuJson;
         internal  ToolStripMenuItem menuXml;
         internal  ToolStripMenuItem menuRaw;
-        internal ToolStripMenuItem menuHashSCrypt;
-        internal ToolStripMenuItem menuHashMD5;
-        internal  ToolStripMenuItem menuHashSha1;
-        internal  ToolStripMenuItem menuHashSha512;
-        internal  ToolStripMenuItem menuHashOpenBSDCrypt;
-        internal  ToolStripMenuItem menuHashSha256;
-        internal  ToolStripMenuItem menuHashHex;
         internal  ToolStripMenuItem menuHelp;
         internal  ToolStripMenuItem menuAbout;
         internal  ToolStripMenuItem menuHelpHelp;
-        internal  ToolStripMenuItem menuHashOct;
-        internal  ToolStripMenuItem menuHashRipeMD256;
-        internal  ToolStripMenuItem menuHashWhirlpool;
-        internal  ToolStripMenuItem menuHashBlake2xs;
-        internal  ToolStripMenuItem menuHashDstu7564;
-        internal  ToolStripMenuItem menuHashCShake;
-        internal  ToolStripMenuItem menuHashTupleHash;
         private Label labelInfoMessage;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel statusLabelSource;
@@ -1207,7 +1051,6 @@ namespace EU.CqrXs.Gui.Forms
         internal ToolStripMenuItem menuHelpCharHexDecOctBin;
         private Controls.TabControlWithHex tabControlWithHexSrc;
         private Controls.TabControlWithHex tabControlWithHexDest;
-        protected internal ToolStripMenuItem menuFileNew;
         internal ToolStripMenuItem menuOptionsMenuWindowsCharHexDecOctBin;
         internal ToolStripMenuItem menuOptionsMenuWindowsitemAbout;
         protected internal ToolStripMenuItem menuMainDownloadImage;
