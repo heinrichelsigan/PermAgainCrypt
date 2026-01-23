@@ -81,6 +81,7 @@ namespace EU.CqrXs.Gui.Forms
             menuHelp = new ToolStripMenuItem();
             menuAbout = new ToolStripMenuItem();
             menuHelpHelp = new ToolStripMenuItem();
+            menuHelpCharHexDecOctBin = new ToolStripMenuItem();
             menuHelpUrlFetch = new ToolStripMenuItem();
             menuOptionsMenuWindowsCharHexDecOctBin = new ToolStripMenuItem();
             menuOptionsMenuWindowsitemAbout = new ToolStripMenuItem();
@@ -510,7 +511,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // menuHelp
             // 
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpUrlFetch });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpCharHexDecOctBin });
             menuHelp.Font = new Font("Lucida Sans Typewriter", 10F);
             menuHelp.Name = "menuHelp";
             menuHelp.Size = new Size(27, 20);
@@ -531,13 +532,12 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.Size = new Size(180, 22);
             menuHelpHelp.Text = "Help";
             // 
-            // menuHelpUrlFetch
+            // menuHelpCharHexDecOctBin
             // 
-            menuHelpUrlFetch.BackColor = SystemColors.MenuBar;
-            menuHelpUrlFetch.Name = "menuHelpUrlFetch";
-            menuHelpUrlFetch.Size = new Size(180, 22);
-            menuHelpUrlFetch.Text = "Url Fetch";
-            menuHelpUrlFetch.Click += menuHelpUrlFetch_Click;
+            menuHelpCharHexDecOctBin.BackColor = SystemColors.MenuBar;
+            menuHelpCharHexDecOctBin.Name = "menuHelpCharHexDecOctBin";
+            menuHelpCharHexDecOctBin.Size = new Size(180, 22);
+            menuHelpCharHexDecOctBin.Text = "CharHexDecOctBin";
             // 
             // menuOptionsMenuWindowsCharHexDecOctBin
             // 

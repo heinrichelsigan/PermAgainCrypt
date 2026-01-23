@@ -57,18 +57,15 @@ namespace EU.CqrXs.Gui.Forms
                 => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
-            
-            //try
-            //{
-            //    menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) =>
-            //        await menuCharHexDecOctBinAsync_Click(sender, e));
-
-            //}
-            //catch (Exception exBtnClick)
-            //{
-            //    Area23Log.LogOriginMsgEx("OneTwoThreeFish ctor()",
-            //        "unknown exception", exBtnClick, 2);
-            //}
+            try
+            {
+                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async(sender, e)
+                    => await menuHelpCharHexDecOctBin_Click(sender, e));
+            }
+            catch (Exception exBtnClick)
+            {
+                Area23Log.LogOriginMsgEx("OneTwoThreeFish ctor()", "error creating menuHelpCharHexDecOctBin.Click delegate", exBtnClick, 2);
+            }
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
@@ -1192,16 +1189,23 @@ namespace EU.CqrXs.Gui.Forms
         #endregion Media Methods
 
 
-        private void menuHelpUrlFetch_Click(object sender, EventArgs e)
+        internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
         {
+            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
+            DialogResult dresult = await dialog.ShowDialogAsync();
+            if (dresult == DialogResult.OK)
+                return;
+            else if (dresult != DialogResult.Continue)
+                return;
+
             //RandomName rname = new RandomName();
             //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
-            string topLevelDomain = ".at", url = ""; 
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ? 
+            string topLevelDomain = ".at", url = "";
+            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
                 (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
-            
+
             switch (++ufcnt)
-            {                                
+            {
                 case 1:
                     url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";
                     break;
@@ -1218,6 +1222,7 @@ namespace EU.CqrXs.Gui.Forms
             AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
             System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
         }
+
     }
 
 }

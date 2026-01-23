@@ -9,6 +9,7 @@ using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
@@ -62,20 +63,18 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
             menuFileNew.Click += new System.EventHandler(async (sender, e)
-                 => await menuFileNew_Click(sender, e));
-            //try
-            //{
-            //    menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e) =>
-            //        await menuCharHexDecOctBinAsync_Click(sender, e));
+                 => await menuFileNew_Click(sender, e));           
+            try
+            {
+                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async(sender, e)
+                    => await menuHelpCharHexDecOctBin_Click(sender, e));
+            }
+            catch (Exception exBtnClick)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()", "error in delegating menuHelpCharHexDecOctBin.Click exception", exBtnClick, 2);
+            }
 
-            //}
-            //catch (Exception exBtnClick)
-            //{
-            //    Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
-            //        "unknown exception", exBtnClick, 2);
-            //}
-
-            ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
+            ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
 
@@ -233,6 +232,7 @@ namespace EU.CqrXs.Gui.Forms
             menuEncHex16.Checked = false;
             menuEncBase32.Checked = false;
             menuEncHex32.Checked = false;
+            menuEncHex64.Checked = false;
             menuEncBase64.Checked = false;
             menuEncUu.Checked = false;
             menuEncXx.Checked = false;
@@ -263,6 +263,7 @@ namespace EU.CqrXs.Gui.Forms
                     case EncodingType.Hex32: menuEncHex32.Checked = true; break;
                     case EncodingType.Uu: menuEncUu.Checked = true; break;
                     case EncodingType.Xx: menuEncXx.Checked = true; break;
+                    case EncodingType.Hex64: menuEncHex64.Checked = true; break;
                     case EncodingType.None: menuEncNone.Checked = true; break;
                     case EncodingType.Base64:
                     default: menuEncBase64.Checked = true; break;
@@ -287,6 +288,7 @@ namespace EU.CqrXs.Gui.Forms
             if (menuEncHex16.Checked) return EncodingType.Hex16;
             if (menuEncBase32.Checked) return EncodingType.Base32;
             if (menuEncHex32.Checked) return EncodingType.Hex32;
+            if (menuEncHex64.Checked) return EncodingType.Hex64;
             if (menuEncUu.Checked) return EncodingType.Uu;
             if (menuEncXx.Checked) return EncodingType.Xx;
             menuEncBase64.Checked = true;
@@ -594,8 +596,10 @@ namespace EU.CqrXs.Gui.Forms
             this.textBoxHash.Text = string.Empty;
             this.textBoxKey.Text = string.Empty;
             this.textBoxPipe.Text = string.Empty;
-            this.tabControlWithHexSrc.AsciiText = string.Empty;
-            this.tabControlWithHexDest.AsciiText = string.Empty;
+            this.tabControlWithHexSrc.EncoderType = EncodingType.None;
+            this.tabControlWithHexSrc.AsciiText = string.Empty;            
+            this.tabControlWithHexDest.EncoderType = EncodingType.None;
+            this.tabControlWithHexDest.AsciiText = string.Empty;            
             cPipe = null;
             await this.groupBoxFiles.ResetPictureBoxFilesAsync(sender, e);
 
@@ -647,7 +651,8 @@ namespace EU.CqrXs.Gui.Forms
             DateTime start = DateTime.Now;
             if (!string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
             {
-                this.tabControlWithHexDest.AsciiText = "";
+                this.tabControlWithHexDest.EncoderType = EncodingType.None;
+                this.tabControlWithHexDest.AsciiText = "";                
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting encryption plain text", ToolTipIcon.Info, -1);
                 try
@@ -657,7 +662,8 @@ namespace EU.CqrXs.Gui.Forms
                         await SetEncodingAsync(menuEncBase64);
 
                     string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.tabControlWithHexDest.AsciiText = encrypted;
+                    this.tabControlWithHexDest.EncoderType = GetEncoding();
+                    this.tabControlWithHexDest.AsciiText = encrypted;                    
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
                     await SetInfoMessageAsync("Encryption finished", ToolTipIcon.Info, 5000);
                 }
@@ -793,7 +799,8 @@ namespace EU.CqrXs.Gui.Forms
 
             if (!string.IsNullOrEmpty(this.tabControlWithHexSrc.AsciiText))
             {
-                this.tabControlWithHexDest.AsciiText = "";
+                this.tabControlWithHexDest.EncoderType = EncodingType.None;
+                this.tabControlWithHexDest.AsciiText = "";                
                 Cursor.Current = new Cursor(iconSandClock.Handle);
                 await SetInfoMessageAsync("Starting decryption of cipher text", ToolTipIcon.Info, -1);
 
@@ -804,7 +811,9 @@ namespace EU.CqrXs.Gui.Forms
                         await SetEncodingAsync(menuEncBase64);
 
                     string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    this.tabControlWithHexDest.AsciiText = decrypted;
+                    this.tabControlWithHexDest.EncoderType = EncodingType.None;
+                    this.tabControlWithHexDest.AsciiText = decrypted;                    
+
                     await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
                 }
@@ -933,8 +942,11 @@ namespace EU.CqrXs.Gui.Forms
             FileInfo fi = new FileInfo(fileName);
             if (fi.Exists && fi.Length > 0)
             {
-                this.tabControlWithHexSrc.AsciiText = string.Empty;
+                this.tabControlWithHexSrc.EncoderType = EncodingType.None;
+                this.tabControlWithHexSrc.AsciiText = string.Empty;               
+                this.tabControlWithHexDest.EncoderType = EncodingType.None;
                 this.tabControlWithHexDest.AsciiText = string.Empty;
+                
                 SetGBoxText(this.groupBoxFiles, "Files Group Box");
 
                 groupBoxFiles.pictureBoxFileIn.Image = fileName.GetImageThumbnailFromFile();
@@ -1312,10 +1324,17 @@ namespace EU.CqrXs.Gui.Forms
         #endregion Media Methods
 
 
-        private void menuHelpUrlFetch_Click(object sender, EventArgs e)
+        protected internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
         {
-            //RandomName rname = new RandomName();
-            //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
+            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
+            DialogResult dresult = await dialog.ShowDialogAsync();
+            if (dresult == DialogResult.OK)
+                return;
+            else if (dresult != DialogResult.Continue)
+                return;
+
+                //RandomName rname = new RandomName();
+                //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
             string topLevelDomain = ".at", url = ""; 
             int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ? 
                 (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
@@ -1338,6 +1357,7 @@ namespace EU.CqrXs.Gui.Forms
             AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
             System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
         }
+    
     }
 
 }

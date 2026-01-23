@@ -45,6 +45,29 @@ namespace EU.CqrXs.Gui.Controls
             }
         }
 
+        internal EncodingType EncoderType
+        {
+            set
+            {
+                switch (value)
+                {
+                    case EncodingType.Uu:
+                    case EncodingType.Xx:
+                        textBoxAsciiText.Font = new Font("Lucida Console", 8.75F);
+                        break;
+                    case EncodingType.Hex64:
+                    case EncodingType.Base64:
+                        textBoxAsciiText.Font = new Font("Lucida Console", 7.4F);
+                        break;
+                    case EncodingType.None:
+                    default:
+                        textBoxAsciiText.Font = new Font("Lucida Console", 9F);
+                        break;
+                }
+            }
+
+        }
+
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal bool AsciiTextReadonly { get => textBoxAsciiText.ReadOnly; set => textBoxAsciiText.ReadOnly = value; }
 
@@ -81,7 +104,7 @@ namespace EU.CqrXs.Gui.Controls
             // 
             tabPageAscii.Controls.Add(textBoxAsciiText);
             tabPageAscii.Cursor = Cursors.Cross;
-            tabPageAscii.Font = new Font("Lucida Sans Unicode", 8F);
+            tabPageAscii.Font = new Font("Lucida Console", 8.5F);
             tabPageAscii.Location = new Point(4, 23);
             tabPageAscii.Margin = new Padding(2);
             tabPageAscii.Name = "tabPageAscii";
@@ -95,7 +118,7 @@ namespace EU.CqrXs.Gui.Controls
             // 
             textBoxAsciiText.BackColor = SystemColors.ControlLight;
             textBoxAsciiText.Dock = DockStyle.Fill;
-            textBoxAsciiText.Font = new Font("Lucida Console", 9F);
+            textBoxAsciiText.Font = new Font("Lucida Console", 8.4F);
             textBoxAsciiText.Location = new Point(1, 1);
             textBoxAsciiText.Margin = new Padding(1);
             textBoxAsciiText.MaxLength = 1048576;
@@ -108,7 +131,7 @@ namespace EU.CqrXs.Gui.Controls
             // tabPageHex
             // 
             tabPageHex.Controls.Add(textBoxViewHex);
-            tabPageHex.Font = new Font("Lucida Sans Unicode", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            tabPageHex.Font = new Font("Lucida Console", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tabPageHex.Location = new Point(4, 23);
             tabPageHex.Margin = new Padding(2);
             tabPageHex.Name = "tabPageHex";
@@ -123,7 +146,7 @@ namespace EU.CqrXs.Gui.Controls
             textBoxViewHex.BackColor = SystemColors.Control;
             textBoxViewHex.BorderStyle = BorderStyle.FixedSingle;
             textBoxViewHex.Dock = DockStyle.Fill;
-            textBoxViewHex.Font = new Font("Lucida Console", 9F);
+            textBoxViewHex.Font = new Font("Lucida Console", 8F);
             textBoxViewHex.Location = new Point(1, 1);
             textBoxViewHex.Margin = new Padding(1);
             textBoxViewHex.MaxLength = 1048576;
@@ -148,7 +171,7 @@ namespace EU.CqrXs.Gui.Controls
             this.TabIndex = 40;
             this.SelectedIndexChanged += SelectedChanged;
             this.BackColor = SystemColors.Control;
-            this.Font = new Font("Lucida Sans Typewriter", 9F);
+            this.Font = new Font("Lucida Console", 8F);
             this.tabPageAscii.ResumeLayout(false);
             this.tabPageAscii.PerformLayout();
             this.tabPageHex.ResumeLayout(false);

@@ -34,7 +34,6 @@ namespace EU.CqrXs.Gui.Forms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EncryptFormMultiControls));
             menuStripEncrypt = new MenuStrip();
             toolMenuMain = new ToolStripMenuItem();
-            menuFileNew = new ToolStripMenuItem();
             menuFileOpen = new ToolStripMenuItem();
             menuMainSave = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
@@ -48,6 +47,8 @@ namespace EU.CqrXs.Gui.Forms
             menuMainRandomText = new ToolStripMenuItem();
             menuMainReset = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
+            menuFileNew = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
             menuFileExit = new ToolStripMenuItem();
             menuCompression = new ToolStripMenuItem();
             zmenu7z = new ToolStripMenuItem();
@@ -61,6 +62,7 @@ namespace EU.CqrXs.Gui.Forms
             menuEncHex16 = new ToolStripMenuItem();
             menuEncBase32 = new ToolStripMenuItem();
             menuEncHex32 = new ToolStripMenuItem();
+            menuEncHex64 = new ToolStripMenuItem();
             menuEncBase64 = new ToolStripMenuItem();
             menuEncUu = new ToolStripMenuItem();
             menuEncXx = new ToolStripMenuItem();
@@ -98,6 +100,7 @@ namespace EU.CqrXs.Gui.Forms
             menuHelp = new ToolStripMenuItem();
             menuAbout = new ToolStripMenuItem();
             menuHelpHelp = new ToolStripMenuItem();
+            menuHelpCharHexDecOctBin = new ToolStripMenuItem();
             menuHelpUrlFetch = new ToolStripMenuItem();
             menuOptionsMenuWindowsCharHexDecOctBin = new ToolStripMenuItem();
             menuOptionsMenuWindowsitemAbout = new ToolStripMenuItem();
@@ -130,7 +133,6 @@ namespace EU.CqrXs.Gui.Forms
             panel1 = new Panel();
             tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
-            toolStripSeparator4 = new ToolStripSeparator();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -162,14 +164,6 @@ namespace EU.CqrXs.Gui.Forms
             toolMenuMain.Name = "toolMenuMain";
             toolMenuMain.Size = new Size(51, 20);
             toolMenuMain.Text = "Main";
-            // 
-            // menuFileNew
-            // 
-            menuFileNew.BackColor = SystemColors.Menu;
-            menuFileNew.Name = "menuFileNew";
-            menuFileNew.ShortcutKeys = Keys.Control | Keys.F;
-            menuFileNew.Size = new Size(185, 22);
-            menuFileNew.Text = "123Fish";
             // 
             // menuFileOpen
             // 
@@ -265,6 +259,19 @@ namespace EU.CqrXs.Gui.Forms
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(182, 6);
             // 
+            // menuFileNew
+            // 
+            menuFileNew.BackColor = SystemColors.Menu;
+            menuFileNew.Name = "menuFileNew";
+            menuFileNew.ShortcutKeys = Keys.Control | Keys.F;
+            menuFileNew.Size = new Size(185, 22);
+            menuFileNew.Text = "123Fish";
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(182, 6);
+            // 
             // menuFileExit
             // 
             menuFileExit.BackColor = SystemColors.Menu;
@@ -327,7 +334,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // menuEncoding
             // 
-            menuEncoding.DropDownItems.AddRange(new ToolStripItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncBase32, menuEncHex32, menuEncBase64, menuEncUu, menuEncXx });
+            menuEncoding.DropDownItems.AddRange(new ToolStripItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncBase32, menuEncHex32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx });
             menuEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             menuEncoding.Name = "menuEncoding";
             menuEncoding.ShortcutKeys = Keys.Alt | Keys.E;
@@ -372,6 +379,14 @@ namespace EU.CqrXs.Gui.Forms
             menuEncHex32.Name = "menuEncHex32";
             menuEncHex32.Size = new Size(122, 22);
             menuEncHex32.Text = "Hex32";
+            // 
+            // menuEncHex64
+            // 
+            menuEncHex64.BackColor = SystemColors.Menu;
+            menuEncHex64.Name = "menuEncHex64";
+            menuEncHex64.Size = new Size(122, 22);
+            menuEncHex64.Text = "Hex64";
+            menuEncHex64.ToolTipText = "base64 mime en-/decoding";
             // 
             // menuEncBase64
             // 
@@ -649,7 +664,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // menuHelp
             // 
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpUrlFetch });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpCharHexDecOctBin });
             menuHelp.Font = new Font("Lucida Sans Typewriter", 10F);
             menuHelp.Name = "menuHelp";
             menuHelp.Size = new Size(27, 20);
@@ -659,7 +674,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(161, 22);
+            menuAbout.Size = new Size(202, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -667,16 +682,20 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(161, 22);
+            menuHelpHelp.Size = new Size(202, 22);
             menuHelpHelp.Text = "Help";
+            // 
+            // menuHelpCharHexDecOctBin
+            // 
+            menuHelpCharHexDecOctBin.BackColor = SystemColors.MenuBar;
+            menuHelpCharHexDecOctBin.Name = "menuHelpCharHexDecOctBin";
+            menuHelpCharHexDecOctBin.Size = new Size(202, 22);
+            menuHelpCharHexDecOctBin.Text = "CharHexDecOctBin";
             // 
             // menuHelpUrlFetch
             // 
-            menuHelpUrlFetch.BackColor = SystemColors.MenuBar;
             menuHelpUrlFetch.Name = "menuHelpUrlFetch";
-            menuHelpUrlFetch.Size = new Size(161, 22);
-            menuHelpUrlFetch.Text = "Url Fetch";
-            menuHelpUrlFetch.Click += menuHelpUrlFetch_Click;
+            menuHelpUrlFetch.Size = new Size(32, 19);
             // 
             // menuOptionsMenuWindowsCharHexDecOctBin
             // 
@@ -1008,30 +1027,25 @@ namespace EU.CqrXs.Gui.Forms
             // 
             tabControlWithHexSrc.Font = new Font("Lucida Sans Typewriter", 9F);
             tabControlWithHexSrc.ItemSize = new Size(72, 19);
-            tabControlWithHexSrc.Location = new Point(4, 380);
+            tabControlWithHexSrc.Location = new Point(0, 380);
             tabControlWithHexSrc.Margin = new Padding(1);
             tabControlWithHexSrc.Name = "tabControlWithHexSrc";
             tabControlWithHexSrc.Padding = new Point(1, 1);
             tabControlWithHexSrc.SelectedIndex = 0;
-            tabControlWithHexSrc.Size = new Size(490, 306);
+            tabControlWithHexSrc.Size = new Size(504, 306);
             tabControlWithHexSrc.TabIndex = 40;
             // 
             // tabControlWithHexDest
             // 
-            tabControlWithHexDest.Font = new Font("Lucida Sans Typewriter", 9F);
+            tabControlWithHexDest.Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tabControlWithHexDest.ItemSize = new Size(72, 19);
-            tabControlWithHexDest.Location = new Point(518, 380);
+            tabControlWithHexDest.Location = new Point(506, 380);
             tabControlWithHexDest.Margin = new Padding(1);
             tabControlWithHexDest.Name = "tabControlWithHexDest";
             tabControlWithHexDest.Padding = new Point(1, 1);
             tabControlWithHexDest.SelectedIndex = 0;
-            tabControlWithHexDest.Size = new Size(478, 306);
+            tabControlWithHexDest.Size = new Size(502, 306);
             tabControlWithHexDest.TabIndex = 46;
-            // 
-            // toolStripSeparator4
-            // 
-            toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(182, 6);
             // 
             // EncryptFormMultiControls
             // 
@@ -1184,6 +1198,7 @@ namespace EU.CqrXs.Gui.Forms
         internal ToolStripMenuItem menuHelpUrlFetch;
         private ToolStripMenuItem toolStripMenuItem1;
         protected internal ToolStripSeparator toolStripSeparator4;
+        internal ToolStripMenuItem menuEncHex64;
     }
 
 
