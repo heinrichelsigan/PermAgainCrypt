@@ -7,9 +7,7 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Drawing;
-using System.Drawing.Imaging;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using System.Security.Policy;
 
 
 namespace EU.CqrXs.Gui.Forms
@@ -18,7 +16,7 @@ namespace EU.CqrXs.Gui.Forms
     /// <summary>
     /// EncryptForm
     /// </summary>
-    public partial class EncryptFormMultiControls : EncryptFormBase
+    public partial class OneTwoThreeFish : EncryptFormBase
     {
 
         protected internal CipherPipe? cPipe = null;
@@ -27,11 +25,11 @@ namespace EU.CqrXs.Gui.Forms
         #region ctor and load
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncryptFormMultiControls"/> class.
+        /// Initializes a new instance of the <see cref="OneTwoThreeFish"/> class.
         /// </summary>
         /// <remarks>This constructor sets up the form and initializes its components.  It should be
-        /// called when creating a new instance of the <see cref="EncryptFormMultiControls"/> form.</remarks>
-        public EncryptFormMultiControls()
+        /// called when creating a new instance of the <see cref="OneTwoThreeFish"/> form.</remarks>
+        public OneTwoThreeFish()
         {
             InitializeComponent();
 
@@ -43,9 +41,7 @@ namespace EU.CqrXs.Gui.Forms
             buttonReset.Click += new System.EventHandler(async (sender, e)
                 => await Reset_Click(sender, e));
             comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) =>
-                await comboBoxEncoding_SelectedIndexChanged(sender, e));
-            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e)
-                => await RadioButtonListHash_SelectedIndexChanged(sender, e));
+                await comboBoxEncoding_SelectedIndexChanged(sender, e));            
             comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e)
                 => await ComboBoxCompression_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
@@ -71,7 +67,7 @@ namespace EU.CqrXs.Gui.Forms
             //}
             //catch (Exception exBtnClick)
             //{
-            //    Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()",
+            //    Area23Log.LogOriginMsgEx("OneTwoThreeFish ctor()",
             //        "unknown exception", exBtnClick, 2);
             //}
 
@@ -85,17 +81,11 @@ namespace EU.CqrXs.Gui.Forms
 
 
             ToolStripMenuItem[] mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
-            foreach (var hashMenuItem in mHashes)
-                hashMenuItem.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
 
             this.comboBoxCompression.Items.Clear();
             foreach (ZipType zipType in ZipTypeExtensions.GetZipTypes())
                 this.comboBoxCompression.Items.Add(zipType.ToString());
-            this.comboBoxCompression.SelectedItem = ZipType.None.ToString();
-
-            this.comboBoxAlgo.Items.Clear();
-            foreach (string cipher in GetCipherEnums())
-                this.comboBoxAlgo.Items.Add(cipher.ToString());
+            this.comboBoxCompression.SelectedItem = ZipType.None.ToString();            
 
             this.comboBoxEncoding.Items.Clear();
             foreach (EncodingType encodingType in EncodingTypesExtensions.GetEncodingTypes())
@@ -105,15 +95,14 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         /// <summary>
-        /// EncryptFormMultiControls_Load - form load event
+        /// OneTwoThreeFish_Load - form load event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void EncryptFormMultiControls_Load(object sender, EventArgs e)
+        internal void OneTwoThreeFish_Load(object sender, EventArgs e)
         {
             this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
-            radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
 
             SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, Resources.BlankEncrypt_640x108, "", true);
             SetStatusLabelText(this.statusLabelMsg, $"{this.Name} started...");
@@ -294,119 +283,7 @@ namespace EU.CqrXs.Gui.Forms
             return EncodingType.Base64;
 
         }
-
-        protected internal async Task menuHash_Click(object sender, EventArgs e) => await SetHashAsync((ToolStripMenuItem)sender, (RadioButtonList)radioButtonListHash);
-
-        protected internal async Task RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => await SetHashAsync(null, (RadioButtonList)sender);
-
-        /// <summary>
-        /// SetHash – sets hash type from menu or radiobuttonlist
-        /// </summary>
-        /// <param name="mi">hash ToolStripMenuItem selected</param>
-        /// <param name="radioButtonList">hash radioButtonList</param>
-        protected internal async Task SetHashAsync(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
-        {
-            KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
-            KeyHash aKeyHash = KeyHash.Hex;
-
-            menuHashBCrypt.Checked = false;
-            menuHashHex.Checked = false;
-            menuHashMD5.Checked = false;
-            menuHashOpenBSDCrypt.Checked = false;
-            menuHashSCrypt.Checked = false;
-            menuHashSha1.Checked = false;
-            menuHashSha256.Checked = false;
-            menuHashSha512.Checked = false;
-            menuHashWhirlpool.Checked = false;
-            menuHashOct.Checked = false;
-            menuHashBlake2xs.Checked = false;
-            menuHashCShake.Checked = false;
-            menuHashDstu7564.Checked = false;
-            menuHashRipeMD256.Checked = false;
-            menuHashTupleHash.Checked = false;
-
-            string hashPattern = "Hex";
-            if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
-            {
-                mi.Checked = true;
-                hashPattern = mi.Name.Replace("menuHash", "");
-                if (hashPattern.Equals("OpenBSD", StringComparison.CurrentCultureIgnoreCase))
-                    hashPattern = "OpenBSDCrypt";
-                try
-                {
-                    if (radioButtonList != null)
-                        radioButtonList.SelectedItem = hashPattern;
-                }
-                catch (Exception exRadio)
-                {
-                    Area23Log.LogOriginEx("EncryptForm Hash", exRadio);
-                }
-            }
-
-
-            if (radioButtonList != null && radioButtonList.SelectedItem != null)
-            {
-                aKeyHash = (hashPattern.StartsWith("Xoo") || hashPattern.StartsWith("Zodi")) ?
-                            KeyHash_Extensions.GetKeyHashFromString(hashPattern) :
-                            KeyHash_Extensions.GetKeyHashFromString(radioButtonList.SelectedItem.ToString());
-                switch (aKeyHash)
-                {
-                    case KeyHash.BCrypt: menuHashBCrypt.Checked = true; break;
-                    case KeyHash.MD5: menuHashMD5.Checked = true; break;
-                    case KeyHash.OpenBSDCrypt: menuHashOpenBSDCrypt.Checked = true; break;
-                    case KeyHash.SCrypt: menuHashSCrypt.Checked = true; break;
-                    case KeyHash.Sha1: menuHashSha1.Checked = true; break;
-                    case KeyHash.Sha256: menuHashSha256.Checked = true; break;
-                    case KeyHash.Sha512: menuHashSha512.Checked = true; break;
-                    case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
-                    case KeyHash.Oct: menuHashOct.Checked = true; break;
-                    case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
-                    case KeyHash.CShake: menuHashCShake.Checked = true; break;
-                    case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
-                    case KeyHash.RipeMD256: menuHashRipeMD256.Checked = true; break;
-                    case KeyHash.TupleHash: menuHashTupleHash.Checked = true; break;
-                    case KeyHash.Hex: menuHashHex.Checked = true; break;
-                    default:
-                        Area23Log.LogOriginMsg("EncryptForm Hash", $"RadioButtonList: {radioButtonList.SelectedItem.ToString()} => KeyHash = {aKeyHash.ToString()}.");
-                        menuHashHex.Checked = true;
-                        break;
-                }
-            }
-
-            Hash_Click(this, new EventArgs());
-            if (cPipe != null)
-            {
-                cPipe.KHash = aKeyHash;
-                await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe?.GenerateEncryptPipeImage());
-            }
-            await SetInfoMessageAsync($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
-        }
-
-        /// <summary>
-        /// GetHash - gets selected hash type
-        /// </summary>
-        /// <returns></returns>
-        protected internal KeyHash GetHash()
-        {
-            if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
-            if (menuHashHex.Checked) return KeyHash.Hex;
-            if (menuHashMD5.Checked) return KeyHash.MD5;
-            if (menuHashOpenBSDCrypt.Checked) return KeyHash.OpenBSDCrypt;
-            if (menuHashSCrypt.Checked) return KeyHash.SCrypt;
-            if (menuHashSha1.Checked) return KeyHash.Sha1;
-            if (menuHashSha256.Checked) return KeyHash.Sha256;
-            if (menuHashSha512.Checked) return KeyHash.Sha512;
-            if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;
-            if (menuHashOct.Checked) return KeyHash.Oct;
-            if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
-            if (menuHashCShake.Checked) return KeyHash.CShake;
-            if (menuHashDstu7564.Checked) return KeyHash.Dstu7564;
-            if (menuHashRipeMD256.Checked) return KeyHash.RipeMD256;
-            if (menuHashTupleHash.Checked) return KeyHash.TupleHash;
-
-            menuHashHex.Checked = true;
-            return KeyHash.Hex;
-        }
+        
 
         #endregion MenuCompressionEncodingZipHash
 
@@ -441,62 +318,23 @@ namespace EU.CqrXs.Gui.Forms
         {
             if (!string.IsNullOrEmpty(this.textBoxKey.Text))
             {
-                this.textBoxHash.Text = GetHash().Hash(this.textBoxKey.Text);
-            }
-        }
+                string metaHash = KeyHash.OpenBSDCrypt.Hash(this.textBoxKey.Text);
+                this.textBoxHash1.Text = metaHash;
+                this.textBoxHashHash1.Text = KeyHash.BCrypt.Hash(metaHash);
+                metaHash = KeyHash.TupleHash.Hash(this.textBoxKey.Text);
+                this.textBoxHash2.Text = metaHash;
+                this.textBoxHashHash2.Text = KeyHash.SCrypt.Hash(metaHash);
+                metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
+                this.textBoxHash3.Text = metaHash;
+                this.textBoxHashHash3.Text = KeyHash.Whirlpool.Hash(metaHash);
 
-        /// <summary>
-        /// pictureBoxAddAlgo_Click - adds selected algorithm to pipeline
-        /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">EventArgs e</param>
-        protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
-        {
-            CipherEnum[] cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
-            {
-                if (cipherAlgos.Length < 8)
-                {
-                    switch (cipherEnum)
-                    {
-                        case CipherEnum.BlowFish:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
-                            break;
-                        case CipherEnum.Fish2:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
-                            break;
-                        case CipherEnum.Fish3:
-                        //case CipherEnum.ThreeFish256:
-                        //    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
-                        //    break;
-                        case CipherEnum.Serpent:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
-                            break;
-                        case CipherEnum.XTea:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.XTea, "", true);
-                            break;
-                        case CipherEnum.Tea:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Tea, "", true);
-                            break;
-                        case CipherEnum.Des:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Des, "", true);
-                            break;
-                        case CipherEnum.Des3:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
-                            break;
-                        default:
-                            break;
-                    }
-                    this.textBoxPipe.Text += cipherEnum.ToString() + ";";
-                    cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                    cPipe = new CipherPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash());
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage(), "", true);
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
-                }
-                else
-                {
-                    SetInfoMessage("Max 8 algorithms in pipe reached!", ToolTipIcon.Warning, 2000);
-                }
+                // this.TexextBoxHash1.Text = 
+                // this.textBoxHash.Text = GetHash().Hash(this.textBoxKey.Text);
+
+                cPipe = new CipherPipe(new CipherEnum[] { CipherEnum.BlowFish, CipherEnum.Fish2, CipherEnum.Fish3 }, 3, GetEncoding(), GetZip());
+                foreach (CipherEnum cipher in cPipe.InPipe)
+                    this.textBoxPipe.Text += cipher.ToString() + ";";
+                SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
             }
         }
 
@@ -532,15 +370,7 @@ namespace EU.CqrXs.Gui.Forms
             }
 
             this.textBoxPipe.Text = string.Empty;
-            if (string.IsNullOrEmpty(this.textBoxHash.Text))
-                Hash_Click(sender, e);
-
-            cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash());
-            foreach (CipherEnum cipher in cPipe.InPipe)
-            {
-                this.textBoxPipe.Text += cipher.ToString() + ";";
-            }
-            SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
+            Hash_Click(sender, e);
         }
 
         /// <summary>
@@ -556,16 +386,8 @@ namespace EU.CqrXs.Gui.Forms
                 return;
             }
 
-            this.textBoxPipe.Text = string.Empty;
-            if (string.IsNullOrEmpty(this.textBoxHash.Text))
-                Hash_Click(sender, e);
-
-            cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-            foreach (CipherEnum cipher in cPipe.InPipe)
-            {
-                this.textBoxPipe.Text += cipher.ToString() + ";";
-            }
-            SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
+            this.textBoxPipe.Text = string.Empty;            
+            Hash_Click(sender, e);            
         }
 
         /// <summary>
@@ -591,7 +413,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <param name="e">EventArgs e</param>
         protected internal async Task Reset_Click(object sender, EventArgs e)
         {
-            this.textBoxHash.Text = string.Empty;
+            this.textBoxHash3.Text = string.Empty;
             this.textBoxKey.Text = string.Empty;
             this.textBoxPipe.Text = string.Empty;
             this.tabControlWithHexSrc.AsciiText = string.Empty;
@@ -601,7 +423,6 @@ namespace EU.CqrXs.Gui.Forms
 
             await this.SetEncodingAsync(menuEncBase64);
             await this.SetCompressionAsync(null, "None");
-            await this.SetHashAsync(menuHashHex, radioButtonListHash);
             await this.statusLabelSource.SetTextAsync("");
             await this.statusLabelDestination.SetTextAsync("");
             await this.statusLabelMsg.SetTextAsync("");
@@ -625,7 +446,7 @@ namespace EU.CqrXs.Gui.Forms
                 SetInfoMessage("Key is empty!", ToolTipIcon.Warning, 2000);
                 return;
             }
-            if (string.IsNullOrEmpty(this.textBoxHash.Text))
+            if (string.IsNullOrEmpty(this.textBoxHash3.Text))
                 Hash_Click(sender, e);
 
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
@@ -639,8 +460,8 @@ namespace EU.CqrXs.Gui.Forms
                 if (result == DialogResult.Cancel)
                     return;
             }
-            CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+            CipherEnum[] pipeAlgos = new CipherEnum[] { CipherEnum.BlowFish, CipherEnum.Fish2, CipherEnum.Fish3 };
+            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip());
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateEncryptPipeImage());
 
@@ -655,11 +476,33 @@ namespace EU.CqrXs.Gui.Forms
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
                     if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                         await SetEncodingAsync(menuEncBase64);
+                    byte[] intermediateBytes = GetZip().Zip(System.Text.Encoding.UTF8.GetBytes(this.tabControlWithHexSrc.AsciiText));
+                    string metaHash = KeyHash.OpenBSDCrypt.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes, 
+                        CipherEnum.BlowFish,
+                        metaHash, 
+                        KeyHash.BCrypt.Hash(metaHash));
+                    
+                    metaHash = KeyHash.TupleHash.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes, 
+                        CipherEnum.Fish2,
+                        metaHash, 
+                        KeyHash.SCrypt.Hash(metaHash));
+                    
+                    metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes, 
+                        CipherEnum.Fish3,
+                        metaHash, 
+                        KeyHash.Whirlpool.Hash(metaHash));
 
-                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+
+                    string encrypted = GetEncoding().EnCode(intermediateBytes);
                     this.tabControlWithHexDest.AsciiText = encrypted;
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
-                    await SetInfoMessageAsync("Encryption finished", ToolTipIcon.Info, 5000);
+                    await SetInfoMessageAsync("1-2-3 fish finished", ToolTipIcon.Info, 5000);
                 }
                 catch (Exception ex)
                 {
@@ -697,10 +540,30 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
+                    byte[] intermediateBytes = (GetZip() == ZipType.None) ? fileBytes : GetZip().Zip(fileBytes);
+                    
+                    string metaHash = KeyHash.OpenBSDCrypt.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.BlowFish,
+                        metaHash,
+                        KeyHash.BCrypt.Hash(metaHash));
 
-                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
-                    string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
-                    string outFilePath = (fileName + GetHash().GetExtension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
+                    metaHash = KeyHash.TupleHash.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish2,
+                        metaHash,
+                        KeyHash.SCrypt.Hash(metaHash));
+
+                    metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
+                    byte[] encodedBytes = CipherPipe.EncryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish3,
+                        metaHash,
+                        KeyHash.Whirlpool.Hash(metaHash));
+
+                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + ".123fish");
 
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await this.statusLabelMsg.SetTextAsync("encryption time: " + DateTime.Now.Subtract(start).ToString());
@@ -713,23 +576,7 @@ namespace EU.CqrXs.Gui.Forms
                     {
                         string outFileName = Path.GetFileName(outFilePath);
                         bool isVerified = true;
-                        if (sha512ToolStripMenuItem.Checked)
-                            isVerified = await VerifyEncryptedFileShaAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
-                        if (bytesOfFileToolStripMenuItem.Checked)
-                            isVerified = await VerifyEncryptedFileBytesAsync(fileName, outFilePath, this.textBoxKey.Text, this.textBoxHash.Text, cPipe);
-
-                        if (!isVerified)
-                        {
-                            await SetInfoMessageAsync("Encryption couldn't be verified", ToolTipIcon.Warning, -1);
-                            await this.PlaySoundFromResourcesAsync("sound_hammer");
-                            await groupBoxFiles.pictureBoxFileOut.SetImageTagVisibleAsync(Properties.Resources.file_encrypted_broken, "{" + outFilePath + "}", true);
-                        }
-                        else
-                        {
-                            await SetInfoMessageAsync("Encryption verified", ToolTipIcon.Info, -1);
-                            // await this.PlaySoundFromResourcesAsync("sound_laser");
-                            await groupBoxFiles.pictureBoxFileOut.SetImageTagVisibleAsync(outFilePath.GetImageThumbnailFromFile(), "{" + outFilePath + "}", true);
-                        }
+                        
 
                         await groupBoxFiles.labelOutputFile.SetTextVisibleAsync(outFileName, true);
 
@@ -779,15 +626,15 @@ namespace EU.CqrXs.Gui.Forms
                 await SetInfoMessageAsync("Key is empty!", ToolTipIcon.Warning, -1);
                 return;
             }
-            if (string.IsNullOrEmpty(this.textBoxHash.Text))
+            if (string.IsNullOrEmpty(this.textBoxHash3.Text))
                 Hash_Click(sender, e);
 
             DateTime start = DateTime.Now;
 
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
-            CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash());
+            CipherEnum[] pipeAlgos = new CipherEnum[] { CipherEnum.BlowFish, CipherEnum.Fish3, CipherEnum.Fish3 };
+            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip());
             // SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateDecryptPipeImage());
             await this.groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());            
 
@@ -803,7 +650,32 @@ namespace EU.CqrXs.Gui.Forms
                     if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
                         await SetEncodingAsync(menuEncBase64);
 
-                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    byte[] intermediateBytes = GetEncoding().DeCode(this.tabControlWithHexSrc.AsciiText);
+
+                    string metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish3,
+                        metaHash,
+                        KeyHash.Whirlpool.Hash(metaHash));
+
+                    metaHash = KeyHash.TupleHash.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish2,
+                        metaHash,
+                        KeyHash.SCrypt.Hash(metaHash));
+
+                    metaHash = KeyHash.OpenBSDCrypt.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.BlowFish,
+                        metaHash,
+                        KeyHash.BCrypt.Hash(metaHash));
+
+                    intermediateBytes = GetZip().Unzip(intermediateBytes);
+                    string decrypted = System.Text.Encoding.UTF8.GetString(intermediateBytes);
+
                     this.tabControlWithHexDest.AsciiText = decrypted;
                     await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
@@ -834,9 +706,31 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
-                    byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash());
+                    byte[] intermediateBytes = GetEncoding().DeCode(System.Text.Encoding.UTF8.GetString(fileBytes));
+                    string metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish3,
+                        metaHash,
+                        KeyHash.Whirlpool.Hash(metaHash));
 
-                    string outFileDecrypt = fileName.StripCiphersInFileName();
+                    metaHash = KeyHash.TupleHash.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.Fish2,
+                        metaHash,
+                        KeyHash.SCrypt.Hash(metaHash));
+
+                    metaHash = KeyHash.OpenBSDCrypt.Hash(this.textBoxKey.Text);
+                    intermediateBytes = CipherPipe.DecryptBytesFast(
+                        intermediateBytes,
+                        CipherEnum.BlowFish,
+                        metaHash,
+                        KeyHash.BCrypt.Hash(metaHash));
+
+                    byte[] outBytes = GetZip().Unzip(intermediateBytes);
+
+                    string outFileDecrypt = fileName.Replace(".123fish", "").Replace(GetZip().GetZipTypeExtension(), "");
 
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(outBytes, ref outFileDecrypt) :
@@ -964,16 +858,6 @@ namespace EU.CqrXs.Gui.Forms
                         ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
                         ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
 
-                        foreach (var miHash in menuHashes)
-                        {
-                            if (miHash.Name.Replace("menuHash", "").Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                                miHash.Text.Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                SetHashAsync((ToolStripMenuItem)miHash, radioButtonListHash).ConfigureAwait(false);
-
-                                break;
-                            }
-                        }
                         foreach (var miEnc in menuEncodings)
                         {
                             if (miEnc.Name.Replace("menuEnc", "").Equals(cPipe.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
@@ -1034,12 +918,12 @@ namespace EU.CqrXs.Gui.Forms
         /// <returns></returns>
         protected internal virtual async Task menuFileNew_Click(object sender, EventArgs e)
         {
-            OneTwoThreeFish oneTwoThreeFish = new OneTwoThreeFish();
-            DialogResult result = await oneTwoThreeFish.ShowDialogAsync();
+            EncryptForm encryptForm = new EncryptForm();
+            DialogResult result = await encryptForm.ShowDialogAsync();
             if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
                 result == DialogResult.Ignore)
             {
-                try { oneTwoThreeFish.Close(); } catch { }
+                try { encryptForm.Close(); } catch { }
             }
         }
 
