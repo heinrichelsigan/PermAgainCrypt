@@ -1,0 +1,223 @@
+\documentclass{article}
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Symmetric Cipher}
+\author{Heinrich Elsigan}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+
+
+
+\begin{abstract}
+
+Hi, I’m @heinrichelsigan
+I’m interested in CSharp, Java, MSSQL, .Net Core, Android and politics, society and the future.
+I’m currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects.
+ 
+All my social media, development and legal weblinks: \href{https://heinrichelsigan.area23.at/}{heinrichelsigan.area23.at}
+
+Read my blog here: \href{https://blog.area23.at}{blog.area23.at}
+
+GitHub:  \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan}
+
+Samples from my repositories: \href{https://area23.at/net/}{area23.at/net/}
+
+StackOverflow: \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
+
+Curriculum vitae: \href{https://drive.google.com/file/d/1-QIu8CFtnEKeYSVarKKrDL_e5aofg9Zh/view?usp=drive_link}{heinrichelsigan.area23.at/cv} 
+
+
+\end{abstract}
+
+
+\section{Thanks to}
+
+Normally, thanks to are always at the end of each paper,
+but the people or organizations I benefited from while trying to make AES strong again
+are more important than a simple proof of concept showing that it works, except on my
+raw experimental test form.
+
+\href{https://www.bouncycastle.org/}{bouncycastle.org}
+
+\href{https://www.schneier.com/}{schneier.com}
+
+\href{https://github.com/dotnet/}{github.com/dotnet}
+
+\href{https://github.com/microsoft}{github.com/microsoft}
+
+\href{https://git.lysator.liu.se/nettle/nettle}{git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
+
+Go to \href{https://io.cqrxs.eu/download/}{io.cqrxs.eu/download} and choose latest version.
+Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bug, because 3-fish
+uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
+settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
+
+
+\section{Documentation online en-/decrypt form}
+
+\begin{figure}
+\includegraphics[width=0.2\linewidth]{Symmetric_Cipher_WebForm.jpg}
+\caption{\label{fig:Symmetric Cipher WebForm}Symmetric Cipher WebForm}
+\end{figure}
+
+\begin{enumerate}
+    \item Key: When clicking key your entered key will be stored temporary in session.
+    \item Textbox secret key: Enter your Email address and secret key.
+    \item Buton Clear: Clear and reset the entire form.
+    \item Hyperlink Help: Show this help
+    \item RadioButtonList KeyHashes
+Choose the hash method to hash your secret key.
+    \item ImageButton Hash: Clicking will hash your key and display hashed key in textbox.    
+    \item TextBox Hash (readonly): Displays your hashed key.
+    \item Button “Set Pipe”: sets symmetric cipher pipe, dependent only on your entered key
+    \item Button “Hash Pipe”: sets symmetric cipher pipe, dependent primary on calculated hash
+and secondary on your entered key.
+    \item DropDown ZipTypes Choose encryption type (Please only GZip or Zip or None)
+    \item DropDown CipherTypes Choose a symmetric cipher to add it to the symmetric cipher
+pipe.
+    \item ImageButton „add algo“: Clicking on will add the in c. DropDown CipherTypes
+selected symmetric cipher algorithm to CipherPipe.
+    \item TextBox CipherPipe (readonly): Displays the current Cipher Pipe algorithms.
+    \item ImageButton “Clear Pipe”: Clicking on will clear only the entire Cipher Pipe
+    \item DropDown EncodingTypes: Choose the final binary to ascii encoder, default is Base64.
+Beware of using uuencode in Web, because <> will be interpreted as possible html
+injection.
+    \item TextArea Source: paste or enter Text here.
+    \item TextArea Destination: (readonly) After clicking Encrypt or Decrypt processed text will
+appear in the text area.
+    \item Button Encrypt: Encrypts the text from TextArea Source and displays encrypted text in
+TextArea Destination.
+    \item Button “Random Text”: Adds a short fortune to TextArea Source.
+    \item Button Decrypt: Decrypts text in TextArea Source and display decrypted text in
+TextArea Destination.
+\end{enumerate}
+
+
+\subsection{Windows form single exe}
+\href{https://io.cqrxs.eu/download/}{io.cqrxs.eu/download/}
+
+\subsection{PermAgainCrypt more minimalistic git repository}
+\href{https://github.com/heinrichelsigan/PermAgainCrypt/}{github.com/heinrichelsigan/PermAgainCrypt}
+
+\section{Documentation of WinForm}
+
+
+\subsection{How to include Figures}
+
+First you have to upload the image file from your computer using the upload link in the file-tree menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:frog} in this section for an example.
+
+Note that your figure will automatically be placed in the most appropriate place for it, given the surrounding text and taking into account other figures or tables that may be close by. You can find out more about adding images to your documents in this help article on \href{https://www.overleaf.com/learn/how-to/Including_images_on_Overleaf}{including images on Overleaf}.
+
+\subsection{How to add Tables}
+
+
+\begin{center}
+ \begin{tabular}{|c|c c c c|}
+ \hline
+ Col0 & Col1 & Col2 & Col2 & Col3 \\ [0.5ex]
+ \hline
+ f(0) & 1 & 6 & 87837 & 787 \\
+ f(1) & 2 & 7 & 78 & 5415 \\
+ f(2) & 3 & 545 & 778 & 7507 \\
+ f(3) & 4 & 545 & 18744 & 7560 \\
+ f(4) & 5 & 88 & 788 & 6344 \\ [1ex]
+ \hline
+\end{tabular}
+\end{center}
+
+Use the table and tabular environments for basic tables --- see Table~\ref{tab:widgets}, for example. For more information, please see this help article on \href{https://www.overleaf.com/learn/latex/tables}{tables}.
+
+\begin{table}
+\centering
+\begin{tabular}{l|r}
+Item & Quantity \\\hline
+Widgets & 42 \\
+Gadgets & 13
+\end{tabular}
+\caption{\label{tab:widgets}An example table.}
+\end{table}
+
+\subsection{How to add Comments and Track Changes}
+
+Comments can be added to your project by highlighting some text and clicking ``Add comment'' in the top right of the editor pane. To view existing comments, click on the Review menu in the toolbar above. To reply to a comment, click on the Reply button in the lower right corner of the comment. You can close the Review pane by clicking its name on the toolbar when you're done reviewing for the time being.
+
+Track changes are available on all our \href{https://www.overleaf.com/user/subscription/plans}{premium plans}, and can be toggled on or off using the option at the top of the Review pane. Track changes allow you to keep track of every change made to the document, along with the person making the change.
+
+\subsection{How to add Lists}
+
+You can make lists with automatic numbering \dots
+
+\begin{enumerate}
+\item Like this,
+\item and like this.
+\end{enumerate}
+\dots or bullet points \dots
+\begin{itemize}
+\item Like this,
+\item and like this.
+\end{itemize}
+
+\subsection{How to write Mathematics}
+
+\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+\[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+      = \frac{1}{n}\sum_{i}^{n} X_i\]
+denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+
+
+\subsection{How to change the margins and paper size}
+
+Usually the template you're using will have the page margins and paper size set correctly for that use-case. For example, if you're using a journal article template provided by the journal publisher, that template will be formatted according to their requirements. In these cases, it's best not to alter the margins directly.
+
+If however you're using a more general template, such as this one, and would like to alter the margins, a common way to do so is via the geometry package. You can find the geometry package loaded in the preamble at the top of this example file, and if you'd like to learn more about how to adjust the settings, please visit this help article on \href{https://www.overleaf.com/learn/latex/page_size_and_margins}{page size and margins}.
+
+\subsection{How to change the document language and spell check settings}
+
+Overleaf supports many different languages, including multiple different languages within one document.
+
+To configure the document language, simply edit the option provided to the babel package in the preamble at the top of this example project. To learn more about the different options, please visit this help article on \href{https://www.overleaf.com/learn/latex/International_language_support}{international language support}.
+
+To change the spell check language, simply open the Overleaf menu at the top left of the editor window, scroll down to the spell check setting, and adjust accordingly.
+
+\subsection{How to add Citations and a References List}
+
+You can simply upload a \verb|.bib| file containing your BibTeX entries, created with a tool such as JabRef. You can then cite entries from it, like this: \cite{greenwade93}. Just remember to specify a bibliography style, as well as the filename of the \verb|.bib|. You can find a \href{https://www.overleaf.com/help/97-how-to-include-a-bibliography-using-bibtex}{video tutorial here} to learn more about BibTeX.
+
+If you have an \href{https://www.overleaf.com/user/subscription/plans}{upgraded account}, you can also import your Mendeley or Zotero library directly as a \verb|.bib| file, via the upload menu in the file-tree.
+
+
+\section{Theory} 
+
+\begin{figure}
+\centering
+\includegraphics[width=0.25\linewidth]{Symmetric_Cipher_Pipeline.png}
+\caption{\label{fig:Symmetric Cipher Pipeline}Symmetric Cipher Pipeline}
+\end{figure}
+
+
+
+\subsection{Good luck!}
+
+We hope you find Overleaf useful, and do take a look at our \href{https://www.overleaf.com/learn}{help library} for more tutorials and user guides! Please also let us know if you have any feedback using the \textbf{Contact us} link at the bottom of the Overleaf menu --- or use the contact form at \url{https://www.overleaf.com/contact}.
+
+
+\bibliographystyle{alpha}
+\bibliography{sample}
+
+\end{document}
+
