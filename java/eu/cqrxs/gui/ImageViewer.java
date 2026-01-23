@@ -6,16 +6,11 @@
  */
 package eu.cqrxs.gui;
 
-import eu.cqrxs.gui.VetoableChangeSupport;
-import eu.cqrxs.gui.PropertyChangeSupport;
-import eu.cqrxs.gui.ErrorsBundle;
-
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.beans.PropertyVetoException;

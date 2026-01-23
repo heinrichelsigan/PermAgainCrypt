@@ -10,6 +10,7 @@
 
 package eu.cqrxs.zip;
 
+import eu.cqrxs.util.NotImplementedError;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
@@ -18,12 +19,10 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import eu.cqrxs.util.NotImplementedError;
-
 /**
  * ZipType represents the enumerator for all Encoding to ascii algorithms
  */
-public enum ZipType implements Serializable {
+public enum ZipType /* implements Serializable */ {
     None(0x00),
 	Zip(0x10),
 	GZip(0x20),

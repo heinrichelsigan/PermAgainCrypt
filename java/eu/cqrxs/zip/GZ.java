@@ -13,7 +13,6 @@ package eu.cqrxs.zip;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.*;
-import java.util.zip.*;
 // import org.apache.commons.io.IOUtils;
 
 public class GZ  {

@@ -1,22 +1,19 @@
 package eu.cqrxs.crypt.cipher;
 
 // import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
-
 // import androidx.core.content.res.TypedArrayUtils;
-
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
+
+import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.crypt.encoding.EnDeCodeHelper;
+import eu.cqrxs.zip.ZipType;
+import eu.cqrxs.zip.GZ;
+import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.util.Constants;
+
 import org.bouncycastle.crypto.*;
 import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
@@ -28,18 +25,7 @@ import org.bouncycastle.crypto.modes.EAXBlockCipher;
 import org.bouncycastle.crypto.modes.GOFBBlockCipher;
 import org.bouncycastle.crypto.paddings.BlockCipherPadding;
 import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
-import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.bouncycastle.jcajce.provider.symmetric.AES;
-
-import eu.cqrxs.crypt.encoding.EncodeEnum;
-import eu.cqrxs.crypt.encoding.Hex16Coder;
-import eu.cqrxs.crypt.encoding.EnDeCodeHelper;
-import eu.cqrxs.crypt.hash.KeyHash;
-import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.*;
-import eu.cqrxs.util.Constants;
-import eu.cqrxs.util.*;
 
 /**
  * CryptBouncyCastle generic crypt wrapper class
@@ -303,7 +289,7 @@ public class CryptBounceCastle  {
         }
         catch (Exception exDecrypt)
         {
-			eu.cqrxs.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on decrypting final block" + exDecrypt.toString(), false);
+			DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on decrypting final block" + exDecrypt.toString(), false);
             try
             {
                 plainData = new byte[outputSize];
@@ -311,7 +297,7 @@ public class CryptBounceCastle  {
             }
             catch (Exception exDecrypt2)
             {
-				eu.cqrxs.util.DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on 2x decrypting final block: " + exDecrypt2.toString(), false);
+				DbgWriter.msg("CryptBounceCastle " + CryptoBlockCipher.getAlgorithmName() + ": Exceptíon on 2x decrypting final block: " + exDecrypt2.toString(), false);
                 // plainData = new byte[outputSize];
                 bs = cipherMode.doFinal(plainData, result);
             }

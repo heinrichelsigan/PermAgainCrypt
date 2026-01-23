@@ -12,15 +12,10 @@ package eu.cqrxs.crypt.hash;
 
 import org.bouncycastle.crypto.Digest;
 
-import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HexFormat;
-import java.util.List;
-import java.util.Set;
+
 import eu.cqrxs.util.*;
 
 public class Whirlpool {

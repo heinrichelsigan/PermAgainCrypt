@@ -4,9 +4,6 @@
 */
 package eu.cqrxs.gui;
 
-import eu.cqrxs.gui.*;
-import eu.cqrxs.gui.ImageTest;
-
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,7 +20,7 @@ public class ImageTest {
     {
       ImageTest imgTest; 
       if (avg == null || avg.length == 0) {
-        imgTest = new ImageTest("cqrxs-eu.jpg");
+        imgTest = new ImageTest("eu/cqrxs/gui/cqrxs-eu.jpg");
         return;
       }
 

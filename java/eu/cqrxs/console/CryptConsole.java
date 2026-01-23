@@ -9,7 +9,6 @@
 
 package eu.cqrxs.console;
 
-import eu.cqrxs.console.OptEnum;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
@@ -22,7 +21,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -32,18 +30,13 @@ import java.util.HashMap;
  *  ConsoleMain
  *  -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
  *  -o | --outFile= | --outText=EnviromentVariable | --outStd
- *  -u | --unzip={gzip|bzip2|zip}
  *  -z | --zip={gzip|bzip2|zip}
- *  -d | --decode={raw|hex16|hex32|base32|base64|uu}
  *  -e | --encode={raw|hex16|hex32|base32|base64|uu}
  *  -C | --crypt={[aes,des3,blowfish,fish2,fish3]|key}
- *     |  -p --pass=Passphrase
- *  -D | --decrypt={[aes,des3,blowfish,fish2,fish3]|key}
- *     |  -p --pass=Passphrase
  *  -k | --key=mykey
- *  -q | --qey=myqey
  *  -H | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
  *  -S | --SymmCipher
+ *  -D | --Decrypt 
  *  -? | --gethelp
  *
  */
@@ -58,9 +51,9 @@ public class CryptConsole  {
     static java.io.File outFile = null;
     static byte[] inBytes = null, outBytes = null;
     static String passKey = "";
-    static eu.cqrxs.zip.ZipType zipType = ZipType.None;
-    static eu.cqrxs.crypt.encoding.EncodeEnum encodingType = EncodeEnum.None;
-    static eu.cqrxs.crypt.hash.KeyHash keyHash = KeyHash.Hex;
+    static ZipType zipType = ZipType.None;
+    static EncodeEnum encodingType = EncodeEnum.None;
+    static KeyHash keyHash = KeyHash.Hex;
 
     /**
      * Main entry method
@@ -79,8 +72,8 @@ public class CryptConsole  {
             progName = "CryptConsole.java";
         }
 
-        // if (args.length < 1)
-            // usage("");
+        if (args.length < 1)
+             usage("");
         encodingType = EncodeEnum.None;
         Constants.DirCreate = false;
         Constants.NOLog = true;
@@ -96,20 +89,17 @@ public class CryptConsole  {
             // System.out.println("argv[" + i+ "] = " + args[i] + " " + optEnum.toString() + " option=" +  optStr);
             // Nothing todo on io params
             if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
-            else // Help => usage()
-                if (optEnum == OptEnum.Help)
-                    usage("");
-                else // usage with error message
-                    if (optEnum == OptEnum.Usage)
-                        usage(optStr);
-                    else // fetch passphrase or Key or Qey (decrypt key) from optEnum and optStr
-                        if (optEnum == OptEnum.Pass || optEnum == OptEnum.Key || optEnum == OptEnum.Qey)
-                            passKey = optStr;
-                        else // prefetch SymmCipherMode
-                            if (optEnum == OptEnum.SymmCipher)
-                                useSymmCipher = true;
-                            else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>();
-                                dict.put(optEnum, optStr);
+            else if (optEnum == OptEnum.Help) // Help => usage()
+                usage("");
+            else if (optEnum == OptEnum.Usage) // usage with error message 
+                usage(optStr); 
+            // fetch passphrase or Key (decrypt key) from optEnum and optStr
+            else if (optEnum == OptEnum.Key)
+                passKey = optStr;
+            else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode 
+                useSymmCipher = true; 
+            else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>(); 
+                dict.put(optEnum, optStr);
         }
         // read from stdin, when no inName specified
         if (inName.isEmpty()) {
@@ -137,7 +127,6 @@ public class CryptConsole  {
             String optStr = dict.get(optVar);
             switch (optVar) {
                 case OptEnum.Zip:
-                case OptEnum.Unzip:
                     if (optStr.toLowerCase().contains("gz") ||
                             optStr.toLowerCase().contains("gunzip"))
                         zipType = ZipType.GZip;
@@ -155,7 +144,6 @@ public class CryptConsole  {
 
                     break;
                 case OptEnum.Encode:
-                case OptEnum.Decode:
                     encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
                     System.out.println("optVar=" + optVar + " optStr=" + optStr + " encodingType = " + encodingType.toString());
                     break;
@@ -179,26 +167,18 @@ public class CryptConsole  {
 
         CipherPipe pipe;
         // Create cipher pipe for en-/decryption
-        if (passKey == null || passKey.length() == 0) {
+        if (passKey == null || passKey.isEmpty() || algos.length > 0) {
             pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
             System.out.println("Created pipe without passkey: " + pipe.getPipeString());
         } else {
-            if (algos.length > 0) {
-                pipe = new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
-                System.out.println("Created pipe withput passkey; pipe=" + pipe.getPipeString());
-            } else {
-                pipe = new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
-                System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
-            }
+            pipe = new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
+            System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
         }
 
         String outString = "";
         if (!reverseDirection) { // encrypt
 
-            System.out.print("InPipe: ");
-            for (CipherEnum cipher : pipe.getInPipe())
-                System.out.print(cipher + "=>");
-
+            PrintPipe(pipe, reverseDirection);
             // CipherPipe encrypt encode
             try {
                 passKey = (passKey.length() == 0) ? " " : passKey;
@@ -208,18 +188,10 @@ public class CryptConsole  {
                 exi.printStackTrace();
             }
             outString = new String(outBytes);
-            System.out.println("\r\nCipherPipe:" +
-                    "\n\tKeyHash    \t= " + pipe.getKeyHash() +
-                    "\n\tZipType    \t= " + pipe.getZipType() +
-                    "\n\tEncodeEnum \t= " + pipe.getEncodeType() +
-                    "\n\tPipeString \t= " + pipe.getPipeString());
         } else { // decrypt
 
             String inString = new String(inBytes);
-            System.out.print("OutPipe: ");
-            for (CipherEnum cipher : pipe.getOutPipe())
-                System.out.print(cipher + "=>");
-
+            PrintPipe(pipe, reverseDirection);
             // CipherPipe decode decrypt
             try {
                 passKey = (passKey.length() == 0) ? " " : passKey;
@@ -229,12 +201,6 @@ public class CryptConsole  {
             } catch (Exception exi) {
                 exi.printStackTrace();
             }
-
-            System.out.println("\r\nCipherPipe:" +
-                    "\n\tKeyHash    \t= " + pipe.getKeyHash() +
-                    "\n\tZipType    \t= " + pipe.getZipType() +
-                    "\n\tEncodeEnum \t= " + pipe.getEncodeType() +
-                    "\n\tPipeString \t= " + pipe.getPipeString());
         }
 
         inBytes = outBytes;
@@ -271,10 +237,29 @@ public class CryptConsole  {
         return;
     }
 
+    /**
+     * PrintPipe prints out a CipherPipe
+     * @param cpipe
+     * @param decryptDirection
+     */
+    public static void PrintPipe(CipherPipe cpipe, boolean decryptDirection) {
+        String pipeDirection = (decryptDirection) ? "OutPipe: " : " InPipe: ";
+        CipherEnum[] ciphers = (decryptDirection) ? cpipe.getOutPipe() : cpipe.getInPipe();
+        String prOut = "CipherPipe: " + pipeDirection +
+                "\n\tKeyHash    \t= " + cpipe.getKeyHash() +
+                "\n\tZipType    \t= " + cpipe.getZipType() +
+                "\n\tEncodeEnum \t= " + cpipe.getEncodeType() +
+                "\n\tPipeString \t= " + cpipe.getPipeString() +
+                "\n\t";
+        for (CipherEnum cipher : ciphers)
+            prOut = prOut + cipher + "=>";
+        System.out.print(prOut);
+    }
+
     /***
      * getOptArg gets an option by argument
      * @param argument the argument
-     * @return {@link OptCon}
+     * @return {@link String[]n}
      */
     public static String[] getOptArg(String argument) {
         String[] optArgs = new String[2];
@@ -357,20 +342,15 @@ public class CryptConsole  {
                 optArgs[0] = OptEnum.Zip.toString();
                 optArgs[1] = optArg;
                 return optArgs;
-            case 'U':
-            case 'u':
-                reverseDirection = true;
-                optArgs[0] = OptEnum.Unzip.toString();
-                optArgs[1] = optArg;
-                return optArgs;
             case 'E':
             case 'e':
                 optArgs[0] = OptEnum.Encode.toString();
                 optArgs[1] = optArg;
                 return optArgs;
+            case 'D':
             case 'd':
                 reverseDirection = true;
-                optArgs[0] = OptEnum.Decode.toString();
+                optArgs[0] = OptEnum.Decrypt.toString();
                 optArgs[1] = optArg;
                 return optArgs;
             case 'C':
@@ -378,25 +358,9 @@ public class CryptConsole  {
                 optArgs[0] = OptEnum.Crypt.toString();
                 optArgs[1] = optArg;
                 return optArgs;
-            case 'D':
-                reverseDirection = true;
-                optArgs[0] = OptEnum.Decrypt.toString();
-                optArgs[1] = optArg;
-                return optArgs;
             case 'k':
             case 'K':
                 optArgs[0] = OptEnum.Key.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'p':
-            case 'P':
-                optArgs[0] = OptEnum.Pass.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'q':
-            case 'Q':
-                reverseDirection = true;
-                optArgs[0] = OptEnum.Qey.toString();
                 optArgs[1] = optArg;
                 return optArgs;
             case 'h':
@@ -431,11 +395,9 @@ public class CryptConsole  {
         System.out.println("Usage:\t" + progName + " \n" +
                 "\t-i | --inFile= | --inText={string|EnviromentVariable} | --inStd \n" +
                 "\t-o | --outFile= | --outText=EnviromentVariable | --outStd \n" +
-                "\t-u | --unzip={gzip|bzip2} \n" +
                 "\t-z | --zip={gzip|bzip2}  \n" +
-                "\t-d | --decode={raw|hex16|hex32|base32|base64|uu} \n" +
                 "\t-e | --encode={raw|hex16|hex32|base32|base64|uu} \n" +
-                "\t-c | --crypt={algo1,algo2,...} \n" +
+                "\t-C | --crypt={algo1,algo2,...} \n" +
                 "\talgo: \n" +
                 "\t\tAes,AesLight,Rijndael,Des,Des3,Dstu7624, \n" +
                 "\t\tAria,Camellia,CamelliaLight,Cast5,Cast6, \n" +
@@ -446,23 +408,25 @@ public class CryptConsole  {
                 "\t\tTea,Tnepres,XTea, \n" +
                 "\t\tZenMatrix,ZenMatrix2 \n" +
                 "\tsymmAlgo: \n" +
-                "\t\tAes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4 \n" +
-                "\t-p --pass=Passphrase \n" +
-                "\t-D | --decrypt=={algo1,algo2,...} \n" +
-                "\t\t-p --pass=Passphrase \n" +
+                "\t\tAes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4\n" +
                 "\t-k | --key=passKey encrypt \n" +
-                "\t-q | --qey=passKey decrypt \n" +
                 "\t-h | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak} \n" +
+                "\t-D | --Decrypt \n" +
                 "\t-S | --SymmCipher \n" +
-                "\t-? | --gethelp");
+                "\t-? | --gethelp\n");
 
-        System.out.println("\nExamples: \n" +
-                "\t" + dirPath + " -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32 \n" +
-                "\t" + dirPath + " -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg \n" +
-                "\t" + dirPath + " --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64 \n"+
-                "\t" + dirPath + " -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg \n" +
-                "\t" + dirPath + " -i=README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=README.MD.SCrypt.zip.uu \n" +
-                "\t" + dirPath + " -i=README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=README_UNZIP.txt");
+        String uout = "Examples: \n" +
+            "\tEU.CqrXs.Console.exe -i=README.MD -e=base16 -o=READ_MD.base16 \n" +
+            "\tEU.CqrXs.Console.exe -D  -i=READ_MD.base16 -e=base16 -o=README_MD.txt \n" +
+            "\tEU.CqrXs.Console.exe -i=README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=README_MD.gz.BfF.base64 \n" +
+            "\tEU.CqrXs.Console.exe -D -i=README_MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=README_GUNZIP.txt \n" +
+            "\tEU.CqrXs.Console.exe -i=README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=README_MD.Whirlpool.bz.Hex32 \n" +
+            "\tEU.CqrXs.Console.exe -D -i=README_MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=README.BUNZIP.txt \n " +
+            "\tEU.CqrXs.Console.exe -i=README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=README_MD.SCrypt.zip.uu \n " +
+            "\tEU.CqrXs.Console.exe -D -i=README_MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=README_MD_UNZIP.txt \n" +
+            "\tEU.CqrXs.Console.exe -i=README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=README_MD.BCrypt.zip.xx \n" +
+            "\tEU.CqrXs.Console.exe -D -i=README_MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=README_SYM_BCRYPT_UNZIP.txt \n";
+        System.out.println(uout);
 
         System.exit(0);
     }

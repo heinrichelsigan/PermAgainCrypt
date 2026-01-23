@@ -10,12 +10,7 @@ package eu.cqrxs.crypt.encoding;
 
 import java.lang.Character;
 import java.nio.charset.Charset;
-import java.util.Base64;
-import java.util.Arrays;
 import java.util.HexFormat;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Base16 En-/Decoder
@@ -23,7 +18,7 @@ import java.util.stream.IntStream;
  * 2026-01-21 changed encoding output toUpperCase
  *
  */
-public class Base16Coder extends EnDeCoder  {
+public class Base16Coder implements IEncodable {
 
 	public final static String VALID_CHARS = "0123456789abcdef";
 	public String error = "";

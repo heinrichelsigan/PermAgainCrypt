@@ -1,8 +1,5 @@
 #
 # Makefile for cqrxs java
-# 
-
-# java runtime
 # JAVA FLAGS for java runtime
 JAVAFLAGS=--enable-native-access=ALL-UNNAMED
 # JAVACFLAGS flags for javac compiler
@@ -21,7 +18,7 @@ all: cqrxs console
 cqrxs:
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/util/CException.java eu/cqrxs/util/NotImplementedError.java eu/cqrxs/util/Constants.java eu/cqrxs/util/Fortune.java eu/cqrxs/util/DbgWriter.java  
 	
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/encoding/uu/CEFormatException.java eu/cqrxs/crypt/encoding/uu/CEStreamExhausted.java eu/cqrxs/crypt/encoding/uu/CharacterDecoder.java eu/cqrxs/crypt/encoding/uu/CharacterEncoder.java  eu/cqrxs/crypt/encoding/uu/UUDecoder.java  eu/cqrxs/crypt/encoding/uu/UUEncoder.java eu/cqrxs/crypt/encoding/EnDeCodeHelper.java eu/cqrxs/crypt/encoding/EncodeEnum.java eu/cqrxs/crypt/encoding/EnDeCoder.java  eu/cqrxs/crypt/encoding/Base16Coder.java eu/cqrxs/crypt/encoding/Hex16Coder.java eu/cqrxs/crypt/encoding/Base64Coder.java  eu/cqrxs/crypt/encoding/UuCoder.java eu/cqrxs/crypt/encoding/XxEncoder.java
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/encoding/uu/CEFormatException.java eu/cqrxs/crypt/encoding/uu/CEStreamExhausted.java eu/cqrxs/crypt/encoding/uu/CharacterDecoder.java eu/cqrxs/crypt/encoding/uu/CharacterEncoder.java  eu/cqrxs/crypt/encoding/uu/UUDecoder.java  eu/cqrxs/crypt/encoding/uu/UUEncoder.java eu/cqrxs/crypt/encoding/EnDeCodeHelper.java eu/cqrxs/crypt/encoding/EncodeEnum.java eu/cqrxs/crypt/encoding/IEncodable.java  eu/cqrxs/crypt/encoding/Base16Coder.java eu/cqrxs/crypt/encoding/Hex16Coder.java eu/cqrxs/crypt/encoding/Base64Coder.java  eu/cqrxs/crypt/encoding/UuCoder.java eu/cqrxs/crypt/encoding/XxEncoder.java
 	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/cipher/CipherEnum.java eu/cqrxs/crypt/cipher/CipherPipe.java eu/cqrxs/crypt/cipher/CryptBounceCastle.java eu/cqrxs/crypt/cipher/CryptHelper.java eu/cqrxs/crypt/cipher/CryptParams.java eu/cqrxs/crypt/cipher/SymmCipherEnum.java 
 	
@@ -48,9 +45,11 @@ run: cqrxs console
 	java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java 
 
 
+jar: cqrxs console
+	echo "building eu.cqrxs.jar " 
+	jar --create --file eu.cqrxs.jar --main-class eu.cqrxs.gui.CqrJdFrame @classes.list
+
 # clean cleans client6 server6_clone 
 clean: 
 	echo "cleaning classes from last build in eu/cqrxs/ eu/cqrxs/cqrframe/ eu/cqrxs/gui/ "
-	rm -rf *.class
-
-
+	rm -rf *.class eu.cqrxs.jar

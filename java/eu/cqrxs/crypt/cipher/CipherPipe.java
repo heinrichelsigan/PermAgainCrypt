@@ -4,28 +4,20 @@ package eu.cqrxs.crypt.cipher;
 // import com.google.common.primitives.Bytes;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
-import org.bouncycastle.crypto.*;
-import org.bouncycastle.crypto.engines.*;
-import org.bouncycastle.crypto.BlockCipher;
 
 import eu.cqrxs.crypt.encoding.EncodeEnum;
-import eu.cqrxs.crypt.cipher.CipherEnum;
-import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.crypt.hash.KeyHash;
-import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.GZ;
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.util.*;
+import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.util.NotImplementedError;
+import eu.cqrxs.zip.ZipType;
+
+import org.bouncycastle.crypto.*;
 
 /**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line

@@ -32,18 +32,9 @@ package cqrxs.eu.fw.crypt.endecoding;
  */
 package eu.cqrxs.crypt.encoding.uu;
 
-import eu.cqrxs.crypt.encoding.uu.CharacterEncoder;
-import eu.cqrxs.crypt.encoding.uu.CharacterDecoder;
-import eu.cqrxs.crypt.encoding.uu.CEFormatException;
-import eu.cqrxs.crypt.encoding.uu.CEStreamExhausted;
 import java.io.PushbackInputStream;
 import java.io.OutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**

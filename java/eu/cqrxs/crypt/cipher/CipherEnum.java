@@ -10,6 +10,7 @@
 
 package eu.cqrxs.crypt.cipher;
 
+import  eu.cqrxs.util.Constants;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -19,17 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Comparator;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Set;
-import eu.cqrxs.util.*;
 
-import eu.cqrxs.util.Constants;
 
 /**
  * CipherEnum represents the enumerator for all cipher algorithms
  * implements Serializable
  */
-public enum CipherEnum implements Serializable {
+public enum CipherEnum  {
     Aes(0x0),
     BlowFish(0x1),
     Camellia(0x2),

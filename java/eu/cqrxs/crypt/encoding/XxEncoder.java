@@ -8,22 +8,17 @@
  */
 package eu.cqrxs.crypt.encoding;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
  * Xx encode decode
- *
  * 2026-01-21 last functionality that works
  *
  */
-public class XxEncoder extends java.beans.Encoder {
+public class XxEncoder extends java.beans.Encoder implements IEncodable  {
 
 	final static byte[] XXEncMap = new byte[] {
 		0x2B, 0x2D, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35,
@@ -64,24 +59,24 @@ public class XxEncoder extends java.beans.Encoder {
 	 * @param inString string to encode
 	 * @return xx string
 	 */
-    public static String Encode(String inString) {
+    public String encode(String inString) {
 		if (inString == null || inString.length() < 1)
             throw new IllegalArgumentException("public static string Encode(String inString == NULL)");
 		
 		byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
-		String xxEncode = EncodeBytesToString(inBytes);
+		String xxEncode = encodeBytesToString(inBytes);
 		
 		return xxEncode;
     }
 
 	/**
 	 * Decode - decodes a xx string to decoded plain String
-	 * @param encoded xx String
+	 * @param xxEncodedString xx String
 	 * @return decoded plain String
 	 */
-	public static String Decode(String encodedString) {
+	public String decode(String xxEncodedString) {
 	
-		byte[] decodedBytes = DecodeStringToBytes(encodedString);
+		byte[] decodedBytes = decodeStringToBytes(xxEncodedString);
 		String decoded = new String(decodedBytes, StandardCharsets.UTF_8);
 		return decoded;
 		
@@ -93,20 +88,28 @@ public class XxEncoder extends java.beans.Encoder {
 	 * @return xx string
 	 * @exception IllegalArgumentException is thrown when inBytes is null or empty
 	 */
-	public static String EncodeBytesToString(byte[] inBytes) {
-        if (inBytes == null || inBytes.length < 1)
-            throw new IllegalArgumentException("public static string EncodeBytesToString(byte[] inBytes == NULL)");
+	public String encodeBytesToString(byte[] inBytes) {
+
+		byte[] outBytes = encodeBytesToBytes(inBytes);
+		String xxString = new String(outBytes, StandardCharsets.UTF_8);
 		
+		return xxString;
+	}
+
+	public byte[] encodeBytesToBytes(byte[] inBytes) {
+		if (inBytes == null || inBytes.length < 1)
+			throw new IllegalArgumentException("public static string encodeBytesToBytes(byte[] inBytes == NULL)");
+
 		int len = inBytes.length;
 		ByteArrayInputStream inStream = new ByteArrayInputStream(inBytes, 0, len);
 		ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-		
+
 		int sidx = 0;
 		int line_len = 45;
 		String newline = "\r\n";
 		byte[] outBytes, nl = newline.getBytes(Charset.forName("UTF-8"));
 		byte u0, u1, u2;
-		
+
 		// split into lines, adding line-length and line terminator
 		while (sidx + line_len < len) {
 			// line length
@@ -166,11 +169,9 @@ public class XxEncoder extends java.beans.Encoder {
 		// line terminator
 		for (int idx = 0; idx < nl.length; idx++)
 			outStream.write(nl[idx]);
-		
+
 		outBytes = outStream.toByteArray();
-		String xxString = new String(outBytes, StandardCharsets.UTF_8);
-		
-		return xxString;
+		return outBytes;
 	}
 	
 	 /**
@@ -179,18 +180,18 @@ public class XxEncoder extends java.beans.Encoder {
      * @return binary byte array
      * @exception IllegalArgumentException is thrown when hexStr is null or empty
      */
-	public static byte[] DecodeStringToBytes(String xxString) throws IllegalArgumentException {
+	public byte[] decodeStringToBytes(String xxString) throws IllegalArgumentException {
         if (xxString == null || xxString.length() == 0)
-            throw new IllegalArgumentException("public static byte[] DecodeStringToBytes(string xxString), xxString == NULL || xxString == \"\"");
+            throw new IllegalArgumentException("public static byte[] decodeStringToBytes(string xxString), xxString == NULL || xxString == \"\"");
 
 		byte[] inBytes = xxString.getBytes(Charset.forName("UTF-8"));
-		byte[] outBytes = DecodeBytesToBytes(inBytes);
+		byte[] outBytes = decodeBytesToBytes(inBytes);
 		return outBytes;
 	}
 		
-	public static byte[] DecodeBytesToBytes(byte[] inBytes) throws IllegalArgumentException {
+	public byte[] decodeBytesToBytes(byte[] inBytes) throws IllegalArgumentException {
         if (inBytes == null || inBytes.length == 0)
-            throw new IllegalArgumentException("public static byte[] DecodeBytesToBytes(byte[] inBytes), byte[] inBytes == NULL");
+            throw new IllegalArgumentException("public static byte[] decodeBytesToBytes(byte[] inBytes), byte[] inBytes == NULL");
 
 		byte[] outBytes = new byte[0];
 		int len = inBytes.length;

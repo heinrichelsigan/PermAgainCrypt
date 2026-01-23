@@ -8,30 +8,16 @@
  */
 package eu.cqrxs.crypt.encoding;
 
-import eu.cqrxs.crypt.encoding.uu.CharacterEncoder;
-import eu.cqrxs.crypt.encoding.uu.CharacterDecoder;
-import eu.cqrxs.crypt.encoding.uu.CEFormatException;
-import eu.cqrxs.crypt.encoding.uu.CEStreamExhausted;
-import eu.cqrxs.crypt.encoding.uu.UUEncoder;
-import eu.cqrxs.crypt.encoding.uu.UUDecoder;
-import java.util.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.io.PushbackInputStream;
+
 import eu.cqrxs.util.*;
 
 /**
  * UuCoder provides UUEncoder and UUDecode
  *
  */
-public class UuCoder extends EnDeCoder {
+public class UuCoder implements IEncodable  {
 
     public UuCoder() {
     }

@@ -9,19 +9,12 @@
 
 package eu.cqrxs.crypt.hash;
 
+import eu.cqrxs.util.Constants;
 import org.bouncycastle.crypto.Digest;
 
-import eu.cqrxs.util.Constants;
-import eu.cqrxs.crypt.cipher.CryptHelper;
-import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HexFormat;
-import java.util.List;
-import java.util.Set;
 
 public class Dstu7564 {
 

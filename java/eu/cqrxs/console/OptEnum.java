@@ -9,7 +9,6 @@
 
 package eu.cqrxs.console;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
@@ -17,44 +16,39 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import eu.cqrxs.console.OptEnum;
-
 /**
  * OptEnum different option types
  */
-public enum OptEnum implements Serializable {
+public enum OptEnum {
+
 	Usage(0x0),
-	InParam(0x1),
-	OutP(0x2),
-	Zip(0x3),
-	Unzip(0x4),
-	Encode(0x5),
-	Decode(0x6),
+	InParam(0x1), 
+    Key(0x2),
+	Hash(0x3),
+	Zip(0x4),
+    CipherAlgos(0x5),
+	Encode(0x6),
+	OutP(0x7),
 	Crypt(0x7),
-	Key(0x8),
-	Decrypt(0x9),
-	HashSum(0xa),
-	Help(0xb),
-	Qey(0xc),
-	Pass(0xd),
-	Hash(0xe),
-	SymmCipher(0xf);
+	Decrypt(0x8),
+	SymmCipher(0x9),
+    Verbose(0xe),
+    Help(0xf);
 
+    /** 
+     * NOTE: Enum constructor must have private or package scope. You can not use the public access modifier. 
+     */ 
+     OptEnum(int value) { 
+         this.value = value; 
+    }
 
-    	/**
-     	 * NOTE: Enum constructor must have private or package scope. You can not use the public access modifier.
-     	 */
-    	OptEnum(int value) {
-        	this.value = value;
-    	}
-
-    	private final int value;
-
-    	/**
-    	 * getValue
-     	 * @return (@link int) value
-    	 */
-  		public int getValue() { return value; }
+    private final int value;
+    
+    /** 
+     * getValue 
+     * @return (@link int) value 
+     */
+    public int getValue() { return value; }
 
 
 	/**
@@ -62,10 +56,10 @@ public enum OptEnum implements Serializable {
 	 * @return name of enum
 	 */
 	public String getName() {
-		int evalue = getValue();
-			for (OptEnum optEnum : OptEnum.values())
-				if (optEnum.getValue() == evalue)
-						return optEnum.toString();
+		int evalue = getValue(); 
+        for (OptEnum optEnum : OptEnum.values()) 
+            if (optEnum.getValue() == evalue) 
+                return optEnum.toString();
 		return "Usage";
 	}
 
@@ -73,7 +67,7 @@ public enum OptEnum implements Serializable {
 	public static String[] getNames() {
 		int cnt = 0;
 		List<String> optEnumList = new ArrayList<>();
-		for (OptEnum optEnum : OptEnum.values())  {
+		for (OptEnum optEnum : OptEnum.values()) {
 			optEnumList.add(optEnum.getName());
 			cnt++;
 		}
@@ -106,7 +100,6 @@ public enum OptEnum implements Serializable {
         }
         return OptEnum.Usage;
     }
-
 
 }
 

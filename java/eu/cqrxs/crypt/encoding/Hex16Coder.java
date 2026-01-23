@@ -9,21 +9,15 @@
 package eu.cqrxs.crypt.encoding;
 
 import java.nio.charset.Charset;
-import java.util.Base64;
-import java.util.Arrays;
 import java.util.HexFormat;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 /**
- * Hex16Coder 
- *
+ * Hex16Coder
  * 2026-01-21 changed encoding output toUpperCase
  *
  */
-public class Hex16Coder extends EnDeCoder  {
+public class Hex16Coder implements IEncodable  {
 
 	public final static String VALID_CHARS = "0123456789ABCDEF";
 	public String error = "";

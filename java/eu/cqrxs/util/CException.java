@@ -10,11 +10,8 @@
 
 package eu.cqrxs.util;
 
-
 import java.io.Serializable;
-import java.lang.Exception;
 import java.lang.RuntimeException;
-import java.lang.IllegalStateException;
 
 /**
  * CException extends {@link RuntimeException}

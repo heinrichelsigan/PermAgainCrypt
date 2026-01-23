@@ -10,23 +10,21 @@
 
 package eu.cqrxs.crypt.encoding;
 
+import eu.cqrxs.util.NotImplementedError;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import eu.cqrxs.util.*;
-import eu.cqrxs.crypt.encoding.*;
-
-// import kotlin.NotImplementedError;
 
 /**
  * EncodeEnum represents the enumerator for all Encoding to ascii algorithms
  */
-public enum EncodeEnum implements Serializable {
+public enum EncodeEnum  {
     None(0),
     Base16(0x200),
     Hex16(0x300),
@@ -96,7 +94,6 @@ public enum EncodeEnum implements Serializable {
             case 0x300:
                 return new Hex16Coder().encode(inString);
             case 0x400:
-				// throw new NotImplementedError("base32 not implemented");
 				byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
 				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                 				
             case 0x500:
@@ -105,15 +102,14 @@ public enum EncodeEnum implements Serializable {
                 return new UuCoder().encode(inString);
             case 0x700:
                 throw new NotImplementedError("base58 not implemented");
-            case 0x800:
+            case 0x800: // Base64
                 return new Base64Coder().encode(inString);
-            case 0x900:
-				// throw new NotImplementedError("xx not implemented");
-                return XxEncoder.Encode(inString);
+            case 0x900: // Xx
+                return new XxEncoder().encode(inString);
             default:
                 break;
         }
-        return "";
+        return inString;
     }
 
 
@@ -136,7 +132,7 @@ public enum EncodeEnum implements Serializable {
             case 0x400:
                 // throw new NotImplementedError("base32 not implemented");
 				byte[] outBytes = org.bouncycastle.util.encoders.Base32.decode(encodedString);
-				return outBytes.toString();
+				return new String(outBytes, StandardCharsets.UTF_8);
             case 0x500:
                 throw new NotImplementedError("hex32 not implemented");
             case 0x600:
@@ -147,7 +143,7 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().decode(encodedString);
             case 0x900:
                 // throw new NotImplementedError("xx not implemented");
-                return XxEncoder.Decode(encodedString);
+                return new XxEncoder().decode(encodedString);
 			default:
                 break;
         }
@@ -169,7 +165,7 @@ public enum EncodeEnum implements Serializable {
         int xvalue = getValue();
         switch (xvalue) {
             case 0:
-                return inBytes.toString();
+                return new String(inBytes, StandardCharsets.UTF_8);
             case 0x200:
                 return new Base16Coder().encodeBytesToString(inBytes);
             case 0x300:
@@ -186,11 +182,11 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().encodeBytesToString(inBytes);
             case 0x900:
                 // throw new NotImplementedError("xx not implemented");
-                return XxEncoder.EncodeBytesToString(inBytes);
+                return new XxEncoder().encodeBytesToString(inBytes);
             default:
                 break;
         }
-        return inBytes.toString();
+        return new String(inBytes, StandardCharsets.UTF_8);
     }
 
 
@@ -232,11 +228,11 @@ public enum EncodeEnum implements Serializable {
                 return new Base64Coder().decodeStringToBytes(encodedString);
             case 0x900:
                 // throw new NotImplementedError("xx not implemented");				
-				return XxEncoder.DecodeStringToBytes(encodedString);				
+				return new XxEncoder().decodeStringToBytes(encodedString);
             default:
                 break;
         }
-        return encodedString.getBytes(Charset.forName("UTF-8"));
+        return encodedString.getBytes(StandardCharsets.UTF_8);
     }
 
 
@@ -286,7 +282,7 @@ public enum EncodeEnum implements Serializable {
 
 
     public static EncodeEnum getEncodingTypeFromString(String enCodingString) {
-        if (enCodingString != null && enCodingString.length() > 0) {
+        if (enCodingString != null && !enCodingString.isEmpty()) {
 
             if (enCodingString.charAt(0) == 'B' ||
                     enCodingString.charAt(0) == 'b') {

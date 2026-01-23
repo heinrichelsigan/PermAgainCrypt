@@ -7,15 +7,11 @@
  * Coded 2021-2027 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
  */
-
 package eu.cqrxs.util;
 
-import java.io.Serializable;
-import java.lang.Exception;
 import java.lang.String;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 
 /**
  * DbgWriter is a simple debug message writer

@@ -10,18 +10,14 @@
 
 package eu.cqrxs.util;
 
-
-import java.io.Serializable;
-import java.lang.Exception;
 import java.lang.String;
-import java.util.Random;
 
 /**
  * Fortune is a never ready fortunes shuffle
  */
 public class Fortune {
 
-	static String[] fortunes = {
+	public final static java.lang.String[] fortunes = {
 		"You have not to bear an ounce of guilt.\n\n\t-- Major Tom (came from acorn, passed dos / windows, went to linux / aix)\n", 
 		"Word Perfect is a good word processor.  It just doesn't run on any os.\n",
 		"When Alan Cox came to Auditorium Maximum at TU Vienna,\nthe entire Auditorium was plain full.\n\n\t-mArch\n",
@@ -45,12 +41,12 @@ public class Fortune {
         "Be warned that typing \fBkillall \fIname\fP may not have the desired\neffect on non-Linux systems, especially when done by a privileged user.\n\t-- From the killall manual page\n"
 	};
 	
-	public static String[] getFortunes() {
+	public static java.lang.String[] getFortunes() {
 			return fortunes;
 	}
 	
-	public static String getFortune() {
-		Random rand = new Random();		
+	public static java.lang.String getFortune() {
+		java.util.Random rand = new java.util.Random();
 		int r = ((r = rand.nextInt())< 0) ? ((0 - r)%fortunes.length) : (r%fortunes.length);
 		return fortunes[r];
 	}
