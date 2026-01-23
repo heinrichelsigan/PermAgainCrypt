@@ -20,7 +20,7 @@
     <Description>EU.CqrXs is a reduced Area23.At.Framework.Core framework with minimalistic helper methods</Description>
     <AutoGenerateBindingRedirects>True</AutoGenerateBindingRedirects>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <DocumentationFile>CqrXs\Properties\EU.CqrXs.xml</DocumentationFile>
+    <DocumentationFile>Properties\EU.CqrXs.xml</DocumentationFile>
     <NuGetAuditMode>all</NuGetAuditMode>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
