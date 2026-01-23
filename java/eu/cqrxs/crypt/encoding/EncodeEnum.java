@@ -31,7 +31,7 @@ public enum EncodeEnum  {
     Base32(0x400),
     Hex32(0x500),
     Uu(0x600),
-    Base58(0x700),
+    Hex64(0x700),
     Base64(0x800),
     Xx(0x900);
 
@@ -72,7 +72,7 @@ public enum EncodeEnum  {
             case 0x600:
                 return "Uu";
             case 0x700:
-                return "Base58";
+                return "Hex64";
             case 0x800:
                 return "Base64";
             case 0x900:
@@ -101,7 +101,8 @@ public enum EncodeEnum  {
             case 0x600:
                 return new UuCoder().encode(inString);
             case 0x700:
-                throw new NotImplementedError("base58 not implemented");
+                return new Hex64Coder().encode(inString);
+                // throw new NotImplementedError("base58 not implemented");
             case 0x800: // Base64
                 return new Base64Coder().encode(inString);
             case 0x900: // Xx
@@ -138,12 +139,13 @@ public enum EncodeEnum  {
             case 0x600:
                 return new UuCoder().decode(encodedString);
             case 0x700:
-                throw new NotImplementedError("base58 not implemented");
+                return new Hex64Coder().decode(encodedString);
+                // throw new NotImplementedError("base58 not implemented");
             case 0x800:
                 return new Base64Coder().decode(encodedString);
             case 0x900:
-                // throw new NotImplementedError("xx not implemented");
                 return new XxEncoder().decode(encodedString);
+                // throw new NotImplementedError("xx not implemented");
 			default:
                 break;
         }
@@ -177,12 +179,13 @@ public enum EncodeEnum  {
             case 0x600:
                 return new UuCoder().encodeBytesToString(inBytes);
             case 0x700:
-                throw new NotImplementedError("base58 not implemented");
+                return new Hex64Coder().encodeBytesToString(inBytes);
+                // throw new NotImplementedError("base58 not implemented");
             case 0x800:
                 return new Base64Coder().encodeBytesToString(inBytes);
             case 0x900:
-                // throw new NotImplementedError("xx not implemented");
                 return new XxEncoder().encodeBytesToString(inBytes);
+                // throw new NotImplementedError("xx not implemented");
             default:
                 break;
         }
@@ -223,12 +226,13 @@ public enum EncodeEnum  {
                 }
                 return plainBytes;
             case 0x700:
-                throw new NotImplementedError("base58 not implemented");
+                return new Hex64Coder().decodeStringToBytes(encodedString);
+                // throw new NotImplementedError("base58 not implemented");
             case 0x800:
                 return new Base64Coder().decodeStringToBytes(encodedString);
             case 0x900:
-                // throw new NotImplementedError("xx not implemented");				
 				return new XxEncoder().decodeStringToBytes(encodedString);
+                // throw new NotImplementedError("xx not implemented");				
             default:
                 break;
         }
@@ -269,7 +273,7 @@ public enum EncodeEnum  {
             case 0x600:
                 return ".uu";
             case 0x700:
-                return ".base58";
+                return ".hex64";
             case 0x800:
                 return ".base64";
             case 0x900:
@@ -291,8 +295,8 @@ public enum EncodeEnum  {
                     return EncodeEnum.Base16;
                 if (enCodingString.contains("32"))
                     return EncodeEnum.Base32;
-                if (enCodingString.contains("58"))
-                    return EncodeEnum.Base58;
+                if (enCodingString.contains("64"))
+                    return EncodeEnum.Base64;
 
                 return EncodeEnum.Base64;
             } else if (enCodingString.charAt(0) == 'H' ||
@@ -302,6 +306,8 @@ public enum EncodeEnum  {
                     return EncodeEnum.Hex16;
                 if (enCodingString.contains("32"))
                     return EncodeEnum.Hex32;
+                if (enCodingString.contains("64"))
+                    return EncodeEnum.Hex64;
             } else if (enCodingString.charAt(0) == 'X' ||
                     enCodingString.charAt(0) == 'x') {
 

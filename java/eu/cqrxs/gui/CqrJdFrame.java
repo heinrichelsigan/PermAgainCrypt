@@ -57,7 +57,7 @@ public class CqrJdFrame extends JFrame {
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
 	
-	Font menuFont, cryptFont;  
+	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
 	
 	JMenuBar jBar = new JMenuBar();
@@ -504,6 +504,7 @@ public class CqrJdFrame extends JFrame {
 		setSize(1024, 768);
 		setResizable(false);
 		
+        monoSpaceFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
 		cryptFont = new Font("Dialog", Font.PLAIN, 11);
 		SymAction lSymAction = new SymAction();
 		SymMouse aSymMouse = new SymMouse();		
@@ -705,7 +706,7 @@ public class CqrJdFrame extends JFrame {
 		jTextAreaSource.setBackground(Color.WHITE);  
 		jTextAreaSource.setFont(cryptFont);
 		jTextAreaSource.setLineWrap(true);
-		jTextAreaSource.setFont(cryptFont);
+		jTextAreaSource.setFont(monoSpaceFont);
 		// jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");		
 		// scrollSource = new JScrollPane (jTextAreaSource, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		getContentPane().add(jTextAreaSource);
@@ -713,7 +714,7 @@ public class CqrJdFrame extends JFrame {
 		jTextAreaDestination = new JTextArea();
 		jTextAreaDestination.setBounds(516, 280, 480, 400);
 		jTextAreaDestination.setLineWrap(true);
-		jTextAreaDestination.setFont(cryptFont);
+		jTextAreaDestination.setFont(monoSpaced);
 		jTextAreaDestination.setEditable(false);
 		jTextAreaDestination.setEditable(false);
 		// jTextAreaDestination.setEnabled(false);
