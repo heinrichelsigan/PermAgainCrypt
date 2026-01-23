@@ -553,17 +553,19 @@ namespace EU.CqrXs.Gui.Forms
                         KeyHash.SCrypt.Hash(metaHash));
 
                     metaHash = KeyHash.Sha384.Hash(this.textBoxKey.Text);
-                    byte[] encodedBytes = CipherPipe.EncryptBytesFast(
+                    intermediateBytes = CipherPipe.EncryptBytesFast(
                         intermediateBytes,
                         CipherEnum.Fish3,
                         metaHash,
                         KeyHash.Whirlpool.Hash(metaHash));
 
-                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + ".123fish");
+                    byte[] encodedBytes = System.Text.Encoding.UTF8.GetBytes(GetEncoding().EnCode(intermediateBytes));
+
+                    string outFilePath = (fileName + GetZip().GetZipTypeExtension() + ".123fish" + GetEncoding().GetEnCodingExtension());
 
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await this.statusLabelMsg.SetTextAsync("encryption time: " + DateTime.Now.Subtract(start).ToString());
-                    await SetInfoMessageAsync("Starting verificaton", ToolTipIcon.Info, -1);
+                    await SetInfoMessageAsync("1-2-3 fish encrypted", ToolTipIcon.Info, -1);
 
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(encodedBytes, ref outFilePath) :
@@ -726,7 +728,7 @@ namespace EU.CqrXs.Gui.Forms
 
                     byte[] outBytes = GetZip().Unzip(intermediateBytes);
 
-                    string outFileDecrypt = fileName.Replace(".123fish", "").Replace(GetZip().GetZipTypeExtension(), "");
+                    string outFileDecrypt = fileName.Replace(".123fish", "").Replace(GetEncoding().GetEnCodingExtension(), "");
 
                     bool saved = (menuFileSettingsItemAutomaticallySaveToTemp.Checked) ?
                                 SaveBytesNoDialog(outBytes, ref outFileDecrypt) :
@@ -912,13 +914,13 @@ namespace EU.CqrXs.Gui.Forms
         /// <returns></returns>
         protected internal virtual async Task menuFileNew_Click(object sender, EventArgs e)
         {
-            EncryptForm encryptForm = new EncryptForm();
-            DialogResult result = await encryptForm.ShowDialogAsync();
-            if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
-                result == DialogResult.Ignore)
-            {
-                try { encryptForm.Close(); } catch { }
-            }
+            //EncryptForm encryptForm = new EncryptForm();
+            //DialogResult result = await encryptForm.ShowDialogAsync();
+            //if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
+            //    result == DialogResult.Ignore)
+            //{
+            //    try { encryptForm.Close(); } catch { }
+            //}
         }
 
         /// <summary>

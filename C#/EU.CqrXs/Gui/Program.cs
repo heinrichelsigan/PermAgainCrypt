@@ -71,7 +71,7 @@ namespace EU.CqrXs.Gui
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             // instanciate a new EncryptForm
-            EncryptFormBase formBase = (formMode == FormMode.Simple) ? new EncryptForm() : new EncryptFormMultiControls();
+            EncryptFormBase formBase = (formMode == FormMode.Simple) ? new OneTwoThreeFish() : new EncryptFormMultiControls();
 
             // Run application
             Application.Run(formBase);
