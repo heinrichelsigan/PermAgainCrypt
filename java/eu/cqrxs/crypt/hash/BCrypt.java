@@ -8,7 +8,6 @@
  
 package eu.cqrxs.crypt.hash;
 
-import org.bouncycastle.crypto.Digest;
 import java.lang.String;
 import java.nio.charset.StandardCharsets;
 import java.util.HexFormat;

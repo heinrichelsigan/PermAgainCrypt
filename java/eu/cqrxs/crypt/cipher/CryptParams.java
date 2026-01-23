@@ -3,25 +3,42 @@ package eu.cqrxs.crypt.cipher;
 // import static eu.cqrxs.crypt.cipher.CipherEnum.CamelliaLight;
 // import androidx.core.content.res.TypedArrayUtils;
 // import com.google.common.primitives.Bytes;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
-import org.bouncycastle.crypto.*;
-import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
-
-import eu.cqrxs.crypt.encoding.Hex16Coder;
+import org.bouncycastle.crypto.engines.AESEngine;
+import org.bouncycastle.crypto.engines.AESLightEngine;
+import org.bouncycastle.crypto.engines.ARIAEngine;
+import org.bouncycastle.crypto.engines.BlowfishEngine;
+import org.bouncycastle.crypto.engines.TwofishEngine;
+import org.bouncycastle.crypto.engines.ThreefishEngine;
+import org.bouncycastle.crypto.engines.CamelliaEngine;
+import org.bouncycastle.crypto.engines.CamelliaLightEngine;
+import org.bouncycastle.crypto.engines.CAST5Engine;
+import org.bouncycastle.crypto.engines.CAST6Engine;
+import org.bouncycastle.crypto.engines.DESedeEngine;
+import org.bouncycastle.crypto.engines.DESEngine;
+import org.bouncycastle.crypto.engines.DSTU7624Engine;
+import org.bouncycastle.crypto.engines.GOST28147Engine;
+import org.bouncycastle.crypto.engines.IDEAEngine;
+import org.bouncycastle.crypto.engines.NoekeonEngine;
+import org.bouncycastle.crypto.engines.RC2Engine;
+import org.bouncycastle.crypto.engines.RC532Engine;
+import org.bouncycastle.crypto.engines.RC564Engine;
+import org.bouncycastle.crypto.engines.RC6Engine;
+import org.bouncycastle.crypto.engines.RijndaelEngine;
+import org.bouncycastle.crypto.engines.SEEDEngine;
+import org.bouncycastle.crypto.engines.SkipjackEngine;
+import org.bouncycastle.crypto.engines.SM4Engine;
+import org.bouncycastle.crypto.engines.TEAEngine;
+import org.bouncycastle.crypto.engines.TnepresEngine;
+import org.bouncycastle.crypto.engines.XTEAEngine;
+// import org.bouncycastle.crypto.engines.
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.util.*;
 
 
+/**
+ * Crypt Params
+ */
 public class CryptParams {
 
     public CipherEnum cipher;
@@ -53,7 +70,7 @@ public class CryptParams {
         size = 256;
         keyLen = 32;
         mode = "ECB";
-        blockCipher = new org.bouncycastle.crypto.engines.AESEngine();
+        blockCipher = new AESEngine();
         keyHashing = KeyHash.Hex;
         blockSize = blockCipher.getBlockSize();
     }
@@ -69,52 +86,52 @@ public class CryptParams {
         switch (cipher) {
             case Aes:
             case AesNet: // TODO: Implement interface IBlockCipher in AesNet
-                blockCipher = new org.bouncycastle.crypto.engines.AESEngine();
+                blockCipher = new AESEngine();
                 break;
             case AesLight:
                 size = 128;
-                blockCipher = new org.bouncycastle.crypto.engines.AESLightEngine();
+                blockCipher = new AESLightEngine();
                 break;
             case Aria:
                 size = 128;
-                blockCipher = new org.bouncycastle.crypto.engines.ARIAEngine();
+                blockCipher = new ARIAEngine();
                 break;
             case BlowFish:
                 size = 64;
                 keyLen = 8;
-                blockCipher = new org.bouncycastle.crypto.engines.BlowfishEngine();
+                blockCipher = new BlowfishEngine();
                 break;
             case Fish2:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.TwofishEngine();
+                blockCipher = new TwofishEngine();
                 break;
             case Fish3:
 			// case ThreeFish256:
-				blockCipher = new org.bouncycastle.crypto.engines.ThreefishEngine(size);
+				blockCipher = new ThreefishEngine(size);
                 break;                            
             case Camellia:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.CamelliaEngine();
+                blockCipher = new CamelliaEngine();
                 break;
             case CamelliaLight:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.CamelliaLightEngine();
+                blockCipher = new CamelliaLightEngine();
                 break;
             case Cast5:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.CAST5Engine();
+                blockCipher = new CAST5Engine();
                 break;
             case Cast6:
-                blockCipher = new org.bouncycastle.crypto.engines.CAST6Engine();
+                blockCipher = new CAST6Engine();
                 break;
             case Des:
                 size = 64;
                 keyLen = 8;
-                blockCipher = new org.bouncycastle.crypto.engines.DESEngine();
+                blockCipher = new DESEngine();
                 break;
             case Des3Net: // TODO: implement IBlockCipher in Des3Net
             /*
@@ -126,45 +143,45 @@ public class CryptParams {
             case Des3:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.DESedeEngine();
+                blockCipher = new DESedeEngine();
                 break;
             case Dstu7624:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.DSTU7624Engine(size);
+                blockCipher = new DSTU7624Engine(size);
                 break;
             case Gost28147:
-                blockCipher = new org.bouncycastle.crypto.engines.GOST28147Engine();
+                blockCipher = new GOST28147Engine();
                 break;
             case Idea:
-                blockCipher = new org.bouncycastle.crypto.engines.IDEAEngine();
+                blockCipher = new IDEAEngine();
                 break;
             case Noekeon:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.NoekeonEngine();
+                blockCipher = new NoekeonEngine();
                 break;
             case RC2:
                 size = 128;
 		        keyLen = 32;
-                blockCipher = new org.bouncycastle.crypto.engines.RC2Engine();
+                blockCipher = new RC2Engine();
                 break;
             case RC532:
-                blockCipher = new org.bouncycastle.crypto.engines.RC532Engine();
+                blockCipher = new RC532Engine();
                 break;
             case RC564:
                 size = 64;
 		        keyLen = 32;
-                blockCipher = new org.bouncycastle.crypto.engines.RC564Engine();
+                blockCipher = new RC564Engine();
                 break;
             case RC6:
-                blockCipher = new org.bouncycastle.crypto.engines.RC6Engine();
+                blockCipher = new RC6Engine();
                 break;
 	        case Rijndael:
-				blockCipher = new org.bouncycastle.crypto.engines.RijndaelEngine();
+				blockCipher = new RijndaelEngine();
 				break;
             case Seed:
-                blockCipher = new org.bouncycastle.crypto.engines.SEEDEngine();
+                blockCipher = new SEEDEngine();
                 size = 128;
                 keyLen = 16;
                 break;
@@ -174,33 +191,33 @@ public class CryptParams {
                 keyLen = 16;
                 break;
             case SM4:
-                blockCipher = new org.bouncycastle.crypto.engines.SM4Engine();
+                blockCipher = new SM4Engine();
                 size = 128;
                 keyLen = 16;
                 break;
             case SkipJack:
-                blockCipher = new org.bouncycastle.crypto.engines.SkipjackEngine();
+                blockCipher = new SkipjackEngine();
                 break;
             case Tea:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.TEAEngine();
+                blockCipher = new TEAEngine();
                 break;
             case Tnepres:
                 size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.TnepresEngine();
+                blockCipher = new TnepresEngine();
                 break;
             case XTea:
 				size = 128;
                 keyLen = 16;
-                blockCipher = new org.bouncycastle.crypto.engines.XTEAEngine();
+                blockCipher = new XTEAEngine();
                 break;
             case ZenMatrix:
                 size = 16;
                 keyLen = 16;
                 // TODO: port it to java
-                // blockCipher = new ZenMatrix(Size);
+                blockCipher = new ZenMatrix(size);
                 // break;
             case ZenMatrix2:
                 // throw new NotImplementedException("ZenMatrix2 IBlockCipher interface not implemented");)
@@ -210,7 +227,7 @@ public class CryptParams {
                 // blockCipher = new ZenMatrix2();
                 // break;
             default:
-                blockCipher = new org.bouncycastle.crypto.engines.AESEngine();
+                blockCipher = new  AESEngine();
                 break;
         }
 
@@ -222,8 +239,8 @@ public class CryptParams {
     public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed, KeyHash keyHash) {
         this(cipherAlgo);
         keyHashing = keyHash;
-        key = (secretKey == null || secretKey.length() == 0) ? Constants.AUTHOR_EMAIL : secretKey;
-        hash = (keyHashed == null || keyHashed.length() < 1) ? keyHashing.hash(secretKey) : keyHashed;
+        key = (secretKey == null || secretKey.isEmpty()) ? Constants.AUTHOR_EMAIL : secretKey;
+        hash = (keyHashed == null || keyHashed.isEmpty()) ? keyHashing.hash(secretKey) : keyHashed;
     }
 
 
@@ -239,8 +256,8 @@ public class CryptParams {
      */
     public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed) {
         this(cipherAlgo);
-        key = (secretKey == null || secretKey.length() == 0) ? Constants.AUTHOR_EMAIL : secretKey;
-        hash = (keyHashed == null || keyHashed.length() < 1) ? keyHashing.hash(secretKey) : keyHashed;
+        key = (secretKey == null || secretKey.isEmpty()) ? Constants.AUTHOR_EMAIL : secretKey;
+        hash = (keyHashed == null || keyHashed.isEmpty()) ? keyHashing.hash(secretKey) : keyHashed;
     }
 
     /***
@@ -259,11 +276,13 @@ public class CryptParams {
      */
     @Deprecated
     public static CryptParams RequestAlgorithm(CipherEnum cipherAlgo) {
+
         return new CryptParams(cipherAlgo);
     }
 
     @Deprecated
     public static CryptParams GetCryptParams(CryptParams cParams) {
+
         return new CryptParams(cParams);
     }
 

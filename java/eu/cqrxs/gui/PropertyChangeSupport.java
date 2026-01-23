@@ -8,13 +8,7 @@
 
 package eu.cqrxs.gui;
 
-import java.io.Serializable;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
-import java.beans.PropertyVetoException;
 import java.beans.PropertyChangeListener;
-import java.beans.VetoableChangeListener;
 import java.beans.PropertyChangeEvent;
 
 

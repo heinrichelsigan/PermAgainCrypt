@@ -8,19 +8,15 @@
  */
 package eu.cqrxs.crypt.encoding;
 
-import java.util.Base64; 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.Base64;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import eu.cqrxs.util.*;
+
 /**
  * Base64Coder is base64 / mime encoder + decoder
  *
  */
-public class Base64Coder extends EnDeCoder  {
+public class Base64Coder implements IEncodable  {
 
     public Base64Coder() {
     }
@@ -35,7 +31,7 @@ public class Base64Coder extends EnDeCoder  {
         if (inBytes == null || inBytes.length < 1)
             throw new IllegalArgumentException("public static string encodeBytesToString(byte[] inBytes == NULL)");
 
-        String encodedString = Base64.getEncoder().encodeToString(inBytes);
+        String encodedString = Base64.getMimeEncoder().encodeToString(inBytes);
         return encodedString;
     }
 
@@ -49,7 +45,7 @@ public class Base64Coder extends EnDeCoder  {
         if (encodedString == null || encodedString.length() == 0)
             throw new IllegalArgumentException("public static byte[] decodeStringToBytes(string encodedString), encodedString == NULL || encodedString == \"\"");
 
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        byte[] decodedBytes = Base64.getMimeDecoder().decode(encodedString);
         return decodedBytes;
     }
 
@@ -64,14 +60,14 @@ public class Base64Coder extends EnDeCoder  {
         if (inBytes == null || inBytes.length < 1)
             throw new IllegalArgumentException("public static string encodeBytes(byte[] inBytes == NULL)");
 
-        String encodedString = Base64.getEncoder().encodeToString(inBytes);
+        String encodedString = Base64.getMimeEncoder().encodeToString(inBytes);
 		byte[] outBytes = encodedString.getBytes(Charset.forName("UTF-8"));
         return outBytes;
     }
 	
 	/**
      * decodeBytes transforms a base64 encoded string into an binary byte[] array
-     * @param encodedString: a base64 encoded String
+     * @param encodedBytes base64 encoded byte array {@link byte[]}
      * @return binary byte array
      * @exception IllegalArgumentException is thrown when encodedString is null or empty
      */
@@ -80,7 +76,7 @@ public class Base64Coder extends EnDeCoder  {
             throw new IllegalArgumentException("public static byte[] decodeStringToBytes(byte[] encodedBytes), encodedBytes == NULL || encodedBytes.length == 0");
 
 		String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        byte[] decodedBytes = Base64.getMimeDecoder().decode(encodedString);
         return decodedBytes;
     }
 
@@ -95,7 +91,7 @@ public class Base64Coder extends EnDeCoder  {
         if (inString == null || inString.length() == 0)
             throw new IllegalArgumentException("public static byte[] encode(String inString), inString == NULL || encodedString == \"\"");
 
-        String encoded = Base64.getEncoder().encodeToString(inString.getBytes(Charset.forName("UTF-8")));
+        String encoded = Base64.getMimeEncoder().encodeToString(inString.getBytes(Charset.forName("UTF-8")));
         return encoded;
     }
 
@@ -109,7 +105,7 @@ public class Base64Coder extends EnDeCoder  {
         if (encodedString == null || encodedString.length() == 0)
             throw new IllegalArgumentException("public static byte[] decode(String encodedString), encodedString == NULL || encodedString == \"\"");
 
-        byte[] decodedBytes = Base64.getDecoder().decode(encodedString);
+        byte[] decodedBytes = Base64.getMimeDecoder().decode(encodedString);
         String decodedString = new String(decodedBytes);
         return decodedString;
     }

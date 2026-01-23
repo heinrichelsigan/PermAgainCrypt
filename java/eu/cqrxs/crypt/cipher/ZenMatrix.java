@@ -9,55 +9,21 @@ package eu.cqrxs.crypt.cipher;
 // import com.google.ai.client.generativeai.common.InvalidStateException;
 
 
-import eu.cqrxs.crypt.encoding.EncodeEnum;
-import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.crypt.hash.KeyHash;
-import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.GZ;
-import eu.cqrxs.util.CException;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
-import eu.cqrxs.util.Fortune;
 import eu.cqrxs.util.NotImplementedError;
+import eu.cqrxs.zip.ZipType;
 
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.HexFormat;
 import java.util.List;
 
 import org.bouncycastle.crypto.*;
-import org.bouncycastle.crypto.engines.*;
 import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.modes.CBCBlockCipher;
-import org.bouncycastle.crypto.modes.CCMBlockCipher;
-import org.bouncycastle.crypto.modes.CFBBlockCipher;
-import org.bouncycastle.crypto.modes.CTSBlockCipher;
-import org.bouncycastle.crypto.modes.EAXBlockCipher;
-import org.bouncycastle.crypto.modes.GOFBBlockCipher;
-import org.bouncycastle.crypto.paddings.BlockCipherPadding;
-import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.bouncycastle.jcajce.provider.symmetric.AES;
-import org.bouncycastle.crypto.modes.CBCBlockCipher;
-import org.bouncycastle.crypto.modes.CCMBlockCipher;
-import org.bouncycastle.crypto.modes.CFBBlockCipher;
-import org.bouncycastle.crypto.modes.CTSBlockCipher;
-import org.bouncycastle.crypto.modes.EAXBlockCipher;
-import org.bouncycastle.crypto.modes.GOFBBlockCipher;
-import org.bouncycastle.crypto.paddings.BlockCipherPadding;
-import org.bouncycastle.crypto.paddings.PaddedBufferedBlockCipher;
-import org.bouncycastle.crypto.params.KeyParameter;
-import org.bouncycastle.crypto.params.ParametersWithIV;
-import org.bouncycastle.jcajce.provider.symmetric.AES;
 
 /**
  * CryptBouncyCastle generic crypt wrapper class

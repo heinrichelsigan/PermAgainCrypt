@@ -4,9 +4,6 @@
 */
 package eu.cqrxs.gui;
 
-import eu.cqrxs.gui.CqrJDialog;
-import eu.cqrxs.gui.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.FlowLayout;
@@ -14,16 +11,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.*;
-import java.net.*;
-import java.net.http.*;
-import java.time.Duration;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.*;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 
 public class CqrJDialog extends JDialog { /* implements MouseListener  { */
     		
@@ -38,7 +30,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 	
 	public CqrJDialog() throws IOException {
 		
-		String filename = "cqrxs-eu.jpg";
+		String filename = "eu/cqrxs/gui/cqrxs-eu.jpg";
 		file = new File(filename);
 		img = ImageIO.read(file);
 		
@@ -52,7 +44,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
  	public CqrJDialog(String filename) throws IOException {
 		
 		if (filename == null || filename.length() == 0)			
-			filename = "cqrxs-eu.jpg";
+			filename = "eu/cqrxs/gui/cqrxs-eu.jpg";
 		file = new File(filename);
 		img = ImageIO.read(file);
 		

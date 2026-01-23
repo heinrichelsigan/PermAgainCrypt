@@ -10,17 +10,13 @@
 
 package eu.cqrxs.crypt.hash;
 
-import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
-import org.bouncycastle.crypto.digests.*;
+
 import org.bouncycastle.crypto.Digest;
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.EnumSet;
+
 import java.util.HexFormat;
-import java.util.List;
-import java.util.Set;
+
 import eu.cqrxs.util.*;
 
 public class MD5 {

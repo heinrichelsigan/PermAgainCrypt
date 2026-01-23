@@ -10,10 +10,7 @@ package eu.cqrxs.crypt.encoding;
 
 import java.nio.charset.StandardCharsets;
 import java.lang.String;
-import java.util.List;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.Set;
 
 
 public final class EnDeCodeHelper {

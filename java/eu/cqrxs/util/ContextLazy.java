@@ -6,19 +6,15 @@
  * Coded 2021-2025 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
  */
-package eu.cqrxs.util;
 
 // import android.content.Context;
 /*
 import com.google.gson.annotations.JsonAdapter;
  */
 // import org.jetbrains.annotations.Nullable;
-import javax.naming.Context;
+package eu.cqrxs.util;
+
 import javax.naming.InitialContext;
-import java.io.Serializable;
-import java.security.InvalidAlgorithmParameterException;
-import java.util.ArrayList;
-import eu.cqrxs.util.Constants;
 
 /**
   * ContextLazy - provides a lazy singelton for application context

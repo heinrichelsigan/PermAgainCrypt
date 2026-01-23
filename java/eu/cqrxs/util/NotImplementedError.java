@@ -1,10 +1,7 @@
 package eu.cqrxs.util;
 
-import java.io.Serializable;
 import java.lang.*;
-import java.lang.UnsupportedOperationException;
 import java.lang.Throwable;
-import eu.cqrxs.util.*;
 
 
 /**

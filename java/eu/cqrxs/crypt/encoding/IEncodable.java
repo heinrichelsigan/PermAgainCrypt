@@ -1,19 +1,8 @@
-/**
- * @author           <a href="mailto:heinrich.elsigan@gmail.com">Heinrich Elsigan</a>
- * @version          V 2.25.1224
- * @since            API 33
- *
- * Coded 2021-2033 by <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
- */
 package eu.cqrxs.crypt.encoding;
 
 import java.io.IOException;
-import eu.cqrxs.util.*;
 
-/*
- * abstract class EnDeCoder is abstract none instancible base class for all encoders
- */
-public abstract class EnDeCoder {
+public interface IEncodable {
 
     /**
      * encode a byte[] into a hex string

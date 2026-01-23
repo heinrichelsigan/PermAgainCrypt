@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Set;
 import eu.cqrxs.util.*;
 
-import javax.crypto.Cipher;
-
 /**
  * SymmCipherEnum represents the enumerator for all symmetric cipher algorithms
  */

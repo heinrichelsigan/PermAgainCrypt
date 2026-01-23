@@ -10,7 +10,6 @@ package eu.cqrxs.crypt.hash;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -20,7 +19,7 @@ import eu.cqrxs.util.*;
 /**
  * KeyHash represents the enumerator for all Encoding to ascii algorithms
  */
-public enum KeyHash implements Serializable {
+public enum KeyHash {
     
 	Hex(0x0),
 	Sha1(0x1),

@@ -11,21 +11,18 @@ package eu.cqrxs.crypt.cipher;
 // import androidx.core.content.res.TypedArrayUtils;
 
 // import com.google.common.primitives.Bytes;
-import java.util.Arrays;
-import java.util.List;
-import java.io.ByteArrayOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HexFormat;
-import java.util.List;
-
+import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.util.*;
+import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.util.NotImplementedError;
+import eu.cqrxs.zip.ZipType;
 
+import java.util.List;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 /**
  * CryptHelper

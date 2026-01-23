@@ -9,19 +9,13 @@
  */ 
 package eu.cqrxs.gui;
 
-import eu.cqrxs.gui.CqrJdFrame;
-import eu.cqrxs.gui.*;
-import eu.cqrxs.gui.CqrJDialog;
-import eu.cqrxs.gui.ImageViewer;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.crypt.hash.KeyHash;
-import eu.cqrxs.crypt.hash.*;
-import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.GZ;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
-import eu.cqrxs.crypt.cipher.*;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.util.Fortune;
+import eu.cqrxs.zip.ZipType;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,14 +25,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.lang.*;
-import java.lang.IllegalStateException;
 import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.Set;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * class CqrJdFrame is main form for PermAgainCrypt in java
@@ -51,7 +41,7 @@ public class CqrJdFrame extends JFrame {
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
-	protected ZipType zipType = ZipType.None;
+	protected eu.cqrxs.zip.ZipType zipType = eu.cqrxs.zip.ZipType.None;
 	protected CipherEnum cipherEnum = CipherEnum.Aes;
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
@@ -64,8 +54,8 @@ public class CqrJdFrame extends JFrame {
 	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
-	CqrJDialog cqrJDialog;
-	ImageViewer imKey, imHash, imAddAlgo, imX, imInFile = new ImageViewer(), imOutFile  = new ImageViewer();
+	eu.cqrxs.gui.CqrJDialog cqrJDialog;
+	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
 	
 	Font menuFont, cryptFont;  
 	static Color defaultMenuItemBg, selectionBg;
@@ -533,7 +523,7 @@ public class CqrJdFrame extends JFrame {
 			mue.printStackTrace();
 		}
 		try {
-			imKey = new ImageViewer();
+			imKey = new eu.cqrxs.gui.ImageViewer();
 			imKey.setImageURL(keyUrl);
 			imKey.setBounds(8,28,30,30);	
 			imKey.addMouseListener(aSymMouse);			
@@ -563,7 +553,7 @@ public class CqrJdFrame extends JFrame {
 		getContentPane().add(jComboBox_Hash);
 		
 		try {
-			imHash = new ImageViewer();
+			imHash = new eu.cqrxs.gui.ImageViewer();
 			imHash.setImageURL(hashUrl);
 			imHash.setBounds(8, 69, 32, 30);		
 			imHash.addMouseListener(aSymMouse);
@@ -604,7 +594,7 @@ public class CqrJdFrame extends JFrame {
 		getContentPane().add(jComboBox_Algo);
 				
 		try {
-			imAddAlgo = new ImageViewer();
+			imAddAlgo = new eu.cqrxs.gui.ImageViewer();
 			imAddAlgo.setImageURL(addAlgoUrl);
 			imAddAlgo.setBounds(230, 111, 32, 27);	
 			imAddAlgo.addMouseListener(aSymMouse);
@@ -625,7 +615,7 @@ public class CqrJdFrame extends JFrame {
 		
 		
 		try {
-			imX = new ImageViewer();
+			imX = new eu.cqrxs.gui.ImageViewer();
 			imX.setImageURL(xUrl);
 			imX.setBounds(844, 112, 27, 27);	
 			imX.addMouseListener(aSymMouse);
@@ -1090,7 +1080,7 @@ public class CqrJdFrame extends JFrame {
 	}
 		
 	protected void randomText_action(ActionEvent event) {
-		String currentFortune = eu.cqrxs.util.Fortune.getFortune();
+		String currentFortune = Fortune.getFortune();
 		jTextAreaSource.setText(currentFortune);
 		if (currentFortune.length() < 2048)
 			jLabel_statusSource.setText(currentFortune.length() + " bytes");
@@ -1279,10 +1269,10 @@ public class CqrJdFrame extends JFrame {
 		jTextAreaSource.append("About menu clicked, event: " + event + "\n");
 		
         try {
-            if (new File("eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
+            if (new File("/eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
+			    cqrJDialog = new CqrJDialog("/eu/cqrxs/gui/cqrxs-eu.jpg");
+            else if (new File("eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
 			    cqrJDialog = new CqrJDialog("eu/cqrxs/gui/cqrxs-eu.jpg");
-            else if (new File("cqrxs-eu.jpg").isFile()) 
-			    cqrJDialog = new CqrJDialog("cqrxs-eu.jpg");
             else
                 cqrJDialog = new CqrJDialog();
 

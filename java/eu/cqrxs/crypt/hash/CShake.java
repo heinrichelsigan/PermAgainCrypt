@@ -13,19 +13,12 @@ package eu.cqrxs.crypt.hash;
 import org.bouncycastle.crypto.Digest;
 
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.crypt.hash.Hex;
-import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.crypt.cipher.CryptHelper;
-import java.nio.charset.StandardCharsets;
-import java.io.Serializable;
+import eu.cqrxs.crypt.encoding.Hex16Coder;
+
 import java.lang.String;
 import java.nio.charset.Charset;
-import java.security.Key;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HexFormat;
-import java.util.List;
-import java.util.Set;
 
 public class CShake {
 
