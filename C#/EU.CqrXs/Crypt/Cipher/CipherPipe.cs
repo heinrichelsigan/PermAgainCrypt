@@ -19,13 +19,13 @@ namespace EU.CqrXs.Crypt.Cipher
 
         #region fields and properties
 
-        private string cipherKey = "", cipherHash = "";
-        private ZipType zType = ZipType.None;
+        protected internal string cipherKey = "", cipherHash = "";
+        protected internal ZipType zType = ZipType.None;
         // private readonly CipherEnum[] inPipe;
-        private CipherEnum[] inPipe;
+        protected internal CipherEnum[] inPipe;
         // private readonly CipherEnum[] outPipe;
-        private EncodingType encodeType = EncodingType.Base64;
-        private KeyHash kHash = KeyHash.Hex;
+        protected internal EncodingType encodeType = EncodingType.Base64;
+        protected internal KeyHash kHash = KeyHash.Hex;
         // private readonly string pipeString;
 
         /// <summary>
@@ -309,11 +309,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 case CipherEnum.Des3Net:
                     Des3Net des3 = new Des3Net(secretKey, hash);
                     encryptBytes = des3.Encrypt(inBytes);
-                    break;
-                //case CipherEnum.RC564:
-                //    RC564.RC564GenWithKey(secretKey, hash, true);
-                //    encryptBytes = RC564.Encrypt(inBytes);
-                //    break;
+                    break;                
                 case CipherEnum.Rsa:
                     AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
                     encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
@@ -336,7 +332,6 @@ namespace EU.CqrXs.Crypt.Cipher
                 case CipherEnum.Dstu7624:
                 case CipherEnum.Fish2:
                 case CipherEnum.Fish3:
-                // case CipherEnum.ThreeFish256:
                 case CipherEnum.Gost28147:
                 case CipherEnum.Idea:
                 case CipherEnum.Noekeon:
@@ -954,7 +949,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// GenerateEncryptPipeImage - generates image for symmetric cipher encryption pipeline
         /// </summary>
         /// <returns><see cref="Image">the image</see></returns>
-        public Image GenerateEncryptPipeImage()
+        public virtual Image GenerateEncryptPipeImage()
         {
             System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resource.BlankEncrypt_640x108, new Size(640, 108)), ximage;
             System.Drawing.Bitmap? gifStartImage = new Bitmap(Properties.Resource.BlankEncrypt_640x96, new Size(640, 108));
@@ -1079,7 +1074,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// GenerateDecryptPipeImage generates an image for decrypt symmetric cipher pipeline 
         /// </summary>
         /// <returns><see cref="Image">the image</see></returns>
-        public Image GenerateDecryptPipeImage()
+        public virtual Image GenerateDecryptPipeImage()
         {
             System.Drawing.Bitmap mergeimg = new Bitmap(640, 108), ximage;
             string bmpName = "";
@@ -1170,7 +1165,11 @@ namespace EU.CqrXs.Crypt.Cipher
         
         #endregion graphics bmp creation
 
-
+        public static CipherEnum SymmCipherToCipher(SymmCipherEnum sCipher)
+        {
+            return sCipher.ToCipherEnum();
+        }
+    
     }
 
 }

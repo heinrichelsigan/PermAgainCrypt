@@ -100,11 +100,7 @@ namespace EU.CqrXs.Crypt.Cipher
                     break;
                 case CipherEnum.Fish3:
                     BlockCipher = new Org.BouncyCastle.Crypto.Engines.ThreefishEngine(Size);
-                    break;
-                //case CipherEnum.ThreeFish256:
-                //    ;
-                //    BlockCipher = new Org.BouncyCastle.Crypto.Engines.ThreefishEngine(Size);
-                //    break;
+                    break;                
                 case CipherEnum.Camellia:
                     Size = 128;
                     KeyLen = 16;

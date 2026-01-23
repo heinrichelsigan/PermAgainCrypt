@@ -15,8 +15,8 @@ namespace EU.CqrXs.Crypt.EnDeCoding
         Base32 =    0x400,
         Hex32 =     0x500,
         Uu =        0x600,
-        Base58 =    0x700,
-        Base64 =    0x800,
+        Hex64 =     0x700,
+        Base64 =    0x800,        
         Xx =        0x900
     }
 
@@ -63,6 +63,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 case EncodingType.Base32: return ((IDecodable)new Base32());
                 case EncodingType.Uu: return ((IDecodable)new Uu());
                 case EncodingType.Xx: return ((IDecodable)new Xx());
+                case EncodingType.Hex64: return ((IDecodable)new Hex64());
                 case EncodingType.Base64:
                 default: return ((IDecodable)new Base64());
             }            
@@ -80,6 +81,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 case EncodingType.Base32: return ".base32";
                 case EncodingType.Uu: return ".uu";
                 case EncodingType.Xx: return ".xx";
+                case EncodingType.Hex64: return ".hex64";
                 case EncodingType.Base64:
                 default: return ".base64";
             }
@@ -142,10 +144,14 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 case "xxdecode":
                     return EncodingType.Xx;
 
-                case "base64":
-                case "mime":
-                case "b64":
+                case "hex64":
+                case "h64":
                 case "64":
+                    return EncodingType.Hex64;
+
+                case "base64":                
+                case "b64":
+                case "mime":
                 default:
                     return EncodingType.Base64;
             }

@@ -543,27 +543,27 @@
             </param>
             <returns>plain text decrypted string</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered">
+        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams">
             <summary>
-            CryptParamsPrefered prefered params for symmetric block cipher
+            SymmCryptParams prefered params for symmetric block cipher
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor">
             <summary>
             standard ctor with <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum.Aes"/> default
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>
-            constructs a object with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="P:EU.CqrXs.Crypt.Cipher.CryptParams.KeyLen"/>
+            constructs a object with correct <see cref="!:Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="P:EU.CqrXs.Crypt.Cipher.CryptParams.KeyLen"/>
             for parameter <see cref="N:EU.CqrXs.Crypt.Cipher"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
             <summary>
-            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> object 
-            with correct <see cref="T:Org.BouncyCastle.Crypto.Engines.SM2Engine.Mode"/>, <see cref="T:System.Drawing.Size"/>, 
+            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> object 
+            with correct <see cref="!:Mode"/>, <see cref="T:System.Drawing.Size"/>, 
             with additional Key and <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash" />
             for parameter <see cref="N:EU.CqrXs.Crypt.Cipher"/>
             </summary>
@@ -572,16 +572,16 @@
             <param name="hash"></param>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
-            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> object by <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
+            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> object by <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             with additional key <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/></param>
             <param name="key">secret key</param>
             <param name="keyHash">key hashing</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
             constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/> object by <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
             with additional kay and hash, <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/>
@@ -591,18 +591,18 @@
             <param name="hash">corresponding key hash</param>
             <param name="keyHash">key hashing</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams)">
             <summary>
             Constructs instance via another object instance
             </summary>
             <param name="cryptParams">another instance</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered.RequestPreferedAlgorithm(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.RequestPreferedAlgorithm(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
             <summary>
-            static way to get valid <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered"/> for a requested <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
+            static way to get valid <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> for a requested <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             </summary>
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
-            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptParamsPrefered"/></returns>
+            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/></returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net">
             <summary>
@@ -643,12 +643,6 @@
             </summary>
             <param name="cipherText">Base64 encoded encrypted byte[]</param>
             <returns>plain text string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.FishRequiresAesEngineException">
-            <summary>
-            this exception is only implemented, because of a 1st 
-            where 3-fish rides on AesEngine
-            </summary>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum">
             <summary>
@@ -699,21 +693,6 @@
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe">
             <summary>
             Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.ZType">
-            <summary>
-            ZType is current <see cref="T:EU.CqrXs.Zip.ZipType"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncodeType">
-            <summary>
-            Current <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncodeType"/> 
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.KHash">
-            <summary>
-            KHash is <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/>
             </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
@@ -844,31 +823,6 @@
             <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
             <returns>Decrypted stirng</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCrypt">
-            <summary>
-            Basic class for symmetric cipher encryption
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCrypt.EncryptBytes(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
-            <summary>
-            Generic encrypt bytes to bytes
-            </summary>
-            <param name="inBytes">Array of byte</param>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key hash iv</param>
-            <returns>encrypted byte Array</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCrypt.DecryptBytes(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
-            <summary>
-            Generic decrypt bytes to bytes
-            </summary>
-            <param name="cipherBytes">Encrypted array of byte</param>
-            <param name="cipherAlgo">both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key hash iv</param>
-            <returns>decrypted byte Array</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix">
              <summary>
@@ -1299,6 +1253,25 @@
             <param name="padOutput">block padding with =</param>
             <returns>Base32 encoded string</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.EnDeCoding.Hex64">
+            <summary>
+            Base64 mime standard encoding
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex64.Encode(System.Byte[])">
+            <summary>
+            Encodes byte[] to valid encode formatted string
+            </summary>
+            <param name="inBytes">byte array to encode</param>
+            <returns>encoded string</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex64.Decode(System.String)">
+            <summary>
+            Decodes an encoded string to byte[]
+            </summary>
+            <param name="encodedString">encoded string</param>
+            <returns>byte array</returns>
+        </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.Base64">
             <summary>
             Base64 mime standard encoding
@@ -1317,70 +1290,6 @@
             </summary>
             <param name="encodedString">encoded string</param>
             <returns>byte array</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder">
-            <summary>
-            DeEnCoder provides static members for formating
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.KeyToHex(System.String)">
-            <summary>
-            KeyHexString transforms a private secret key to hex string
-            </summary>
-            <param name="key">private secret key</param>
-            <returns>hex string of bytes</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.EncodeBytes(System.Byte[],EU.CqrXs.Crypt.EnDeCoding.EncodingType,System.Boolean,System.Boolean)">
-            <summary>
-            EncodeBytes encodes encrypted byte[] by encodingMethod to an encoded text string
-            </summary>
-            <param name="encryptBytes">encryptedBytes to encdode</param>
-            <param name="encodingType">EncodingTypes are "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64".
-            "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]">fromPlain</see> represent a binary without encryption</param>
-            <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
-            <returns>encoded encrypted string</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.DecodeText(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,System.Boolean,System.Boolean)">
-            <summary>
-            EncodedTextToBytes transforms an encoded text string into a <see cref="T:byte[]">býte array</see>
-            </summary>
-            <param name="cipherText">encoded (encrypted) text string</param>
-            <param name="encodingType"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/> could be 
-            "None", "Hex16", "Base16", "Base32", "Hex32", "Uu", "Base64". "Base64" is default.</param>
-            <param name="fromPlain">Only for uu: true, if <see cref="T:byte[]">encryptBytes</see> represent a binary without encryption</param>
-            <param name="fromFile">Only for uu: true, if file and not textbox will be encrypted, default (false)</param>
-            <returns>binary byte array</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.GetBytesFromString(System.String,System.Int32,System.Boolean)">
-            <summary>
-            GetBytesFromString gets byte[] array representing binary transformation of a string
-            </summary>
-            <param name="inString">string to transfer to binary byte[] data</param>
-            <param name="blockSize">current block size, default: 256</param>
-            <param name="upStretchToCorrectBlockSize">fills at the end of byte[] padding zero 0 bytes, default: false</param>
-            <returns>byte[] array of binary byte</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.GetStringFromBytesTrimNulls(System.Byte[])">
-            <summary>
-            GetStringFromBytesTrimNulls gets a plain text string from binary byte[] data and truncate all 0 byte at the end.
-            </summary>
-            <param name="decryptedBytes">decrypted byte[]</param>
-            <returns>truncated string without a lot of \0 (null) characters</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.GetBytesTrimNulls(System.Byte[])">
-            <summary>
-            GetBytesTrimNulls gets a byte[] from binary byte[] data and truncate all 0 byte at the end.
-            </summary>
-            <param name="inBytes">decrypted byte[]</param>
-            <returns>truncated byte[] without a lot of \0 (null) characters</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.DeEnCoder.Trim_Decrypted_Text(System.String)">
-            <summary>
-            Trim_Decrypted_Text removes all special control characters from a text string
-            </summary>
-            <param name="decryptedText">string to trim and strip from special control characters.</param>
-            <returns>text only string with at least text formation special characters.</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType">
             <summary>
@@ -1588,8 +1497,9 @@
         </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.IDecodable">
             <summary>
-            IDecodable is an common interface for <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base32"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base64"/>,
-            <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex32"/>, <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Uu"/> and <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Xx"/> Encoding / Decoding
+            IDecodable is an common interface for <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base32"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base64"/>, 
+            <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex32"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex64"/>
+            <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Uu"/> and <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Xx"/> Encoding / Decoding
             </summary>
         </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.RawString">
@@ -1711,11 +1621,6 @@
             <param name="xxEncodedStr">xx encoded string</param>
             <returns>xx decoded plain text</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.Ascon256">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.AsconHash256" />
-            </summary>
-        </member>
         <member name="T:EU.CqrXs.Crypt.Hash.BCrypt">
             <summary>
             BCrypt a classic unix passwd crypt method
@@ -1734,37 +1639,6 @@
             <returns></returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.Blake2xs">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Hash.Blake2xs.HashString(System.String)">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.Blake2xsDigest" />
-            </summary>
-            <param name="stringToHash"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.CShake">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.CShakeDigest" />
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Hash.CShake.HashString(System.String)">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.CShakeDigest" />
-            </summary>
-            <param name="stringToHash"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.Dstu7564">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.Dstu7564Digest" />
-            </summary>
         </member>
         <member name="T:EU.CqrXs.Crypt.Hash.KeyHash">
             <summary>
@@ -1812,20 +1686,6 @@
             <returns>string encrypted password</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.ArgumentException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.RipeMD256">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
-            Thanx to the legion of <see href="https://bouncycastle.org/" />
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Hash.RipeMD256.HashString(System.String)">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.RipeMD256Digest" />
-            </summary>
-            <param name="stringToHash"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="T:EU.CqrXs.Crypt.Hash.SCrypt">
             <summary>
@@ -1924,37 +1784,6 @@
             <param name="stream">stream strm</param>
             <param name="fileName">optional filename to add after hash</param>
             <returns>Sha512 hash with optional fileName</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.TupleHash">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.TupleHash" />
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Hash.TupleHash.HashString(System.String)">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.TupleHash" />
-            </summary>
-            <param name="stringToHash">string to be hased</param>
-            <returns>hashed hex string</returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.Whirlpool">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.WhirlpoolDigest" />
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Hash.Xoodyak">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Hash.Xoodyak.HashString(System.String)">
-            <summary>
-            <see cref="T:Org.BouncyCastle.Crypto.Digests.XoodyakDigest" />
-            </summary>
-            <param name="stringToHash"></param>
-            <returns></returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CContact.#ctor">
             <summary>
@@ -2269,17 +2098,6 @@
             <returns>IP Address of client host or in case of SNAT IP Address of 1st internet provider gateway of client host</returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.HttpClientRequest.GetLatestAtImages(System.String)">
-            <summary>
-            Gets latest images from .at or other specified top level domain 
-            searching duckduckgo, brave, qwant and yahoo image search engines
-            </summary>
-            <param name="topLvlDomain">top level domain suffix;
-            e.g. at, de, eu, edu, gov
-            you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
-            </param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> of svg and img html tags</returns>
-        </member>
         <member name="T:EU.CqrXs.Net.WebHttp.TcpClientWebRequest">
             <summary>
             <see cref="T:EU.CqrXs.Net.WebHttp.TcpClientWebRequest"/> performs web request raw on tcp socket 
@@ -2307,7 +2125,7 @@
             WebClientRequest implements a static WebClient Request via <see cref="T:System.Net.WebClient"/>
             and mainly provides
             <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)"/>
-            <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.LatestAtImages(System.String)"/>
+            <see cref="!:LatestAtImages(string)"/>
             via basic static methods
             <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)"/>
             <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)"/>
@@ -2357,17 +2175,6 @@
             <param name="url">default: https://cqrxs.eu/net/R.aspx https://area23.at/net/R.aspx</param>
             <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
             <returns>external official gateway <see cref="T:System.Net.IPAddress">ip address</see> of client</returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.LatestAtImages(System.String)">
-            <summary>
-            Gets latest images from .at or other specified top level domain 
-            searching duckduckgo, brave, qwant and yahoo image search engines
-            </summary>
-            <param name="topLvlDomain">top level domain suffix;
-            e.g. at, de, eu, edu, gov
-            you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
-            </param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> of svg and img html tags</returns>
         </member>
         <member name="T:EU.CqrXs.Properties.Resource">
             <summary>

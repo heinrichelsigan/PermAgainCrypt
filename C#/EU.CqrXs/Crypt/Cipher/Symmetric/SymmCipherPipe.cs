@@ -3,6 +3,7 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
+using System.Security.Cryptography.Xml;
 using System.Security.Policy;
 using System.Text;
 
@@ -14,33 +15,20 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
     /// </summary>
     public class SymmCipherPipe : CipherPipe
     {
+        
+        protected internal SymmCipherEnum[] inSymmPipe;                
 
-        private ZipType zType = ZipType.None;
-        private SymmCipherEnum[] inPipe;
-        // internal readonly SymmCipherEnum[] outPipe;
-        private EncodingType encodeType = EncodingType.Base64;
-        private KeyHash kHash = KeyHash.Hex;
-        // private readonly string pipeString;
-        private string symmCipherKey = "", symmCipherHash = "";
+        public SymmCipherEnum[] InSymmPipe
+        {
+            get => inSymmPipe; 
+            set
+            {                
+                inSymmPipe = value;
+                InPipe = value.ToList().ConvertAll(new Converter<SymmCipherEnum, CipherEnum>(SymmCipherToCipher)).ToArray();
+            }
+        }
 
-        /// <summary>
-        /// ZType is current <see cref="ZipType"/>
-        /// </summary>
-        public new ZipType ZType { get => zType; internal set => zType = value; }
-
-        /// <summary>
-        /// Current <see cref="EncodeType"/> 
-        /// </summary>
-        public new EncodingType EncodeType { get => encodeType; internal set => encodeType = value; }
-
-        /// <summary>
-        /// KHash is <see cref="KeyHash"/>
-        /// </summary>
-        public new KeyHash KHash { get => kHash; internal set => kHash = value; }
-
-
-        public new SymmCipherEnum[] InPipe { get => inPipe; set => inPipe = value; }    
-        public new SymmCipherEnum[] OutPipe { get => new List<SymmCipherEnum>(InPipe).Reverse<SymmCipherEnum>().ToArray(); }
+        public SymmCipherEnum[] OutSymmPipe { get => new List<SymmCipherEnum>(InSymmPipe).Reverse<SymmCipherEnum>().ToArray(); }
 
 
         public new string PipeString
@@ -48,7 +36,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             get
             {
                 string pipeString = string.Empty;
-                foreach (SymmCipherEnum symmCipher in inPipe)
+                foreach (SymmCipherEnum symmCipher in inSymmPipe)
                     pipeString += symmCipher.GetSymmCipherChar();
                 return pipeString;
             }
@@ -74,12 +62,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         #region ctor SymmCipherPipe
 
-        public SymmCipherPipe()
+        public SymmCipherPipe() : base()
         {
-            inPipe = (new List<SymmCipherEnum>()).ToArray();
-            encodeType = EncodingType.Base64;
-            kHash = KeyHash.Hex;
-            zType = ZipType.None;
+            inSymmPipe = (new List<SymmCipherEnum>()).ToArray();
 
             Area23Log.LogOriginMsg("SymmCipherPipe", $"Generating symmetric cipher pipe: {PipeString}, encoding = {encodeType}, zipping={zType}, hashing={kHash}");
         }
@@ -88,39 +73,34 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
         /// </summary>
         /// <param name="symmCipherEnums">array of <see cref="T:SymmCipherEnum[]"/> as inpipe</param>
-        public SymmCipherPipe(SymmCipherEnum[] symmCipherEnums, uint maxpipe = 8, 
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+        public SymmCipherPipe(
+            SymmCipherEnum[] symmCipherEnums, 
+            uint maxpipe = 8, 
+            EncodingType encType = EncodingType.Base64, 
+            ZipType zpType = ZipType.None, 
+            KeyHash kh = KeyHash.Hex) : 
+            base(
+                symmCipherEnums.ToList().ConvertAll(new Converter<SymmCipherEnum, CipherEnum>(SymmCipherToCipher)).ToArray(),
+                maxpipe,
+                encType,
+                zpType,
+                kh)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
 
             int isize = Math.Min(((int)symmCipherEnums.Length), ((int)maxpipe));
-            inPipe = new SymmCipherEnum[isize];
-            Array.Copy(symmCipherEnums, inPipe, isize);
-           
-            zType = zpType;
-            encodeType = encType;
-            kHash = kh;
-
+            inSymmPipe = new SymmCipherEnum[isize];
+            Array.Copy(symmCipherEnums, inSymmPipe, isize);
+                       
             Area23Log.LogOriginMsg("SymmCipherPipe", $"Generating symmetric cipher pipe: {PipeString}, encoding = {encType}, zipping={zpType}, hashing={kh}");
-
-            //if (inPipe.Length > maxpipe)
-            //{
-            //    List<string> pipElems = new List<string>(inPipe.Length);
-            //    foreach (var cipherEnum in inPipe)
-            //        pipElems.Add(cipherEnum.ToString());                
-            //    throw new ArgumentException($"Pipe \"{string.Join(";", pipElems.ToArray())}\" length exceeds {maxpipe}!");
-            //}
-
-            //foreach (SymmCipherEnum symmCipher in inPipe)
-            //    pipeString += symmCipher.GetSymmCipherChar();
         }
 
         /// <summary>
         /// SymmCipherPipe constructor with an array of <see cref="T:string[]"/> as inpipe
         /// </summary>
         /// <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
-        public SymmCipherPipe(string[] symmCipherAlgos, uint maxpipe = 8, 
+        public SymmCipherPipe(string[] symmCipherAlgos, uint maxpipe = 8,
             EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
@@ -141,12 +121,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 }
             }
 
-            inPipe = symmCipherEnums.ToArray();
-
+            InSymmPipe = symmCipherEnums.ToArray();
             encodeType = encType;
             kHash = kh;
             zType = zpType;
-
             // Area23Log.LogOriginMsg("SymmCipherPipe", $"Generating symmetric cipher pipe: {PipeString}, encoding = {encType}, zipping={zpType}, hashing={kh}");
         }
 
@@ -184,7 +162,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             }
 
 
-            inPipe = pipeList.ToArray();
+            InSymmPipe = pipeList.ToArray();
 
             encodeType = encType;
             kHash = kh;
@@ -205,9 +183,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)
         {
             if (string.IsNullOrEmpty(key))
-                throw new ArgumentNullException("key");
-            symmCipherKey = key;
-            symmCipherHash = (string.IsNullOrEmpty(hash)) ? kHash.Hash(key) : hash;
+                throw new ArgumentNullException("key");            
+            
+            cipherKey = key;
+            cipherHash = (string.IsNullOrEmpty(hash)) ? kHash.Hash(key) : hash;
         }
 
         /// <summary>
@@ -217,7 +196,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         public SymmCipherPipe(string key)
             : this(key, EnDeCodeHelper.KeyToHex(key))
         {
-            symmCipherKey = key;
+            cipherKey = key;
         }
 
         #endregion ctor SymmCipherPipe
@@ -228,7 +207,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// ToJson 
         /// </summary>
         /// <returns>serialized string</returns>
-        public string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public new string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         /// <summary>
         /// FromJson
@@ -241,11 +220,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             if (pipe == null)
             {
                 this.inPipe = pipe.InPipe;
+                this.inSymmPipe = pipe.InSymmPipe;
                 this.encodeType = pipe.EncodeType;
                 this.kHash = pipe.KHash;
                 this.zType = pipe.ZType;
-                this.symmCipherKey = pipe.symmCipherKey;
-                this.symmCipherHash = pipe.symmCipherHash;
+                this.cipherKey = pipe.cipherKey;
+                this.cipherHash = pipe.cipherHash;
             }
             return pipe;
         }
@@ -272,7 +252,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             byte[] encryptBytes = inBytes;
             
-            CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hashIv);
+            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hashIv);
             Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
             encryptBytes = cryptBounceCastle.Encrypt(inBytes);
 
@@ -297,7 +277,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             byte[] decryptBytes = cipherBytes;
 
-            CryptParamsPrefered cpParams = new CryptParamsPrefered(cipherAlgo, secretKey, hashIv);
+            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hashIv);
             Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
             decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
 
@@ -318,12 +298,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 		/// <returns>encrypted byte[]</returns>
 		public override byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey = "", string hashIv = "", ZipType zipBefore = ZipType.None)
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("secretKey");
-            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(symmCipherHash))
+            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(cipherHash))
                 hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
-            symmCipherKey = secretKey;
-            symmCipherHash = hashIv;
+            cipherKey = secretKey;
+            cipherHash = hashIv;
 
             byte[] encryptedBytes = new byte[inBytes.Length];
             Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
@@ -358,17 +338,18 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="hashIv">hash relational to secret kay</param>
         /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
-        public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey = "", string hashIv = "", ZipType unzipAfter = ZipType.None)
+        public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, 
+            string secretKey = "", string hashIv = "", ZipType unzipAfter = ZipType.None)
         {
-            if (string.IsNullOrEmpty(symmCipherKey) && string.IsNullOrEmpty(secretKey))
+            if (string.IsNullOrEmpty(cipherKey) && string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("secretKey");
 
-            symmCipherKey = string.IsNullOrEmpty(secretKey) ? symmCipherKey : secretKey;
+            cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
 
-            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(symmCipherHash))
-                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(symmCipherKey);
+            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(cipherHash))
+                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(cipherKey);
 
-            symmCipherHash = string.IsNullOrEmpty(hashIv) ? symmCipherHash : hashIv;
+            cipherHash = string.IsNullOrEmpty(hashIv) ? cipherHash : hashIv;
 
             long outByteLen = (OutPipe == null || OutPipe.Length == 0) ? cipherBytes.Length : ((cipherBytes.Length * 3) + 1);
             byte[] decryptedBytes = new byte[outByteLen];
@@ -434,15 +415,15 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             EncodingType encType = EncodingType.Base64,
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            symmCipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : symmCipherKey;
-            symmCipherHash = keyHash.Hash(secretKey);
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            cipherHash = keyHash.Hash(secretKey);
             encodeType = encType;
             zType = zipBefore;
             kHash = keyHash;
-            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, symmCipherHash, zipBefore);
+            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
             string cryptedEncoded = encType.EnCode(outBytes);
             return cryptedEncoded;
         }
@@ -451,11 +432,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             EncodingType encType = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            symmCipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : symmCipherKey;
-            symmCipherHash = keyHash.Hash(secretKey);
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            cipherHash = keyHash.Hash(secretKey);
             encodeType = encType;
             zType = unzipAfter;
             kHash = keyHash;
@@ -470,17 +451,17 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             EncodingType encType = EncodingType.Base64,
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            symmCipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : symmCipherKey;
-            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(symmCipherKey) : hashIV;
-            symmCipherHash = hashIV;
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
+            cipherHash = hashIV;
             encodeType = encType;
             zType = zipBefore;
             kHash = keyHash;
 
-            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, symmCipherKey, symmCipherHash, zipBefore);
+            byte[] outBytes = MerryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, zipBefore);
             byte[] encryptedBytes = (new List<byte>()).ToArray();
             if (encType != EncodingType.None)
             {
@@ -497,12 +478,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             EncodingType encType = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(symmCipherKey))
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
-            symmCipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : symmCipherKey;
-            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(symmCipherKey) : hashIV;
-            symmCipherHash = hashIV;
+            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
+            hashIV = (string.IsNullOrEmpty(hashIV)) ? keyHash.Hash(cipherKey) : hashIV;
+            cipherHash = hashIV;
             encodeType = encType;
             zType = unzipAfter;
             kHash = keyHash;
@@ -545,18 +526,18 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         
         #region static en-de-crypt members
 
-            /// <summary>
-            /// EncrpytToStringd
-            /// </summary>
-            /// <param name="inString">string to encrypt multiple times</param>
-            /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
-            /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-            /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
-            /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
-            /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
-            /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
-            /// <returns>encrypted string</returns>        
-            /// <returns></returns>
+        /// <summary>
+        /// EncrpytToStringd
+        /// </summary>
+        /// <param name="inString">string to encrypt multiple times</param>
+        /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+        /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+        /// <param name="pipeString">out parameter for setting hash to compare entities encryption</param>
+        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+        /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
+        /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
+        /// <returns>encrypted string</returns>        
+        /// <returns></returns>
         public static new string EncrpytToString(string inString, string cryptKey, out string pipeString,
             EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {

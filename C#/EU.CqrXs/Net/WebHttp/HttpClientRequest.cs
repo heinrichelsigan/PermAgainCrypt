@@ -19,26 +19,11 @@ namespace EU.CqrXs.Net.WebHttp
         public static HttpClient HttpClientR { get => httpClientR; }
 
         private static string topLevelDomain = "at";
-        private static string[] UrlImgs
-        {
-            get => new string[]
-                {
-                    $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd",
-                    $"https://duckduckgo.com/?q=site%3A.{topLevelDomain}&df=d&ia=images&iax=images",
-                    $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images",
-                    "https://images.search.yahoo.com/search/images;_ylt=AwriiQVEAWhpR94pfEiJzbkF?p=site%3A" + topLevelDomain + "&fr=yfp-t&imgt=day&fr2=p%3As%2Cv%3Ai"
-                };
-        }
-
-
-
+        
         static HttpClientRequest()
         {
             // empty static constructor 
         }
-
-        
-
 
         public static HttpClient GetHttpClient(string baseAddr, string hostName, System.Text.Encoding? encoding)
         {
@@ -160,60 +145,6 @@ namespace EU.CqrXs.Net.WebHttp
             }
 
             return ipClient;
-        }
-
-
-        /// <summary>
-        /// Gets latest images from .at or other specified top level domain 
-        /// searching duckduckgo, brave, qwant and yahoo image search engines
-        /// </summary>
-        /// <param name="topLvlDomain">top level domain suffix;
-        /// e.g. at, de, eu, edu, gov
-        /// you could also add a subdomain suffix like: ac.at, co.at, gv.at or similar
-        /// </param>
-        /// <returns><see cref="List{String}"/> of svg and img html tags</returns>
-        public static async Task<List<string>> GetLatestAtImages(string topLvlDomain)
-        {
-            List<string> imgList = new List<string>();
-            topLevelDomain = string.IsNullOrEmpty(topLvlDomain) ? "at" : topLvlDomain;
-            foreach (string url in UrlImgs)
-            {
-                var httpResponse = await GetResponseByUrl(url);
-                if (httpResponse.IsSuccessStatusCode)
-                {
-                    string respToParse = httpResponse.ToString();
-                    bool isParsed = false;
-                    while (!isParsed)
-                    {
-                        if (respToParse.Contains("<img", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            int imgIdx = respToParse.IndexOf("<img");
-                            if (imgIdx < 0)
-                                imgIdx = respToParse.IndexOf("<Img");
-                            if (imgIdx < 0)
-                                imgIdx = respToParse.IndexOf("<Img");
-                            respToParse = respToParse.Substring(imgIdx);
-
-                            string imgToAdd = respToParse.Substring(0, respToParse.IndexOf(">") + 1);
-                            respToParse = respToParse.Substring(respToParse.IndexOf(">") + 1);
-                            imgList.Add(imgToAdd);
-                        }
-                        else if (respToParse.Contains("<svg"))
-                        {
-                            respToParse = respToParse.Substring(respToParse.IndexOf("<svg"));
-                            string svgToAdd = respToParse.Substring(0, respToParse.IndexOf("</svg>") + 1);
-                            respToParse = respToParse.Substring(respToParse.IndexOf("</svg>") + 1);
-                            imgList.Add(svgToAdd);
-                        }
-                        else
-                        {
-                            isParsed = true;
-                        }
-                    }
-                }
-            }
-            
-            return imgList.ToArray().Distinct().ToList();            
         }
 
 

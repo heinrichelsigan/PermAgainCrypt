@@ -305,7 +305,7 @@ namespace EU.CqrXs.SpoolTest
         {
             if (true)
             {
-                SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutPipe : symmPipe.InPipe;
+                SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutSymmPipe : symmPipe.InSymmPipe;
                 System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
                 foreach (var symmCipher in symmCiphers)
                     System.Console.Write($"{symmCipher}=>");

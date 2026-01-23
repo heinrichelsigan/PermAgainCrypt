@@ -1320,20 +1320,46 @@ namespace EU.CqrXs.Util
                 ext.EndsWith(".bmp", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".exif", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".ico", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".docx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".docm", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".dot", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".dotx", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".dotm", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".odm", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".xlsx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xl", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".xls", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlsx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xla", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlb", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlc", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xld", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlk", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xll", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlm", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlsb", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlsm", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".xlt", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xltm", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xltx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlv", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".xlw", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".odx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".csv", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".pptx", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".ppt", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".vsmx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".odp", StringComparison.CurrentCultureIgnoreCase) ||                
                 ext.EndsWith(".vsd", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".vstx", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".vsd", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsw", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vtx", StringComparison.CurrentCultureIgnoreCase) ||                
+                ext.EndsWith(".vds", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vdx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vss", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vst", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vsdx", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".vsto", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".txt", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".text", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".asc", StringComparison.CurrentCultureIgnoreCase) ||

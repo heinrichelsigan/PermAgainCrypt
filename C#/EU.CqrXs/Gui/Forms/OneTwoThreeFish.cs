@@ -326,10 +326,8 @@ namespace EU.CqrXs.Gui.Forms
                 this.textBoxHash3.Text = metaHash;
                 this.textBoxHashHash3.Text = KeyHash.Whirlpool.Hash(metaHash);
 
-                // this.TexextBoxHash1.Text = 
-                // this.textBoxHash.Text = GetHash().Hash(this.textBoxKey.Text);
-
                 cPipe = new CipherPipe(new CipherEnum[] { CipherEnum.BlowFish, CipherEnum.Fish2, CipherEnum.Fish3 }, 3, GetEncoding(), GetZip());
+                this.textBoxPipe.Text = "";
                 foreach (CipherEnum cipher in cPipe.InPipe)
                     this.textBoxPipe.Text += cipher.ToString() + ";";
                 SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
@@ -876,9 +874,8 @@ namespace EU.CqrXs.Gui.Forms
 
                         this.textBoxPipe.Text = "";
                         foreach (CipherEnum cipher in cPipe.InPipe)
-                        {
                             this.textBoxPipe.Text += cipher.ToString() + ";";
-                        }
+                        
                         SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
                     }
                 }

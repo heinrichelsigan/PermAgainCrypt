@@ -118,78 +118,7 @@ namespace EU.CqrXs.Gui.Helper
             }
 
             return Properties.Resources.image_file;
-        }
-
-        /// <summary>
-        /// Downloads an absolute referemces image from toplevel domain via 4 known search engines
-        /// </summary>
-        /// <param name="topLevelDomain">top level domain to search, default: eu</param>
-        public static string[] DownloadImage(string topLevelDomain = ".eu")
-        {
-            int imgUrlIdx = -1;
-            string urlImage = "";
-            List<string> imgs = WebClientRequest.LatestAtImages(topLevelDomain), fileList = new List<string>();
-            string fName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.Area23DateTimeWithMillis() + ".img");
-
-            foreach (string anImg in imgs)
-            {
-                try
-                {
-                    if (anImg.Contains("<img", StringComparison.InvariantCultureIgnoreCase) &&
-                        anImg.Contains("src", StringComparison.InvariantCultureIgnoreCase) &&
-                        anImg.Contains("=") &&
-                        (imgUrlIdx = anImg.IndexOf("src")) > -1)
-                    {
-                        urlImage = anImg.Substring(imgUrlIdx + 1);
-                        if ((imgUrlIdx = urlImage.IndexOf("=")) > -1)
-                            urlImage = urlImage.Substring(imgUrlIdx + 1);
-                        urlImage = urlImage.Trim("\"'".ToCharArray());
-
-                        if (urlImage.Contains('>'))
-                        {
-                            urlImage = (urlImage.Contains("/>") ?
-                                        urlImage.Substring(0, urlImage.IndexOf("/") - 1) :
-                                        urlImage.Substring(0, urlImage.IndexOf(">") - 1));
-                        }
-
-                        bool fileAdded = false;
-                        Uri uri = new Uri(urlImage);
-                        if (uri.IsWellFormedOriginalString() || uri.ToString().Contains("://"))
-                        {
-                            FileInfo fi = WebClientRequest.DownloadBytes(uri.ToString(), fName, System.Text.Encoding.UTF8);
-                            if (fi.Exists && uri.ToString().Contains('/') && uri.ToString().Contains("."))
-                            {
-                                string fileRest = "", localPath = uri.LocalPath.ToString();
-                                if ((imgUrlIdx = uri.ToString().LastIndexOf("/")) > -1)
-                                {
-                                    fileRest = uri.ToString().Substring(imgUrlIdx + 1);
-                                    if (localPath.Contains('.') && localPath.Length > 3)
-                                        fileRest = localPath;
-                                    if (fileRest.Contains('.') && fileRest.Length > 3)
-                                    {
-                                        fi.CopyTo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileRest));
-                                        fileList.Add(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileRest));
-                                        fileAdded = true;
-                                        Thread.Sleep(40);
-                                        fi.Delete();
-                                    }
-                                }
-                            }
-                            if (!fileAdded)
-                                fileList.Add(fi.FullName);
-                            fileAdded = false;
-                        }
-
-                    }
-                }
-                catch (Exception urlExc)
-                {
-                    Area23Log.LogOriginMsgEx(typeof(ExtensionMethods).Name, $"{urlExc.GetType()}:", urlExc);
-                }
-            }
-
-            return fileList.ToArray();
-        }
+        }        
 
     }
 }
