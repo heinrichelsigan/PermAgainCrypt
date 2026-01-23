@@ -9,12 +9,16 @@
 
 package eu.cqrxs.console;
 
+import eu.cqrxs.console.OptEnum;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.zip.ZipType;
+
+import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.*;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -150,8 +154,8 @@ public class CryptConsole  {
                 case OptEnum.Hash:
                     keyHash = KeyHash.getKeyHashFromString(optStr);
                     break;
-                case OptEnum.Crypt:
-                case OptEnum.Decrypt: // Usage on not existing or empty passphrase / key
+                case OptEnum.Crypt: 
+                    // Usage on not existing or empty passphrase / key
                     if (passKey == null || passKey.isEmpty())
                         usage("unrecognized crypt option \"" + optStr + "\" without --pass=passPhrase ");
 
@@ -276,9 +280,9 @@ public class CryptConsole  {
                 argument.substring(1);
 
         if (arg.contains("="))
-            optArg = arg.substring(arg.indexOf('='));
-        else if (arg.contains(":"))
-            optArg =  arg.substring(arg.indexOf(':'));
+            optArg = arg.substring(arg.indexOf('=') + 1);
+        // else if (arg.contains(":"))
+        //     optArg =  arg.substring(arg.indexOf(':') + 1);
 
         // System.out.println("arg=" + arg +  " optArg=" + optArg);
 
