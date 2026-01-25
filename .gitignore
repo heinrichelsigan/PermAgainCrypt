@@ -404,6 +404,9 @@ FodyWeavers.xsd
 /Deploy/console/TestCryptConsole.bat
 /Deploy/framework
 
+/docu/*.toc
+/docu/*.aux
+
 /java/out/
 /java/temp/
 
