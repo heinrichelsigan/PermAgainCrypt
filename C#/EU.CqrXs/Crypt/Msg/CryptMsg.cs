@@ -9,9 +9,12 @@ namespace EU.CqrXs.Crypt.Msg
 {
 
     /// <summary>
-    /// CryptMsg
+    /// <see cref="CryptMsg{TC}"/> derived from <see cref="CMsg"/> is a generic crypt container, 
+    /// where instanciated generic object from <typeparamref name="TC"/> will be serialized and encrypted.
+    /// For decrypting containing generic object serialized crypted string will be decrypted and deserialized and mapped into
+    /// TODO: refactoring of en-/decryption
     /// </summary>
-    /// <typeparam name="TC"></typeparam>
+    /// <typeparam name="TC">generic type parameter</typeparam>
     [Serializable]
     public class CryptMsg<TC> : CMsg, IMsgAble where TC : class
     {

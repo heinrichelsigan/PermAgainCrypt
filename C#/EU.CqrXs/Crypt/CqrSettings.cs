@@ -6,6 +6,10 @@ using System.Diagnostics.CodeAnalysis;
 namespace EU.CqrXs.Crypt
 {
 
+    /// <summary>
+    /// Comes from SecureChat, maybe we will need it in a different kind in future.
+    /// TODO: adapt it with low priority.
+    /// </summary>
     public class CryptSettings
     {
         // TODO: replace it in C# 9.0 to private static readonly lock _lock

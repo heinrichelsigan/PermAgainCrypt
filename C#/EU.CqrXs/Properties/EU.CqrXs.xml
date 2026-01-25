@@ -4,6 +4,16 @@
         <name>EU.CqrXs</name>
     </assembly>
     <members>
+        <member name="T:EU.CqrXs.Crypt.CException">
+            <summary>
+            CException a generic app level Exception derived from <see cref="T:System.ApplicationException"/>
+            provides a <see cref="P:EU.CqrXs.Crypt.CException.LastException"/> chain list to the root of first runtime exception
+            <see cref="T:System.DateTime"/> <see cref="P:EU.CqrXs.Crypt.CException.TimeStampException"/>, when the Exception was thrown
+            <see cref="P:EU.CqrXs.Crypt.CException.LastException"/> a property, that stores the Exception in <see cref="M:System.AppDomain.SetData(System.String,System.Object)"/> on set
+            and getss the last Exception during starting this instance via <see cref="M:System.AppDomain.GetData(System.String)" />
+            For root first Exception <see cref="P:EU.CqrXs.Crypt.CException.LastException"/> is always <see cref="T:null"/>
+            </summary>
+        </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Asymmetric.DH">
             <summary>
             Diffie Hellman key exchange
@@ -1145,6 +1155,12 @@
             <param name="encrypt">true for encryption, false for decryption</param>
             <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.CryptSettings">
+            <summary>
+            Comes from SecureChat, maybe we will need it in a different kind in future.
+            TODO: adapt it with low priority.
+            </summary>
+        </member>
         <member name="M:EU.CqrXs.Crypt.CryptSettings.#ctor">
             <summary>
             CryptSettings constructor maybe needed public for NewTonSoftJson serializing object
@@ -1786,6 +1802,12 @@
             <param name="fileName">optional filename to add after hash</param>
             <returns>Sha512 hash with optional fileName</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.CContact">
+            <summary>
+            CContact derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/> is a container for any Google or Outlook contact
+            TODO: refactor it!
+            </summary>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CContact.#ctor">
             <summary>
             Parameterless default constructor
@@ -1828,6 +1850,12 @@
             when serialized string to decrypt and deserialize is either null or empty 
             or <see cref="T:EU.CqrXs.Crypt.Msg.CContact"/> can't be decrypted and deserialized.
             </exception>
+        </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.CFile">
+            <summary>
+            CFile derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg" /> represents any file in what ever filesystem.
+            TODO: need to refactor!
+            </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CFile.#ctor(System.String,EU.CqrXs.Crypt.Msg.SerType)">
             <summary>
@@ -1879,7 +1907,11 @@
         </member>
         <member name="T:EU.CqrXs.Crypt.Msg.CImage">
             <summary>
-            CImage is a image derived drom <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/>
+            CImage is a image derived from <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/>
+            <see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> has almost same properties and some small mappings  as <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> 
+            and additionally member functions for conversion or import from File or <see cref="T:System.Drawing.Image"/> entity:
+            <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingBitmap"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.FromDrawingImage(System.Drawing.Image,System.String)"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingImage(EU.CqrXs.Crypt.Msg.CImage)"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToFile(EU.CqrXs.Crypt.Msg.CImage)"/>
+            TODO: refactor it
             </summary>
         </member>
         <member name="P:EU.CqrXs.Crypt.Msg.CImage.ImageFileName">
@@ -1951,6 +1983,12 @@
             <param name="imgName"><see cref="T:System.String">string imgName</see></param>
             <returns><see cref="T:EU.CqrXs.Crypt.Msg.CImage">converted CqrImage</see></returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.CMsg">
+            <summary>
+            CMsg is basic message of encryptable / decryptable entities
+            TODO: need to refactor soonly
+            </summary>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CMsg.#ctor">
             <summary>
             Parameterless constructor CMsg
@@ -1979,9 +2017,12 @@
         </member>
         <member name="T:EU.CqrXs.Crypt.Msg.CryptMsg`1">
             <summary>
-            CryptMsg
+            <see cref="T:EU.CqrXs.Crypt.Msg.CryptMsg`1"/> derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/> is a generic crypt container, 
+            where instanciated generic object from <typeparamref name="TC"/> will be serialized and encrypted.
+            For decrypting containing generic object serialized crypted string will be decrypted and deserialized and mapped into
+            TODO: refactoring of en-/decryption
             </summary>
-            <typeparam name="TC"></typeparam>
+            <typeparam name="TC">generic type parameter</typeparam>
         </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CryptMsg`1.EncryptToJson(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
             <summary>
@@ -1994,6 +2035,58 @@
             Serialize <see cref="T:EU.CqrXs.Crypt.Msg.CryptMsg`1"/> to Json Stting
             </summary>
             <returns>json serialized string</returns>
+        </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.IMsgAble">
+            <summary>
+            interface for all en-/decryptable entities derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/>
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Cerializer">
+            <summary>
+            <see cref="T:EU.CqrXs.Crypt.Msg.SerType"/> is serializing type, for now Json = 0x1000, Xml = 0x2000, maybe protbuf later
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Message">
+            <summary>
+            basic Message is needed for en-/decryption
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Hash">
+            <summary>
+            simple hash to know, if the pipe is matching
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Md5Hash">
+            <summary>
+            standard md5sum of bytes or message string
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Msg.IMsgAble.Cerialize">
+            <summary>
+            Serializes the current object to a string representation.
+            </summary>
+            <returns>A string that represents the serialized form of the object.</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Msg.IMsgAble.DeCerialize``1(System.String)">
+            <summary>
+            Deserializes the specified string to an object of type T.
+            </summary>
+            <typeparam name="T">The type of the object to deserialize to.</typeparam>
+            <param name="serializedText">The serializedText string to deserialize. Cannot be null or empty.</param>
+            <returns>An instance of type T deserialized from the serializedText string, or null if the input is null, empty, or cannot be
+            deserialized to type T.</returns>
+        </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.SerType">
+            <summary>
+            Serializer enumeration type with default to json
+            </summary>
+        </member>
+        <member name="T:EU.CqrXs.Crypt.Msg.SerializationTypeExtension">
+            <summary>
+            Extension methods for enum <see cref="T:EU.CqrXs.Crypt.Msg.SerType"/>
+            <see cref="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.Cerialize``1(EU.CqrXs.Crypt.Msg.SerType,``0)"/>
+            <see cref="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.DeCerialize``1(EU.CqrXs.Crypt.Msg.SerType,System.String)"/>
+            </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.Cerialize``1(EU.CqrXs.Crypt.Msg.SerType,``0)">
             <summary>

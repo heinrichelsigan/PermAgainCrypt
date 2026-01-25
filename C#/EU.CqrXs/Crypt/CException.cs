@@ -3,6 +3,15 @@ using EU.CqrXs.Util;
 
 namespace EU.CqrXs.Crypt
 {
+
+    /// <summary>
+    /// CException a generic app level Exception derived from <see cref="ApplicationException"/>
+    /// provides a <see cref="LastException"/> chain list to the root of first runtime exception
+    /// <see cref="DateTime"/> <see cref="TimeStampException"/>, when the Exception was thrown
+    /// <see cref="LastException"/> a property, that stores the Exception in <see cref="AppDomain.SetData(string, object?)"/> on set
+    /// and getss the last Exception during starting this instance via <see cref="AppDomain.GetData(string)" />
+    /// For root first Exception <see cref="LastException"/> is always <see cref="T:null"/>
+    /// </summary>
     public class CException : ApplicationException
     {
         public static CException LastException

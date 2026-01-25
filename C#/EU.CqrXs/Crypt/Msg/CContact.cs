@@ -12,6 +12,10 @@ using System.Text;
 namespace EU.CqrXs.Crypt.Msg
 {
 
+    /// <summary>
+    /// CContact derived from <see cref="CMsg"/> is a container for any Google or Outlook contact
+    /// TODO: refactor it!
+    /// </summary>
     [Serializable]
     public class CContact : CMsg, IMsgAble
     {

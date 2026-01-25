@@ -5,12 +5,18 @@ using EU.CqrXs.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Drawing.Imaging;
+using System.Threading.Channels;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace EU.CqrXs.Crypt.Msg
 {
 
     /// <summary>
-    /// CImage is a image derived drom <see cref="CFile"/>
+    /// CImage is a image derived from <see cref="CFile"/>
+    /// <see cref="CImage"/> has almost same properties and some small mappings  as <see cref="CFile"/> 
+    /// and additionally member functions for conversion or import from File or <see cref="System.Drawing.Image"/> entity:
+    /// <see cref="ToDrawingBitmap"/> <see cref="FromDrawingImage(Image, string)"/> <see cref="ToDrawingImage(CImage)"/> <see cref="ToFile(CImage)"/>
+    /// TODO: refactor it
     /// </summary>
     [Serializable]
     public class CImage : CFile, IMsgAble

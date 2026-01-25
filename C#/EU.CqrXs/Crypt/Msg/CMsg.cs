@@ -6,13 +6,15 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Utilities.Encoders;
-using System.Drawing.Imaging;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
 
+	/// <summary>
+	/// CMsg is basic message of encryptable / decryptable entities
+	/// TODO: need to refactor soonly
+	/// </summary>
 	[Serializable]
 	public class CMsg : IMsgAble
 	{

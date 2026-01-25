@@ -4,7 +4,9 @@ using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
-
+    /// <summary>
+    /// Serializer enumeration type with default to json
+    /// </summary>
     [Serializable]
     [DefaultValue(SerType.Json)]
     public enum SerType : short
@@ -22,6 +24,11 @@ namespace EU.CqrXs.Crypt.Msg
         Client = 1
     }
 
+    /// <summary>
+    /// Extension methods for enum <see cref="SerType"/>
+    /// <see cref="Cerialize{T}(SerType, T)"/>
+    /// <see cref="DeCerialize{T}(SerType, string)"/>
+    /// </summary>
     public static class SerializationTypeExtension
     {
 
