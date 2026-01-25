@@ -135,10 +135,11 @@ namespace EU.CqrXs.Console
                 // Create SymmCipherPipe // for reduced symmetric cipher pool only
                 SymmCipherPipe symmPipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
                             new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
-                            new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                            new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, verbose);
 
                 PrintSymmCipherPipe(symmPipe, reverseDirection);
-                outBytes = symmPipe.CryptCodeBytes(inBytes, passKey, keyHash.Hash(passKey),
+                outBytes = symmPipe.CryptCodeBytes(inBytes, 
+                    passKey ?? "", string.IsNullOrEmpty(passKey) ? "" : keyHash.Hash(passKey),
                     reverseDirection, encodingType, zipType, keyHash);
             }
             else 
@@ -146,10 +147,11 @@ namespace EU.CqrXs.Console
                 // Create cipher pipe for en-/decryption
                 CipherPipe pipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
                                 new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
-                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, verbose);
 
                 PrintCipherPipe(pipe, reverseDirection);
-                outBytes = pipe.CryptCodeBytes(inBytes, passKey, keyHash.Hash(passKey),
+                outBytes = pipe.CryptCodeBytes(inBytes, 
+                    passKey ?? "", string.IsNullOrEmpty(passKey) ? "" : keyHash.Hash(passKey),
                     reverseDirection, encodingType, zipType, keyHash);
             }
             
@@ -340,8 +342,6 @@ namespace EU.CqrXs.Console
     EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
     EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
 
-    REM EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    REM EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
     EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
     EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
 

@@ -181,7 +181,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="kh"><see cref="KeyHash"/></param>
         /// <exception cref="ArgumentException"></exception>
         public CipherPipe(byte[] keyBytes, uint maxpipe = 8, 
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, 
+            bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -201,8 +202,9 @@ namespace EU.CqrXs.Crypt.Cipher
                     hashBytes.Add(cb);
                     CipherEnum cipherEnm = CipherEnumExtensions.ByteCipherDict[cb];
                     pipeList.Add(cipherEnm);
-                    String x = "keybyts[" + i + "]=" + keyBytes[i] + " byte cb = " + (int)cb + " CipherEnum: " + cipherEnm;
-                    Console.Error.WriteLine(x);
+
+                    if (verbose)
+                        Console.Out.WriteLine("keybyts[" + i + "]=" + keyBytes[i] + " byte cb = " + (int)cb + " CipherEnum: " + cipherEnm); 
                 }                
             }
            
@@ -223,8 +225,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType"></param>
         /// <param name="zpType"></param>
         /// <param name="kh"></param>
-        public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)
+        public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, bool verbose = false)
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, verbose)
         {
             cipherKey = key;
             cipherHash = hash;
@@ -234,8 +236,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// CipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
-        public CipherPipe(string key)
-            : this(key, EnDeCodeHelper.KeyToHex(key))
+        public CipherPipe(string key, bool verbose = false)
+            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, verbose) 
         {
             cipherKey = key;
         }

@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.Console": {
       "commandName": "Project",
-      "commandLineArgs": " -Yankee=yankee"
+      "commandLineArgs": " -i=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\x64\\README.MD -e=base16 -o=C:\\Users\\heinrich.elsigan\\source\\PermAgainCrypt\\Deploy\\console\\x64\\README_MD.base16"
     }
   }
 }

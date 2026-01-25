@@ -134,7 +134,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="keyBytes">user key bytes</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
         public SymmCipherPipe(byte[] keyBytes, uint maxpipe = 8, 
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
+            bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -145,19 +146,26 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             string hexString = string.Empty;
             HashSet<byte> hashBytes = new HashSet<byte>();
-            for (int bc = 0; (bc < keyBytes.Length && hashBytes.Count < maxpipe); bc++)
+            int cc = 0, bc = 0;
+            for (bc = 0; (bc < keyBytes.Length && pipeList.Count < maxpipe); bc++)
             { 
                 byte msb = (byte)(keyBytes[bc] / 0x10);
                 byte lsb = (byte)(keyBytes[bc] % 0x10);
+                SymmCipherEnum symmCipherEnum = symDict[msb];
                 if (!hashBytes.Contains(msb))
                 {
-                    hashBytes.Add(msb);
-                    pipeList.Add(symDict[msb]);
+                    hashBytes.Add(msb);                    
+                    pipeList.Add(symmCipherEnum);
+                    if (verbose)
+                        Console.Out.WriteLine("keybyts[" + cc + "]=" + keyBytes[cc++] + " byte msb = " + (int)msb + " SymmCipherEnum: " + symmCipherEnum);
                 }
                 if (!hashBytes.Contains(lsb))
                 {
                     hashBytes.Add(lsb);
-                    pipeList.Add(symDict[lsb]);
+                    symmCipherEnum = symDict[lsb];
+                    pipeList.Add(symmCipherEnum);
+                    if (verbose)
+                        Console.Out.WriteLine("keybyts[" + cc + "]=" + keyBytes[cc++] + " byte lsb = " + (int)lsb + " SymmCipherEnum: " + symmCipherEnum);
                 }
             }
 
@@ -179,8 +187,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="hash">hash value of secret key</param>
         public SymmCipherPipe(string key, string hash, 
                             EncodingType encType = EncodingType.Base64, 
-                            ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh)
+                            ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
+                            bool verbose = false)
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, verbose)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");            
@@ -193,8 +202,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// SymmCipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
-        public SymmCipherPipe(string key)
-            : this(key, EnDeCodeHelper.KeyToHex(key))
+        public SymmCipherPipe(string key, bool verbose = false)
+            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, verbose)
         {
             cipherKey = key;
         }
