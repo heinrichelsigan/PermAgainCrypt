@@ -7,14 +7,14 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Security.Policy;
 
 
 namespace EU.CqrXs.Gui.Forms
 {
 
     /// <summary>
-    /// EncryptForm
+    /// OneTwoThreeFish is a demo form for a Blowfish, Twofish, Threefish encryption pipeline
+    /// where every stage has a different key derived from hashed user key and hashed again for added security.
     /// </summary>
     public partial class OneTwoThreeFish : EncryptFormBase
     {
