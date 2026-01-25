@@ -1,9 +1,13 @@
 ﻿using EU.CqrXs.Crypt;
+using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
+using ICSharpCode.SharpZipLib.GZip;
 using Newtonsoft.Json;
+using System.Security.Policy;
+using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
@@ -388,12 +392,13 @@ namespace EU.CqrXs.Crypt.Msg
             try
             {
                 keyHash = EnDeCodeHelper.KeyToHex(serverKey);
-                pipeString = new SymmCipherPipe(serverKey, keyHash).PipeString;
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                pipeString = symmPipe.PipeString;
                 cfile.Hash = pipeString;
                 cfile.Md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, cfile.FileName), "");
                 cfile.Sha256Hash = Sha256Sum.Hash(cfile.Data, "");
-
-                encrypted = SymmCipherPipe.EncrpytBytesToString(cfile.Data, serverKey, out pipeString, encoder, zipType);                
+                // encrypted = SymmCipherPipe.EncrpytBytesToString(, serverKey, out pipeString, encoder, zipType);                
+                encrypted = Encoding.UTF8.GetString(symmPipe.EncryptEncodeBytes(cfile.Data, serverKey, keyHash, encoder, zipType, KeyHash.Hex));                
                 cfile.Data = new byte[0];
                 cfile.Message = encrypted;
             }
@@ -449,9 +454,11 @@ namespace EU.CqrXs.Crypt.Msg
             string decrypted = "", pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                pipeString = new SymmCipherPipe(serverKey, keyHash).PipeString;
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                pipeString = symmPipe.PipeString;
 
-                byte[] fileBytes = SymmCipherPipe.DecrpytStringToBytes(cfile.Message, serverKey, out pipeString, decoder, zipType);
+                byte[] fileBytes = symmPipe.DecodeDecrpyt(cfile.Message, serverKey, decoder, zipType, KeyHash.Hex);
+                // byte[] fileBytes = SymmCipherPipe.DecrpytStringToBytes(cfile.Message, serverKey, out pipeString, decoder, zipType);
                 
                 string md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, cfile.FileName), "");
                 if (!cfile.Hash.Equals(pipeString))

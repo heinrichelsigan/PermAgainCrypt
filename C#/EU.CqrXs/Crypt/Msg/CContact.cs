@@ -4,7 +4,9 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
+using ICSharpCode.SharpZipLib.GZip;
 using Newtonsoft.Json;
+using System.Security.Policy;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
@@ -294,9 +296,11 @@ namespace EU.CqrXs.Crypt.Msg
             string encrypted = "", pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                pipeString = new SymmCipherPipe(serverKey, keyHash).PipeString;
-                                
-                encrypted = SymmCipherPipe.EncrpytToString(ccntct.Message, serverKey, out pipeString, encoder, zipType, KeyHash.SCrypt);
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                pipeString = symmPipe.PipeString;
+                encrypted = Encoding.UTF8.GetString(new SymmCipherPipe(serverKey).EncryptEncodeBytes(
+                    Encoding.UTF8.GetBytes(ccntct.Message), serverKey, keyHash, encoder, zipType, KeyHash.Hex));
+                // encrypted = SymmCipherPipe.EncrpytToString(ccntct.Message, serverKey, out pipeString, encoder, zipType,);
                 ccntct.Hash = pipeString;
                 ccntct.Md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, ccntct.Message), "");
                 
@@ -350,9 +354,12 @@ namespace EU.CqrXs.Crypt.Msg
             string pipeString = "", decrypted = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                pipeString = new SymmCipherPipe(serverKey, keyHash).PipeString;
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                pipeString = symmPipe.PipeString;
 
-                decrypted = SymmCipherPipe.DecrpytToString(ccntct.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
+                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
+                    ccntct.Message, serverKey, decoder, zipType, KeyHash.Hex));
+                // decrypted = SymmCipherPipe.DecrpytToString(ccntct.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
 
                 if (!ccntct.Hash.Equals(pipeString))
                 {

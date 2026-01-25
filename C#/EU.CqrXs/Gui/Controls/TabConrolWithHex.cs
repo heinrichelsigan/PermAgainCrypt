@@ -45,6 +45,7 @@ namespace EU.CqrXs.Gui.Controls
             }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         internal EncodingType EncoderType
         {
             set

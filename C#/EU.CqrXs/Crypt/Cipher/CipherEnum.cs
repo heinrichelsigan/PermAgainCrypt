@@ -47,9 +47,9 @@ namespace EU.CqrXs.Crypt.Cipher
 
         Des3Net = 0x1d,
         AesNet = 0x1e,        
-        ZenMatrix2 = 0x1f,
+        ZenMatrix2 = 0x1f
 
-        Rsa = 0x21
+        // Rsa = 0x21
         // DH = 0x22,
     }
 
@@ -134,7 +134,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 case CipherEnum.ZenMatrix: return 'z';
                 case CipherEnum.ZenMatrix2: return 'Z';
 
-                case CipherEnum.Rsa: return '%';
+                // case CipherEnum.Rsa: return '%';
                 // case CipherEnum.DH: return '!';
 
                 default: break;

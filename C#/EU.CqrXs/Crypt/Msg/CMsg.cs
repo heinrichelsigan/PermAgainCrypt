@@ -6,6 +6,9 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Utilities.Encoders;
+using System.Drawing.Imaging;
+using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
@@ -177,8 +180,12 @@ namespace EU.CqrXs.Crypt.Msg
         {
 			string pipeString = "", encrypted = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
-            {                
-                encrypted = SymmCipherPipe.EncrpytToString(Message, serverKey, out pipeString, encoder, zipType);
+            {
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                pipeString = symmPipe.PipeString;
+                encrypted = Encoding.UTF8.GetString(new SymmCipherPipe(serverKey).EncryptEncodeBytes(
+                    Encoding.UTF8.GetBytes(Message), serverKey, keyHash, encoder, zipType, KeyHash.Hex));
+                // encrypted = SymmCipherPipe.EncrpytToString(Message, serverKey, out pipeString, encoder, zipType);
                 Hash = pipeString;
 				Md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, Message), "");
 
@@ -213,7 +220,12 @@ namespace EU.CqrXs.Crypt.Msg
 			string pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                string decrypted = SymmCipherPipe.DecrpytToString(Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                pipeString = symmPipe.PipeString;
+
+                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
+					Message, serverKey, decoder, zipType, KeyHash.Hex));
+                // string decrypted = SymmCipherPipe.DecrpytToString(Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
 
                 if (!Hash.Equals(pipeString))
                     throw new CException($"CMsg.Hash={Hash} doesn't match PipeString={pipeString}");
@@ -412,16 +424,20 @@ namespace EU.CqrXs.Crypt.Msg
         {
             // CMsg.SerializedMsg = "";
             CMsg.Md5Hash = "";
-			string pipeString = "";
-            string encryptedMsg = "";
+			string pipeString = "", encryptedMsg = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
 
             try
             {
-                pipeString = new SymmCipherPipe(serverKey).PipeString;
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                pipeString = symmPipe.PipeString;
+                
 				CMsg.Hash = pipeString;
                 CMsg.Md5Hash = MD5Sum.HashString(string.Concat(serverKey, EnDeCodeHelper.KeyToHex(serverKey), pipeString, CMsg.Message), "");
-                
-                encryptedMsg = SymmCipherPipe.EncrpytToString(CMsg.Message, serverKey, out pipeString, encType, zipType);                    
+
+
+                encryptedMsg = Encoding.UTF8.GetString(new SymmCipherPipe(serverKey).EncryptEncodeBytes(
+                    Encoding.UTF8.GetBytes(CMsg.Message), serverKey, keyHash, encType, zipType, KeyHash.Hex));
+                // encryptedMsg = SymmCipherPipe.EncrpytToString(CMsg.Message, serverKey, out pipeString, encType, zipType);                    
 				CMsg.Message = encryptedMsg;
 
             }
@@ -436,10 +452,15 @@ namespace EU.CqrXs.Crypt.Msg
 
 		public static CMsg? Decrypt(ref CMsg CMsg, string serverKey, EncodingType encType = EncodingType.Base64)
 		{
-			string pipeString = "";
-			try
+			string pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
+            try
 			{
-				string decrypted = SymmCipherPipe.DecrpytToString(CMsg.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
+                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                pipeString = symmPipe.PipeString;
+
+                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
+                    CMsg.Message, serverKey, EncodingType.Base64, ZipType.None, KeyHash.Hex));
+                // string decrypted = SymmCipherPipe.DecrpytToString(CMsg.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
 				
 				if (!CMsg.Hash.Equals(pipeString))
 					throw new CException($"CMsg.Hash={CMsg.Hash} doesn't match PipeString={pipeString}");

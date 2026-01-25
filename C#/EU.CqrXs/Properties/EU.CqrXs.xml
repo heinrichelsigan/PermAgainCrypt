@@ -123,15 +123,20 @@
             PipeString will always be generated on the fly from <see cref="P:EU.CqrXs.Crypt.Cipher.CipherPipe.InPipe"/>
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor">
+            <summary>
+            parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/>
+            </summary>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.CipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
             CipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
             </summary>
             <param name="cipherEnums">array of <see cref="T:CipherEnum[]"/> as inpipe</param>
-            <param name="maxpipe">size of max. pipe stages is always 8</param>
-            <param name="encType"></param>
-            <param name="zpType"></param>
-            <param name="kh"></param>
+            <param name="maxpipe">size of max. pipe stages, can't be greater than 8</param>
+            <param name="encType"><see cref="P:EU.CqrXs.Crypt.Cipher.CipherPipe.EncodeType"/></param>
+            <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
+            <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
@@ -204,17 +209,16 @@
             <param name="hash">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Zip.ZipType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
             <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
-            <param name="zipBefore"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Zip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <returns>encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Zip.ZipType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
             starts merry to turn arround from right to left against clock hour cycle 
@@ -222,7 +226,6 @@
             <param name="cipherBytes">encrypted byte array</param>
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
-            <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytTextGoRounds(System.String,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
@@ -761,17 +764,16 @@
             <param name="hashIv">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Zip.ZipType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
             <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
-            <param name="zipBefore"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Zip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <returns>encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Zip.ZipType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
             starts merry to turn arround from right to left against clock hour cycle 
@@ -779,7 +781,6 @@
             <param name="cipherBytes">encrypted byte array</param>
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
-            <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
@@ -2277,7 +2278,7 @@
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Properties.Resource.BlankDecrypt_640x108_png">
+        <member name="P:EU.CqrXs.Properties.Resource.BlankDecrypt_640x108">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>

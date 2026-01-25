@@ -101,8 +101,8 @@ namespace EU.CqrXs.Test
 
                 for (int j = 0; j < 4; j++)
                 {
-                    if (cipherEnums[j] == CipherEnum.Rsa)
-                        cipherEnums[j] = CipherEnum.Des3Net;
+                    //if (cipherEnums[j] == CipherEnum.Rsa)
+                    //    cipherEnums[j] = CipherEnum.Des3Net;
                     zType = ZipType.None;
                 }
 

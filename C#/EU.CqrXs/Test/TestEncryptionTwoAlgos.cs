@@ -57,8 +57,8 @@ namespace EU.CqrXs.Test
             {
                 CipherEnum cipherType = cipherEnums[i];
                 CipherEnum cipherEnum = cipherEnums[((i + 1) % cipherEnums.Length)];
-                if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
-                if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
+                // if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
+                // if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
                 byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
@@ -152,8 +152,8 @@ namespace EU.CqrXs.Test
             {
                 CipherEnum cipherType = cipherEnums[i];
                 CipherEnum cipherEnum = cipherEnums[((i + 1) % cipherEnums.Length)];
-                if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
-                if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
+                // if (cipherType == CipherEnum.Rsa) cipherType = CipherEnum.Des;
+                // if (cipherEnum == CipherEnum.Rsa) cipherEnum = CipherEnum.BlowFish;
 
                 CipherEnum[] cipherPair = new CipherEnum[] { cipherType, cipherEnum };
                 zType = zTypes[j % zTypes.Length];

@@ -27,12 +27,12 @@ import java.nio.charset.Charset;
  *       8 I            25 Z            42 q            59 7 
  *       9 J            26 a            43 r            60 8 
  *      10 K            27 b            44 s            61 9 
- *      11 L            28 c            45 t            62 - (minus) 
- *      12 M            29 d            46 u            63 _ (underscore)
+ *      11 L            28 c            45 t            62 + (plus) 
+ *      12 M            29 d            46 u            63 / (slash)
  *      13 N            30 e            47 v           
  *      14 O            31 f            48 w 
  *      15 P            32 g            49 x 
- *      16 Q            33 h            50 y             (pad) =
+ *      16 Q            33 h            50 y         (pad) =
  *
  */
 public class Hex64Coder implements IEncodable  {
@@ -65,7 +65,7 @@ public class Hex64Coder implements IEncodable  {
         if (encodedString == null || encodedString.length() == 0)
             throw new IllegalArgumentException("public static byte[] decodeStringToBytes(String encodedString), encodedString == NULL || encodedString == \"\"");
         String transformedEncoded = encodedString.replace("-", "+").replace("_", "/");
-        byte[] decodedBytes = Base64.getMimeDecoder().decode(encodedString);
+        byte[] decodedBytes = Base64.getMimeDecoder().decode(transformedEncoded);
         return decodedBytes;
     }
 

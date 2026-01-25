@@ -54,8 +54,8 @@ namespace EU.CqrXs.Test
             int khcnt = 0;
             foreach (CipherEnum cipherEnum in cipherTypes)
             {
-                if (cipherEnum == CipherEnum.Rsa)
-                    continue;
+                //if (cipherEnum == CipherEnum.Rsa)
+                //    continue;
                 CipherEnum[] cipherEnums = new CipherEnum[] { cipherEnum };
                 CipherPipe pipe = new CipherPipe(cipherEnums); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
                 KeyHash khane = khs[(khcnt)%(khs.Length)];

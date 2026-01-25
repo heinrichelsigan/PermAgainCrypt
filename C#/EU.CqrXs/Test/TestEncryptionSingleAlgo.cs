@@ -56,7 +56,8 @@ namespace EU.CqrXs.Test
             byte[] plainBytes = File.ReadAllBytes(fileBytesTest);
             foreach (CipherEnum cipherEnum in cipherTypes)
             {
-                cipherType = (cipherEnum == CipherEnum.Rsa) ? CipherEnum.Des3 : cipherEnum;
+                // cipherType = (cipherEnum == CipherEnum.Rsa) ? CipherEnum.Des3 : cipherEnum;
+                cipherType = cipherEnum;
 
                 CipherEnum[] cipherEnums = new CipherEnum[] { cipherType };
                 CipherPipe pipe = new CipherPipe(cipherEnums); // new CipherPipe(Encoding.UTF8.GetBytes(Constants.AUTHOR_EMAIL), 0);
