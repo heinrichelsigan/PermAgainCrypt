@@ -45,7 +45,7 @@ import java.util.HashMap;
  *
  */
 public class CryptConsole  {
-    static boolean useSymmCipher = false;
+    static boolean useSymmCipher = false, verbose = false;
     final static String sepChar = java.nio.file.FileSystems.getDefault().getSeparator();
     static String progName = "";
     final static String dirPath = Path.of("").toAbsolutePath().toString();
@@ -80,9 +80,9 @@ public class CryptConsole  {
              usage("");
         encodingType = EncodeEnum.None;
         Constants.DirCreate = false;
-        Constants.NOLog = true;
+        Constants.NOLog = false;
         OptEnum optEnum = OptEnum.Usage;
-        HashMap<OptEnum, String> dict = new HashMap<OptEnum, String>();
+		String optCryptLater = "";
         String[] algos = new String[0];
         String[] optArgs = new String[2];
         for (int i = 0; i < args.length; i++) {
@@ -102,8 +102,34 @@ public class CryptConsole  {
                 passKey = optStr;
             else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode 
                 useSymmCipher = true; 
-            else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>(); 
-                dict.put(optEnum, optStr);
+			else if (optEnum == OptEnum.Zip) { // prefetch Zip  
+				if (optStr.toLowerCase().contains("gz") ||
+					optStr.toLowerCase().contains("gunzip"))
+					zipType = ZipType.GZip;
+				if (optStr.toLowerCase().contains("zip") ||
+					optStr.toLowerCase().contains("unzip"))
+					zipType = ZipType.Zip;
+				if (optStr.toLowerCase().contains("bz") ||
+					optStr.toLowerCase().contains("bunz") ||
+					optStr.toLowerCase().contains("2"))
+					zipType = ZipType.BZip2;
+				else
+					usage("unrecognized zip option: " + optStr);
+			}
+			else if (optEnum == OptEnum.Encode) {
+				encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
+				if (verbose)
+					System.out.println("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
+			}
+			else if (optEnum == OptEnum.Hash) 
+				keyHash = KeyHash.getKeyHashFromString(optStr);
+			else if (optEnum == OptEnum.Verbose) 
+				verbose = true;
+			else if (optEnum == OptEnum.Crypt) {
+				optCryptLater = optStr;
+			}
+            // else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>(); 
+            //    dict.put(optEnum, optStr);
         }
         // read from stdin, when no inName specified
         if (inName.isEmpty()) {
@@ -126,57 +152,29 @@ public class CryptConsole  {
             }
         }
 
-        // iterate all option keys
-        for (OptEnum optVar : dict.keySet()) {
-            String optStr = dict.get(optVar);
-            switch (optVar) {
-                case OptEnum.Zip:
-                    if (optStr.toLowerCase().contains("gz") ||
-                            optStr.toLowerCase().contains("gunzip"))
-                        zipType = ZipType.GZip;
-                    else
-                    if (optStr.toLowerCase().contains("bz") ||
-                            optStr.toLowerCase().contains("bunzip") ||
-                            optStr.toLowerCase().contains("2"))
-                        zipType = ZipType.BZip2;
-                    else
-                    if (optStr.toLowerCase().contains("zip") ||
-                            optStr.toLowerCase().contains("unzip"))
-                        zipType = ZipType.Zip;
-                    else
-                        usage("unrecognized zip option: " + optStr);
+		// optCryptLater handling
+		if (!optCryptLater.isEmpty()) {			      
+			// Usage on not existing or empty passphrase / key
+			if (passKey == null || passKey.isEmpty())
+				usage("unrecognized crypt option \"" + optCryptLater + "\" without --pass=passPhrase ");
 
-                    break;
-                case OptEnum.Encode:
-                    encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
-                    System.out.println("optVar=" + optVar + " optStr=" + optStr + " encodingType = " + encodingType.toString());
-                    break;
-                case OptEnum.Hash:
-                    keyHash = KeyHash.getKeyHashFromString(optStr);
-                    break;
-                case OptEnum.Crypt: 
-                    // Usage on not existing or empty passphrase / key
-                    if (passKey == null || passKey.isEmpty())
-                        usage("unrecognized crypt option \"" + optStr + "\" without --pass=passPhrase ");
-
-                    // when string / array is not null, fetch array for crypt pipe
-                    if (!optStr.isEmpty()) {
-                        optStr = optStr.replace("(", "").replace("{", "").replace("[", "").replace("]", "").replace("}", "").replace(")", "");
-                        algos = optStr.split(",;:");
-                    }
-                    break;
-                default: break;
-            }
+			// when string / array is not null, fetch array for crypt pipe
+			if (!optCryptLater.isEmpty()) {
+				optCryptLater = optCryptLater.replace("(", "").replace("{", "").replace("[", "").replace("]", "").replace("}", "").replace(")", "");
+				algos = optCryptLater.split(",;:");
+			}
         }
 
         CipherPipe pipe;
         // Create cipher pipe for en-/decryption
         if (passKey == null || passKey.isEmpty() || algos.length > 0) {
             pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
-            System.out.println("Created pipe without passkey: " + pipe.getPipeString());
+			if (verbose)
+				System.out.println("Created pipe without passkey: " + pipe.getPipeString());
         } else {
             pipe = new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
-            System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
+			if (verbose)
+				System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
         }
 
         String outString = "";
@@ -198,28 +196,34 @@ public class CryptConsole  {
             PrintPipe(pipe, reverseDirection);
             // CipherPipe decode decrypt
             try {
-                passKey = (passKey.length() == 0) ? " " : passKey;
+                passKey = (passKey == null || passKey.isEmpty()) ? "" : passKey;
                 outBytes = pipe.decodeDecrpytBytes(inBytes,
-                        passKey, keyHash.hash(passKey),
+                        passKey, (passKey.isEmpty() ? "" : keyHash.hash(passKey)),
                         encodingType, zipType, keyHash);
             } catch (Exception exi) {
                 exi.printStackTrace();
             }
         }
 
-        inBytes = outBytes;
+		if (verbose) {
+			String outMsg1 = inBytes.length + " inBytes transformed to " + outBytes.length + " outBytes.";
+			System.out.println(outMsg1);
+		}
+        
+		inBytes = outBytes;
 
-        if (outName != null && outName.length() > 0)
-            System.out.println(outName.getBytes(Charset.forName("UTF-8")));
-        else
         if (outFile != null) {
             try {
                 Path fpath = outFile.toPath();
                 Files.write(fpath, outBytes);
+				if (verbose)
+					System.out.println(outBytes.length + " bytes written to file " + fpath.toString());
             } catch (Exception exIO) {
                 exIO.printStackTrace();
             }
         }
+		else if (outName != null && outName.length() > 0)
+            System.out.println(outName.getBytes(Charset.forName("UTF-8")));
         else
         if (outEnviron != null && outEnviron.length() > 0) {
             String os = System.getProperty("os.name").toLowerCase();
@@ -257,7 +261,8 @@ public class CryptConsole  {
                 "\n\t";
         for (CipherEnum cipher : ciphers)
             prOut = prOut + cipher + "=>";
-        System.out.print(prOut);
+		if (verbose)
+			System.out.print(prOut);
     }
 
     /***
@@ -333,8 +338,11 @@ public class CryptConsole  {
                     if (arg.toLowerCase().contains("file") ||
                             optArg.contains(sepChar) ||
                             optArg.contains(".") ||
-                            outName.length() > 0)
+                            outName.length() > 0) {
                         outFile = new java.io.File(outName);
+						if (verbose) 
+							System.out.println("outFile is set to " + outFile);
+						}
                 else
                     if (outName.length() > 0 || arg.toLowerCase().contains("text") ||
                         optArg.charAt(0) == '$' || optArg.charAt(0) == '%')
@@ -374,8 +382,13 @@ public class CryptConsole  {
                 return optArgs;
             case 'S':
                 optArgs[0] = OptEnum.SymmCipher.toString();
-            optArgs[1] = optArg;
+				optArgs[1] = optArg;
                 return optArgs;
+			case 'v':
+            case 'V':
+                optArgs[0] = OptEnum.Verbose.toString();
+				optArgs[1] = optArg;
+                return optArgs;				
             case 'g':
             case 'G':
             case '?':
