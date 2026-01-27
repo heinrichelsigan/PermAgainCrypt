@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HexFormat;
 import java.util.*;
 
+import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CryptHelper;
 import eu.cqrxs.crypt.encoding.Hex16Coder;
 import eu.cqrxs.util.Constants;
@@ -251,11 +252,14 @@ public enum KeyHash {
 				case "blake2":
 				case "blake2xs":   		return KeyHash.Blake2xs;
 				case "cshake": 			return KeyHash.CShake;
-				case "dstu7564":  		return KeyHash.Dstu7564;
+				case "dstu7564":
+				case "Dstu7564":
+				case "dstu756":			return KeyHash.Dstu7564;
 				case "ripe":
 				case "ripe256":
 				case "ripemd256": 		return KeyHash.RipeMD256;
 				case "tuplehash":		return KeyHash.TupleHash;
+
 				case "hex16":
 				case "hex":				return KeyHash.Hex;
 				default:
@@ -281,6 +285,7 @@ public enum KeyHash {
 			case 0x2: 	return ".openbsdcrypt";
 			case 0xa: 	return ".whirlpool";
 			case 0xe: 	return ".ripemd256";
+			case 0xd: 	return ".dstu7564";
 			case 0xf: 	return ".tuplehash";
 			default:	break;
 		}

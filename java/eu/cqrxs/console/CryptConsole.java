@@ -81,6 +81,7 @@ public class CryptConsole  {
         encodingType = EncodeEnum.None;
         Constants.DirCreate = false;
         Constants.NOLog = false;
+        Constants.DEBUG = false;
         OptEnum optEnum = OptEnum.Usage;
 		String optCryptLater = "";
         String[] algos = new String[0];
@@ -176,8 +177,10 @@ public class CryptConsole  {
 	    }
 	    else if (optEnum == OptEnum.Hash) 
 		    keyHash = KeyHash.getKeyHashFromString(optStr);
-	    else if (optEnum == OptEnum.Verbose) 
-		    verbose = true;
+	    else if (optEnum == OptEnum.Verbose) {
+            Constants.DEBUG = true;
+            verbose = true;
+        }
         else if (optEnum == OptEnum.Decrypt)
             reverseDirection = true;
 	    else if (optEnum == OptEnum.Crypt)

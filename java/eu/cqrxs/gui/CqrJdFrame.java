@@ -16,6 +16,7 @@ import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.gui.ImageViewer;
+import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
@@ -74,10 +75,12 @@ public class CqrJdFrame extends JFrame {
 
 	JMenuItem menuZip_item7z, menuZip_itemGz, menuZip_itemBz, menuZip_itemZip, menuZip_itemNone;
 	
-	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16, menuEncoding_itemUu, menuEncoding_itemXx, menuEncoding_itemBase64;
+	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16,
+			menuEncoding_itemBase32, menuEncoding_itemUu, menuEncoding_itemXx,
+			menuEncoding_itemHex64, menuEncoding_itemBase64;
 	
-	JMenuItem menuHash_Ascon256, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSDCrypt,
-				menuHash_RipeMD256, menuHash_Sha1, menuHash_Sha256, menuHash_Sha512, menuHash_SCrypt, menuHash_Whirlpool, menuHash_Xoodyak;
+	JMenuItem menuHash_Dstu7564, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSDCrypt,
+				menuHash_RipeMD256, menuHash_Sha1, menuHash_Sha256, menuHash_Sha512, menuHash_SCrypt, menuHash_Whirlpool, menuHash_TupleHash;
 
 	JMenu menuOptions_menuWarnings, menuOptions_verifyEncryption, menuOptions_menuFileSettings;
 	JMenuItem menuOptions_menuWarnings_itemWarnOnEmptyPipe, menuOptions_menuWarnings_itemWarnOnDoubleZipping;
@@ -101,6 +104,7 @@ public class CqrJdFrame extends JFrame {
 		setSize(1024,768);
 		Init();
 		setVisible(true);
+		Constants.DEBUG = false;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -299,7 +303,15 @@ public class CqrJdFrame extends JFrame {
 		menuEncoding_itemHex16.setFont(menuFont);
 		menuEncoding_itemHex16.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemHex16);
-		
+
+		menuEncoding_itemBase32 = new JMenuItem();
+		menuEncoding_itemBase32.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemBase32.setText("Base32");
+		menuEncoding_itemBase32.setActionCommand("Base32");
+		menuEncoding_itemBase32.setFont(menuFont);
+		menuEncoding_itemBase32.addActionListener(aSymAction);
+		menuEncoding.add(menuEncoding_itemBase32);
+
 		menuEncoding_itemUu = new JMenuItem();
 		menuEncoding_itemUu.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuEncoding_itemUu.setText("Uu");
@@ -316,8 +328,16 @@ public class CqrJdFrame extends JFrame {
 		menuEncoding_itemXx.setFont(menuFont);		
 		menuEncoding_itemXx.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemXx);
-			
-			
+
+
+		menuEncoding_itemHex64 = new JMenuItem();
+		menuEncoding_itemHex64.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemHex64.setText("Hex64");
+		menuEncoding_itemHex64.setActionCommand("Hex64");
+		menuEncoding_itemHex64.setFont(menuFont);
+		menuEncoding_itemHex64.addActionListener(aSymAction);
+		menuEncoding.add(menuEncoding_itemHex64);
+
 		menuEncoding_itemBase64 = new JMenuItem();
 		menuEncoding_itemBase64.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuEncoding_itemBase64.setText("Base64");
@@ -332,13 +352,6 @@ public class CqrJdFrame extends JFrame {
 		menuHash.setText("Hash");
 		menuHash.setActionCommand("Hash");
 		jBar.add(menuHash);
-		
-		menuHash_Ascon256 = new JMenuItem();
-		menuHash_Ascon256.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuHash_Ascon256.setText("Ascon256");
-		menuHash_Ascon256.setActionCommand("Ascon256");
-		menuHash_Ascon256.setFont(menuFont);
-		menuHash.add(menuHash_Ascon256);
 		
 		menuHash_BCrypt = new JMenuItem();
 		menuHash_BCrypt.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -363,6 +376,14 @@ public class CqrJdFrame extends JFrame {
 		menuHash_CShake.setFont(menuFont);
 		menuHash_CShake.addActionListener(aSymAction);
 		menuHash.add(menuHash_CShake);
+
+		menuHash_Dstu7564 = new JMenuItem();
+		menuHash_Dstu7564.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_Dstu7564.setText("Dstu7564");
+		menuHash_Dstu7564.setActionCommand("Dstu7564");
+		menuHash_Dstu7564.setFont(menuFont);
+		menuHash_Dstu7564.addActionListener(aSymAction);
+		menuHash.add(menuHash_Dstu7564);
 		
 		menuHash_Hex = new JMenuItem();
 		menuHash_Hex.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -428,6 +449,14 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Sha512.addActionListener(aSymAction);
 		menuHash.add(menuHash_Sha512);
 				
+		menuHash_TupleHash = new JMenuItem();
+		menuHash_TupleHash.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuHash_TupleHash.setText("TupleHash");
+		menuHash_TupleHash.setActionCommand("TupleHash");
+		menuHash_TupleHash.setFont(menuFont);
+		menuHash_TupleHash.addActionListener(aSymAction);
+		menuHash.add(menuHash_TupleHash);
+		
 		menuHash_Whirlpool = new JMenuItem();
 		menuHash_Whirlpool.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuHash_Whirlpool.setText("Whirlpool");
@@ -435,14 +464,6 @@ public class CqrJdFrame extends JFrame {
 		menuHash_Whirlpool.setFont(menuFont);
 		menuHash_Whirlpool.addActionListener(aSymAction);
 		menuHash.add(menuHash_Whirlpool);
-		
-		menuHash_Xoodyak = new JMenuItem();
-		menuHash_Xoodyak.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuHash_Xoodyak.setText("Xoodyak");
-		menuHash_Xoodyak.setActionCommand("Xoodyak");
-		menuHash_Xoodyak.setFont(menuFont);
-		menuHash_Xoodyak.addActionListener(aSymAction);
-		menuHash.add(menuHash_Xoodyak);
 		
 		menuOptions = new JMenu();
 		menuOptions.setFont(menuFont);
@@ -749,6 +770,7 @@ public class CqrJdFrame extends JFrame {
 				String selectedHash = item.toString();
 				selectMenuItemByString(menuHash, selectedHash);
 				keyHash = KeyHash.getEnum(selectedHash);
+				// DbgWriter.msg("KeyHash: " + keyHash.toString() + " selectedHash "  + selectedHash.toLowerCase(), false);
 				// do something with object
 				String keyValue = "";
                 try {
@@ -884,22 +906,26 @@ public class CqrJdFrame extends JFrame {
 			else if (object == menuEncoding_itemBase16)
 				selectItemByString(jComboBox_Encoding, menuEncoding, "Base16"); 
 			else if (object == menuEncoding_itemHex16)
-				selectItemByString(jComboBox_Encoding, menuEncoding, "Hex16"); 
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Hex16");
+			else if (object == menuEncoding_itemBase32)
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Base32");
 			else if (object == menuEncoding_itemUu)
 				selectItemByString(jComboBox_Encoding, menuEncoding, "Uu"); 
 			else if (object == menuEncoding_itemXx)
-				selectItemByString(jComboBox_Encoding, menuEncoding, "Xx"); 
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Xx");
+			else if (object == menuEncoding_itemHex64)
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Hex64");
 			else if (object == menuEncoding_itemBase64)
 				selectItemByString(jComboBox_Encoding, menuEncoding, "Base64"); 
 			
-			else if (object == menuHash_Ascon256) 
-				selectItemByString(jComboBox_Hash, menuHash, "Ascon256");								
 			else if (object == menuHash_BCrypt) 
 				selectItemByString(jComboBox_Hash, menuHash, "BCrypt"); 
 			else if (object == menuHash_Blake2xs) 
 				selectItemByString(jComboBox_Hash, menuHash, "Blake2xs");					
 			else if (object == menuHash_CShake) 
 				selectItemByString(jComboBox_Hash, menuHash, "CShake");	
+			else if (object == menuHash_Dstu7564) 
+				selectItemByString(jComboBox_Hash, menuHash, "Dstu7564");								
 			else if (object == menuHash_Hex) 
 				selectItemByString(jComboBox_Hash, menuHash, "Hex"); 	
 			else if (object == menuHash_MD5) 
@@ -916,10 +942,10 @@ public class CqrJdFrame extends JFrame {
 				selectItemByString(jComboBox_Hash, menuHash, "Sha256"); 
 			else if (object == menuHash_Sha512) 
 				selectItemByString(jComboBox_Hash, menuHash, "Sha512");	
+			else if (object == menuHash_TupleHash) 	
+				selectItemByString(jComboBox_Hash, menuHash, "TupleHash"); 
 			else if (object == menuHash_Whirlpool) 	
 				selectItemByString(jComboBox_Hash, menuHash, "Whirlpool"); 
-			else if (object == menuHash_Xoodyak) 	
-				selectItemByString(jComboBox_Hash, menuHash, "Xoodyak"); 
 			
 			else if (object == menuHelp_itemAbout)
 				about_action(event);
@@ -1389,8 +1415,9 @@ public class CqrJdFrame extends JFrame {
 	
 	protected static void selectItemByString(JComboBox cb, JMenu m, String s) {
 		for (int i=0; i<cb.getItemCount(); i++) {
-			if (cb.getItemAt(i).toString().equals(s)) {
-				cb.setSelectedIndex(i);				
+			if (cb.getItemAt(i).toString().equals(s) ||
+					cb.getItemAt(i).toString().toLowerCase().equals(s.toLowerCase())) {
+				cb.setSelectedIndex(i);
 				break;
 			}
 		}
