@@ -100,57 +100,56 @@ public class CryptConsole  {
             // fetch passphrase or Key (decrypt key) from optEnum and optStr
             else if (optEnum == OptEnum.Key)
                 passKey = optStr;
-            else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode 
-                useSymmCipher = true; 
-			else if (optEnum == OptEnum.Zip) { // prefetch Zip  
-				if (optStr.toLowerCase().contains("gz") ||
-					optStr.toLowerCase().contains("gunzip"))
-					zipType = ZipType.GZip;
-				if (optStr.toLowerCase().contains("zip") ||
-					optStr.toLowerCase().contains("unzip"))
-					zipType = ZipType.Zip;
-				if (optStr.toLowerCase().contains("bz") ||
-					optStr.toLowerCase().contains("bunz") ||
-					optStr.toLowerCase().contains("2"))
-					zipType = ZipType.BZip2;
-				else
-					usage("unrecognized zip option: " + optStr);
-			}
-			else if (optEnum == OptEnum.Encode) {
-				encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
-				if (verbose)
-					System.out.println("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
-			}
-			else if (optEnum == OptEnum.Hash) 
-				keyHash = KeyHash.getKeyHashFromString(optStr);
-			else if (optEnum == OptEnum.Verbose) 
-				verbose = true;
-			else if (optEnum == OptEnum.Crypt) {
-				optCryptLater = optStr;
-			}
-            // else // otherwise add optEnum and optStr to Dictionary<OptEnum, string>(); 
-            //    dict.put(optEnum, optStr);
-        }
-        // read from stdin, when no inName specified
-        if (inName.isEmpty()) {
-            System.out.println("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
-            byte[] buf = new byte[Constants.MAX_BYTE_BUFFEER];
-            int buflen = 0;
-            byte b;
-            try {
-                buf = System.in.readAllBytes();
-                buflen = buf.length;
-                // while (true) {
-                //     b = (byte)System.in.read();
-                //     if (b == -1)
-                //         break;
-                //     buf[buflen++] = (byte) b;
-                // }
-                System.arraycopy(buf, 0, inBytes, 0, buflen);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+            else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode
+		    useSymmCipher = true; 
+	    else if (optEnum == OptEnum.Zip) { // prefetch Zip  
+		if (optStr.toLowerCase().contains("gz") || 
+			optStr.toLowerCase().contains("gunzip")) 
+			zipType = ZipType.GZip; 
+		if (optStr.toLowerCase().contains("zip") || 
+			optStr.toLowerCase().contains("unzip")) 
+			zipType = ZipType.Zip; 
+		if (optStr.toLowerCase().contains("bz") || 
+			optStr.toLowerCase().contains("bunz") || 
+			optStr.toLowerCase().contains("2")) 
+			zipType = ZipType.BZip2;
+		else 
+			usage("unrecognized zip option: " + optStr);
+	    }
+ 	    else if (optEnum == OptEnum.Encode) { 
+	 	   encodingType = EncodeEnum.getEncodingTypeFromString(optStr); 
+		   if (verbose) 
+			   System.out.println("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
+	    }
+	    else if (optEnum == OptEnum.Hash) 
+		    keyHash = KeyHash.getKeyHashFromString(optStr);
+	    else if (optEnum == OptEnum.Verbose) 
+		    verbose = true;
+	    else if (optEnum == OptEnum.Crypt) {
+		    optCryptLater = optStr;
+	    }
+	    // else assert(0);
+	}
+	// read from stdin, when no inName specified
+	if (inName.isEmpty()) {
+		System.out.println("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
+		byte[] buf = new byte[Constants.MAX_BYTE_BUFFEER];
+		int buflen = 0;
+		byte b;
+		try {
+			buf = System.in.readAllBytes();
+			buflen = buf.length;
+			// while (true) {
+			//     b = (byte)System.in.read();
+			//     if (b == -1)
+			//         break;
+			//     buf[buflen++] = (byte) b;
+			// }
+			System.arraycopy(buf, 0, inBytes, 0, buflen);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 		// optCryptLater handling
 		if (!optCryptLater.isEmpty()) {			      
