@@ -10,11 +10,17 @@ package eu.cqrxs.crypt.hash;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import eu.cqrxs.util.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.HexFormat;
+import java.util.*;
+
+import eu.cqrxs.crypt.cipher.CryptHelper;
+import eu.cqrxs.crypt.encoding.Hex16Coder;
+import eu.cqrxs.util.Constants;
+import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.util.CException;
+import org.bouncycastle.crypto.Digest;
 
 /**
  * KeyHash represents the enumerator for all Encoding to ascii algorithms
@@ -62,42 +68,26 @@ public enum KeyHash {
     public String getName() {
 		int xval = getValue();
 		switch (xval) {
-			case 0x0:
-				return "Hex";
-			case 0x1:
-				return "Sha1";				
-			case 0x2:
-				return "OpenBSDCrypt";
-			case 0x3:
-				return "BCrypt";
-			case 0x4:
-				return "SCrypt";
-			case 0x5:
-				return "MD5";
-			case 0x6:
-				return "Sha256";
-			case 0x7:
-				return "Sha384";
-			case 0x8:
-				return "Oct";
-			case 0x9:
-				return "Sha512";
-			case 0xa:
-				return "Whirlpool";
-			case 0xb:
-				return "Blake2xs";
-			case 0xc:
-				return "CShake";
-			case 0xd:
-				return "Dstu7564";
-			case 0xe:
-				return "RipeMD256";
-			case 0xf:
-				return "TupleHash";
+			case 0x0: 	return "Hex";
+			case 0x1: 	return "Sha1";
+			case 0x2: 	return "OpenBSDCrypt";
+			case 0x3: 	return "BCrypt";
+			case 0x4: 	return "SCrypt";
+			case 0x5: 	return "MD5";
+			case 0x6: 	return "Sha256";
+			case 0x7: 	return "Sha384";
+			case 0x8: 	return "Oct";
+			case 0x9: 	return "Sha512";
+			case 0xa: 	return "Whirlpool";
+			case 0xb: 	return "Blake2xs";
+			case 0xc: 	return "CShake";
+			case 0xd: 	return "Dstu7564";
+			case 0xe:  	return "RipeMD256";
+			case 0xf: 	return "TupleHash";
 			default:
 				break;
 		}
-		return "Hex";
+		return toString();
     }
 
 	public static String[] getNames() {
@@ -121,39 +111,119 @@ public enum KeyHash {
             if (Constants.DEBUG)
                 System.out.
                             println("KeyHash: " + xval + " " + getName());
-			switch (xval) {
-				case 0x0:
+			if (instr == null || instr.isEmpty())
+				throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
+			byte[] inBytes = instr.getBytes(StandardCharsets.UTF_8);
+			byte[] resBuf = new byte[inBytes.length];
+			HexFormat hex = HexFormat.of();
+			Digest digest;
+			String hexs = "";
+
+			switch (getEnum(getName())) {
+				case KeyHash.Hex:
 					return eu.cqrxs.crypt.hash.Hex.hashString(instr);
-				case 0x1:
+				case KeyHash.Sha1:
 					return eu.cqrxs.crypt.hash.Sha1.hashString(instr);					
-				case 0x2:
+				case KeyHash.OpenBSDCrypt:
 					return eu.cqrxs.crypt.hash.OpenBSDCrypt.hashString(instr);
-				case 0x3:
+				case KeyHash.BCrypt:
 					return eu.cqrxs.crypt.hash.BCrypt.hashString(instr);
-				case 0x4:
+				case KeyHash.SCrypt:
 					return eu.cqrxs.crypt.hash.SCrypt.hashString(instr);
-				case 0x5:
+				case KeyHash.MD5:
 					return eu.cqrxs.crypt.hash.MD5.hashString(instr);
-				case 0x6:
+				case KeyHash.Sha256:
 					return eu.cqrxs.crypt.hash.Sha256.hashString(instr);
-				case 0x7:
+				case KeyHash.Sha384:
 					return eu.cqrxs.crypt.hash.Sha384.hashString(instr);
-				case 0x8:
-					return eu.cqrxs.crypt.hash.Oct.hashString(instr);
-				case 0x9:
+				case KeyHash.Oct:
+					String hexString = hex.formatHex(inBytes);
+					for (int wco = 0; wco < inBytes.length; wco++)
+						hexs +=  eu.cqrxs.util.Constants.decimalToOctal(inBytes[wco]);
+					return hexs;
+				case KeyHash.Sha512:
 				  return eu.cqrxs.crypt.hash.Sha512.hashString(instr);
-				case 0xa:
-					return eu.cqrxs.crypt.hash.Whirlpool.hashString(instr);
-				case 0xb:
-					return eu.cqrxs.crypt.hash.Blake2xs.hashString(instr);
-				case 0xc:
-                    return eu.cqrxs.crypt.hash.CShake.hashString(instr);
-				case 0xd:
-					return eu.cqrxs.crypt.hash.Dstu7564.hashString(instr);
-				case 0xe:
-					return eu.cqrxs.crypt.hash.RipeMD256.hashString(instr);
-				case 0xf:
-					return eu.cqrxs.crypt.hash.TupleHash.hashString(instr);
+				case KeyHash.Whirlpool:
+					digest = new org.bouncycastle.crypto.digests.WhirlpoolDigest();
+					resBuf = new byte[digest.getDigestSize()];
+					// digest.update(inBytes);
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+					hexs = hex.formatHex(resBuf);
+					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
+
+					return hexs;
+				case KeyHash.Blake2xs:
+					digest = new org.bouncycastle.crypto.digests.Blake2xsDigest(32, inBytes);
+					int dgsize = digest.getDigestSize();
+					// dgsize = (dgsize < 16) ? 16 : ((dgsize > 256) ? 256 : dgsize);
+					resBuf = new byte[dgsize];
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+
+					try {
+						hexs = hex.formatHex(resBuf);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
+					}
+					DbgWriter.msg((getName() + ": bytes.length=" + resBuf.length + " \thexs=" + hexs), false);
+
+					return hexs;
+				case KeyHash.CShake:
+					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
+					digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(256, inBytes, CryptHelper.getKeyBytesFromBytes(inBytes, 32));
+					resBuf = new byte[digest.getDigestSize()];
+					// digest.update(inBytes);
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+
+					try {
+						hexs = hex.formatHex(resBuf);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
+					}
+					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
+
+					return hexs;
+				case KeyHash.Dstu7564:
+					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
+					digest = new org.bouncycastle.crypto.digests.DSTU7564Digest(256);
+					resBuf = new byte[digest.getDigestSize()];					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+
+					hexs = hex.formatHex(resBuf);
+					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexstring=" + hexs), false);
+
+					return hexs;
+				case KeyHash.RipeMD256:
+					digest = new org.bouncycastle.crypto.digests.RIPEMD256Digest();
+					resBuf = new byte[digest.getDigestSize()];
+					// digest.update(inBytes);
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+					hexs = hex.formatHex(resBuf);
+					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexstring=" + hexs), false);
+
+					return hexs;
+				case KeyHash.TupleHash:
+					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
+					digest = new org.bouncycastle.crypto.digests.TupleHash(256, inBytes, 32);
+					resBuf = new byte[digest.getDigestSize()];
+					// digest.update(inBytes);
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+
+					try {
+						hexs = hex.formatHex(resBuf);
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						hexs = (new Hex16Coder()).encodeBytesToString(resBuf);
+					}
+					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
+
+					return hexs;
 				default:
 					break;
 			}
@@ -165,85 +235,36 @@ public enum KeyHash {
 
 	public static KeyHash getKeyHashFromString(String stringToHash) {
 		if (stringToHash != null && stringToHash != "") {
-			switch (stringToHash) {
-				case "scrypt": 
-				case "SCrypt": return KeyHash.SCrypt;
-				
-				case "bcrypt": 
-				case "BCrypt": return KeyHash.BCrypt;
-				
-				case "openbsd": 
-				case "bsdcrypt": 
-				case "openbsdcrypt": 
-				case "OpenBSDCrypt": return KeyHash.OpenBSDCrypt;
-				
-				case "Oct": 
-				case "Octal":
+			switch (stringToHash.toLowerCase()) {
+				case "scrypt":	 		return KeyHash.SCrypt;
+				case "bcrypt":			return KeyHash.BCrypt;
+				case "openbsd":
+				case "openbsdcrypt": 	return KeyHash.OpenBSDCrypt;
 				case "octal":
-				case "oct": return KeyHash.Oct;
-				
-				case "md5": 
-				case "Md5": 
-				case "MD5": return KeyHash.MD5;
-				
-				case "sha1": 
-				case "Sha1": 
-				case "SHA1": return KeyHash.Sha1;
-				
-				case "sha256": 
-				case "Sha256": 
-				case "SHA256": return KeyHash.Sha256;
-				
-				case "sha384": 
-				case "Sha384":
-				case "SHA384": return KeyHash.Sha384;
-				
-				case "sha512": 
-				case "Sha512": 
-				case "SHA512": return KeyHash.Sha512;
-				
-				case "whirlpool":
-				case "Whirlpool":
-				case "WhirlPool":return KeyHash.Whirlpool;
-					
-			
+				case "oct": 			return KeyHash.Oct;
+				case "md5":			 	return KeyHash.MD5;
+				case "sha1": 			return KeyHash.Sha1;
+				case "sha256":  		return KeyHash.Sha256;
+				case "sha384":  		return KeyHash.Sha384;
+				case "sha512": 			return KeyHash.Sha512;
+				case "whirlpool": 		return KeyHash.Whirlpool;
 				case "blake2":
-				case "Blake2":
-				case "blake2xs": 
-				case "Blake2xs": 
-				case "Blake2XS": return KeyHash.Blake2xs;
-				
-				case "shake":
-				case "cshake": 
-				case "Cshake": 
-				case "CShake": return KeyHash.CShake;
-				
-				case "dstu7564": 
-				case "Dstu7564": return KeyHash.Dstu7564;
-				
+				case "blake2xs":   		return KeyHash.Blake2xs;
+				case "cshake": 			return KeyHash.CShake;
+				case "dstu7564":  		return KeyHash.Dstu7564;
 				case "ripe":
-				case "Ripe":
 				case "ripe256":
-				case "Ripe256":
-				case "ripemd256": 
-				case "RipeMD256": return KeyHash.RipeMD256;
-				
-				case "TupleHash":
-				case "zuplehash":
-				case "2hash":
-				case "hash2": return KeyHash.TupleHash;
-				
+				case "ripemd256": 		return KeyHash.RipeMD256;
+				case "tuplehash":		return KeyHash.TupleHash;
 				case "hex16":
-				case "Hex16":
-				case "hex": 
-				case "Hex":
-					return KeyHash.Hex;
-
+				case "hex":				return KeyHash.Hex;
 				default:
 					break;
 			}
 		}
-		return KeyHash.Hex;
+
+		KeyHash kHash = Enum.valueOf(KeyHash.class, stringToHash);
+		return kHash;
 	}
 
 
@@ -255,43 +276,15 @@ public enum KeyHash {
 
 	public static String getKeyHashExtension(KeyHash khash) {
 		int xval = khash.getValue();
+		String retext = "." + khash.toString().toLowerCase();
 		switch (xval) {
-			case 0x0:
-				return ".hex";
-			case 0x1:
-				return ".sha1";
-			case 0x2:
-				return ".openbsdcrypt";
-			case 0x3:
-				return ".bcrypt";
-			case 0x4:
-				return ".scrypt";
-			case 0x5:
-				return ".md5";
-			case 0x6:
-				return ".sha256";
-			case 0x7:
-				return ".sha384";
-			case 0x8:
-				return ".oct";
-			case 0x9:
-				return ".sha512";
-			case 0xa:
-				return ".whirlpool";
-			case 0xb:
-				return ".blake2xs";
-			case 0xc:
-				return ".cshake";
-			case 0xd:
-				return ".dstu7564";
-			case 0xe:
-				return ".ripemd256";
-			case 0xf:
-				return ".tuplehash";
-			default:
-				break;
+			case 0x2: 	return ".openbsdcrypt";
+			case 0xa: 	return ".whirlpool";
+			case 0xe: 	return ".ripemd256";
+			case 0xf: 	return ".tuplehash";
+			default:	break;
 		}
-		return ".hex";
+		return retext;
 	}
 
 

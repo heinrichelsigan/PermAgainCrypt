@@ -40,16 +40,15 @@ eu/cqrxs/crypt/encoding/uu/CEStreamExhausted.java eu/cqrxs/crypt/encoding/uu/Cha
 echo "$0 javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/crypt/cipher/CipherEnum.java eu/cqrxs/crypt/cipher/CipherPipe.java eu/cqrxs/crypt/cipher/CryptBounceCastle.java eu/cqrxs/crypt/cipher/CryptHelper.java eu/cqrxs/crypt/cipher/CryptParams.java eu/cqrxs/crypt/cipher/SymmCipherEnum.java "
 javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/crypt/cipher/CipherEnum.java eu/cqrxs/crypt/cipher/CipherPipe.java eu/cqrxs/crypt/cipher/CryptBounceCastle.java eu/cqrxs/crypt/cipher/CryptHelper.java eu/cqrxs/crypt/cipher/CryptParams.java eu/cqrxs/crypt/cipher/SymmCipherEnum.java 
 
-echo "javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/crypt/hash/Hex.java eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/RipeMD256.java eu/cqrxs/crypt/hash/Sha1.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha384.java eu/cqrxs/crypt/hash/Sha512.java eu/cqrxs/crypt/hash/Whirlpool.java eu/cqrxs/crypt/hash/Dstu7564.java"
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/crypt/hash/Hex.java eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/RipeMD256.java eu/cqrxs/crypt/hash/Sha1.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha384.java eu/cqrxs/crypt/hash/Sha512.java eu/cqrxs/crypt/hash/Whirlpool.java eu/cqrxs/crypt/hash/Dstu7564.java
+echo "javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/crypt/hash/Hex.java eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/Sha1.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha384.java eu/cqrxs/crypt/hash/Sha512.java"
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/crypt/hash/Hex.java eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/Sha1.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha384.java eu/cqrxs/crypt/hash/Sha512.java 
 
 echo "javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java"
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
 
 
-echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/gui/*.java "
+echo "$0: javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java"
 javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/gui/ImageTest.java
 
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/console/*.java "

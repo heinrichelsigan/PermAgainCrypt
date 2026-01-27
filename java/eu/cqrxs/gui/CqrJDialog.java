@@ -4,6 +4,8 @@
 */
 package eu.cqrxs.gui;
 
+import eu.cqrxs.util.Constants;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.FlowLayout;
@@ -36,7 +38,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		
 		setModal(true);		
         setResizable(false);		
-        setTitle("About CqrJd: cqrxs.eu");
+        setTitle("About PermAgainCrypt: cqrxs.eu");
 		
         Init();
 	}
@@ -83,7 +85,9 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		getContentPane().add(jPanelCenter);
 			
 		jTextField = new JTextField();
-		jTextField.setBounds(144, 440, 600, 27);
+		jTextField.setBounds(144, 440, 144, 27);
+		jTextField.setText(Constants.APP_NAME + " " + Constants.VERSION);
+		jTextField.setEnabled(false);
 		getContentPane().add(jTextField);
 		jButtonExit = new JButton();
 		jButtonExit.setText("Exit");
@@ -95,7 +99,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		
 		// setVisible(true);
 		try {
-			setDefaultCloseOperation(JDialog.EXIT_ON_CLOSE);	
+			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		} catch (Exception ex) { }
 		
 		SymAction lSymAction = new SymAction();
@@ -117,7 +121,10 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 
 	public void appExit(ActionEvent event) {
 		// We don't log exit events ;)
-		System.exit(0);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.removeAll();
+		this.dispose();
+		// System.exit(0);
 	}
 	/*
 	public void eventOutput(String eventDescription, MouseEvent e) {

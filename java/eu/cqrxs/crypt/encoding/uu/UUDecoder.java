@@ -205,9 +205,9 @@ public class UUDecoder extends CharacterDecoder {
          * Check for \n after \r
          */
         if (c == '\r') {
-            c = inStream.read ();
-            if ((c != '\n') && (c != -1))
-                inStream.unread (c);
+            c = inStream.read();
+            if ((c != '\n') && (c != -1) && (c != '\r'))
+                inStream.unread(c);
         }
     }
 

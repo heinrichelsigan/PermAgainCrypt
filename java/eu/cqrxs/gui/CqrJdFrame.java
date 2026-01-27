@@ -16,11 +16,9 @@ import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.gui.ImageViewer;
-import eu.cqrxs.gui.PropertyChangeSupport;
-import eu.cqrxs.gui.VetoableChangeSupport;
-import eu.cqrxs.gui.ErrorsBundle;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
+import eu.cqrxs.zip.GZ;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -712,7 +710,7 @@ public class CqrJdFrame extends JFrame {
 		jTextAreaSource.setFont(cryptFont);
 		jTextAreaSource.setLineWrap(true);
 		jTextAreaSource.setFont(monoSpaceFont);
-		// jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");		
+		// jTextAreaSource.append("jMenuBar.getUI() == " + jMenuBar.getUI() + "\n");
 		// scrollSource = new JScrollPane (jTextAreaSource, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		getContentPane().add(jTextAreaSource);
 				
@@ -1272,7 +1270,7 @@ public class CqrJdFrame extends JFrame {
 	
 	protected void about_action(ActionEvent event) {
 	
-		jTextAreaSource.append("About menu clicked, event: " + event + "\n");
+		// jTextAreaSource.append("About menu clicked, event: " + event + "\n");
 		
         try {
             if (new File("/eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
