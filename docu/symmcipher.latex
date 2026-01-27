@@ -6,8 +6,9 @@
 % Useful packages
 \usepackage{amsmath}
 \usepackage{graphicx}
-\usepackage[colorlinks=true, allcolors=blue]{hyperref}
-
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\urlstyle{rm}
 \title{Making symmetric block cipher meta permutating again}
 \author{Heinrich Elsigan}
 
@@ -19,17 +20,17 @@
 
 \begin{abstract}
 
-Hi, I’m \href{https://heinrichelsigan.area23.at/}{heinrichelsigan}.
+Hi, I’m \href{https://heinrichelsigan.area23.at/}{Heinrich Elsigan}
 I’m interested in CSharp, Java, MSSQL, .Net Core, Android and politics, society and the future;
 currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects.
 
 \begin{enumerate}
     \item social media, development and other links: 
     \item personal tech and political blog \href{https://blog.area23.at}{blog.area23.at}
-	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan}
-	\item live demo .Net \href{https://area23.at/net/}{area23.at/net/}
+	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan/}
+	\item live demo .Net \href{https://area23.at/net/}{area23.at/net}
 	\item StackOverflow \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
-	\item Curriculum vitae \href{https://drive.google.com/file/d/1-QIu8CFtnEKeYSVarKKrDL_e5aofg9Zh/view?usp=drive_link}{heinrichelsigan.area23.at/cv} 
+	\item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv} 
 \end{enumerate}
 
 \end{abstract}
@@ -43,22 +44,136 @@ are more important than a simple proof of concept showing that it works, except 
 raw experimental test form.
 
 \begin{enumerate}
-	\item \href{https://www.bouncycastle.org/}{bouncycastle.org}
-	\item \href{https://www.schneier.com/}{schneier.com}
-	\item \href{https://github.com/dotnet/}{github.com/dotnet}
-	\item \href{https://github.com/microsoft}{github.com/microsoft}
-	\item \href{https://git.lysator.liu.se/nettle/nettle}{git.lysator.liu.se/nettle/nettle} real easy to read c/c++ code
+	\item \url{https://bouncycastle.org/}
+	\item \url{https://schneier.com/}
+	\item \url{https://github.com/dotnet/}
+	\item \url{https://github.com/microsoft}
+	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
 \end{enumerate}
 
-Go to \href{https://io.cqrxs.eu/download/}{io.cqrxs.eu/download} and choose latest version.
+\section{Theory} 
+
+\subsection{8-staged symmetric block cipher pipeline}
+
+An eight staged symmetric block cipher crypto pipeline to improve advanced encryption standard based on meta DES, 3DES with P-Box S-Box.
+
+The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
+
+\begin{figure}
+\includegraphics[natwidth=868,natheight=402]{CipherPipeline.eps}
+\caption{\label{fig:CipherPipeline.eps}Cipher Pipeline}
+\end{figure}
+
+Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
+
+Implementation is based on my blog article: \href{https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html}{Making symmetric cipher encryption meta permutating again}, including the follwing symmetric cipher algorithms:
+
+\dots or bullet points \dots
+\begin{itemize}
+\item \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Aes}, AesLight, \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Rijndael}
+\item \href{https://www.schneier.com/}{Bruce Schneier's} BlowFish, 2-Fish, 3-Fish
+\item \href{https://en.wikipedia.org/wiki/Camellia_(cipher)}{Camellia}, CamelliaLight
+\item \href{https://en.wikipedia.org/wiki/CAST-128}{Cast5}, Cast6
+\item \href{https://nsa.gov/}{National security agency's} Des, 3-Des, \href{https://en.wikipedia.org/wiki/Skipjack_(cipher)}{SkipJack}
+\item \href{https://en.wikipedia.org/wiki/Kupyna}{Dstu7624}
+\item \href{https://en.wikipedia.org/wiki/GOST_(block_cipher)}{Ghost}, \href{https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm}{Idea}, \href{https://en.wikipedia.org/wiki/NOEKEON}{Noekeon}
+\item \href{https://de.wikipedia.org/wiki/RC2_(Blockchiffre)}{RC2}, \href{https://en.wikipedia.org/wiki/RC5}{RC5}32, RC564, \href{https://en.wikipedia.org/wiki/RC6}{RC6}
+\item \href{https://en.wikipedia.org/wiki/SEED}{SEED}, \href{https://en.wikipedia.org/wiki/SM4_(cipher)}{SM4}
+\item \href{https://en.wikipedia.org/wiki/Serpent_(cipher)}{Serpent}, Tnepres
+\item \href{https://de.wikipedia.org/wiki/Tiny_Encryption_Algorithm}{Tea}, \href{https://en.wikipedia.org/wiki/XTEA}{XTea}
+\item and my own simplest symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2
+\end{itemize}
+
+
+\subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
+
+Starting from a no permutating 1-matrix, where projection is same as base,
+ZenMatrix generates a permutating mapping with blocksize 16
+a matrix with only one 1 per row and column (rest is 0)
+to change position inside block and value offset.
+
+\url{https://area23.at/net/Crypt/ZenMatrixVisualize.aspx}
+
+ \begin{tabular}{|c||c c c c c c c c c c c c c c c c c|}
+ \hline
+  x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & \\ [0.5ex]
+\hline
+ x0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x2 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x3 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x4 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x5 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x6 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ xA & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \\
+ xB & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \\
+ xC & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & \\
+ xD & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \\
+ xE & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \\
+ xF & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \\
+ \hline
+\end{tabular}
+
+When entering hostmaster@nic.at with hash ripemd256 and not fully symmetric checked, 
+the matrix will look like this:
+
+\begin{center}
+ \begin{tabular}{||c|c c c c c c c c c c c c c c c c c|}
+ \hline
+  x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & Mx \\ [0.5ex]
+ \hline
+ x0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 8 \\
+ x1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 7 \\
+ x2 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 6 \\
+ x3 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 4 \\
+ x4 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3 \\
+ x5 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+ x6 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 2 \\
+ x7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & E \\
+ x8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & D \\
+ x9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & A \\
+ xA & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & C \\
+ xB & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 9 \\
+ xC & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & B \\
+ xD & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & F \\
+ xE & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 5 \\
+ xF & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+ \hline
+\end{tabular}
+\end{center}
+
+this mean that a byte[8] e.g. 321F 0000 0000 0000 
+$x0 \implies x8$,
+$x1 \implies x7$,
+$x2 \implies x6$,
+$x3 \implies x4$,
+$xF \implies x0$,
+is mapped to 8880 8868 4888 8888.
+
+\section{Software}
+
+Source code of PermAgainCrypt is hoted at Github.
+Github releases contains compiled and linked .exe files for windows, 
+but most users prefer download from a seperate download site \url{https://cqrxs.eu/}.
+
+\subsection{Git: PermAgainCrypt minimalistic repository}
+\url{https://github.com/heinrichelsigan/PermAgainCrypt/}
+
+\subsection{Download}
+Go to \url{https://cqrxs.eu/} or \url{https://io.cqrxs.eu/} and choose latest version.
+You can directly go to the download area \url{https://cqrxs.eu/download/} or \url{https://io.cqrxs.eu/download/}.
 Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bug, because 3-fish
 uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
 settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
 
-\section{Documentation online en-/decrypt form}
+
+\subsection{Documentation online en-/decrypt form}
 
 \begin{figure}
-\includegraphics[width=1.5\textwidth,natwidth=924,natheight=659]{Symmetric_Cipher_WebForm.jpg}
+\includegraphics[width=1\textwidth,natwidth=924,natheight=659]{Symmetric_Cipher_WebForm.jpg}
 \caption{\label{fig:SymmetricCipherWebForm}Symmetric Cipher WebForm}
 \end{figure}
 
@@ -95,111 +210,17 @@ TextArea Destination.
 \end{enumerate}
 
 
-\subsection{Windows form single exe}
-\href{https://io.cqrxs.eu/download/}{https://io.cqrxs.eu/download/}
-
-\subsection{PermAgainCrypt more minimalistic git repository}
-\href{https://github.com/heinrichelsigan/PermAgainCrypt/}{https://github.com/heinrichelsigan/PermAgainCrypt}
-
-\section{Documentation of WinForm}
-
-
-\subsection{How to include Figures}
-
-First you have to upload the image file from your computer using the upload link in the file-tree menu. Then use the includegraphics command to include it in your document. Use the figure environment and the caption command to add a number and a caption to your figure. See the code for Figure \ref{fig:SymmetricCipherWebForm} in this section for an example.
-
-Note that your figure will automatically be placed in the most appropriate place for it, given the surrounding text and taking into account other figures or tables that may be close by. You can find out more about adding images to your documents in this help article on \href{https://www.overleaf.com/learn/how-to/Including_images_on_Overleaf}{including images on Overleaf}.
-
-\subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
-
-Starting from a no permutating 1 matrix, where projection is same as base,
-ZenMatrix permutates the mappings of position in block and value offset % 
-with Blocksize 16.
-
-\href{https://area23.at/net/Crypt/ZenMatrixVisualize.aspx}{Visualize ZenMatrix with different keys and hash functions}
-
-\begin{center}
- \begin{tabular}{||c|c c c c c c c c c c c c c c c c c|c||}
- \hline
- f= & 0x0 & 0x1 & 0x2 & 0x3 & 0x4 & 0x5 & 0x6 & 0x7 & 0x8 & 0x9 & 0xa & 0xb & 0xc & 0xd & 0xe & 0xf & matix \\ [0.5ex]
- \hline
- M(0) & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(1) & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(2) & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(3) & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(4) & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(5) & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(6) & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(7) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(8) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(9) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(a) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(b) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0x0 \\
- M(c) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0x0 \\
- M(d) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0x0 \\
- M(e) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0x0 \\
- M(f) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0x0 \\
- \hline
-\end{tabular}
-\end{center}
+\subsection{Documentation of WinForm}
 
 
 \begin{figure}
-\includegraphics[width=1.2\textwidth,natwidth=1153,natheight=906]{2026-01-25_ZenMatrixVisualize.png}
-\caption{\label{fig:ZenMatrixVisualize}Zen-Matrix Visualize}
-\end{figure}
-
-When entering postmaster[AT]nic.at with hash ripemd256 and not fully symmetric checked, 
-the matrix will look like this:
-
-\begin{center}
- \begin{tabular}{||c|c c c c c c c c c c c c c c c c c|c||}
- \hline
- f= & 0x0 & 0x1 & 0x2 & 0x3 & 0x4 & 0x5 & 0x6 & 0x7 & 0x8 & 0x9 & 0xa & 0xb & 0xc & 0xd & 0xe & 0xf & matix \\ [0.5ex]
- \hline
- M(0) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x8 \\
- M(1) & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x4 \\
- M(2) & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x1 \\
- M(3) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0xc \\
- M(4) & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x3 \\
- M(5) & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x0 \\
- M(6) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0xb \\
- M(7) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0xe \\
- M(8) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0xd \\
- M(9) & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x5 \\
- M(a) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0x9 \\
- M(b) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0xa \\
- M(c) & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x6 \\
- M(d) & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x2 \\
- M(e) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0x7 \\
- M(f) & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0xf \\
- \hline
-\end{tabular}
-\end{center}
-
-
-Use the table and tabular environments for basic tables --- see Table~\ref{tab:widgets}, for example. For more information, please see this help article on \href{https://www.overleaf.com/learn/latex/tables}{tables}.
-
-
-\subsection{How to add Comments and Track Changes}
-
-Comments can be added to your project by highlighting some text and clicking ``Add comment'' in the top right of the editor pane. To view existing comments, click on the Review menu in the toolbar above. To reply to a comment, click on the Reply button in the lower right corner of the comment. You can close the Review pane by clicking its name on the toolbar when you're done reviewing for the time being.
-
-Track changes are available on all our \href{https://www.overleaf.com/user/subscription/plans}{premium plans}, and can be toggled on or off using the option at the top of the Review pane. Track changes allow you to keep track of every change made to the document, along with the person making the change.
-
-
-\section{Windows Form CSharp}
-
-\begin{figure}
-\includegraphics[width=1.5\textwidth,natwidth=1010,natheight=761]{2026-01-25_WinForm_CSharp.png}
+\includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_WinForm_CSharp.png}
 \caption{\label{fig:WinForm_Csharp}WinForm CSharp}
 \end{figure}
 
 
-\subsection{How to add Lists}
 
-
-\section{Java JFrame based}
+\subsection{Java JFrame based}
 
 
 \begin{enumerate}
@@ -207,13 +228,13 @@ Track changes are available on all our \href{https://www.overleaf.com/user/subsc
 \end{enumerate}
 \dots or bullet points \dots
 \begin{itemize}
-\item \href{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}{JFrame documentation at oracle}
-\item \href{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}{JFrame source form OpenJDK7u}
+\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
+\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
 \end{itemize}
 
 
 \begin{figure}
-\includegraphics[width=1.2\textwidth,natwidth=1010,natheight=761]{2026-01-25_javax_swing_JFrame_java.png}
+\includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_javax_swing_JFrame_java.png}
 \caption{\label{fig:javax.swing}java javax.swing.JFrameWinForm}
 \end{figure}
 
@@ -225,12 +246,6 @@ Track changes are available on all our \href{https://www.overleaf.com/user/subsc
       = \frac{1}{n}\sum_{i}^{n} X_i\]
 denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
 
-
-\subsection{How to change the margins and paper size}
-
-Usually the template you're using will have the page margins and paper size set correctly for that use-case. For example, if you're using a journal article template provided by the journal publisher, that template will be formatted according to their requirements. In these cases, it's best not to alter the margins directly.
-
-If however you're using a more general template, such as this one, and would like to alter the margins, a common way to do so is via the geometry package. You can find the geometry package loaded in the preamble at the top of this example file, and if you'd like to learn more about how to adjust the settings, please visit this help article on \href{https://www.overleaf.com/learn/latex/page_size_and_margins}{page size and margins}.
 
 \subsection{How to change the document language and spell check settings}
 
@@ -245,15 +260,6 @@ To change the spell check language, simply open the Overleaf menu at the top lef
 You can simply upload a \verb|.bib| file containing your BibTeX entries, created with a tool such as JabRef. You can then cite entries from it, like this: \cite{greenwade93}. Just remember to specify a bibliography style, as well as the filename of the \verb|.bib|. You can find a \href{https://www.overleaf.com/help/97-how-to-include-a-bibliography-using-bibtex}{video tutorial here} to learn more about BibTeX.
 
 If you have an \href{https://www.overleaf.com/user/subscription/plans}{upgraded account}, you can also import your Mendeley or Zotero library directly as a \verb|.bib| file, via the upload menu in the file-tree.
-
-
-\section{Theory} 
-
-\begin{figure}
-\centering
-\includegraphics[width=1.2\textwidth,natwidth=868,natheight=506]{Symmetric_Cipher_Pipeline.png}
-\caption{\label{fig:SymmetricCipherPipeline}Symmetric Cipher Pipeline}
-\end{figure}
 
 
 

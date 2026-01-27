@@ -404,11 +404,14 @@ public class CipherPipe {
      * @param inBytes plain byte[] to encrypt
      * @param secretKey user secret key to use for all symmetric cipher algorithms in the pipe
      * @param hashIv hash key iv relational to secret key
-     * @param zipBefore {@link ZipType }
      * @return encrypted byte[]
      */
-    public byte[] merryGoRoundEncrpyt(byte[] inBytes, String secretKey, String hashIv, ZipType zipBefore)
+    public byte[] merryGoRoundEncrpyt(byte[] inBytes, String secretKey, String hashIv)
             throws InvalidCipherTextException {
+
+        if (inPipe.length == 0)
+            return inBytes;
+
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
@@ -418,15 +421,6 @@ public class CipherPipe {
 
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        if (zipBefore != ZipType.None)
-        {
-            try {
-			    encryptedBytes = zipBefore.zip(inBytes);
-            	inBytes = encryptedBytes;
-		    } catch (Exception exZip) {
-			    exZip.printStackTrace();
-		    }
-        }
 
         for (CipherEnum cipher : inPipe)
         {
@@ -443,36 +437,27 @@ public class CipherPipe {
      * @param cipherBytes encrypted byte array
      * @param secretKey user secret key, normally email address
      * @param hashIv hash relational to secret key
-     * @param unzipAfter {@link ZipType}
      * @return byte[]
      */
-    public byte[] decrpytRoundGoMerry(byte[] cipherBytes, String secretKey, String hashIv, ZipType unzipAfter)
+    public byte[] decrpytRoundGoMerry(byte[] cipherBytes, String secretKey, String hashIv)
             throws InvalidCipherTextException {
+
+        if (inPipe.length == 0)
+            return cipherBytes;
+
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
-        String hash = (hashIv != null && hashIv.length() > 0) ? hashIv : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        String hash = (hashIv != null && hashIv.length() > 0) ? hashIv : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(cipherKey);
         cipherHash = hash;
 
-
         byte[] decryptedBytes = new byte[cipherBytes.length];
-        if (getOutPipe() == null || getOutPipe().length == 0)
-            System.arraycopy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.length);
-        else
-            for (CipherEnum cipher : getOutPipe())
-            {
-                decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
-                cipherBytes = decryptedBytes;
-            }
-
-        if (unzipAfter != ZipType.None) {
-			try {
-				decryptedBytes = unzipAfter.unzip(cipherBytes);
-			} catch (Exception exUnzip) {
-				exUnzip.printStackTrace();
-			}
-		}
+        for (CipherEnum cipher : getOutPipe())
+        {
+            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
+            cipherBytes = decryptedBytes;
+        }
 
         return decryptedBytes;
     }
@@ -534,8 +519,14 @@ public class CipherPipe {
         zType = zipBefore;
         encodeType = encoding;
 
+        try {
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            inBytes = zippedBytes;
+        } catch (Exception exZip) {
+            exZip.printStackTrace();
+        }
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv, zipBefore);
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv);
 
         return encryptedBytes;
     }
@@ -613,8 +604,14 @@ public class CipherPipe {
         encodeType = decoding;
 
         // perform multi crypt pipe stages
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, unzipAfter);
-
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv);
+        try {
+            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
+                    unzipAfter.unzip(decryptedBytes) : decryptedBytes;
+            decryptedBytes = unzipBytes;
+        } catch (Exception exUnzip) {
+            exUnzip.printStackTrace();
+        }
         return decryptedBytes;
     }
 
@@ -628,14 +625,21 @@ public class CipherPipe {
      */
     public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException {
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
+        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        //     throw new IllegalArgumentException("seretkey");
 
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(secretKey);
+        cipherHash = keyHash.hash(cipherKey);
         zType = zipBefore;
         kHash = keyHash;
-        return merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
+
+        try {
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            inBytes = zippedBytes;
+        } catch (Exception exZip) {
+            exZip.printStackTrace();
+        }
+        return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash);
     }
 
 
@@ -649,13 +653,23 @@ public class CipherPipe {
      */
     public byte[] decrpytRoundsGo(byte[] cipherBytes, String secretKey, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException {
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(secretKey);
+        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        //     throw new IllegalArgumentException("seretkey");
+
         zType = unzipAfter;
         kHash = keyHash;
-        return decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), unzipAfter);
+        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        cipherHash = keyHash.hash(cipherKey);
+
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash);
+        try {
+            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
+                    unzipAfter.unzip(decryptedBytes) : decryptedBytes;
+            decryptedBytes = unzipBytes;
+        } catch (Exception exUnzip) {
+            exUnzip.printStackTrace();
+        }
+        return decryptedBytes;
     }
 
 
@@ -663,14 +677,21 @@ public class CipherPipe {
                                 EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("secretKey");
+        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        //     throw new IllegalArgumentException("secretKey");
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(secretKey);
+        cipherHash = keyHash.hash(cipherKey);
         encodeType = encType;
         zType = zipBefore;
         kHash = keyHash;
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
+
+        try {
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            inBytes = zippedBytes;
+        } catch (Exception exZip) {
+            exZip.printStackTrace();
+        }
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash);
         String cryptedEncoded = encType.encodeBytesToString(outBytes);
         return cryptedEncoded;
     }
@@ -693,18 +714,24 @@ public class CipherPipe {
                                     EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
-
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        String hash = (hashIV != null && hashIV.length() > 0) ? hashIV : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
-        cipherHash = hash;
+        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        //    throw new IllegalArgumentException("seretkey");
 
         encodeType = encType;
         zType = zipBefore;
         kHash = keyHash;
 
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, zipBefore);
+        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        String hash = (hashIV != null && hashIV.length() > 0) ? hashIV : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
+        cipherHash = hash;
+
+        try {
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            inBytes = zippedBytes;
+        } catch (Exception exZip) {
+            exZip.printStackTrace();
+        }
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash);
         byte[] encryptedBytes = new byte[0];
         if (encType != EncodeEnum.None)
         {
@@ -733,8 +760,14 @@ public class CipherPipe {
         zType = unzipAfter;
         kHash = keyHash;
         byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), unzipAfter);
-
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey));
+        try {
+            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
+                    unzipAfter.unzip(outBytes) : outBytes;
+            outBytes = unzipBytes;
+        } catch (Exception exUnzip) {
+            exUnzip.printStackTrace();
+        }
         return outBytes;
     }
 
@@ -775,8 +808,14 @@ public class CipherPipe {
         else
             cipherBytes = encodedBytes;
 
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV, unzipAfter);
-
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV);
+        try {
+            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
+                    unzipAfter.unzip(outBytes) : outBytes;
+            outBytes = unzipBytes;
+        } catch (Exception exUnzip) {
+            exUnzip.printStackTrace();
+        }
         return outBytes;
     }
 
