@@ -404,8 +404,17 @@ FodyWeavers.xsd
 /Deploy/console/TestCryptConsole.bat
 /Deploy/framework
 
-/docu/*.toc
-/docu/*.aux
+/docu/symmcipher.log
+/docu/symmcipher.toc
+/docu/symmcipher.aux
+/docu/symmcipher.dvi
+/docu/symmcipher.out
+/docu/symmcipher.ps
+
+*.dvi
+*.toc
+*.aux
+*.out
 
 /java/out/
 /java/temp/
