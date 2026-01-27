@@ -88,7 +88,7 @@ public class ZenMatrix implements BlockCipher  {
             matrixPermutationKey[sbcnt++] = s;
         }
         _inverseMatrix = buildInverseMatrix(matrixPermutationKey, 0x10);
-		(new DbgWriter()).msg("ZenMatrix reseted", true);
+		DbgWriter.msg(("ZenMatrix reseted"), false);
 		initialised = false;
     }
 
@@ -99,7 +99,7 @@ public class ZenMatrix implements BlockCipher  {
 
 		reset();
 		this.forEncryption = forEncryption;
-		(new DbgWriter()).msg("ZenMatrix init(boolean forEncryption = " + String.valueOf(forEncryption) + ", ...) ...", true);
+		DbgWriter.msg(("ZenMatrix init(boolean forEncryption = " + String.valueOf(forEncryption) + ", ...) ..."), false);
 				
         try  {
             this.privateBytes = ((KeyParameter)parameters).getKey();
@@ -118,7 +118,7 @@ public class ZenMatrix implements BlockCipher  {
                 throw new IllegalArgumentException("parameters: KeyParameter and/or ParametersWithIV contain a null or empty key or iv.");
 
             this.privateBytes = CryptHelper.tarBytes(bKey, bIv);
-			(new DbgWriter()).msg("\tprivateBytes.lenght = " + privateBytes.length +  " bKey.length = " + bKey.length +  " bIv.length = " + bIv.length, true);
+			DbgWriter.msg(("\tprivateBytes.lenght = " + privateBytes.length +  " bKey.length = " + bKey.length +  " bIv.length = " + bIv.length), false);
         }
 										        
 		genBuildWithBytes(privateBytes, false);
@@ -263,7 +263,7 @@ public class ZenMatrix implements BlockCipher  {
 		
 		String kbs = "ZenMatrix genBuildWithBytes(byte keyBytes.length =" + keyBytes.length + ", fullSymmetric " +  fullSymmetric + ")\n\tKeyBytes = ";				
         for (int j = 0; j < keyBytes.length; kbs += String.format("%x", keyBytes[j++]));
-		(new DbgWriter()).msg(kbs, 2, true);
+		DbgWriter.msg(kbs, false);
         // InitMatrixSymChiffer();
         int ba = 0, bb = 0;
         System.arraycopy(keyBytes, 0, privateBytes, 0, Math.min(keyBytes.length, 0x10));
@@ -325,8 +325,11 @@ public class ZenMatrix implements BlockCipher  {
 		
 		String perm = "KeyBytes: ";
 		for (int j=0; j < keyBytes.length; perm += String.format("%x", keyBytes[j++]));               
-        for (int j=0; j<16; perm += String.format("\n%02x \t=> %02x => %02x", j, permutationKeyHash[j], matrixPermutationKey[j++])) ;
-		(new DbgWriter()).msg("ZenMatrix " +  perm, true);	
+        for (int j=0; j<16; j++) 
+			perm += (j < permutationKeyHash.length && j < matrixPermutationKey.length) ?
+				String.format("\n%02x \t=> %02x => %02x", j, permutationKeyHash[j], matrixPermutationKey[j]) :
+				String.format("\n%02x \t=> permKeyHash.Count: %02d, matrixPermKey.Count: %02d", j, permutationKeyHash.length,  matrixPermutationKey.length);			
+		DbgWriter.msg(("ZenMatrix " +  perm), false);	
 
         if (fullSymmetric) {
             /* #region fullSymmetric => InverseMatrix = MatrixPermutationKey; */
@@ -395,10 +398,10 @@ public class ZenMatrix implements BlockCipher  {
         perm = "KeyBytes: ";
 		for (int j=0; j < keyBytes.length; perm += String.format("%x", keyBytes[j++]));               
         for (int j=0; j<16; perm += String.format("\n%2x \t=> %02x => %2x", j, permutationKeyHash[j], matrixPermutationKey[j++])) ;
-		(new DbgWriter()).msg("ZenMatrix " +  perm, true);	
+		DbgWriter.msg(("ZenMatrix " +  perm), false);	
         perm = "";
         for (int j=0; j<16; perm += String.format("\n%x \t=> %x ", j, _inverseMatrix[j++]));
-		(new DbgWriter()).msg("_inverseMatrix " +  perm, true);	
+		DbgWriter.msg(("ZenMatrix " +  perm), false);	
 
         initialised = true;        		
     }
