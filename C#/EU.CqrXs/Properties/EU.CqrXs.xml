@@ -2612,6 +2612,18 @@
             
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Util.Extensions.ToInt(System.Char)">
+            <summary>
+            Converts the specified character to its corresponding integer value, supporting decimal digits and
+            alphabetic characters.
+            </summary>
+            <remarks>This method treats both uppercase and lowercase letters as values from 10 to 35,
+            following the convention used in base-36 conversions. For example, 'A' and 'a' both return 10, 'B' and 'b'
+            return 11, and so on.</remarks>
+            <param name="c">The character to convert. Can be a digit ('0'-'9') or a letter ('A'-'Z', 'a'-'z').</param>
+            <returns>An integer representing the value of the character: 0-9 for digits, 10-35 for letters ('A'-'Z' or 'a'-'z').
+            Returns -1 if the character is not a digit or letter.</returns>
+        </member>
         <member name="M:EU.CqrXs.Util.Extensions.IsRoundNumber(System.Double)">
             <summary>
             <see cref="T:System.Double"/>.IsRoundNumber() extension methods: checks, if a double is a round number
@@ -2898,48 +2910,6 @@
             <param name="strInput">this <see cref="T:System.String">string input</see> to json validate</param>
             <returns>true, if it's a valid serialized json string, otherwise false</returns>
         </member>
-        <member name="M:EU.CqrXs.Util.Extensions.SetBackColorAsync(System.Windows.Forms.Label,System.Drawing.Color)">
-            <summary>
-            SetBackColorAsync extension delegate to set <see cref="T:System.Drawing.Color">Backcolor</see> for <see cref="T:System.Windows.Forms.Label"/> across threads
-            </summary>
-            <param name="label">extension method for this label</param>
-            <param name="backColor"><see cref="T:System.Drawing.Color">backColor</see></param>
-            <returns>void Task for async method</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.Extensions.SetTextVisibleAsync(System.Windows.Forms.Label,System.String,System.Boolean)">
-            <summary>
-            SetTextVisibleAsync extension method delegate to set a text to <see cref="T:System.Windows.Forms.Label"/> across threads
-            </summary>
-            <param name="label">the label</param>       
-            <param name="text"><see cref="T:System.String" /></param>
-            <param name="visible"><see cref="T:System.Boolean"/>, default to true</param>
-            <returns>void Task for async method</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.Extensions.SetImageTagVisibleAsync(System.Windows.Forms.PictureBox,System.Drawing.Image,System.String,System.Boolean)">
-            <summary>
-            SetImageTagVisibleAsync extension method to set an <see cref="T:System.Drawing.Image"/> in <see cref="T:System.Windows.Forms.PictureBox"/> across threads
-            </summary>
-            <param name="pictBox">the PictureBox</param>
-            <param name="image">the Image</param>
-            <param name="tagText">image tag</param>
-            <param name="visible">true, if visible, false if invisible</param>
-            <returns>void Task for async method</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.Extensions.SetTextAsync(System.Windows.Forms.GroupBox,System.String)">
-            <summary>
-            SetTextAsync extension method delegate to set a <see cref="T:System.String">string text</see>/ to <see cref="T:System.Windows.Forms.GroupBox">this</see> across threads
-            </summary>
-            <param name="text">text header for GroupBox</param>
-            <returns>void Task for async method</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.Extensions.SetTextAsync(System.Windows.Forms.ToolStripStatusLabel,System.String)">
-            <summary>
-            SetTextAsync extension method for System.Windows.Forms.ToolStripStatusLabel to set text in a thread safe manner
-            </summary>
-            <param name="tsLabel">ToolStripStatusLabel</param>
-            <param name="text">text to set</param>
-            <returns></returns>
-        </member>
         <member name="M:EU.CqrXs.Util.Extensions.ReverseToString``1(System.Collections.Generic.Stack{``0})">
             <summary>
             <see cref="T:System.Collections.Generic.Stack`1"/>.ReverseToString<typeparamref name="T"/> extension method: reverses a objects in a stack to a string
@@ -3023,7 +2993,7 @@
             <summary>
             Extension <see cref="T:System.String"/>.StripCiphersInFileName() 
             strips all <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> and 
-            <seealso cref="!:SymmCipherEnum"/> characters
+            <seealso cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> characters
             from current string.       
             </summary>
             <param name="fileName"><see cref="T:System.String"/> with extension</param>

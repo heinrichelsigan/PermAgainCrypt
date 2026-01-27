@@ -60,7 +60,7 @@ An eight staged symmetric block cipher crypto pipeline to improve advanced encry
 The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
 
 \begin{figure}
-\includegraphics[natwidth=868,natheight=402]{CipherPipeline.eps}
+\includegraphics[width=1\textwidth,natwidth=868,natheight=402]{CipherPipeline.eps}
 \caption{\label{fig:CipherPipeline.eps}Cipher Pipeline}
 \end{figure}
 
@@ -94,7 +94,13 @@ to change position inside block and value offset.
 
 \url{https://area23.at/net/Crypt/ZenMatrixVisualize.aspx}
 
- \begin{tabular}{|c||c c c c c c c c c c c c c c c c c|}
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=1302,natheight=1002]{2026-01-25_ZenMatrixVisualize.png}
+\caption{\label{fig:ZenMatrixVisualize}ZenMatrix Visualize}
+\end{figure}
+
+
+\begin{tabular}{|c||c c c c c c c c c c c c c c c c c|}
  \hline
   x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & \\ [0.5ex]
 \hline
@@ -120,8 +126,7 @@ to change position inside block and value offset.
 When entering hostmaster@nic.at with hash ripemd256 and not fully symmetric checked, 
 the matrix will look like this:
 
-\begin{center}
- \begin{tabular}{||c|c c c c c c c c c c c c c c c c c|}
+\begin{tabular}{||c|c c c c c c c c c c c c c c c c|c||}
  \hline
   x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & Mx \\ [0.5ex]
  \hline
@@ -143,7 +148,6 @@ the matrix will look like this:
  xF & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
  \hline
 \end{tabular}
-\end{center}
 
 this mean that a byte[8] e.g. 321F 0000 0000 0000 
 $x0 \implies x8$,
@@ -212,6 +216,7 @@ TextArea Destination.
 
 \subsection{Documentation of WinForm}
 
+\dots
 
 \begin{figure}
 \includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_WinForm_CSharp.png}
@@ -220,22 +225,26 @@ TextArea Destination.
 
 
 
+\subsection{Documentation of Windows Console}
+
+Download the lastest Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
+
+\begin{figure}
+\includegraphics[width=1\textwidth,viewport]{2026-01-27_EU_CqrXs_Console.jpg}
+\caption{\label{fig:Windows_Console}Windows_Console}
+\end{figure}
+
+
 \subsection{Java JFrame based}
 
-
-\begin{enumerate}
-\item eu.cqrxs.gui.CqrJdFrame : javax.swing.JFrame
-\end{enumerate}
-\dots or bullet points \dots
 \begin{itemize}
 \item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
 \item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
 \end{itemize}
 
-
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_javax_swing_JFrame_java.png}
-\caption{\label{fig:javax.swing}java javax.swing.JFrameWinForm}
+\includegraphics[width=1\textwidth,natwidth=1012,natheight=762]{javax_swing_JFrame_java.jpg}
+\caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
 
@@ -246,30 +255,14 @@ TextArea Destination.
       = \frac{1}{n}\sum_{i}^{n} X_i\]
 denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
 
-
-\subsection{How to change the document language and spell check settings}
-
-Overleaf supports many different languages, including multiple different languages within one document.
-
-To configure the document language, simply edit the option provided to the babel package in the preamble at the top of this example project. To learn more about the different options, please visit this help article on \href{https://www.overleaf.com/learn/latex/International_language_support}{international language support}.
-
-To change the spell check language, simply open the Overleaf menu at the top left of the editor window, scroll down to the spell check setting, and adjust accordingly.
-
-\subsection{How to add Citations and a References List}
-
-You can simply upload a \verb|.bib| file containing your BibTeX entries, created with a tool such as JabRef. You can then cite entries from it, like this: \cite{greenwade93}. Just remember to specify a bibliography style, as well as the filename of the \verb|.bib|. You can find a \href{https://www.overleaf.com/help/97-how-to-include-a-bibliography-using-bibtex}{video tutorial here} to learn more about BibTeX.
-
-If you have an \href{https://www.overleaf.com/user/subscription/plans}{upgraded account}, you can also import your Mendeley or Zotero library directly as a \verb|.bib| file, via the upload menu in the file-tree.
-
-
-
 \subsection{Good luck!}
 
-We hope you find Overleaf useful, and do take a look at our \href{https://www.overleaf.com/learn}{help library} for more tutorials and user guides! Please also let us know if you have any feedback using the \textbf{Contact us} link at the bottom of the Overleaf menu --- or use the contact form at \url{https://www.overleaf.com/contact}.
+We hope you find PermAgainCrypt useful, and good luck!
 
 
 \bibliographystyle{alpha}
 \bibliography{sample}
 
 \end{document}
+
 

@@ -518,6 +518,7 @@ public class CqrJdFrame extends JFrame {
 		setJMenuBar(jBar);
 		
 		try {
+			keyUrl =  URI.create("https://area23.at/net/res/img/symbol/key_ring.gif").toURL();
 			hashUrl = URI.create("https://area23.at/net/res/img/crypt/a_hash.png").toURL();
 			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
 			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();

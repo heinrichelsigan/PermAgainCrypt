@@ -1,4 +1,5 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Zip;
@@ -23,6 +24,39 @@ namespace EU.CqrXs.Util
     {
 
         #region primitive types extensions
+
+        #region char extensions
+
+        /// <summary>
+        /// Converts the specified character to its corresponding integer value, supporting decimal digits and
+        /// alphabetic characters.
+        /// </summary>
+        /// <remarks>This method treats both uppercase and lowercase letters as values from 10 to 35,
+        /// following the convention used in base-36 conversions. For example, 'A' and 'a' both return 10, 'B' and 'b'
+        /// return 11, and so on.</remarks>
+        /// <param name="c">The character to convert. Can be a digit ('0'-'9') or a letter ('A'-'Z', 'a'-'z').</param>
+        /// <returns>An integer representing the value of the character: 0-9 for digits, 10-35 for letters ('A'-'Z' or 'a'-'z').
+        /// Returns -1 if the character is not a digit or letter.</returns>
+        public static int ToInt(this char c)
+        {
+            int iLetterUpperA = (int)'A',
+                iLetterLowera = ((int)'a'),
+                iNumDigitZero = ((int)'0'),
+                iChar = ((int)c);
+
+            if (Char.IsDigit(c) || Char.IsNumber(c))
+                return (iChar - iNumDigitZero);
+            else if (Char.IsUpper(c))
+                return ((iChar - iLetterUpperA) + 10);
+            else if (Char.IsLower(c))
+                return ((iChar - iLetterLowera) + 10);
+
+            return -1;
+        }
+
+        #endregion char extensions
+
+        #region double extensions 
 
         /// <summary>
         /// <see cref="double"/>.IsRoundNumber() extension methods: checks, if a double is a round number
@@ -53,6 +87,8 @@ namespace EU.CqrXs.Util
         {
             return double.IsNaN(d);
         }
+
+        #endregion double extensions 
 
         #endregion primitive types extensions
 
@@ -106,9 +142,9 @@ namespace EU.CqrXs.Util
 
         #endregion DateTime extensions
 
-        #region stream_byteArray_string_extensions
+        #region stream byteArray string extensions
 
-        #region stream_extensions
+        #region stream extensions
 
         /// <summary>
         /// <see cref="Stream"/>.ToByteArray() extension method: converts <see cref="Stream"/> to <see cref="T:byte[]"/> array
@@ -129,9 +165,9 @@ namespace EU.CqrXs.Util
             }
         }
 
-        #endregion stream_extensions
+        #endregion stream extensions
 
-        #region byteArray_extensions
+        #region byteArray extensions
 
         /// <summary>
         /// <see cref="T:byte[]"/>.GetImageMimeType() extension method: auto detect mime type of an image inside an binary byte[] array
@@ -432,9 +468,9 @@ namespace EU.CqrXs.Util
             return bytes.ToArray();
         }
 
-        #endregion byte_array_extensions
+        #endregion byteArray extensions
 
-        #region string_extensions
+        #region string extensions
 
         /// <summary>
         /// <see cref="string"/>.FromHexString() extension method: converts hexadecimal string to byte[]
@@ -580,9 +616,9 @@ namespace EU.CqrXs.Util
         }
 
 
-        #endregion string_extensions
+        #endregion string _extensions
 
-        #endregion stream_byteArray_string_extensions
+        #endregion stream byteArray string extensions
 
         #region System.Exception extensions
 
@@ -918,208 +954,6 @@ namespace EU.CqrXs.Util
 
         #endregion System.Net extension methods
 
-        #region async invoke gui extensions
-
-        /// <summary>
-        /// SetBackColorAsync extension delegate to set <see cref="Color">Backcolor</see> for <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">extension method for this label</param>
-        /// <param name="backColor"><see cref="Color">backColor</see></param>
-        /// <returns>void Task for async method</returns>
-        public static async Task SetBackColorAsync(this Label label, Color backColor)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    try
-                    {
-                        await label.InvokeAsync(() =>
-                        {
-                            if (label != null)
-                                label.BackColor = backColor;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        string labelName = (label != null && !string.IsNullOrEmpty(label.Name)) ? label.Name : "Label";
-                        if (label != null && label.Parent != null && !string.IsNullOrEmpty(label.Parent.Name))
-                            labelName = label.Parent.Name;
-                        Area23Log.LogOriginMsgEx(labelName, $"Exception in delegate SetLabelBackColor Color: \"{backColor.ToString()}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (label != null)
-                        label.BackColor = backColor;
-                }
-            }
-        }
-
-        /// <summary>
-        /// SetTextVisibleAsync extension method delegate to set a text to <see cref="Label"/> across threads
-        /// </summary>
-        /// <param name="label">the label</param>       
-        /// <param name="text"><see cref="string" /></param>
-        /// <param name="visible"><see cref="bool"/>, default to true</param>
-        /// <returns>void Task for async method</returns>
-        public static async Task SetTextVisibleAsync(this Label label, string text, bool visible = true)
-        {
-            if (label != null)
-            {
-                if (label.InvokeRequired)
-                {
-                    try
-                    {
-                        await label.InvokeAsync(() =>
-                        {
-                            if (label != null && (!visible || text != null))
-                            {
-                                label.Text = text ?? "";
-                                label.Visible = visible;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        string nameLabel = (label != null && !string.IsNullOrEmpty(label.Name)) ? label.Name : "Label";
-                        if (label != null && label.Parent != null && !string.IsNullOrEmpty(label.Parent.Name))
-                            nameLabel = label.Parent.Name;
-                        Area23Log.LogOriginMsgEx(nameLabel, $"Exception in delegate SetLabelTextVisibleAsync visible={visible}; Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (label != null && (!visible || text != null))
-                    {
-                        label.Text = text ?? "";
-                        label.Visible = visible;
-                    }
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// SetImageTagVisibleAsync extension method to set an <see cref="Image"/> in <see cref="PictureBox"/> across threads
-        /// </summary>
-        /// <param name="pictBox">the PictureBox</param>
-        /// <param name="image">the Image</param>
-        /// <param name="tagText">image tag</param>
-        /// <param name="visible">true, if visible, false if invisible</param>
-        /// <returns>void Task for async method</returns>
-        public static async Task SetImageTagVisibleAsync(this PictureBox pictBox, System.Drawing.Image image, string tagText = "", bool visible = true)
-        {
-            if (pictBox != null && image != null)
-            {
-                if (pictBox.InvokeRequired)
-                {
-                    try
-                    {
-                        await pictBox.InvokeAsync(() =>
-                        {
-                            if (pictBox != null && image != null && tagText != null)
-                            {
-                                pictBox.Image = image;
-                                pictBox.Tag = tagText;
-                                pictBox.Visible = visible;
-                            }
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        string picName = (pictBox != null && !string.IsNullOrEmpty(pictBox.Name)) ? pictBox.Name : "PictureBox";
-                        Area23Log.LogOriginMsgEx(picName, $"Exception in delegate SetPictureBoxImage image: \"{image}\", tag: \"{tagText}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (pictBox != null && image != null && tagText != null)
-                    {
-                        pictBox.Image = image;
-                        pictBox.Tag = tagText;
-                        pictBox.Visible = visible;
-                    }
-                }
-            }
-        }
-
-        public static async Task SetBitmapTagVisibleAsync(this PictureBox pictBox, Bitmap bmp, string tagText, bool visible = true) 
-            => await SetImageTagVisibleAsync(pictBox, (System.Drawing.Image)bmp, tagText, visible);
-
-
-        /// <summary>
-        /// SetTextAsync extension method delegate to set a <see cref="string">string text</see>/ to <see cref="GroupBox">this</see> across threads
-        /// </summary>
-        /// <param name="text">text header for GroupBox</param>
-        /// <returns>void Task for async method</returns>
-        public static async Task SetTextAsync(this System.Windows.Forms.GroupBox groupBox, string text)
-        {
-            string textToSet = (!string.IsNullOrEmpty(text)) ? text : string.Empty;
-            if (groupBox != null)
-            {
-                if (groupBox.InvokeRequired)
-                {
-                    try
-                    {
-                        await groupBox.InvokeAsync(() =>
-                        {
-                            if (groupBox != null && textToSet != null)
-                                groupBox.Text = textToSet;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        string gBoxName = (groupBox != null && !string.IsNullOrEmpty(groupBox.Name)) ? groupBox.Name : "GroupBox";
-                        Area23Log.LogOriginMsgEx(gBoxName, $"Exception in delegate SetGBoxText text: \"{textToSet}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (groupBox != null && textToSet != null)
-                        groupBox.Text = textToSet;
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// SetTextAsync extension method for System.Windows.Forms.ToolStripStatusLabel to set text in a thread safe manner
-        /// </summary>
-        /// <param name="tsLabel">ToolStripStatusLabel</param>
-        /// <param name="text">text to set</param>
-        /// <returns></returns>
-        public static async Task SetTextAsync(this System.Windows.Forms.ToolStripStatusLabel tsLabel, string text)
-        {
-            if (tsLabel != null)
-            {
-                ToolStrip? tsParent = tsLabel.GetCurrentParent();
-                if (tsParent != null && tsParent.InvokeRequired)
-                {
-                    try
-                    {
-                        await tsParent.InvokeAsync(() =>
-                        {
-                            if (tsLabel != null && text != null)
-                                tsLabel.Text = text;
-                        });
-                    }
-                    catch (System.Exception exDelegate)
-                    {
-                        string tsLabelName = (tsLabel != null && !string.IsNullOrEmpty(tsLabel.Name)) ? tsLabel.Name : "ToolStripStatusLabel";
-                        Area23Log.LogOriginMsgEx(tsLabelName, $"Exception in delegate SetStatusLabelTextCallback Text: \"{text}\".\n", exDelegate);
-                    }
-                }
-                else
-                {
-                    if (tsLabel != null && text != null)
-                        tsLabel.Text = text;
-                }
-            }
-        }
-
-        #endregion async invoke gui extensions
-
         #region genericsT_extensions
 
         /// <summary>
@@ -1280,6 +1114,7 @@ namespace EU.CqrXs.Util
 
         #endregion genericsT_extensions
 
+
         #region cqrxs extensions
 
         /// <summary>
@@ -1296,7 +1131,7 @@ namespace EU.CqrXs.Util
             string pipeChars = "ALEabFfClc6$DedgIN25RrsS4JtTjX%!";
             if (string.IsNullOrEmpty(fileName)) return false;
 
-            string ext = Path.GetExtension(fileName).StartsWith('.') 
+            string ext = Path.GetExtension(fileName).StartsWith('.')
                 ? Path.GetExtension(fileName)
                 : "." + Path.GetExtension(fileName);
 
@@ -1304,7 +1139,7 @@ namespace EU.CqrXs.Util
                 ext.EndsWith(".xx", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".base16", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".base32", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".base58", StringComparison.CurrentCultureIgnoreCase) ||
+                ext.EndsWith(".hex64", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".base64", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".hex16", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".hex32", StringComparison.CurrentCultureIgnoreCase) ||
@@ -1349,11 +1184,11 @@ namespace EU.CqrXs.Util
                 ext.EndsWith(".csv", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".pptx", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".ppt", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".odp", StringComparison.CurrentCultureIgnoreCase) ||                
+                ext.EndsWith(".odp", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vsd", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vsw", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vsx", StringComparison.CurrentCultureIgnoreCase) ||
-                ext.EndsWith(".vtx", StringComparison.CurrentCultureIgnoreCase) ||                
+                ext.EndsWith(".vtx", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vds", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vdx", StringComparison.CurrentCultureIgnoreCase) ||
                 ext.EndsWith(".vss", StringComparison.CurrentCultureIgnoreCase) ||

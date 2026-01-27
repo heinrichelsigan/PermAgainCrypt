@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using EU.CqrXs.Util;
+using System.Text;
 
 namespace EU.CqrXs.Crypt.EnDeCoding
 {
@@ -42,33 +43,6 @@ namespace EU.CqrXs.Crypt.EnDeCoding
 
         #endregion common interface, interfaces for static members appear in C# 7.3 or later
 
-        private static int CharToInt(char c)
-        {
-            int iBigA = (int)'A', iLittleA = ((int)'a'), iChar = ((int)c);
-
-            if (Char.IsUpper(c))
-                return ((iChar - iBigA) + 10);
-            else if (Char.IsLower(c))
-                return ((iChar - iLittleA) + 10);
-            else if (Char.IsDigit(c) || Char.IsNumber(c))
-                switch (c)
-                {
-                    case '0': return 0;
-                    case '1': return 1;
-                    case '2': return 2;
-                    case '3': return 3;
-                    case '4': return 4;
-                    case '5': return 5;
-                    case '6': return 6;
-                    case '7': return 7;
-                    case '8': return 8;
-                    case '9': return 9;
-                    default: break;
-                }
-
-            return -1;
-        }
-
         /// <summary>
         /// FromHex32 converts a base32 string to a binary byte array
         /// </summary>
@@ -96,7 +70,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
             var charValue = 0;
             foreach (var c in encoded)
             {
-                charValue = CharToInt(c);
+                charValue = c.ToInt();
                 if (charValue < 0)
                     throw new FormatException("Illegal character: `" + c + "`");
 
