@@ -14,6 +14,11 @@ import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.gui.CqrJDialog;
+import eu.cqrxs.gui.ImageViewer;
+import eu.cqrxs.gui.PropertyChangeSupport;
+import eu.cqrxs.gui.VetoableChangeSupport;
+import eu.cqrxs.gui.ErrorsBundle;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 
@@ -513,13 +518,12 @@ public class CqrJdFrame extends JFrame {
 		setJMenuBar(jBar);
 		
 		try {
-			keyUrl = new URL("https://area23.at/net/res/img/symbol/key_ring.gif");
-			hashUrl = new URL("https://area23.at/net/res/img/crypt/a_hash.png");
-			addAlgoUrl = new URL("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif");
-			xUrl = new URL("https://area23.at/net/res/img/symbol/close_delete.gif");
-			fileInUrl = new URL("https://area23.at/net/res/img/crypt/file.png");
-			fileEnCryptedUrl = new URL("https://area23.at/net/res/img/crypt/encrypted.png");
-			fileDeCryptedUrl = new URL("https://area23.at/net/res/img/crypt/decrypted.png");
+			hashUrl = URI.create("https://area23.at/net/res/img/crypt/a_hash.png").toURL();
+			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
+			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
+			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
+			fileEnCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/encrypted.png").toURL();
+			fileDeCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/decrypted.png").toURL();
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}

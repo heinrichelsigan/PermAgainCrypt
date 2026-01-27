@@ -11,6 +11,8 @@
 package eu.cqrxs.zip;
 
 import eu.cqrxs.util.NotImplementedError;
+import eu.cqrxs.zip.GZ;
+import eu.cqrxs.zip.ZipType;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;

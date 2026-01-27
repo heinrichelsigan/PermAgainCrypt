@@ -8,9 +8,11 @@
  */
 package eu.cqrxs.crypt.encoding;
 
+import eu.cqrxs.crypt.encoding.IEncodable;
 import java.util.Base64;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
+
 
 /**
  * Base64Coder is base64 / mime encoder + decoder

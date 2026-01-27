@@ -39,7 +39,7 @@ public class CShake {
         digest.update(inBytes, 0, inBytes.length);
         digest.doFinal(resBuf, 0);
 
-        String hexs = (new Hex16Coder()).encodeBytesToString(resBuf);
+        String hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
 
 		try {
 			HexFormat hex = HexFormat.of();

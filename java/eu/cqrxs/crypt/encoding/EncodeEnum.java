@@ -11,6 +11,14 @@
 package eu.cqrxs.crypt.encoding;
 
 import eu.cqrxs.util.NotImplementedError;
+import eu.cqrxs.crypt.encoding.IEncodable;
+import eu.cqrxs.crypt.encoding.Base16Coder;
+import eu.cqrxs.crypt.encoding.Hex16Coder;
+import eu.cqrxs.crypt.encoding.Base64Coder;
+import eu.cqrxs.crypt.encoding.UuCoder;
+import eu.cqrxs.crypt.encoding.XxEncoder;
+import eu.cqrxs.crypt.encoding.Hex64Coder;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.String;

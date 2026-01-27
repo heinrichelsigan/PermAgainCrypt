@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.net.URI;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.beans.PropertyVetoException;
@@ -143,7 +144,8 @@ public class ImageViewer extends Component implements java.io.Serializable
 
 	       fileName = str;
 	       if(fileName != null && fileName != "")
-	           setURL(new URL(fileName));
+			   // setURL(new URL(fileName));
+	           setURL(URI.create(fileName).toURL());
 	       else
 	           setURL(null);
 
@@ -224,7 +226,8 @@ public class ImageViewer extends Component implements java.io.Serializable
      */
 	public URL getURL()
 	{
-	    return getImageURL();
+		URL imageURL = getImageURL();
+		return imageURL;
 	}
 
     /**
@@ -272,8 +275,8 @@ public class ImageViewer extends Component implements java.io.Serializable
 	{
 		if (newStyle != imageStyle)
 		{
-			Integer oldValue = new Integer(imageStyle);
-			Integer newValue = new Integer(newStyle);
+			Integer oldValue = Integer.valueOf(imageStyle);
+			Integer newValue = Integer.valueOf(newStyle);
 
 			vetos.fireVetoableChange("style", oldValue, newValue);
 
@@ -365,7 +368,8 @@ public class ImageViewer extends Component implements java.io.Serializable
 	{
 		super.paint(g);
 
-		Dimension dim = size();
+		// java.awt.geom.Dimension2D dim2 = getSize();
+		Dimension dim = getSize();
 		if (image != null)
 		{
 
@@ -475,7 +479,7 @@ public class ImageViewer extends Component implements java.io.Serializable
      *          is returned.
      * @see #preferredSize
 	 */
-	public Dimension minimumSize()
+	public  Dimension minimumSize()
     {
         return preferredSize();
     }

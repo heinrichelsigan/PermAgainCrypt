@@ -10,7 +10,8 @@
 
 package eu.cqrxs.crypt.cipher;
 
-import  eu.cqrxs.util.Constants;
+import eu.cqrxs.util.Constants;
+import eu.cqrxs.crypt.cipher.SymmCipherEnum;
 
 import java.io.Serializable;
 import java.lang.String;
