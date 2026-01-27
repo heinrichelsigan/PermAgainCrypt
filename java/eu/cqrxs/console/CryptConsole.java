@@ -351,17 +351,19 @@ public class CryptConsole  {
                 "\t-S | --SymmCipher \n" +
                 "\t-? | --gethelp\n");
 
-        String uout = "Examples: \n" +
-            "\tEU.CqrXs.Console.exe -i=README.MD -e=base16 -o=READ_MD.base16 \n" +
-            "\tEU.CqrXs.Console.exe -D  -i=READ_MD.base16 -e=base16 -o=README_MD.txt \n" +
-            "\tEU.CqrXs.Console.exe -i=README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=README_MD.gz.BfF.base64 \n" +
-            "\tEU.CqrXs.Console.exe -D -i=README_MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=README_GUNZIP.txt \n" +
-            "\tEU.CqrXs.Console.exe -i=README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=README_MD.Whirlpool.bz.Hex32 \n" +
-            "\tEU.CqrXs.Console.exe -D -i=README_MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=README.BUNZIP.txt \n " +
-            "\tEU.CqrXs.Console.exe -i=README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=README_MD.SCrypt.zip.uu \n " +
-            "\tEU.CqrXs.Console.exe -D -i=README_MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=README_MD_UNZIP.txt \n" +
-            "\tEU.CqrXs.Console.exe -i=README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=README_MD.BCrypt.zip.xx \n" +
-            "\tEU.CqrXs.Console.exe -D -i=README_MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=README_SYM_BCRYPT_UNZIP.txt \n";
+        String uout = "\tBCJAR=bcprov-lts8on-2.73.10.jar\n" +
+            "\tMYCLASSPATH=\"$CLASSPATH:./:./$BCJAR:./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/net:./eu/cqrxs/net/addr:./eu/cqrxs/net/server6:./eu/cqrxs/util/:./eu/cqrxs/crypt/:./eu/cqrxs/crypt/encoding/:./eu/cqrxs/crypt/cipher/:./eu/cqrxs/crypt/hash/:\"\n" +
+        "\n# Examples: \n\n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -i=README.MD -e=base16 -o=READ_MD.base16 \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -D -i=READ_MD.base16 -e=base16 -o=README_MD.txt \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -i=README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=README_MD.gz.BfF.base64 \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -D -i=README_MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=README_GUNZIP.txt \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -i=README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=README_MD.Whirlpool.bz.Hex32 \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -D -i=README_MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=README.BUNZIP.txt \n " +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -i=README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=README_MD.SCrypt.zip.uu \n " +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -D -i=README_MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=README_MD_UNZIP.txt \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -i=README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=README_MD.BCrypt.zip.xx \n" +
+            "\tjava --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/console/CryptConsole.java \\ \n\t -D -i=README_MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=README_SYM_BCRYPT_UNZIP.txt \n";
         System.out.println(uout);
 
         System.exit(0);
