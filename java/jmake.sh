@@ -53,8 +53,7 @@ javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/gui/I
 
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/console/*.java "
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation  eu/cqrxs/console/CryptConsole.java eu/cqrxs/consol/OptEnum.java 
-javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation eu/cqrxs/consol/OptEnum.java eu/cqrxs/console/CryptConsole.java
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/console/OptEnum.java eu/cqrxs/console/CryptConsole.java
 
 
 echo "build finished"

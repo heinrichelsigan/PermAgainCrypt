@@ -87,12 +87,65 @@ public class CryptConsole  {
         String[] optArgs = new String[2];
         for (int i = 0; i < args.length; i++) {
             // string optStr = GetOption(... => out OptEnum optEnum)
-            optArgs = getOptArg(args[i]);
+            optArgs = OptEnum.getOptArg(args[i]);
             optEnum = OptEnum.getOptionFromString(optArgs[0]);
             String optStr = optArgs[1];
             // System.out.println("argv[" + i+ "] = " + args[i] + " " + optEnum.toString() + " option=" +  optStr);
             // Nothing todo on io params
-            if (optEnum == OptEnum.OutP || optEnum == OptEnum.InParam) ;
+            if (optEnum == OptEnum.InParam) {
+                inName = optStr;
+                if (inName == null || inName.length() == 0)
+                    ; // Else
+                else if (args[i].toLowerCase().contains("file") ||
+                    Files.exists(Paths.get(inName)) ||
+                    Files.exists(Paths.get(dirPath + "\\" + inName)) ||
+                    Files.exists(Paths.get(dirPath + "/" + inName)) ||
+                    Files.exists(Paths.get(dirPath + sepChar + inName))) {
+                    if (Files.exists(Paths.get(dirPath + sepChar + inName))) {
+                        inFile = new java.io.File(dirPath + sepChar + inName);
+                        try {
+                            inBytes = Files.readAllBytes(inFile.toPath());
+                        } catch (Exception exx) {
+                            exx.printStackTrace();
+                        }
+                    } else if (Files.exists(Paths.get(inName))) {
+                        inFile = new java.io.File(inName);
+                        try {
+                            inBytes = Files.readAllBytes(inFile.toPath());
+                        } catch (Exception exx) {
+                            exx.printStackTrace();
+                        }
+                    }
+                }
+                else if (args[i].toLowerCase().contains("text") || inName.length() > 0) {
+                    String inStr = System.getenv(inName.replace("$", "").replace("%", ""));
+                    if (inStr == null || inStr.length() == 0)
+                        inStr = inName;
+                    inBytes = inStr.getBytes(Charset.forName("UTF-8"));
+                }
+                else
+                    usage("unrecognized option: " + args[1] + ".");
+
+            }
+            else if (optEnum == OptEnum.OutP) {
+                outName = optStr;
+                if (outName == null || outName.length() == 0)
+                    ; // to stdout
+                else
+                if (args[i].toLowerCase().contains("file") ||
+                        optStr.contains(sepChar) ||
+                        optStr.contains(".") ||
+                        outName.length() > 0) {
+                    outFile = new java.io.File(outName);
+                    if (verbose)
+                        System.out.println("outFile is set to " + outFile);
+                }
+                else
+                if (outName.length() > 0 || args[i].toLowerCase().contains("text") ||
+                        optStr.charAt(0) == '$' || optStr.charAt(0) == '%')
+                    outEnviron = optStr;
+
+            }
             else if (optEnum == OptEnum.Help) // Help => usage()
                 usage("");
             else if (optEnum == OptEnum.Usage) // usage with error message 
@@ -101,35 +154,37 @@ public class CryptConsole  {
             else if (optEnum == OptEnum.Key)
                 passKey = optStr;
             else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode
-		    useSymmCipher = true; 
-	    else if (optEnum == OptEnum.Zip) { // prefetch Zip  
-		if (optStr.toLowerCase().contains("gz") || 
-			optStr.toLowerCase().contains("gunzip")) 
-			zipType = ZipType.GZip; 
-		if (optStr.toLowerCase().contains("zip") || 
-			optStr.toLowerCase().contains("unzip")) 
-			zipType = ZipType.Zip; 
-		if (optStr.toLowerCase().contains("bz") || 
-			optStr.toLowerCase().contains("bunz") || 
-			optStr.toLowerCase().contains("2")) 
-			zipType = ZipType.BZip2;
-		else 
-			usage("unrecognized zip option: " + optStr);
-	    }
- 	    else if (optEnum == OptEnum.Encode) { 
-	 	   encodingType = EncodeEnum.getEncodingTypeFromString(optStr); 
-		   if (verbose) 
+		        useSymmCipher = true;
+	        else if (optEnum == OptEnum.Zip) { // prefetch Zip
+		        if (optStr.toLowerCase().contains("gz") ||
+			        optStr.toLowerCase().contains("gunzip"))
+			        zipType = ZipType.GZip;
+		        if (optStr.toLowerCase().contains("zip") ||
+			        optStr.toLowerCase().contains("unzip"))
+			        zipType = ZipType.Zip;
+		        if (optStr.toLowerCase().contains("bz") ||
+			        optStr.toLowerCase().contains("bunz") ||
+			        optStr.toLowerCase().contains("2"))
+			        zipType = ZipType.BZip2;
+		    else
+			    usage("unrecognized zip option: " + optStr);
+	        }
+ 	        else if (optEnum == OptEnum.Encode) {
+	 	        encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
+		    if (verbose)
 			   System.out.println("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
 	    }
 	    else if (optEnum == OptEnum.Hash) 
 		    keyHash = KeyHash.getKeyHashFromString(optStr);
 	    else if (optEnum == OptEnum.Verbose) 
 		    verbose = true;
-	    else if (optEnum == OptEnum.Crypt) {
+        else if (optEnum == OptEnum.Decrypt)
+            reverseDirection = true;
+	    else if (optEnum == OptEnum.Crypt)
 		    optCryptLater = optStr;
-	    }
 	    // else assert(0);
 	}
+
 	// read from stdin, when no inName specified
 	if (inName.isEmpty()) {
 		System.out.println("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
@@ -151,8 +206,8 @@ public class CryptConsole  {
 		}
 	}
 
-		// optCryptLater handling
-		if (!optCryptLater.isEmpty()) {			      
+        // optCryptLater handling
+        if (!optCryptLater.isEmpty()) {
 			// Usage on not existing or empty passphrase / key
 			if (passKey == null || passKey.isEmpty())
 				usage("unrecognized crypt option \"" + optCryptLater + "\" without --pass=passPhrase ");
@@ -263,141 +318,6 @@ public class CryptConsole  {
 		if (verbose)
 			System.out.print(prOut);
     }
-
-    /***
-     * getOptArg gets an option by argument
-     * @param argument the argument
-     * @return {@link String[]n}
-     */
-    public static String[] getOptArg(String argument) {
-        String[] optArgs = new String[2];
-        optArgs[0] = OptEnum.Usage.toString();
-        optArgs[1] = "";
-
-        // System.out.println("getOptArg(String argument = " + argument +  ") ...");
-        if (argument == null || argument.length() < 2)   {
-            return optArgs;
-        }
-        String optArg = argument;
-
-        String arg = (argument.charAt(1) == '-') ? argument.substring(2) :
-                argument.substring(1);
-
-        if (arg.contains("="))
-            optArg = arg.substring(arg.indexOf('=') + 1);
-        // else if (arg.contains(":"))
-        //     optArg =  arg.substring(arg.indexOf(':') + 1);
-
-        // System.out.println("arg=" + arg +  " optArg=" + optArg);
-
-        switch (arg.charAt(0)) {
-            case 'I':
-            case 'i':
-                optArgs[0] = OptEnum.InParam.toString();
-                inName = optArg;
-                if (inName == null || inName.length() == 0)
-                    ; // Else
-                else
-                    if (arg.toLowerCase().contains("file") || Files.exists(Paths.get(inName)) ||
-                            Files.exists(Paths.get(dirPath + sepChar + inName))) {
-                    if (Files.exists(Paths.get(dirPath + sepChar + inName))) {
-                        inFile = new java.io.File(dirPath + sepChar + inName);
-                        try {
-                            inBytes = Files.readAllBytes(inFile.toPath());
-                        } catch (Exception exx) {
-                            exx.printStackTrace();
-                        }
-                    } else if (Files.exists(Paths.get(inName))) {
-                        inFile = new java.io.File(inName);
-                        try {
-                            inBytes = Files.readAllBytes(inFile.toPath());
-                        } catch (Exception exx) {
-                            exx.printStackTrace();
-                        }
-                    }
-                }
-                else
-                    if (arg.toLowerCase().contains("text") || inName.length() > 0) {
-                        String inStr = System.getenv(inName.replace("$", "").replace("%", ""));
-                    if (inStr == null || inStr.length() == 0)
-                        inStr = inName;
-                    inBytes = inStr.getBytes(Charset.forName("UTF-8"));
-                }
-                else
-                    usage("unrecognized option: " + argument + ".");
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'O':
-            case 'o':
-                optArgs[0] =  OptEnum.OutP.toString();
-                outName = optArg;
-                if (outName == null || outName.length() == 0)
-                    ; // to stdout
-                else
-                    if (arg.toLowerCase().contains("file") ||
-                            optArg.contains(sepChar) ||
-                            optArg.contains(".") ||
-                            outName.length() > 0) {
-                        outFile = new java.io.File(outName);
-						if (verbose) 
-							System.out.println("outFile is set to " + outFile);
-						}
-                else
-                    if (outName.length() > 0 || arg.toLowerCase().contains("text") ||
-                        optArg.charAt(0) == '$' || optArg.charAt(0) == '%')
-                    outEnviron = optArg;
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'Z':
-            case 'z':
-                optArgs[0] = OptEnum.Zip.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'E':
-            case 'e':
-                optArgs[0] = OptEnum.Encode.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'D':
-            case 'd':
-                reverseDirection = true;
-                optArgs[0] = OptEnum.Decrypt.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'C':
-            case 'c':
-                optArgs[0] = OptEnum.Crypt.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'k':
-            case 'K':
-                optArgs[0] = OptEnum.Key.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'h':
-            case 'H':
-                optArgs[0] = OptEnum.Hash.toString();
-                optArgs[1] = optArg;
-                return optArgs;
-            case 'S':
-                optArgs[0] = OptEnum.SymmCipher.toString();
-				optArgs[1] = optArg;
-                return optArgs;
-			case 'v':
-            case 'V':
-                optArgs[0] = OptEnum.Verbose.toString();
-				optArgs[1] = optArg;
-                return optArgs;				
-            case 'g':
-            case 'G':
-            case '?':
-            default:
-                optArgs[0] = OptEnum.Usage.toString();
-                optArgs[1] = "unrecognized option: " + argument + ".";
-                return optArgs;
-        }
-    }
-
 
 
     /***

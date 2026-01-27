@@ -789,24 +789,22 @@ public class CipherPipe {
                                      EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
             throws InvalidCipherTextException, IOException {
 
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
+        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
+        //     throw new IllegalArgumentException("seretkey");
 
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        String hash = (hashIV != null && hashIV.length() > 0) ? hashIV : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
-        cipherHash = hash;
         encodeType = encType;
         zType = unzipAfter;
         kHash = keyHash;
 
-        byte[] cipherBytes = new byte[0];
-        if (encType != EncodeEnum.None)
-        {
+        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        String hash = (hashIV != null && hashIV.length() > 0) ? hashIV : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
+        cipherHash = hash;
+
+        byte[] cipherBytes =encodedBytes;
+        if (encType != EncodeEnum.None)  {
             String encoded =  new String(encodedBytes, StandardCharsets.UTF_8);
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
-        else
-            cipherBytes = encodedBytes;
 
         byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV);
         try {
@@ -816,6 +814,7 @@ public class CipherPipe {
         } catch (Exception exUnzip) {
             exUnzip.printStackTrace();
         }
+
         return outBytes;
     }
 
