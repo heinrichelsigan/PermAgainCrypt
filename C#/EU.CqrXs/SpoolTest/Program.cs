@@ -13,7 +13,7 @@ namespace EU.CqrXs.SpoolTest
     /// <summary>
     /// OptEnum different option types
     /// </summary>
-    public enum OptEnum
+    public enum OptSpoolEnum
     {
         Usage = 0x0,
         InDir = 0x1,
@@ -21,7 +21,7 @@ namespace EU.CqrXs.SpoolTest
         Decrypt = 0x3,
         KeyFile = 0x4,
         Symmetric = 0x5,
-        YankeeTest = 0x6,
+        Verbose = 0x6,
         GetHelp = 0x7
     }
 
@@ -52,11 +52,11 @@ namespace EU.CqrXs.SpoolTest
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --KeyFile={file with 10000 of keys}     
     /// -D | --Decrypt 
-    /// -S | --SymmCipher // use symmetric chipher only to encrypt 
-    /// -Y | --YankeeTest // this is a yankee test
+    /// -S | --SymmCipher   // use symmetric chipher only to encrypt 
+    /// -V | --verbose      // verbose output
     /// -? | --gethelp\n";
         // generic spooler variables
-        static bool useSymmCipher = false, decryptDirection = false;
+        static bool useSymmCipher = false, decryptDirection = false, verbose = false;
         static string inDir = "", outDir = "", keyFile = "";
         static string[] keys = new string[0], files = new string[0];
 
@@ -86,13 +86,13 @@ namespace EU.CqrXs.SpoolTest
             Constants.DirCreate = false;
             Constants.NOLog = true;
 
-            Dictionary<OptEnum, string> dict = new Dictionary<OptEnum, string>();
+            Dictionary<OptSpoolEnum, string> dict = new Dictionary<OptSpoolEnum, string>();
             string[] algos = new List<string>().ToArray();
 
             for (int i = 0; i < args.Length; i++)
             {
                 // string optStr = GetOption(... => out OptEnum optEnum)
-                string optStr = GetOption(args[i], out OptEnum optEnum);
+                string optStr = GetOption(args[i], out OptSpoolEnum optEnum);
             }
             if (string.IsNullOrEmpty(outDir) || !Directory.Exists(outDir))
             {
@@ -115,7 +115,13 @@ namespace EU.CqrXs.SpoolTest
 
 
             if (!Directory.Exists(inDir))
-                inDir = progDirectory;
+            {
+                inDir = Path.Combine(progDirectory, inDir.Contains(Path.DirectorySeparatorChar) ? "spool_in" : inDir);
+                if (!Directory.Exists(inDir))
+                    Directory.CreateDirectory(inDir);
+                File.Copy(Path.Combine(progDirectory, README_FILE), Path.Combine(inDir, README_FILE), true);
+            }
+                    
             files = Directory.GetFiles(inDir);
             byte[] outBytes = new byte[0];
             foreach (string file in files)
@@ -131,28 +137,29 @@ namespace EU.CqrXs.SpoolTest
                 CipherPipe cPipe;
                 if (file.IsPermAgainCryptFile() && decryptDirection)
                 {
-                    ofName = ofName.StripCipherPipeFromFileName(out cPipe);
-                    outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey),
-                        encodingType, zipType, keyHash);                    
+                    ofName = ofName.StripCipherPipeFromFileName(out cPipe); 
+                    PrintCipherPipe(cPipe, decryptDirection);  
+                    outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);                    
                 }
                 else
                 {
-                    cPipe = new CipherPipe(passKey, keyHash.Hash(passKey),
-                        encodingType, zipType, keyHash);
-                    outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey),
-                       encodingType, zipType, keyHash);
+                    cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash); 
+                    PrintCipherPipe(cPipe, decryptDirection);
+                    outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
                     ofName += cPipe.PipeFullExtension;
                 }
 
-                PrintCipherPipe(cPipe, decryptDirection);
-
-                File.WriteAllBytes(Path.Combine(outDir, ofName), outBytes);
+                
+                string outFile = Path.Combine(outDir, ofName);
+                if (verbose)
+                    Console.WriteLine("Writing " + outBytes.Length + " outbytes to file " + outFile);
+                File.WriteAllBytes(outFile, outBytes);
                 filesCount++;
             }
             //algos = new string[] { "ZenMatrix " };            
 
-
-            System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
+            if (verbose)
+                System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
 
             return;
 
@@ -164,12 +171,12 @@ namespace EU.CqrXs.SpoolTest
         /// <param name="argument">cmd line argument</param>
         /// <param name="optEnum"><see cref="OptEnum">OptEnum cmd arg option enum</see></param>
         /// <returns></returns>
-        public static string GetOption(string argument, out OptEnum optEnum)
+        public static string GetOption(string argument, out OptSpoolEnum optEnum)
         {
             string optArg = "";
             if (string.IsNullOrEmpty(argument) || argument.Length < 2 || argument[0] != '-')
             {
-                optEnum = OptEnum.Usage;
+                optEnum = OptSpoolEnum.Usage;
                 return optArg;
             }
             optArg = argument;
@@ -182,7 +189,7 @@ namespace EU.CqrXs.SpoolTest
             {
                 case 'I':
                 case 'i':
-                    optEnum = OptEnum.InDir;
+                    optEnum = OptSpoolEnum.InDir;
                     inDir = optArg;
                     if (string.IsNullOrEmpty(inDir))
                         Usage($"--InDir needs not null or empty parameter for incoming directory.");
@@ -193,16 +200,35 @@ namespace EU.CqrXs.SpoolTest
                         else
                         {
                             if (Constants.DirCreate)
-                                Directory.CreateDirectory(inDir);
+                            {
+                                if (!inDir.Contains(Path.DirectorySeparatorChar))
+                                {
+                                    inDir = Path.Combine(progDirectory, inDir);
+                                    Directory.CreateDirectory(inDir);
+                                }
+                                else
+                                    Directory.CreateDirectory(inDir);
+                            }
                             else
-                                Usage($"InDir=${inDir} doesn't exist.");
+                            {
+                                inDir = Path.Combine(LibPaths.TempDir, string.IsNullOrEmpty(inDir) ? "spool_in" : inDir);
+                                try
+                                {
+                                    if (!Directory.Exists(inDir))
+                                        Directory.CreateDirectory(inDir);
+                                }
+                                catch (Exception exInDir)
+                                {
+                                    Usage($"{exInDir.GetType()}: {exInDir.Message}\n{exInDir.StackTrace}\n");
+                                }
+                            }
                         }
                     }
                     return optArg;
 
                 case 'O':
                 case 'o':
-                    optEnum = OptEnum.OutDir;
+                    optEnum = OptSpoolEnum.OutDir;
                     outDir = optArg;
                     if (string.IsNullOrEmpty(outDir))
                         Usage($"--OutDir needs not null or empty parameter for outgoing directory.");                    
@@ -213,22 +239,41 @@ namespace EU.CqrXs.SpoolTest
                         else
                         {
                             if (Constants.DirCreate)
-                                Directory.CreateDirectory(outDir);
-                            else
-                                Usage($"OutDir=${outDir} doesn't exist.");
+                            {
+                                if (!outDir.Contains(Path.DirectorySeparatorChar))
+                                {
+                                    outDir = Path.Combine(progDirectory, outDir);
+                                    Directory.CreateDirectory(outDir);
+                                }
+                                else
+                                    Directory.CreateDirectory(outDir);
+                            }
+                            else if (!string.IsNullOrEmpty(outDir) && !outDir.Contains(Path.DirectorySeparatorChar))
+                            {
+                                outDir = Path.Combine(LibPaths.TempDir, "spool_out");
+                                try
+                                {
+                                    if (!Directory.Exists(outDir))
+                                        Directory.CreateDirectory(outDir);
+                                }
+                                catch (Exception exOutDir)
+                                {
+                                    Usage($"{exOutDir.GetType()}: {exOutDir.Message}\n{exOutDir.StackTrace}\n");
+                                }
+                            }
                         }
                     }                    
                     return optArg;
 
                 case 'D':
                 case 'd':
-                    optEnum = OptEnum.Decrypt;
-                    decryptDirection = true;
+                    optEnum = OptSpoolEnum.Decrypt;
+                    Program.decryptDirection = true;
                     return optArg;
 
                 case 'k':
                 case 'K':
-                    optEnum = OptEnum.KeyFile;
+                    optEnum = OptSpoolEnum.KeyFile;
                     keyFile = optArg;
                     if (string.IsNullOrEmpty(keyFile) || !File.Exists(keyFile)) 
                     {
@@ -244,24 +289,26 @@ namespace EU.CqrXs.SpoolTest
                     return optArg;      
                     
                 case 'S':
-                    optEnum = OptEnum.Symmetric;
+                    optEnum = OptSpoolEnum.Symmetric;
                     Program.useSymmCipher = true;
-                    return optArg;  
-                    
-                case 'y':
-                case 'Y':
-                    optEnum = OptEnum.YankeeTest;
                     return optArg;
 
-                case 'g':
-                case 'G':
-                case '?':
-                default:
-                    optEnum = OptEnum.Usage;
-                    optArg = $"unrecognized option: {argument}.";
-                    Usage(optArg);
-                    break;
-            }
+                case 'v':
+                case 'V':
+                    optEnum = OptSpoolEnum.Verbose;
+                    Constants.NOLog = false;
+                    Program.verbose = true;
+                    return optArg;
+
+                    case 'g':
+                    case 'G':
+                    case '?':
+                    default:
+                        optEnum = OptSpoolEnum.Usage;
+                        optArg = $"unrecognized option: {argument}.";
+                        Usage(optArg);
+                        break;
+                    }
 
             return optArg;
         }

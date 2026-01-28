@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.SpoolTest": {
       "commandName": "Project",
-      "commandLineArgs": "--inDir=Spooler\\In --outDir=Spooler\\Out --Keys=Spooler\\keys.txt"
+      "commandLineArgs": "-V -i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In -o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out -K=S:\\PermAgainCrypt\\docu\\keys.txt "
     }
   }
 }
