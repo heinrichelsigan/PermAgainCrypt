@@ -7,10 +7,7 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+
 
 
 namespace EU.CqrXs.Gui.Forms
@@ -24,6 +21,9 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal CipherPipe? cPipe = null;
         protected internal string simg = "";
+        protected internal ToolStripMenuItem[] menuEncodings;
+        protected internal ToolStripMenuItem[] menuZips;
+        protected internal ToolStripMenuItem[] mHashes;
 
         #region ctor and load
 
@@ -33,8 +33,11 @@ namespace EU.CqrXs.Gui.Forms
         /// <remarks>This constructor sets up the form and initializes its components.  It should be
         /// called when creating a new instance of the <see cref="EncryptFormMultiControls"/> form.</remarks>
         public EncryptFormMultiControls()
-        {
+    {
             InitializeComponent();
+            menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
+            menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
+            mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
 
             tabControlWithHexDest.AsciiTextReadonly = true;
             buttonEncrypt.Click += new System.EventHandler(async (sender, e)
@@ -74,16 +77,12 @@ namespace EU.CqrXs.Gui.Forms
                 Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()", "error in delegating menuHelpCharHexDecOctBin.Click exception", exBtnClick, 2);
             }
 
-            ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
-
-            ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
+            
             foreach (var zipMenuItem in menuZips)
                 zipMenuItem.Click += new System.EventHandler(async (sender, e) => await menuCompression_Click(sender, e));
 
-
-            ToolStripMenuItem[] mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
             foreach (var hashMenuItem in mHashes)
                 hashMenuItem.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
 
@@ -145,11 +144,8 @@ namespace EU.CqrXs.Gui.Forms
                 return;
             }
 
-            zmenu7z.Checked = false;
-            zmenuBZip2.Checked = false;
-            zmenuGZip.Checked = false;
-            zmenuZip.Checked = false;
-            zmenuNone.Checked = false;
+            foreach (var menuZ in menuZips)
+                menuZ.Checked = false;
 
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("zmenu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
@@ -227,15 +223,8 @@ namespace EU.CqrXs.Gui.Forms
                 return;
             }
 
-            menuEncNone.Checked = false;
-            menuEncBase16.Checked = false;
-            menuEncHex16.Checked = false;
-            menuEncBase32.Checked = false;
-            menuEncHex32.Checked = false;
-            menuEncHex64.Checked = false;
-            menuEncBase64.Checked = false;
-            menuEncUu.Checked = false;
-            menuEncXx.Checked = false;
+            foreach (var menuEncods in menuEncodings)
+                menuEncods.Checked = false;
 
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("menuEncBase") || mi.Name.StartsWith("menuEncHex") || mi.Name.StartsWith("menuEncUu") ||
@@ -255,6 +244,7 @@ namespace EU.CqrXs.Gui.Forms
             if (mi == null && comboItem != null && !string.IsNullOrEmpty(comboItem.ToString()))
             {
                 encodingType = EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None");
+                var menuItemChecked = encodingType.CheckMenuItemForEncoding(menuEncodings);
                 switch (encodingType)
                 {
                     case EncodingType.Base16: menuEncBase16.Checked = true; break;
@@ -283,6 +273,7 @@ namespace EU.CqrXs.Gui.Forms
         /// <returns></returns>
         protected internal EncodingType GetEncoding()
         {
+            EncodingType encType = EncodingTypesExtensions.GetEncodíngTypeFromCheckMenuItem(menuEncodings);
             if (menuEncNone.Checked) return EncodingType.None;
             if (menuEncBase16.Checked) return EncodingType.Base16;
             if (menuEncHex16.Checked) return EncodingType.Hex16;
@@ -311,21 +302,9 @@ namespace EU.CqrXs.Gui.Forms
             KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
             KeyHash aKeyHash = KeyHash.Hex;
 
-            menuHashBCrypt.Checked = false;
-            menuHashHex.Checked = false;
-            menuHashMD5.Checked = false;
-            menuHashOpenBSDCrypt.Checked = false;
-            menuHashSCrypt.Checked = false;
-            menuHashSha1.Checked = false;
-            menuHashSha256.Checked = false;
-            menuHashSha512.Checked = false;
-            menuHashWhirlpool.Checked = false;
-            menuHashOct.Checked = false;
-            menuHashBlake2xs.Checked = false;
-            menuHashCShake.Checked = false;
-            menuHashDstu7564.Checked = false;
-            menuHashRipeMD256.Checked = false;
-            menuHashTupleHash.Checked = false;
+            foreach (var menuHashe in mHashes)
+                menuHashe.Checked = false;
+       
 
             string hashPattern = "Hex";
             if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
@@ -971,12 +950,8 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     cPipe = GetCPipeFromFileName(fileName);
                     if (cPipe != null)
-                    {
-                        ToolStripItem[] menuHashes = new ToolStripItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
-                        ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
-                        ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
-
-                        foreach (var miHash in menuHashes)
+                    {                        
+                        foreach (var miHash in mHashes)
                         {
                             if (miHash.Name.Replace("menuHash", "").Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
                                 miHash.Text.Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -1333,25 +1308,16 @@ namespace EU.CqrXs.Gui.Forms
             else if (dresult != DialogResult.Continue)
                 return;
 
-                //RandomName rname = new RandomName();
-                //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
             string topLevelDomain = ".at", url = ""; 
             int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ? 
                 (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
             
             switch (++ufcnt)
             {                                
-                case 1:
-                    url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";
-                    break;
-                case 2:
-                    url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay";
-                    break;
+                case 1:     url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images"; break;
+                case 2:     url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay"; break;
                 case 0:
-                default:
-                    ufcnt %= 3;
-                    url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd";
-                    break;
+                default:    ufcnt %= 3;url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd"; break;
             }
 
             AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);

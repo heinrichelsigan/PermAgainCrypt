@@ -1385,6 +1385,95 @@ namespace EU.CqrXs.Util
             return strippedFileName;
         }
 
+        public static string StripSymmCipherPipeFromFileName(this string fileName, out SymmCipherPipe? symmCipherPipe)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            symmCipherPipe = null;
+            string strippedFileName = fileName;
+
+            if (!fileName.IsPermAgainCryptFile())
+                return strippedFileName;
+
+            KeyHash kHash = KeyHash.Hex;
+
+            EncodingType eType = EncodingType.None;
+            foreach (EncodingType encTyp in EncodingTypesExtensions.GetEncodingTypes())
+            {
+                if (fileName.EndsWith("." + encTyp.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    eType = encTyp;
+                    strippedFileName = fileName.Replace("." + encTyp.ToString(), "").Replace("." + encTyp.ToString().ToLower(), "");
+                    break;
+                }
+            }
+
+            bool cipherAfterZip = false;
+            ZipType zipTyp = ZipType.None;
+            foreach (ZipType zType in ZipTypeExtensions.GetZipTypes())
+            {
+                if (zType != ZipType.None)
+                {
+                    if (strippedFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
+                        zipTyp = zType;
+                    else if (strippedFileName.Contains(zType.GetZipTypeExtension() + ".", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        zipTyp = zType;
+                        cipherAfterZip = true;
+                    }
+                }
+                if (zipTyp != ZipType.None)
+                {
+                    strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "").Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
+                    break;
+                }
+            }
+
+
+            foreach (KeyHash kh in KeyHash_Extensions.GetHashTypes())
+            {
+                if (strippedFileName.Contains("." + kh.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    kHash = kh;
+                    strippedFileName = strippedFileName.Replace("." + kh.ToString(), "").Replace("." + kh.ToString().ToLower(), "");
+
+                    break;
+                }
+            }
+
+            List<SymmCipherEnum> symmCipherEnums = new List<SymmCipherEnum>();
+            if (cipherAfterZip)
+            {
+                string pipeRestString = strippedFileName.Substring(strippedFileName.LastIndexOf("."));
+                foreach (char ch in pipeRestString)
+                {
+                    foreach (SymmCipherEnum symmCipher in CipherEnumExtensions.GetCipherTypes())
+                    {
+                        if (symmCipher.GetSymmCipherChar() == ch)
+                            symmCipherEnums.Add(symmCipher);
+                    }
+                }
+
+                if (symmCipherEnums.Count > 0)
+                {
+                    SymmCipherPipe cPipe = new SymmCipherPipe(symmCipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+                    if (strippedFileName.Contains("." + cPipe.PipeString))
+                    {
+                        symmCipherPipe = cPipe;
+                        strippedFileName = strippedFileName.Replace("." + cPipe.PipeString, "");
+                    }
+                }
+            }
+
+
+            if (symmCipherPipe == null)
+                symmCipherPipe = new SymmCipherPipe(symmCipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+
+
+            return strippedFileName;
+        }
+
         /// <summary>
         /// Extension <see cref="string"/>.StripCiphersInFileName() 
         /// strips all <see cref="CipherEnum"/> and 

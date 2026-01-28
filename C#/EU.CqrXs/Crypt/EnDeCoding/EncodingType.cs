@@ -66,7 +66,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 case EncodingType.Hex64: return ((IDecodable)new Hex64());
                 case EncodingType.Base64:
                 default: return ((IDecodable)new Base64());
-            }            
+            }
         }
 
 
@@ -100,7 +100,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
         }
 
 
-        public static EncodingType GetEnum(string enCodingString) 
+        public static EncodingType GetEnum(string enCodingString)
         {
             string encodeExt = enCodingString.ToLower().Replace(".", "").Trim();
             switch (encodeExt)
@@ -123,12 +123,12 @@ namespace EU.CqrXs.Crypt.EnDeCoding
 
                 case "base32":
                 case "b32":
-                    return EncodingType.Base32; 
+                    return EncodingType.Base32;
 
                 case "hex32":
                 case "h32":
                 case "32":
-                    return EncodingType.Hex32; 
+                    return EncodingType.Hex32;
 
                 case "uu":
                 case "uue":
@@ -149,15 +149,49 @@ namespace EU.CqrXs.Crypt.EnDeCoding
                 case "64":
                     return EncodingType.Hex64;
 
-                case "base64":                
+                case "base64":
                 case "b64":
                 case "mime":
                 default:
                     return EncodingType.Base64;
             }
 
-        }        
+        }
 
+
+        public static ToolStripMenuItem CheckMenuItemForEncoding(this EncodingType encodingType, ToolStripMenuItem[] items) 
+        {
+            ToolStripMenuItem checkedItem = null;
+            foreach (ToolStripMenuItem item in items)
+            {
+                item.Tag = encodingType;
+                if (item.Name.Contains(encodingType.ToString()))
+                {
+                    item.Checked = true;
+                    checkedItem = item;                    
+                }
+                else
+                    item.Checked = false;
+            }
+            return checkedItem;
+        }
+
+
+        public static EncodingType GetEncodíngTypeFromCheckMenuItem(ToolStripMenuItem[] items)
+        {
+            EncodingType encodingType = EncodingType.None;
+            foreach (ToolStripMenuItem item in items)
+            {
+                if (item.Checked)
+                {
+                   string enncodingName =  string.IsNullOrEmpty(item.Tag.ToString() ?? "") ? 
+                        item.Name.Replace("menuEnc", "") : item.Tag.ToString();
+                    encodingType = Enum.Parse<EncodingType>(enncodingName);
+                    return encodingType;
+                }                
+            }
+            return EncodingType.None; ;
+        }
     }
 
 }

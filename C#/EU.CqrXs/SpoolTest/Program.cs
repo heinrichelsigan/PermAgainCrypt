@@ -47,7 +47,8 @@ namespace EU.CqrXs.SpoolTest
         const string README_FILE = "README.MD";
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-        static readonly string UsageString = "Usage:\t" + Path.GetFileName(progName) + @"
+        static readonly string progFilename = (!string.IsNullOrEmpty(progName)) ? Path.GetFileName(progName) : "EU.CqrXs.SpoolTest.exe";
+        static readonly string UsageString = $"Usage:\t {progFilename} " + @"
     /// -i | --InDir={path to incoming dir} 
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --KeyFile={file with 10000 of keys}     
@@ -78,7 +79,7 @@ namespace EU.CqrXs.SpoolTest
         /// <param name="args">command line arguments</param>
         static void Main(string[] args)
         {
-            if (args.Length <= 0)
+            if (args.Length < 1)
                 Usage();
 
             long filesCount = 0;
@@ -131,25 +132,48 @@ namespace EU.CqrXs.SpoolTest
                 encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
                 zipType = ZipTypes[((++zc) % ZipTypes.Length)];
 
-                byte[] inByte = File.ReadAllBytes(file);                
+                byte[] inByte = File.ReadAllBytes(file);
                 string ofName = Path.GetFileName(file);
 
                 CipherPipe cPipe;
+                SymmCipherPipe symmPipe;
                 if (file.IsPermAgainCryptFile() && decryptDirection)
                 {
-                    ofName = ofName.StripCipherPipeFromFileName(out cPipe); 
-                    PrintCipherPipe(cPipe, decryptDirection);  
-                    outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);                    
+                    if (verbose)
+                        Console.Write(DateTime.Now.Area23DateTimeWithSeconds() + " spooling now file " + ofName);
+                    if (useSymmCipher)
+                    {
+                        ofName = ofName.StripSymmCipherPipeFromFileName(out symmPipe);
+                        PrintSymmCipherPipe(symmPipe, decryptDirection);
+                        outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    }
+                    else
+                    {
+                        ofName = ofName.StripCipherPipeFromFileName(out cPipe);
+                        PrintCipherPipe(cPipe, decryptDirection);
+                        outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    }
+
                 }
                 else
                 {
-                    cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash); 
-                    PrintCipherPipe(cPipe, decryptDirection);
-                    outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-                    ofName += cPipe.PipeFullExtension;
+                    if (useSymmCipher)
+                    {
+                        symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        PrintSymmCipherPipe(symmPipe, decryptDirection);
+                        outBytes = symmPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        ofName += symmPipe.PipeFullExtension;
+                    }
+                    else
+                    {
+                        cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        PrintCipherPipe(cPipe, decryptDirection);
+                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        ofName += cPipe.PipeFullExtension;
+                    }
                 }
 
-                
+
                 string outFile = Path.Combine(outDir, ofName);
                 if (verbose)
                     Console.WriteLine("Writing " + outBytes.Length + " outbytes to file " + outFile);
@@ -160,7 +184,7 @@ namespace EU.CqrXs.SpoolTest
 
             if (verbose)
                 System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
-
+            
             return;
 
         }
@@ -290,7 +314,7 @@ namespace EU.CqrXs.SpoolTest
                     
                 case 'S':
                     optEnum = OptSpoolEnum.Symmetric;
-                    Program.useSymmCipher = true;
+                    useSymmCipher = true;
                     return optArg;
 
                 case 'v':
@@ -322,26 +346,20 @@ namespace EU.CqrXs.SpoolTest
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine(UsageString);
+            if (verbose)
+            {
+                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V " +
+                        "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In   \n" +
+                        "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out  \n" +
+                        "-k=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In\\keys.txt \n" +
+                        "-S\n");
 
-            System.Console.Out.WriteLine($"\nExamples: " + @"
-
-    EU.CqrXs.Console.exe -i=..\\README.MD -e=base16 -o=.\README_MD.base16
-    EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
-
-    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
-    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
-
-    EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
-    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
-
-    REM EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    REM EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
-    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
-
-    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n");
-
+                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V " +
+                            "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out   \n" +
+                            "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\ReIn  \n" +
+                            "-k=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In\\keys.txt \n" +
+                            "-D -S\n");
+            }
             System.Environment.Exit(0);
         }
 
@@ -350,7 +368,7 @@ namespace EU.CqrXs.SpoolTest
         #region print only debug info
         public static void PrintSymmCipherPipe(SymmCipherPipe symmPipe, bool outPipe = false)
         {
-            if (true)
+            if (verbose)
             {
                 SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutSymmPipe : symmPipe.InSymmPipe;
                 System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
@@ -363,7 +381,7 @@ namespace EU.CqrXs.SpoolTest
 
         public static void PrintCipherPipe(CipherPipe cipherPipe, bool outPipe = false)
         {
-            if (true)
+            if (verbose)
             {
                 CipherEnum[] ciphers = (outPipe) ? cipherPipe.OutPipe : cipherPipe.InPipe;
                 System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
