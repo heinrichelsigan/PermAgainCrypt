@@ -140,7 +140,8 @@ namespace EU.CqrXs.SpoolTest
                 byte[] inByte = File.ReadAllBytes(file);
                 string ofName = Path.GetFileName(file);
                 if (verbose)
-                    Console.Write(DateTime.Now.Area23DateTimeWithSeconds() + " reading " + inBytes.Length + " bytes from file " + ofName);
+                    Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + 
+                        " reading " + inBytes.Length + " bytes from file " + ofName);
 
                 CipherPipe cPipe;
                 SymmCipherPipe symmPipe;
