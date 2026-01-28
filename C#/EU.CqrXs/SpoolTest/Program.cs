@@ -141,7 +141,7 @@ namespace EU.CqrXs.SpoolTest
                 string ofName = Path.GetFileName(file);
                 if (verbose)
                     Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + 
-                        " reading " + inBytes.Length + " bytes from file " + ofName);
+                        " reading " + inByte.Length + " bytes from file " + ofName);
 
                 CipherPipe cPipe;
                 SymmCipherPipe symmPipe;
