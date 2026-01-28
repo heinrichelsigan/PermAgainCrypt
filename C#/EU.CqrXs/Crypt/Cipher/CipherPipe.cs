@@ -442,34 +442,27 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns>encrypted byte[]</returns>
         public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv)
         {
+            if (InPipe == null || inPipe.Length == 0)   // return immideate, when zero round cipher merry go round
+                return inBytes;
+
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
-
             string hash = hashIv ?? "";
             if (string.IsNullOrEmpty(hash) && !string.IsNullOrEmpty(secretKey))
                 hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
-
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
-            byte[] encryptedBytes = new byte[inBytes.Length];
-            Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
             //#if DEBUG
-            //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-            //            // stageDictionary.Add(CipherEnum.ZenMatrix, inBytes);
+            //      stageDictionary = new Dictionary<CipherEnum, byte[]>();
             //#endif
-            //if (zipBefore != ZipType.None)
-            //{
-            //    encryptedBytes = zipBefore.Zip(inBytes);
-            //    inBytes = encryptedBytes;
-            //}
-
+            byte[] encryptedBytes = new byte[inBytes.Length];
             foreach (CipherEnum cipher in InPipe)
             {
                 encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
                 inBytes = encryptedBytes;
                 //#if DEBUG
-                //                stageDictionary.Add(cipher, encryptedBytes);
+                //      stageDictionary.Add(cipher, encryptedBytes);
                 //#endif
             }
 
@@ -486,33 +479,30 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
         public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv)
         {
+            if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
+                return cipherBytes;
+
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
-
             string hash = hashIv ?? "";
             if (string.IsNullOrEmpty(hash) && !string.IsNullOrEmpty(secretKey))
                 hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
-
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
 
+            /*  #if DEBUG
+             *      stageDictionary = new Dictionary<CipherEnum, byte[]>();
+             *  #endif  */
             byte[] decryptedBytes = new byte[cipherBytes.Length];
-            //#if DEBUG
-            //            stageDictionary = new Dictionary<CipherEnum, byte[]>();
-            //            // stageDictionary.Add(CipherEnum.ZenMatrix, cipherBytes);
-            //#endif 
-            if (OutPipe == null || OutPipe.Length == 0)
-                Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
-            else
-                foreach (CipherEnum cipher in OutPipe)
-                {
-                    decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
-                    cipherBytes = decryptedBytes;
-                    //#if DEBUG
-                    //                    stageDictionary.Add(cipher, cipherBytes);
-                    //#endif
-                }
-           
+            foreach (CipherEnum cipher in OutPipe)
+            {
+                decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
+                cipherBytes = decryptedBytes;
+                /*  #if DEBUG
+                 *      stageDictionary.Add(cipher, cipherBytes);
+                 *  #endif */
+            }
+
             return decryptedBytes;
         }
 
@@ -564,13 +554,13 @@ namespace EU.CqrXs.Crypt.Cipher
             ZipType zipBefore = ZipType.None,
             KeyHash keyHash = KeyHash.Hex)
         {
-            // hashIv if empty hash secretKey with keyHash hashing variant
-            hashIv = (string.IsNullOrEmpty(hashIv)) ? keyHash.Hash(cryptKey) : hashIv;
-            cipherKey = cryptKey;
-            cipherHash = hashIv;
             KHash = keyHash;
             ZType = zipBefore;
             EncodeType = encoding;
+            // hashIv if empty hash secretKey with keyHash hashing variant
+            hashIv = (string.IsNullOrEmpty(hashIv)) ? keyHash.Hash(cryptKey) : hashIv;
+            cipherKey = cryptKey;
+            cipherHash = hashIv;            
 
             // perform zipping before, if it's given as argument
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
@@ -630,13 +620,14 @@ namespace EU.CqrXs.Crypt.Cipher
             ZipType unzipAfter = ZipType.None,
             KeyHash keyHash = KeyHash.Hex)
         {
+            KHash = keyHash;
+            ZType = unzipAfter;
+            EncodeType = decoding;
+
             // hashIv if empty hash secretKey with keyHash hashing variant            
             hashIv = string.IsNullOrEmpty(hashIv) ? keyHash.Hash(cryptKey) : hashIv;
             cipherKey = cryptKey;
             cipherHash = hashIv;
-            KHash = keyHash;
-            ZType = unzipAfter;
-            EncodeType = decoding;
 
             // perform multi crypt pipe stages
             byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cryptKey, hashIv);
@@ -649,13 +640,14 @@ namespace EU.CqrXs.Crypt.Cipher
 
         public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
+            ZType = zipBefore;
+            KHash = keyHash;
+
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             cipherHash = keyHash.Hash(secretKey);
-            ZType = zipBefore;
-            KHash = keyHash;
 
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
@@ -708,6 +700,10 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
+            encodeType = encType;
+            ZType = zipBefore;
+            KHash = keyHash;
+
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
 
@@ -716,9 +712,6 @@ namespace EU.CqrXs.Crypt.Cipher
                 cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
             else 
                 cipherHash = hashIV;
-            encodeType = encType;
-            ZType = zipBefore;
-            KHash = keyHash;
 
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
@@ -759,6 +752,10 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
         {
+            encodeType = encType;
+            ZType = unzipAfter;
+            KHash = keyHash;
+
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
 
@@ -768,9 +765,6 @@ namespace EU.CqrXs.Crypt.Cipher
             else
                 cipherHash = hashIV;
             cipherHash = hashIV;
-            encodeType = encType;
-            ZType = unzipAfter;
-            KHash = keyHash;
 
             // Decoded encoded bytes first, if necessary
             byte[] cipherBytes = (encType != EncodingType.None) ?            

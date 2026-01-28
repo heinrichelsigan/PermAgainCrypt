@@ -5,6 +5,7 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using System.Text;
+using System.Xml;
 
 
 namespace EU.CqrXs.SpoolTest
@@ -138,37 +139,21 @@ namespace EU.CqrXs.SpoolTest
 
                 byte[] inByte = File.ReadAllBytes(file);
                 string ofName = Path.GetFileName(file);
+                if (verbose)
+                    Console.Write(DateTime.Now.Area23DateTimeWithSeconds() + " reading " + inBytes.Length + " bytes from file " + ofName);
 
                 CipherPipe cPipe;
                 SymmCipherPipe symmPipe;
-                if (file.IsPermAgainCryptFile() && decryptDirection)
+                if (!decryptDirection) // encrypting
                 {
-                    if (verbose)
-                        Console.Write(DateTime.Now.Area23DateTimeWithSeconds() + " spooling now file " + ofName);
-                    if (useSymmCipher)
-                    {
-                        ofName = ofName.StripSymmCipherPipeFromFileName(out symmPipe);
-                        PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-                    }
-                    else
-                    {
-                        ofName = ofName.StripCipherPipeFromFileName(out cPipe);
-                        PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
-                    }
-
-                }
-                else
-                {
-                    if (useSymmCipher)
+                    if (useSymmCipher) // SymmCipherPipe and SymmCipherEnum only
                     {
                         symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
                         outBytes = symmPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
                         ofName += symmPipe.PipeFullExtension;
                     }
-                    else
+                    else // CipherPipe and all CipherEnum's
                     {
                         cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
                         PrintCipherPipe(cPipe, decryptDirection);
@@ -176,21 +161,46 @@ namespace EU.CqrXs.SpoolTest
                         ofName += cPipe.PipeFullExtension;
                     }
                 }
+                else if (file.IsPermAgainCryptFile()) // decrypting
+                {
+                    if (useSymmCipher)
+                    {
+                        ofName = ofName.StripSymmCipherPipeFromFileName(out symmPipe);
+                        if (symmPipe != null)
+                        {
+                            keyHash = symmPipe.KHash;
+                            encodingType = symmPipe.EncodeType;
+                            zipType = symmPipe.ZType;
+                        }
+                        PrintSymmCipherPipe(symmPipe, decryptDirection);
+                        outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    }
+                    else
+                    {
+                        ofName = ofName.StripCipherPipeFromFileName(out cPipe);
+                        if (cPipe != null)
+                        {
+                            keyHash = cPipe.KHash;
+                            encodingType = cPipe.EncodeType;
+                            zipType = cPipe.ZType;
+                        }
+                        PrintCipherPipe(cPipe, decryptDirection);
+                        outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                    }
 
-
+                }
+                
                 string outFile = Path.Combine(outDir, ofName);
                 if (verbose)
-                    Console.WriteLine("Writing " + outBytes.Length + " outbytes to file " + outFile);
+                    Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds() + " writing " + outBytes.Length + " outbytes to file " + outFile);
                 File.WriteAllBytes(outFile, outBytes);
                 filesCount++;
-            }
-            //algos = new string[] { "ZenMatrix " };            
+            }           
 
             if (verbose)
                 System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
             
             return;
-
         }
 
         /// <summary>
@@ -366,7 +376,6 @@ namespace EU.CqrXs.SpoolTest
             }
             System.Environment.Exit(0);
         }
-
 
 
         #region print only debug info

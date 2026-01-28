@@ -304,26 +304,28 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 		/// <returns>encrypted byte[]</returns>
 		public override byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey = "", string hashIv = "")
         {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                throw new ArgumentNullException("secretKey");
-            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(cipherHash))
-                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
-            cipherKey = secretKey;
-            cipherHash = hashIv;
+            if (InPipe == null || inPipe.Length == 0)   // when 0 round cipher merry go round => return immideate inBytes;
+                return inBytes;
 
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                secretKey = "";
+            string hash = hashIv ?? "";
+            if (string.IsNullOrEmpty(hash) && !string.IsNullOrEmpty(secretKey))
+                hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
+            cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
+            cipherHash = hash;
+
+            //#if DEBUG
+            //      stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+            //#endif
             byte[] encryptedBytes = new byte[inBytes.Length];
-            Array.Copy(inBytes, 0, encryptedBytes, 0, inBytes.Length);
-//#if DEBUG
-//            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
-//            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, inBytes);
-//#endif
             foreach (SymmCipherEnum symmCipher in InPipe)
             {
                 encryptedBytes = EncryptBytesFast(inBytes, symmCipher, secretKey, hashIv);
                 inBytes = encryptedBytes;
-//#if DEBUG
-//                stageDictionary.Add(symmCipher, encryptedBytes);
-//#endif
+                //#if DEBUG
+                //      stageDictionary.Add(symmCipher, encryptedBytes);
+                //#endif
             }
 
             return encryptedBytes;
@@ -339,33 +341,31 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
         public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey = "", string hashIv = "")
         {
-            if (string.IsNullOrEmpty(cipherKey) && string.IsNullOrEmpty(secretKey))
-                throw new ArgumentNullException("secretKey");
+            if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
+                return cipherBytes;
 
+            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
+                secretKey = "";
+            string hash = hashIv ?? "";
+            if (string.IsNullOrEmpty(hashIv) && !string.IsNullOrEmpty(secretKey))
+                hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
+            cipherHash = string.IsNullOrEmpty(hash) ? cipherHash : hashIv;
 
-            if (string.IsNullOrEmpty(hashIv) && string.IsNullOrEmpty(cipherHash))
-                hashIv = (!string.IsNullOrEmpty(hashIv)) ? hashIv : (kHash != null) ? kHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(cipherKey);
-
-            cipherHash = string.IsNullOrEmpty(hashIv) ? cipherHash : hashIv;
-
+            //#if DEBUG
+            //            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
+            //            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, cipherBytes);
+            //#endif 
             long outByteLen = (OutPipe == null || OutPipe.Length == 0) ? cipherBytes.Length : ((cipherBytes.Length * 3) + 1);
             byte[] decryptedBytes = new byte[outByteLen];
-//#if DEBUG
-//            stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
-//            // stageDictionary.Add(SymmCipherEnum.ZenMatrix, cipherBytes);
-//#endif 
-            if (OutPipe == null || OutPipe.Length == 0)
-                Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
-            else
-                foreach (SymmCipherEnum symmCipher in OutPipe)
-                {
-                    decryptedBytes = DecryptBytesFast(cipherBytes, symmCipher, secretKey, hashIv);
-                    cipherBytes = decryptedBytes;
-//#if DEBUG
-//                    stageDictionary.Add(symmCipher, cipherBytes);
-//#endif
-                }
+            foreach (SymmCipherEnum symmCipher in OutPipe)
+            {
+                decryptedBytes = DecryptBytesFast(cipherBytes, symmCipher, secretKey, hashIv);
+                cipherBytes = decryptedBytes;
+                //#if DEBUG
+                //                    stageDictionary.Add(symmCipher, cipherBytes);
+                //#endif
+            }
 
             return decryptedBytes;
         }

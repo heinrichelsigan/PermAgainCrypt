@@ -2,7 +2,7 @@
   "profiles": {
     "EU.CqrXs.SpoolTest": {
       "commandName": "Project",
-      "commandLineArgs": "-V -S -i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In -o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out -K=S:\\PermAgainCrypt\\docu\\keys.txt "
+      "commandLineArgs": "-V -D -i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Encrypt -o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out -K=S:\\PermAgainCrypt\\docu\\keys.txt "
     }
   }
 }
