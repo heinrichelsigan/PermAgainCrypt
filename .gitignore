@@ -404,6 +404,11 @@ FodyWeavers.xsd
 /Deploy/console/TestCryptConsole.bat
 /Deploy/framework
 
+/Deploy/SpoolTest/Encrypt
+/Deploy/SpoolTest/Encrypt/*.*
+/Deploy/SpoolTest/Out
+/Deploy/SpoolTest/Out/*.*
+
 /docu/symmcipher.log
 /docu/symmcipher.toc
 /docu/symmcipher.aux
