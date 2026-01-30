@@ -18,14 +18,15 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.26.128</AssemblyVersion>
-	<FileVersion>2.26.128</FileVersion>
+    <AssemblyVersion>2.26.130</AssemblyVersion>
+	<FileVersion>2.26.130</FileVersion>
     <Description>Symmetric Crypt Pipe WinForm Heinrich Elsigan he@area23.at</Description>
     <StartupObject>EU.CqrXs.Gui.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
     <PackageIcon>CryptPenacle.png</PackageIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <UseWPF>False</UseWPF>
+    <ApplicationIcon>Resources\icon\TripleDes.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -71,6 +72,10 @@
     <None Remove="Resources\sounds\sound_soft.wav" />
     <None Remove="Resources\sounds\sound_state_kills.m4a" />
     <None Remove="Resources\sounds\sound_train.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\icon\TripleDes.ico" />
   </ItemGroup>
     
 	<ItemGroup>

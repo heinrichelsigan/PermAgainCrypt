@@ -69,6 +69,7 @@
     <Compile Include="Crypt\Cipher\Asymmetric\DH.cs" />
     <Compile Include="Crypt\Cipher\Asymmetric\Dsa.cs" />
     <Compile Include="Crypt\Cipher\Asymmetric\Rsa.cs" />
+    <Compile Include="Crypt\Cipher\CipherMode.cs" />
     <Compile Include="Crypt\Cipher\CipherEnum.cs" />
     <Compile Include="Crypt\Cipher\CipherPipe.cs" />
     <Compile Include="Crypt\Cipher\CryptHelper.cs" />
@@ -144,6 +145,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="README.md" />
   </ItemGroup>
 

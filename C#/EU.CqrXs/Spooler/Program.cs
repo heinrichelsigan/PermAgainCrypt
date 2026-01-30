@@ -1,4 +1,5 @@
-﻿using EU.CqrXs.Crypt.Cipher;
+﻿using EU.CqrXs.Crypt;
+using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
@@ -8,7 +9,7 @@ using System.Text;
 using System.Xml;
 
 
-namespace EU.CqrXs.SpoolTest
+namespace EU.CqrXs.Spooler
 {
 
     /// <summary>
@@ -20,7 +21,7 @@ namespace EU.CqrXs.SpoolTest
         InDir = 0x1,
         OutDir = 0x2,
         Decrypt = 0x3,
-        KeyFile = 0x4,
+        Key = 0x4,
         Symmetric = 0x5,
         Verbose = 0x6,
         GetHelp = 0x7
@@ -36,10 +37,10 @@ namespace EU.CqrXs.SpoolTest
     /// EU.CqrXs.Console.Program 
     /// -i | --InDir={path to incoming dir} 
     /// -o | --OutDir={path to outcoming dir}
-    /// -k | --KeyFile={file with 10000 of keys}     
+    /// -k | --Key={users key}   
     /// -D | --Decrypt 
-    /// -S | --SymmCipher // use symmetric chipher only to encrypt 
-    /// -Y | --YankeeTest // this is a yankee test
+    /// -S | --SymmCipher // use symmetric chipher only to encrypt
+    /// -V | --verbose
     /// -? | --gethelp
     /// </summary>
     internal class Program
@@ -52,7 +53,7 @@ namespace EU.CqrXs.SpoolTest
         static readonly string UsageString = $"Usage:\t {progFilename} " + @"
     /// -i | --InDir={path to incoming dir} 
     /// -o | --OutDir={path to outcoming dir}
-    /// -k | --KeyFile={file with 10000 of keys}     
+    /// -k | --Key=secretKey
     /// -D | --Decrypt 
     /// -S | --SymmCipher   // use symmetric chipher only to encrypt 
     /// -V | --verbose      // verbose output
@@ -84,9 +85,11 @@ namespace EU.CqrXs.SpoolTest
         /// <param name="args">command line arguments</param>
         static void Main(string[] args)
         {
-            if (args.Length < 1)
+            if (args == null || args.Length == 0)
                 Usage();
 
+            CException decryptExc = null, encryptExc = null;
+            bool keyFromArg = true;
             long filesCount = 0;
             encodingType = EncodingType.None;
             Constants.DirCreate = false;
@@ -99,40 +102,37 @@ namespace EU.CqrXs.SpoolTest
             {
                 // string optStr = GetOption(... => out OptEnum optEnum)
                 string optStr = GetOption(args[i], out OptSpoolEnum optEnum);
-            }
-            if (string.IsNullOrEmpty(outDir) || !Directory.Exists(outDir))
-            {
-                outDir = Path.Combine(LibPaths.TempDir, "spool_out");
-                try
-                {
-                    if (!Directory.Exists(outDir))
-                        Directory.CreateDirectory(outDir);
-                }
-                catch (Exception exOutDir)
-                {
-                    Usage($"{exOutDir.GetType()}: {exOutDir.Message}\n{exOutDir.StackTrace}\n");
-                }
-            }
+            }            
 
             int zc = 0;
             int hc = 0;
             int ec = 0;
             int kc = 0;
 
-
-            if (!Directory.Exists(inDir))
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
-                inDir = Path.Combine(progDirectory, inDir.Contains(Path.DirectorySeparatorChar) ? "spool_in" : inDir);
-                if (!Directory.Exists(inDir))
-                    Directory.CreateDirectory(inDir);
-                File.Copy(Path.Combine(progDirectory, README_FILE), Path.Combine(inDir, README_FILE), true);
+                System.Console.WriteLine("Reading key from stdin");
+                using (Stream stdin = System.Console.OpenStandardInput())
+                {
+                    byte[] buffer = new byte[1024];
+                    int bytes;
+                    bytes = stdin.Read(buffer, 0, buffer.Length);                   
+                    byte[] outBuffer = EnDeCodeHelper.GetBytesTrimCrLfNulls(buffer);
+                    if (outBuffer.Length > 0)
+                        key = System.Text.Encoding.UTF8.GetString(outBuffer);
+                    else
+                        Usage("key string is null or empty.");
+                    keyFromArg = false;
+                }                
             }
-                    
+            if (verbose)
+                System.Console.WriteLine($"Key read from {(keyFromArg ?"argument":"stdin")}: '{key}'");
+
             files = Directory.GetFiles(inDir);
             byte[] outBytes = new byte[0];
             foreach (string file in files)
             {
-                passKey = keys[((kc++) % KeyHashes.Length)];
+                passKey = key; // keys[((kc++) % KeyHashes.Length)];
                 keyHash = KeyHashes[((++hc) % KeyHashes.Length)];
                 encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
                 zipType = ZipTypes[((++zc) % ZipTypes.Length)];
@@ -158,12 +158,14 @@ namespace EU.CqrXs.SpoolTest
                     {
                         cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
                         PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);                        
                         ofName += cPipe.PipeFullExtension;
                     }
                 }
                 else if (file.IsPermAgainCryptFile()) // decrypting
                 {
+                    keyHash = KeyHash.Hex;
+                    zipType = ZipType.None;
                     if (useSymmCipher)
                     {
                         ofName = ofName.StripSymmCipherPipeFromFileName(out symmPipe);
@@ -174,7 +176,17 @@ namespace EU.CqrXs.SpoolTest
                             zipType = symmPipe.ZType;
                         }
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        try
+                        {
+                            outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        } 
+                        catch (Exception exSymmDecrypt)
+                        {
+                            outBytes = new byte[0];
+                            decryptExc = new CException($"{exSymmDecrypt.GetType()} was thrown decrypting {ofName} with {symmPipe.PipeFullExtension}", exSymmDecrypt);
+                            if (verbose)
+                                System.Console.Error.WriteLine($"{exSymmDecrypt.GetType()}: {exSymmDecrypt.Message}\n\t{exSymmDecrypt.ToString()}");                            
+                        }
                     }
                     else
                     {
@@ -186,17 +198,30 @@ namespace EU.CqrXs.SpoolTest
                             zipType = cPipe.ZType;
                         }
                         PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        try
+                        {
+                            outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        } 
+                        catch (Exception exDecrypt)
+                        {
+                            decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
+                            outBytes = new byte[0];
+                            if (verbose)
+                                System.Console.Error.WriteLine($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}");
+                        }
                     }
 
                 }
                 
                 string outFile = Path.Combine(outDir, ofName);
-                if (verbose)
-                    Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds() + " writing " + outBytes.Length + " outbytes to file " + outFile);
-                File.WriteAllBytes(outFile, outBytes);
+                if (outBytes != null && outBytes.Length > 0)
+                {
+                    if (verbose)
+                        Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds() + " writing " + outBytes.Length + " outbytes to file " + outFile);
+                    File.WriteAllBytes(outFile, outBytes);
+                }
                 filesCount++;
-            }           
+            } 
 
             if (verbose)
                 System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
@@ -312,19 +337,10 @@ namespace EU.CqrXs.SpoolTest
 
                 case 'k':
                 case 'K':
-                    optEnum = OptSpoolEnum.KeyFile;
-                    keyFile = optArg;
-                    if (string.IsNullOrEmpty(keyFile) || !File.Exists(keyFile)) 
-                    {
-                        if (File.Exists(Path.Combine(progDirectory, keyFile)))
-                            keyFile = Path.Combine(progDirectory, keyFile);
-                        else
-                        {
-                            string warn = string.IsNullOrEmpty(keyFile) ? "(NULL)" : keyFile;
-                            Usage($"KeyFile={warn} doesn't exist.");
-                        }
-                    }
-                    keys = File.ReadAllLines(keyFile, Encoding.UTF8);
+                    optEnum = OptSpoolEnum.Key;
+                    key = optArg;
+                    if (string.IsNullOrEmpty(key))
+                        Usage("Key={NULL or \"\"})");
                     return optArg;      
                     
                 case 'S':
@@ -363,17 +379,13 @@ namespace EU.CqrXs.SpoolTest
             System.Console.Out.WriteLine(UsageString);
             if (verbose)
             {
-                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V " +
+                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V -S -k=bar@ba.area23.at\n" +
                         "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In   \n" +
-                        "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out  \n" +
-                        "-k=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In\\keys.txt \n" +
-                        "-S\n");
+                        "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Encrypt  \n");
 
-                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V " +
-                            "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out   \n" +
-                            "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\ReIn  \n" +
-                            "-k=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In\\keys.txt \n" +
-                            "-D -S\n");
+                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V -D -S -k=bar@ba.area23.at\n" +
+                            "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Encrypt  \n" +
+                            "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out  \n");
             }
             System.Environment.Exit(0);
         }

@@ -72,13 +72,13 @@ namespace EU.CqrXs.Test
                 try
                 {
                     startOp = DateTime.Now;
-                    byte[] cipherBytes = pipe.EncrpytFileBytesGoRounds(plainBytes, Email, kHash.Hash(Email),
+                    byte[] cipherBytes = pipe.EncryptEncodeBytes(plainBytes, Email, kHash.Hash(Email),
                                                 encType, zType, kHash);
                     Assert.IsNotNull(cipherBytes);
 
                     midOp = DateTime.Now;
                     encOpTime = midOp.Subtract(startOp);
-                    byte[] deCodedBytes = pipe.DecryptFileBytesRoundsGo(cipherBytes, Email, kHash.Hash(Email),
+                    byte[] deCodedBytes = pipe.DecodeDecrpytBytes(cipherBytes, Email, kHash.Hash(Email),
                                             encType, zType, kHash);
                     Assert.IsTrue(plainBytes != null && deCodedBytes != null && deCodedBytes.Length > 0 && deCodedBytes.Length > 0 &&
                         plainBytes.LongLength == deCodedBytes.LongLength && plainBytes[i] == deCodedBytes[i]);

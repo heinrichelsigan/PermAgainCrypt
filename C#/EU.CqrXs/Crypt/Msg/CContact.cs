@@ -361,9 +361,10 @@ namespace EU.CqrXs.Crypt.Msg
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
                 pipeString = symmPipe.PipeString;
 
-                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
-                    ccntct.Message, serverKey, decoder, zipType, KeyHash.Hex));
-                // decrypted = SymmCipherPipe.DecrpytToString(ccntct.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
+                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(ccntct.Message), serverKey, keyHash, decoder, zipType, KeyHash.Hex));
+                // decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
+                //     ccntct.Message, serverKey, decoder, zipType, KeyHash.Hex));
 
                 if (!ccntct.Hash.Equals(pipeString))
                 {

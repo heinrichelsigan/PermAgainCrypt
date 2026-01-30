@@ -6,6 +6,7 @@ using EU.CqrXs.Zip;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Crypto;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Security.Policy;
 
 namespace EU.CqrXs.Crypt.Cipher
@@ -50,6 +51,10 @@ namespace EU.CqrXs.Crypt.Cipher
         /// OutPipe will always be generated from <see cref="InPipe"/>
         /// </summary>
         public CipherEnum[] OutPipe { get => inPipe.ToList().Reverse<CipherEnum>().ToArray(); }
+
+        public CipherMode2 CMode2 { get; set; } = CipherMode2.ECB;
+
+        public CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
 
         /// <summary>
         /// PipeString will always be generated on the fly from <see cref="InPipe"/>
@@ -109,7 +114,9 @@ namespace EU.CqrXs.Crypt.Cipher
             encodeType = EncodingType.Base64;
             zType = ZipType.None;
             kHash = KeyHash.Hex;
+            CMode2 = CipherMode2.ECB;
         }
+
 
         /// <summary>
         /// CipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
@@ -119,8 +126,10 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType"><see cref="EncodeType"/></param>
         /// <param name="zpType"><see cref="ZipType"/></param>
         /// <param name="kh"><see cref="KeyHash"/></param>
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
         public CipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8, 
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, 
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -132,6 +141,7 @@ namespace EU.CqrXs.Crypt.Cipher
             encodeType = encType;
             zType = zpType;
             kHash = kh;            
+            CMode2 = cmode2;
         }
 
         /// <summary>
@@ -142,7 +152,10 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType"><see cref="EncodeType"/></param>
         /// <param name="zpType"><see cref="Zip.ZipType"/></param>
         /// <param name="kh"><see cref="KeyHash"/></param>
-        public CipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
+        public CipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, 
+            ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -169,6 +182,7 @@ namespace EU.CqrXs.Crypt.Cipher
             encodeType = encType;
             kHash = kh;
             zType = zpType;
+            CMode2 = cmode2;
         }
 
         /// <summary>
@@ -179,10 +193,12 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType"><see cref="EncodeType"/></param>
         /// <param name="zpType"><see cref="Zip.ZipType"/></param>
         /// <param name="kh"><see cref="KeyHash"/></param>
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
+        /// <param name="verbose"></param>
         /// <exception cref="ArgumentException"></exception>
         public CipherPipe(byte[] keyBytes, uint maxpipe = 8, 
             EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, 
-            bool verbose = false)
+            CipherMode2 cmode2 = CipherMode2.ECB, bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -213,6 +229,7 @@ namespace EU.CqrXs.Crypt.Cipher
             zType = zpType;            
             encodeType = encType;
             kHash = kh;
+            CMode2 = cmode2;
 
         }
 
@@ -225,8 +242,12 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType"></param>
         /// <param name="zpType"></param>
         /// <param name="kh"></param>
-        public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, bool verbose = false)
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, verbose)
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
+        /// <param name="verbose"></param>
+        public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64,
+            ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB, bool verbose = false)
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, cmode2, verbose)
         {
             cipherKey = key;
             cipherHash = hash;
@@ -236,8 +257,9 @@ namespace EU.CqrXs.Crypt.Cipher
         /// CipherPipe ctor with only key
         /// </summary>
         /// <param name="key"></param>
+        /// <param name="verbose"></param>
         public CipherPipe(string key, bool verbose = false)
-            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, verbose) 
+            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.ECB, verbose) 
         {
             cipherKey = key;
         }
@@ -268,6 +290,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 this.zType = pipe.ZType;
                 this.cipherKey = pipe.cipherKey;
                 this.cipherHash = pipe.cipherHash;
+                this.CMode2 = pipe.CMode2;
             }
             return pipe;
         }
@@ -283,25 +306,28 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="cipherAlgo"><see cref="CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
         /// <param name="hash">key's hash</param>
+        /// <param name="cmode2"></param>
         /// <returns>encrypted byte Array</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] EncryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, 
-            string secretKey, string hash)
+            string secretKey, string hash, CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
             if (string.IsNullOrEmpty(hash))
                 throw new ArgumentNullException("hash");
 
+            CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash) { CMode2 = cmode2 };
             byte[] encryptBytes = inBytes;
 
             switch (cipherAlgo)
             {
                 case CipherEnum.AesNet:
-                    AesNet aesNet = new AesNet(secretKey, hash);
+                    AesNet aesNet = new AesNet(cpParams);
                     encryptBytes = aesNet.Encrypt(inBytes);
                     break;
                 case CipherEnum.Des3Net:
-                    Des3Net des3 = new Des3Net(secretKey, hash);
+                    Des3Net des3 = new Des3Net(cpParams);
                     encryptBytes = des3.Encrypt(inBytes);
                     break; 
                 case CipherEnum.ZenMatrix:
@@ -340,7 +366,6 @@ namespace EU.CqrXs.Crypt.Cipher
                 // case CipherEnum.ZenMatrix:
                 // case CipherEnum.ZenMatrix2:
                 default:
-                    CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash) { CMode2 = cipherMode.ToString() };
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     encryptBytes = cryptBounceCastle.Encrypt(inBytes);
                     break;
@@ -358,24 +383,25 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="hash">key's hash</param>
         /// <returns>decrypted byte Array</returns>
         public static byte[] DecryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, 
-            string secretKey, string hash)
+            string secretKey, string hash,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
             if (string.IsNullOrEmpty(hash))
                 throw new ArgumentNullException("hash");
             // bool sameKey = true;
-
+            CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash) { CMode2 = cmode2 };
             byte[] decryptBytes = cipherBytes;
 
             switch (cipherAlgo)
             {
                 case CipherEnum.AesNet:
-                    AesNet aesNet = new AesNet(secretKey, hash);
+                    AesNet aesNet = new AesNet(cpParams);
                     decryptBytes = aesNet.Decrypt(cipherBytes);
                     break;
                 case CipherEnum.Des3Net:
-                    Des3Net des3 = new Des3Net(secretKey, hash);
+                    Des3Net des3 = new Des3Net(cpParams);
                     decryptBytes = des3.Decrypt(cipherBytes);
                     break;                
                 //case CipherEnum.Rsa:
@@ -417,11 +443,9 @@ namespace EU.CqrXs.Crypt.Cipher
                 case CipherEnum.XTea:
                 // case CipherEnum.ZenMatrix:
                 // case CipherEnum.ZenMatrix2:
-                default:
-                    CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
+                default:                    
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
-
                     break;
             }
 
@@ -439,8 +463,10 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
         /// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
         /// <param name="hashIv">hash key iv relational to secret key</param>
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <returns>encrypted byte[]</returns>
-        public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv)
+        public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv,
+            CipherMode2 cmode2)
         {
             if (InPipe == null || inPipe.Length == 0)   // return immideate, when zero round cipher merry go round
                 return inBytes;
@@ -452,6 +478,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
+            CMode2 = cmode2;
 
             //#if DEBUG
             //      stageDictionary = new Dictionary<CipherEnum, byte[]>();
@@ -459,7 +486,7 @@ namespace EU.CqrXs.Crypt.Cipher
             byte[] encryptedBytes = new byte[inBytes.Length];
             foreach (CipherEnum cipher in InPipe)
             {
-                encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
+                encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKey, cipherHash, CMode2);
                 inBytes = encryptedBytes;
                 //#if DEBUG
                 //      stageDictionary.Add(cipher, encryptedBytes);
@@ -476,8 +503,10 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="cipherBytes">encrypted byte array</param>
         /// <param name="secretKey">user secret key, normally email address</param>
         /// <param name="hashIv">hash relational to secret kay</param>
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
-        public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv)
+        public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv,
+            CipherMode2 cmode2)
         {
             if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
                 return cipherBytes;
@@ -489,6 +518,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
+            CMode2 = cmode2;
 
             /*  #if DEBUG
              *      stageDictionary = new Dictionary<CipherEnum, byte[]>();
@@ -496,7 +526,7 @@ namespace EU.CqrXs.Crypt.Cipher
             byte[] decryptedBytes = new byte[cipherBytes.Length];
             foreach (CipherEnum cipher in OutPipe)
             {
-                decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
+                decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash, cmode2);
                 cipherBytes = decryptedBytes;
                 /*  #if DEBUG
                  *      stageDictionary.Add(cipher, cipherBytes);
@@ -505,6 +535,7 @@ namespace EU.CqrXs.Crypt.Cipher
 
             return decryptedBytes;
         }
+
 
         /// <summary>
         /// EncrpytTextGoRounds encrypts text with cipher pipe pipeline
@@ -515,6 +546,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encoding"><see cref="EncodingType"/></param>
         /// <param name="zipBefore"><see cref="ZipType"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/></param>
+        /// <param name="cmode2"></param>
         /// <returns>UTF9 emcoded encrypted string without binary data</returns>
         public virtual string EncrpytTextGoRounds(
             string inString,
@@ -522,13 +554,14 @@ namespace EU.CqrXs.Crypt.Cipher
             string hashIv,
             EncodingType encoding = EncodingType.Base64,
             ZipType zipBefore = ZipType.None,
-            KeyHash keyHash = KeyHash.Hex)
+            KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             // Transform string to bytes
             byte[] inBytes = EnDeCodeHelper.GetBytesFromString(inString);
 
             // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-            byte[] encryptedBytes = EncrpytFileBytesGoRounds(inBytes, cryptKey, hashIv, encoding, zipBefore, keyHash);
+            byte[] encryptedBytes = EncryptEncodeBytes(inBytes, cryptKey, hashIv, encoding, zipBefore, keyHash, cmode2);
 
             // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
             string encrypted = encoding.GetEnCoder().Encode(encryptedBytes);
@@ -545,18 +578,22 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="hashIv">private key hash for encryption</param>
         /// <param name="zipBefore"><see cref="ZipType"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/></param>
-        /// <returns>binary data</returns>
+        /// <param name="cmode2"></param>
+        /// <returns>binary data</returns>        
+        [Obsolete("Use EncrpyEncodeBytes instead", true)]
         public virtual byte[] EncrpytFileBytesGoRounds(
             byte[] inBytes,
             string cryptKey,
             string hashIv,
             EncodingType encoding = EncodingType.Base64,
             ZipType zipBefore = ZipType.None,
-            KeyHash keyHash = KeyHash.Hex)
+            KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             KHash = keyHash;
             ZType = zipBefore;
             EncodeType = encoding;
+            CMode2 = cmode2;
             // hashIv if empty hash secretKey with keyHash hashing variant
             hashIv = (string.IsNullOrEmpty(hashIv)) ? keyHash.Hash(cryptKey) : hashIv;
             cipherKey = cryptKey;
@@ -565,10 +602,11 @@ namespace EU.CqrXs.Crypt.Cipher
             // perform zipping before, if it's given as argument
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // perform multi crypt pipe stages
-            byte[] encryptedBytes = MerryGoRoundEncrpyt(zippedBytes, cryptKey, hashIv);
+            byte[] encryptedBytes = MerryGoRoundEncrpyt(zippedBytes, cryptKey, hashIv, cmode2);
 
             return encryptedBytes;
         }
+
 
         /// <summary>
         /// decrypt encoded encrypted text
@@ -579,6 +617,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="decoding"><see cref="EncodingType"/></param>
         /// <param name="unzipAfter"><see cref="ZipType"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/></param>
+        /// <param name="cmode2"></param>
         /// <returns>decrypted UTF8 string, containing no binary data</returns>
         public virtual string DecryptTextRoundsGo(
             string cryptedEncodedMsg,
@@ -586,12 +625,13 @@ namespace EU.CqrXs.Crypt.Cipher
             string hashIv,
             EncodingType decoding = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None,
-            KeyHash keyHash = KeyHash.Hex)
+            KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             byte[] cipherBytes = decoding.GetEnCoder().Decode(cryptedEncodedMsg);
 
             // perform multi crypt pipe stages
-            byte[] decryptedBytes = DecryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash);
+            byte[] decryptedBytes = DecodeDecrpytBytes(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash, cmode2);
 
             // Get string from decrypted bytes
             string decrypted = EnDeCodeHelper.GetString(decryptedBytes);
@@ -611,26 +651,29 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="decoding"><see cref="EncodingType">decoding type</see> for decodinng</param>
         /// <param name="unzipAfter"><see cref="ZipType"/></param>
         /// <param name="keyHash"><see cref="KeyHash"/></param>
+        /// <param name="cmode2"></param>
         /// <returns>plain data byte[]</returns>
+        [Obsolete("Use DecodeDecrpytBytes instead", true)]
         public virtual byte[] DecryptFileBytesRoundsGo(
             byte[] cipherBytes,
             string cryptKey,
             string hashIv,
             EncodingType decoding = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None,
-            KeyHash keyHash = KeyHash.Hex)
+            KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             KHash = keyHash;
             ZType = unzipAfter;
             EncodeType = decoding;
-
+            CMode2 = cmode2;
             // hashIv if empty hash secretKey with keyHash hashing variant            
             hashIv = string.IsNullOrEmpty(hashIv) ? keyHash.Hash(cryptKey) : hashIv;
             cipherKey = cryptKey;
             cipherHash = hashIv;
 
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cryptKey, hashIv);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, cmode2);
             // Unzip after if necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;            
 
@@ -638,7 +681,9 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
-        public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, 
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB) 
         {
             ZType = zipBefore;
             KHash = keyHash;
@@ -648,15 +693,17 @@ namespace EU.CqrXs.Crypt.Cipher
 
             cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
             cipherHash = keyHash.Hash(secretKey);
-
+            CMode2 = cmode2;
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // encrypt in a marry go round way
-            return MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            return MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, cmode2);
         }
 
 
-        public virtual byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public virtual byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, 
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
@@ -665,9 +712,10 @@ namespace EU.CqrXs.Crypt.Cipher
             cipherHash = keyHash.Hash(secretKey);
             ZType = unzipAfter;
             KHash = keyHash;
+            CMode2 = cmode2;
 
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, keyHash.Hash(secretKey));
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, keyHash.Hash(secretKey), cmode2);
             // Unzip after if necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
             
@@ -675,8 +723,11 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
-        public virtual string EncrpytEncode(byte[] inBytes, string secretKey, EncodingType encType = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        [Obsolete("use EncryptEncodeBytes instead.", true)]
+        public virtual string EncrpytEncode(byte[] inBytes, string secretKey, 
+            EncodingType encType = EncodingType.Base64,
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -686,19 +737,22 @@ namespace EU.CqrXs.Crypt.Cipher
             ZType = zipBefore;
             KHash = keyHash;
             cipherHash = (!string.IsNullOrEmpty(secretKey)) ? KHash.Hash(secretKey) : "";                        
+            CMode2 = cmode2;
 
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // now encrypt in a merry go round 
-            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, CMode2);
             // encode to ascii string after encryption pipe
             string cryptedEncoded = encType.EnCode(outBytes);
 
             return cryptedEncoded;
         }
 
-        public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
-           ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, 
+            EncodingType encType = EncodingType.Base64,
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             encodeType = encType;
             ZType = zipBefore;
@@ -712,11 +766,12 @@ namespace EU.CqrXs.Crypt.Cipher
                 cipherHash = (!string.IsNullOrEmpty(secretKey)) ? keyHash.Hash(secretKey) : "";
             else 
                 cipherHash = hashIV;
+            CMode2 = cmode2;
 
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // now encrypt with pipe
-            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, CMode2);
             // encode after encryption pipe
             if (encType == EncodingType.None)
                 return outBytes;
@@ -725,9 +780,11 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
-
-        public virtual byte[] DecodeDecrpyt(string encoded, string secretKey, EncodingType encType = EncodingType.Base64,
-            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        [Obsolete("use DecodeDecrpytBytes instead.", true)]
+        public virtual byte[] DecodeDecrpyt(string encoded, string secretKey, 
+            EncodingType encType = EncodingType.Base64,
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -738,23 +795,27 @@ namespace EU.CqrXs.Crypt.Cipher
             encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
+            CMode2 = cmode2;
 
             // decode encoded ascii string to byte array
             byte[] cipherBytes = encodeType.GetEnCoder().Decode(encoded);
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, CMode2);
             // Unzip after if necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
             return decryptedBytes;
         }
 
-        public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV, EncodingType encType = EncodingType.Base64,
-           ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV,
+            EncodingType encType = EncodingType.Base64,
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
+            CMode2 = cmode2;
 
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -771,7 +832,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 encodeType.GetEnCoder().Decode(System.Text.Encoding.UTF8.GetString(encodedBytes)) :            
                 encodedBytes;
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, CMode2);
             // Unzip after all, if it's necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
@@ -779,10 +840,11 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
+
         /// <summary>
         /// Multi functional 
-        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
-        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
         /// </summary>
         /// <param name="inBytes">incoming bytes</param>
         /// <param name="secretKey">user private key</param>
@@ -791,14 +853,16 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
         /// <param name="zip">compression method to zip before or unzip after pipe processed</param>
         /// <param name="keyHash">hashing type of hashing method to hash key</param>
+        /// <param name="cmode2"></param>
         /// <returns>transformed byte array</returns>
         public virtual byte[] CryptCodeBytes(byte[] inBytes, string secretKey, string hashIV,
             bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
-            ZipType zip= ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType zip = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             return (!directionDecrypt) ?
-                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash) :
-                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash);
+                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2) :
+                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2);
         }
 
         #region static en-de-crypt members

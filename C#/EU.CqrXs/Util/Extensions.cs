@@ -1320,27 +1320,22 @@ namespace EU.CqrXs.Util
                 }
             }
 
-            bool cipherAfterZip = false;
+            ZipType[] zipTypes = { ZipType.BZip2, ZipType.GZip, ZipType.Zip };            
             ZipType zipTyp = ZipType.None;
-            foreach (ZipType zType in ZipTypeExtensions.GetZipTypes())
+            foreach (ZipType zType in zipTypes)
             {
-                if (zType != ZipType.None)
+                if (strippedFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
                 {
-                    if (strippedFileName.EndsWith(zType.GetZipTypeExtension(), StringComparison.CurrentCultureIgnoreCase))
-                        zipTyp = zType;
-                    else if (strippedFileName.Contains(zType.GetZipTypeExtension() + ".", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        zipTyp = zType;
-                        cipherAfterZip = true;
-                    }
+                    zipTyp = zType;
+                    strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "");
                 }
-                if (zipTyp != ZipType.None)
+                else if (strippedFileName.Contains(zType.GetZipTypeExtension() + ".", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension(), "").Replace(zipTyp.GetZipTypeExtension().ToLower(), "");
-                    break;
+                    zipTyp = zType;
+                    strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension() + ".", ".");
                 }
             }
-
+            
 
             foreach (KeyHash kh in KeyHash_Extensions.GetHashTypes())
             {
@@ -1353,33 +1348,25 @@ namespace EU.CqrXs.Util
                 }
             }
 
-            List<CipherEnum> cipherEnums = new List<CipherEnum>();
-            if (cipherAfterZip)
+            List<CipherEnum> cipherEnums = new List<CipherEnum>();            
+            string pipeRestString = strippedFileName.Substring(strippedFileName.LastIndexOf("."));
+            foreach (char ch in pipeRestString)
             {
-                string pipeRestString = strippedFileName.Substring(strippedFileName.LastIndexOf("."));
-                foreach (char ch in pipeRestString)
+                foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
                 {
-                    foreach (CipherEnum cipher in CipherEnumExtensions.GetCipherTypes())
-                    {
-                        if (cipher.GetCipherChar() == ch)
-                            cipherEnums.Add(cipher);
-                    }
-                }
-
-                if (cipherEnums.Count > 0)
-                {
-                    CipherPipe cPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
-                    if (strippedFileName.Contains("." + cPipe.PipeString))
-                    {
-                        cipherPipe = cPipe;
-                        strippedFileName = strippedFileName.Replace("." + cPipe.PipeString, "");
-                    }
+                    if (cipher.GetCipherChar() == ch)
+                        cipherEnums.Add(cipher);
                 }
             }
 
-
-            if (cipherPipe == null)
+            if (cipherEnums.Count > 0)
+            {
                 cipherPipe = new CipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, kHash);
+                if (strippedFileName.Contains("." + cipherPipe.PipeString))
+                {
+                    strippedFileName = strippedFileName.Replace("." + cipherPipe.PipeString, "");
+                }
+            }
 
 
             return strippedFileName;

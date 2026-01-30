@@ -223,10 +223,11 @@ namespace EU.CqrXs.Crypt.Msg
             try
             {
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+				string hashIv = KeyHash.Hex.Hash(serverKey);
                 pipeString = symmPipe.PipeString;
 
-                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
-					Message, serverKey, decoder, zipType, KeyHash.Hex));
+                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(Message), serverKey, hashIv, decoder, zipType, KeyHash.Hex));
                 // string decrypted = SymmCipherPipe.DecrpytToString(Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
 
                 if (!Hash.Equals(pipeString))
@@ -460,8 +461,8 @@ namespace EU.CqrXs.Crypt.Msg
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
                 pipeString = symmPipe.PipeString;
 
-                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
-                    CMsg.Message, serverKey, EncodingType.Base64, ZipType.None, KeyHash.Hex));
+                string decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(CMsg.Message), serverKey, keyHash, EncodingType.Base64, ZipType.None, KeyHash.Hex));
                 // string decrypted = SymmCipherPipe.DecrpytToString(CMsg.Message, serverKey, out pipeString, EncodingType.Base64, ZipType.None);
 				
 				if (!CMsg.Hash.Equals(pipeString))

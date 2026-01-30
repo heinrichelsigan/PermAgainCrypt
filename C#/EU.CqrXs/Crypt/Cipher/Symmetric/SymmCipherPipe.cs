@@ -3,9 +3,11 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Security.Policy;
 using System.Text;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {
@@ -250,17 +252,19 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="cipherAlgo"><see cref="SymmCipherEnum"/> both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
         /// <param name="hashIv">key's hash</param>
+        /// <param name="cipherMode"></param>
         /// <returns>encrypted byte Array</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] EncryptBytesFast(byte[] inBytes, SymmCipherEnum cipherAlgo,
-            string secretKey, string hashIv)
+            string secretKey, string hashIv, CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
             string hash = (!string.IsNullOrEmpty(hashIv)) ? hashIv : KeyHash.Hex.Hash(secretKey);
 
             byte[] encryptBytes = inBytes;
-            
-            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hash);
+
+            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hash) { CMode2 = cmode2 };
             Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
             encryptBytes = cryptBounceCastle.Encrypt(inBytes);
 
@@ -274,9 +278,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="cipherAlgo"><see cref="SymmCipherEnum"/>both symmetric and asymetric cipher algorithms</param>
         /// <param name="secretKey">secret key to decrypt</param>
         /// <param name="hashIv">key's hash</param>
+        /// <param name="cmode2"></param>
         /// <returns>decrypted byte Array</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static byte[] DecryptBytesFast(byte[] cipherBytes, SymmCipherEnum cipherAlgo,
-            string secretKey, string hashIv)
+            string secretKey, string hashIv, CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
@@ -284,25 +290,27 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             byte[] decryptBytes = cipherBytes;
 
-            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hash);
+            SymmCryptParams cpParams = new SymmCryptParams(cipherAlgo, secretKey, hash) {  Mode = cmode2.ToString() };
             Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
             decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
 
             return EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
         }
 
-		#endregion static members EncryptBytesFast DecryptBytesFast
+        #endregion static members EncryptBytesFast DecryptBytesFast
 
-		#region multiple rounds en-de-cryption
+        #region multiple rounds en-de-cryption
 
-		/// <summary>
-		/// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
-		/// </summary>
-		/// <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
-		/// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
-		/// <param name="hashIv">hash key iv relational to secret key</param>
-		/// <returns>encrypted byte[]</returns>
-		public override byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey = "", string hashIv = "")
+        /// <summary>
+        /// MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
+        /// </summary>
+        /// <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
+        /// <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
+        /// <param name="hashIv">hash key iv relational to secret key</param>
+        /// <param name="cmode2"></param>
+        /// <returns>encrypted byte[]</returns>
+        public override byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv,
+            CipherMode2 cmode2)
         {
             if (InPipe == null || inPipe.Length == 0)   // when 0 round cipher merry go round => return immideate inBytes;
                 return inBytes;
@@ -314,14 +322,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 hash = (KHash != null) ? KHash.Hash(secretKey) : EnDeCodeHelper.KeyToHex(secretKey);
             cipherKey = string.IsNullOrEmpty(secretKey) ? cipherKey : secretKey;
             cipherHash = hash;
-
+            CMode2 = cmode2;
             //#if DEBUG
             //      stageDictionary = new Dictionary<SymmCipherEnum, byte[]>();
             //#endif
             byte[] encryptedBytes = new byte[inBytes.Length];
             foreach (SymmCipherEnum symmCipher in InPipe)
             {
-                encryptedBytes = EncryptBytesFast(inBytes, symmCipher, secretKey, hashIv);
+                encryptedBytes = EncryptBytesFast(inBytes, symmCipher, secretKey, hashIv, cmode2);
                 inBytes = encryptedBytes;
                 //#if DEBUG
                 //      stageDictionary.Add(symmCipher, encryptedBytes);
@@ -338,8 +346,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="cipherBytes">encrypted byte array</param>
         /// <param name="secretKey">user secret key, normally email address</param>
         /// <param name="hashIv">hash relational to secret kay</param>
+        /// <param name="cmode2"></param>
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
-        public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey = "", string hashIv = "")
+        public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv,
+            CipherMode2 cmode2)
         {
             if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
                 return cipherBytes;
@@ -360,7 +370,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             byte[] decryptedBytes = new byte[outByteLen];
             foreach (SymmCipherEnum symmCipher in OutPipe)
             {
-                decryptedBytes = DecryptBytesFast(cipherBytes, symmCipher, secretKey, hashIv);
+                decryptedBytes = DecryptBytesFast(cipherBytes, symmCipher, secretKey, hashIv, cmode2);
                 cipherBytes = decryptedBytes;
                 //#if DEBUG
                 //                    stageDictionary.Add(symmCipher, cipherBytes);
@@ -371,7 +381,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         }
 
 
-        public override byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public override byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, 
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
@@ -384,10 +396,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // encrypt in a marry go round way
-            return MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            return MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, cmode2);
         }
 
-        public override byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+        public override byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, 
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
@@ -396,9 +410,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             cipherHash = keyHash.Hash(secretKey);
             ZType = unzipAfter;
             KHash = keyHash;
-
+            CMode2 = cmode2;
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, CMode2);
             // Unzip after if necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
@@ -406,12 +420,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         }
 
         public byte[] Encrpyt(byte[] plainBytes, string cryptKey, EncodingType encoding = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             // construct symmetric cipher pipeline with cryptKey and pass pipeString as out param                          
-
+            CMode2 = cmode2;
             // perform multi crypt pipe stages
-            byte[] encryptedBytes = this.EncrpytGoRounds(plainBytes, cryptKey, zipBefore, keyHash);
+            byte[] encryptedBytes = this.EncrpytGoRounds(plainBytes, cryptKey, zipBefore, keyHash, CMode2);
             // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
             string encoded = encoding.GetEnCoder().Encode(encryptedBytes);
             byte[] encodedBytes = System.Text.Encoding.UTF8.GetBytes(encoded);
@@ -420,23 +435,25 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         }
 
         public byte[] Decrpyt(byte[] encodedBytes, string cryptKey, EncodingType decoding = EncodingType.Base64,
-            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             string decodedString = System.Text.Encoding.UTF8.GetString(encodedBytes);
 
             byte[] cipherBytes = decoding.GetEnCoder().Decode(decodedString);
 
             // staged decryption of bytes
-            byte[] unroundedMerryBytes = DecrpytRoundsGo(cipherBytes, cryptKey, unzipAfter, keyHash);
+            byte[] unroundedMerryBytes = DecrpytRoundsGo(cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
             
             return unroundedMerryBytes;
             // return unroundedMerryBytes.TrimEnd((byte)0).ToArray();
         }
 
-
+        [Obsolete("use EncryptEncodeBytes instead.", true)]
         public override string EncrpytEncode(byte[] inBytes, string secretKey, 
             EncodingType encType = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -450,16 +467,18 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // now encrypt in a merry go round 
-            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, cmode2);
             // encode to ascii string after encryption pipe
             string cryptedEncoded = encType.EnCode(outBytes);
 
             return cryptedEncoded;
         }
 
+        [Obsolete("use DecodeDecrpytBytes instead.", true)] 
         public override byte[] DecodeDecrpyt(string encoded, string secretKey, 
             EncodingType encType = EncodingType.Base64,
-            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -470,11 +489,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
+            CMode2 = cmode2;
 
             // decode encoded ascii string to byte array
             byte[] cipherBytes = encodeType.GetEnCoder().Decode(encoded);
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, cmode2);
             // Unzip after if necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
@@ -484,7 +504,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public override byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, 
             EncodingType encType = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -501,7 +522,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             // zip if requested
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
             // now encrypt with pipe
-            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash);
+            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, cmode2);
             // encode after encryption pipe
             if (encType == EncodingType.None)
                 return outBytes;
@@ -511,7 +532,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public override byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV, 
             EncodingType encType = EncodingType.Base64,
-            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -525,13 +547,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             encodeType = encType;
             ZType = unzipAfter;
             KHash = keyHash;
+            CMode2 = cmode2;
 
             // Decoded encoded bytes first, if necessary
             byte[] cipherBytes = (encType != EncodingType.None) ?
                 encodeType.GetEnCoder().Decode(System.Text.Encoding.UTF8.GetString(encodedBytes)) :
                 encodedBytes;
             // perform multi crypt pipe stages
-            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, secretKey, cipherHash, cmode2);
             // Unzip after all, if it's necessary
             byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
@@ -540,8 +563,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// Multi functional 
-        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
-        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash)"/>
+        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
         /// </summary>
         /// <param name="inBytes">incoming bytes</param>
         /// <param name="secretKey">user private key</param>
@@ -553,11 +576,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <returns>transformed byte array</returns>
         public override byte[] CryptCodeBytes(byte[] inBytes, string secretKey, string hashIV,
             bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
-            ZipType zip = ZipType.None, KeyHash keyHash = KeyHash.Hex)
+            ZipType zip = ZipType.None, KeyHash keyHash = KeyHash.Hex,
+            CipherMode2 cmode2 = CipherMode2.ECB)
         {
             return (!directionDecrypt) ?
-                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash) :
-                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash);
+                EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2) :
+                DecodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2);
         }
 
         #region static en-de-crypt members

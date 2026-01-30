@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EU.CqrXs.Crypt.Cipher.CipherPipe">
+    <Position X="9" Y="2" Width="2.5" />
+    <Members>
+      <Method Name="CipherPipe" Hidden="true" />
+      <Method Name="DecodeDecrpytBytes" Hidden="true" />
+      <Method Name="DecrpytBytesToString" Hidden="true" />
+      <Method Name="DecrpytStringToBytes" Hidden="true" />
+      <Method Name="DecrpytToString" Hidden="true" />
+      <Field Name="encodeType" Hidden="true" />
+      <Method Name="EncrpytBytesToString" Hidden="true" />
+      <Method Name="EncrpytStringToBytes" Hidden="true" />
+      <Method Name="EncrpytToString" Hidden="true" />
+      <Field Name="inPipe" Hidden="true" />
+      <Field Name="kHash" Hidden="true" />
+      <Method Name="ToJson" Hidden="true" />
+      <Field Name="zType" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AJAIAUAEAABMEAAAFyRAAACgQBACBAGAMAwIkGAQCAI=</HashCode>
+      <FileName>Crypt\Cipher\CipherPipe.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EncodeType" />
+      <Property Name="KHash" />
+      <Property Name="ZType" />
+      <Property Name="InPipe" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EU.CqrXs.Crypt.Cipher.CryptParams">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAAoIAwAQACAEAAAAAAAABAAAAAAABACAAAAg=</HashCode>
+      <FileName>Crypt\Cipher\CryptParams.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cipher" />
+      <Property Name="KeyHashing" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle">
+    <Position X="13" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IQABAAAAAIACgAQQIAAAAAAAgAAAAAAACAAgIACAAAo=</HashCode>
+      <FileName>Crypt\Cipher\Symmetric\CryptBounceCastle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CryptoBlockCipher" />
+      <Property Name="CryptoBlockCipherPadding" />
+      <Property Name="PadBufBChipger" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Org.BouncyCastle.Crypto.Paddings.PaddedBufferedBlockCipher" Collapsed="true">
+    <Position X="16.75" Y="6.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="EU.CqrXs.Crypt.Cipher.CipherModeExtensions" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Crypt\Cipher\CipherMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Org.BouncyCastle.Crypto.IBlockCipher" Collapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Org.BouncyCastle.Crypto.Paddings.IBlockCipherPadding" Collapsed="true">
+    <Position X="17" Y="5.5" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="EU.CqrXs.Crypt.Cipher.CipherEnum" Collapsed="true">
+    <Position X="6.5" Y="6" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AMiApwCABABIiACQAEABSAAAAgIAAAAhABAABQiAEAA=</HashCode>
+      <FileName>Crypt\Cipher\CipherEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EU.CqrXs.Crypt.EnDeCoding.EncodingType" Collapsed="true">
+    <Position X="13.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAABAQAEAAAAAAAgAAAAAABAAAAAAAAgAAAEAAIA=</HashCode>
+      <FileName>Crypt\EnDeCoding\EncodingType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EU.CqrXs.Crypt.Hash.KeyHash" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAgQAIEABAAAIAAAIAAAGIAQAAAABAE=</HashCode>
+      <FileName>Crypt\Hash\KeyHash.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="EU.CqrXs.Zip.ZipType" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAEAAAAAgAAACAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Zip\ZipType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

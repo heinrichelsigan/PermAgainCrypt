@@ -1,0 +1,268 @@
+\documentclass{article}
+
+\usepackage[english]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\urlstyle{rm}
+\title{Making symmetric block cipher meta permutating again}
+\author{Heinrich Elsigan}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+
+Hi, I’m \href{https://heinrichelsigan.area23.at/}{Heinrich Elsigan}
+I’m interested in CSharp, Java, MSSQL, .Net Core, Android and politics, society and the future;
+currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects.
+
+\begin{enumerate}
+    \item social media, development and other links: 
+    \item personal tech and political blog \href{https://blog.area23.at}{blog.area23.at}
+	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan/}
+	\item live demo .Net \href{https://area23.at/net/}{area23.at/net}
+	\item StackOverflow \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
+	\item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv} 
+\end{enumerate}
+
+\end{abstract}
+
+
+\section{Thanks to}
+
+Normally, thanks to are always at the end of each paper,
+but the people or organizations I benefited from while trying to make AES strong again
+are more important than a simple proof of concept showing that it works, except on my
+raw experimental test form.
+
+\begin{enumerate}
+	\item \url{https://bouncycastle.org/}
+	\item \url{https://schneier.com/}
+	\item \url{https://github.com/dotnet/}
+	\item \url{https://github.com/microsoft}
+	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
+\end{enumerate}
+
+\section{Theory} 
+
+\subsection{8-staged symmetric block cipher pipeline}
+
+An eight staged symmetric block cipher crypto pipeline to improve advanced encryption standard based on meta DES, 3DES with P-Box S-Box.
+
+The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
+
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=868,natheight=402]{CipherPipeline.eps}
+\caption{\label{fig:CipherPipeline.eps}Cipher Pipeline}
+\end{figure}
+
+Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
+
+Implementation is based on my blog article: \href{https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html}{Making symmetric cipher encryption meta permutating again}, including the follwing symmetric cipher algorithms:
+
+\dots or bullet points \dots
+\begin{itemize}
+\item \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Aes}, AesLight, \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Rijndael}
+\item \href{https://www.schneier.com/}{Bruce Schneier's} BlowFish, 2-Fish, 3-Fish
+\item \href{https://en.wikipedia.org/wiki/Camellia_(cipher)}{Camellia}, CamelliaLight
+\item \href{https://en.wikipedia.org/wiki/CAST-128}{Cast5}, Cast6
+\item \href{https://nsa.gov/}{National security agency's} Des, 3-Des, \href{https://en.wikipedia.org/wiki/Skipjack_(cipher)}{SkipJack}
+\item \href{https://en.wikipedia.org/wiki/Kupyna}{Dstu7624}
+\item \href{https://en.wikipedia.org/wiki/GOST_(block_cipher)}{Ghost}, \href{https://en.wikipedia.org/wiki/International_Data_Encryption_Algorithm}{Idea}, \href{https://en.wikipedia.org/wiki/NOEKEON}{Noekeon}
+\item \href{https://de.wikipedia.org/wiki/RC2_(Blockchiffre)}{RC2}, \href{https://en.wikipedia.org/wiki/RC5}{RC5}32, RC564, \href{https://en.wikipedia.org/wiki/RC6}{RC6}
+\item \href{https://en.wikipedia.org/wiki/SEED}{SEED}, \href{https://en.wikipedia.org/wiki/SM4_(cipher)}{SM4}
+\item \href{https://en.wikipedia.org/wiki/Serpent_(cipher)}{Serpent}, Tnepres
+\item \href{https://de.wikipedia.org/wiki/Tiny_Encryption_Algorithm}{Tea}, \href{https://en.wikipedia.org/wiki/XTEA}{XTea}
+\item and my own simplest symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2
+\end{itemize}
+
+
+\subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
+
+Starting from a no permutating 1-matrix, where projection is same as base,
+ZenMatrix generates a permutating mapping with blocksize 16
+a matrix with only one 1 per row and column (rest is 0)
+to change position inside block and value offset.
+
+\url{https://area23.at/net/Crypt/ZenMatrixVisualize.aspx}
+
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=1302,natheight=1002]{2026-01-25_ZenMatrixVisualize.png}
+\caption{\label{fig:ZenMatrixVisualize}ZenMatrix Visualize}
+\end{figure}
+
+
+\begin{tabular}{|c||c c c c c c c c c c c c c c c c c|}
+ \hline
+  x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & \\ [0.5ex]
+\hline
+ x0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x2 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x3 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x4 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x5 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x6 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ x9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \\
+ xA & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \\
+ xB & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \\
+ xC & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & \\
+ xD & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \\
+ xE & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & \\
+ xF & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \\
+ \hline
+\end{tabular}
+
+When entering hostmaster@nic.at with hash ripemd256 and not fully symmetric checked, 
+the matrix will look like this:
+
+\begin{tabular}{||c|c c c c c c c c c c c c c c c c|c||}
+ \hline
+  x & x0 & x1 & x2 & x3 & x4 & x5 & x6 & x7 & x8 & x9 & xA & xB & xC & xD & xE & xF & Mx \\ [0.5ex]
+ \hline
+ x0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 8 \\
+ x1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 7 \\
+ x2 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 6 \\
+ x3 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 4 \\
+ x4 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 3 \\
+ x5 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+ x6 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 2 \\
+ x7 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & E \\
+ x8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & D \\
+ x9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & A \\
+ xA & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & C \\
+ xB & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 9 \\
+ xC & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & B \\
+ xD & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & F \\
+ xE & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 5 \\
+ xF & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+ \hline
+\end{tabular}
+
+this mean that a byte[8] e.g. 321F 0000 0000 0000 
+$x0 \implies x8$,
+$x1 \implies x7$,
+$x2 \implies x6$,
+$x3 \implies x4$,
+$xF \implies x0$,
+is mapped to 8880 8868 4888 8888.
+
+\section{Software}
+
+Source code of PermAgainCrypt is hoted at Github.
+Github releases contains compiled and linked .exe files for windows, 
+but most users prefer download from a seperate download site \url{https://cqrxs.eu/}.
+
+\subsection{Git: PermAgainCrypt minimalistic repository}
+\url{https://github.com/heinrichelsigan/PermAgainCrypt/}
+
+\subsection{Download}
+Go to \url{https://cqrxs.eu/} or \url{https://io.cqrxs.eu/} and choose latest version.
+You can directly go to the download area \url{https://cqrxs.eu/download/} or \url{https://io.cqrxs.eu/download/}.
+Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bug, because 3-fish
+uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
+settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
+
+
+\subsection{Documentation online en-/decrypt form}
+
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=924,natheight=659]{Symmetric_Cipher_WebForm.jpg}
+\caption{\label{fig:SymmetricCipherWebForm}Symmetric Cipher WebForm}
+\end{figure}
+
+\begin{enumerate}
+    \item Key: When clicking key your entered key will be stored temporary in session.
+    \item Textbox secret key: Enter your Email address and secret key.
+    \item Buton Clear: Clear and reset the entire form.
+    \item Hyperlink Help: Show this help
+    \item RadioButtonList KeyHashes
+Choose the hash method to hash your secret key.
+    \item ImageButton Hash: Clicking will hash your key and display hashed key in textbox.    
+    \item TextBox Hash (readonly): Displays your hashed key.
+    \item Button “Set Pipe”: sets symmetric cipher pipe, dependent only on your entered key
+    \item Button “Hash Pipe”: sets symmetric cipher pipe, dependent primary on calculated hash
+and secondary on your entered key.
+    \item DropDown ZipTypes Choose encryption type (Please only GZip or Zip or None)
+    \item DropDown CipherTypes Choose a symmetric cipher to add it to the symmetric cipher
+pipe.
+    \item ImageButton „add algo“: Clicking on will add the in c. DropDown CipherTypes
+selected symmetric cipher algorithm to CipherPipe.
+    \item TextBox CipherPipe (readonly): Displays the current Cipher Pipe algorithms.
+    \item ImageButton “Clear Pipe”: Clicking on will clear only the entire Cipher Pipe
+    \item DropDown EncodingTypes: Choose the final binary to ascii encoder, default is Base64.
+Beware of using uuencode in Web, because <> will be interpreted as possible html
+injection.
+    \item TextArea Source: paste or enter Text here.
+    \item TextArea Destination: (readonly) After clicking Encrypt or Decrypt processed text will
+appear in the text area.
+    \item Button Encrypt: Encrypts the text from TextArea Source and displays encrypted text in
+TextArea Destination.
+    \item Button “Random Text”: Adds a short fortune to TextArea Source.
+    \item Button Decrypt: Decrypts text in TextArea Source and display decrypted text in
+TextArea Destination.
+\end{enumerate}
+
+
+\subsection{Documentation of WinForm}
+
+\dots
+
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_WinForm_CSharp.png}
+\caption{\label{fig:WinForm_Csharp}WinForm CSharp}
+\end{figure}
+
+
+
+\subsection{Documentation of Windows Console}
+
+Download the lastest Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
+
+\begin{figure}
+\includegraphics[width=1\textwidth,viewport]{2026-01-27_EU_CqrXs_Console.jpg}
+\caption{\label{fig:Windows_Console}Windows_Console}
+\end{figure}
+
+
+\subsection{Java JFrame based}
+
+\begin{itemize}
+\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
+\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=1\textwidth,natwidth=1012,natheight=762]{javax_swing_JFrame_java.jpg}
+\caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
+\end{figure}
+
+
+\subsection{How to write Mathematics}
+
+\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
+\[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
+      = \frac{1}{n}\sum_{i}^{n} X_i\]
+denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
+
+\subsection{Good luck!}
+
+We hope you find PermAgainCrypt useful, and good luck!
+
+
+\bibliographystyle{alpha}
+\bibliography{sample}
+
+\end{document}
+
+

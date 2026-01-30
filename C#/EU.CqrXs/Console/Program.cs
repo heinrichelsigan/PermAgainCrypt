@@ -205,7 +205,7 @@ namespace EU.CqrXs.Console
                 // Create cipher pipe for en-/decryption
                 CipherPipe pipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
                                 new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
-                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, verbose);
+                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, CipherMode2.ECB, verbose);
 
                 PrintCipherPipe(pipe, reverseDirection);
                 outBytes = pipe.CryptCodeBytes(inBytes, 

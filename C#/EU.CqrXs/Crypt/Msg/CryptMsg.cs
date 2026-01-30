@@ -175,8 +175,8 @@ namespace EU.CqrXs.Crypt.Msg
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
                 pipeString = symmPipe.PipeString;
 
-                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
-                    Message, serverKey, decoder, zipType, KeyHash.Hex));
+                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(Message), serverKey, keyHash, decoder, zipType, KeyHash.Hex));
                 // decrypted = SymmCipherPipe.DecrpytToString(Message, serverKey, out pipeString, decoder, zipType);
 
                 if (!Hash.Equals(pipeString))
@@ -292,8 +292,8 @@ namespace EU.CqrXs.Crypt.Msg
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
                 pipeString = symmPipe.PipeString;
 
-                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpyt(
-                    cSrvMsg.Message, serverKey, decoder, zipType, KeyHash.Hex));
+                decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(cSrvMsg.Message), serverKey, keyHash, decoder, zipType, KeyHash.Hex));
                 // decrypted = SymmCipherPipe.DecrpytToString(cSrvMsg.Message, serverKey, out pipeString, decoder, zipType);
 
                 if (!cSrvMsg.Hash.Equals(pipeString))

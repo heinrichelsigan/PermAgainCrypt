@@ -27,7 +27,15 @@ namespace EU.CqrXs.Crypt.Cipher
 
         public string Hash { get; set; }
 
-        public string Mode { get; set; }
+        public string Mode { get => CMode2.ToString(); set => CMode2 = CipherModeExtensions.ParseText(value); }
+
+        public System.Security.Cryptography.CipherMode CMode
+        {
+            get => CMode2.ToCipherMode();
+            set => CMode2 = value.FromCipherMode();
+        }
+
+        public CipherMode2 CMode2 { get; set; }
 
         public int Size { get; set; }
 
@@ -51,7 +59,7 @@ namespace EU.CqrXs.Crypt.Cipher
             Cipher = CipherEnum.Aes;
             Size = 256;
             KeyLen = 32;
-            Mode = "ECB";
+            Mode = "EAX";
             BlockCipher = new AesEngine();
             KeyHashing = KeyHash.Hex;
         }
@@ -105,7 +113,7 @@ namespace EU.CqrXs.Crypt.Cipher
                     Size = 128;
                     KeyLen = 16;
                     BlockCipher = new Org.BouncyCastle.Crypto.Engines.CamelliaEngine();
-                    break;
+                    break;                
                 case CipherEnum.CamelliaLight:
                     Size = 128;
                     KeyLen = 16;

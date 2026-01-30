@@ -1,6 +1,7 @@
 ﻿using EU.CqrXs.Crypt.Hash;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
+using System.Security.Cryptography;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {
@@ -32,6 +33,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             Size = 256;
             KeyLen = 32;
             Mode = "ECB";
+            CMode = CipherMode.ECB;
             BlockCipher = new AesEngine();
             KeyHashing = KeyHash.Hex;   
         }
@@ -102,8 +104,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// Constructs instance via another object instance
         /// </summary>
         /// <param name="cryptParams">another instance</param>
-        public SymmCryptParams(SymmCryptParams cryptParams) : 
-            this(cryptParams.SymmCipher, cryptParams.Key, cryptParams.Hash, cryptParams.KeyHashing) { }
+        public SymmCryptParams(SymmCryptParams cryptParams) :
+            this(cryptParams.SymmCipher, cryptParams.Key, cryptParams.Hash, cryptParams.KeyHashing) { CMode = cryptParams.CMode; }
 
         #endregion ctor
 

@@ -100,7 +100,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="init">init <see cref="CryptBounceCastle"/> first time with a new key</param>
         public CryptBounceCastle(CryptParams cparams, bool init = true)
         {
-            CryptoBlockCipher = (cparams.BlockCipher == null) ? new AesEngine() : cparams.BlockCipher;
+            CryptoBlockCipher = (cparams.BlockCipher == null) ? new Org.BouncyCastle.Crypto.Engines.AesEngine() : cparams.BlockCipher;
             if (CryptoBlockCipher.AlgorithmName == "RC564" || CryptoBlockCipher.AlgorithmName == "RC5-64")
                 CryptoBlockCipher = new RC564Engine();
             CryptoBlockCipherPadding = new Org.BouncyCastle.Crypto.Paddings.ZeroBytePadding();
@@ -195,8 +195,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)ccmCipher, CryptoBlockCipherPadding);
                     break;
                 case "CTS":
-                    Org.BouncyCastle.Crypto.Modes.CtsBlockCipher ctsCipher = new CtsBlockCipher(CryptoBlockCipher);
-                    cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)ctsCipher, CryptoBlockCipherPadding);
+                    Org.BouncyCastle.Crypto.Modes.CbcBlockCipher ctsCipher = new CbcBlockCipher(CryptoBlockCipher);
+                    cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)new CtsBlockCipher((IBlockCipher)ctsCipher), CryptoBlockCipherPadding);
                     break;
                 case "EAX":
                     Org.BouncyCastle.Crypto.Modes.EaxBlockCipher eaxCipher = new EaxBlockCipher(CryptoBlockCipher);
@@ -260,8 +260,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)ccmCipher, CryptoBlockCipherPadding);
                     break;
                 case "CTS":
-                    Org.BouncyCastle.Crypto.Modes.CtsBlockCipher ctsCipher = new CtsBlockCipher(CryptoBlockCipher);
-                    cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)ctsCipher, CryptoBlockCipherPadding);
+                    Org.BouncyCastle.Crypto.Modes.CbcBlockCipher ctsCipher = new CbcBlockCipher(CryptoBlockCipher);
+                    cipherMode = new PaddedBufferedBlockCipher((IBlockCipher)new CtsBlockCipher((IBlockCipher)ctsCipher), CryptoBlockCipherPadding);
                     break;
                 case "EAX":
                     Org.BouncyCastle.Crypto.Modes.EaxBlockCipher eaxCipher = new EaxBlockCipher(CryptoBlockCipher);

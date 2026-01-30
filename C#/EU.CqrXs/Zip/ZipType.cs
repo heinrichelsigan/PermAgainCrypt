@@ -108,12 +108,12 @@ namespace EU.CqrXs.Zip
                     return WinZip.Zip(inBytes);
                 case ZipType.Z7: // TODO
                 case ZipType.None:
-                    return inBytes;
+                    break;
                 default: // Asset(0)
                     break;
             }
 
-            return new byte[0];
+            return inBytes;
         }
 
         /// <summary>
@@ -130,19 +130,30 @@ namespace EU.CqrXs.Zip
             switch (zipType)
             {
                 case ZipType.BZip2:
-                    return BZip2.BUnZip(compressedBytes);
+                    byte[] dbz2bytes = new List<byte>().ToArray();
+                    try
+                    {
+                        dbz2bytes = BZip2.BUnZip(compressedBytes);
+                    }
+                    catch (Exception exZip)
+                    {
+                        dbz2bytes = BZip2.BUnZip2Bytes(compressedBytes);
+                    }
+                    if (dbz2bytes.Length < (compressedBytes.Length - 16))
+                        dbz2bytes = compressedBytes;
+                    return dbz2bytes;
                 case ZipType.GZip:
                     return GZ.GUnZipBytes(compressedBytes);
                 case ZipType.Zip:
                     return WinZip.UnZip(compressedBytes);
                 case ZipType.Z7: // TODO
                 case ZipType.None:
-                    return compressedBytes;
+                    break;
                 default: // Asset(0)
                     break;
             }
 
-            return new byte[0];
+            return compressedBytes;
         }
     }
     

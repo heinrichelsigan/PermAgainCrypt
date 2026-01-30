@@ -44,13 +44,15 @@ namespace EU.CqrXs.Crypt.Cipher
         Dstu7624 = 0x1a,        
         AesLight = 0x1b,
         ZenMatrix = 0x1c,
-
-        Des3Net = 0x1d,
-        AesNet = 0x1e,        
-        ZenMatrix2 = 0x1f
+        Ascon = 0x1d,
+        
+        ZenMatrix2 = 0x1f,
 
         // Rsa = 0x21
         // DH = 0x22,
+
+        Des3Net = 0x31,
+        AesNet = 0x32
     }
 
     /// <summary>

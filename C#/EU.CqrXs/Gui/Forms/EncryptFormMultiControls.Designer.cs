@@ -82,6 +82,14 @@ namespace EU.CqrXs.Gui.Forms
             menuHashSCrypt = new ToolStripMenuItem();
             menuHashWhirlpool = new ToolStripMenuItem();
             menuHashTupleHash = new ToolStripMenuItem();
+            cipherModeToolStripMenuItem = new ToolStripMenuItem();
+            menuCipherModeItemCBC = new ToolStripMenuItem();
+            menuCipherModeItemCCM = new ToolStripMenuItem();
+            menuCipherModeItemCFB = new ToolStripMenuItem();
+            menuCipherModeItemCTS = new ToolStripMenuItem();
+            menuCipherModeItemEAX = new ToolStripMenuItem();
+            menuCipherModeItemECB = new ToolStripMenuItem();
+            menuCipherModeItemGOFB = new ToolStripMenuItem();
             optionsToolStripMenuItem = new ToolStripMenuItem();
             menuOptionsItemsWarnings = new ToolStripMenuItem();
             warnOnEmptyPipeToolStripMenuItem = new ToolStripMenuItem();
@@ -149,7 +157,7 @@ namespace EU.CqrXs.Gui.Forms
             menuStripEncrypt.AllowMerge = false;
             menuStripEncrypt.BackColor = SystemColors.MenuBar;
             menuStripEncrypt.Font = new Font("Lucida Sans Typewriter", 9F);
-            menuStripEncrypt.Items.AddRange(new ToolStripItem[] { toolMenuMain, menuCompression, menuEncoding, menuHash, optionsToolStripMenuItem, menuSerialize, menuHelp });
+            menuStripEncrypt.Items.AddRange(new ToolStripItem[] { toolMenuMain, menuCompression, menuEncoding, menuHash, cipherModeToolStripMenuItem, optionsToolStripMenuItem, menuSerialize, menuHelp });
             menuStripEncrypt.Location = new Point(0, 0);
             menuStripEncrypt.Name = "menuStripEncrypt";
             menuStripEncrypt.Padding = new Padding(3, 2, 2, 2);
@@ -528,6 +536,62 @@ namespace EU.CqrXs.Gui.Forms
             menuHashTupleHash.Name = "menuHashTupleHash";
             menuHashTupleHash.Size = new Size(170, 22);
             menuHashTupleHash.Text = "TupleHash";
+            // 
+            // cipherModeToolStripMenuItem
+            // 
+            cipherModeToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { menuCipherModeItemCBC, menuCipherModeItemCCM, menuCipherModeItemCFB, menuCipherModeItemCTS, menuCipherModeItemEAX, menuCipherModeItemECB, menuCipherModeItemGOFB });
+            cipherModeToolStripMenuItem.Font = new Font("Lucida Sans Typewriter", 10F);
+            cipherModeToolStripMenuItem.Name = "cipherModeToolStripMenuItem";
+            cipherModeToolStripMenuItem.Size = new Size(99, 20);
+            cipherModeToolStripMenuItem.Text = "CipherMode";
+            // 
+            // menuCipherModeItemCBC
+            // 
+            menuCipherModeItemCBC.Name = "menuCipherModeItemCBC";
+            menuCipherModeItemCBC.Size = new Size(180, 22);
+            menuCipherModeItemCBC.Text = "CBC";
+            // 
+            // menuCipherModeItemCCM
+            // 
+            menuCipherModeItemCCM.Enabled = false;
+            menuCipherModeItemCCM.Name = "menuCipherModeItemCCM";
+            menuCipherModeItemCCM.Size = new Size(180, 22);
+            menuCipherModeItemCCM.Text = "CCM";
+            // 
+            // menuCipherModeItemCFB
+            // 
+            menuCipherModeItemCFB.Name = "menuCipherModeItemCFB";
+            menuCipherModeItemCFB.Size = new Size(180, 22);
+            menuCipherModeItemCFB.Text = "CFB";
+            // 
+            // menuCipherModeItemCTS
+            // 
+            menuCipherModeItemCTS.Enabled = false;
+            menuCipherModeItemCTS.Name = "menuCipherModeItemCTS";
+            menuCipherModeItemCTS.Size = new Size(180, 22);
+            menuCipherModeItemCTS.Text = "CTS";
+            // 
+            // menuCipherModeItemEAX
+            // 
+            menuCipherModeItemEAX.Enabled = false;
+            menuCipherModeItemEAX.Name = "menuCipherModeItemEAX";
+            menuCipherModeItemEAX.Size = new Size(180, 22);
+            menuCipherModeItemEAX.Text = "EAX";
+            // 
+            // menuCipherModeItemECB
+            // 
+            menuCipherModeItemECB.Checked = true;
+            menuCipherModeItemECB.CheckState = CheckState.Checked;
+            menuCipherModeItemECB.Name = "menuCipherModeItemECB";
+            menuCipherModeItemECB.Size = new Size(180, 22);
+            menuCipherModeItemECB.Text = "ECB";
+            // 
+            // menuCipherModeItemGOFB
+            // 
+            menuCipherModeItemGOFB.Enabled = false;
+            menuCipherModeItemGOFB.Name = "menuCipherModeItemGOFB";
+            menuCipherModeItemGOFB.Size = new Size(180, 22);
+            menuCipherModeItemGOFB.Text = "GOFB";
             // 
             // optionsToolStripMenuItem
             // 
@@ -1199,6 +1263,14 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem toolStripMenuItem1;
         protected internal ToolStripSeparator toolStripSeparator4;
         internal ToolStripMenuItem menuEncHex64;
+        private ToolStripMenuItem cipherModeToolStripMenuItem;
+        private ToolStripMenuItem menuCipherModeItemCBC;
+        private ToolStripMenuItem menuCipherModeItemCCM;
+        private ToolStripMenuItem menuCipherModeItemCFB;
+        private ToolStripMenuItem menuCipherModeItemCTS;
+        private ToolStripMenuItem menuCipherModeItemEAX;
+        private ToolStripMenuItem menuCipherModeItemECB;
+        private ToolStripMenuItem menuCipherModeItemGOFB;
     }
 
 

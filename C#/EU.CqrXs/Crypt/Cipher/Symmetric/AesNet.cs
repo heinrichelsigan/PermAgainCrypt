@@ -23,6 +23,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public static KeyHash AesHash { get; private set; }
 
+        public static CipherMode CMode { get; private set; }
+
         public static EncodingType EncodeType { get; private set; }
 
         #endregion properties
@@ -37,7 +39,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public AesNet() : this(Convert.FromBase64String(Constants.AES_KEY), Convert.FromBase64String(Constants.AES_IV)) { }
 
-        public AesNet(string key, string hash, EncodingType encodeType = EncodingType.None)
+        public AesNet(string key, string hash, EncodingType encodeType = EncodingType.None, CipherMode cipherMode = CipherMode.ECB)
         {
             if (string.IsNullOrEmpty(key) && string.IsNullOrEmpty(hash))
             {
@@ -59,15 +61,46 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 AesIv = Encoding.UTF8.GetBytes(Constants.AES_IV);
             }
 
+            CMode = cipherMode;
             AesAlgo = new AesCng();
             // AesAlgo.KeySize = AesKeyLen;
             AesAlgo.Key = AesKey;
             AesAlgo.IV = AesIv;
-            AesAlgo.Mode = CipherMode.ECB;
+            AesAlgo.Mode = cipherMode;
             AesAlgo.Padding = PaddingMode.ISO10126;
         }
 
-        public AesNet(byte[] aesKey, byte[] aesIv)
+        public AesNet(CryptParams cparams)
+        {
+            if (string.IsNullOrEmpty(cparams.Key) && string.IsNullOrEmpty(cparams.Hash))
+            {
+                cparams.Key = Constants.AES_KEY;
+                cparams.Hash = Constants.AES_IV;
+            }
+            byte[] keyBytes = Encoding.UTF8.GetBytes(cparams.Key);
+            byte[] hashBytes = Encoding.UTF8.GetBytes(cparams.Hash);
+            CMode = cparams.CMode;
+            try
+            {
+                CreateAesKeyIv(ref keyBytes, ref hashBytes);
+            }
+            catch (Exception e)
+            {
+                Area23Log.LogOriginEx("AesNet.ctor", e, 2);
+                // TODO: what shell we do with the drunken sailor
+                AesKey = Convert.FromBase64String(Constants.AES_KEY);
+                AesIv = Encoding.UTF8.GetBytes(Constants.AES_IV);
+            }
+
+            AesAlgo = new AesCng();
+            // AesAlgo.KeySize = AesKeyLen;
+            AesAlgo.Key = AesKey;
+            AesAlgo.IV = AesIv;
+            AesAlgo.Mode = cparams.CMode;
+            AesAlgo.Padding = PaddingMode.ISO10126;
+        }
+
+        public AesNet(byte[] aesKey, byte[] aesIv, CipherMode cipherMode = CipherMode.ECB)
         {
             if (aesKey == null || aesKey.Length == 0)
                 aesKey = Convert.FromBase64String(Constants.AES_KEY);
@@ -75,11 +108,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 aesIv = Encoding.UTF8.GetBytes(Constants.AES_IV);
 
             CreateAesKeyIv(ref aesKey, ref aesIv);
-
+            CMode = cipherMode;
             AesAlgo = new AesCng();
             AesAlgo.Key = AesKey;
             AesAlgo.IV = AesIv;
-            AesAlgo.Mode = CipherMode.ECB;
+            AesAlgo.Mode = cipherMode;
             AesAlgo.Padding = PaddingMode.ISO10126;
 
         }

@@ -352,6 +352,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             ZenMatrixGenWithBytes(keyBytes, fullSymmetric);
         }
 
+
+        public ZenMatrix(CryptParams cryptParams, bool fullSymmetric = false) : 
+            this(cryptParams.Key, cryptParams.Hash, fullSymmetric, cryptParams.KeyHashing)
+        {
+        }
+
         /// <summary>
         /// InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
         /// </summary>

@@ -461,7 +461,9 @@ namespace EU.CqrXs.Crypt.Msg
                 SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
                 pipeString = symmPipe.PipeString;
 
-                byte[] fileBytes = symmPipe.DecodeDecrpyt(cfile.Message, serverKey, decoder, zipType, KeyHash.Hex);
+                byte[] fileBytes = symmPipe.DecodeDecrpytBytes(
+                    Encoding.UTF8.GetBytes(cfile.Message), 
+                    serverKey, keyHash, decoder, zipType, KeyHash.Hex);
                 // byte[] fileBytes = SymmCipherPipe.DecrpytStringToBytes(cfile.Message, serverKey, out pipeString, decoder, zipType);
                 
                 string md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, cfile.FileName), "");
