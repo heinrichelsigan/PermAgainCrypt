@@ -51,9 +51,18 @@ public class CryptParams {
         cipher = CipherEnum.valueOf(algo);
     }
 
+    /**
+     * getMode()
+     * @return {@link String} with 3 characters for {@link CipherMode2}
+     */
+    public String getMode() { return cmode2.getName(); }
+
     public String key;
     public String hash;
-    public String mode;
+    // public String mode;
+
+    public CipherMode2 cmode2;
+
     public int size;
 
     public int blockSize;
@@ -65,22 +74,30 @@ public class CryptParams {
     public KeyHash keyHashing;
 
 
+    /**
+     * CryptParams(CipherEnum cparameter less default constructor
+     */
     public CryptParams() {
         cipher = CipherEnum.Aes;
         size = 256;
         keyLen = 32;
-        mode = "ECB";
+        cmode2 = CipherMode2.ECB;
         blockCipher = new AESEngine();
         keyHashing = KeyHash.Hex;
         blockSize = blockCipher.getBlockSize();
     }
 
 
+
+    /**
+     * CryptParams(CipherEnum constructor
+     * @param cipherAlgo {@link CipherEnum}
+     */
     public CryptParams(CipherEnum cipherAlgo) {
         cipher = cipherAlgo;
         size = 256;
         keyLen = 32;
-        mode = "ECB";
+        cmode2 = CipherMode2.ECB;
         keyHashing = KeyHash.Hex;
 
         switch (cipher) {
@@ -236,28 +253,68 @@ public class CryptParams {
     }
 
 
-    public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed, KeyHash keyHash) {
+    /**
+     * CryptParams(CipherEnum constructor
+     * @param cipherAlgo {@link CipherEnum}
+     * @param secretKey user key for encryption {@link String}
+     * @param keyHashed hashed user key
+     * @param keyHash {@link KeyHash}
+     * @param cMode2 {@link CipherMode2}
+     */
+    public CryptParams(CipherEnum cipherAlgo,
+                       String secretKey,
+                       String keyHashed,
+                       KeyHash keyHash,
+                       CipherMode2 cMode2
+                    ) {
         this(cipherAlgo);
         keyHashing = keyHash;
+        cmode2 = cMode2;
         key = (secretKey == null || secretKey.isEmpty()) ? Constants.AUTHOR_EMAIL : secretKey;
         hash = (keyHashed == null || keyHashed.isEmpty()) ? keyHashing.hash(secretKey) : keyHashed;
     }
 
-
-    public CryptParams(CipherEnum cipherAlgo, String secretKey, KeyHash keyHash) {
-        this(cipherAlgo, secretKey, keyHash.hash(secretKey), keyHash);
+    /**
+     * CryptParams(CipherEnum constructor
+     * @param cipherAlgo {@link CipherEnum}
+     * @param secretKey user key for encryption {@link String}
+     * @param keyHash {@link KeyHash}
+     * @param cMode2 {@link CipherMode2}
+     */
+    public CryptParams(CipherEnum cipherAlgo,
+                       String secretKey,
+                       KeyHash keyHash,
+                       CipherMode2 cMode2) {
+        this(cipherAlgo, secretKey, keyHash.hash(secretKey), keyHash, cMode2);
     }
 
     /***
      * constructs a  CryptParams object by {@link CipherEnum}
      * @param cipherAlgo {@link CipherEnum}
-     * @param key user key for encryption {@link String}
-     * @param hash hashed user key
+     * @param secretKey user key for encryption {@link String}
+     * @param keyHashed hashed user key
+     * @param cMode2 {@link CipherMode2}
      */
-    public CryptParams(CipherEnum cipherAlgo, String secretKey, String keyHashed) {
+    public CryptParams(CipherEnum cipherAlgo,
+                       String secretKey,
+                       String keyHashed,
+                       CipherMode2 cMode2) {
         this(cipherAlgo);
+        cmode2 = cMode2;
         key = (secretKey == null || secretKey.isEmpty()) ? Constants.AUTHOR_EMAIL : secretKey;
         hash = (keyHashed == null || keyHashed.isEmpty()) ? keyHashing.hash(secretKey) : keyHashed;
+    }
+
+    /***
+     * constructs a  CryptParams object by {@link CipherEnum}
+     * @param cipherAlgo {@link CipherEnum}
+     * @param secretKey user key for encryption {@link String}
+     * @param keyHashed hashed user key
+     */
+    public CryptParams(CipherEnum cipherAlgo,
+                       String secretKey,
+                       String keyHashed) {
+        this(cipherAlgo, secretKey, keyHashed, CipherMode2.ECB);
     }
 
     /***
@@ -265,7 +322,8 @@ public class CryptParams {
      * @param cryptParams another instance
      */
     public CryptParams(CryptParams cryptParams) {
-        this(cryptParams.cipher, cryptParams.key, cryptParams.hash, cryptParams.keyHashing);
+        this(cryptParams.cipher, cryptParams.key, cryptParams.hash,
+            cryptParams.keyHashing, cryptParams.cmode2);
     }
 
 
