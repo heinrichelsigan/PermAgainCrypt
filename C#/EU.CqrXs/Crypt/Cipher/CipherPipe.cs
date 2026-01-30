@@ -340,7 +340,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 // case CipherEnum.ZenMatrix:
                 // case CipherEnum.ZenMatrix2:
                 default:
-                    CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
+                    CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash) { CMode2 = cipherMode.ToString() };
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     encryptBytes = cryptBounceCastle.Encrypt(inBytes);
                     break;
