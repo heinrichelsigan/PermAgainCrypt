@@ -73,6 +73,18 @@
             <param name="isPublic">true, if it's public key, false if it's private key</param>
             <returns>plain text string (decrypted)</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.Cipher.CiffreMode">
+            <summary>
+            <see cref="T:System.Security.Cryptography.CipherMode"/>
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherModeExtensions.ParseText(System.String)">
+            <summary>
+            parses pipe semicolon separated pipe string to CipherList
+            </summary>
+            <param name="text">semicolon separated pipe string to CipherList </param>
+            <returns><see cref="T:CipherMode"/> array of ciphers for the pipe</returns>
+        </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.CipherEnum">
             <summary>
             CipherEnum maps BlockCipher algorithms <see cref="T:Org.BouncyCastle.Crypto.IBlockCipher"/>
@@ -138,7 +150,7 @@
             parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/>
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.CipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.CipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             CipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
             </summary>
@@ -147,8 +159,9 @@
             <param name="encType"><see cref="P:EU.CqrXs.Crypt.Cipher.CipherPipe.EncodeType"/></param>
             <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             CipherPipe constructor with an array of <see cref="T:string[]"/> cipherAlgos as inpipe
             </summary>
@@ -157,8 +170,9 @@
             <param name="encType"><see cref="P:EU.CqrXs.Crypt.Cipher.CipherPipe.EncodeType"/></param>
             <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
             CipherPipe ctor with array of user key bytes
             </summary>
@@ -167,9 +181,11 @@
             <param name="encType"><see cref="P:EU.CqrXs.Crypt.Cipher.CipherPipe.EncodeType"/></param>
             <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
+            <param name="verbose"></param>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
             Constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/> from key and hash
             by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:EU.CqrXs.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
@@ -179,12 +195,15 @@
             <param name="encType"></param>
             <param name="zpType"></param>
             <param name="kh"></param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
+            <param name="verbose"></param>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.#ctor(System.String,System.Boolean)">
             <summary>
             CipherPipe ctor with only key
             </summary>
             <param name="key"></param>
+            <param name="verbose"></param>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.ToJson">
             <summary>
@@ -199,7 +218,7 @@
             <param name="json">serialized json</param>
             <returns><see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic encrypt bytes to bytes
             </summary>
@@ -207,9 +226,11 @@
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
             <param name="hash">key's hash</param>
+            <param name="cmode2"></param>
             <returns>encrypted byte Array</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic decrypt bytes to bytes
             </summary>
@@ -219,16 +240,17 @@
             <param name="hash">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
             <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <returns>encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
             starts merry to turn arround from right to left against clock hour cycle 
@@ -236,9 +258,10 @@
             <param name="cipherBytes">encrypted byte array</param>
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytTextGoRounds(System.String,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytTextGoRounds(System.String,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             EncrpytTextGoRounds encrypts text with cipher pipe pipeline
             </summary>
@@ -248,9 +271,10 @@
             <param name="encoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
             <param name="zipBefore"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"></param>
             <returns>UTF9 emcoded encrypted string without binary data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytFileBytesGoRounds(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytFileBytesGoRounds(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Encrypt nomary data byte[]
             </summary>
@@ -260,9 +284,10 @@
             <param name="hashIv">private key hash for encryption</param>
             <param name="zipBefore"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
-            <returns>binary data</returns>
+            <param name="cmode2"></param>
+            <returns>binary data</returns>        
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptTextRoundsGo(System.String,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptTextRoundsGo(System.String,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             decrypt encoded encrypted text
             </summary>
@@ -272,9 +297,10 @@
             <param name="decoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
             <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"></param>
             <returns>decrypted UTF8 string, containing no binary data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptFileBytesRoundsGo(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecryptFileBytesRoundsGo(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             DecryptFileBytesRoundsGo
             </summary>
@@ -284,13 +310,14 @@
             <param name="decoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType">decoding type</see> for decodinng</param>
             <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
+            <param name="cmode2"></param>
             <returns>plain data byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Multi functional 
-            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
-            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
             </summary>
             <param name="inBytes">incoming bytes</param>
             <param name="secretKey">user private key</param>
@@ -299,6 +326,7 @@
             <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
             <param name="zip">compression method to zip before or unzip after pipe processed</param>
             <param name="keyHash">hashing type of hashing method to hash key</param>
+            <param name="cmode2"></param>
             <returns>transformed byte array</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytToString(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
@@ -754,7 +782,7 @@
             <param name="json">serialized json</param>
             <returns><see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic encrypt bytes to bytes
             </summary>
@@ -762,9 +790,11 @@
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
             <param name="hashIv">key's hash</param>
+            <param name="cipherMode"></param>
             <returns>encrypted byte Array</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic decrypt bytes to bytes
             </summary>
@@ -772,18 +802,21 @@
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>both symmetric and asymetric cipher algorithms</param>
             <param name="secretKey">secret key to decrypt</param>
             <param name="hashIv">key's hash</param>
+            <param name="cmode2"></param>
             <returns>decrypted byte Array</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
             <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
             <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
             <param name="hashIv">hash key iv relational to secret key</param>
+            <param name="cmode2"></param>
             <returns>encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
             starts merry to turn arround from right to left against clock hour cycle 
@@ -791,13 +824,14 @@
             <param name="cipherBytes">encrypted byte array</param>
             <param name="secretKey">user secret key, normally email address</param>
             <param name="hashIv">hash relational to secret kay</param>
+            <param name="cmode2"></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Multi functional 
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
             </summary>
             <param name="inBytes">incoming bytes</param>
             <param name="secretKey">user private key</param>

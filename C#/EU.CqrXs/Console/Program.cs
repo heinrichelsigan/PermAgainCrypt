@@ -16,10 +16,15 @@ namespace EU.CqrXs.Console
     /// EU.CqrXs.Console.Program 
     /// -i | --inFile= | --inText={string|EnviromentVariable} | --inStd    
     /// -k | --key=mykey
-    /// -H | --hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
-    /// -z | --zip={gzip|bzip2|zip}
+    /// -H | --hash={Blake2xs|BCrypt|CShake|Dstu7564|Hex|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
+    ///         default: Hex
+    /// -z | --zip={bzip2|gzip|zip} 
+    ///         default: none
     /// -C | --CipherAlgos={[aes,des3,blowfish,fish2,fish3]|key}
+    /// -M | --mode={ECB|CBC|CFB}   
+    ///         default: ECB
     /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
+    ///         default: base64
     /// -o | --outFile= | --outText=EnviromentVariable | --outStd        
     /// -D | --Decrypt 
     /// -S | --SymmCipher 
@@ -36,6 +41,7 @@ namespace EU.CqrXs.Console
         static FileInfo? inFile = null, outFile = null;
         static byte[]? inBytes = null, outBytes = null;
         static string passKey = "";
+        static CipherMode2 cmode2 = CipherMode2.ECB;
         static ZipType zipType = ZipType.None;
         static EncodingType encodingType = EncodingType.None;
         static KeyHash keyHash = KeyHash.Hex;
@@ -110,6 +116,10 @@ namespace EU.CqrXs.Console
                             zipType = ZipType.Zip;
                         else
                             Usage($"urecognized zip option: {optStr}");
+                        break;
+                    case OptEnum.Mode:
+                        if (!Enum.TryParse<CipherMode2>(optStr, out cmode2))
+                            cmode2 = CipherMode2.ECB;
                         break;
                     case OptEnum.Encode:
                         encodingType = EncodingTypesExtensions.GetEnum(optStr);
@@ -192,8 +202,8 @@ namespace EU.CqrXs.Console
             {
                 // Create SymmCipherPipe // for reduced symmetric cipher pool only
                 SymmCipherPipe symmPipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                            new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash) :
-                            new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, verbose);
+                            new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash, cmode2) :
+                            new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2, verbose);
 
                 PrintSymmCipherPipe(symmPipe, reverseDirection);
                 outBytes = symmPipe.CryptCodeBytes(inBytes, 
@@ -204,8 +214,8 @@ namespace EU.CqrXs.Console
             {
                 // Create cipher pipe for en-/decryption
                 CipherPipe pipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash) :
-                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, CipherMode2.ECB, verbose);
+                                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash, cmode2) :
+                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2, verbose);
 
                 PrintCipherPipe(pipe, reverseDirection);
                 outBytes = pipe.CryptCodeBytes(inBytes, 
@@ -235,31 +245,34 @@ namespace EU.CqrXs.Console
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine("Usage:\t" + Path.GetFileName(progName) + @"
-    -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd    
+    -i  ├─┉--inFile= | --inText={string|EnviromentVariable} | --inStd    
         |
-    -k  | --key=passKey encrypt    
-    -H  | --Hash={Oct|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
-    -z  | --zip={gzip|bzip2|zip}
-    -C  | --CipherAlgost={algo1,algo2,...}
-         algo:
-            Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
-            Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,
-            Gost28147,Idea,Noekeon,
-            RC2,RC532,RC564,RC6,
-            Seed,SkipJack,Serpent,SM4,
-            Tea,Tnepres,XTea,
-            ZenMatrix,ZenMatrix2
-        symmAlgo: 
-            Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-    -S  | --SymmCipher 
-    -e  | --encode={raw|hex16|hex32|base32|base64|uu}
-    -D  | --Decrypt=Inverse_Pipe_Direction
-        |
-    -o  | --outFile= | --outText=EnviromentVariable | --outStd            
-        |
-    -Y  | --YankeeTest
-    -?  | --gethelp");
+    -k  ├─┉ --key=passKey encrypt    
+    -H  ├─┭ --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hey|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
+        | │     default: Hex
+    -z  ├─┽ --zip={gzip|bzip2|zip} 
+        | │     default: none
+    -C  ├─┽ --CipherAlgost={algo1,algo2,...}
+        | └┉ algo:
+        │     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
+        │       Aria,Camellia,CamelliaLight,Cast5,Cast6,
+        │       BlowFish,Fish2,Fish3,
+        │       Gost28147,Idea,Noekeon,
+        │       RC2,RC532,RC564,RC6,
+        │       Seed,SkipJack,Serpent,SM4,
+        │       Tea,Tnepres,XTea,
+        │       ZenMatrix,ZenMatrix2
+        │   symmAlgo: 
+        │        Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
+    -S  ├─┳ --SymmCipher 
+    -e  ├─┽--encode={raw|hex16|hex32|base32|base64|uu}
+        | ┣┉┉   default: base64
+    -D  ├─┽--Decrypt=Inverse_Pipe_Direction
+        | ┃ 
+    -o  ├─┽--outFile= | --outText=EnviromentVariable | --outStd            
+        | ┃
+    -V  ├─┽--verbose 
+    -?  ├─┽--gethelp");
 
             System.Console.Out.WriteLine($"\nExamples: " + @"
 

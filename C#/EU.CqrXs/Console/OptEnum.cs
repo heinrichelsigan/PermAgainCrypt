@@ -24,6 +24,7 @@ namespace EU.CqrXs.Console
         OutP = 0x7,
         DeCrypt = 0x8,
         SymmCipher = 0x9,
+        Mode = 0xa,
         Verbose = 0xe,
         Help = 0xf
     }
@@ -78,6 +79,10 @@ namespace EU.CqrXs.Console
                 case 'k':
                 case 'K':
                     optEnum = OptEnum.Key;
+                    return optArg;
+                case 'm':
+                case 'M':
+                    optEnum = OptEnum.Mode;
                     return optArg;
                 case 'h':
                 case 'H':

@@ -80,13 +80,15 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             uint maxpipe = 8, 
             EncodingType encType = EncodingType.Base64, 
             ZipType zpType = ZipType.None, 
-            KeyHash kh = KeyHash.Hex) : 
+            KeyHash kh = KeyHash.Hex, 
+            CipherMode2 cmode2 = CipherMode2.ECB) : 
             base(
                 symmCipherEnums.ToList().ConvertAll(new Converter<SymmCipherEnum, CipherEnum>(SymmCipherToCipher)).ToArray(),
                 maxpipe,
                 encType,
                 zpType,
-                kh)
+                kh,
+                cmode2)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -103,7 +105,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         public SymmCipherPipe(string[] symmCipherAlgos, uint maxpipe = 8,
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex)
+            EncodingType encType = EncodingType.Base64, 
+            ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.ECB) 
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -124,6 +127,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             }
 
             InSymmPipe = symmCipherEnums.ToArray();
+            CMode2 = cmode2;
             encodeType = encType;
             kHash = kh;
             zType = zpType;
@@ -137,7 +141,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
         public SymmCipherPipe(byte[] keyBytes, uint maxpipe = 8, 
             EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
-            bool verbose = false)
+            CipherMode2 cmode2 = CipherMode2.ECB, bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -173,7 +177,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
 
             InSymmPipe = pipeList.ToArray();
-
+            CMode2 = cmode2;
             encodeType = encType;
             kHash = kh;
             zType = zpType;
@@ -190,8 +194,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         public SymmCipherPipe(string key, string hash, 
                             EncodingType encType = EncodingType.Base64, 
                             ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
+                            CipherMode2 cmode2 = CipherMode2.ECB,
                             bool verbose = false)
-            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, verbose)
+            : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, cmode2, verbose)
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");            
@@ -205,7 +210,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="key"></param>
         public SymmCipherPipe(string key, bool verbose = false)
-            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, verbose)
+            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.ECB, verbose)
         {
             cipherKey = key;
         }
