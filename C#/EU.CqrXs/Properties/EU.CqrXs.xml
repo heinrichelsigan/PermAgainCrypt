@@ -3572,5 +3572,10 @@
             <param name="compressedBytes"></param>
             <returns>decompressed bytes</returns>
         </member>
+        <member name="T:EU.CqrXs.GlobalStaticResources">
+            <summary>
+            Contains all the static resources defined for the application
+            </summary>
+        </member>
     </members>
 </doc>

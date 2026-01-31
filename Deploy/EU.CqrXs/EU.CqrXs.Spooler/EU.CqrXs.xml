@@ -736,26 +736,26 @@
             Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
             </summary>
             <param name="symmCipherEnums">array of <see cref="T:SymmCipherEnum[]"/> as inpipe</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             SymmCipherPipe constructor with an array of <see cref="T:string[]"/> as inpipe
             </summary>
             <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
             SymmCipherPipe ctor with array of user key bytes
             </summary>
             <param name="keyBytes">user key bytes</param>
             <param name="maxpipe">maximum lentgh <see cref="F:EU.CqrXs.Util.Constants.MAX_PIPE_LEN"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
             Constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe"/> from key and hash
             by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:EU.CqrXs.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>

@@ -23,8 +23,9 @@ namespace EU.CqrXs.Spooler
         Decrypt = 0x3,
         Key = 0x4,
         Symmetric = 0x5,
-        Verbose = 0x6,
-        GetHelp = 0x7
+        Mode = 0x6,
+        Verbose = 0xe,
+        GetHelp = 0xf
     }
 
 
@@ -39,6 +40,7 @@ namespace EU.CqrXs.Spooler
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --Key={users key}   
     /// -D | --Decrypt 
+    /// -M | --mode={CBC|CFB|ECB}   
     /// -S | --SymmCipher // use symmetric chipher only to encrypt
     /// -V | --verbose
     /// -? | --gethelp
@@ -55,6 +57,7 @@ namespace EU.CqrXs.Spooler
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --Key=secretKey
     /// -D | --Decrypt 
+    /// -M | --mode={CBC|CFB|ECB}
     /// -S | --SymmCipher   // use symmetric chipher only to encrypt 
     /// -V | --verbose      // verbose output
     /// -? | --gethelp\n";
@@ -78,6 +81,7 @@ namespace EU.CqrXs.Spooler
                                                 KeyHash.RipeMD256,KeyHash.Sha1, KeyHash.Sha256, KeyHash.Sha384, KeyHash.Sha512,
                                                 KeyHash.SCrypt, KeyHash.TupleHash, KeyHash.Whirlpool };
         static KeyHash keyHash = KeyHash.Hex;
+        static CipherMode2 cmode2 = CipherMode2.ECB;
 
         /// <summary>
         /// Console spooler app for en-/decrypting a huge amount of files
@@ -149,16 +153,16 @@ namespace EU.CqrXs.Spooler
                 {
                     if (useSymmCipher) // SymmCipherPipe and SymmCipherEnum only
                     {
-                        symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        outBytes = symmPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        outBytes = symmPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += symmPipe.PipeFullExtension;
                     }
                     else // CipherPipe and all CipherEnum's
                     {
-                        cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                        cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);                        
+                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += cPipe.PipeFullExtension;
                     }
                 }
@@ -178,7 +182,7 @@ namespace EU.CqrXs.Spooler
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
                         try
                         {
-                            outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                            outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         } 
                         catch (Exception exSymmDecrypt)
                         {
@@ -200,7 +204,7 @@ namespace EU.CqrXs.Spooler
                         PrintCipherPipe(cPipe, decryptDirection);
                         try
                         {
-                            outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash);
+                            outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         } 
                         catch (Exception exDecrypt)
                         {
@@ -341,11 +345,18 @@ namespace EU.CqrXs.Spooler
                     key = optArg;
                     if (string.IsNullOrEmpty(key))
                         Usage("Key={NULL or \"\"})");
-                    return optArg;      
-                    
+                    return optArg;
+
                 case 'S':
                     optEnum = OptSpoolEnum.Symmetric;
                     useSymmCipher = true;
+                    return optArg;
+
+                case 'm':
+                case 'M':
+                    if (!Enum.TryParse<CipherMode2>(optArg, true, out cmode2))
+                        cmode2 = CipherMode2.ECB;
+                    optEnum = OptSpoolEnum.Mode;
                     return optArg;
 
                 case 'v':

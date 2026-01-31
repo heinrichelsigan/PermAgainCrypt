@@ -557,14 +557,22 @@ namespace EU.CqrXs.Crypt.Cipher
             KeyHash keyHash = KeyHash.Hex,
             CipherMode2 cmode2 = CipherMode2.ECB)
         {
+            if (string.IsNullOrEmpty(hashIv))
+                cipherHash = (!string.IsNullOrEmpty(cryptKey)) ? keyHash.Hash(cryptKey) : "";
+            else
+                cipherHash = hashIv;
+            
             // Transform string to bytes
-            byte[] inBytes = EnDeCodeHelper.GetBytesFromString(inString);
+            // byte[] inBytes = EnDeCodeHelper.GetBytesFromString(inString);
+            byte[] inBytes = System.Text.Encoding.UTF8.GetBytes(inString);
+            // zip if requested
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
 
-            // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-            byte[] encryptedBytes = EncryptEncodeBytes(inBytes, cryptKey, hashIv, encoding, zipBefore, keyHash, cmode2);
+            // now encrypt with pipe
+            byte[] encryptedBytes = MerryGoRoundEncrpyt(zippedBytes, cryptKey, cipherHash, CMode2);
 
             // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-            string encrypted = encoding.GetEnCoder().Encode(encryptedBytes);
+            string encrypted = encoding.EnCode(encryptedBytes);
 
             return encrypted;
         }
@@ -628,16 +636,27 @@ namespace EU.CqrXs.Crypt.Cipher
             KeyHash keyHash = KeyHash.Hex,
             CipherMode2 cmode2 = CipherMode2.ECB)
         {
-            byte[] cipherBytes = decoding.GetEnCoder().Decode(cryptedEncodedMsg);
 
+            cipherKey = cryptKey;
+            cipherHash = (string.IsNullOrEmpty(hashIv)) ?
+                ((!string.IsNullOrEmpty(cryptKey)) ? keyHash.Hash(cryptKey) : "") : hashIv;
+
+            // Decoded encoded bytes first, if necessary
+            byte[] cipherBytes = (decoding != EncodingType.None) ?
+                decoding.GetEnCoder().Decode(cryptedEncodedMsg) : 
+                System.Text.Encoding.UTF8.GetBytes(cryptedEncodedMsg);                     
+                      
+           
             // perform multi crypt pipe stages
-            byte[] decryptedBytes = DecodeDecrpytBytes(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash, cmode2);
+            byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash, CMode2);
+            // Unzip after all, if it's necessary
+            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
 
-            // Get string from decrypted bytes
-            string decrypted = EnDeCodeHelper.GetString(decryptedBytes);
+            string decrypted= System.Text.Encoding.UTF8.GetString(decryptedBytes);
+            
             // find first \0 = NULL char in string and truncate all after first \0 apperance in string
-            while (decrypted[decrypted.Length - 1] == '\0')
-                decrypted = decrypted.Substring(0, decrypted.Length - 1);
+            // while (decrypted[decrypted.Length - 1] == '\0')
+            //    decrypted = decrypted.Substring(0, decrypted.Length - 1);
 
             return decrypted;
         }

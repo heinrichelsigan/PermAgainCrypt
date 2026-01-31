@@ -216,9 +216,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             ICipherParameters keyParamIV = new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(keyParam, Iv);
 
             // if (Mode == "ECB")
-            cipherMode.Init(true, keyParam);
+                cipherMode.Init(true, keyParam);
             // else
-            // cipherMode.Init(true, keyParamIV);
+            // cipherMode.Init(true, keyParam, keyParamIV);
 
             if (PadBufBChipger == null && cipherMode != null)
                 PadBufBChipger = cipherMode;
@@ -283,11 +283,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             ICipherParameters keyParamIV = new ParametersWithIV(keyParam, Iv);
 
 
-            // Decrypt
-            //if (Mode == "ECB")
+            // Decrypt            
+            // if (Mode == "ECB")
             cipherMode.Init(false, keyParam);
-            //else
-            //    cipherMode.Init(false, keyParamIV);
+            // else
+            // cipherMode.init(false, keyParam, keyParamIV);
+
 
             // decryptedData = cipherMode.ProcessBytes(cipherData);
             if (cipherMode != null)
