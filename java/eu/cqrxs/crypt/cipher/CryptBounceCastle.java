@@ -91,7 +91,7 @@ public class CryptBounceCastle  {
         CryptoBlockCipherPadding = new org.bouncycastle.crypto.paddings.ZeroBytePadding();
         keyLen = cparams.keyLen;
         size = Math.min(cparams.size, CryptoBlockCipher.getBlockSize());
-        mode = cparams.mode;
+        mode = cparams.getMode();
 
         if (init)
         {

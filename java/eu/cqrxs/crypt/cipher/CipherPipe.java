@@ -19,6 +19,8 @@ import eu.cqrxs.zip.ZipType;
 
 import org.bouncycastle.crypto.*;
 
+import javax.crypto.Cipher;
+
 /**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
  */
@@ -32,6 +34,7 @@ public class CipherPipe {
     EncodeEnum  encodeType = EncodeEnum.Base64;
     KeyHash kHash = KeyHash.Hex;
     // private readonly String pipeString;
+    CipherMode2 cMode2 = CipherMode2.ECB;
 
 
     public ZipType getZipType() {
@@ -77,6 +80,7 @@ public class CipherPipe {
         encodeType = EncodeEnum.Base64;
         zType = ZipType.None;
         kHash = KeyHash.Hex;
+        cMode2 = CipherMode2.ECB;
     }
 
     /**
@@ -86,8 +90,14 @@ public class CipherPipe {
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      */
-    public CipherPipe(CipherEnum[] cipherEnums, int maxpipe, EncodeEnum encType, ZipType zpType, KeyHash kh) {
+    public CipherPipe(CipherEnum[] cipherEnums,
+                      int maxpipe,
+                      EncodeEnum encType,
+                      ZipType zpType,
+                      KeyHash kh,
+                      CipherMode2 cmode2) {
 
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
@@ -99,6 +109,7 @@ public class CipherPipe {
         }
         // System.arraycopy(cipherEnums, 0, inPipe, 0, isize);
 
+        cMode2 = cmode2;
         encodeType = encType;
         zType = zpType;
         kHash = kh;
@@ -111,8 +122,14 @@ public class CipherPipe {
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * */
-    public CipherPipe(String[] cipherAlgos, int maxpipe, EncodeEnum encType, ZipType zpType, KeyHash kh) {
+    public CipherPipe(String[] cipherAlgos, int maxpipe,
+                      EncodeEnum encType,
+                      ZipType zpType,
+                      KeyHash kh,
+                      CipherMode2 cmode2) {
+
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
 
@@ -130,7 +147,7 @@ public class CipherPipe {
         }
 
         inPipe = cipherEnums.toArray(CipherEnum[]::new);
-
+        cMode2 = cmode2;
         encodeType = encType;
         kHash = kh;
         zType = zpType;
@@ -144,8 +161,14 @@ public class CipherPipe {
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      */
-    public CipherPipe(byte[] keyBytes, int maxpipe, EncodeEnum encType, ZipType zpType, KeyHash kh) {
+    public CipherPipe(byte[] keyBytes,
+                      int maxpipe,
+                      EncodeEnum encType,
+                      ZipType zpType,
+                      KeyHash kh,
+                      CipherMode2 cmode2) {
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
 
@@ -173,7 +196,7 @@ public class CipherPipe {
                 inPipe[ib] = pipeList.get(ib);
             }
         }
-
+        cMode2 = cmode2;
         zType = zpType;
         encodeType = encType;
         kHash = kh;
@@ -187,10 +210,14 @@ public class CipherPipe {
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      */
-    public CipherPipe(String key, String hash, EncodeEnum encType, ZipType zpType, KeyHash kh) {
+    public CipherPipe(String key, String hash,
+                      EncodeEnum encType, ZipType zpType,
+                      KeyHash kh, CipherMode2 cmode2) {
 
-        this(CryptHelper.getKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh);
+        this(CryptHelper.getKeyBytesSimple(key, hash, 16),
+                Constants.MAX_PIPE_LEN, encType, zpType, kh, cmode2);
         cipherKey = key;
         cipherHash = hash;
     }
@@ -201,7 +228,7 @@ public class CipherPipe {
      * @param key only users secret key
      */
     public CipherPipe(String key) {
-        this(key, KeyHash.Hex.hash(key), EncodeEnum.Base64, ZipType.None, KeyHash.Hex);
+        this(key, KeyHash.Hex.hash(key), EncodeEnum.Base64, ZipType.None, KeyHash.Hex, CipherMode2.ECB);
         cipherKey = key;
     }
     /*
@@ -238,18 +265,24 @@ public class CipherPipe {
      * @param inBytes array of bytes
      * @param cipherAlgo {@link CipherEnum}
      * @param secretKey users secret key for encryption
-     * @param hash users key hashed
+     * @param hashedKey users key hashed
+     * @param cmode2 {@link CipherMode2}
      * @return byte array of encrypted bytes
      */
-    public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String secretKey, String hashedKey)
+    public static byte[] encryptBytesFast(
+            byte[] inBytes,
+            CipherEnum cipherAlgo,
+            String secretKey, String hashedKey,
+            CipherMode2 cmode2)
         throws InvalidCipherTextException {
+
         if (secretKey == null || secretKey.length() < 1)
             throw new IllegalArgumentException("seretkey");
         if (hashedKey == null || hashedKey.length() == 0)
             throw new IllegalArgumentException("hashedKey");
 
         byte[] encryptBytes = inBytes;
-        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey);
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey, cmode2);
 
         switch (cipherAlgo)
         {
@@ -322,9 +355,15 @@ public class CipherPipe {
      * @param cipherAlgo {@link CipherEnum}
      * @param secretKey users secret key
      * @param hash users key hashed
+     * @param cmode2 {@link CipherMode2}
      * @return decrypted bytes for one cipher algo
      */
-    public static byte[] decryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, String secretKey, String hash)
+    public static byte[] decryptBytesFast(
+            byte[] cipherBytes,
+            CipherEnum cipherAlgo,
+            String secretKey,
+            String hash,
+            CipherMode2 cmode2)
             throws InvalidCipherTextException {
         if (secretKey == null || secretKey.length() == 0)
             throw new IllegalArgumentException("seretkey");
@@ -333,7 +372,7 @@ public class CipherPipe {
         // bool sameKey = true;
 
         byte[] decryptBytes = cipherBytes; 
-        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash);
+        CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash, cmode2);
 
         switch (cipherAlgo)
         {
@@ -404,9 +443,14 @@ public class CipherPipe {
      * @param inBytes plain byte[] to encrypt
      * @param secretKey user secret key to use for all symmetric cipher algorithms in the pipe
      * @param hashIv hash key iv relational to secret key
+     * @param cmode2 {@link CipherMode2}
      * @return encrypted byte[]
      */
-    public byte[] merryGoRoundEncrpyt(byte[] inBytes, String secretKey, String hashIv)
+    public byte[] merryGoRoundEncrpyt(
+                byte[] inBytes,
+                String secretKey,
+                String hashIv,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException {
 
         if (inPipe.length == 0)
@@ -424,7 +468,7 @@ public class CipherPipe {
 
         for (CipherEnum cipher : inPipe)
         {
-            encryptedBytes = encryptBytesFast(inBytes, cipher, cipherKey, cipherHash);
+            encryptedBytes = encryptBytesFast(inBytes, cipher, cipherKey, cipherHash, cmode2);
             inBytes = encryptedBytes;
         }
 
@@ -437,9 +481,14 @@ public class CipherPipe {
      * @param cipherBytes encrypted byte array
      * @param secretKey user secret key, normally email address
      * @param hashIv hash relational to secret key
+     * @param cmode2 {@link CipherMode2}
      * @return byte[]
      */
-    public byte[] decrpytRoundGoMerry(byte[] cipherBytes, String secretKey, String hashIv)
+    public byte[] decrpytRoundGoMerry(
+                byte[] cipherBytes,
+                String secretKey,
+                String hashIv,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException {
 
         if (inPipe.length == 0)
@@ -455,7 +504,7 @@ public class CipherPipe {
         byte[] decryptedBytes = new byte[cipherBytes.length];
         for (CipherEnum cipher : getOutPipe())
         {
-            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash);
+            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherKey, cipherHash, cmode2);
             cipherBytes = decryptedBytes;
         }
 
@@ -470,21 +519,25 @@ public class CipherPipe {
      * @param encoding {@link EncodeEnum}
      * @param zipBefore {@link ZipType}
      * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * @return UTF8 encoded encrypted String without binary data
      */
     public String encrpytTextGoRounds(
-            String inString,
-            String cryptKey,
-            String hashIv,
-            EncodeEnum encoding,
-            ZipType zipBefore,
-            KeyHash keyHash) throws InvalidCipherTextException, IOException
-    {
+                String inString,
+                String cryptKey,
+                String hashIv,
+                EncodeEnum encoding,
+                ZipType zipBefore,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
+            throws InvalidCipherTextException, IOException {
+
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
 
         // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-        byte[] encryptedBytes = encrpytFileBytesGoRounds(inBytes, cryptKey, hashIv, encoding, zipBefore, keyHash);
+        byte[] encryptedBytes = encrpytFileBytesGoRounds(inBytes, cryptKey, hashIv,
+                encoding, zipBefore, keyHash, cmode2);
 
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
         String encrypted = encoding.encodeBytesToString(encryptedBytes);
@@ -501,16 +554,19 @@ public class CipherPipe {
      * @param encoding {@link EncodeEnum}
      * @param zipBefore {@link ZipType}
      * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * @return binary data
      */
     public byte[] encrpytFileBytesGoRounds(
-            byte[] inBytes,
-            String cryptKey,
-            String hashIv,
-            EncodeEnum encoding,
-            ZipType zipBefore,
-            KeyHash keyHash) throws InvalidCipherTextException
-    {
+                byte[] inBytes,
+                String cryptKey,
+                String hashIv,
+                EncodeEnum encoding,
+                ZipType zipBefore,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
+            throws InvalidCipherTextException {
+
         // hashIv if empty hash secretKey with keyHash hashing variant
         hashIv = (hashIv == null || hashIv.length() == 0) ? keyHash.hash(cryptKey) : hashIv;
         cipherKey = cryptKey;
@@ -526,7 +582,7 @@ public class CipherPipe {
             exZip.printStackTrace();
         }
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv);
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv, cmode2);
 
         return encryptedBytes;
     }
@@ -541,23 +597,26 @@ public class CipherPipe {
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException
 	 * @throws IOException
      */
     public String decryptTextRoundsGo(
-            String cryptedEncodedMsg,
-            String cryptKey,
-            String hashIv,
-            EncodeEnum decoding,
-            ZipType unzipAfter,
-            KeyHash keyHash) throws InvalidCipherTextException, IOException
-    {
+                String cryptedEncodedMsg,
+                String cryptKey,
+                String hashIv,
+                EncodeEnum decoding,
+                ZipType unzipAfter,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
+            throws InvalidCipherTextException, IOException {
 
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
 
         // perform multi crypt pipe stages
-        byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv, decoding, unzipAfter, keyHash);
+        byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, cryptKey, hashIv,
+                decoding, unzipAfter, keyHash, cmode2);
 
         // Get String from decrypted bytes
         String decrypted = (inPipe.length == 0) ?
@@ -584,17 +643,20 @@ public class CipherPipe {
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException
      */
     public byte[] decryptFileBytesRoundsGo(
-            byte[] cipherBytes,
-            String cryptKey,
-            String hashIv,
-            EncodeEnum decoding,
-            ZipType unzipAfter,
-            KeyHash keyHash) throws InvalidCipherTextException
-    {
+                byte[] cipherBytes,
+                String cryptKey,
+                String hashIv,
+                EncodeEnum decoding,
+                ZipType unzipAfter,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
+            throws InvalidCipherTextException  {
+
         // hashIv if empty hash secretKey with keyHash hashing variant
         hashIv = (hashIv == null || hashIv.length() == 0) ? keyHash.hash(cryptKey) : hashIv;
         cipherKey = cryptKey;
@@ -602,9 +664,9 @@ public class CipherPipe {
         kHash = keyHash;
         zType = unzipAfter;
         encodeType = decoding;
-
+        cMode2 = cmode2;
         // perform multi crypt pipe stages
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv);
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, cmode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
@@ -621,10 +683,17 @@ public class CipherPipe {
      * @param secretKey prviate key for encryption
      * @param zipBefore {@link ZipType}
      * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * @return encrypted binary data bytes
      */
-    public byte[] encrpytGoRounds(byte[] inBytes, String secretKey, ZipType zipBefore, KeyHash keyHash)
+    public byte[] encrpytGoRounds(
+                byte[] inBytes,
+                String secretKey,
+                ZipType zipBefore,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException {
+
         // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
         //     throw new IllegalArgumentException("seretkey");
 
@@ -632,14 +701,14 @@ public class CipherPipe {
         cipherHash = keyHash.hash(cipherKey);
         zType = zipBefore;
         kHash = keyHash;
-
+        cMode2 = cmode2;
         try {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash);
+        return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cmode2);
     }
 
 
@@ -649,9 +718,15 @@ public class CipherPipe {
      * @param secretKey prviate key for encryption
      * @param unzipAfter {@link ZipType}
      * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * @return decrypted bytes
      */
-    public byte[] decrpytRoundsGo(byte[] cipherBytes, String secretKey, ZipType unzipAfter, KeyHash keyHash)
+    public byte[] decrpytRoundsGo(
+                byte[] cipherBytes,
+                String secretKey,
+                ZipType unzipAfter,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException {
         // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
         //     throw new IllegalArgumentException("seretkey");
@@ -660,8 +735,8 @@ public class CipherPipe {
         kHash = keyHash;
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         cipherHash = keyHash.hash(cipherKey);
-
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash);
+        cMode2 = cmode2;
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash, cmode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
@@ -672,9 +747,14 @@ public class CipherPipe {
         return decryptedBytes;
     }
 
-
-    public String encrpytEncode(byte[] inBytes, String secretKey,
-                                EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
+    @Deprecated
+    public String encrpytEncode(
+                    byte[] inBytes,
+                    String secretKey,
+                    EncodeEnum encType,
+                    ZipType zipBefore,
+                    KeyHash keyHash,
+                    CipherMode2 cmode2)
             throws InvalidCipherTextException, IOException {
 
         // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -684,14 +764,14 @@ public class CipherPipe {
         encodeType = encType;
         zType = zipBefore;
         kHash = keyHash;
-
+        cMode2 = cmode2;
         try {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, cmode2);
         String cryptedEncoded = encType.encodeBytesToString(outBytes);
         return cryptedEncoded;
     }
@@ -705,13 +785,20 @@ public class CipherPipe {
      * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param zipBefore zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @param cmode2 {@link CipherMode2}
      * @return encrypted byte array
      * @throws InvalidCipherTextException
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] encryptEncodeBytes(byte[] inBytes, String secretKey, String hashIV,
-                                    EncodeEnum encType, ZipType zipBefore, KeyHash keyHash)
+    public byte[] encryptEncodeBytes(
+                byte[] inBytes,
+                String secretKey,
+                String hashIV,
+                EncodeEnum encType,
+                ZipType zipBefore,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException, IOException {
 
         // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
@@ -720,7 +807,7 @@ public class CipherPipe {
         encodeType = encType;
         zType = zipBefore;
         kHash = keyHash;
-
+        cMode2 = cmode2;
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         String hash = (hashIV != null && hashIV.length() > 0) ? hashIV : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
         cipherHash = hash;
@@ -731,7 +818,7 @@ public class CipherPipe {
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cmode2);
         byte[] encryptedBytes = new byte[0];
         if (encType != EncodeEnum.None)
         {
@@ -746,21 +833,28 @@ public class CipherPipe {
     }
 
 
-
-    public byte[] decodeDecrpyt(String encoded, String secretKey,
-                                EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
+    @Deprecated
+    public byte[] decodeDecrpyt(
+                    String encoded,
+                    String secretKey,
+                    EncodeEnum encType,
+                    ZipType unzipAfter,
+                    KeyHash keyHash,
+                    CipherMode2 cmode2)
             throws InvalidCipherTextException, IOException {
 
         if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
             throw new IllegalArgumentException("seretkey");
 
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(secretKey);
+        cMode2 = cmode2;
         encodeType = encType;
         zType = unzipAfter;
         kHash = keyHash;
+        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
+        cipherHash = keyHash.hash(secretKey);
+
         byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey));
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), cmode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(outBytes) : outBytes;
@@ -774,24 +868,27 @@ public class CipherPipe {
     /**
      *  decodeDecrpytBytes
      * @param encodedBytes encoded byte array
-     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
+     * @param secretKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
 	 * @param hashIV key hash
      * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] decodeDecrpytBytes(byte[] encodedBytes, String secretKey, String hashIV,
-                                     EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash)
-            throws InvalidCipherTextException, IOException {
+    public byte[] decodeDecrpytBytes(
+                        byte[] encodedBytes, String secretKey, String hashIV,
+                        EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash,
+                        CipherMode2 cmode2)
+                    throws InvalidCipherTextException, IOException {
 
         // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
         //     throw new IllegalArgumentException("seretkey");
-
+        cMode2 = cmode2;
         encodeType = encType;
         zType = unzipAfter;
         kHash = keyHash;
@@ -806,7 +903,7 @@ public class CipherPipe {
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
 
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV);
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV, cmode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(outBytes) : outBytes;
@@ -821,21 +918,24 @@ public class CipherPipe {
 
 
     /**
-     *  encrpytToString
+     * encrpytToString
      * @param inString String to encrypt multiple times
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
      * @param encoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param zipBefore zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
+     * @param cmode2 {@link CipherMode2}
      * @return encrypted String<
      * @throws InvalidCipherTextException
      * @throws IOException
      */
+    @Deprecated
     public static String encrpytToString(String inString, String cryptKey,
-                                         EncodeEnum encoding,
-                                         ZipType zipBefore,
-                                         KeyHash keyHash)
+                EncodeEnum encoding,
+                ZipType zipBefore,
+                KeyHash keyHash,
+                CipherMode2 cmode2)
             throws InvalidCipherTextException, IOException {
         // construct symmetric cipher pipeline with cryptKey
         CipherPipe cyptPipe = new CipherPipe(cryptKey);
@@ -843,41 +943,46 @@ public class CipherPipe {
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash);
+        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash, cmode2);
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
         String encrypted = encoding.encodeBytesToString(encryptedBytes);
 
         return encrypted;
     }
 
+    @Deprecated
     public static String encrpytBytesToString(byte[] plainBytes, String cryptKey,
-                                              EncodeEnum encoding,
-                                              ZipType zipBefore,
-                                              KeyHash keyHash)
-                                            throws InvalidCipherTextException, IOException {
+                                    EncodeEnum encoding,
+                                    ZipType zipBefore,
+                                    KeyHash keyHash,
+                                    CipherMode2 cmode2)
+                                throws InvalidCipherTextException, IOException {
         // construct symmetric cipher pipeline with cryptKey
         CipherPipe cyptPipe = new CipherPipe(cryptKey);
 
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(plainBytes, cryptKey, zipBefore, keyHash);
+        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(
+                plainBytes, cryptKey, zipBefore, keyHash, cmode2);
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
         String encrypted = encoding.encodeBytesToString(encryptedBytes);
 
         return encrypted;
     }
 
+    @Deprecated
     public static byte[] encrpytStringToBytes(String inString, String cryptKey,
-                                              EncodeEnum encoding,
-                                              ZipType zipBefore,
-                                              KeyHash keyHash)
-                                        throws InvalidCipherTextException {
+                                          EncodeEnum encoding,
+                                          ZipType zipBefore,
+                                          KeyHash keyHash,
+                                          CipherMode2 cmode2)
+                                    throws InvalidCipherTextException {
         // construct symmetric cipher pipeline with cryptKey and pass pipeString as out param
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
-
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = cryptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash);
+        byte[] encryptedBytes = cryptPipe.encrpytGoRounds(
+                inBytes, cryptKey, zipBefore, keyHash, cmode2);
 
         return encryptedBytes;
     }
@@ -892,22 +997,26 @@ public class CipherPipe {
      * @param decoding {@link EncodeEnum}
      * @param unzipAfter {@link ZipType}
      * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
      * @return Decrypted stirng
      * @throws InvalidCipherTextException
      * @throws IOException
      */
+    @Deprecated
     public static String decrpytToString(String cryptedEncodedMsg, String cryptKey,
-                                         EncodeEnum decoding,
-                                         ZipType unzipAfter,
-                                         KeyHash keyHash)
-            throws InvalidCipherTextException, IOException {
+                                        EncodeEnum decoding,
+                                        ZipType unzipAfter,
+                                        KeyHash keyHash,
+                                        CipherMode2 cmode2)
+                        throws InvalidCipherTextException, IOException {
         // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 
         // get bytes from encrypted encoded String dependent on the encoding type(uu, base64, base32,..)
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
         // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(cipherBytes, cryptKey, unzipAfter, keyHash);
+        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
+                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
 
         // Get String from decrypted bytes
         String decrypted = unroundedMerryBytes.toString();
@@ -918,32 +1027,38 @@ public class CipherPipe {
         return decrypted;
     }
 
+    @Deprecated
     public static byte[] decrpytStringToBytes(String cryptedEncodedMsg, String cryptKey,
-                                              EncodeEnum decoding,
-                                              ZipType unzipAfter,
-                                              KeyHash keyHash)
-            throws InvalidCipherTextException, IOException {
+                                            EncodeEnum decoding,
+                                            ZipType unzipAfter,
+                                            KeyHash keyHash,
+                                            CipherMode2 cmode2)
+                    throws InvalidCipherTextException, IOException {
         // create symmetric cipher pipe for decryption with crypt key
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 
         // get bytes from encrypted encoded String dependent on the encoding type (uu, base64, base32,..)
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
         // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(cipherBytes, cryptKey, unzipAfter, keyHash);
+        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
+                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
 
         return unroundedMerryBytes;
     }
 
+    @Deprecated
     public static String decrpytBytesToString(byte[] cipherBytes, String cryptKey,
-                                              EncodeEnum decoding,
-                                              ZipType unzipAfter,
-                                              KeyHash keyHash)
-                                        throws InvalidCipherTextException {
+                                            EncodeEnum decoding,
+                                            ZipType unzipAfter,
+                                            KeyHash keyHash,
+                                            CipherMode2 cmode2)
+                                throws InvalidCipherTextException {
         // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
         CipherPipe cryptPipe = new CipherPipe(cryptKey);
 
         // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(cipherBytes, cryptKey, unzipAfter, keyHash);
+        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
+                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
 
         // Get String from decrypted bytes
         String decrypted =  unroundedMerryBytes.toString();

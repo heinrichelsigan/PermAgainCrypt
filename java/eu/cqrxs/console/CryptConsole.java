@@ -11,6 +11,7 @@ package eu.cqrxs.console;
 
 import eu.cqrxs.console.OptEnum;
 import eu.cqrxs.crypt.cipher.CipherEnum;
+import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
@@ -225,11 +226,13 @@ public class CryptConsole  {
         CipherPipe pipe;
         // Create cipher pipe for en-/decryption
         if (passKey == null || passKey.isEmpty() || algos.length > 0) {
-            pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash);
+            pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN,
+                    encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it
 			if (verbose)
 				System.out.println("Created pipe without passkey: " + pipe.getPipeString());
         } else {
-            pipe = new CipherPipe(passKey, keyHash.hash(passKey), encodingType, zipType, keyHash);
+            pipe = new CipherPipe(passKey, keyHash.hash(passKey),
+                    encodingType,  zipType, keyHash, CipherMode2.ECB); // TODO: fix it!
 			if (verbose)
 				System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
         }
@@ -242,7 +245,8 @@ public class CryptConsole  {
             try {
                 passKey = (passKey.length() == 0) ? " " : passKey;
                 outBytes = pipe.encryptEncodeBytes(inBytes,
-                            passKey,  keyHash.hash(passKey), encodingType, zipType, keyHash);
+                            passKey,  keyHash.hash(passKey),
+                        encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it
             } catch (Exception exi) {
                 exi.printStackTrace();
             }
@@ -256,7 +260,7 @@ public class CryptConsole  {
                 passKey = (passKey == null || passKey.isEmpty()) ? "" : passKey;
                 outBytes = pipe.decodeDecrpytBytes(inBytes,
                         passKey, (passKey.isEmpty() ? "" : keyHash.hash(passKey)),
-                        encodingType, zipType, keyHash);
+                        encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it
             } catch (Exception exi) {
                 exi.printStackTrace();
             }

@@ -34,17 +34,10 @@ bld/
 [Ll]ogs/
 [Ppackages]/
 
-Deploy/*.7z
-Deploy/*.zip
-Deploy/*.bz2
-Deploy/*.gz
-Deploy/*.exe
-Deploy/test/
-Deploy/console/*.exe
-Deploy/console/*.7z
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
+/C#/.vs/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
@@ -185,6 +178,20 @@ DocProject/Help/*.hhk
 DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
+
+# latex dvi toc aux generated files 
+*.dvi
+*.toc
+*.aux
+*.out
+
+/docu/symmcipher.log
+/docu/symmcipher.toc
+/docu/symmcipher.aux
+/docu/symmcipher.dvi
+/docu/symmcipher.out
+/docu/symmcipher.ps
+
 
 # Click-Once directory
 publish/
@@ -371,56 +378,81 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# java classes
-*.class
-
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+
+# encrypted files
 
 *.7z
 *.bz2
 *.gz
 *.hex
-*.base64
-*.uu
 *.hex16
+*.hex32
+*.hex64
 *.base16
 *.base32
+*.base64
+*.uu
+*.xx
 *.base32hex
 *.3fish
 *.fish2
 *.fish3
+*.des3
+*.aes
 
-/C#/.vs/
-/C#/Deploy
-/C#/Deploy/2025-10-22_PermAgainCrypt_x86/ 
-/C#/Deploy/2025-10-22_PermAgainCrypt_x86/CryptFormCore.exe 
-/C#/Deploy/2025-10-22_PermAgainCrypt_x64/CryptFormCore.exe 
-/C#/Deploy/2025-10-22_PermAgainCrypt_x64/
-/C#/Deploy/20251022_ConsoleCrypt_x86.7z
-/C#/Deploy/20251022_PermAgainCrypt_x64.7z
-/C#/Deploy/20251022_PermAgainCrypt_x86.7z
+# Framework documentation XML
+EU.CqrXs.xml
+
+# Deployment packages
+Deploy/*.7z
+Deploy/*.zip
+Deploy/*.bz2
+Deploy/*.gz
+Deploy/*.exe
+Deploy/test/
+Deploy/console/*.exe
+Deploy/console/*.7z
+
+# Deployment folder
+/Deploy
+/Deploy/ 
+/Deploy/EU.CqrXs/
+/Deploy/EU.CqrXs/EU.CqrXs.Console/
+/Deploy/EU.CqrXs/EU.CqrXs.Console/*.exe
+/Deploy/EU.CqrXs/EU.CqrXs.Console/Console_Test.bat
+/Deploy/EU.CqrXs/EU.CqrXs.Console/EU.CqrXs.xml
+/Deploy/EU.CqrXs/EU.CqrXs.Console/README.MD
+/Deploy/EU.CqrXs/EU.CqrXs.Test/
+/Deploy/EU.CqrXs/EU.CqrXs.Test/
+/Deploy/EU.CqrXs/EU.CqrXs.Test/*.dll
+/Deploy/EU.CqrXs/EU.CqrXs.Test/*.pdb
+/Deploy/EU.CqrXs/EU.CqrXs.Test/*.exe
+/Deploy/EU.CqrXs/EU.CqrXs.Gui/
+/Deploy/EU.CqrXs/EU.CqrXs.Gui/*.exe
+/Deploy/EU.CqrXs/EU.CqrXs.Gui/EU.CqrXs.xml
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/*.exe
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/EU.CqrXs.xml
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Encrypt/
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Encrypt/*.*
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Out/
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Out/*.*
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/README.MD
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Spooler_Test.bat
+
 /Deploy/console/README_MD.txt
 /Deploy/console/TestCryptConsole.bat
 /Deploy/framework
 
-/Deploy/SpoolTest/Encrypt
-/Deploy/SpoolTest/Encrypt/*.*
-/Deploy/SpoolTest/Out
-/Deploy/SpoolTest/Out/*.*
+## java section
+# java classes
+*.class
 
-/docu/symmcipher.log
-/docu/symmcipher.toc
-/docu/symmcipher.aux
-/docu/symmcipher.dvi
-/docu/symmcipher.out
-/docu/symmcipher.ps
-
-*.dvi
-*.toc
-*.aux
-*.out
-
+# java out 
 /java/out/
+# java temp
 /java/temp/
 
