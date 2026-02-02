@@ -95,20 +95,20 @@ Usage:  EU.CqrXs.Console.exe
 
 Examples:
 
-    EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
-    EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
+    EU.CqrXs.Console.exe -V -i=.\README.MD -e=base16 -o=.\README_MD.base16
+    EU.CqrXs.Console.exe -V -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
-    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
+    EU.CqrXs.Console.exe -V -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -V -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
-    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
+    EU.CqrXs.Console.exe -V -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
+    EU.CqrXs.Console.exe -V -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
-    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
+    EU.CqrXs.Console.exe -V -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
+    EU.CqrXs.Console.exe -V -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+    EU.CqrXs.Console.exe -V -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
+    EU.CqrXs.Console.exe -V -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
 
 U:\source\PermAgainCrypt\Deploy\console\x86>
 ```
@@ -121,8 +121,8 @@ U:\source\PermAgainCrypt\Deploy\console\x86>
 
 - RC564 is not well implemented by me in java.
 - ZenMatrix has **now** *been already* ported by me to java.
-- BZip2 and Zip aren't already ported by me to java.
-- Ascon256 and Xoodyak have currently every replaced by Oct and TupleHash
+- ZenMatrix2, BZip2 and Zip aren't already ported by me to java.
+- Ascon256 and Xoodyak have currently every replaced by *Oct* and *TupleHash*
 
 <img width="2017" height="932" alt="2026-01-27_Screenshot_Java_CSharp" src="https://github.com/user-attachments/assets/411827b4-cb98-48c2-ade1-4692c3fb858f" />
 
