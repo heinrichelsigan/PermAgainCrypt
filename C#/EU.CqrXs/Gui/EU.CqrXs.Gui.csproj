@@ -119,11 +119,6 @@
 	<ItemGroup>
 	  <Folder Include="log\" />
 	</ItemGroup>
-    
-	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.251219" />
-	  <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.251219" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\EU.CqrXs.csproj" />
