@@ -48,75 +48,88 @@ https://github.com/heinrichelsigan/PermAgainCrypt/releases/
 
 ## Credits
 - Great Thanks to [the Legion of the Bouncy Castle](https://www.bouncycastle.org/) 
-- Github: [github.com/bcgit](https://github.com/bcgit) 
+- Github: [github.com/bcgit](https://github.com/bcgit)
+- LibTom: [github.com/libtom/libtomcrypt](https://github.com/libtom/libtomcrypt) [libtom.net/](https://www.libtom.net/)
 
 ## WinFormCore:
 <img width="800" height="726" alt="image" src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/PermAgainCrypt_WinForm.gif" />
 
 ## Console Application
 
-<img width="1132" height="818" alt="image" src="https://github.com/user-attachments/assets/bdda016b-5daa-436a-a9f0-4f981e54b688" />
+![2026-01-27_EU_CqrXs_Console](https://github.com/user-attachments/assets/e5b885c3-971b-43d3-b16e-8c610cea1ba4)
 
 Console application let you execute cipherpipe as standard console programm. 
 options can be set by argument parameters.
 
 ```
-U:\source\PermAgainCrypt\Deploy\console\x86>EU.CqrXs.Console.exe -?
+U:\source\PermAgainCrypt\Deploy\console\x86>EU.CqrXs.Console.exe
 Usage:  EU.CqrXs.Console.exe
-    -i | --inFile= | --inText={string|EnviromentVariable} | --inStd
-    -o | --outFile= | --outText=EnviromentVariable | --outStd
-    -u | --unzip={gzip|bzip2}
-    -z | --zip={gzip|bzip2}
-    -d | --decode={raw|hex16|hex32|base32|base64|uu}
-    -e | --encode={raw|hex16|hex32|base32|base64|uu}
-      -c | --crypt={algo1,algo2,...}
-         algo:
-            Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
-            Aria,Camellia,CamelliaLight,Cast5,Cast6,
-            BlowFish,Fish2,Fish3,
-            Gost28147,Idea,Noekeon,
-            RC2,RC532,RC564,RC6,
-            Seed,SkipJack,Serpent,SM4,
-            Tea,Tnepres,XTea,
-            ZenMatrix,ZenMatrix2
-        symmAlgo:
-            Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4
-      -p --pass=Passphrase
-    -D | --decrypt=={algo1,algo2,...}
-      -p --pass=Passphrase
-    -k | --key=passKey encrypt
-    -q | --qey=passKey decrypt
-    -h | --hash={Blake2xs|BCrypt|CShake|Dstu7564|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|TupleHash|Whirlpool}
-    -S | --SymmCipher
-    -? | --gethelp
+    -i  ├─ --inFile= | --inText={string|EnviromentVariable} | --inStd
+        |
+    -k  ├─ --key=passKey encrypt
+    -H  ├─ --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hey|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}
+        |      default: Hex
+    -z  ├─ --zip={gzip|bzip2|zip}
+        |     default: none
+    -C  ├─ --CipherAlgost={algo1,algo2,...}
+        | └ algo:
+        │     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
+        │       Aria,Camellia,CamelliaLight,Cast5,Cast6,
+        │       BlowFish,Fish2,Fish3,
+        │       Gost28147,Idea,Noekeon,
+        │       RC2,RC532,RC564,RC6,
+        │       Seed,SkipJack,Serpent,SM4,
+        │       Tea,Tnepres,XTea,
+        │       ZenMatrix,ZenMatrix2
+        │   symmAlgo:
+        │        Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4
+    -S  ├─ --SymmCipher
+    -e  ├─ --encode={raw|hex16|hex32|base32|base64|uu}
+        |   default: base64
+    -D  ├─ --Decrypt [ = Inverse_Pipe_Direction ]
+        |
+    -o  ├─ --outFile= | --outText=EnviromentVariable | --outStd
+        |
+    -V  ├─ --verbose
+    -?  ├─ --gethelp
 
 Examples:
-        EU.CqrXs.Console.exe -i=test.jpg -z=bzip2 -e=base32 -o=test.jpg.bz2.base32
-        EU.CqrXs.Console.exe -i=test.jpg.bz2.base32 -d=base32 -u=bzip2 -o=test1.jpg
 
-        EU.CqrXs.Console.exe --inFile=test.jpg --zip=gzip --crypt=AesLight,Fish3 -k=MySecretKey -e=base64 -o=test.jpg.gz.aeslight.fish3.base64
-        EU.CqrXs.Console.exe -i=test.jpg.gz.aeslight.fish3.base64 -d=base64  -D=AesLight,Fish3 -k=MySecretKey -e=base64  --unzip=gzip  -o=test2.jpg
+    EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\README_MD.base16
+    EU.CqrXs.Console.exe -D  -i=.\README_MD.base16 -e=base16 -o=.\READ_MD.txt
 
-        EU.CqrXs.Console.exe -i=README.MD -z=zip -k=io.cqrxs.eu -H=SCrypt -e=uu -o=README.MD.SCrypt.zip.uu
-        EU.CqrXs.Console.exe -i=README.MD.SCrypt.zip.uu -d=uu -q=io.cqrxs.eu -H=SCrypt -u=zip -o=README_UNZIP.txt
+    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
+    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
+    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
 
 U:\source\PermAgainCrypt\Deploy\console\x86>
 ```
 
 # [Java](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/java)
 
-<img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-28_javaProtorype.gif?raw=true" />
+<img width="1007" height="764" alt="2026-01-25_javax_swing_JFrame_java" src="https://github.com/user-attachments/assets/fb449450-0dcd-481e-a75f-572efbf8d5ee" />
 
 ## Java C# compare encoding / decoding
 
-RC564 is not well implemented by me in java.
-ZenMatrix isn't already ported by me to java.
-BZip2 and Zip aren't already ported by me to java.
-Ascon256 and Xoodyak have currently every replaced by Oct and TupleHash
-<img src="https://github.com/heinrichelsigan/PermAgainCrypt/blob/main/docu/2025-12-31_Screenshot%20Java_CSharp.png?raw=true" />
+- RC564 is not well implemented by me in java.
+- ZenMatrix has **now** *been already* ported by me to java.
+- BZip2 and Zip aren't already ported by me to java.
+- Ascon256 and Xoodyak have currently every replaced by Oct and TupleHash
 
-<img src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/Screenshot%202025-12-29_Java_CSharp_Compare_Pipe6.png" />
+<img width="2017" height="932" alt="2026-01-27_Screenshot_Java_CSharp" src="https://github.com/user-attachments/assets/411827b4-cb98-48c2-ade1-4692c3fb858f" />
+
+![Peek_2026_01_28_0340](https://github.com/user-attachments/assets/28231520-d5e9-4eac-8673-f41c227d4870)
+
 
 # [Android](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/android)
 
+<img width="720" height="1600" alt="Screenshot_20260202-081909" src="https://github.com/user-attachments/assets/69402018-f67e-40ad-987c-61a6ca925361" />
 
