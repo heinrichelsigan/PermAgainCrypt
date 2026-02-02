@@ -259,7 +259,7 @@ namespace EU.CqrXs.Console
     -z  ├─ --zip={gzip|bzip2|zip} 
         |     default: none
     -C  ├─ --CipherAlgost={algo1,algo2,...}
-        | └ algo:
+        |   algo:
         │     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
         │       Aria,Camellia,CamelliaLight,Cast5,Cast6,
         │       BlowFish,Fish2,Fish3,
