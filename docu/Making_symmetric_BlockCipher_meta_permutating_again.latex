@@ -7,6 +7,17 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{color}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{makeidx}
+\usepackage{amssymb}
+\usepackage{alltt}
+\usepackage{graphicx}
+\usepackage{layout}
+\usepackage{fancyhdr}
+\usepackage{float}
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 \urlstyle{rm}
 \title{Making symmetric block cipher meta permutating again}
@@ -57,18 +68,18 @@ raw experimental test form.
 
 An eight staged symmetric block cipher crypto pipeline to improve advanced encryption standard based on meta DES, 3DES with P-Box S-Box.
 
-The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
 
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=868,natheight=402]{CipherPipeline.eps}
-\caption{\label{fig:CipherPipeline.eps}Cipher Pipeline}
+\includegraphics[width=1\textwidth]{Symmetric_Cipher_Pipeline.png}
+\caption{\label{fig:CipherPipeline}Cipher Pipeline}
 \end{figure}
+
+The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
 
 Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
 
 Implementation is based on my blog article: \href{https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html}{Making symmetric cipher encryption meta permutating again}, including the follwing symmetric cipher algorithms:
 
-\dots or bullet points \dots
 \begin{itemize}
 \item \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Aes}, AesLight, \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Rijndael}
 \item \href{https://www.schneier.com/}{Bruce Schneier's} BlowFish, 2-Fish, 3-Fish
@@ -84,6 +95,57 @@ Implementation is based on my blog article: \href{https://area23-at.blogspot.com
 \item and my own simplest symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2
 \end{itemize}
 
+\subsubsection{Most blockcipher algorithms break on a lot of 0 byte inside}
+Most blockcipher algorithms break, when you fill a > 2x BLOCKSIZE (byte)0 inside a text or some other file. You can generate such a NULL block with linux dd:
+\begin{small}
+\begin{verbatim}
+sudo nice -n -17 dd if=/dev/zero of=/mnt/h/zeros.txt bs=4k  count=64
+\end{verbatim}
+\end{small}
+
+That's why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to decrypt.
+
+\subsection{CSharp Code Example}
+\begin{small}
+\begin{verbatim}
+    /* CSharp constructing a CipherPipe */
+
+    // 1 with parameter key
+    string hash = KeyHash.Hex.Hash(key);
+    CipherPipe cPipe = new CipherPipe(key, hash, 
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, 
+        CipherMode2.ECB);
+
+    // 2. with an array of ciphers, e.g. BlowFish;TwoFish;ThreeFish
+    string algos = "BlowFish;TwoFish;ThreeFish";
+    CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(algos);
+    cPipe = new CipherPipe(pipeAlgos, 8, 
+                EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                CipherMode2.ECB);
+
+    /* calling CipherPipe encrypt or decrypt */    
+    string s = "Text to encrypt", key = "myKey", hashIv = KeyHash.Hex.Hash(key);
+    // encrypt text
+    string encryptext = cPipe.EncrpytTextGoRounds(s, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.ECB);
+    // encrypt bytes
+    byte[] fbytes = System.Text.Encoding.Utf8.GetBytes(s);
+    byte[] cbytes = cPipe.EncryptEncodeBytes(fileBytes, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.ECB);
+    // decrypt text
+    string dcrypt = cPipe.DecryptTextRoundsGo(encryptext, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.ECB);
+    // decypt bytes
+    byte[] outBytes = cPipe.DecodeDecrpytBytes(cbytes, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.ECB);
+    
+\end{verbatim}
+\end{small}
+
 
 \subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
 
@@ -95,7 +157,7 @@ to change position inside block and value offset.
 \url{https://area23.at/net/Crypt/ZenMatrixVisualize.aspx}
 
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=1302,natheight=1002]{2026-01-25_ZenMatrixVisualize.png}
+\includegraphics[width=1\textwidth]{2026-01-25_ZenMatrixVisualize.png}
 \caption{\label{fig:ZenMatrixVisualize}ZenMatrix Visualize}
 \end{figure}
 
@@ -149,7 +211,8 @@ the matrix will look like this:
  \hline
 \end{tabular}
 
-this mean that a byte[8] e.g. 321F 0000 0000 0000 
+\subsubsection{Mapping}
+This mean that a byte[8] e.g. 321F 0000 0000 0000 
 $x0 \implies x8$,
 $x1 \implies x7$,
 $x2 \implies x6$,
@@ -177,7 +240,7 @@ settings AES default engine for 3-fish, isn’t so serious and please download v
 \subsection{Documentation online en-/decrypt form}
 
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=924,natheight=659]{Symmetric_Cipher_WebForm.jpg}
+\includegraphics[width=1\textwidth]{Symmetric_Cipher_WebForm.jpg}
 \caption{\label{fig:SymmetricCipherWebForm}Symmetric Cipher WebForm}
 \end{figure}
 
@@ -216,23 +279,53 @@ TextArea Destination.
 
 \subsection{Documentation of WinForm}
 
-\dots
+You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCrypt/releases}{github.com/heinrichelsigan/PermAgainCrypt/releases} to download \url{https://github.com/heinrichelsigan/PermAgainCrypt/releases/download/2026-01-25-Hex64-Console-JFrame-Latex-release-v2.26.125/2026-01-25_EU.CqrXs.Gui_x64.7z} 
+\dots 
 
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=1010,natheight=761]{2026-01-25_WinForm_CSharp.png}
+\includegraphics[width=1\textwidth]{2026-01-25_WinForm_CSharp.png}
 \caption{\label{fig:WinForm_Csharp}WinForm CSharp}
 \end{figure}
-
-
 
 \subsection{Documentation of Windows Console}
 
 Download the lastest Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
 
 \begin{figure}
-\includegraphics[width=1\textwidth,viewport]{2026-01-27_EU_CqrXs_Console.jpg}
-\caption{\label{fig:Windows_Console}Windows_Console}
+\includegraphics[width=1\textwidth]{2026-01-27_EU_CqrXs_Console.jpg}
+\caption{\label{fig:EU.CqrXs.Console.exe}Windows EU.CqrXs.Console.exe}
 \end{figure}
+
+\subsection{Usage:  EU.CqrXs.Console.exe}
+\begin{small}
+\begin{verbatim}
+Usage:  EU.CqrXs.Console.exe
+    -i  --inFile= | --inText={string|EnviromentVariable} | --inStd
+    -k  --key=passKey encrypt
+    -H  --Hash {BCrypt|CShake|Dstu7564|Hey|MD5|RipeMD256|SCrypt|Sha1|Whirlpool|TupleHash}
+            default: Hex
+    -z  --zip={gzip|bzip2|zip}
+            default: none
+    -C  --CipherAlgost={algo1,algo2,...}
+            algo:
+                Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
+                Aria,Camellia,CamelliaLight,Cast5,Cast6,
+                BlowFish,Fish2,Fish3,
+                Gost28147,Idea,Noekeon,
+                RC2,RC532,RC564,RC6,
+                Seed,SkipJack,Serpent,SM4,
+                Tea,Tnepres,XTea,
+                ZenMatrix,ZenMatrix2
+    -S  --SymmCipher
+    -e  --encode={raw|hex16|hex32|base32|base64|uu}
+            default: base64
+    -D  --Decrypt [ = Inverse_Pipe_Direction ]
+    -o  --outFile= | --outText=EnviromentVariable | --outStd
+    -V  --verbose
+    -?  --gethelp
+
+\end{verbatim}
+\end{small}
 
 
 \subsection{Java JFrame based}
@@ -243,7 +336,7 @@ Download the lastest Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Co
 \end{itemize}
 
 \begin{figure}
-\includegraphics[width=1\textwidth,natwidth=1012,natheight=762]{javax_swing_JFrame_java.jpg}
+\includegraphics[width=1\textwidth]{javax_swing_JFrame_java.jpg}
 \caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
@@ -257,12 +350,11 @@ denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{
 
 \subsection{Good luck!}
 
-We hope you find PermAgainCrypt useful, and good luck!
-
+We hope you find PermAgainCrypt useful, and good luck.
+\href{https://cqrxs.eu/help/}{help library} for more tutorials and user guides! Please also let us know if you have any feedback using the \textbf{Contact us} link at the bottom of the Overleaf menu --- or use the contact form at \url{https://heinrichelsigan.area23.at}.
 
 \bibliographystyle{alpha}
 \bibliography{sample}
 
 \end{document}
-
 

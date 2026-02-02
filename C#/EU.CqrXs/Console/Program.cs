@@ -245,15 +245,15 @@ namespace EU.CqrXs.Console
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine("Usage:\t" + Path.GetFileName(progName) + @"
-    -i  ├─┉--inFile= | --inText={string|EnviromentVariable} | --inStd    
+    -i  ├─ --inFile= | --inText={string|EnviromentVariable} | --inStd    
         |
-    -k  ├─┉ --key=passKey encrypt    
-    -H  ├─┭ --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hey|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
-        | │     default: Hex
-    -z  ├─┽ --zip={gzip|bzip2|zip} 
-        | │     default: none
-    -C  ├─┽ --CipherAlgost={algo1,algo2,...}
-        | └┉ algo:
+    -k  ├─ --key=passKey encrypt    
+    -H  ├─ --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hey|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
+        |      default: Hex
+    -z  ├─ --zip={gzip|bzip2|zip} 
+        |     default: none
+    -C  ├─ --CipherAlgost={algo1,algo2,...}
+        | └ algo:
         │     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
         │       Aria,Camellia,CamelliaLight,Cast5,Cast6,
         │       BlowFish,Fish2,Fish3,
@@ -264,15 +264,15 @@ namespace EU.CqrXs.Console
         │       ZenMatrix,ZenMatrix2
         │   symmAlgo: 
         │        Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-    -S  ├─┳ --SymmCipher 
-    -e  ├─┽--encode={raw|hex16|hex32|base32|base64|uu}
-        | ┣┉┉   default: base64
-    -D  ├─┽--Decrypt=Inverse_Pipe_Direction
-        | ┃ 
-    -o  ├─┽--outFile= | --outText=EnviromentVariable | --outStd            
-        | ┃
-    -V  ├─┽--verbose 
-    -?  ├─┽--gethelp");
+    -S  ├─ --SymmCipher 
+    -e  ├─ --encode={raw|hex16|hex32|base32|base64|uu}
+        |   default: base64
+    -D  ├─ --Decrypt [ = Inverse_Pipe_Direction ]
+        |  
+    -o  ├─ --outFile= | --outText=EnviromentVariable | --outStd            
+        | 
+    -V  ├─ --verbose 
+    -?  ├─ --gethelp");
 
             System.Console.Out.WriteLine($"\nExamples: " + @"
 
