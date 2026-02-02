@@ -101,8 +101,14 @@ namespace EU.CqrXs.Console
                         if (string.IsNullOrEmpty(outName))
                             ; // to stdout                    
                         else
-                            if (args[i].ToLower().Contains("file") || optStr.Contains(LibPaths.SepChar) || optStr.Contains('.') || !string.IsNullOrEmpty(outName))
-                            outFile = new FileInfo(outName);
+                            if (args[i].ToLower().Contains("file") || optStr.Contains(LibPaths.SepChar) || optStr.Contains('.') || !args[i].ToLower().Contains("text"))
+                        {
+                            string odir = Path.GetDirectoryName(optStr);
+                            if (Directory.Exists(odir)) 
+                                outFile = new FileInfo(outName);
+                            else
+                                outFile = new FileInfo(Path.Combine(progDirectory, outName.Replace(".\\", "")));                            
+                        }                            
                         else
                             if (!string.IsNullOrEmpty(outName) || args[i].ToLower().Contains("text") || optStr.StartsWith("$"))
                             outEnviron = optStr;

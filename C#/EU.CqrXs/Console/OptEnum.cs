@@ -52,7 +52,7 @@ namespace EU.CqrXs.Console
 
             if (arg.Contains("="))
                 // optArg = arg.GetSubStringByPattern("=", true, "", " ", true, StringComparison.CurrentCultureIgnoreCase);
-                optArg = arg.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                optArg = arg.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
 
             switch (arg[0])
             {
