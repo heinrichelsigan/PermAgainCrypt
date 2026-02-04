@@ -67,7 +67,7 @@ namespace EU.CqrXs.Spooler
         static string[] keys = new string[0], files = new string[0];
 
         // specific encrypt/decrypt process variables
-        static string? inName = null, outName = null, outEnviron = null, key = null;
+        static string? outEnviron = null, key = null;
         static FileInfo? inFile = null, outFile = null;
         static byte[]? inBytes = null, outBytes = null;
         static string passKey = "";

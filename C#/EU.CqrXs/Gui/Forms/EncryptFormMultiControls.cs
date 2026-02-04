@@ -39,7 +39,7 @@ namespace EU.CqrXs.Gui.Forms
             InitializeComponent();
             menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
             menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
-            mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
+            mHashes = new ToolStripMenuItem[] { menuHashBCrypt, menuHashBlake2xs, menuHashCShake, menuHashDstu7564, menuHashHex, menuHashMD5, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSCrypt, menuHashSha1, menuHashSha256, menuHashSha384, menuHashSha512, menuHashTupleHash, menuHashWhirlpool };
             // mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCCM, menuCipherModeItemCFB, menuCipherModeItemCTS, menuCipherModeItemEAX, menuCipherModeItemECB, menuCipherModeItemGOFB };
             mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCFB, menuCipherModeItemECB };
 
@@ -347,11 +347,12 @@ namespace EU.CqrXs.Gui.Forms
                     case KeyHash.MD5: menuHashMD5.Checked = true; break;
                     case KeyHash.OpenBSDCrypt: menuHashOpenBSDCrypt.Checked = true; break;
                     case KeyHash.SCrypt: menuHashSCrypt.Checked = true; break;
-                    case KeyHash.Sha1: menuHashSha1.Checked = true; break;
+                    case KeyHash.Sha1: menuHashSha1.Checked = true; break;                    
                     case KeyHash.Sha256: menuHashSha256.Checked = true; break;
+                    case KeyHash.Sha384: menuHashSha384.Checked = true; break;
                     case KeyHash.Sha512: menuHashSha512.Checked = true; break;
                     case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
-                    case KeyHash.Oct: menuHashOct.Checked = true; break;
+                    case KeyHash.Oct: menuHashSha384.Checked = true; break;
                     case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
                     case KeyHash.CShake: menuHashCShake.Checked = true; break;
                     case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
@@ -381,16 +382,16 @@ namespace EU.CqrXs.Gui.Forms
         protected internal KeyHash GetHash()
         {
             if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
+            if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
             if (menuHashHex.Checked) return KeyHash.Hex;
             if (menuHashMD5.Checked) return KeyHash.MD5;
             if (menuHashOpenBSDCrypt.Checked) return KeyHash.OpenBSDCrypt;
             if (menuHashSCrypt.Checked) return KeyHash.SCrypt;
             if (menuHashSha1.Checked) return KeyHash.Sha1;
             if (menuHashSha256.Checked) return KeyHash.Sha256;
+            if (menuHashSha384.Checked) return KeyHash.Sha384;            
             if (menuHashSha512.Checked) return KeyHash.Sha512;
-            if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;
-            if (menuHashOct.Checked) return KeyHash.Oct;
-            if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
+            if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;            
             if (menuHashCShake.Checked) return KeyHash.CShake;
             if (menuHashDstu7564.Checked) return KeyHash.Dstu7564;
             if (menuHashRipeMD256.Checked) return KeyHash.RipeMD256;

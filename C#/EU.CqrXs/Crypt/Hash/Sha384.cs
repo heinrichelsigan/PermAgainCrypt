@@ -54,12 +54,12 @@ namespace EU.CqrXs.Crypt.Hash
 
         public static byte[] HashBytes(byte[] bytes)
         {
-            return SHA1.Create().ComputeHash(bytes);
+            return SHA384.Create().ComputeHash(bytes);
         }
 
         public static byte[] HashBytes(Stream s)
         {
-            return SHA1.Create().ComputeHash(s);
+            return SHA384.Create().ComputeHash(s);
         }
 
 

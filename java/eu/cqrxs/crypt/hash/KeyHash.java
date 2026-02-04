@@ -61,7 +61,12 @@ public enum KeyHash {
      */
     public int getValue() { return value; }
 
-
+	final static KeyHash[] orderedHashes = { KeyHash.BCrypt, KeyHash.Blake2xs, KeyHash.CShake, KeyHash.Dstu7564, 
+		KeyHash.Hex, KeyHash.MD5, KeyHash.Oct, KeyHash.OpenBSDCrypt, KeyHash.RipeMD256, KeyHash.SCrypt, 
+		KeyHash.Sha1, KeyHash.Sha256, KeyHash.Sha384, KeyHash.Sha512, KeyHash.TupleHash,  KeyHash.Whirlpool };
+		
+	
+	
     /**
      * getName
      * @return name of enum
@@ -69,22 +74,22 @@ public enum KeyHash {
     public String getName() {
 		int xval = getValue();
 		switch (xval) {
-			case 0x0: 	return "Hex";
-			case 0x1: 	return "Sha1";
-			case 0x2: 	return "OpenBSDCrypt";
 			case 0x3: 	return "BCrypt";
-			case 0x4: 	return "SCrypt";
-			case 0x5: 	return "MD5";
-			case 0x6: 	return "Sha256";
-			case 0x7: 	return "Sha384";
-			case 0x8: 	return "Oct";
-			case 0x9: 	return "Sha512";
-			case 0xa: 	return "Whirlpool";
 			case 0xb: 	return "Blake2xs";
 			case 0xc: 	return "CShake";
 			case 0xd: 	return "Dstu7564";
+			case 0x0: 	return "Hex";					
+			case 0x5: 	return "MD5";			
+			case 0x8: 	return "Oct";					
+			case 0x2: 	return "OpenBSDCrypt";					
 			case 0xe:  	return "RipeMD256";
+			case 0x4: 	return "SCrypt";
+			case 0x1: 	return "Sha1";
+			case 0x6: 	return "Sha256";
+			case 0x7: 	return "Sha384";
+			case 0x9: 	return "Sha512";
 			case 0xf: 	return "TupleHash";
+			case 0xa: 	return "Whirlpool";
 			default:
 				break;
 		}
@@ -94,7 +99,7 @@ public enum KeyHash {
 	public static String[] getNames() {
 		int cnt = 0;
 		List<String> keyHashList = new ArrayList<>();
-		for (KeyHash keyHash : KeyHash.values())  {
+		for (KeyHash keyHash : orderedHashes)  {
 			keyHashList.add(keyHash.getName());
 			cnt++;
 		}
