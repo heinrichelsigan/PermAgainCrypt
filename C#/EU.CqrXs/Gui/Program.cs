@@ -4,7 +4,7 @@ using EU.CqrXs.Gui.Forms;
 
 
 namespace EU.CqrXs.Gui
-{    
+{
     #region enum FormMode
     public enum FormMode
     {
@@ -26,7 +26,9 @@ namespace EU.CqrXs.Gui
         public static string ProgName { get => Constants.APP_NAME_WINFORM; }
         public static ulong ProgramCount = 0x0;
         internal static Mutex? mutex;
-
+        internal static EncryptFormMultiControls formComplex;
+        internal static EncryptFormSimple formSimple;
+        internal static ApplicationContext applicationContext;
         internal static SystemColorMode colorMode = SystemColorMode.System;
         internal static FormMode formMode = FormMode.MultiComponent;
         // internal static CipherPipe? ciperPipe;
@@ -62,7 +64,7 @@ namespace EU.CqrXs.Gui
                         formMode = FormMode.Simple;
                 }
             }
-                
+
 
             // set Application basic settings
             Application.EnableVisualStyles();
@@ -70,11 +72,23 @@ namespace EU.CqrXs.Gui
             Application.SetCompatibleTextRenderingDefault(false);
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
-            // instanciate a new EncryptForm
-            EncryptFormBase formBase = (formMode == FormMode.Simple) ? new OneTwoThreeFish() : new EncryptFormMultiControls();
+            applicationContext = new ApplicationContext();
+            if (formMode == FormMode.Simple) 
+            {
+                Program.formSimple = new EncryptFormSimple();
+                applicationContext.MainForm = formSimple;
+                applicationContext.Tag = formSimple.Name;
+            }
+            else 
+            {
+                Program.formComplex = new EncryptFormMultiControls();
+                applicationContext.MainForm = formComplex;
+                applicationContext.Tag = formComplex.Name;
+            }
+
 
             // Run application
-            Application.Run(formBase);
+            Application.Run(applicationContext);
 
             // Release, Close, Dispose Mutal Exclusion
             ReleaseCloseDisposeMutex();

@@ -83,6 +83,9 @@
           <SubType>Component</SubType>
         </Compile>
         <Compile Update="Forms\CharHexDecOctBinDialog.cs" />
+        <Compile Update="Forms\EncryptFormSimple.cs">
+          <SubType>Form</SubType>
+        </Compile>
         <Compile Update="Forms\OneTwoThreeFish.cs">
           <SubType>Form</SubType>
         </Compile>
@@ -98,6 +101,9 @@
     </ItemGroup>
     
 	<ItemGroup>
+	  <EmbeddedResource Update="Forms\EncryptFormSimple.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Forms\OneTwoThreeFish.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>

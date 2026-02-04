@@ -15,32 +15,27 @@ namespace EU.CqrXs.Gui.Forms
 {
 
     /// <summary>
-    /// EncryptForm
+    /// EncryptFormSimple
     /// </summary>
-    public partial class EncryptFormMultiControls : EncryptFormBase
+    public partial class EncryptFormSimple : EncryptFormBase
     {
 
         protected internal CipherPipe? cPipe = null;
-        protected internal string simg = "";
-        protected internal ToolStripMenuItem[] menuEncodings;
-        protected internal ToolStripMenuItem[] menuZips;
-        protected internal ToolStripMenuItem[] mHashes;
+        protected internal string simg = "";        
         protected internal ToolStripMenuItem[] mCipherModes;
 
         #region ctor and load
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncryptFormMultiControls"/> class.
+        /// Initializes a new instance of the <see cref="EncryptFormSimple"/> class.
         /// </summary>
         /// <remarks>This constructor sets up the form and initializes its components.  It should be
-        /// called when creating a new instance of the <see cref="EncryptFormMultiControls"/> form.</remarks>
-        public EncryptFormMultiControls()
+        /// called when creating a new instance of the <see cref="EncryptFormSimple"/> form.</remarks>
+        public EncryptFormSimple()
         {
             InitializeComponent();
-            menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
-            menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
-            mHashes = new ToolStripMenuItem[] { menuHashOct, menuHashBlake2xs, menuHashBCrypt, menuHashCShake, menuHashDstu7564, menuHashMD5, menuHashHex, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSha1, menuHashSha256, menuHashSha512, menuHashSCrypt, menuHashWhirlpool, menuHashTupleHash };
-            // mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCCM, menuCipherModeItemCFB, menuCipherModeItemCTS, menuCipherModeItemEAX, menuCipherModeItemECB, menuCipherModeItemGOFB };
+            
+                     
             mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCFB, menuCipherModeItemECB };
 
             tabControlWithHexDest.AsciiTextReadonly = true;
@@ -50,12 +45,6 @@ namespace EU.CqrXs.Gui.Forms
                 => await Decrypt_Click(sender, e));
             buttonReset.Click += new System.EventHandler(async (sender, e)
                 => await Reset_Click(sender, e));
-            comboBoxEncoding.SelectedIndexChanged += new System.EventHandler(async (sender, e) =>
-                await comboBoxEncoding_SelectedIndexChanged(sender, e));
-            radioButtonListHash.SelectedIndexChanged += new EventHandler(async (sender, e)
-                => await RadioButtonListHash_SelectedIndexChanged(sender, e));
-            comboBoxCompression.SelectedIndexChanged += new System.EventHandler(async (sender, e)
-                => await ComboBoxCompression_SelectedIndexChanged(sender, e));
             groupBoxFiles.FileAdded += GroupBoxFilesAdded;
             groupBoxFiles.FileRequired += GroupBoxFileRequired;
 
@@ -69,10 +58,7 @@ namespace EU.CqrXs.Gui.Forms
                 => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
-            menuMainItemOneTwoThreeFish.Click += new System.EventHandler(async (sender, e)
-                 => await menuMainItemOneTwoThreeFish_Click(sender, e));
-
-            menuMainItemSimple.Click += menuMainFormSimple_Click;
+            menuMainComplex.Click += menuMainComplex_Click;
             try
             {
                 menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e)
@@ -83,46 +69,23 @@ namespace EU.CqrXs.Gui.Forms
                 Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()", "error in delegating menuHelpCharHexDecOctBin.Click exception", exBtnClick, 2);
             }
 
-            foreach (ToolStripMenuItem encodingMenu in menuEncodings)
-                encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
-
-            foreach (var zipMenuItem in menuZips)
-                zipMenuItem.Click += new System.EventHandler(async (sender, e) => await menuCompression_Click(sender, e));
-
-            foreach (var hashMenuItem in mHashes)
-                hashMenuItem.Click += new System.EventHandler(async (sender, e) => await menuHash_Click(sender, e));
-
             foreach (var cipherModeItem in mCipherModes)
-                cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));
-            this.comboBoxCompression.Items.Clear();
-            foreach (ZipType zipType in ZipTypeExtensions.GetZipTypes())
-                this.comboBoxCompression.Items.Add(zipType.ToString());
-            this.comboBoxCompression.SelectedItem = ZipType.None.ToString();
-
-            this.comboBoxAlgo.Items.Clear();
-            foreach (string cipher in GetCipherEnums())
-                this.comboBoxAlgo.Items.Add(cipher.ToString());
-
-            this.comboBoxEncoding.Items.Clear();
-            foreach (EncodingType encodingType in EncodingTypesExtensions.GetEncodingTypes())
-                this.comboBoxEncoding.Items.Add(encodingType.ToString());
-            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
+                cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));            
 
             this.Load += new System.EventHandler(async (sender, e)
-                => await EncryptFormMultiControls_LoadAsync(sender, e));
+                => await EncryptFormSimple_LoadAsync(sender, e));
         }
 
 
         /// <summary>
-        /// EncryptFormMultiControls_LoadAsync - form load event
+        /// EncryptFormSimple_LoadAsync - form load event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal async Task EncryptFormMultiControls_LoadAsync(object sender, EventArgs e)
+        internal async Task EncryptFormSimple_LoadAsync(object sender, EventArgs e)
         {
             this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
-            radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(Resources.BlankEncrypt_640x108, "", true);
             await SetInfoMessageAsync($"{this.Name} started...", ToolTipIcon.Info, 2000);
@@ -134,271 +97,12 @@ namespace EU.CqrXs.Gui.Forms
 
         #region MenuCompressionEncodingZipHash
 
-        protected internal async Task menuCompression_Click(object sender, EventArgs e) => await SetCompressionAsync((ToolStripMenuItem)sender, null);
+        
+        protected internal KeyHash GetHash() => KeyHash.SCrypt;
+        
+        protected internal ZipType GetZip() => ZipType.GZip;
 
-        protected internal async Task ComboBoxCompression_SelectedIndexChanged(object sender, EventArgs e) => await SetCompressionAsync(null, comboBoxCompression.SelectedItem);
-
-        /// <summary>
-        /// SetCompression – sets compression type from menu or combobox
-        /// </summary>
-        /// <param name="mi">selected compression ToolStripMenuItem</param>
-        /// <param name="comboItem">selected compression combobox item</param>
-        protected internal async Task SetCompressionAsync(ToolStripMenuItem? mi = null, object? comboItem = null)
-        {
-            ZipType zipType = (mi != null) ? ZipTypeExtensions.GetZipType(mi.Name ?? "None") :
-                (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None") :
-                    ZipType.None;
-
-            if (mi != null && mi.Checked && comboItem == null)
-            {
-                comboBoxCompression.SelectedItem = zipType.ToString();
-                return;
-            }
-
-            foreach (var menuZ in menuZips)
-                menuZ.Checked = false;
-
-            if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("zmenu") && (mi.Name.EndsWith("7z") || mi.Name.EndsWith("BZip2") || mi.Name.EndsWith("Gzip") || mi.Name.EndsWith("Zip") || mi.Name.EndsWith("None"))))
-            {
-                mi.Checked = true;
-                for (int i = 0; i < comboBoxCompression.Items.Count; i++)
-                {
-                    if (comboBoxCompression.Items[i] != null && comboBoxCompression.Items[i].ToString() == zipType.ToString())
-                    {
-                        comboBoxCompression.SelectedIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            if (mi == null && comboItem != null && !string.IsNullOrEmpty(comboItem.ToString()))
-            {
-                zipType = ZipTypeExtensions.GetZipType(comboItem.ToString() ?? "None");
-                switch (zipType)
-                {
-
-                    case ZipType.GZip: zmenuGZip.Checked = true; break;
-                    case ZipType.Zip: zmenuZip.Checked = true; break;
-                    case ZipType.Z7:
-                    case ZipType.BZip2: zmenuBZip2.Checked = true; break;
-                    case ZipType.None:
-                    default:
-                        zmenuNone.Checked = true;
-                        comboBoxCompression.SelectedItem = ZipType.None.ToString();
-                        break;
-                }
-            }
-            if (cPipe != null)
-            {
-                cPipe.ZType = zipType;
-                await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe?.GenerateEncryptPipeImage());
-            }
-            SetInfoMessage($"ZipType {zipType.ToString()} set.", ToolTipIcon.Info, 1000);
-        }
-
-        /// <summary>
-        /// GetZip - gets selected compression type
-        /// </summary>
-        /// <returns></returns>
-        protected internal ZipType GetZip()
-        {
-            if (zmenu7z.Checked) return ZipType.Z7;
-            if (zmenuBZip2.Checked) return ZipType.BZip2;
-            if (zmenuGZip.Checked) return ZipType.GZip;
-            if (zmenuZip.Checked) return ZipType.Zip;
-            // if (zmenuEncNone.Checked) return ZipType.None;
-            zmenuNone.Checked = true;
-            comboBoxCompression.SelectedItem = ZipType.None.ToString();
-            return ZipType.None;
-        }
-
-        protected internal async Task menuEncodingKind_Click(object sender, EventArgs e) => await SetEncodingAsync((ToolStripMenuItem)sender, null);
-
-        protected internal async Task comboBoxEncoding_SelectedIndexChanged(object sender, EventArgs e) => await SetEncodingAsync(null, comboBoxEncoding.SelectedItem);
-
-        /// <summary>
-        /// SetEncoding - sets encoding type from menu or combobox
-        /// </summary>
-        /// <param name="mi">encoding ToolStripMenuItem</param>
-        /// <param name="comboItem">selected encoding combobox item</param>
-        protected internal async Task SetEncodingAsync(ToolStripMenuItem? mi = null, object? comboItem = null)
-        {
-            EncodingType encodingType = (mi != null) ? EncodingTypesExtensions.GetEncodingTypeFromString(mi.Name.Replace("menuEnc", "")) :
-                (comboItem != null && !string.IsNullOrEmpty(comboItem.ToString())) ? EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None") :
-                EncodingType.None;
-
-            if (mi != null && mi.Checked && comboItem == null)
-            {
-                comboBoxEncoding.SelectedItem = encodingType.ToString();
-                return;
-            }
-
-            foreach (var menuEncods in menuEncodings)
-                menuEncods.Checked = false;
-
-            if (mi != null && mi.Name != null &&
-                (mi.Name.StartsWith("menuEncBase") || mi.Name.StartsWith("menuEncHex") || mi.Name.StartsWith("menuEncUu") ||
-                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx")))
-            {
-                mi.Checked = true;
-                for (int i = 0; i < comboBoxEncoding.Items.Count; i++)
-                {
-                    if (comboBoxEncoding.Items[i] != null && comboBoxEncoding.Items[i].ToString() == encodingType.ToString())
-                    {
-                        comboBoxEncoding.SelectedIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            if (mi == null && comboItem != null && !string.IsNullOrEmpty(comboItem.ToString()))
-            {
-                encodingType = EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None");
-                var menuItemChecked = encodingType.CheckMenuItemForEncoding(menuEncodings);
-                switch (encodingType)
-                {
-                    case EncodingType.Base16: menuEncBase16.Checked = true; break;
-                    case EncodingType.Hex16: menuEncHex16.Checked = true; break;
-                    case EncodingType.Base32: menuEncBase32.Checked = true; break;
-                    case EncodingType.Hex32: menuEncHex32.Checked = true; break;
-                    case EncodingType.Uu: menuEncUu.Checked = true; break;
-                    case EncodingType.Xx: menuEncXx.Checked = true; break;
-                    case EncodingType.Hex64: menuEncHex64.Checked = true; break;
-                    case EncodingType.None: menuEncNone.Checked = true; break;
-                    case EncodingType.Base64:
-                    default: menuEncBase64.Checked = true; break;
-                }
-            }
-            if (cPipe != null)
-            {
-                cPipe.EncodeType = encodingType;
-                await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe?.GenerateEncryptPipeImage());
-            }
-            await SetInfoMessageAsync($"Encoding {encodingType.ToString()} set.", ToolTipIcon.Info, 1000);
-        }
-
-        /// <summary>
-        /// GetEncoding - gets selected encoding type
-        /// </summary>
-        /// <returns></returns>
-        protected internal EncodingType GetEncoding()
-        {
-            EncodingType encType = EncodingTypesExtensions.GetEncodíngTypeFromCheckMenuItem(menuEncodings);
-            if (menuEncNone.Checked) return EncodingType.None;
-            if (menuEncBase16.Checked) return EncodingType.Base16;
-            if (menuEncHex16.Checked) return EncodingType.Hex16;
-            if (menuEncBase32.Checked) return EncodingType.Base32;
-            if (menuEncHex32.Checked) return EncodingType.Hex32;
-            if (menuEncHex64.Checked) return EncodingType.Hex64;
-            if (menuEncUu.Checked) return EncodingType.Uu;
-            if (menuEncXx.Checked) return EncodingType.Xx;
-            menuEncBase64.Checked = true;
-            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
-            return EncodingType.Base64;
-
-        }
-
-        protected internal async Task menuHash_Click(object sender, EventArgs e) => await SetHashAsync((ToolStripMenuItem)sender, (RadioButtonList)radioButtonListHash);
-
-        protected internal async Task RadioButtonListHash_SelectedIndexChanged(object sender, EventArgs e) => await SetHashAsync(null, (RadioButtonList)sender);
-
-        /// <summary>
-        /// SetHash – sets hash type from menu or radiobuttonlist
-        /// </summary>
-        /// <param name="mi">hash ToolStripMenuItem selected</param>
-        /// <param name="radioButtonList">hash radioButtonList</param>
-        protected internal async Task SetHashAsync(ToolStripMenuItem? mi, RadioButtonList? radioButtonList)
-        {
-            KeyHash[] keyHashes = KeyHash_Extensions.GetHashTypes();
-            KeyHash aKeyHash = KeyHash.Hex;
-
-            foreach (var menuHashe in mHashes)
-                menuHashe.Checked = false;
-
-
-            string hashPattern = "Hex";
-            if (mi != null && mi.Name != null && mi.Name.StartsWith("menuHash"))
-            {
-                mi.Checked = true;
-                hashPattern = mi.Name.Replace("menuHash", "");
-                if (hashPattern.Equals("OpenBSD", StringComparison.CurrentCultureIgnoreCase))
-                    hashPattern = "OpenBSDCrypt";
-                try
-                {
-                    if (radioButtonList != null)
-                        radioButtonList.SelectedItem = hashPattern;
-                }
-                catch (Exception exRadio)
-                {
-                    Area23Log.LogOriginEx("EncryptForm Hash", exRadio);
-                }
-            }
-
-
-            if (radioButtonList != null && radioButtonList.SelectedItem != null)
-            {
-                aKeyHash = (hashPattern.StartsWith("Xoo") || hashPattern.StartsWith("Zodi")) ?
-                            KeyHash_Extensions.GetKeyHashFromString(hashPattern) :
-                            KeyHash_Extensions.GetKeyHashFromString(radioButtonList.SelectedItem.ToString());
-                switch (aKeyHash)
-                {
-                    case KeyHash.BCrypt: menuHashBCrypt.Checked = true; break;
-                    case KeyHash.MD5: menuHashMD5.Checked = true; break;
-                    case KeyHash.OpenBSDCrypt: menuHashOpenBSDCrypt.Checked = true; break;
-                    case KeyHash.SCrypt: menuHashSCrypt.Checked = true; break;
-                    case KeyHash.Sha1: menuHashSha1.Checked = true; break;
-                    case KeyHash.Sha256: menuHashSha256.Checked = true; break;
-                    case KeyHash.Sha512: menuHashSha512.Checked = true; break;
-                    case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
-                    case KeyHash.Oct: menuHashOct.Checked = true; break;
-                    case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
-                    case KeyHash.CShake: menuHashCShake.Checked = true; break;
-                    case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
-                    case KeyHash.RipeMD256: menuHashRipeMD256.Checked = true; break;
-                    case KeyHash.TupleHash: menuHashTupleHash.Checked = true; break;
-                    case KeyHash.Hex: menuHashHex.Checked = true; break;
-                    default:
-                        Area23Log.LogOriginMsg("EncryptForm Hash", $"RadioButtonList: {radioButtonList.SelectedItem.ToString()} => KeyHash = {aKeyHash.ToString()}.");
-                        menuHashHex.Checked = true;
-                        break;
-                }
-            }
-
-            Hash_Click(this, new EventArgs());
-            if (cPipe != null)
-            {
-                cPipe.KHash = aKeyHash;
-                await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe?.GenerateEncryptPipeImage());
-            }
-            await SetInfoMessageAsync($"{GetHash().ToString()} hashed.", ToolTipIcon.Info, 1000);
-        }
-
-        /// <summary>
-        /// GetHash - gets selected hash type
-        /// </summary>
-        /// <returns></returns>
-        protected internal KeyHash GetHash()
-        {
-            if (menuHashBCrypt.Checked) return KeyHash.BCrypt;
-            if (menuHashHex.Checked) return KeyHash.Hex;
-            if (menuHashMD5.Checked) return KeyHash.MD5;
-            if (menuHashOpenBSDCrypt.Checked) return KeyHash.OpenBSDCrypt;
-            if (menuHashSCrypt.Checked) return KeyHash.SCrypt;
-            if (menuHashSha1.Checked) return KeyHash.Sha1;
-            if (menuHashSha256.Checked) return KeyHash.Sha256;
-            if (menuHashSha512.Checked) return KeyHash.Sha512;
-            if (menuHashWhirlpool.Checked) return KeyHash.Whirlpool;
-            if (menuHashOct.Checked) return KeyHash.Oct;
-            if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
-            if (menuHashCShake.Checked) return KeyHash.CShake;
-            if (menuHashDstu7564.Checked) return KeyHash.Dstu7564;
-            if (menuHashRipeMD256.Checked) return KeyHash.RipeMD256;
-            if (menuHashTupleHash.Checked) return KeyHash.TupleHash;
-
-            menuHashHex.Checked = true;
-            return KeyHash.Hex;
-        }
+        protected internal EncodingType GetEncoding() => EncodingType.Base64;
 
         protected internal async Task menuCipherMode_Click(object sender, EventArgs e)
         {
@@ -474,61 +178,7 @@ namespace EU.CqrXs.Gui.Forms
             }
         }
 
-        /// <summary>
-        /// pictureBoxAddAlgo_Click - adds selected algorithm to pipeline
-        /// </summary>
-        /// <param name="sender">object sender</param>
-        /// <param name="e">EventArgs e</param>
-        protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
-        {
-            CipherEnum[] cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
-            {
-                if (cipherAlgos.Length < 8)
-                {
-                    switch (cipherEnum)
-                    {
-                        case CipherEnum.BlowFish:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
-                            break;
-                        case CipherEnum.Fish2:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
-                            break;
-                        case CipherEnum.Fish3:
-                        //case CipherEnum.ThreeFish256:
-                        //    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
-                        //    break;
-                        case CipherEnum.Serpent:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
-                            break;
-                        case CipherEnum.XTea:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.XTea, "", true);
-                            break;
-                        case CipherEnum.Tea:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Tea, "", true);
-                            break;
-                        case CipherEnum.Des:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Des, "", true);
-                            break;
-                        case CipherEnum.Des3:
-                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
-                            break;
-                        default:
-                            break;
-                    }
-                    this.textBoxPipe.Text += cipherEnum.ToString() + ";";
-                    cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                    cPipe = new CipherPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage(), "", true);
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
-                }
-                else
-                {
-                    SetInfoMessage("Max 8 algorithms in pipe reached!", ToolTipIcon.Warning, 2000);
-                }
-            }
-        }
-
+   
         /// <summary>
         /// pictureBoxDelete_Click - clears pipeline textbox
         /// </summary>
@@ -564,7 +214,8 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, 
+                GetEncoding(),  GetZip(), GetHash(), GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -589,7 +240,8 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text,
+                GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -630,9 +282,6 @@ namespace EU.CqrXs.Gui.Forms
             cPipe = null;
             await this.groupBoxFiles.ResetPictureBoxFilesAsync(sender, e);
 
-            await this.SetEncodingAsync(menuEncBase64);
-            await this.SetCompressionAsync(null, "None");
-            await this.SetHashAsync(menuHashHex, radioButtonListHash);
             await this.statusLabelSource.SetTextAsync("");
             await this.statusLabelDestination.SetTextAsync("");
             await this.statusLabelMsg.SetTextAsync("");
@@ -662,16 +311,15 @@ namespace EU.CqrXs.Gui.Forms
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
             if (string.IsNullOrEmpty(this.textBoxPipe.Text) && this.warnOnEmptyPipeToolStripMenuItem.Checked)
             {
-                string warnMsg = $"No encryption pipe is set, do you want to {GetEncoding()} encode only?";
-                if (GetEncoding() == EncodingType.None && GetZip() == ZipType.None)
-                    warnMsg = "Neither pipe, nor zip, nor encoding is set, encrypt will transform nothing.";
-
+                string warnMsg = $"No encryption pipe is set, do you want to gzip with Base64 encode only?";                
                 DialogResult result = MessageBox.Show(this, warnMsg, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (result == DialogResult.Cancel)
                     return;
             }
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new CipherPipe(pipeAlgos, 8,
+                                    GetEncoding(), GetZip(), GetHash(),
+                                    GetCipherMode2());
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateEncryptPipeImage());
 
@@ -685,10 +333,9 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
-                    if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        await SetEncodingAsync(menuEncBase64);
 
-                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text,
+                        GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
                     this.tabControlWithHexDest.EncoderType = GetEncoding();
                     this.tabControlWithHexDest.AsciiText = encrypted;
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
@@ -716,14 +363,7 @@ namespace EU.CqrXs.Gui.Forms
                     }
                     return;
                 }
-
-                if (this.warnOnDoubleZippingToolStripMenuItem.Checked && Path.GetExtension(fileName).IsCompressedFile() && GetZip() != ZipType.None)
-                {
-                    DialogResult dresult = MessageBox.Show(this, "Zip an already compressed file twice?", "Double zip warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (dresult == DialogResult.No)
-                        return;
-                }
-
+                
                 await SetInfoMessageAsync("Starting encryption for file " + groupBoxFiles.labelFileIn.Text, ToolTipIcon.Info, -1);
 
                 Cursor.Current = new Cursor(iconSandClock.Handle);
@@ -731,7 +371,8 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
 
-                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, this.textBoxHash.Text,
+                        GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
                     string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
                     string outFilePath = (fileName + GetHash().GetExtension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
 
@@ -834,11 +475,10 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
-                    if (menuEncNone.Checked && (pipeAlgos.Length > 0 || GetZip() != ZipType.None))
-                        await SetEncodingAsync(menuEncBase64);
 
-                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
-                    this.tabControlWithHexDest.EncoderType = EncodingType.None;
+                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, this.textBoxHash.Text,
+                        GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+                    this.tabControlWithHexDest.EncoderType = GetEncoding();
                     this.tabControlWithHexDest.AsciiText = decrypted;
 
                     await SetInfoMessageAsync("Decryption finished", ToolTipIcon.Info, 6000);
@@ -998,36 +638,7 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     cPipe = GetCPipeFromFileName(fileName);
                     if (cPipe != null)
-                    {
-                        foreach (var miHash in mHashes)
-                        {
-                            if (miHash.Name.Replace("menuHash", "").Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                                miHash.Text.Equals(cPipe.KHash.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                SetHashAsync((ToolStripMenuItem)miHash, radioButtonListHash).ConfigureAwait(false);
-
-                                break;
-                            }
-                        }
-                        foreach (var miEnc in menuEncodings)
-                        {
-                            if (miEnc.Name.Replace("menuEnc", "").Equals(cPipe.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                                miEnc.Text.Equals(cPipe.EncodeType.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                SetEncodingAsync((ToolStripMenuItem)miEnc, null).ConfigureAwait(true);
-                                break;
-                            }
-                        }
-                        foreach (var miZip in menuZips)
-                        {
-                            if (miZip.Name.Replace("zmenu", "").Equals(cPipe.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase) ||
-                               miZip.Text.Equals(cPipe.ZType.ToString(), StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                SetCompressionAsync((ToolStripMenuItem)miZip, null).ConfigureAwait(true);
-                                break;
-                            }
-                        }
-
+                    {                        
                         this.textBoxPipe.Text = "";
                         foreach (CipherEnum cipher in cPipe.InPipe)
                         {
@@ -1042,7 +653,7 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion file loading and saving ops
 
-        #region HelpOpenSave
+        #region menus
 
         protected internal override async Task menuHelp_Click(object sender, EventArgs e)
         {
@@ -1062,31 +673,19 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         /// <summary>
-        /// Shows OneTwoThreeFish Demo form 
+        /// Switches to complex WinForm <see cref="EncryptFormMultiControls"/>
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// <returns><see cref="T:Task"</returns>
-        protected internal virtual async Task menuMainItemOneTwoThreeFish_Click(object sender, EventArgs e)
+        /// <returns><see cref="Task"/></returns>
+        protected internal virtual void menuMainComplex_Click(object sender, EventArgs e)
         {
-            OneTwoThreeFish oneTwoThreeFish = new OneTwoThreeFish();
-            DialogResult result = await oneTwoThreeFish.ShowDialogAsync();
-            if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
-                result == DialogResult.Ignore)
-            {
-                try { oneTwoThreeFish.Close(); } catch { }
-            }
-        }
+            if (Program.formComplex == null)
+                Program.formComplex = new EncryptFormMultiControls();
 
-        internal void menuMainFormSimple_Click(object sender, EventArgs e)
-        {
-            if (Program.formSimple == null)
-                Program.formSimple = new EncryptFormSimple();
-
-            Program.formSimple.Show();
             this.Hide();
-            Program.formComplex.Hide();
-            Program.formSimple.Focus();
+            Program.formSimple.Hide();
+            Program.formComplex.Show();
         }
 
         /// <summary>
@@ -1256,7 +855,32 @@ namespace EU.CqrXs.Gui.Forms
             }
         }
 
-        #endregion OpenSave    
+        protected internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
+        {
+            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
+            DialogResult dresult = await dialog.ShowDialogAsync();
+            if (dresult == DialogResult.OK)
+                return;
+            else if (dresult != DialogResult.Continue)
+                return;
+
+            string topLevelDomain = ".at", url = "";
+            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
+                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
+
+            switch (++ufcnt)
+            {
+                case 1: url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images"; break;
+                case 2: url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay"; break;
+                case 0:
+                default: ufcnt %= 3; url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd"; break;
+            }
+
+            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
+            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
+        }
+
+        #endregion menus    
 
 
         #region Media Methods
@@ -1358,32 +982,6 @@ namespace EU.CqrXs.Gui.Forms
         #endregion Media Methods
 
 
-        protected internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
-            DialogResult dresult = await dialog.ShowDialogAsync();
-            if (dresult == DialogResult.OK)
-                return;
-            else if (dresult != DialogResult.Continue)
-                return;
-
-            string topLevelDomain = ".at", url = "";
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
-                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
-
-            switch (++ufcnt)
-            {
-                case 1: url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images"; break;
-                case 2: url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay"; break;
-                case 0:
-                default: ufcnt %= 3; url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd"; break;
-            }
-
-            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
-            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
-        }
-
-        
     }
 
 }
