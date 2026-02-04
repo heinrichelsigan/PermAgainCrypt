@@ -474,10 +474,13 @@ public class ZenMatrix implements BlockCipher  {
                     outBytes[i] = inBytes[i];               // copy full inBytes to outBytes
                 else if (i == ilen)
                     outBytes[i] = (byte)0x0;                // write 0x0 at end of inBytes
-                else if (i > ilen)
-                    outBytes[i] = padbuf[j++];              // fill rest with padding buffer
+                else if (i == ilen + 1)
+                    outBytes[i] = (byte)0xff;                // stop byte
                 else if (i == (olen - 1))
                     outBytes[i] = (byte)0x0;                // terminate outBytes with NULL
+                else if (i > (ilen + 1))
+                    outBytes[i] = padbuf[j++];              // fill rest with padding buffer
+
             }
         } else {                                            // truncate padding buffer to get trimmed decrypted output
 
@@ -485,11 +488,9 @@ public class ZenMatrix implements BlockCipher  {
             boolean last0 = false;
 
             for (olen = ilen; (olen > 0 && !last0); olen--) {
-                if (olen < (ilen - 2))  {
-                    if ((inBytes[olen - 1] == (byte)0x0) && inBytes[olen - 2] != (byte)0x0)  {
-                        last0 = true;
-                        break;
-                    }
+                if ((inBytes[olen - 1] == (byte)0xff) && inBytes[olen - 2] == (byte)0x0) {
+                    last0 = true;
+                    break;
                 }
             }
 

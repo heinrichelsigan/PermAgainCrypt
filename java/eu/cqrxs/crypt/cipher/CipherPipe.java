@@ -619,6 +619,7 @@ public class CipherPipe {
                 decoding, unzipAfter, keyHash, cmode2);
 
         // Get String from decrypted bytes
+
         String decrypted = (inPipe.length == 0) ?
                 new String(decryptedBytes, "UTF8") :
                 new String(decryptedBytes, StandardCharsets.UTF_8);
