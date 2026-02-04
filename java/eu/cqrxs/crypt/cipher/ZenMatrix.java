@@ -173,12 +173,11 @@ public class ZenMatrix implements BlockCipher  {
                     bCnt += 0x10;
             }
 
-            // byte[] outBytes = processed;
-            // if (!forEncryption)
-            //    outBytes = PadBuffer(processed);
-            // Array.Copy(outBytes, 0, outBuf, outOff, BLOCK_SIZE);
+			byte[] outBytes = processed;
+            if (!forEncryption)
+                outBytes = padBuffer(processed, false);			
 
-            System.arraycopy(processed, 0, outBuf, outOff, BLOCK_SIZE);
+            System.arraycopy(outBytes, 0, outBuf, outOff, BLOCK_SIZE);
 
             return BLOCK_SIZE;
         }
@@ -475,7 +474,7 @@ public class ZenMatrix implements BlockCipher  {
                 else if (i == ilen)
                     outBytes[i] = (byte)0x0;                // write 0x0 at end of inBytes
                 else if (i == ilen + 1)
-                    outBytes[i] = (byte)0xff;                // stop byte
+                    outBytes[i] = (byte)0xff;                // write 0xff as stop byte at first byte of padding buffer
                 else if (i == (olen - 1))
                     outBytes[i] = (byte)0x0;                // terminate outBytes with NULL
                 else if (i > (ilen + 1))
@@ -507,13 +506,13 @@ public class ZenMatrix implements BlockCipher  {
      * @param pdata plain data as
      * @return encrypted data
      */
-    public byte[] encrypt(byte[] pdata) {
+    public byte[] encrypt(byte[] pdata, boolean randomBuffer) {
         // Check arguments.
         if (pdata == null || pdata.length <= 0)
             throw new IllegalArgumentException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
 
         forEncryption = true;
-        byte[] obytes = padBuffer(pdata, false);
+        byte[] obytes = padBuffer(pdata, randomBuffer);
 
         List<Byte> encryptedBytes = new ArrayList<Byte>();
         for (int i = 0; i < obytes.length; i += 0x10)  {
@@ -531,6 +530,9 @@ public class ZenMatrix implements BlockCipher  {
         return retbytes; // encryptedBytes.toArray();
     }
 
+	public byte[] encrypt(byte[] pdata) {
+		return encrypt(pdata, false);
+	}
 
     /**
      * decrypt
@@ -568,6 +570,7 @@ public class ZenMatrix implements BlockCipher  {
     /* #region static helpers swap byte and SwapT{T} generic */
 
 
+
     /**
      * buildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
      * @param matrix byte[16] encryption matrix
@@ -601,11 +604,11 @@ public class ZenMatrix implements BlockCipher  {
         String s = String.format("%02x", inByte);
         byte maskLsb = (byte)0x0f;
         byte maskMsb = (byte)0xf0;
-		byte lsbIn = (byte)((short)inByte % 16);
+		byte lsbIn = (byte)((inByte & 0x0f) % 16);
 		lsbIn = (byte)(mapChar(s.charAt(1)));
         // byte lsbIn = (byte)(inByte & maskLsb);
 
-		byte msbIn = (byte)((short)((short)inByte / 0x10)); 
+		byte msbIn = (byte)((inByte & 0xf0) / 0x10); 
         msbIn = (byte)(mapChar(s.charAt(0)));
         // byte msbIn = (byte)(inByte & maskMsb);
         byte lsbOut, msbOut;
@@ -613,21 +616,21 @@ public class ZenMatrix implements BlockCipher  {
         {
             lsbOut = matrixPermutationKey[(byte)lsbIn];
             msbOut = matrixPermutationKey[(byte)msbIn];
-            outSBytes[1] = (byte)inByte;
-            outSBytes[2] = msbOut;
-            outSBytes[3] = lsbOut;
-            outByte = (byte)((short)(((short)msbOut * 0x10) + ((short)lsbOut)));
+            outByte = (byte)((msbOut * 0x10) + lsbOut);
             outSBytes[0] = outByte;
+			outSBytes[1] = (byte)inByte;
+            outSBytes[2] = msbOut;
+            outSBytes[3] = lsbOut;            
         }
         else // if decrypt
         {
             lsbOut = _inverseMatrix[(byte)lsbIn];
             msbOut = _inverseMatrix[(byte)msbIn];
+			outByte = (byte)((msbOut * 0x10) + lsbOut);
+			outSBytes[0] = outByte;
             outSBytes[1] = (byte)inByte;
             outSBytes[2] = msbOut;
-            outSBytes[3] = lsbOut;
-            outByte = (byte)((short)(((short)msbOut * 0x10) + ((short)lsbOut)));
-            outSBytes[0] = outByte;
+            outSBytes[3] = lsbOut;            
         }
 
 		// String s = "OutBytes: " + String.valueOf(outSBytes[0]) + " " + String.valueOf(outSBytes[1]) + " "  + String.valueOf(outSBytes[2])  + " "  + String.valueOf(outSBytes[3]);

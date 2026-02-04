@@ -358,7 +358,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="pdata">plain data as <see cref="T:byte[]"/></param>
         /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
-        public override byte[] Encrypt(byte[] pdata)
+        public override byte[] Encrypt(byte[] pdata, bool randomBuf = false)
         {
             // Check arguments.
             if (pdata == null || pdata.Length <= 0)
@@ -382,11 +382,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     obytes[i] = pdata[i];                    // copy full data to obytes
                 else if (i == dlen)
                     obytes[i] = (byte)0x0;                  // write 0x0 at end of data bytes
+                else if (i == dlen + 1)
+                    obytes[i] = (byte)0xff;                  // write 0xff as stop byte beginning padding buffer
+                else if (i == (olen - 1))
+                    obytes[i] = (byte)0x0;                  // terminate end of obytes with 0x0                                    
                 else if (i > dlen)
                     obytes[i] = rndbuf[j++];                // fill rest with random hash padding 
 
-                if (i == (olen - 1))
-                    obytes[i] = (byte)0x0;                  // terminate end of obytes with 0x0                                    
+
             }
 
 
@@ -434,7 +437,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             for (dlen = olen; dlen > 0 && !first0; dlen--)
             {
-                if (dlen < (olen - 2) && (outBytes.ElementAt(dlen - 1) == (byte)0x0))
+                if (dlen <= olen && 
+                    (outBytes.ElementAt(dlen - 1) == (byte)0xff) && 
+                        // || outBytes.ElementAt(dlen - 1) == (byte)0x00) &&
+                    outBytes.ElementAt(dlen - 2) == (byte)0x0)
                 {
                     first0 = true;
                     break;

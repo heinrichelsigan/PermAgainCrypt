@@ -301,11 +301,11 @@ public class CipherPipe {
                 break;
             */
             case ZenMatrix:
-                encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes);
+                encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
             // case CipherEnum.ZenMatrix2:
-            //     encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-            //     break;
+            //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
+            //  break;
             case Aes:
             case AesNet:
             case AesLight:
@@ -319,7 +319,6 @@ public class CipherPipe {
             case Dstu7624:
             case Fish2:
             case Fish3:
-            // case ThreeFish256:
             case Gost28147:
             case Idea:
             case Noekeon:

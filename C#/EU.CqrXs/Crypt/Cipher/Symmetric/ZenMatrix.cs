@@ -273,10 +273,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     bCnt += 0x10;
             }
 
-            // byte[] outBytes = processed;
-            // if (!forEncryption)                             // trim padding buffer from decrypted output
-            //     outBytes = PadBuffer(processed);
-            // output = new Span<byte>(outBytes);
+            byte[] outBytes = processed;
+            if (!forEncryption)                             // trim padding buffer from decrypted output
+                 outBytes = PadBuffer(processed);
+            output = new Span<byte>(outBytes);
 
             output = new Span<byte>(processed);
 
@@ -601,10 +601,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                         outBytes[i] = inBytes[i];               // copy full inBytes to outBytes
                     else if (i == ilen)
                         outBytes[i] = (byte)0x0;                // write 0x0 at end of inBytes
-                    else if (i > ilen)
-                        outBytes[i] = padbuf[j++];              // fill rest with padding buffer
+                    else if (i == ilen + 1)
+                        outBytes[i] = (byte)0xff;               // write 0xff as stop byte EOF as 1st byte of padBuf
                     else if (i == (olen - 1))
                         outBytes[i] = (byte)0x0;                // terminate outBytes with NULL
+                    else if (i > ilen)
+                        outBytes[i] = padbuf[j++];              // fill rest with padding buffer
+                    
                 }
             }
             else                                                // truncate padding buffer to get trimmed decrypted output
@@ -614,9 +617,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
                 for (olen = ilen; (olen > 0 && !last0); olen--)
                 {
-                    if (olen < (ilen - 2))
+                    if (olen <= ilen)
                     {
-                        if ((inBytes[olen - 1] == (byte)0x0) && inBytes[olen - 2] != (byte)0x0)
+                        if ((inBytes[olen - 1] == (byte)0xff) //  || inBytes[olen - 1] == (byte)0x0
+                            && inBytes[olen - 2] == (byte)0x0)
                         {
                             last0 = true;
                             break;
@@ -637,14 +641,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="pdata">plain data as <see cref="T:byte[]"/></param>
         /// <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
-        public virtual byte[] Encrypt(byte[] pdata)
+        public virtual byte[] Encrypt(byte[] pdata, bool randomBuf = false)
         {
             // Check arguments.
             if (pdata == null || pdata.Length <= 0)
                 throw new ArgumentNullException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
 
             forEncryption = true;
-            byte[] obytes = PadBuffer(pdata, false);
+            byte[] obytes = PadBuffer(pdata, randomBuf);
 
             List<byte> encryptedBytes = new List<byte>();
             for (int i = 0; i < obytes.Length; i += 0x10)
@@ -697,7 +701,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         {
             List<byte> outSBytes = new List<byte>(2);
             byte lsbIn = (byte)(inByte & 0x0F);
-            byte msbIn = (byte)(((inByte & 0xF0) / 0x10));
+            byte msbIn = (byte)((inByte & 0xF0) / 0x10);
             byte lsbOut, msbOut;
             if (encrypt)
             {
@@ -705,7 +709,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 msbOut = MatrixPermutationKey[(int)msbIn];
                 outSBytes.Add(lsbOut);
                 outSBytes.Add(msbOut);
-                outByte = (byte)((short)(((short)msbOut * 0x10) + ((short)lsbOut)));
+                outByte = (byte)((msbOut * 0x10) + lsbOut);
             }
             else // if decrypt
             {
@@ -713,7 +717,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 msbOut = _inverseMatrix[(int)msbIn];
                 outSBytes.Add(lsbOut);
                 outSBytes.Add(msbOut);
-                outByte = (byte)((short)(((short)msbOut * 0x10) + ((short)lsbOut)));
+                outByte = (byte)((msbOut * 0x10) + lsbOut);
             }
 
             return outSBytes.ToArray();
