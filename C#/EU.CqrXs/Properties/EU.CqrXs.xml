@@ -937,7 +937,7 @@
         <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.PermutationKeyHash">
             <summary>
             PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/>
-            Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
+            Advantage of <see cref="T:HashSet{byte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.ProcessBlock(System.Byte[],System.Int32,System.Byte[],System.Int32)">
@@ -1032,13 +1032,6 @@
             <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.BuildInverseMatrix(System.SByte[],System.Int32)">
-            <summary>
-            BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
-            </summary>
-            <param name="matrix">sbyte[16] encryption matrix</param>
-            <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
-        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)">
             <summary>
             MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/> in case of encrypt,
@@ -1047,14 +1040,21 @@
             <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
             <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
             <param name="encrypt">true for encryption, false for decryption</param>
-            <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant and least significant) bit</returns>
+            <returns>An <see cref="T:byte[]"/> array with 2  0x0 - 0xf segments (most significant and least significant) bit</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.BuildInverseMatrix(System.Byte[],System.Int32)">
+            <summary>
+            BuildInverseMatrix, builds the determinant decryption matrix for byte[16] encryption matrix
+            </summary>
+            <param name="matrix">byte[16] encryption matrix</param>
+            <returns><see cref="T:byte[]">byte[16]</see> decryption matrix (determinante)</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2">
             <summary>
-            More complex but still lightweight sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
+            More complex but still lightweight byte mapping from 0x0 .. to 0xf as symmetric cipher matrix
             position swaps and byte mappings are seperated in 2 matrizes 
             and maybe I will add ZenMatrix3 l8r, to multiply and divide byte values with a 3rd matrix 
-            for mapping sbyte[1] => byte[1] 0xf => 0xab and generate 
+            for mapping byte[1] => byte[1] 0xf => 0xab and generate 
             
             I would never introduce such a cipher in real world applications, 
             only for students how the simplest blockcipher works
@@ -1076,7 +1076,7 @@
         <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.PermutationKeyHash2">
             <summary>
             PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/>
-            Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
+            Advantage of <see cref="T:HashSet{byte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor">
@@ -1145,12 +1145,12 @@
             <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.SByte[],System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.Byte[],System.Int32)">
             <summary>
-            BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
+            BuildInverseMatrix, builds the determinant decryption matrix for byte[16] encryption matrix
             </summary>
-            <param name="matrix">sbyte[16] encryption matrix</param>
-            <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
+            <param name="matrix">byte[16] encryption matrix</param>
+            <returns><see cref="T:byte[]">byte[16]</see> decryption matrix (determinante)</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)">
             <summary>
@@ -1160,7 +1160,7 @@
             <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
             <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
             <param name="encrypt">true for encryption, false for decryption</param>
-            <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
+            <returns>An <see cref="T:byte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.CryptSettings">
             <summary>

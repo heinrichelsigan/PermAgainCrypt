@@ -2,11 +2,11 @@
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Crypt.Msg;
-using EU.CqrXs.Util;
-using EU.CqrXs.Zip;
 using EU.CqrXs.Gui.Helper;
 using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
+using EU.CqrXs.Util;
+using EU.CqrXs.Zip;
 
 namespace EU.CqrXs.Gui.Forms
 {
@@ -24,6 +24,7 @@ namespace EU.CqrXs.Gui.Forms
         protected internal delegate void SetGroupBoxTextCallback(System.Windows.Forms.GroupBox groupBox, string headerText);
         protected internal delegate void SetPictureBoxCallback(System.Windows.Forms.PictureBox pictBox, Image image, string tagTxt, bool show);
         protected internal delegate void SetStatusLabelTextCallback(System.Windows.Forms.ToolStripStatusLabel tsLabel, string text);
+        protected internal delegate void SetProgressBarValueCallback(System.Windows.Forms.ProgressBar pBar, int pVal);
 
         protected override void OnLoad(EventArgs e)
         {
@@ -105,6 +106,34 @@ namespace EU.CqrXs.Gui.Forms
             }
         }
         
+        protected internal virtual void SetProgressBarValue(ProgressBar pBar, int pVal)
+        {
+            
+            if (pBar != null)
+            {
+                if (pBar.InvokeRequired)
+                {
+                    SetProgressBarValueCallback pbarCall = delegate (ProgressBar prBar, int prVal)
+                    {
+                        if (prBar != null)
+                            prBar.Value = prVal;
+                    };
+                    try
+                    {
+                        Invoke(pbarCall, new object[] { pBar, pVal });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsgEx(this.Name, $"Exception in delegate SetProgressBarValue value: \"{pVal}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (pBar != null)
+                        pBar.Value = pVal;
+                }
+            }
+        }
 
         /// <summary>
         /// SetGBoxText delegate to set a text to <see cref="GroupBox"/> across threads

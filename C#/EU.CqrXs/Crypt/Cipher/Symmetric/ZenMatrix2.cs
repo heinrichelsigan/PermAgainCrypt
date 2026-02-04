@@ -9,10 +9,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {
 
     /// <summary>
-    /// More complex but still lightweight sbyte mapping from 0x0 .. to 0xf as symmetric cipher matrix
+    /// More complex but still lightweight byte mapping from 0x0 .. to 0xf as symmetric cipher matrix
     /// position swaps and byte mappings are seperated in 2 matrizes 
     /// and maybe I will add ZenMatrix3 l8r, to multiply and divide byte values with a 3rd matrix 
-    /// for mapping sbyte[1] => byte[1] 0xf => 0xab and generate 
+    /// for mapping byte[1] => byte[1] 0xf => 0xab and generate 
     /// 
     /// I would never introduce such a cipher in real world applications, 
     /// only for students how the simplest blockcipher works
@@ -36,20 +36,20 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// abstraction of a 0x10 => 0x10 matrix, for example
         /// <see cref="MatrixPermutationKey2"/> 
         /// </summary>
-        public sbyte[] MatrixPermutationKey2 { get; protected internal set; }
+        public byte[] MatrixPermutationKey2 { get; protected internal set; }
 
-        protected internal sbyte[] _inverseMatrix2 = new sbyte[0];
+        protected internal byte[] _inverseMatrix2 = new byte[0];
         /// <summary>
         /// Inverse Matrix 2 
         /// </summary>
-        protected internal sbyte[] InverseMatrix2
+        protected internal byte[] InverseMatrix2
         {
             get
             {
                 if (_inverseMatrix2 == null ||
                     _inverseMatrix2.Length < 0x10 ||
-                    (_inverseMatrix2[0] == (sbyte)0x0 && _inverseMatrix2[1] == (sbyte)0x0 && _inverseMatrix2[0xf] == (sbyte)0x0) ||
-                    (_inverseMatrix2[0] == (sbyte)0x0 && _inverseMatrix2[1] == (sbyte)0x1 && _inverseMatrix2[0xf] == (sbyte)0xf))
+                    (_inverseMatrix2[0] == (byte)0x0 && _inverseMatrix2[1] == (byte)0x0 && _inverseMatrix2[0xf] == (byte)0x0) ||
+                    (_inverseMatrix2[0] == (byte)0x0 && _inverseMatrix2[1] == (byte)0x1 && _inverseMatrix2[0xf] == (byte)0xf))
                 {
                     _inverseMatrix2 = BuildInverseMatrix(MatrixPermutationKey2);
                 }
@@ -61,9 +61,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// PermutationKeyHash is same as <see cref="MatrixPermutationKey2"/>
-        /// Advantage of <see cref="T:HashSet{sbyte}"/> is, that no duplicated values can be inside
+        /// Advantage of <see cref="T:HashSet{byte}"/> is, that no duplicated values can be inside
         /// </summary>
-        public HashSet<sbyte> PermutationKeyHash2 { get; protected internal set; }
+        public HashSet<byte> PermutationKeyHash2 { get; protected internal set; }
 
 
         #endregion Properties
@@ -72,14 +72,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public ZenMatrix2(int bs) : base(bs)
         {
-            sbyte sbcnt = 0x0;
-            MatrixPermutationKey2 = new sbyte[0x10];
-            foreach (sbyte s in MatrixPermutationBase)
+            byte sbcnt = 0x0;
+            MatrixPermutationKey2 = new byte[0x10];
+            foreach (byte s in MatrixPermutationBase)
             {
                 privateBytes2[sbcnt % 0x10] = (byte)0x0;
                 MatrixPermutationKey2[sbcnt++] = s;
             }
-            PermutationKeyHash2 = new HashSet<sbyte>(MatrixPermutationBase);
+            PermutationKeyHash2 = new HashSet<byte>(MatrixPermutationBase);
             _inverseMatrix2 = BuildInverseMatrix(MatrixPermutationKey2);
         }
 
@@ -88,14 +88,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         public ZenMatrix2() : this(16)
         {
-            sbyte sbcnt = 0x0;
-            MatrixPermutationKey2 = new sbyte[0x10];
-            foreach (sbyte s in MatrixPermutationBase)
+            byte sbcnt = 0x0;
+            MatrixPermutationKey2 = new byte[0x10];
+            foreach (byte s in MatrixPermutationBase)
             {
                 privateBytes2[sbcnt % 0x10] = (byte)0x0;
                 MatrixPermutationKey2[sbcnt++] = s;
             }
-            PermutationKeyHash2 = new HashSet<sbyte>(MatrixPermutationBase);
+            PermutationKeyHash2 = new HashSet<byte>(MatrixPermutationBase);
             _inverseMatrix2 = BuildInverseMatrix(MatrixPermutationKey2);
         }
 
@@ -134,18 +134,18 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         private void InitMatrixSymChiffer2()
         {
-            sbyte sbcnt = 0x0;
-            MatrixPermutationKey = new sbyte[0x10];
-            MatrixPermutationKey2 = new sbyte[0x10];
-            foreach (sbyte s in MatrixPermutationBase)
+            byte sbcnt = 0x0;
+            MatrixPermutationKey = new byte[0x10];
+            MatrixPermutationKey2 = new byte[0x10];
+            foreach (byte s in MatrixPermutationBase)
             {
                 privateBytes[sbcnt % 0x10] = (byte)0x0;
                 privateBytes2[sbcnt % 0x10] = (byte)0x0;
                 MatrixPermutationKey[sbcnt] = s;
                 MatrixPermutationKey2[sbcnt++] = s;
             }
-            PermutationKeyHash = new HashSet<sbyte>(MatrixPermutationBase);
-            PermutationKeyHash2 = new HashSet<sbyte>(MatrixPermutationBase);
+            PermutationKeyHash = new HashSet<byte>(MatrixPermutationBase);
+            PermutationKeyHash2 = new HashSet<byte>(MatrixPermutationBase);
             _inverseMatrix = BuildInverseMatrix(MatrixPermutationKey);
             _inverseMatrix2 = BuildInverseMatrix(MatrixPermutationKey2);
         }
@@ -171,8 +171,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             int ba = 0, bb = 0;
 
-            Dictionary<sbyte, sbyte> MatrixDict2 = new Dictionary<sbyte, sbyte>();
-            PermutationKeyHash2 = new HashSet<sbyte>();
+            Dictionary<byte, byte> MatrixDict2 = new Dictionary<byte, byte>();
+            PermutationKeyHash2 = new HashSet<byte>();
 
             if (keyBytes2.Length < 0x10)
             {
@@ -196,15 +196,15 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             foreach (byte keyByte in new List<byte>(privateBytes2))
             {
-                sbyte b = (sbyte)(keyByte % 0x10);
+                byte b = (byte)(keyByte % 0x10);
                 for (int i = 0; i < 32; i++)
                 {
                     if (PermutationKeyHash2.Contains(b) || ((int)b) == ba)
                     {
                         if (i < 0x10)
-                            b = ((sbyte)((Convert.ToInt32(keyByte) + MagicOrder[i]) % 0x10));
+                            b = ((byte)((Convert.ToInt32(keyByte) + MagicOrder[i]) % 0x10));
                         if (i >= 0x10)
-                            b = ((sbyte)((Convert.ToInt32(keyByte) + i) % 0x10));
+                            b = ((byte)((Convert.ToInt32(keyByte) + i) % 0x10));
                     }
                     else break;
                 }
@@ -216,15 +216,15 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     {
                         if (fullSymmetric)
                         {
-                            if (!MatrixDict2.Keys.Contains(b) && !MatrixDict2.Keys.Contains((sbyte)ba))
+                            if (!MatrixDict2.Keys.Contains(b) && !MatrixDict2.Keys.Contains((byte)ba))
                             {
-                                MatrixDict2.Add((sbyte)ba, (sbyte)bb);
-                                MatrixDict2.Add((sbyte)bb, (sbyte)ba);
+                                MatrixDict2.Add((byte)ba, (byte)bb);
+                                MatrixDict2.Add((byte)bb, (byte)ba);
                             }
                         }
 
                         PermutationKeyHash2.Add(b);
-                        MatrixPermutationKey2 = MatrixPermutationKey2.SwapTPositions<sbyte>(ba, bb);
+                        MatrixPermutationKey2 = MatrixPermutationKey2.SwapTPositions<byte>(ba, bb);
                         ba++;
                     }
                 }
@@ -237,15 +237,15 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 {
                     for (int k = 0; k < 0x10; k++)
                     {
-                        if (!MatrixDict2.Keys.Contains((sbyte)k))
+                        if (!MatrixDict2.Keys.Contains((byte)k))
                         {
                             for (int l = 0x0f; l >= 0; l--)
                             {
-                                if (!MatrixDict2.Values.Contains((sbyte)l))
+                                if (!MatrixDict2.Values.Contains((byte)l))
                                 {
-                                    MatrixDict2.Add((sbyte)k, (sbyte)l);
-                                    if (!MatrixDict2.Keys.Contains((sbyte)l))
-                                        MatrixDict2.Add((sbyte)l, (sbyte)k);
+                                    MatrixDict2.Add((byte)k, (byte)l);
+                                    if (!MatrixDict2.Keys.Contains((byte)l))
+                                        MatrixDict2.Add((byte)l, (byte)k);
                                     break;
                                 }
                             }
@@ -254,12 +254,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 }
                 if (MatrixDict2.Count == 0x10)
                 {
-                    sbyte bKey, bValue;
+                    byte bKey, bValue;
                     PermutationKeyHash2.Clear();
                     for (int n = 0; n < 0x10; n++)
                     {
-                        bKey = (sbyte)n;
-                        bValue = (sbyte)MatrixDict2[bKey];
+                        bKey = (byte)n;
+                        bValue = (byte)MatrixDict2[bKey];
                         PermutationKeyHash2.Add(bValue);
                         MatrixPermutationKey2[(int)bKey] = bValue;
                         MatrixPermutationKey2[(int)bValue] = bKey;
@@ -272,9 +272,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             else
             {
                 #region bugfix for missing permutations
-                sbyte[] strikeBytes = {  (sbyte)0x0, (sbyte)0x1, (sbyte)0x2, (sbyte)0x3, (sbyte)0x4, (sbyte)0x5, (sbyte)0x6, (sbyte)0x7,
-                                        (sbyte)0x8, (sbyte)0x9, (sbyte)0xa, (sbyte)0xb, (sbyte)0xc, (sbyte)0xd, (sbyte)0xe, (sbyte)0xf  };
-                HashSet<sbyte> strikeList = new HashSet<sbyte>(strikeBytes);
+                byte[] strikeBytes = {  (byte)0x0, (byte)0x1, (byte)0x2, (byte)0x3, (byte)0x4, (byte)0x5, (byte)0x6, (byte)0x7,
+                                        (byte)0x8, (byte)0x9, (byte)0xa, (byte)0xb, (byte)0xc, (byte)0xd, (byte)0xe, (byte)0xf  };
+                HashSet<byte> strikeList = new HashSet<byte>(strikeBytes);
                 int cancelationCounter = 0;
                 if (PermutationKeyHash.Count < 0x10)
                 {
@@ -284,7 +284,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                         {
                             try
                             {
-                                sbyte inByte = PermutationKeyHash.ElementAt(k);
+                                byte inByte = PermutationKeyHash.ElementAt(k);
                                 if (strikeList.Contains(inByte))
                                     strikeList.Remove(inByte);
                             }
@@ -293,7 +293,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                                 Area23Log.LogOriginMsgEx("ZenMatrix", $"Error when loading PermutationKeyHash.ElementAt({k});", exByte);
                                 if (strikeList.Count > 0)
                                 {
-                                    sbyte addedFromStrikeList = (sbyte)strikeList.ElementAt(0);
+                                    byte addedFromStrikeList = (byte)strikeList.ElementAt(0);
                                     strikeList.Remove(addedFromStrikeList);
                                     PermutationKeyHash.Add(addedFromStrikeList);
                                 }
@@ -345,17 +345,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 {
                     byte b = inBytes[bCnt];
                     MapByteValue2(ref b, out byte mappedByte, forEncryption);
-                    sbyte sm = (forEncryption) ? MatrixPermutationKey[aCnt] : InverseMatrix[aCnt];
+                    byte sm = (forEncryption) ? MatrixPermutationKey[aCnt] : InverseMatrix[aCnt];
                     processed[(int)sm] = mappedByte;
                 }
             }
             return processed ?? new byte[0];
         }
 
-        #endregion ProcessEncryptDecryptBytes
-
-        #region encrypt decrypt
-
+        
         /// <summary>
         /// MatrixSymChiffer Encrypt member function
         /// </summary>
@@ -449,18 +446,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             return obytes;
         }
 
-        #endregion encrypt decrypt
-
-
-
-        #region static helpers swap byte and SwapT{T} generic 
-
+       
         /// <summary>
-        /// BuildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
+        /// BuildInverseMatrix, builds the determinant decryption matrix for byte[16] encryption matrix
         /// </summary>
-        /// <param name="matrix">sbyte[16] encryption matrix</param>
-        /// <returns><see cref="T:sbyte[]">sbyte[16]</see> decryption matrix (determinante)</returns>
-        internal static sbyte[] BuildInverseMatrix2(sbyte[] matrix, int size = 0x10)
+        /// <param name="matrix">byte[16] encryption matrix</param>
+        /// <returns><see cref="T:byte[]">byte[16]</see> decryption matrix (determinante)</returns>
+        internal static byte[] BuildInverseMatrix2(byte[] matrix, int size = 0x10)
         {
             return BuildInverseMatrix(matrix, 0x10);
         }
@@ -472,34 +464,34 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="inByte"><see cref="byte"/> in byte to map</param>
         /// <param name="outByte"><see cref="byte"/> mapped out byte</param>
         /// <param name="encrypt">true for encryption, false for decryption</param>
-        /// <returns>An <see cref="T:sbyte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
-        private sbyte[] MapByteValue2(ref byte inByte, out byte outByte, bool encrypt = true)
+        /// <returns>An <see cref="T:byte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
+        private byte[] MapByteValue2(ref byte inByte, out byte outByte, bool encrypt = true)
         {
-            List<sbyte> outSBytes = new List<sbyte>(2);
-            sbyte lsbIn = (sbyte)((short)inByte % 16);
-            sbyte msbIn = (sbyte)((short)((short)inByte / 16));
-            sbyte lsbOut, msbOut;
+            List<byte> outBytes = new List<byte>(2);
+            byte lsbIn = (byte)(inByte & 0x0F);
+            byte msbIn = (byte)((inByte & 0xF0) / 0x10);
+            byte lsbOut, msbOut;
             if (encrypt)
             {
                 lsbOut = MatrixPermutationKey2[(int)lsbIn];
                 msbOut = MatrixPermutationKey2[(int)msbIn];
-                outSBytes.Add(lsbOut);
-                outSBytes.Add(msbOut);
-                outByte = (byte)((short)(((short)msbOut * 16) + ((short)lsbOut)));
+                outBytes.Add(lsbOut);
+                outBytes.Add(msbOut);
+                outByte = (byte)((msbOut * 0x10) + lsbOut);
             }
             else // if decrypt
             {
                 lsbOut = _inverseMatrix2[(int)lsbIn];
                 msbOut = _inverseMatrix2[(int)msbIn];
-                outSBytes.Add(lsbOut);
-                outSBytes.Add(msbOut);
-                outByte = (byte)((short)(((short)msbOut * 16) + ((short)lsbOut)));
+                outBytes.Add(lsbOut);
+                outBytes.Add(msbOut);
+                outByte = (byte)((msbOut * 0x10) + lsbOut);
             }
 
-            return outSBytes.ToArray();
+            return outBytes.ToArray();
         }
 
-        #endregion static helpers swap byte and SwapT{T} generic
+        #endregion ProcessEncryptDecryptBytes
 
 
     }

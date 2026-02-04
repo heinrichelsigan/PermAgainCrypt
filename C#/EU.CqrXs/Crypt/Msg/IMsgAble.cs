@@ -41,4 +41,5 @@
         T? DeCerialize<T>(string serializedText);
 
     }
+
 }

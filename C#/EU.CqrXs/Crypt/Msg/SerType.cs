@@ -4,6 +4,7 @@ using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
+
     /// <summary>
     /// Serializer enumeration type with default to json
     /// </summary>

@@ -11,6 +11,7 @@ using System.Text;
 
 namespace EU.CqrXs.Crypt.Msg
 {
+    
     /// <summary>
     /// CFile derived from <see cref="CMsg" /> represents any file in what ever filesystem.
     /// TODO: need to refactor!

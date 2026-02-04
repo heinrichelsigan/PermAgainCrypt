@@ -3,7 +3,6 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using EU.CqrXs.Net.WebHttp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -316,6 +315,34 @@ namespace EU.CqrXs.Gui.Helper
                 {
                     if (tsLabel != null && text != null)
                         tsLabel.Text = text;
+                }
+            }
+        }
+
+
+        public static async Task SetProgressBarValueAsync(this ProgressBar pBar, int pVal)
+        {
+            if (pBar != null)
+            {
+                if (pBar.InvokeRequired)
+                {
+                    try
+                    {
+                        await pBar.InvokeAsync(() =>
+                        {
+                            if (pBar != null)
+                                pBar.Value = pVal;
+                        });
+                    }
+                    catch (System.Exception exDelegate)
+                    {
+                        Area23Log.LogOriginMsgEx(pBar.Name, $"Exception in delegate SetProgressBarValue value: \"{pVal}\".\n", exDelegate);
+                    }
+                }
+                else
+                {
+                    if (pBar != null)
+                        pBar.Value = pVal;
                 }
             }
         }

@@ -38,7 +38,8 @@ namespace EU.CqrXs.Util
         public const string APP_NAME_CONSOLE = "EU.CqrXs.Console.exe";
         public const string APP_DIR = "net";
         public const string APP_ERROR = "AppError";
-        public const string VERSION = "v2.25.411";
+        public const string VERSION = "v2.26.204";
+        public const string PIPE_STAGE = "PipeStage";
         public const string VALKEY_CACHE_HOST = "cqrcachecqrxseu-53g0xw.serverless.eus2.cache.amazonaws.com";
         public const int VALKEY_CACHE_PORT = 6379;
         public const string VALKEY_CACHE_HOST_PORT = "cqrcachecqrxseu-53g0xw.serverless.eus2.cache.amazonaws.com:6379";

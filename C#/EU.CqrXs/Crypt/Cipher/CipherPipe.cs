@@ -742,32 +742,6 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
-        [Obsolete("use EncryptEncodeBytes instead.", true)]
-        public virtual string EncrpytEncode(byte[] inBytes, string secretKey, 
-            EncodingType encType = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
-        {
-            if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
-                secretKey = "";
-
-            cipherKey = (!string.IsNullOrEmpty(secretKey)) ? secretKey : cipherKey;
-            encodeType = encType;
-            ZType = zipBefore;
-            KHash = keyHash;
-            cipherHash = (!string.IsNullOrEmpty(secretKey)) ? KHash.Hash(secretKey) : "";                        
-            CMode2 = cmode2;
-
-            // zip if requested
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
-            // now encrypt in a merry go round 
-            byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, secretKey, cipherHash, CMode2);
-            // encode to ascii string after encryption pipe
-            string cryptedEncoded = encType.EnCode(outBytes);
-
-            return cryptedEncoded;
-        }
-
         public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, 
             EncodingType encType = EncodingType.Base64,
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
