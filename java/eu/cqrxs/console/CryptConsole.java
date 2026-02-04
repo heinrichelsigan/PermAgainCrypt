@@ -232,7 +232,7 @@ public class CryptConsole  {
 				System.out.println("Created pipe without passkey: " + pipe.getPipeString());
         } else {
             pipe = new CipherPipe(passKey, keyHash.hash(passKey),
-                    encodingType,  zipType, keyHash, CipherMode2.ECB); // TODO: fix it!
+                    encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it!
 			if (verbose)
 				System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
         }

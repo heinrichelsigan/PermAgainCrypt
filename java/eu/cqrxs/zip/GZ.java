@@ -7,7 +7,7 @@
  * Coded 2021-2027 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
  */
- 
+
 package eu.cqrxs.zip;
 
 import java.io.*;
@@ -60,27 +60,27 @@ public class GZ  {
             throw new RuntimeException("Failed to zip content", e);
         }
     }
-	
+
 
     /**
      * gunzip gunzips a byte array (same as gzip -d )
      * @param gzBytes gzipped byte[]
      * @return unzipped plain byte[]
      */
-	public static byte[] gunzip(final byte[] bytes) throws IOException {
-		if (bytes == null || bytes.length == 0) {
-			throw new IllegalArgumentException("Cannot unzip null or empty byte array");
-		}
-		try (final GZIPInputStream gunzipStream = new GZIPInputStream(new ByteArrayInputStream(bytes))) {
-			final ByteArrayOutputStream byteArrayOutStream = new ByteArrayOutputStream();
-			final byte[] data = new byte[16384];
-			int nRead;
-			while ((nRead = gunzipStream.read(data)) != -1) {
-				byteArrayOutStream.write(data, 0, nRead);
-			}
-			return byteArrayOutStream.toByteArray();
-		}
-	}
+    public static byte[] gunzip(final byte[] gzBytes) throws IOException {
+        if (gzBytes == null || gzBytes.length == 0) {
+            throw new IllegalArgumentException("Cannot unzip null or empty byte array");
+        }
+        try (final GZIPInputStream gunzipStream = new GZIPInputStream(new ByteArrayInputStream(gzBytes))) {
+            final ByteArrayOutputStream byteArrayOutStream = new ByteArrayOutputStream();
+            final byte[] data = new byte[16384];
+            int nRead;
+            while ((nRead = gunzipStream.read(data)) != -1) {
+                byteArrayOutStream.write(data, 0, nRead);
+            }
+            return byteArrayOutStream.toByteArray();
+        }
+    }
 
     /**
      * gunzips a gzipped byte[] to a plain text String
