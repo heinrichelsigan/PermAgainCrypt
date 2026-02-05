@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace EU.CqrXs.Test
 {
+
     /// <summary>
     /// TestCompression test zipping <see cref="ZipType">enum ZipType</see>
     /// ZipType.GZip, ZipType.BZip2, ZipType.Zip 

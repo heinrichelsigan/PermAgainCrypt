@@ -5,9 +5,7 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using System.Text;
-using System.Xml;
-
+using System.Runtime.CompilerServices;
 
 namespace EU.CqrXs.Spooler
 {
@@ -25,9 +23,8 @@ namespace EU.CqrXs.Spooler
         Symmetric = 0x5,
         Mode = 0x6,
         Verbose = 0xe,
-        GetHelp = 0xf
+        Help = 0xf
     }
-
 
 
     /// <summary>
@@ -43,7 +40,7 @@ namespace EU.CqrXs.Spooler
     /// -M | --mode={CBC|CFB|ECB}   
     /// -S | --SymmCipher // use symmetric chipher only to encrypt
     /// -V | --verbose
-    /// -? | --gethelp
+    /// -? | --help
     /// </summary>
     internal class Program
     {
@@ -60,7 +57,7 @@ namespace EU.CqrXs.Spooler
     /// -M | --mode={CBC|CFB|ECB}
     /// -S | --SymmCipher   // use symmetric chipher only to encrypt 
     /// -V | --verbose      // verbose output
-    /// -? | --gethelp\n";
+    /// -? | --help\n";
         // generic spooler variables
         static bool useSymmCipher = false, decryptDirection = false, verbose = false;
         static string inDir = "", outDir = "", keyFile = "";
@@ -69,7 +66,7 @@ namespace EU.CqrXs.Spooler
         // specific encrypt/decrypt process variables
         static string? outEnviron = null, key = null;
         static FileInfo? inFile = null, outFile = null;
-        static byte[]? inBytes = null, outBytes = null;
+        static byte[] inBytes = new byte[0], outBytes = new byte[0];
         static string passKey = "";
         static readonly ZipType[] ZipTypes = { ZipType.None, ZipType.GZip, ZipType.BZip2, ZipType.Zip };
         static ZipType zipType = ZipType.None;
@@ -92,6 +89,8 @@ namespace EU.CqrXs.Spooler
             if (args == null || args.Length == 0)
                 Usage();
 
+            DateTime startDate = DateTime.Now;
+            TimeSpan duration = startDate - DateTime.Now;
             CException decryptExc = null, encryptExc = null;
             bool keyFromArg = true;
             long filesCount = 0;
@@ -99,19 +98,16 @@ namespace EU.CqrXs.Spooler
             Constants.DirCreate = false;
             Constants.NOLog = true;
 
-            Dictionary<OptSpoolEnum, string> dict = new Dictionary<OptSpoolEnum, string>();
             string[] algos = new List<string>().ToArray();
 
             for (int i = 0; i < args.Length; i++)
             {
-                // string optStr = GetOption(... => out OptEnum optEnum)
-                string optStr = GetOption(args[i], out OptSpoolEnum optEnum);
-            }            
+                string[] optArgs = GetOption(args[i]);
+                OptSpoolEnum optSpoolEnum = Enum.Parse<OptSpoolEnum>(optArgs[0]);
+                string optArg = optArgs[1];
+            }
 
-            int zc = 0;
-            int hc = 0;
-            int ec = 0;
-            int kc = 0;
+            int zc = 0, hc = 0, ec = 0;
 
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
             {
@@ -129,11 +125,10 @@ namespace EU.CqrXs.Spooler
                     keyFromArg = false;
                 }                
             }
-            if (verbose)
-                System.Console.WriteLine($"Key read from {(keyFromArg ?"argument":"stdin")}: '{key}'");
+            Verbose($"Key read from {(keyFromArg ? "argument" : "stdin")}: '{key}'");
 
             files = Directory.GetFiles(inDir);
-            byte[] outBytes = new byte[0];
+            outBytes = new byte[0];
             foreach (string file in files)
             {
                 passKey = key; // keys[((kc++) % KeyHashes.Length)];
@@ -141,11 +136,10 @@ namespace EU.CqrXs.Spooler
                 encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
                 zipType = ZipTypes[((++zc) % ZipTypes.Length)];
 
-                byte[] inByte = File.ReadAllBytes(file);
-                string ofName = Path.GetFileName(file);
-                if (verbose)
-                    Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + 
-                        " reading " + inByte.Length + " bytes from file " + ofName);
+                startDate = DateTime.Now;           
+                inBytes = File.ReadAllBytes(file);        // read all bytes from file
+                string ofName = Path.GetFileName(file);         // gets full filename without directory path
+                Verbose($"reading {inBytes.Length} bytes from file {ofName}");
 
                 CipherPipe cPipe;
                 SymmCipherPipe symmPipe;
@@ -155,14 +149,14 @@ namespace EU.CqrXs.Spooler
                     {
                         symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        outBytes = symmPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        outBytes = symmPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += symmPipe.PipeFullExtension;
                     }
                     else // CipherPipe and all CipherEnum's
                     {
                         cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.EncryptEncodeBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += cPipe.PipeFullExtension;
                     }
                 }
@@ -182,14 +176,13 @@ namespace EU.CqrXs.Spooler
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
                         try
                         {
-                            outBytes = symmPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                            outBytes = symmPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         } 
                         catch (Exception exSymmDecrypt)
                         {
                             outBytes = new byte[0];
                             decryptExc = new CException($"{exSymmDecrypt.GetType()} was thrown decrypting {ofName} with {symmPipe.PipeFullExtension}", exSymmDecrypt);
-                            if (verbose)
-                                System.Console.Error.WriteLine($"{exSymmDecrypt.GetType()}: {exSymmDecrypt.Message}\n\t{exSymmDecrypt.ToString()}");                            
+                            Verbose($"{exSymmDecrypt.GetType()}: {exSymmDecrypt.Message}\n\t{exSymmDecrypt.ToString()}", true);                        
                         }
                     }
                     else
@@ -204,14 +197,13 @@ namespace EU.CqrXs.Spooler
                         PrintCipherPipe(cPipe, decryptDirection);
                         try
                         {
-                            outBytes = cPipe.DecodeDecrpytBytes(inByte, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                            outBytes = cPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         } 
                         catch (Exception exDecrypt)
                         {
                             decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
                             outBytes = new byte[0];
-                            if (verbose)
-                                System.Console.Error.WriteLine($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}");
+                            Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
                         }
                     }
 
@@ -220,15 +212,17 @@ namespace EU.CqrXs.Spooler
                 string outFile = Path.Combine(outDir, ofName);
                 if (outBytes != null && outBytes.Length > 0)
                 {
-                    if (verbose)
-                        Console.WriteLine(DateTime.Now.Area23DateTimeWithSeconds() + " writing " + outBytes.Length + " outbytes to file " + outFile);
+                    Verbose($"writing {outBytes.Length} outbytes to file {outFile}");
                     File.WriteAllBytes(outFile, outBytes);
                 }
                 filesCount++;
-            } 
+                duration = DateTime.Now.Subtract(startDate);
 
-            if (verbose)
-                System.Console.Out.WriteLine($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
+                Verbose($"perf in: {BytesPerSecond(inBytes.LongLength, duration.TotalSeconds)}, " +
+                    $"out: {BytesPerSecond(outBytes.LongLength, duration.TotalSeconds)}");
+            }
+
+            Verbose($"{Path.GetFileName(progName)}: {filesCount} documents processed.");
             
             return;
         }
@@ -237,28 +231,27 @@ namespace EU.CqrXs.Spooler
         /// Gets an option by argument
         /// </summary>
         /// <param name="argument">cmd line argument</param>
-        /// <param name="optEnum"><see cref="OptEnum">OptEnum cmd arg option enum</see></param>
-        /// <returns></returns>
-        public static string GetOption(string argument, out OptSpoolEnum optEnum)
+        /// <returns><see cref="T:string[2]">optArgs</see> where optArgs[0] contains OptSpoolEnum, optArgs[1] contains option value</returns>
+        public static string[] GetOption(string argument)
         {
-            string optArg = "";
+            OptSpoolEnum optEnum = OptSpoolEnum.Usage;
             if (string.IsNullOrEmpty(argument) || argument.Length < 2 || argument[0] != '-')
             {
                 optEnum = OptSpoolEnum.Usage;
-                return optArg;
+                Usage($"unrecognized option: {argument}.");
+                System.Environment.Exit(1);
             }
-            optArg = argument;
+            
             string arg = argument.TrimStart("-/".ToCharArray());
-
-            if (arg.Contains("="))
-                optArg = arg.Substring(arg.IndexOf("=") + 1);
+            string[] optArgs = (arg.Contains("=")) ? arg.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries) : new string[] { arg, "" };
 
             switch (arg[0])
             {
                 case 'I':
                 case 'i':
                     optEnum = OptSpoolEnum.InDir;
-                    inDir = optArg;
+                    optArgs[0] = optEnum.ToString();
+                    inDir = optArgs[1];
                     if (string.IsNullOrEmpty(inDir))
                         Usage($"--InDir needs not null or empty parameter for incoming directory.");
                     if (!Directory.Exists(inDir))
@@ -292,14 +285,16 @@ namespace EU.CqrXs.Spooler
                             }
                         }
                     }
-                    return optArg;
+                    
+                    return optArgs;
 
                 case 'O':
                 case 'o':
                     optEnum = OptSpoolEnum.OutDir;
-                    outDir = optArg;
+                    optArgs[0] = optEnum.ToString();
+                    outDir = optArgs[1];
                     if (string.IsNullOrEmpty(outDir))
-                        Usage($"--OutDir needs not null or empty parameter for outgoing directory.");                    
+                        Usage($"--OutDir needs not null or empty parameter for outgoing directory.");
                     if (!Directory.Exists(outDir))
                     {
                         if (Directory.Exists(Path.Combine(progDirectory, outDir)))
@@ -330,79 +325,118 @@ namespace EU.CqrXs.Spooler
                                 }
                             }
                         }
-                    }                    
-                    return optArg;
+                    }
+                    return optArgs;
 
                 case 'D':
                 case 'd':
                     optEnum = OptSpoolEnum.Decrypt;
+                    optArgs[0] = optEnum.ToString();
                     Program.decryptDirection = true;
-                    return optArg;
+                    return optArgs;
 
                 case 'k':
                 case 'K':
                     optEnum = OptSpoolEnum.Key;
-                    key = optArg;
+                    optArgs[0] = optEnum.ToString();
+                    key = optArgs[1];
                     if (string.IsNullOrEmpty(key))
                         Usage("Key={NULL or \"\"})");
-                    return optArg;
+                    return optArgs;
 
                 case 'S':
                     optEnum = OptSpoolEnum.Symmetric;
+                    optArgs[0] = optEnum.ToString();
                     useSymmCipher = true;
-                    return optArg;
+                    return optArgs;
 
                 case 'm':
                 case 'M':
-                    if (!Enum.TryParse<CipherMode2>(optArg, true, out cmode2))
+                    if (!Enum.TryParse<CipherMode2>(optArgs[1], true, out cmode2))
                         cmode2 = CipherMode2.ECB;
                     optEnum = OptSpoolEnum.Mode;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
 
                 case 'v':
                 case 'V':
                     optEnum = OptSpoolEnum.Verbose;
+                    optArgs[0] = optEnum.ToString();
                     Constants.NOLog = false;
                     Program.verbose = true;
-                    return optArg;
+                    return optArgs;
 
-                    case 'g':
-                    case 'G':
-                    case '?':
-                    default:
-                        optEnum = OptSpoolEnum.Usage;
-                        optArg = $"unrecognized option: {argument}.";
-                        Usage(optArg);
-                        break;
-                    }
+                case 'H':
+                case 'h':
+                case '?':
+                default:
+                    optEnum = OptSpoolEnum.Usage;
+                    optArgs[0] = optEnum.ToString();
+                    optArgs[1] = $"unrecognized option: {argument}.";
+                    Usage(optArgs[1]);
+                    break;
+            }
 
-            return optArg;
+            return optArgs;
         }
 
         /// <summary>
         /// Usage shows the usage of console application
         /// </summary>
-        static void Usage(string errMsg = "")
+        internal static void Usage(string errMsg = "")
         {
             if (!string.IsNullOrEmpty(errMsg))
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine(UsageString);
-            if (verbose)
-            {
-                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V -S -k=bar@ba.area23.at\n" +
+            Verbose($"\nExamples: \n{progFilename} -V -S -k=bar@ba.area23.at\n" +
                         "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\In   \n" +
                         "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Encrypt  \n");
 
-                System.Console.Out.WriteLine($"\nExamples: \n{progFilename} -V -D -S -k=bar@ba.area23.at\n" +
+            Verbose($"\nExamples: \n{progFilename} -V -D -S -k=bar@ba.area23.at\n" +
                             "-i=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Encrypt  \n" +
                             "-o=S:\\PermAgainCrypt\\Deploy\\SpoolTest\\Out  \n");
-            }
+            
             System.Environment.Exit(0);
         }
 
+        internal static string BytesPerSecond(long byteLen, double seconds)
+        {
+            long bps = (long)(byteLen / seconds);
+            if (bps < 2048)
+                return $"{bps} bytes/s";
+            if (bps < 1024 * 1024)
+            {
+                bps = (long)(bps / 1024);
+                return $"{bps} KB/s";
+            }
+            bps = (long)(bps / (1024 * 1024));
+            return $"{bps} MB/s";
+        }
 
-        #region print only debug info
+        #region print verbose debug info
+
+        /// <summary>
+        /// Verbose prints message to stdout or stderr
+        /// </summary>
+        /// <param name="s"><see cref="string">string s</see></param>
+        /// <param name="stdErr"><see cref="bool">stdErr</see> if true, prints to stderr, otherwise to stdout, default false</param>
+        public static void Verbose(string s, bool stdErr = false) // default to stdout
+        {
+            if (verbose)
+            {
+                if (stdErr)
+                    Console.Error.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + " " + s);
+                else
+                    Console.Out.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + " " + s);
+            }
+        }
+
+        /// <summary>
+        /// Prints properties of a symmetric cipher pipe
+        /// </summary>
+        /// <param name="symmPipe"><see cref="SymmCipherPipe"/></param>
+        /// <param name="outPipe">direction decrypt</param>
         public static void PrintSymmCipherPipe(SymmCipherPipe symmPipe, bool outPipe = false)
         {
             if (verbose)
@@ -412,10 +446,15 @@ namespace EU.CqrXs.Spooler
                 foreach (var symmCipher in symmCiphers)
                     System.Console.Write($"{symmCipher}=>");
                 System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
-                    $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
+                    $"EncodeType={symmPipe.EncodeType} CipherMode={symmPipe.CMode2} PipeString={symmPipe.PipeString}");
             }
         }
 
+        /// <summary>
+        /// Prints the properties of <see cref="CipherPipe"/>
+        /// </summary>
+        /// <param name="cipherPipe"><see cref="CipherPipe"/></param>
+        /// <param name="outPipe">direction decrypt</param>
         public static void PrintCipherPipe(CipherPipe cipherPipe, bool outPipe = false)
         {
             if (verbose)
@@ -425,10 +464,11 @@ namespace EU.CqrXs.Spooler
                 foreach (CipherEnum cipher in ciphers)
                     System.Console.Write($"{cipher}=>");
                 System.Console.WriteLine($"\r\nCipherPipe: KeyHash={cipherPipe.KHash} ZipType={cipherPipe.ZType} " +
-                    $"EncodeType={cipherPipe.EncodeType} PipeString={cipherPipe.PipeString}");
+                    $"EncodeType={cipherPipe.EncodeType} CipherMode={cipherPipe.CMode2} PipeString={cipherPipe.PipeString}");
             }
         }
-        #endregion print only debug info
+        
+        #endregion print verbose debug info
 
     }
 
