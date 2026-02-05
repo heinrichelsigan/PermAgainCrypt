@@ -1,4 +1,6 @@
-﻿namespace EU.CqrXs.Crypt.EnDeCoding
+﻿using System.Text;
+
+namespace EU.CqrXs.Crypt.EnDeCoding
 {
     /// <summary>
     /// RawString hexadecimal byte encoding / decoding
@@ -46,6 +48,11 @@
             if (inBytes == null || inBytes.Length < 1)
                 throw new ArgumentNullException("inBytes", "public static string ToHex(byte[] inBytes == NULL)");
 
+            return ByteArrayToHexString(inBytes);  // ToBase16Classic(inBytes);
+        }
+
+        public static string ToBase16Classic(byte[] inBytes)
+        {
             string hexString = string.Empty;
             for (int wc = 0; wc < inBytes.Length; wc++)
             {
@@ -55,6 +62,17 @@
             return hexString; // to slow for very large files .ToUpper();     
         }
 
+        public static string ByteArrayToHexString(byte[] Bytes)
+        {
+            StringBuilder sb = new StringBuilder(Bytes.Length * 2);
+            foreach (byte B in Bytes)
+            {
+                sb.Append(VALID_CHARS[(int)(B >> 4)]);
+                sb.Append(VALID_CHARS[(int)(B & 0xF)]);
+            }
+
+            return sb.ToString();
+        }
 
         /// <summary>
         /// FromBase16 transforms a hex string to binary byte array

@@ -12,14 +12,14 @@
     <StartupObject>EU.CqrXs.Spooler.Program</StartupObject>
     <ApplicationIcon>SatIcon.ico</ApplicationIcon>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-    <PublishTrimmed>False</PublishTrimmed>
+    <PublishTrimmed>True</PublishTrimmed>
     <Title>EU.CqrXs.Spooler</Title>
     <Description>EU.CqrXs.Spooler</Description>
     <Copyright>Copyright © 2000-2040 Copyleft https://cqrxs.eu</Copyright>
     <PackageProjectUrl>https://cqrxs.eu/download/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.202</AssemblyVersion>
-    <FileVersion>2.26.202</FileVersion>
+    <AssemblyVersion>2.26.205</AssemblyVersion>
+    <FileVersion>2.26.205</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
