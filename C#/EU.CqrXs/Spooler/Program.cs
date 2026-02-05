@@ -147,14 +147,14 @@ namespace EU.CqrXs.Spooler
                 {
                     if (useSymmCipher) // SymmCipherPipe and SymmCipherEnum only
                     {
-                        symmPipe = new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        symmPipe = new SymmCipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
                         PrintSymmCipherPipe(symmPipe, decryptDirection);
                         outBytes = symmPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += symmPipe.PipeFullExtension;
                     }
                     else // CipherPipe and all CipherEnum's
                     {
-                        cPipe = new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        cPipe = new CipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
                         PrintCipherPipe(cPipe, decryptDirection);
                         outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
                         ofName += cPipe.PipeFullExtension;
