@@ -1,5 +1,4 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
-using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
@@ -27,7 +26,6 @@ namespace EU.CqrXs.Console
     ///         default: base64
     /// -o | --outFile= | --outText=EnviromentVariable | --outStd        
     /// -D | --Decrypt 
-    /// -S | --SymmCipher 
     /// -? | --gethelp
     /// </summary>
     internal class Program
@@ -37,7 +35,7 @@ namespace EU.CqrXs.Console
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
         static string? inName = null, outName = null, outEnviron = null, key = null;
-        static bool reverseDirection = false, verbose = false, useSymmCipher = false;
+        static bool reverseDirection = false, verbose = false;
         static FileInfo? inFile = null, outFile = null;
         static byte[]? inBytes = null, outBytes = null;
         static string passKey = "";
@@ -53,18 +51,20 @@ namespace EU.CqrXs.Console
         static void Main(string[] args)
         {
             string[] algos = new List<string>().ToArray();
-            encodingType = EncodingType.None;            
+            encodingType = EncodingType.None;
             Constants.DirCreate = false;
             Constants.NOLog = true;
             string encryptOptLater = "";
 
             if (args.Length <= 0)
                 Usage();
-                                   
+
             for (int i = 0; i < args.Length; i++)
             {
                 // string optStr = GetOption(... => out OptEnum optEnum)
-                string optStr = args[i].GetOption(out OptEnum optEnum);
+                string[] optArgs = args[i].GetOption();                
+                OptEnum optEnum = Enum.Parse<OptEnum>(optArgs[0]);
+                string optStr = optArgs[1];
                 switch (optEnum)
                 {
                     case OptEnum.InParam:
@@ -104,11 +104,11 @@ namespace EU.CqrXs.Console
                             if (args[i].ToLower().Contains("file") || optStr.Contains(LibPaths.SepChar) || optStr.Contains('.') || !args[i].ToLower().Contains("text"))
                         {
                             string odir = Path.GetDirectoryName(optStr);
-                            if (Directory.Exists(odir)) 
+                            if (Directory.Exists(odir))
                                 outFile = new FileInfo(outName);
                             else
-                                outFile = new FileInfo(Path.Combine(progDirectory, outName.Replace(".\\", "")));                            
-                        }                            
+                                outFile = new FileInfo(Path.Combine(progDirectory, outName.Replace(".\\", "")));
+                        }
                         else
                             if (!string.IsNullOrEmpty(outName) || args[i].ToLower().Contains("text") || optStr.StartsWith("$"))
                             outEnviron = optStr;
@@ -136,9 +136,6 @@ namespace EU.CqrXs.Console
                     case OptEnum.Hash:
                         keyHash = KeyHash_Extensions.GetKeyHashFromString(optStr);
                         break;
-                    case OptEnum.SymmCipher:
-                        useSymmCipher = true;
-                        break;
                     case OptEnum.CipherAlgos:
                         encryptOptLater = optStr;
                         break;
@@ -153,8 +150,8 @@ namespace EU.CqrXs.Console
                     default:
                         Usage(string.IsNullOrEmpty(optStr) ? "" : optStr);
                         break;
-                }                               
-        }
+                }
+            }
 
             // when string / array is not null, fetch array for crypt pipe
             if (!string.IsNullOrEmpty(encryptOptLater))
@@ -164,27 +161,9 @@ namespace EU.CqrXs.Console
 
                 encryptOptLater = encryptOptLater.Replace("(", "").Replace("{", "").Replace("[", "").Replace("]", "").Replace("}", "").Replace(")", "");
                 algos = encryptOptLater.Split(",;:".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (useSymmCipher)
-                {
-                    List<string> algoList = new List<string>();
-                    for (int ali = 0; ali < algos.Length; ali++)
-                    {
-                        if (!Enum.TryParse<SymmCipherEnum>(algos[ali], out SymmCipherEnum symmCipherEnum))
-                            continue;
-
-                        foreach (SymmCipherEnum sci in SymmCipherEnumExtensions.GetSymmCipherTypes())
-                        {
-                            if (sci == symmCipherEnum)
-                            {
-                                algoList.Add(sci.ToString());
-                                break;
-                            }
-                        }
-                        algos = algoList.ToArray();
-                    }
-                }
+                
             }
-            
+
 
             // read from stdin, when no inName specified
             if (string.IsNullOrEmpty(inName))
@@ -203,32 +182,17 @@ namespace EU.CqrXs.Console
                     Array.Copy(outBytes, 0, inBytes, 0, outBytes.Length);
                 }
             }
-            
-            if (useSymmCipher) 
-            {
-                // Create SymmCipherPipe // for reduced symmetric cipher pool only
-                SymmCipherPipe symmPipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                            new SymmCipherPipe(algos, 8, encodingType, zipType, keyHash, cmode2) :
-                            new SymmCipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2, verbose);
 
-                PrintSymmCipherPipe(symmPipe, reverseDirection);
-                outBytes = symmPipe.CryptCodeBytes(inBytes, 
-                    passKey ?? "", string.IsNullOrEmpty(passKey) ? "" : keyHash.Hash(passKey),
-                    reverseDirection, encodingType, zipType, keyHash);
-            }
-            else 
-            {
-                // Create cipher pipe for en-/decryption
-                CipherPipe pipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                                new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash, cmode2) :
-                                new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2, verbose);
+            // Create cipher pipe for en-/decryption
+            CipherPipe pipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
+                            new CipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, keyHash, cmode2) :
+                            new CipherPipe(passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2, verbose);
 
-                PrintCipherPipe(pipe, reverseDirection);
-                outBytes = pipe.CryptCodeBytes(inBytes, 
-                    passKey ?? "", string.IsNullOrEmpty(passKey) ? "" : keyHash.Hash(passKey),
-                    reverseDirection, encodingType, zipType, keyHash);
-            }
-            
+            PrintCipherPipe(pipe, reverseDirection);
+            outBytes = pipe.CryptCodeBytes(inBytes,
+                passKey ?? "", string.IsNullOrEmpty(passKey) ? "" : keyHash.Hash(passKey),
+                reverseDirection, encodingType, zipType, keyHash);
+
             inBytes = outBytes;
 
             if (outFile != null)
@@ -268,9 +232,6 @@ namespace EU.CqrXs.Console
         │       Seed,SkipJack,Serpent,SM4,
         │       Tea,Tnepres,XTea,
         │       ZenMatrix,ZenMatrix2
-        │   symmAlgo: 
-        │        Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-    -S  ├─ --SymmCipher 
     -e  ├─ --encode={raw|hex16|hex32|base32|base64|uu}
         |   default: base64
     -D  ├─ --Decrypt [ = Inverse_Pipe_Direction ]
@@ -301,19 +262,7 @@ namespace EU.CqrXs.Console
         }
 
         #region print only debug info
-        public static void PrintSymmCipherPipe(SymmCipherPipe symmPipe, bool outPipe = false)
-        {
-            if (verbose)
-            {
-                SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutSymmPipe : symmPipe.InSymmPipe;
-                System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
-                foreach (var symmCipher in symmCiphers)
-                    System.Console.Write($"{symmCipher}=>");
-                System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
-                    $"EncodeType={symmPipe.EncodeType} PipeString={symmPipe.PipeString}");
-            }
-        }
-
+        
         public static void PrintCipherPipe(CipherPipe cipherPipe, bool outPipe = false)
         {
             if (verbose)

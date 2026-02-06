@@ -397,7 +397,7 @@ namespace EU.CqrXs.Crypt.Msg
             try
             {
                 keyHash = EnDeCodeHelper.KeyToHex(serverKey);
-                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                CipherPipe symmPipe = new CipherPipe(serverKey, keyHash, encoder, zipType);
                 pipeString = symmPipe.PipeString;
                 cfile.Hash = pipeString;
                 cfile.Md5Hash = MD5Sum.HashString(string.Concat(serverKey, keyHash, pipeString, cfile.FileName), "");
@@ -459,7 +459,7 @@ namespace EU.CqrXs.Crypt.Msg
             string decrypted = "", pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                CipherPipe symmPipe = new CipherPipe(serverKey, keyHash, decoder, zipType);
                 pipeString = symmPipe.PipeString;
 
                 byte[] fileBytes = symmPipe.DecodeDecrpytBytes(

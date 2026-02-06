@@ -240,6 +240,51 @@
             <param name="hash">key's hash</param>
             <returns>decrypted byte Array</returns>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncrpytT``2(``1,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+            <summary>
+            EncrpytT
+            </summary>
+            <typeparam name="TRet">
+                <see cref="T:string"/>
+                <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+                <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+            </typeparam>
+            <typeparam name="TIn">
+                <see cref="T:string"/>
+                <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+                <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+            </typeparam>
+            <param name="tinSource">plain string, char[], byte[], IEnumerable{char}, IEnumerable{bytes}</param>
+            <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+            and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+            <param name="hashIv">hashed key Iv</param>
+            <param name="encoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+            <param name="zipBefore">Zip bytes with <see cref="T:EU.CqrXs.Zip.ZipType"/> before passing them in encrypted stage pipeline. <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Zip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
+            <param name="kayHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
+            <param name="cmode2"></param>
+            <returns>encrypted generic type</returns>
+            <exception cref="T:EU.CqrXs.Crypt.CException">is thrown on unknown type</exception>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecrpytT``2(``1,System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+            <summary>
+             DecrpytT generic decryption method
+            </summary>
+            <typeparam name="TRet">return type 
+                <see cref="T:string"/>
+                <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+                <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+            </typeparam>
+            <typeparam name="TIn"></typeparam>
+            <param name="tinSource">encrypted message</param>
+            <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+            and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+            <param name="decoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+            <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
+            <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
+            <param name="mode2"></param>
+            <returns>Decrypted generic TRet</returns>
+            <exception cref="T:EU.CqrXs.Crypt.CException">is thrown on unknown type</exception>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
@@ -534,67 +579,6 @@
             </param>
             <returns>plain text decrypted string</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams">
-            <summary>
-            SymmCryptParams prefered params for symmetric block cipher
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor">
-            <summary>
-            standard ctor with <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum.Aes"/> default
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
-            <summary>
-            constructs a object with correct <see cref="!:Mode"/>, <see cref="T:System.Drawing.Size"/>, <see cref="P:EU.CqrXs.Crypt.Cipher.CryptParams.KeyLen"/>
-            for parameter <see cref="N:EU.CqrXs.Crypt.Cipher"/>
-            </summary>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String)">
-            <summary>
-            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> object 
-            with correct <see cref="!:Mode"/>, <see cref="T:System.Drawing.Size"/>, 
-            with additional Key and <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash" />
-            for parameter <see cref="N:EU.CqrXs.Crypt.Cipher"/>
-            </summary>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
-            <param name="key"></param>
-            <param name="hash"></param>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
-            <summary>
-            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> object by <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            with additional key <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/>
-            </summary>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/></param>
-            <param name="key">secret key</param>
-            <param name="keyHash">key hashing</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Hash.KeyHash)">
-            <summary>
-            constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/> object by <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
-            with additional kay and hash, <see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/>
-            </summary>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/></param>
-            <param name="key">secret key</param>
-            <param name="hash">corresponding key hash</param>
-            <param name="keyHash">key hashing</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams)">
-            <summary>
-            Constructs instance via another object instance
-            </summary>
-            <param name="cryptParams">another instance</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams.RequestPreferedAlgorithm(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
-            <summary>
-            static way to get valid <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/> for a requested <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            </summary>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
-            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCryptParams"/></returns>
-        </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net">
             <summary>
             Des3Net native .Net triple des without bouncy castle
@@ -634,163 +618,6 @@
             </summary>
             <param name="cipherText">Base64 encoded encrypted byte[]</param>
             <returns>plain text string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum">
-            <summary>
-            SymmCipherEnum maps prefered provided symmetric <see cref="T:Org.BouncyCastle.Crypto.IBlockCipher"/> algorthims
-            Default algorithm is <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum.Aes"/> <seealso cref="T:Org.BouncyCastle.Crypto.Engines.AesEngine" />
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions">
-            <summary>
-            SymmCipherEnumExtensions provides extension methods for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetSymmCipherTypes">
-            <summary>
-            GetSymmCipherTypes 
-            </summary>
-            <returns>an array of all SymmCipherEnum values</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetCharSymmCipherDict">
-            <summary>
-            GetCharSymmCipherDict gets <see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/>,
-            where hexbyte as char is mapped to <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum" />
-            </summary>
-            <returns><see cref="T:Dictionary{T:char, T:SymmCipherEnum}"/></returns>        
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetByteSymmCipherDict">
-            <summary>
-            GetByteSymmCipherDict gets <see cref="T:Dictionary{T:byte, T:SymmCipherEnum}"/>,
-            where hex byte value is mapped to  <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum" />
-            </summary>
-            <returns><see cref="T:Dictionary{ T:byte, T:SymmCipherEnum}"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.GetSymmCipherChar(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
-            <summary>
-            Extensions method for Enum <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            gets a character for each Cipher Algorithm, that is used here
-            </summary>
-            <param name="symmCipher">this <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/></param>
-            <returns>a <see cref="T:System.Char"/>, that is a short name for the encryption</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnumExtensions.ToCipherEnum(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum)">
-            <summary>
-            ExtensionMethod ToCipherEnum converts <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> to <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
-            </summary>
-            <param name="symmCipher"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> to convert</param>
-            <returns></returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe">
-            <summary>
-            Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            SymmCipherPipe constructor with an array of <see cref="T:SymmCipherEnum[]"/> as inpipe
-            </summary>
-            <param name="symmCipherEnums">array of <see cref="T:SymmCipherEnum[]"/> as inpipe</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            SymmCipherPipe constructor with an array of <see cref="T:string[]"/> as inpipe
-            </summary>
-            <param name="symmCipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
-            <summary>
-            SymmCipherPipe ctor with array of user key bytes
-            </summary>
-            <param name="keyBytes">user key bytes</param>
-            <param name="maxpipe">maximum lentgh <see cref="F:EU.CqrXs.Util.Constants.MAX_PIPE_LEN"/></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
-            <summary>
-            Constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe"/> from key and hash
-            by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:EU.CqrXs.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
-            </summary>
-            <param name="key">secret key to generate pipe</param>
-            <param name="hash">hash value of secret key</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.#ctor(System.String,System.Boolean)">
-            <summary>
-            SymmCipherPipe ctor with only key
-            </summary>
-            <param name="key"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.ToJson">
-            <summary>
-            ToJson 
-            </summary>
-            <returns>serialized string</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.FromJson(System.String)">
-            <summary>
-            FromJson
-            </summary>
-            <param name="json">serialized json</param>
-            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            Generic encrypt bytes to bytes
-            </summary>
-            <param name="inBytes">Array of byte</param>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key's hash</param>
-            <param name="cipherMode"></param>
-            <returns>encrypted byte Array</returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum,System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            Generic decrypt bytes to bytes
-            </summary>
-            <param name="cipherBytes">Encrypted array of byte</param>
-            <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/>both symmetric and asymetric cipher algorithms</param>
-            <param name="secretKey">secret key to decrypt</param>
-            <param name="hashIv">key's hash</param>
-            <param name="cmode2"></param>
-            <returns>decrypted byte Array</returns>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
-            </summary>
-            <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
-            <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
-            <param name="hashIv">hash key iv relational to secret key</param>
-            <param name="cmode2"></param>
-            <returns>encrypted byte[]</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            DecrpytRoundGoMerry against clock turn -
-            starts merry to turn arround from right to left against clock hour cycle 
-            </summary>
-            <param name="cipherBytes">encrypted byte array</param>
-            <param name="secretKey">user secret key, normally email address</param>
-            <param name="hashIv">hash relational to secret kay</param>
-            <param name="cmode2"></param>
-            <returns><see cref="T:byte[]"/> plain bytes</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
-            <summary>
-            Multi functional 
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
-            </summary>
-            <param name="inBytes">incoming bytes</param>
-            <param name="secretKey">user private key</param>
-            <param name="hashIV">hashed secret key</param>
-            <param name="directionDecrypt">true for decryption, false for encryption</param>
-            <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
-            <param name="zip">compression method to zip before or unzip after pipe processed</param>
-            <param name="keyHash">hashing type of hashing method to hash key</param>
-            <returns>transformed byte array</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix">
              <summary>
@@ -2950,7 +2777,7 @@
             <summary>
             Extension <see cref="T:System.String"/>.StripCiphersInFileName() 
             strips all <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> and 
-            <seealso cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SymmCipherEnum"/> characters
+            <seealso cref="!:SymmCipherEnum"/> characters
             from current string.       
             </summary>
             <param name="fileName"><see cref="T:System.String"/> with extension</param>

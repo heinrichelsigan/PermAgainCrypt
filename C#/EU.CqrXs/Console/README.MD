@@ -15,10 +15,7 @@ Usage:  EU.CqrXs.Console.exe
             RC2,RC532,RC564,RC6,
             Seed,SkipJack,Serpent,SM4,
             Tea,Tnepres,XTea,
-            ZenMatrix,ZenMatrix2
-        symmAlgo: 
-            Aes,BlowFish,Camellia,Cast6,Des3,Fish2,Fish3,Gost28147,Idea,RC532,Seed,SkipJack,Serpent,Tea,XTea,SM4        
-        -S  | --SymmCipher   
+            ZenMatrix,ZenMatrix2      
         -e  | --encode={raw|hex16|hex32|base32|base64|uu}
         -o  | --outFile= | --outText=EnviromentVariable | --outStd            
         -D  | --Decrypt           
@@ -39,7 +36,7 @@ Examples:
     EU.CqrXs.Console.exe -i=.\README.MD  -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -e=uu -o=.\README.MD.SCrypt.zip.uu
     EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -o=.\READ_UNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
 
 

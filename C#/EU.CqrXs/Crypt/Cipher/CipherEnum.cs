@@ -187,10 +187,10 @@ namespace EU.CqrXs.Crypt.Cipher
         }
 
 
-        public static CipherEnum FromSymmCipherEnum(Symmetric.SymmCipherEnum symmCipherEnum)
-        {
-            return symmCipherEnum.ToCipherEnum();
-        }
+        //public static CipherEnum FromSymmCipherEnum(Symmetric.SymmCipherEnum symmCipherEnum)
+        //{
+        //    return symmCipherEnum.ToCipherEnum();
+        //}
 
     }
 

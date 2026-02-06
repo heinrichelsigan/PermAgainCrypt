@@ -76,10 +76,7 @@
     <Compile Include="Crypt\Cipher\CryptParams.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\AesNet.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\CryptBounceCastle.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\SymmCryptParams.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\Des3Net.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\SymmCipherEnum.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\SymmCipherPipe.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
     <Compile Include="Crypt\CqrSettings.cs" />

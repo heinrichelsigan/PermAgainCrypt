@@ -1375,6 +1375,7 @@ namespace EU.CqrXs.Util
             return strippedFileName;
         }
 
+        /*
         public static string StripSymmCipherPipeFromFileName(this string fileName, out SymmCipherPipe? symmCipherPipe)
         {
             if (string.IsNullOrEmpty(fileName))
@@ -1451,6 +1452,8 @@ namespace EU.CqrXs.Util
 
             return strippedFileName;
         }
+        */
+
 
         /// <summary>
         /// Extension <see cref="string"/>.StripCiphersInFileName() 

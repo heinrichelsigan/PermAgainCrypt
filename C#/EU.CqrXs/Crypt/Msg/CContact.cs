@@ -1,4 +1,5 @@
 ﻿using EU.CqrXs.Crypt;
+using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
@@ -300,9 +301,9 @@ namespace EU.CqrXs.Crypt.Msg
             string encrypted = "", pipeString = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey);
+                CipherPipe symmPipe = new CipherPipe(serverKey);
                 pipeString = symmPipe.PipeString;
-                encrypted = Encoding.UTF8.GetString(new SymmCipherPipe(serverKey).EncryptEncodeBytes(
+                encrypted = Encoding.UTF8.GetString(new CipherPipe(serverKey).EncryptEncodeBytes(
                     Encoding.UTF8.GetBytes(ccntct.Message), serverKey, keyHash, encoder, zipType, KeyHash.Hex));
                 // encrypted = SymmCipherPipe.EncrpytToString(ccntct.Message, serverKey, out pipeString, encoder, zipType,);
                 ccntct.Hash = pipeString;
@@ -358,7 +359,7 @@ namespace EU.CqrXs.Crypt.Msg
             string pipeString = "", decrypted = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                SymmCipherPipe symmPipe = new SymmCipherPipe(serverKey, keyHash);
+                CipherPipe symmPipe = new CipherPipe(serverKey, keyHash, decoder, zipType, KeyHash.Hex, CipherMode2.ECB);
                 pipeString = symmPipe.PipeString;
 
                 decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(

@@ -8,6 +8,7 @@ using Org.BouncyCastle.Crypto;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Security.Policy;
+using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher
 {
@@ -452,6 +453,140 @@ namespace EU.CqrXs.Crypt.Cipher
 
             return EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
         }
+
+
+
+        /// <summary>
+        /// EncrpytT
+        /// </summary>
+        /// <typeparam name="TRet">
+        ///     <see cref="T:string"/>
+        ///     <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+        ///     <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+        /// </typeparam>
+        /// <typeparam name="TIn">
+        ///     <see cref="T:string"/>
+        ///     <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+        ///     <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+        /// </typeparam>
+        /// <param name="tinSource">plain string, char[], byte[], IEnumerable{char}, IEnumerable{bytes}</param>
+        /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+        /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+        /// <param name="hashIv">hashed key Iv</param>
+        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+        /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
+        /// <param name="kayHash"><see cref="KeyHash"/> hashing key algorithm</param>
+        /// <param name="cmode2"></param>
+        /// <returns>encrypted generic type</returns>
+        /// <exception cref="CException">is thrown on unknown type</exception>
+        public static TRet EncrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
+            EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None,
+            KeyHash kayHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.ECB)
+        {
+            byte[] stringBytes = new List<byte>().ToArray();
+            // construct symmetric cipher pipeline with cryptKey, keyIv, encopding, zipBefore, keyHash and cmode2
+            CipherPipe cipherPipe = new CipherPipe(cryptKey, hashIv, encoding, zipBefore, kayHash, cmode2, true);
+
+            if (tinSource is string inString)   // Transform string to bytes
+                stringBytes = Encoding.UTF8.GetBytes(inString);
+            else if (tinSource is char[] chars)
+                stringBytes = Encoding.UTF8.GetBytes(new string(chars));
+            else if (tinSource is IEnumerable<char> charsIEnumerable)
+                stringBytes = Encoding.UTF8.GetBytes(new string(charsIEnumerable.ToArray()));
+            else if (tinSource is byte[] inBytes)
+                stringBytes = inBytes;
+            else if (tinSource is IEnumerable<byte> bytesEnumerable)
+                stringBytes = bytesEnumerable.ToArray();
+            else throw new CException($"Unknown type Exception, type {typeof(TIn)} is not supported.");
+
+            // zip if requested
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(stringBytes) : stringBytes;
+            // encrypt in a marry go round way
+            byte[] encryptedBytes = cipherPipe.MerryGoRoundEncrpyt(zippedBytes, cryptKey, hashIv, cmode2);
+            // encode after encryption pipe
+            String encryptedString = encoding.GetEnCoder().Encode(encryptedBytes);
+
+            TRet result = default(TRet);
+            if (typeof(TRet) == typeof(string))
+                result = (TRet)(object)encryptedString;
+            else if (typeof(TRet) == typeof(char[]))
+                result = (TRet)(object)encryptedString.ToCharArray();
+            else if (typeof(TRet) == typeof(IEnumerable<char>))
+                result = (TRet)(object)encryptedString.ToCharArray();
+            else if (typeof(TRet) == typeof(byte[]))
+                result = (TRet)(object)System.Text.Encoding.UTF8.GetBytes(encryptedString);
+            else if (typeof(TRet) == typeof(IEnumerable<byte>))
+                result = (TRet)(object)System.Text.Encoding.UTF8.GetBytes(encryptedString);
+            else throw new CException($"Unknown type Exception, type {typeof(TRet)} is not supported.");
+
+            return result;
+        }
+
+        /// <summary>
+        ///  DecrpytT generic decryption method
+        /// </summary>
+        /// <typeparam name="TRet">return type 
+        ///     <see cref="T:string"/>
+        ///     <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+        ///     <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+        /// </typeparam>
+        /// <typeparam name="TIn"></typeparam>
+        /// <param name="tinSource">encrypted message</param>
+        /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+        /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+        /// <param name="decoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+        /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
+        /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
+        /// <param name="mode2"></param>
+        /// <returns>Decrypted generic TRet</returns>
+        /// <exception cref="CException">is thrown on unknown type</exception>
+        public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
+            EncodingType decoding = EncodingType.Base64, ZipType unzipAfter = ZipType.None,
+            KeyHash keyHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.ECB)
+        {
+
+            hashIv = hashIv ?? keyHash.Hash(cryptKey);
+            byte[] stringBytes = new List<byte>().ToArray();
+            // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
+            CipherPipe cPipe = new CipherPipe(cryptKey, hashIv, decoding, unzipAfter, keyHash, cmode2, true);
+            string pipeString = cPipe.PipeString;
+            string incomingEncoded = string.Empty;
+
+            if (tinSource is string inString)
+                incomingEncoded = inString;
+            else if (tinSource is char[] chars)
+                incomingEncoded = chars.ToString();
+            else if (tinSource is IEnumerable<char> charsIEnumerable)
+                incomingEncoded = new string(charsIEnumerable.ToArray());
+            else if (tinSource is byte[] inBytes)
+                incomingEncoded = System.Text.Encoding.UTF8.GetString(inBytes);
+            else if (tinSource is IEnumerable<byte> bytesEnumerable)
+                incomingEncoded = System.Text.Encoding.UTF8.GetString(bytesEnumerable.ToArray());
+            else throw new CException($"Unknown type Exception, type {typeof(TIn)} is not supported.");
+
+            // get bytes from encrypted encoded string dependent on the encoding type (uu, base64, base32,..)
+            byte[] cipherBytes = decoding.GetEnCoder().Decode(incomingEncoded);
+            // staged decryption of bytes
+            byte[] intermediatBytes = cPipe.DecrpytRoundGoMerry(cipherBytes, cryptKey, keyHash.Hash(cryptKey), cmode2);
+            // Unzip after if necessary
+            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
+
+            TRet result = default(TRet);
+            if (typeof(TRet) == typeof(string))
+                result = (TRet)(object)System.Text.Encoding.UTF8.GetString(decryptedBytes);
+            else if (typeof(TRet) == typeof(char[]))
+                result = (TRet)(object)System.Text.Encoding.UTF8.GetString(decryptedBytes).ToCharArray();
+            else if (result is IEnumerable<char> charsEnumerable)
+                result = (TRet)(object)System.Text.Encoding.UTF8.GetString(decryptedBytes).ToCharArray();
+            else if (typeof(TRet) == typeof(byte[]))
+                result = (TRet)(object)decryptedBytes;
+            else if (result is IEnumerable<byte> bytesIEnumerable)
+                result = (TRet)(object)decryptedBytes;
+            else throw new CException($"Unknown type Exception, type {typeof(TRet)} is not supported.");
+
+            return result;
+        }
+
 
         #endregion static members EncryptBytesFast DecryptBytesFast
 
@@ -979,10 +1114,10 @@ namespace EU.CqrXs.Crypt.Cipher
         
         #endregion graphics bmp creation
 
-        public static CipherEnum SymmCipherToCipher(SymmCipherEnum sCipher)
-        {
-            return sCipher.ToCipherEnum();
-        }
+        //public static CipherEnum SymmCipherToCipher(SymmCipherEnum sCipher)
+        //{
+        //    return sCipher.ToCipherEnum();
+        //}
     
     }
 

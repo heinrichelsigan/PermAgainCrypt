@@ -20,7 +20,7 @@ namespace EU.CqrXs.Spooler
         OutDir = 0x2,
         Decrypt = 0x3,
         Key = 0x4,
-        Symmetric = 0x5,
+        // Symmetric = 0x5,
         Mode = 0x6,
         Verbose = 0xe,
         Help = 0xf
@@ -59,7 +59,7 @@ namespace EU.CqrXs.Spooler
     /// -V | --verbose      // verbose output
     /// -? | --help\n";
         // generic spooler variables
-        static bool useSymmCipher = false, decryptDirection = false, verbose = false;
+        static bool decryptDirection = false, verbose = false;
         static string inDir = "", outDir = "", keyFile = "";
         static string[] keys = new string[0], files = new string[0];
 
@@ -142,71 +142,37 @@ namespace EU.CqrXs.Spooler
                 Verbose($"reading {inBytes.Length} bytes from file {ofName}");
 
                 CipherPipe cPipe;
-                SymmCipherPipe symmPipe;
                 if (!decryptDirection) // encrypting
                 {
-                    if (useSymmCipher) // SymmCipherPipe and SymmCipherEnum only
-                    {
-                        symmPipe = new SymmCipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
-                        PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        outBytes = symmPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                        ofName += symmPipe.PipeFullExtension;
-                    }
-                    else // CipherPipe and all CipherEnum's
-                    {
-                        cPipe = new CipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
-                        PrintCipherPipe(cPipe, decryptDirection);
-                        outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                        ofName += cPipe.PipeFullExtension;
-                    }
+                    // CipherPipe and all CipherEnum's
+                    cPipe = new CipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
+                    PrintCipherPipe(cPipe, decryptDirection);
+                    outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                    ofName += cPipe.PipeFullExtension;
                 }
                 else if (file.IsPermAgainCryptFile()) // decrypting
                 {
                     keyHash = KeyHash.Hex;
                     zipType = ZipType.None;
-                    if (useSymmCipher)
-                    {
-                        ofName = ofName.StripSymmCipherPipeFromFileName(out symmPipe);
-                        if (symmPipe != null)
-                        {
-                            keyHash = symmPipe.KHash;
-                            encodingType = symmPipe.EncodeType;
-                            zipType = symmPipe.ZType;
-                        }
-                        PrintSymmCipherPipe(symmPipe, decryptDirection);
-                        try
-                        {
-                            outBytes = symmPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                        } 
-                        catch (Exception exSymmDecrypt)
-                        {
-                            outBytes = new byte[0];
-                            decryptExc = new CException($"{exSymmDecrypt.GetType()} was thrown decrypting {ofName} with {symmPipe.PipeFullExtension}", exSymmDecrypt);
-                            Verbose($"{exSymmDecrypt.GetType()}: {exSymmDecrypt.Message}\n\t{exSymmDecrypt.ToString()}", true);                        
-                        }
-                    }
-                    else
-                    {
-                        ofName = ofName.StripCipherPipeFromFileName(out cPipe);
-                        if (cPipe != null)
-                        {
-                            keyHash = cPipe.KHash;
-                            encodingType = cPipe.EncodeType;
-                            zipType = cPipe.ZType;
-                        }
-                        PrintCipherPipe(cPipe, decryptDirection);
-                        try
-                        {
-                            outBytes = cPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                        } 
-                        catch (Exception exDecrypt)
-                        {
-                            decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
-                            outBytes = new byte[0];
-                            Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
-                        }
-                    }
 
+                    ofName = ofName.StripCipherPipeFromFileName(out cPipe);
+                    if (cPipe != null)
+                    {
+                        keyHash = cPipe.KHash;
+                        encodingType = cPipe.EncodeType;
+                        zipType = cPipe.ZType;
+                    }
+                    PrintCipherPipe(cPipe, decryptDirection);
+                    try
+                    {
+                        outBytes = cPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                    }
+                    catch (Exception exDecrypt)
+                    {
+                        decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
+                        outBytes = new byte[0];
+                        Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
+                    }
                 }
                 
                 string outFile = Path.Combine(outDir, ofName);
@@ -343,13 +309,7 @@ namespace EU.CqrXs.Spooler
                     if (string.IsNullOrEmpty(key))
                         Usage("Key={NULL or \"\"})");
                     return optArgs;
-
-                case 'S':
-                    optEnum = OptSpoolEnum.Symmetric;
-                    optArgs[0] = optEnum.ToString();
-                    useSymmCipher = true;
-                    return optArgs;
-
+              
                 case 'm':
                 case 'M':
                     if (!Enum.TryParse<CipherMode2>(optArgs[1], true, out cmode2))
@@ -429,24 +389,6 @@ namespace EU.CqrXs.Spooler
                     Console.Error.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + " " + s);
                 else
                     Console.Out.WriteLine(DateTime.Now.Area23DateTimeWithSeconds().ToString() + " " + s);
-            }
-        }
-
-        /// <summary>
-        /// Prints properties of a symmetric cipher pipe
-        /// </summary>
-        /// <param name="symmPipe"><see cref="SymmCipherPipe"/></param>
-        /// <param name="outPipe">direction decrypt</param>
-        public static void PrintSymmCipherPipe(SymmCipherPipe symmPipe, bool outPipe = false)
-        {
-            if (verbose)
-            {
-                SymmCipherEnum[] symmCiphers = (outPipe) ? symmPipe.OutSymmPipe : symmPipe.InSymmPipe;
-                System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
-                foreach (var symmCipher in symmCiphers)
-                    System.Console.Write($"{symmCipher}=>");
-                System.Console.WriteLine($"\r\nSymmCipherPipe: KeyHash={symmPipe.KHash} ZipType={symmPipe.ZType} " +
-                    $"EncodeType={symmPipe.EncodeType} CipherMode={symmPipe.CMode2} PipeString={symmPipe.PipeString}");
             }
         }
 

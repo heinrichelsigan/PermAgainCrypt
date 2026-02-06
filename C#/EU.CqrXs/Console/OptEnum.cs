@@ -23,7 +23,7 @@ namespace EU.CqrXs.Console
         Encode = 0x6,
         OutP = 0x7,
         DeCrypt = 0x8,
-        SymmCipher = 0x9,
+        // SymmCipher = 0x9,
         Mode = 0xa,
         Verbose = 0xe,
         Help = 0xf
@@ -38,79 +38,89 @@ namespace EU.CqrXs.Console
         /// <param name="argument">cmd line argument</param>
         /// <param name="optEnum"><see cref="OptEnum">OptEnum cmd arg option enum</see></param>
         /// <returns>optArg</returns>
-        public static string GetOption(this string argument, out OptEnum optEnum)
+        public static string[] GetOption(this string argument)
         {
-            string optArg = "";
+            OptEnum optEnum = OptEnum.Usage;
             if (string.IsNullOrEmpty(argument) || argument.Length < 2 || argument[0] != '-')
             {
                 optEnum = OptEnum.Usage;
                 if (argument[0] != '/')
-                    return optArg;
+                    return new string[2] { optEnum.ToString(), argument };
             }
-            optArg = argument;
-            string arg = argument.TrimStart("-/".ToCharArray());
 
-            if (arg.Contains("="))
-                // optArg = arg.GetSubStringByPattern("=", true, "", " ", true, StringComparison.CurrentCultureIgnoreCase);
-                optArg = arg.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
+            string arg = argument.TrimStart("-/".ToCharArray());
+            
+            // optArg = arg.GetSubStringByPattern("=", true, "", " ", true, StringComparison.CurrentCultureIgnoreCase);
+            string[] optArgs = (arg.Contains("=")) ?
+                    arg.Split("=".ToCharArray(), StringSplitOptions.RemoveEmptyEntries) :
+                    new string[] { optEnum.ToString(), arg };           
 
             switch (arg[0])
             {
                 case 'I':
                 case 'i':
                     optEnum = OptEnum.InParam;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'O':
                 case 'o':
                     optEnum = OptEnum.OutP;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'Z':
                 case 'z':
                     optEnum = OptEnum.Zip;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'E':
                 case 'e':
                     optEnum = OptEnum.Encode;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'C':
                 case 'c':
                     optEnum = OptEnum.CipherAlgos;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'k':
                 case 'K':
                     optEnum = OptEnum.Key;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'm':
                 case 'M':
                     optEnum = OptEnum.Mode;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'h':
                 case 'H':
                     optEnum = OptEnum.Hash;
-                    return optArg;
-                case 'S':
-                    optEnum = OptEnum.SymmCipher;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'D':
                     optEnum = OptEnum.DeCrypt;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'v':
                 case 'V':
                     optEnum = OptEnum.Verbose;
-                    return optArg;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
                 case 'g':
                 case 'G':
                 case '?':
                     optEnum = OptEnum.Help;
-                    optArg = "";
+                    optArgs[0] = optEnum.ToString();
+                    optArgs[1] = "";
                     break;
                 default:
                     optEnum = OptEnum.Usage;
-                    optArg = $"unrecognized option: {argument}.";
+                    optArgs[0] = optEnum.ToString();
+                    optArgs[1] = $"unrecognized option: {argument}.";
                     break;
             }
 
-            return optArg;
+            return optArgs;
         }
 
     }
