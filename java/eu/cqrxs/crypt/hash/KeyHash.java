@@ -64,10 +64,12 @@ public enum KeyHash {
 	final static KeyHash[] orderedHashes = { KeyHash.BCrypt, KeyHash.Blake2xs, KeyHash.CShake, KeyHash.Dstu7564, 
 		KeyHash.Hex, KeyHash.MD5, KeyHash.Oct, KeyHash.OpenBSDCrypt, KeyHash.RipeMD256, KeyHash.SCrypt, 
 		KeyHash.Sha1, KeyHash.Sha256, KeyHash.Sha384, KeyHash.Sha512, KeyHash.TupleHash,  KeyHash.Whirlpool };
-		
-	
-	
-    /**
+
+	final static KeyHash[] secureHashes = {
+			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
+			KeyHash.OpenBSDCrypt, KeyHash.RipeMD256,  KeyHash.SCrypt,  KeyHash.Whirlpool };
+
+	/**
      * getName
      * @return name of enum
      */
@@ -108,15 +110,14 @@ public enum KeyHash {
     }
 
  	/**
-     * getName
-     * @return name of enum
+     * hash hashes a {@link String} with {@link HashKey}
+     * @return hashed {@link String}
      */
     public String hash(String instr) {
 		try {
 			int xval = getValue();
             if (Constants.DEBUG)
-                System.out.
-                            println("KeyHash: " + xval + " " + getName());
+                System.out.println("KeyHash: " + xval + " " + getName());
 			if (instr == null || instr.isEmpty())
 				throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 			byte[] inBytes = instr.getBytes(StandardCharsets.UTF_8);
@@ -126,43 +127,14 @@ public enum KeyHash {
 			String hexs = "";
 
 			switch (getEnum(getName())) {
-				case KeyHash.Hex:
-					return eu.cqrxs.crypt.hash.Hex.hashString(instr);
-				case KeyHash.Sha1:
-					return eu.cqrxs.crypt.hash.Sha1.hashString(instr);					
-				case KeyHash.OpenBSDCrypt:
-					return eu.cqrxs.crypt.hash.OpenBSDCrypt.hashString(instr);
+				
 				case KeyHash.BCrypt:
 					return eu.cqrxs.crypt.hash.BCrypt.hashString(instr);
-				case KeyHash.SCrypt:
-					return eu.cqrxs.crypt.hash.SCrypt.hashString(instr);
-				case KeyHash.MD5:
-					return eu.cqrxs.crypt.hash.MD5.hashString(instr);
-				case KeyHash.Sha256:
-					return eu.cqrxs.crypt.hash.Sha256.hashString(instr);
-				case KeyHash.Sha384:
-					return eu.cqrxs.crypt.hash.Sha384.hashString(instr);
-				case KeyHash.Oct:
-					String hexString = hex.formatHex(inBytes);
-					for (int wco = 0; wco < inBytes.length; wco++)
-						hexs +=  eu.cqrxs.util.Constants.decimalToOctal(inBytes[wco]);
-					return hexs;
-				case KeyHash.Sha512:
-				  return eu.cqrxs.crypt.hash.Sha512.hashString(instr);
-				case KeyHash.Whirlpool:
-					digest = new org.bouncycastle.crypto.digests.WhirlpoolDigest();
-					resBuf = new byte[digest.getDigestSize()];
-					// digest.update(inBytes);
-					digest.update(inBytes, 0, inBytes.length);
-					digest.doFinal(resBuf, 0);
-					hexs = hex.formatHex(resBuf);
-					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
-
-					return hexs;
+					
 				case KeyHash.Blake2xs:
 					digest = new org.bouncycastle.crypto.digests.Blake2xsDigest(32, inBytes);
 					int dgsize = digest.getDigestSize();
-					// dgsize = (dgsize < 16) ? 16 : ((dgsize > 256) ? 256 : dgsize);
+					
 					resBuf = new byte[dgsize];
 					digest.update(inBytes, 0, inBytes.length);
 					digest.doFinal(resBuf, 0);
@@ -173,14 +145,12 @@ public enum KeyHash {
 						ex.printStackTrace();
 						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
 					}
-					DbgWriter.msg((getName() + ": bytes.length=" + resBuf.length + " \thexs=" + hexs), false);
-
 					return hexs;
+					
 				case KeyHash.CShake:
 					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
 					digest = new org.bouncycastle.crypto.digests.CSHAKEDigest(256, inBytes, CryptHelper.getKeyBytesFromBytes(inBytes, 32));
 					resBuf = new byte[digest.getDigestSize()];
-					// digest.update(inBytes);
 					digest.update(inBytes, 0, inBytes.length);
 					digest.doFinal(resBuf, 0);
 
@@ -190,9 +160,8 @@ public enum KeyHash {
 						ex.printStackTrace();
 						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
 					}
-					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
-
 					return hexs;
+					
 				case KeyHash.Dstu7564:
 					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
 					digest = new org.bouncycastle.crypto.digests.DSTU7564Digest(256);
@@ -200,24 +169,69 @@ public enum KeyHash {
 					digest.doFinal(resBuf, 0);
 
 					hexs = hex.formatHex(resBuf);
-					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexstring=" + hexs), false);
-
+					return hexs;		
+				
+				case KeyHash.Hex:
+					hexs = hex.formatHex(inBytes);
 					return hexs;
+
+				case KeyHash.MD5:
+					return eu.cqrxs.crypt.hash.MD5.hashString(instr);
+				
+				case KeyHash.Oct:
+					String hexString = hex.formatHex(inBytes);
+					for (int wco = 0; wco < inBytes.length; wco++)
+						hexs +=  eu.cqrxs.util.Constants.decimalToOctal(inBytes[wco]);
+					return hexs;
+				
+				case KeyHash.OpenBSDCrypt:
+					return eu.cqrxs.crypt.hash.OpenBSDCrypt.hashString(instr);				
+				
 				case KeyHash.RipeMD256:
 					digest = new org.bouncycastle.crypto.digests.RIPEMD256Digest();
 					resBuf = new byte[digest.getDigestSize()];
-					// digest.update(inBytes);
 					digest.update(inBytes, 0, inBytes.length);
 					digest.doFinal(resBuf, 0);
 					hexs = hex.formatHex(resBuf);
-					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexstring=" + hexs), false);
-
 					return hexs;
+				
+				case KeyHash.SCrypt:
+					return eu.cqrxs.crypt.hash.SCrypt.hashString(instr);
+				
+				case KeyHash.Sha1:
+					digest = new org.bouncycastle.crypto.digests.SHA1Digest();
+					resBuf = new byte[digest.getDigestSize()];
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+					hexs = hex.formatHex(resBuf);					
+					return hexs;
+					
+				case KeyHash.Sha256:
+					return eu.cqrxs.crypt.hash.Sha256.hashString(instr);
+
+				case KeyHash.Sha384:
+					digest = new org.bouncycastle.crypto.digests.SHA384Digest();
+					resBuf = new byte[digest.getDigestSize()];
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+					hexs = hex.formatHex(resBuf);					
+					return hexs;					
+				
+				case KeyHash.Sha512:
+					return eu.cqrxs.crypt.hash.Sha512.hashString(instr);
+
+				case KeyHash.Whirlpool:
+					digest = new org.bouncycastle.crypto.digests.WhirlpoolDigest();
+					resBuf = new byte[digest.getDigestSize()];	
+					digest.update(inBytes, 0, inBytes.length);
+					digest.doFinal(resBuf, 0);
+					hexs = hex.formatHex(resBuf);					
+					return hexs;
+
 				case KeyHash.TupleHash:
 					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
 					digest = new org.bouncycastle.crypto.digests.TupleHash(256, inBytes, 32);
 					resBuf = new byte[digest.getDigestSize()];
-					// digest.update(inBytes);
 					digest.update(inBytes, 0, inBytes.length);
 					digest.doFinal(resBuf, 0);
 
@@ -227,18 +241,34 @@ public enum KeyHash {
 						ex.printStackTrace();
 						hexs = (new Hex16Coder()).encodeBytesToString(resBuf);
 					}
-					DbgWriter.msg((getName() + ": bytes.length=" +resBuf.length + " \thexs=" + hexs), false);
-
 					return hexs;
+								
 				default:
 					break;
 			}
-		} catch (Exception exi) { }
+		} catch (Exception exi) { 
+			exi.printStackTrace();
+		}
 		return "";
     }
 
+	public static KeyHash[] getOrderedHashes() { return orderedHashes; }
 
+	public static KeyHash[] getSecureHashes() { return secureHashes; }
 
+	public static KeyHash[] getKeyHashes() {
+		Set<KeyHash> allElementsInKeyHash =  EnumSet.allOf(KeyHash.class);
+		return allElementsInKeyHash.toArray(KeyHash[]::new);
+	}
+
+	public static Set<KeyHash> getSecureHashSet() {
+		return new HashSet<KeyHash>(Arrays.asList(secureHashes));
+	}
+
+	public static Set<KeyHash> getKeyHashSet() {
+		Set<KeyHash> allElementsInKeyHash =  EnumSet.allOf(KeyHash.class);
+		return allElementsInKeyHash;
+	}
 	public static KeyHash getKeyHashFromString(String stringToHash) {
 		if (stringToHash != null && stringToHash != "") {
 			switch (stringToHash.toLowerCase()) {
@@ -278,11 +308,6 @@ public enum KeyHash {
 
 
 
-	public static Set<KeyHash> getKeyHashes() {
-		Set<KeyHash> allElementsInKeyHash = EnumSet.allOf(KeyHash.class);
-		return allElementsInKeyHash;
-	}
-
 	public static String getKeyHashExtension(KeyHash khash) {
 		int xval = khash.getValue();
 		String retext = "." + khash.toString().toLowerCase();
@@ -297,8 +322,6 @@ public enum KeyHash {
 		return retext;
 	}
 
-
-	
     /**
      * getEnum
      * @param khash String 

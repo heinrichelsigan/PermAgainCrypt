@@ -1,4 +1,5 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Crypt.Msg;
@@ -17,6 +18,7 @@ namespace EU.CqrXs.Gui.Forms
         protected internal bool isDragMode = false;
         protected internal readonly Lock _Lock = new Lock();
         protected internal CipherPipe? CPipe;
+        protected internal SecureCipherPipe? SPipe;
 
         protected internal static HashSet<string> HashFiles = new HashSet<string>();
         protected internal delegate void SetLabelTextVisibleCallback(System.Windows.Forms.Label label, string text, bool visible = true);
@@ -359,13 +361,29 @@ namespace EU.CqrXs.Gui.Forms
 
         #region verify output file
 
-        public CipherPipe? GetCPipeFromFileName(string fileName)
+        public SecureCipherPipe? GetSPipeFromFileName(string fileName)
         {
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName));
 
             string origName = fileName.StripCipherPipeFromFileName(out CipherPipe? fPipe);
             if (fPipe != null && 
+                (!string.IsNullOrEmpty(fPipe.PipeString) || fPipe.ZType != ZipType.None || fPipe.EncodeType != EncodingType.None || fPipe.KHash != KeyHash.Hex))
+            {
+                SPipe = new SecureCipherPipe(fPipe);
+                return SPipe;
+            }
+
+            return null;
+        }
+
+        public CipherPipe? GetCPipeFromFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            string origName = fileName.StripCipherPipeFromFileName(out CipherPipe? fPipe);
+            if (fPipe != null &&
                 (!string.IsNullOrEmpty(fPipe.PipeString) || fPipe.ZType != ZipType.None || fPipe.EncodeType != EncodingType.None || fPipe.KHash != KeyHash.Hex))
             {
                 CPipe = fPipe;
@@ -387,11 +405,35 @@ namespace EU.CqrXs.Gui.Forms
             return success;
         }
 
+        public async Task<bool> VerifyEncryptedFileBytesAsync(string inFilePath, string outFilePath, string key, SecureCipherPipe sPipe)
+        {
+            byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
+            // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.EncodeType, sPipe.ZType);
+            // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
+            byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
+
+            bool success = await Task.Run(() => CompareBytes(inBytes, outBytes));
+            return success;
+        }
+
         public async Task<bool> VerifyEncryptedFileShaAsync(string inFilePath, string outFilePath, string key, string hash, CipherPipe cPipe)
         {
             // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
             byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, key, hash, cPipe.EncodeType, cPipe.ZType, cPipe.KHash);
+            // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
+            byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
+
+            bool shaSuccess = CompareSha512HashSum(inBytes, outBytes);
+            return shaSuccess;
+        }
+
+        public async Task<bool> VerifyEncryptedFileShaAsync(string inFilePath, string outFilePath, string key, SecureCipherPipe sPipe)
+        {
+            // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
+            byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.EncodeType, sPipe.ZType);
             // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 

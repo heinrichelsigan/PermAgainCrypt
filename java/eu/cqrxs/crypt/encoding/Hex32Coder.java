@@ -143,7 +143,7 @@ public class Hex32Coder implements IEncodable {
         int bitsLeft = 0;
         int charValue = 0;
         for (char c : encoded.toCharArray())  {
-            charValue = (int)c;
+            charValue = (int)charToInt(c);
             if (charValue < 0)
                 throw new CException("Illegal character: `" + c + "`");
 
@@ -161,7 +161,7 @@ public class Hex32Coder implements IEncodable {
 
 
 
-    public boolean IsValidHex32(String inString) {
+    public boolean isValidHex32(String inString) {
         boolean valid = true;
         error = "";
         for (char ch : inString.toCharArray()) {
@@ -172,5 +172,24 @@ public class Hex32Coder implements IEncodable {
         }
         return valid;
     }
+	
+	public static int charToInt(char c) {
+		int iLetterUpperA = (int)'A',
+			iLetterLowera = ((int)'a'),
+			iNumDigitZero = ((int)'0'),
+			iChar = ((int)c);
+
+		if (Character.isDigit(c))
+			return (iChar - iNumDigitZero);
+		else if (Character.isLetter(c)) {
+			if (Character.isUpperCase(c))
+				return ((iChar - iLetterUpperA) + 10);
+			if (Character.isLowerCase(c))
+				return ((iChar - iLetterLowera) + 10);
+		}
+
+		return -1;
+	}
+
 
 }

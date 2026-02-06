@@ -77,6 +77,7 @@
     <Compile Include="Crypt\Cipher\Symmetric\AesNet.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\CryptBounceCastle.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\Des3Net.cs" />
+    <Compile Include="Crypt\Cipher\Symmetric\SecureCipherPipe.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
     <Compile Include="Crypt\CqrSettings.cs" />
@@ -97,9 +98,7 @@
     <Compile Include="Crypt\Hash\MD5Sum.cs" />
     <Compile Include="Crypt\Hash\OpenBSDCrypt.cs" />
     <Compile Include="Crypt\Hash\SCrypt.cs" />
-    <Compile Include="Crypt\Hash\Sha1.cs" />
     <Compile Include="Crypt\Hash\Sha256Sum.cs" />
-    <Compile Include="Crypt\Hash\Sha384.cs" />
     <Compile Include="Crypt\Hash\Sha512Sum.cs" />
     <Compile Include="Crypt\Msg\CContact.cs" />
     <Compile Include="Crypt\Msg\CFile.cs" />

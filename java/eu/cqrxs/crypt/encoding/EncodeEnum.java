@@ -113,7 +113,6 @@ public enum EncodeEnum  {
         return inString;
     }
 
-
     /**
      * decode transforms am encoded String to a readable text String
      * @param encodedString an encoded String
@@ -151,7 +150,6 @@ public enum EncodeEnum  {
         }
         return encodedString;
     }
-
 
     /**
      * encodeBytesToString - converts a binary byte array into an encoded String
@@ -191,7 +189,6 @@ public enum EncodeEnum  {
         }
         return new String(inBytes, StandardCharsets.UTF_8);
     }
-
 
     /**
      * decodeStringToBytes transforms an uu encoded string into an binary byte[] array
@@ -240,7 +237,6 @@ public enum EncodeEnum  {
     }
 
 
-
     public static String[] getNames() {
         int cnt = 0;
         List<String> encodingTypeList = new ArrayList<>();
@@ -283,7 +279,6 @@ public enum EncodeEnum  {
         }
         return "";
     }
-
 
     public static EncodeEnum getEncodingTypeFromString(String enCodingString) {
         if (enCodingString != null && !enCodingString.isEmpty()) {
@@ -328,8 +323,6 @@ public enum EncodeEnum  {
         }
         return EncodeEnum.None;
     }
-
-
 
     /**
      * getEnum

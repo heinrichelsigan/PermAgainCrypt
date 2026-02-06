@@ -155,7 +155,41 @@ public class CryptHelper {
     }
 
 
+    /**
+     * getKeyBytesSingle gets single user key bytes from users key and key hash
+     * @param key users secret key
+     * @param keyLen length that keybytes should have afterwards
+     * @return generated user keybyte array from key and hash
+     */
+    public static byte[] getKeyBytesSingle(String key, int keyLen) {
+        if (key == null || key.length() == 0)
+            throw new IllegalArgumentException("key");
 
+        byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
+        byte[] outBytes = new byte[keyLen];
+        if (keyBytes.length >= keyLen) {
+            System.arraycopy(keyBytes, 0, outBytes, 0, keyLen);
+            return outBytes;
+        }
+
+        byte[] smallBytes = tarBytes(keyBytes, key.getBytes(Charset.forName("UTF-8")));
+
+        if (smallBytes.length >= keyLen) {
+            System.arraycopy(smallBytes, 0, outBytes, 0, keyLen);
+            // System.arraycopy()
+            return outBytes;
+        }
+        byte[] bigBytes = tarBytes(smallBytes,
+                tarBytes(key.getBytes(Charset.forName("UTF-8")), keyBytes));
+        if (bigBytes.length >= keyLen) {
+            System.arraycopy(bigBytes, 0, outBytes, 0, keyLen);
+            // System.arraycopy()
+            return outBytes;
+        }
+
+        // return outBytes;
+        return getUserKeyBytes(key, key, keyLen);
+    }
 
     /**
      * getKeyBytesSimple gets simplö user key bytes from users key and key hash

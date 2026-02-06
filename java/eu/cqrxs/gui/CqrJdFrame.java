@@ -645,6 +645,7 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Hash.setFont(cryptFont);
 		jComboBox_Hash.addItemListener(new HashChangeListener());
 		getContentPane().add(jComboBox_Hash);
+		selectItemByString(jComboBox_Hash, menuHash, "Hex"); 	
 		
 		try {
 			imHash = new eu.cqrxs.gui.ImageViewer();
@@ -680,6 +681,7 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Zip.setFont(cryptFont);
 		jComboBox_Zip.addItemListener(new ZipChangeListener());
 		getContentPane().add(jComboBox_Zip);
+		selectItemByString(jComboBox_Zip, menuZip, "None");
 
 		jComboBox_Algo = new JComboBox(CipherEnum.getNames());
 		jComboBox_Algo.setBounds(108, 112, 120, 25);
