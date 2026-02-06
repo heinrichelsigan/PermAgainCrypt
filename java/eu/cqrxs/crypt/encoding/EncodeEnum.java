@@ -11,16 +11,8 @@
 package eu.cqrxs.crypt.encoding;
 
 import eu.cqrxs.util.NotImplementedError;
-import eu.cqrxs.crypt.encoding.IEncodable;
-import eu.cqrxs.crypt.encoding.Base16Coder;
-import eu.cqrxs.crypt.encoding.Hex16Coder;
-import eu.cqrxs.crypt.encoding.Base64Coder;
-import eu.cqrxs.crypt.encoding.UuCoder;
-import eu.cqrxs.crypt.encoding.XxEncoder;
-import eu.cqrxs.crypt.encoding.Hex64Coder;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.String;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -105,7 +97,7 @@ public enum EncodeEnum  {
 				byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
 				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                 				
             case 0x500:
-                throw new NotImplementedError("hex32 not implemented");
+                return new Hex32Coder().encode(inString);
             case 0x600:
                 return new UuCoder().encode(inString);
             case 0x700:
@@ -143,7 +135,7 @@ public enum EncodeEnum  {
 				byte[] outBytes = org.bouncycastle.util.encoders.Base32.decode(encodedString);
 				return new String(outBytes, StandardCharsets.UTF_8);
             case 0x500:
-                throw new NotImplementedError("hex32 not implemented");
+                return new Hex32Coder().decode(encodedString);
             case 0x600:
                 return new UuCoder().decode(encodedString);
             case 0x700:
@@ -183,7 +175,7 @@ public enum EncodeEnum  {
             case 0x400:
 				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                
             case 0x500:
-                throw new NotImplementedError("hex32 not implemented");
+                return new Hex32Coder().encodeBytesToString(inBytes);
             case 0x600:
                 return new UuCoder().encodeBytesToString(inBytes);
             case 0x700:
@@ -224,7 +216,7 @@ public enum EncodeEnum  {
 				// throw new NotImplementedError("base32 not implemented");
 				return org.bouncycastle.util.encoders.Base32.decode(encodedString);
             case 0x500:
-                throw new NotImplementedError("hex32 not implemented");
+                return new Hex32Coder().decodeStringToBytes(encodedString);
             case 0x600:
                 byte[] plainBytes = new byte[0];
                 try {

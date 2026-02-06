@@ -40,7 +40,6 @@ import java.util.HashMap;
  *  -C | --crypt={[aes,des3,blowfish,fish2,fish3]|key}
  *  -k | --key=mykey
  *  -H | --hash={Ascon256|Blake2xs|BCrypt|CShake|Dstu7564|MD5|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|Xoodyak}
- *  -S | --SymmCipher
  *  -D | --Decrypt 
  *  -? | --gethelp
  *
@@ -89,7 +88,7 @@ public class CryptConsole  {
         String[] optArgs = new String[2];
         for (int i = 0; i < args.length; i++) {
             // string optStr = GetOption(... => out OptEnum optEnum)
-            optArgs = OptEnum.getOptArg(args[i]);
+            optArgs = getOptArg(args[i]);
             optEnum = OptEnum.getOptionFromString(optArgs[0]);
             String optStr = optArgs[1];
             // System.out.println("argv[" + i+ "] = " + args[i] + " " + optEnum.toString() + " option=" +  optStr);
@@ -139,8 +138,7 @@ public class CryptConsole  {
                         optStr.contains(".") ||
                         outName.length() > 0) {
                     outFile = new java.io.File(outName);
-                    if (verbose)
-                        System.out.println("outFile is set to " + outFile);
+                    verbout("outFile is set to " + outFile);
                 }
                 else
                 if (outName.length() > 0 || args[i].toLowerCase().contains("text") ||
@@ -155,8 +153,8 @@ public class CryptConsole  {
             // fetch passphrase or Key (decrypt key) from optEnum and optStr
             else if (optEnum == OptEnum.Key)
                 passKey = optStr;
-            else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMode
-		        useSymmCipher = true;
+            // else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMod
+            //     useSymmCipher = true;
 	        else if (optEnum == OptEnum.Zip) { // prefetch Zip
 		        if (optStr.toLowerCase().contains("gz") ||
 			        optStr.toLowerCase().contains("gunzip"))
@@ -173,54 +171,53 @@ public class CryptConsole  {
 	        }
  	        else if (optEnum == OptEnum.Encode) {
 	 	        encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
-		    if (verbose)
-			   System.out.println("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
-	    }
-	    else if (optEnum == OptEnum.Hash) 
-		    keyHash = KeyHash.getKeyHashFromString(optStr);
-	    else if (optEnum == OptEnum.Verbose) {
-            Constants.DEBUG = true;
-            verbose = true;
+                verbout("optVar=" + args[0] + " optStr=" + optStr + " encodingType = " + encodingType.toString());
+	        }
+            else if (optEnum == OptEnum.Hash)
+                keyHash = KeyHash.getKeyHashFromString(optStr);
+            else if (optEnum == OptEnum.Verbose) {
+                Constants.DEBUG = true;
+                verbose = true;
+            }
+            else if (optEnum == OptEnum.Decrypt)
+                reverseDirection = true;
+            else if (optEnum == OptEnum.Crypt)
+                optCryptLater = optStr;
+            // else assert(0);
         }
-        else if (optEnum == OptEnum.Decrypt)
-            reverseDirection = true;
-	    else if (optEnum == OptEnum.Crypt)
-		    optCryptLater = optStr;
-	    // else assert(0);
-	}
 
-	// read from stdin, when no inName specified
-	if (inName.isEmpty()) {
-		System.out.println("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
-		byte[] buf = new byte[Constants.MAX_BYTE_BUFFEER];
-		int buflen = 0;
-		byte b;
-		try {
-			buf = System.in.readAllBytes();
-			buflen = buf.length;
-			// while (true) {
-			//     b = (byte)System.in.read();
-			//     if (b == -1)
-			//         break;
-			//     buf[buflen++] = (byte) b;
-			// }
-			System.arraycopy(buf, 0, inBytes, 0, buflen);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	    // read from stdin, when no inName specified
+	    if (inName.isEmpty()) {
+            System.out.println("Reading from stdin, enter \r\n^Z (Enter Strg - z Enter) to stop reading from stdin");
+            byte[] buf = new byte[Constants.MAX_BYTE_BUFFEER];
+            int buflen = 0;
+            byte b;
+            try {
+                buf = System.in.readAllBytes();
+                buflen = buf.length;
+                // while (true) {
+                //     b = (byte)System.in.read();
+                //     if (b == -1)
+                //         break;
+                //     buf[buflen++] = (byte) b;
+                // }
+                System.arraycopy(buf, 0, inBytes, 0, buflen);
+            } catch (IOException e) {
+			    e.printStackTrace();
+		    }
+	    }
 
         // optCryptLater handling
         if (!optCryptLater.isEmpty()) {
-			// Usage on not existing or empty passphrase / key
-			if (passKey == null || passKey.isEmpty())
-				usage("unrecognized crypt option \"" + optCryptLater + "\" without --pass=passPhrase ");
+            // Usage on not existing or empty passphrase / key
+            if (passKey == null || passKey.isEmpty())
+                usage("unrecognized crypt option \"" + optCryptLater + "\" without --pass=passPhrase ");
 
-			// when string / array is not null, fetch array for crypt pipe
-			if (!optCryptLater.isEmpty()) {
-				optCryptLater = optCryptLater.replace("(", "").replace("{", "").replace("[", "").replace("]", "").replace("}", "").replace(")", "");
-				algos = optCryptLater.split(",;:");
-			}
+            // when string / array is not null, fetch array for crypt pipe
+            if (!optCryptLater.isEmpty()) {
+                optCryptLater = optCryptLater.replace("(", "").replace("{", "").replace("[", "").replace("]", "").replace("}", "").replace(")", "");
+                algos = optCryptLater.split(",;:");
+            }
         }
 
         CipherPipe pipe;
@@ -228,13 +225,11 @@ public class CryptConsole  {
         if (passKey == null || passKey.isEmpty() || algos.length > 0) {
             pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN,
                     encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it
-			if (verbose)
-				System.out.println("Created pipe without passkey: " + pipe.getPipeString());
+            verbout("Created pipe without passkey: " + pipe.getPipeString());
         } else {
             pipe = new CipherPipe(passKey, keyHash.hash(passKey),
                     encodingType, zipType, keyHash, CipherMode2.ECB); // TODO: fix it!
-			if (verbose)
-				System.out.println("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
+            verbout("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
         }
 
         String outString = "";
@@ -266,19 +261,15 @@ public class CryptConsole  {
             }
         }
 
-		if (verbose) {
-			String outMsg1 = inBytes.length + " inBytes transformed to " + outBytes.length + " outBytes.";
-			System.out.println(outMsg1);
-		}
-        
+        verbout(inBytes.length + " inBytes transformed to " + outBytes.length + " outBytes.");
+
 		inBytes = outBytes;
 
         if (outFile != null) {
             try {
                 Path fpath = outFile.toPath();
                 Files.write(fpath, outBytes);
-				if (verbose)
-					System.out.println(outBytes.length + " bytes written to file " + fpath.toString());
+                verbout(outBytes.length + " bytes written to file " + fpath.toString());
             } catch (Exception exIO) {
                 exIO.printStackTrace();
             }
@@ -306,26 +297,83 @@ public class CryptConsole  {
         return;
     }
 
-    /**
-     * PrintPipe prints out a CipherPipe
-     * @param cpipe
-     * @param decryptDirection
-     */
-    public static void PrintPipe(CipherPipe cpipe, boolean decryptDirection) {
-        String pipeDirection = (decryptDirection) ? "OutPipe: " : " InPipe: ";
-        CipherEnum[] ciphers = (decryptDirection) ? cpipe.getOutPipe() : cpipe.getInPipe();
-        String prOut = "CipherPipe: " + pipeDirection +
-                "\n\tKeyHash    \t= " + cpipe.getKeyHash() +
-                "\n\tZipType    \t= " + cpipe.getZipType() +
-                "\n\tEncodeEnum \t= " + cpipe.getEncodeType() +
-                "\n\tPipeString \t= " + cpipe.getPipeString() +
-                "\n\t";
-        for (CipherEnum cipher : ciphers)
-            prOut = prOut + cipher + "=>";
-		if (verbose)
-			System.out.print(prOut);
-    }
 
+    /***
+     * getOptArg gets an option by argument
+     * @param argument the argument
+     * @return {@link String[]}
+     */
+    public static String[] getOptArg(String argument) {
+        String[] optArgs = new String[2];
+        optArgs[0] = OptEnum.Usage.toString();
+        optArgs[1] = "";
+
+        // System.out.println("getOptArg(String argument = " + argument +  ") ...");
+        if (argument == null || argument.length() < 2)   {
+            return optArgs;
+        }
+        String optArg = argument;
+
+        String arg = (argument.charAt(1) == '-') ? argument.substring(2) :
+                argument.substring(1);
+
+        if (arg.contains("="))
+            optArg = arg.substring(arg.indexOf('=') + 1);
+        // else if (arg.contains(":"))
+        //     optArg =  arg.substring(arg.indexOf(':') + 1);
+
+        // System.out.println("arg=" + arg +  " optArg=" + optArg);
+
+        optArgs[1] = optArg;
+        switch (arg.charAt(0)) {
+            case 'I':
+            case 'i':
+                optArgs[0] = OptEnum.InParam.toString();
+                return optArgs;
+            case 'O':
+            case 'o':
+                optArgs[0] =  OptEnum.OutP.toString();
+                return optArgs;
+            case 'Z':
+            case 'z':
+                optArgs[0] = OptEnum.Zip.toString();
+                return optArgs;
+            case 'E':
+            case 'e':
+                optArgs[0] = OptEnum.Encode.toString();
+                return optArgs;
+            case 'D':
+            case 'd':
+                optArgs[0] = OptEnum.Decrypt.toString();
+                return optArgs;
+            case 'C':
+            case 'c':
+                optArgs[0] = OptEnum.Crypt.toString();
+                return optArgs;
+            case 'k':
+            case 'K':
+                optArgs[0] = OptEnum.Key.toString();
+                return optArgs;
+            case 'h':
+            case 'H':
+                optArgs[0] = OptEnum.Hash.toString();
+                return optArgs;
+            // case 'S':
+            // 	optArgs[0] = OptEnum.SymmCipher.toString();
+            // 	return optArgs;
+            case 'v':
+            case 'V':
+                optArgs[0] = OptEnum.Verbose.toString();
+                return optArgs;
+            case 'g':
+            case 'G':
+            case '?':
+            default:
+                optArgs[0] = OptEnum.Usage.toString();
+                optArgs[1] = "unrecognized option: " + argument + ".";
+                return optArgs;
+        }
+    }
 
     /***
      * usage shows the usage of console application
@@ -374,6 +422,34 @@ public class CryptConsole  {
         System.out.println(uout);
 
         System.exit(0);
+    }
+
+    /**
+     * PrintPipe prints out a CipherPipe
+     * @param cpipe
+     * @param decryptDirection
+     */
+    public static void PrintPipe(CipherPipe cpipe, boolean decryptDirection) {
+        String pipeDirection = (decryptDirection) ? "OutPipe: " : " InPipe: ";
+        CipherEnum[] ciphers = (decryptDirection) ? cpipe.getOutPipe() : cpipe.getInPipe();
+        String prOut = "CipherPipe: " + pipeDirection +
+                "\n\tKeyHash    \t= " + cpipe.getKeyHash() +
+                "\n\tZipType    \t= " + cpipe.getZipType() +
+                "\n\tEncodeEnum \t= " + cpipe.getEncodeType() +
+                "\n\tPipeString \t= " + cpipe.getPipeString() +
+                "\n\t";
+        for (CipherEnum cipher : ciphers)
+            prOut = prOut + cipher + "=>";
+        verbout(prOut);
+    }
+
+    /**
+     * verbout prints out verbose information
+     * @param s {@link String} to write out
+     */
+    public static void verbout(String s) {
+        if (verbose)
+            System.out.println(s);
     }
 
 }
