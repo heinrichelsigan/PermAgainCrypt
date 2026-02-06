@@ -11,7 +11,6 @@
 package eu.cqrxs.crypt.cipher;
 
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.crypt.cipher.SymmCipherEnum;
 
 import java.io.Serializable;
 import java.lang.String;
@@ -286,9 +285,9 @@ public enum CipherEnum  {
         return cipherEnums;
     }
 
-    public static CipherEnum fromSymmCipherEnum(SymmCipherEnum symmCipherEnum) {
-        return symmCipherEnum.toCipherEnum();
-    }
+    // public static CipherEnum fromSymmCipherEnum(SymmCipherEnum symmCipherEnum) {
+	//     return symmCipherEnum.toCipherEnum();
+	// }
 
 
     /**

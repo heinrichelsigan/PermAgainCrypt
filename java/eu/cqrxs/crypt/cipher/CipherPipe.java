@@ -620,7 +620,7 @@ public class CipherPipe {
         // Get String from decrypted bytes
 
         String decrypted = (inPipe.length == 0) ?
-                new String(decryptedBytes, "UTF8") :
+                    new String(decryptedBytes, "UTF8") :
                 new String(decryptedBytes, StandardCharsets.UTF_8);
 
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
