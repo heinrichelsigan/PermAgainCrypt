@@ -197,8 +197,8 @@ namespace EU.CqrXs.Gui.Forms
             }
 
             this.textBoxPipe.Text = string.Empty;
-
-            cPipe = new SecureCipherPipe(this.textBoxKey.Text, GetEncoding(), GetZip(), GetCipherMode2());
+            string hashhash = KeyHash.Whirlpool.Hash(KeyHash.SCrypt.Hash(this.textBoxKey.Text));
+            cPipe = new SecureCipherPipe(hashhash, GetEncoding(), GetZip(), GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
