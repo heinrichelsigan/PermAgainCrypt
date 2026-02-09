@@ -3,7 +3,6 @@
  * @author           Heinrich Elsigan
  * @version          V 0.2
  * @since            JDK 8
- *
  * Coded 2021-2025 by
  * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
  */ 
@@ -43,7 +42,8 @@ public class CqrJFrameSimple extends JFrame {
 	public static CqrJFrameSimple cqrJFrameSimple;
     public static CqrJdFrame cqrJdFrame;
 	protected static byte[] openFileBytes, saveFileBytes;
-	URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl, pipeUrl;
+    private static String[] args;
+    URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -61,7 +61,7 @@ public class CqrJFrameSimple extends JFrame {
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
-	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
+	eu.cqrxs.gui.ImageViewer imKey, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
@@ -95,7 +95,8 @@ public class CqrJFrameSimple extends JFrame {
      * @param args command line arguments
      */
 	public static void main(String args[]) {
-		cqrJFrameSimple = new CqrJFrameSimple();
+        CqrJFrameSimple.args = args;
+        cqrJFrameSimple = new CqrJFrameSimple();
 	}
 		
     /**
@@ -510,7 +511,6 @@ public class CqrJFrameSimple extends JFrame {
 		
 		try {
 			keyUrl =  URI.create("https://area23.at/net/res/img/symbol/key_ring.gif").toURL();
-			hashUrl = URI.create("https://area23.at/net/res/img/crypt/a_hash.png").toURL();
 			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
 			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
 			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
@@ -531,56 +531,37 @@ public class CqrJFrameSimple extends JFrame {
 		jTextField_Key = new JTextField();
 		jTextField_Key.setFont(cryptFont);
 		jTextField_Key.setText("zen@area23.at");
-		jTextField_Key.setBounds(48,30,824,25);
+		jTextField_Key.setBounds(48,30,680,25);
 		jTextField_Key.setFont(cryptFont);		
 		getContentPane().add(jTextField_Key);
-		
+
+		jButton_hashPipe = new JButton();
+		jButton_hashPipe.setBounds(756, 30, 108, 25);
+		jButton_hashPipe.setActionCommand("hashPipe");
+		jButton_hashPipe.setText("Hash Pipe");
+		jButton_hashPipe.setFont(cryptFont);
+		jButton_hashPipe.addActionListener(lSymAction);
+		getContentPane().add(jButton_hashPipe);
+
 		jButton_setPipe = new JButton();
-		jButton_setPipe.setBounds(876,30,120,25);
+		jButton_setPipe.setBounds(888,30,108,25);
 		jButton_setPipe.setText("Set Pipe");
 		jButton_setPipe.setFont(cryptFont);		
 		jButton_setPipe.setActionCommand("setPipe");
 		jButton_setPipe.addActionListener(lSymAction);
 		getContentPane().add(jButton_setPipe);
 		
-		try {
-			imHash = new eu.cqrxs.gui.ImageViewer();
-			imHash.setImageURL(hashUrl);
-			imHash.setBounds(8, 69, 32, 30);		
-			imHash.addMouseListener(aSymMouse);
-			getContentPane().add(imHash);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}					
-		
-		jTextField_Hash = new JTextField();
-		jTextField_Hash.setFont(cryptFont);
-		jTextField_Hash.setText("");		
-		jTextField_Hash.setBounds(48,69,823,25);
-		jTextField_Hash.setEditable(false);
-		jTextField_Hash.setFont(cryptFont);
-		jTextField_Hash.setBackground(Color.WHITE);  
-		jTextField_Hash.setForeground(Color.BLACK);  
-		getContentPane().add(jTextField_Hash);
-			
-		jButton_hashPipe = new JButton();
-		jButton_hashPipe.setBounds(876, 69, 120, 25);
-		jButton_hashPipe.setActionCommand("hashPipe");
-		jButton_hashPipe.setText("Hash Pipe");
-		jButton_hashPipe.setFont(cryptFont);		
-		jButton_hashPipe.addActionListener(lSymAction);
-		getContentPane().add(jButton_hashPipe);	
-		
+
         String[] zipTypeNames = { ZipType.GZip.getName() };
 		jComboBox_Zip = new JComboBox(zipTypeNames);
-		jComboBox_Zip.setBounds(8, 112, 96, 25);
+		jComboBox_Zip.setBounds(8, 64, 96, 25);
 		jComboBox_Zip.setFont(cryptFont);
 		jComboBox_Zip.addItemListener(new ZipChangeListener());
 		getContentPane().add(jComboBox_Zip);
 		selectItemByString(jComboBox_Zip, menuZip, "GZip");
 
 		jComboBox_Algo = new JComboBox(CipherEnum.getNames());
-		jComboBox_Algo.setBounds(108, 112, 120, 25);
+		jComboBox_Algo.setBounds(108, 64, 120, 25);
 		jComboBox_Algo.setFont(cryptFont);
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
 		getContentPane().add(jComboBox_Algo);
@@ -588,7 +569,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			imAddAlgo = new eu.cqrxs.gui.ImageViewer();
 			imAddAlgo.setImageURL(addAlgoUrl);
-			imAddAlgo.setBounds(230, 111, 32, 27);	
+			imAddAlgo.setBounds(230, 63, 32, 27);
 			imAddAlgo.addMouseListener(aSymMouse);
 			getContentPane().add(imAddAlgo);
 		} catch (Exception ex) {
@@ -597,7 +578,7 @@ public class CqrJFrameSimple extends JFrame {
 			
 		jTextField_Pipe = new JTextField();
 		jTextField_Pipe.setText("");
-		jTextField_Pipe.setBounds(264, 112, 578, 25);
+		jTextField_Pipe.setBounds(264, 64, 578, 25);
 		jTextField_Pipe.setEditable(false);
 		// jTextField_Pipe.setEnabled(false);
 		jTextField_Pipe.setForeground(Color.BLACK);  
@@ -609,7 +590,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			imX = new eu.cqrxs.gui.ImageViewer();
 			imX.setImageURL(xUrl);
-			imX.setBounds(844, 112, 27, 27);	
+			imX.setBounds(844, 64, 27, 27);
 			imX.addMouseListener(aSymMouse);
 			getContentPane().add(imX);
 		} catch (Exception ex) {
@@ -618,7 +599,7 @@ public class CqrJFrameSimple extends JFrame {
 				
         String[] comboEncodeEnums = { EncodeEnum.Xx.getName(), EncodeEnum.Base64.getName() };
 		jComboBox_Encoding = new JComboBox(comboEncodeEnums);
-		jComboBox_Encoding.setBounds(876, 112, 120, 25);
+		jComboBox_Encoding.setBounds(876, 64, 120, 25);
 		jComboBox_Encoding.setFont(cryptFont);
 		jComboBox_Encoding.addItemListener(new EncodeChangeListener());
 		getContentPane().add(jComboBox_Encoding);
@@ -629,7 +610,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			imInFile = new ImageViewer();
 			imInFile.setImageURL(fileInUrl);
-			imInFile.setBounds(8, 144 ,60,60);	
+			imInFile.setBounds(8, 108 ,60,60);
 			imInFile.addMouseListener(aSymMouse);			
 			getContentPane().add(imInFile);
 		} catch (Exception ex) {
@@ -637,7 +618,7 @@ public class CqrJFrameSimple extends JFrame {
 		}
 		jLabel_fileIn = new JLabel();
 		jLabel_fileIn.setFont(cryptFont);
-		jLabel_fileIn.setBounds(8, 208, 120, 24);
+		jLabel_fileIn.setBounds(8, 172, 120, 24);
 		jLabel_fileIn.setText("[No input file loaded]");
 		jLabel_fileIn.setFont(cryptFont);		
 		getContentPane().add(jLabel_fileIn);
@@ -645,7 +626,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			imOutFile = new ImageViewer();
 			imOutFile.setImageURL(fileInUrl);
-			imOutFile.setBounds(912, 144, 60, 60);		
+			imOutFile.setBounds(912, 108, 60, 60);
 			imOutFile.addMouseListener(aSymMouse);
 			getContentPane().add(imOutFile);
 		} catch (Exception ex) {
@@ -654,42 +635,42 @@ public class CqrJFrameSimple extends JFrame {
 		
 		jLabel_fileOut = new JLabel();
 		jLabel_fileOut.setFont(cryptFont);
-		jLabel_fileOut.setBounds(884, 208, 120, 24);
+		jLabel_fileOut.setBounds(884, 172, 120, 24);
 		jLabel_fileOut.setText("[No output file processed]");		
 		getContentPane().add(jLabel_fileOut);				
 				
 		
 		jButton_encrypt = new JButton();
 		jButton_encrypt.setFont(cryptFont);
-		jButton_encrypt.setBounds(8, 244, 120, 25);
+		jButton_encrypt.setBounds(8, 208, 120, 25);
 		jButton_encrypt.setText("Encrypt");
 		jButton_encrypt.addActionListener(lSymAction);
 		getContentPane().add(jButton_encrypt);
 		
 		jButton_decrypt = new JButton();
 		jButton_decrypt.setFont(cryptFont);
-		jButton_decrypt.setBounds(142, 244, 120, 25);
+		jButton_decrypt.setBounds(142, 208, 120, 25);
 		jButton_decrypt.setText("Decrypt");
 		jButton_decrypt.addActionListener(lSymAction);
 		getContentPane().add(jButton_decrypt);
 		
 		jButton_randomText = new JButton();
 		jButton_randomText.setFont(cryptFont);
-		jButton_randomText.setBounds(368, 244, 120, 25);
+		jButton_randomText.setBounds(368, 208, 120, 25);
 		jButton_randomText.setText("Random Text");
 		jButton_randomText.addActionListener(lSymAction);
 		getContentPane().add(jButton_randomText);
 				
 		jLabel_infoMessage = new JLabel();
 		jLabel_infoMessage.setFont(cryptFont);
-		jLabel_infoMessage.setBounds(512, 244, 468, 25);
+		jLabel_infoMessage.setBounds(512, 208, 468, 25);
 		jLabel_infoMessage.setText("");
 		jLabel_infoMessage.setBackground(Color.YELLOW);
 		getContentPane().add(jLabel_infoMessage);
 				
 		jButton_resetForm = new JButton();
 		jButton_resetForm.setFont(cryptFont);
-		jButton_resetForm.setBounds(876, 244, 120, 25);
+		jButton_resetForm.setBounds(876, 208, 120, 25);
 		jButton_resetForm.setText("Reset Form");
 		jButton_resetForm.addActionListener(lSymAction);
 		getContentPane().add(jButton_resetForm);
@@ -707,7 +688,7 @@ public class CqrJFrameSimple extends JFrame {
 		// JScrollPane scrollAreaSource = new JScrollPane (jTextAreaSource);
 		// scrollAreaSource.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		// scrollAreaSource.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollSource.setBounds(8, 280, 484, 404);
+		scrollSource.setBounds(8, 244, 484, 444);
 		getContentPane().add(scrollSource);
 		// getContentPane().add(jTextAreaSource);
 				
@@ -719,7 +700,7 @@ public class CqrJFrameSimple extends JFrame {
 
 		// jTextAreaDestination.setEnabled(false);
 		scrollDestination = new JScrollPane (jTextAreaDestination, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollDestination.setBounds(516, 280, 488, 408);
+		scrollDestination.setBounds(516, 244, 488, 444);
         // scrollDestination.setHorizontalScrollBarPolicy();			
 		// getContentPane().add(jTextAreaDestination);
 		getContentPane().add(scrollDestination);
@@ -972,7 +953,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			String key = jTextField_Key.getText().toString();
 			String hashed = keyHash.hash(key);
-			jTextField_Hash.setText(hashed);
+			// jTextField_Hash.setText(hashed);
 
 			SecureCipherPipe pipe = new SecureCipherPipe(key, encodeType, zipType, cmode2);
 
@@ -1000,8 +981,8 @@ public class CqrJFrameSimple extends JFrame {
 		String hashed = "";
 		try {
 			hashed = keyHash.hash(keyValue);
-			jTextField_Hash.setText(hashed);
-			setInfoMsg("Hashed key " + keyValue);
+			// jTextField_Hash.setText(hashed);
+			// setInfoMsg("Hashed key " + keyValue);
 		} catch (Exception exh) {
 		}
 	}
@@ -1010,7 +991,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			String key = jTextField_Key.getText().toString();
 			String hashed = KeyHash.Whirlpool.hash(KeyHash.SCrypt.hash(key));
-			jTextField_Hash.setText(hashed);
+			// jTextField_Hash.setText(hashed);
             
 			SecureCipherPipe pipe = new SecureCipherPipe(hashed, encodeType, zipType, cmode2);
 
@@ -1349,8 +1330,6 @@ public class CqrJFrameSimple extends JFrame {
 				jTextField_Pipe.setText(pipeText + cipherString + ";");
 			} else if (object == imKey) {
 				// keyHash.Hash(
-			} else if (object == imHash) {
-				hashKey_action();
 			} else if (object == imX) {
 				jTextField_Pipe.setText("");
 			} else if (object == imInFile) {
