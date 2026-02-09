@@ -32,10 +32,6 @@ public class SecureCipherPipe extends CipherPipe {
 
     public EncodeEnum getEncodeType() { return encodeType; }
 
-    public KeyHash[] getKeyHashes() { return KeyHash.getSecureHashes(); }
-
-    public HashSet<KeyHash> getKeyHasSet() { return new HashSet<KeyHash>(KeyHash.getSecureHashSet()); }
-
     public CipherEnum[] getInPipe() { return inPipe; }
 
 
@@ -375,10 +371,10 @@ public class SecureCipherPipe extends CipherPipe {
 
         for (CipherEnum cipher : inPipe) {
 
-            String keyHash = keyHashes[(merry % keyHashes.length)].hash(cipherKeyHash);
+            String cipherHashKey = keyHashes[(merry % keyHashes.length)].hash(cipherKeyHash);
             if ((++merry) > 7) merry = 0;
 
-            encryptedBytes = encryptBytesFast(inBytes, cipher, keyHash, cmode2); 
+            encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
             inBytes = encryptedBytes;
         }
 
@@ -409,10 +405,10 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] decryptedBytes = new byte[cipherBytes.length];
         for (CipherEnum cipher : getOutPipe()) {
 
-            String keyHash = keyHashes[(roundsGo % keyHashes.length)].hash(cipherKeyHash);
+            String cipherHashKey = keyHashes[(roundsGo % keyHashes.length)].hash(cipherKeyHash);
             if ((--roundsGo) < 0) roundsGo = 7;
 
-            decryptedBytes = decryptBytesFast(cipherBytes, cipher, keyHash, cmode2);
+            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
             cipherBytes = decryptedBytes;
         }
 
@@ -439,9 +435,14 @@ public class SecureCipherPipe extends CipherPipe {
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
 
+		try {
+            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            inBytes = zippedBytes;
+        } catch (Exception exZip) {
+            exZip.printStackTrace();
+        }
         // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-        byte[] encryptedBytes = encrpytFileBytesGoRounds(inBytes, cipherKeyHash,
-                encoding, zipBefore, cmode2);
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);                
 
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
         String encrypted = encoding.encodeBytesToString(encryptedBytes);
@@ -502,7 +503,10 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
 
         // perform multi crypt pipe stages
-        byte[] decryptedBytes = decryptFileBytesRoundsGo(cipherBytes, hashKey, decoding, unzipAfter, cmode2);
+        byte[] intermediatBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
+
+		// Unzip after all, if it's necessary
+		byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.unzip(intermediatBytes) : intermediatBytes;
 
         // Get String from decrypted bytes
         String decrypted = (inPipe.length == 0) ?
@@ -511,10 +515,10 @@ public class SecureCipherPipe extends CipherPipe {
 
         // find first \0 = NULL char in String and truncate all after first \0 apperance in String
 		for (int ix = 0; ix < decrypted.length(); ix++) {
-			if (decrypted.charAt(ix) == '\0' && ix > 0) {
-				decrypted = decrypted.substring(0, ix);
-				break; 
-			}
+		 	if (decrypted.charAt(ix) == '\0' && ix > 0) {
+		 		decrypted = decrypted.substring(0, ix);
+		 		break; 
+		 	}
 		}
 
         return decrypted;

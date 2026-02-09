@@ -47,7 +47,7 @@ public class CqrJFrameSimple extends JFrame {
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
-	protected eu.cqrxs.zip.ZipType zipType = eu.cqrxs.zip.ZipType.None;
+	protected eu.cqrxs.zip.ZipType zipType = eu.cqrxs.zip.ZipType.GZip;
 	protected CipherEnum cipherEnum = CipherEnum.Aes;
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
@@ -1074,12 +1074,12 @@ public class CqrJFrameSimple extends JFrame {
 		for (int ci = 0; ci < cipherEnums.length; ci++)
 			pipeString = pipeString + cipherEnums[ci].getName() + ";";
         
-		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
-		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
+		dbgMsg(String.format("PipeString: %s \nEncoding: %s zipping; %s", 
+		 		pipeString, encodeType.getName(), zipType.getName()), 2, false);
 		saveFileName = "";
 		try {
-			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
-			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
+			dbgMsg(String.format("pipe.encrypt with key=%s, \nencode=%s, zip=%s", 
+			 	key, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
 
 			if (plain != null && plain.length() > 0) {
 		    	
@@ -1149,8 +1149,8 @@ public class CqrJFrameSimple extends JFrame {
 		for (int ci = 0; ci < cipherEnums.length; ci++)
 			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 		
-        dbgMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
+        dbgMsg(String.format("Out pipe: %s \nEncoding: %s zipping; %s",
+		        pipeSting, encodeType.getName(),  zipType.getName()), 1, true);
 
 		String decrypted = "";
         saveFileName = "";

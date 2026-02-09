@@ -67,7 +67,7 @@ public enum KeyHash {
 
 	final static KeyHash[] secureHashes = {
 			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
-			KeyHash.OpenBSDCrypt, KeyHash.RipeMD256,  KeyHash.SCrypt,  KeyHash.Whirlpool };
+			KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
 
 	/**
      * getName
@@ -123,7 +123,7 @@ public enum KeyHash {
 			byte[] inBytes = instr.getBytes(StandardCharsets.UTF_8);
 			byte[] resBuf = new byte[inBytes.length];
 			HexFormat hex = HexFormat.of();
-			Digest digest;
+			Digest digest = new org.bouncycastle.crypto.digests.NullDigest();
 			String hexs = "";
 
 			switch (getEnum(getName())) {

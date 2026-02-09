@@ -3,6 +3,7 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Crypto.Digests;
 using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
@@ -517,7 +518,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 string cipherHashKey = secureHashes[merry % secureHashes.Length].Hash(cipherKeyHash);
                 if ((++merry) > 7) merry = 0;
 
-                encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherKeyHash, CMode2);
+                encryptedBytes = EncryptBytesFast(inBytes, cipher, cipherHashKey, CMode2);
                 inBytes = encryptedBytes;
             }
 
@@ -549,7 +550,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 string cipherHashKey = secureHashes[merry % secureHashes.Length].Hash(cipherKeyHash);
                 if ((--merry) < 0) merry = 7;
 
-                decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherKeyHash, cmode2);
+                decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
                 cipherBytes = decryptedBytes;
             }
 

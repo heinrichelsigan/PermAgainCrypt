@@ -59,7 +59,7 @@ namespace EU.CqrXs.Crypt.Cipher
             Cipher = CipherEnum.Aes;
             Size = 256;
             KeyLen = 32;
-            Mode = "EAX";
+            Mode = "ECB";
             BlockCipher = new AesEngine();
             KeyHashing = KeyHash.Hex;
         }
