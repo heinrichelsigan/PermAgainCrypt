@@ -5,8 +5,6 @@ using EU.CqrXs.Zip;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Security.Cryptography;
-using System.Security.Cryptography.Xml;
-using System.Security.Policy;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
@@ -305,36 +303,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     break;
                 case CipherEnum.ZenMatrix2:
                     encryptBytes = (new ZenMatrix2(secretKey, secretKey, false)).Encrypt(inBytes);
-                    break;
-                case CipherEnum.Aes:
-                case CipherEnum.AesLight:
-                case CipherEnum.Aria:
-                case CipherEnum.BlowFish:
-                case CipherEnum.Camellia:
-                case CipherEnum.Cast5:
-                case CipherEnum.Cast6:
-                case CipherEnum.Des:
-                case CipherEnum.Des3:
-                case CipherEnum.Dstu7624:
-                case CipherEnum.Fish2:
-                case CipherEnum.Fish3:
-                case CipherEnum.Gost28147:
-                case CipherEnum.Idea:
-                case CipherEnum.Noekeon:
-                case CipherEnum.RC2:
-                case CipherEnum.RC532:
-                case CipherEnum.RC564:
-                case CipherEnum.RC6:
-                case CipherEnum.Rijndael:
-                case CipherEnum.Seed:
-                case CipherEnum.Serpent:
-                case CipherEnum.SM4:
-                case CipherEnum.SkipJack:
-                case CipherEnum.Tea:
-                case CipherEnum.Tnepres:
-                case CipherEnum.XTea:
-                // case CipherEnum.ZenMatrix:
-                // case CipherEnum.ZenMatrix2:
+                    break;                
                 default:
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     encryptBytes = cryptBounceCastle.Encrypt(inBytes);
@@ -380,36 +349,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     break;
                 case CipherEnum.ZenMatrix2:
                     decryptBytes = (new ZenMatrix2(secretKey, secretKey, false)).Decrypt(cipherBytes);
-                    break;
-                case CipherEnum.Aes:
-                case CipherEnum.AesLight:
-                case CipherEnum.Aria:
-                case CipherEnum.BlowFish:
-                case CipherEnum.Camellia:
-                case CipherEnum.Cast5:
-                case CipherEnum.Cast6:
-                case CipherEnum.Des:
-                case CipherEnum.Des3:
-                case CipherEnum.Dstu7624:
-                case CipherEnum.Fish2:
-                case CipherEnum.Fish3:
-                case CipherEnum.Gost28147:
-                case CipherEnum.Idea:
-                case CipherEnum.Noekeon:
-                case CipherEnum.RC2:
-                case CipherEnum.RC532:
-                case CipherEnum.RC564:
-                case CipherEnum.RC6:
-                case CipherEnum.Rijndael:
-                case CipherEnum.Seed:
-                case CipherEnum.Serpent:
-                case CipherEnum.SM4:
-                case CipherEnum.SkipJack:
-                case CipherEnum.Tea:
-                case CipherEnum.Tnepres:
-                case CipherEnum.XTea:
-                // case CipherEnum.ZenMatrix:
-                // case CipherEnum.ZenMatrix2:
+                    break;                
+					
                 default:
                     Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
@@ -914,7 +855,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <returns><see cref="Image">the image</see></returns>
         public virtual Image GenerateDecryptPipeImage()
         {
-            System.Drawing.Bitmap mergeimg = new Bitmap(640, 108), ximage;
+            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resource.BlankDecrypt_640x108, new Size(640, 108)), ximage;
             string bmpName = "";
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
             {
