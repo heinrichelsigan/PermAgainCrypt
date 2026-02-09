@@ -119,7 +119,6 @@ public class UuCoder extends java.beans.Encoder implements IEncodable  {
      * @param inString: plain input string
      * @return an uu encoded String
      * @exception IllegalArgumentException is thrown when inString is null or empty
-     * @exception IOException
      */
     public String encode(String inString) {
         if (inString == null || inString.length() == 0)

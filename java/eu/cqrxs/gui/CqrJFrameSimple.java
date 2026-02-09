@@ -119,8 +119,8 @@ public class CqrJFrameSimple extends JFrame {
 
     /**
      * AddMenus add all menus
-     * @param jbar main menu bar
-     * @returns {@link JMenuBar}
+     * @param aSymAction {@link SymAction}
+     * @return {@link JMenuBar}
      */
 	public JMenuBar AddMenus(SymAction aSymAction) {
 	    

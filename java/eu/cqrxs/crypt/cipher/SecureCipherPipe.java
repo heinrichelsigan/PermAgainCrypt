@@ -71,7 +71,7 @@ public class SecureCipherPipe extends CipherPipe {
     /**
      * SecureCipherPipe constructor with following parameters
      * @param cipherEnums an array of {@link CipherEnum}
-     * @param maxpipe maximum pipeline size {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum pipeline size {@link eu.cqrxs.util.Constants}.MAX_PIPE_LEN
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
@@ -94,9 +94,10 @@ public class SecureCipherPipe extends CipherPipe {
     }
 
     /**
-     *  SecureCipherPipe constructor with an array of <see cref="T:String[]"/> cipherAlgos as inpipe
-     * @param cipherAlgos array of String[] as inpipe
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     *  SecureCipherPipe constructor with an array of [@link String[]} cipherAlgos as inpipe
+     *
+     * @param cipherAlgos array of [@link String[]} as inpipe
+     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
@@ -129,7 +130,7 @@ public class SecureCipherPipe extends CipherPipe {
     /**
      * SecureCipherPipe ctor with array of user key bytes
      * @param keyBytes user key bytes
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
@@ -230,7 +231,6 @@ public class SecureCipherPipe extends CipherPipe {
             //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
             //  break;
             case Aes:
-            case AesNet:
             case AesLight:
             case Aria:
             case BlowFish:
@@ -370,7 +370,7 @@ public class SecureCipherPipe extends CipherPipe {
         int merry = 0;
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        KeyHash[] keyHashes = getKeyHashes();
+        KeyHash[] keyHashes = KeyHash.getSecureHashes();
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
 
         for (CipherEnum cipher : inPipe) {
@@ -403,7 +403,7 @@ public class SecureCipherPipe extends CipherPipe {
             throw new IllegalArgumentException("hashKey");
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        KeyHash[] keyHashes = getKeyHashes();
+        KeyHash[] keyHashes = KeyHash.getSecureHashes();
         int roundsGo = keyHashes.length - 1;
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
@@ -481,15 +481,15 @@ public class SecureCipherPipe extends CipherPipe {
 
 
 	/**
-     *  decryptTextRoundsGo
+     * decryptTextRoundsGo
      * @param cryptedEncodedMsg encoded byte array
-	 * @param hashKey  Unique deterministic key which will be hashed at each stage of with a different secure hash {@link KeyHash.secureHashes}
+	 * @param hashKey  Unique deterministic key which will be hashed at each stage of with a different secure hash {@link KeyHash}.secureHashes
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return plain bytes
-     * @throws InvalidCipherTextException
-	 * @throws IOException
+     * @throws InvalidCipherTextException from bouncy-castle
+	 * @throws IOException Input/OutputException
      */
     public String decryptTextRoundsGo(String cryptedEncodedMsg, String hashKey, EncodeEnum decoding, ZipType unzipAfter, CipherMode2 cmode2)
                             throws InvalidCipherTextException, IOException {

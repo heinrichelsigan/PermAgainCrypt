@@ -117,7 +117,7 @@ public enum CipherMode2 {
 
     /***
      * getMap()
-     * @return a HashMap Map<byte,CipherMode2>
+     * @return HashMap{byte,CipherMode2}
      */
     public static HashMap<Byte, CipherMode2> getMap() {
 

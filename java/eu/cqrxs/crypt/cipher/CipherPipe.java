@@ -86,7 +86,7 @@ public class CipherPipe {
     /**
      * CipherPipe constructor with following parameters
      * @param cipherEnums an array of {@link CipherEnum}
-     * @param maxpipe maximum pipeline size {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum pipeline size {@link Constants}.MAX_PIPE_LEN
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -116,9 +116,9 @@ public class CipherPipe {
     }
 
     /**
-     *  CipherPipe constructor with an array of <see cref="T:String[]"/> cipherAlgos as inpipe
+     *  CipherPipe constructor with an array of String[] cipherAlgos as inpipe
      * @param cipherAlgos array of String[] as inpipe
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum length {@link Constants}
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -157,7 +157,7 @@ public class CipherPipe {
     /**
      * CipherPipe ctor with array of user key bytes
      * @param keyBytes user key bytes
-     * @param maxpipe maximum length {@link Constants.MAX_PIPE_LEN}
+     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
      * @param encType {@link EncodeEnum}
      * @param zpType {@link ZipType}
      * @param kh {@link KeyHash}
@@ -307,7 +307,6 @@ public class CipherPipe {
             //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
             //  break;
             case Aes:
-            case AesNet:
             case AesLight:
             case Aria:
             case BlowFish:
@@ -592,7 +591,7 @@ public class CipherPipe {
      * @param cryptedEncodedMsg encoded byte array
      * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-	 * @param hashIV key hash
+	 * @param hashIv key hash
      * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
      * @param unzipAfter zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
@@ -926,9 +925,9 @@ public class CipherPipe {
      * @param zipBefore zip bytes with {@link ZipType}
      * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
      * @param cmode2 {@link CipherMode2}
-     * @return encrypted String<
-     * @throws InvalidCipherTextException
-     * @throws IOException
+     * @return encrypted String
+     * @throws InvalidCipherTextException comes from bouncy-castle
+     * @throws IOException input/output Exception
      */
     @Deprecated
     public static String encrpytToString(String inString, String cryptKey,

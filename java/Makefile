@@ -22,7 +22,7 @@ cqrxs:
 	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/cipher/CipherEnum.java eu/cqrxs/crypt/cipher/CipherPipe.java eu/cqrxs/crypt/cipher/SecureCipherPipe.java eu/cqrxs/crypt/cipher/CryptBounceCastle.java eu/cqrxs/crypt/cipher/CryptHelper.java eu/cqrxs/crypt/cipher/CryptParams.java 
 	
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS)eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha512.java 
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha512.java 
 	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
 	

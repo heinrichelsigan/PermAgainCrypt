@@ -110,7 +110,7 @@ public enum KeyHash {
     }
 
  	/**
-     * hash hashes a {@link String} with {@link HashKey}
+     * hash hashes a {@link String} with {@link KeyHash}
      * @return hashed {@link String}
      */
     public String hash(String instr) {

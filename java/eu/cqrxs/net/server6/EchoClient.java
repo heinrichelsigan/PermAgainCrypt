@@ -38,7 +38,7 @@ public class EchoClient {
 	/*
 	 * connect hostname port
 	 * @param hostname 
-	 * @param tcpport
+	 * @param srvport
 	 */
 	public int connect(String hostname, int srvport) {
         
@@ -94,7 +94,7 @@ public class EchoClient {
 	/**
 	 * writeOut writes outPut String character by character and terminates it with \r\n
 	 * @param outPut {@link String}
-	 * @returns true on successful write, false on error
+	 * @return {@link java.lang.Boolean} true on successful write, false on error
 	 */
     public boolean writeOut(String outPut) {
 		
@@ -116,7 +116,7 @@ public class EchoClient {
 	
 	/**
 	 * readIn reads byte wise from inStream on socket
-	 * @returns readed line without <CR> 13 <NL> 10 <EOF> -1
+	 * @return reed line without CR:13 NL:10 EOF:-1
 	 */
 	public String readIn() { 
 	

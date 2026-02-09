@@ -118,7 +118,7 @@ public class Hex32Coder implements IEncodable {
     /***
      * decodeStringToBytes
      * @param encoded
-     * @return {@link byte[]}
+     * @return {@see byte[]}
      */
     public byte[] decodeStringToBytes(String encoded) {
 

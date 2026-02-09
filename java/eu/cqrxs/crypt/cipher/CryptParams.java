@@ -102,9 +102,10 @@ public class CryptParams {
 
         switch (cipher) {
             case Aes:
-            case AesNet: // TODO: Implement interface IBlockCipher in AesNet
+            /* case AesNet: // TODO: Implement interface IBlockCipher in AesNet
                 blockCipher = new AESEngine();
                 break;
+             */
             case AesLight:
                 size = 128;
                 blockCipher = new AESLightEngine();
@@ -124,7 +125,6 @@ public class CryptParams {
                 blockCipher = new TwofishEngine();
                 break;
             case Fish3:
-			// case ThreeFish256:
 				blockCipher = new ThreefishEngine(size);
                 break;                            
             case Camellia:
@@ -150,8 +150,8 @@ public class CryptParams {
                 keyLen = 8;
                 blockCipher = new DESEngine();
                 break;
-            case Des3Net: // TODO: implement IBlockCipher in Des3Net
             /*
+            case Des3Net: // TODO: implement IBlockCipher in Des3Net
                 size = 128;
                 keyLen = 16;
                 blockCipher = new Org.BouncyCastle.Crypto.Engines.DesEdeEngine();
@@ -235,7 +235,8 @@ public class CryptParams {
                 keyLen = 16;
                 // TODO: port it to java
                 blockCipher = new ZenMatrix(size);
-                // break;
+                break;
+            /*)
             case ZenMatrix2:
                 // throw new NotImplementedException("ZenMatrix2 IBlockCipher interface not implemented");)
                 size = 32;
@@ -243,6 +244,7 @@ public class CryptParams {
                 // TODO: port it to java
                 // blockCipher = new ZenMatrix2();
                 // break;
+             */
             default:
                 blockCipher = new  AESEngine();
                 break;

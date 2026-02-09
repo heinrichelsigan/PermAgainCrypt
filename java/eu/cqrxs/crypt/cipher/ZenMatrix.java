@@ -126,7 +126,7 @@ public class ZenMatrix implements BlockCipher  {
     }
 
     /**
-     * Processes one BLOCK with BLOCK_SIZE <see cref="BLOCK_SIZE"/>
+     * Processes one BLOCK with BLOCK_SIZE {@link ZenMatrix}.BLOCK_SIZE
      * @param inBuf in bytes buffer
      * @param inOff in bytes offset
      * @param outBuf out bytes buffer
@@ -252,7 +252,6 @@ public class ZenMatrix implements BlockCipher  {
      *                  must have at least 4 bytes and will be truncated after
      *                  16 bytes only the first 16 bytes will be taken from keyBytes for {@link ZenMatrix}
      * @param fullSymmetric fullSymmetric means that zen matrix is it's inverse element and decrypts back to plain text, when encrypting twice or ²
-     * @return true, if init with key bytes was successful
      */
     protected void genBuildWithBytes(byte[] keyBytes, boolean fullSymmetric)  {
         if ((keyBytes == null || keyBytes.length < 4))
@@ -592,9 +591,9 @@ public class ZenMatrix implements BlockCipher  {
     }
 
     /**
-     * MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="MatrixPermutationKey"/> in case of encrypt,
-     * @param inByte  in byte to map<
-     * @param encrypt   mapped out byte
+     * MapByteValue splits a byte in 2 0x0 to 0xf segments and map both trough {@see MatrixPermutationKey} in case of encrypt,
+     * @param inByte in byte to map
+     * @param encrypt  mapped out byte
      * @return byte[]
      */
     protected  byte[] mapByteValue(byte inByte,  boolean encrypt) {

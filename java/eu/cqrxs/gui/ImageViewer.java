@@ -486,46 +486,46 @@ public class ImageViewer extends Component implements java.io.Serializable
 
 	/**
 	 * Adds a listener for all event changes.
-	 * @param PropertyChangeListener listener the listener to add.
+	 * @param propertyChangeListener listener the listener to add.
 	 * @see #removePropertyChangeListener
 	 */
-	public void addPropertyChangeListener(PropertyChangeListener listener)
+	public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener)
 	{
 	    //super.addPropertyChangeListener(listener);
-	    changes.addPropertyChangeListener(listener);
+	    changes.addPropertyChangeListener(propertyChangeListener);
 	}
 
 	/**
 	 * Removes a listener for all event changes.
-	 * @param PropertyChangeListener listener the listener to remove.
+	 * @param propertyChangeListener listener the listener to remove.
 	 * @see #addPropertyChangeListener
 	 */
-	public void removePropertyChangeListener(PropertyChangeListener listener)
+	public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener)
 	{
 	    //super.removePropertyChangeListener(listener);
-	    changes.removePropertyChangeListener(listener);
+	    changes.removePropertyChangeListener(propertyChangeListener);
 	}
 
 	/**
 	 * Adds a vetoable listener for all event changes.
-	 * @param VetoableChangeListener listener the listener to add.
+	 * @param vetoableChangeListener listener the listener to add.
 	 * @see #removeVetoableChangeListener
 	 */
-	public void addVetoableChangeListener(VetoableChangeListener listener)
+	public void addVetoableChangeListener(VetoableChangeListener vetoableChangeListener)
 	{
 	     //super.addVetoableChangeListener(listener);
-		vetos.addVetoableChangeListener(listener);
+		vetos.addVetoableChangeListener(vetoableChangeListener);
 	}
 
 	/**
 	 * Removes a vetoable listener for all event changes.
-	 * @param VetoableChangeListener listener the listener to remove.
+	 * @param vetoableChangeListener listener the listener to remove.
 	 * @see #addVetoableChangeListener
 	 */
-	public void removeVetoableChangeListener(VetoableChangeListener listener)
+	public void removeVetoableChangeListener(VetoableChangeListener vetoableChangeListener)
 	{
 	    //super.removeVetoableChangeListener(listener);
-	    vetos.removeVetoableChangeListener(listener);
+	    vetos.removeVetoableChangeListener(vetoableChangeListener);
 	}
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {

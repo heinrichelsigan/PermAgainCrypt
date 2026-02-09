@@ -19,22 +19,22 @@ public final class EnDeCodeHelper {
     /**
      * keyBytesToHexBytesSalt converts key bytes to hex bytes and salt it
      * @param keyBytes bytes of secret key
-     * @paran length length that final salt bytes should have
+     * @param keylen length that final salt bytes should have
      * @return salt bytes
      */
-    public static byte[] keyBytesToHexBytesSalt(byte[] keyBytes, int length)  {
+    public static byte[] keyBytesToHexBytesSalt(byte[] keyBytes, int keylen)  {
         if (keyBytes == null || keyBytes.length== 0)
             throw new IllegalArgumentException("keyBytes");
 
         String hexString = (new Hex16Coder()).encodeBytesToString(keyBytes);
         byte[] hexBytes = hexString.getBytes(StandardCharsets.UTF_8);
 
-        while (hexBytes.length < length) {
+        while (hexBytes.length < keylen) {
             hexBytes = eu.cqrxs.crypt.cipher.CryptHelper.tarBytes(keyBytes,
                     hexString.getBytes(StandardCharsets.UTF_8));
         }
 
-        int len = (length > 0 && hexBytes.length >= length) ? length : hexBytes.length;
+        int len = (keylen > 0 && hexBytes.length >= keylen) ? keylen : hexBytes.length;
 
         byte[] outBytes = new byte[len];
         for (int i = 0; i < len; outBytes[i++] = ((byte)0)) ;

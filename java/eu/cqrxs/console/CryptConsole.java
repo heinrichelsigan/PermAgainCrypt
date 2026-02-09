@@ -61,7 +61,7 @@ public class CryptConsole  {
 
     /**
      * Main entry method
-     * @oaram args {@link String[]}
+     * @param args String[]
      */
     public static void main(String[] args) {
         try {

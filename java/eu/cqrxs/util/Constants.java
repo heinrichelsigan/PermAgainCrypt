@@ -25,7 +25,7 @@ public class Constants {
 	public final static int SOCKET_BYTE_BUFFEER = 1048576;         //  1 MB Buffer
 	public final static int MAX_BYTE_BUFFEER = 4194240;            //  4 MB Buffer
 	public final static int MAX_SOCKET_BYTE_BUFFEER = 33554432;    //  32 MB Buffer  2^25
-	public final static int BGWORKWE_BUSYWAITING_SLEEP = 360000;
+	public final static int BGWORKER_BUSYWAITING_SLEEP = 360000;
 	public final static boolean CQR_ENCRYPT = true;
 	public final static boolean ZEN_MATRIX_SYMMETRIC = false;
 
@@ -35,17 +35,9 @@ public class Constants {
 	public final static char UNDER_SCORE = '_';
 
 	public final static String APP_NAME = "eu.cqrxs";
+	public final static String VERSION = java.time.YearMonth.now().toString();
 	public final static String APP_DIR = "net";
 	public final static String APP_ERROR = "AppError";
-	public final static String VERSION = "v2.26.128";
-	public final static String VALKEY_CACHE_HOST = "cqrcachecqrxseu-53g0xw.serverless.eus2.cache.amazonaws.com";
-	public final static int VALKEY_CACHE_PORT = 6379;
-	public final static String VALKEY_CACHE_HOST_PORT = "cqrcachecqrxseu-53g0xw.serverless.eus2.cache.amazonaws.com:6379";
-	public final static String VALKEY_CACHE_HOST_PORT_KEY = "ValkeyCacheHostPort";
-	public final static String EXTERNAL_CLIENT_IP = "ExternalClientIP";
-	public final static String EXTERNAL_CLIENT_IP_V4 = "ExternalClientIPv4";
-	public final static String SERVER_IP_V4 = "ServerIPv4";
-	public final static String SERVER_IP_V6 = "ServerIPv6";
 	public final static String CQR_SERVICE_SOAP = "CqrServiceSoap";
 	public final static String CQR_SERVICE_SOAP12 = "CqrServiceSoap12";
 	public final static String CQR_SRV_SOAP = "CqrSrvSoap";
@@ -83,13 +75,6 @@ public class Constants {
 	public final static String FR_CQRXS_EU = "fr.cqrxs.eu";
 	public final static String PARIS_CQRXS_EU = "paris.cqrxs.eu";
 	public final static String PARISIENNSE_CQRXS_EU = "parisienne.cqrxs.eu";
-
-	public final static String DE_CQRXS_EU = "de.cqrxs.eu";
-	public final static String FRANKFURT_CQRXS_EU = "frankfurt.cqrxs.eu";
-	public final static String BERLINERIN_CQRXS_EU = "berlinerin.cqrxs.eu";
-
-	public final static String SE_CQRXS_EU = "se.cqrxs.eu";
-	public final static String STOCKHOLM_CQRXS_EU = "stockholm.cqrxs.eu";
 
 	public final static String IE_CQRXS_EU = "ie.cqrxs.eu";
 	public final static String DUBLIN_CQRXS_EU = "dublin.cqrxs.eu";
@@ -160,7 +145,6 @@ public class Constants {
 	public final static String LOG_EXT = ".log";
 	public final static String LOG_EXCEPTION_STATIC = "LogExceptionStatic";
 	public final static String OUT_DIR = "out";
-	public final static String QR_DIR = "Qr";
 	public final static String RES_DIR = "res";
 	public final static String RES_FOLDER = "res";
 	public final static String TEXT_DIR = "text";
@@ -169,63 +153,13 @@ public class Constants {
 	public final static String UTF8_DIR = "Utf8";
 	public final static String UU_DIR = "uu";
 
-	public final static String OBJ_DIR = "obj";
-	public final static String RELEASE_DIR = "Release";
-	public final static String DEBUG_DIR = "Debug";
-	public final static String NET9_WINDOWS7 = "net9.0-windows7.0";
-	public final static String NET9_WINDOWS8 = "net9.0-windows8.0";
-	public final static String NET9_WINDOWS10 = "net9.0-windows10";
-	public final static String NET9_WINDOWS11 = "net9.0-windows11";
-	public final static String WIN_X86 = "win-x86";
-	public final static String WIN_X64 = "win-x86";
-	public final static String MIME_EXT = ".mime";
-	public final static String BASE64_EXT = ".base64";
 	public final static String ATTACH_FILES_DIR = "AttachFiles";
 	public final static String UPSAVED_FILE = "SavedFile";
 
-	public final static String UTF8_JSON = "utf8symol.json";
-	public final static String JSON_SAVE_FILE = "urlshort.json";
-	public final static String JSON_APPDICT_FILE = "appdict.json";
-	public final static String JSON_CONTACTS = "contacts";
-	public final static String JSON_CONTACTS_FILE = "contacts.json";
-	public final static String JSON_SETTINGS_FILE = "settings.json";
-	public final static String CQR_CHAT_FILE = "cqr{0}chat.json";
 	public final static String PREVIOUS_EXCEPTION = "previous_exception";
 	public final static String LAST_EXCEPTION = "last_exception";
 	public final static String COOL_CRYPT_SPLIT = "[;:→\t]";
 
-	public final static String UNKNOWN = "UnKnown";
-	public final static String DEFAULT_MIMETYPE = "application/octet-stream";
-	public final static String RPN_STACK = "rpnStack";
-	public final static String CHANGE_CLICK_EVENTCNT = "change_Click_EventCnt";
-	public final static String BC_START_MSG = "bc 1.07.1\r\nCopyright 1991-1994, 1997, 1998, 2000, 2004, 2006, 2008, 2012-2017 Free Software Foundation, Inc.\r\nThis is free software with ABSOLUTELY NO WARRANTY.\r\nFor details type `warranty'.\r\n";
-
-	public final static String BACK_COLOR = "BackColor";
-	public final static String QR_COLOR = "QrColor";
-	public final static String BACK_COLOR_STRING = "BackColorString";
-	public final static String QR_COLOR_STRING = "QrColorString";
-	public final static String IMAGE_UPLOAD_CLICK = "click_here_to_upload";
-	public final static String IMAGE_UPLOAD_EXTENSION = ".png";
-
-	public final static String ROACH_DESKTOP_WINDOW = "Roach.Desktop.Window";
-	public final static String MUTEX_REGOPS = "Mutex.Registry.Operations";
-
-	public final static String EXE_COMMAND_CMD = "cmd";
-	public final static String EXE_POWER_SHELL = "powershell";
-
-	public final static String EXE_WIN_INIT = "wininit";
-	public final static String EXE_SERVICES = "services";
-	public final static String EXE_SVC_HOST = "svchost";
-	public final static String EXE_TASK_HOST = "taskhostw";
-	public final static String EXE_DLL_HOST = "dllhost";
-	public final static String EXE_SCHEDULER = "scheduler";
-	public final static String EXE_VM_COMPUTE = "vmcompute";
-	public final static String EXE_WIN_DEFENDER = "MsMpEng";
-	public final static String EXE_LASS = "lsass";                     // local Security Authority Subsystem Service. 
-	public final static String EXE_CSRSS = "csrss";                    // hosts the server side of the Win32 subsystem
-
-	public final static String EXE_WIN_LOGON = "winlogon";             // windows logon handler for current logon
-	public final static String EXE_DESKTOP_WINDOW_MANAGER = "dwm";     // window manager for current logon
 
 	public final static String STRING_EMPTY = "";
 	public final static String STRING_NULL = null;

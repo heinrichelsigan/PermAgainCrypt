@@ -89,7 +89,7 @@ public class Hex64Coder implements IEncodable  {
 	
 	/**
      * decodeBytes transforms a hex64 encoded string into an binary byte[] array
-     * @param encodedBytes hex64 encoded byte array {@link byte[]}
+     * @param encodedBytes hex64 encoded byte array {@see byte[]}
      * @return binary byte array
      * @exception IllegalArgumentException is thrown when encodedString is null or empty
      */

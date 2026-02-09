@@ -77,9 +77,9 @@ import java.nio.ByteBuffer;
  *
  * @author      Chuck McManis
  * @see         CharacterDecoder;
- * @see         UCEncoder
  * @see         UUEncoder
- * @see         BASE64Encoder
+ * @see         UUEncoder
+ * @see         org.bouncycastle.util.encoders.Base64Encoder
  */
 public abstract class CharacterEncoder {
 
@@ -180,6 +180,8 @@ public abstract class CharacterEncoder {
     /**
      * Encode the buffer in <i>aBuffer</i> and write the encoded
      * result to the OutputStream <i>aStream</i>.
+     * @param aBuffer byte[]
+     * @param aStream OutputStream
      */
     public void encode(byte aBuffer[], OutputStream aStream)
     throws IOException {
@@ -190,6 +192,8 @@ public abstract class CharacterEncoder {
     /**
      * A 'streamless' version of encode that simply takes a buffer of
      * bytes and returns a string containing the encoded buffer.
+     * @param aBuffer byte[]
+     * @return String
      */
     public String encode(byte aBuffer[]) {
         ByteArrayOutputStream   outStream = new ByteArrayOutputStream();
@@ -255,8 +259,9 @@ public abstract class CharacterEncoder {
     /**
      * Encode the <i>aBuffer</i> ByteBuffer and write the encoded
      * result to the OutputStream <i>aStream</i>.
-     * <P>
+     * @param aBuffer {@link ByteBuffer}
      * The ByteBuffer's position will be advanced to ByteBuffer's limit.
+     * @param aStream {@link OutputStream}
      */
     public void encode(ByteBuffer aBuffer, OutputStream aStream)
         throws IOException {
@@ -267,7 +272,7 @@ public abstract class CharacterEncoder {
     /**
      * A 'streamless' version of encode that simply takes a ByteBuffer
      * and returns a string containing the encoded buffer.
-     * <P>
+     * @param aBuffer {@link ByteBuffer}
      * The ByteBuffer's position will be advanced to ByteBuffer's limit.
      */
     public String encode(ByteBuffer aBuffer) {
@@ -280,6 +285,8 @@ public abstract class CharacterEncoder {
      * to the output stream. This method will run until it exhausts the
      * input stream. It differs from encode in that it will add the
      * line at the end of a final line that is shorter than bytesPerLine().
+     * @param inStream {@link InputStream}
+     * @param outStream {@link OutputStream}
      */
     public void encodeBuffer(InputStream inStream, OutputStream outStream)
         throws IOException {
@@ -313,6 +320,8 @@ public abstract class CharacterEncoder {
     /**
      * Encode the buffer in <i>aBuffer</i> and write the encoded
      * result to the OutputStream <i>aStream</i>.
+     * @param aBuffer byte[]
+     * @param aStream {@link OutputStream}
      */
     public void encodeBuffer(byte aBuffer[], OutputStream aStream)
     throws IOException {
@@ -323,6 +332,8 @@ public abstract class CharacterEncoder {
     /**
      * A 'streamless' version of encode that simply takes a buffer of
      * bytes and returns a string containing the encoded buffer.
+     * @param aBuffer byte[]
+     * @return String[]
      */
     public String encodeBuffer(byte aBuffer[]) {
         ByteArrayOutputStream   outStream = new ByteArrayOutputStream();
@@ -339,8 +350,9 @@ public abstract class CharacterEncoder {
     /**
      * Encode the <i>aBuffer</i> ByteBuffer and write the encoded
      * result to the OutputStream <i>aStream</i>.
-     * <P>
+     * @param sBuffer {@link ByteBuffer}
      * The ByteBuffer's position will be advanced to ByteBuffer's limit.
+     * @param aStream {@link OutputStream}
      */
     public void encodeBuffer(ByteBuffer aBuffer, OutputStream aStream)
         throws IOException {

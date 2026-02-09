@@ -97,7 +97,7 @@ public class CryptHelper {
      * @param keyHash key hash
      * @param merge do merge
      * @return doubled concatendated string of (secretKey + hash)
-     * @Exception IllegalArgumentException
+     * @throws IllegalArgumentException key
      */
     public static byte[] KeyUserHashBytes(String key, String keyHash, boolean merge)  {
         if (key == null || key.length() < 1)
@@ -234,7 +234,7 @@ public class CryptHelper {
         * @param key users secret key
         * @param keyHash hashed key
         * @param keyLen total length of new generated key bytes
-        * @return user keybytes {@link byte[]}
+        * @return user key bytes
         */
         public static byte[] getUserKeyBytes(String key, String keyHash, int keyLen)  {
             if (key == null || key.length() == 0)
