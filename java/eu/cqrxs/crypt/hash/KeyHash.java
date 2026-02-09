@@ -165,7 +165,8 @@ public enum KeyHash {
 				case KeyHash.Dstu7564:
 					DbgWriter.msg((getName() + ": instr=" +instr + " \tinBytes.length=" + inBytes.length + " \t"), false);
 					digest = new org.bouncycastle.crypto.digests.DSTU7564Digest(256);
-					resBuf = new byte[digest.getDigestSize()];					digest.update(inBytes, 0, inBytes.length);
+					resBuf = new byte[digest.getDigestSize()];					
+					digest.update(inBytes, 0, inBytes.length);
 					digest.doFinal(resBuf, 0);
 
 					hexs = hex.formatHex(resBuf);

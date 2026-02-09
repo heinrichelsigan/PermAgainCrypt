@@ -372,7 +372,7 @@ public class SecureCipherPipe extends CipherPipe {
         for (CipherEnum cipher : inPipe) {
 
             String cipherHashKey = keyHashes[(merry % keyHashes.length)].hash(cipherKeyHash);
-            if ((++merry) > 7) merry = 0;
+            if ((++merry) > (keyHashes.length -1)) merry = 0;
 
             encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
             inBytes = encryptedBytes;
@@ -406,7 +406,7 @@ public class SecureCipherPipe extends CipherPipe {
         for (CipherEnum cipher : getOutPipe()) {
 
             String cipherHashKey = keyHashes[(roundsGo % keyHashes.length)].hash(cipherKeyHash);
-            if ((--roundsGo) < 0) roundsGo = 7;
+            if ((--roundsGo) < 0) roundsGo = keyHashes.length - 1;
 
             decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
             cipherBytes = decryptedBytes;
