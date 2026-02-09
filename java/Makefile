@@ -26,7 +26,7 @@ cqrxs:
 	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
 	
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs//util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs/gui/PropertyChangeSupport.java eu/cqrxs//util/Fortune.java  eu/cqrxs/gui/ImageViewer.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java
 	
 	echo "build finished"
 
