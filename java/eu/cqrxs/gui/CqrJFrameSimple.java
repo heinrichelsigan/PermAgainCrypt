@@ -43,7 +43,7 @@ public class CqrJFrameSimple extends JFrame {
     public static CqrJdFrame cqrJdFrame;
 	protected static byte[] openFileBytes, saveFileBytes;
     private static String[] args;
-    URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl;
+    URL keyUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -57,7 +57,7 @@ public class CqrJFrameSimple extends JFrame {
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
 	JLabel jLabel_fileIn, jLabel_fileOut, jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
-	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
+	JTextField jTextField_Key, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
@@ -72,10 +72,9 @@ public class CqrJFrameSimple extends JFrame {
 			menuOptions_menuWarnings, menuOptions_verifyEncryption, menuOptions_menuFileSettings,
 			menuHelp = new JMenu();
 	
-	JMenuItem menuMain_itemOpen, menuMain_itemSave, 
-				menuMain_itemSetPipe, menuMain_itemHashKey, menuMain_itemHashPipe, 
-				menuMain_itemEncrypt, menuMain_itemDecrypt, menuMain_itemRandomText, menuMain_itemReset, menuMain_itemShowComplex, 
-				menuMain_itemExit = new JMenuItem();
+	JMenuItem menuMain_itemOpen, menuMain_itemSave, menuMain_itemSetPipe, menuMain_itemHashPipe, 
+				menuMain_itemEncrypt, menuMain_itemDecrypt, menuMain_itemRandomText, menuMain_itemReset,
+                menuMain_itemShowComplex, menuMain_itemExit = new JMenuItem();
 
 	JMenuItem menuZip_item7z, menuZip_itemGz, menuZip_itemBz, menuZip_itemZip, menuZip_itemNone;
 	
@@ -168,14 +167,6 @@ public class CqrJFrameSimple extends JFrame {
 		menuMain_itemSetPipe.setFont(menuFont);
 		menuMain_itemSetPipe.addActionListener(aSymAction);
 		menuMain.add(menuMain_itemSetPipe);
-
-		menuMain_itemHashKey = new JMenuItem();
-		menuMain_itemHashKey.setHorizontalTextPosition(SwingConstants.RIGHT);
-		menuMain_itemHashKey.setText("Hash Key");
-		menuMain_itemHashKey.setActionCommand("HashKey");
-		menuMain_itemHashKey.setFont(menuFont);
-		menuMain_itemHashKey.addActionListener(aSymAction);
-		menuMain.add(menuMain_itemHashKey);
 
 		menuMain_itemHashPipe = new JMenuItem();
 		menuMain_itemHashPipe.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -580,7 +571,6 @@ public class CqrJFrameSimple extends JFrame {
 		jTextField_Pipe.setText("");
 		jTextField_Pipe.setBounds(264, 64, 578, 25);
 		jTextField_Pipe.setEditable(false);
-		// jTextField_Pipe.setEnabled(false);
 		jTextField_Pipe.setForeground(Color.BLACK);  
 		jTextField_Pipe.setBackground(Color.WHITE);  
 		jTextField_Pipe.setFont(cryptFont);
@@ -796,8 +786,6 @@ public class CqrJFrameSimple extends JFrame {
 
 			if (object == menuMain_itemExit)
 				exit_action(event);								
-			else if (object == menuMain_itemHashKey)
-				hashKey_action();
 			else if (object == menuMain_itemOpen)
 				open_action();
 			else if (object == menuMain_itemSave)
@@ -953,7 +941,6 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			String key = jTextField_Key.getText().toString();
 			String hashed = keyHash.hash(key);
-			// jTextField_Hash.setText(hashed);
 
 			SecureCipherPipe pipe = new SecureCipherPipe(key, encodeType, zipType, cmode2);
 
@@ -971,27 +958,10 @@ public class CqrJFrameSimple extends JFrame {
 		}
 	}
 	
-	protected void hashKey_action() {
-		String keyValue = "";
-		try {
-				keyValue = jTextField_Key.getText().toString();
-		} catch (Exception exi) {
-				keyValue = "zen@area23.at";
-		}
-		String hashed = "";
-		try {
-			hashed = keyHash.hash(keyValue);
-			// jTextField_Hash.setText(hashed);
-			// setInfoMsg("Hashed key " + keyValue);
-		} catch (Exception exh) {
-		}
-	}
-	
 	protected void hashPipe_action(ActionEvent event) {
 		try {
 			String key = jTextField_Key.getText().toString();
 			String hashed = KeyHash.Whirlpool.hash(KeyHash.SCrypt.hash(key));
-			// jTextField_Hash.setText(hashed);
             
 			SecureCipherPipe pipe = new SecureCipherPipe(hashed, encodeType, zipType, cmode2);
 
@@ -1024,7 +994,6 @@ public class CqrJFrameSimple extends JFrame {
 			jTextAreaSource.setText("");
 			jTextAreaDestination.setText("");
 			jTextField_Pipe.setText("");
-			jTextField_Hash.setText("");
 			jTextField_Key.setText("zen@area23.at");
 			// TODO: reset JComboBoxes jComboBox_Algo
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
@@ -1041,7 +1010,6 @@ public class CqrJFrameSimple extends JFrame {
 		String plain = jTextAreaSource.getText();
 		String key = jTextField_Key.getText();
 		String hashed = keyHash.hash(key);
-		jTextField_Hash.setText(hashed);
 		String cipherPipeString = jTextField_Pipe.getText();
 		String pipeString = "";
 		CipherEnum[] ciphers = new CipherEnum[0];
@@ -1115,7 +1083,6 @@ public class CqrJFrameSimple extends JFrame {
 		String encrypted = jTextAreaSource.getText();
 		String key = jTextField_Key.getText();
 		String hashed = keyHash.hash(key);
-		jTextField_Hash.setText(hashed);
 		String cipherPipeString = jTextField_Pipe.getText();
 		CipherEnum[] ciphers = new CipherEnum[0];
 		if (cipherPipeString.length() > 0) {
