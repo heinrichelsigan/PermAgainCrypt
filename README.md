@@ -31,11 +31,12 @@ Since symmetric block cipher ciphers each block in the same encrypting way
 <img width="1021" height="443" alt="image" src="https://github.com/user-attachments/assets/27210f93-31d8-4002-851e-95748c5ad4d9" />
 
 parallel processing can be implemented quiet easy with average performance bust on huge multiprocessore machines.
-<img width="1065" height="727" alt="image" src="https://github.com/user-attachments/assets/2b72b58a-c0ab-45c9-94e2-ae45aae30dd0" />
+<img width="1065" height="727" alt="image" src="https://github.com/user-attachments/assets/bddbc429-7d1d-4c4e-a55b-40c3b0cbf50b" />
+
 
 ### Disadvantages
 
-<img width="995" height="732" alt="image" src="https://github.com/user-attachments/assets/4903c60d-7213-477f-b5b0-638a5e929a3b" />
+<img width="1049" height="709" alt="image" src="https://github.com/user-attachments/assets/90052c90-0fe1-477d-a505-5f92fb7506d5" />
 
 
 ## C# solution and all projects ported to .NetCore 10
