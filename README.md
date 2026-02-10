@@ -34,10 +34,9 @@ parallel processing can be implemented quiet easy with average performance bust 
 <img width="800" height="546" alt="image" src="https://github.com/user-attachments/assets/465a04bc-30ec-4058-be85-e0000f697402" />
 
 
-
 ### Disadvantages
 
-<img width="1049" height="709" alt="image" src="https://github.com/user-attachments/assets/90052c90-0fe1-477d-a505-5f92fb7506d5" />
+<img width="800" height="541" alt="image" src="https://github.com/user-attachments/assets/90052c90-0fe1-477d-a505-5f92fb7506d5" />
 
 
 ## C# solution and all projects ported to .NetCore 10
