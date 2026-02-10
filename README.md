@@ -28,10 +28,11 @@ including the follwing symmetric cipher algorithms:
 
 ### Advantages
 Since symmetric block cipher ciphers each block in the same encrypting way
-<img width="1021" height="443" alt="image" src="https://github.com/user-attachments/assets/27210f93-31d8-4002-851e-95748c5ad4d9" />
+<img width="800" height="347" alt="image" src="https://github.com/user-attachments/assets/27210f93-31d8-4002-851e-95748c5ad4d9" />
 
 parallel processing can be implemented quiet easy with average performance bust on huge multiprocessore machines.
-<img width="1065" height="727" alt="image" src="https://github.com/user-attachments/assets/bddbc429-7d1d-4c4e-a55b-40c3b0cbf50b" />
+<img width="800" height="546" alt="image" src="https://github.com/user-attachments/assets/465a04bc-30ec-4058-be85-e0000f697402" />
+
 
 
 ### Disadvantages
