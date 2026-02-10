@@ -541,6 +541,12 @@
             <param name="secretHash">user host ip address</param>
             <returns>Array of byte with length KeyLen</returns>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.CanAlgoKeyIV(Org.BouncyCastle.Crypto.IBlockCipher)">
+            <summary>
+            can this SymmBlockCipherAlgo key with initialization vector?
+            </summary>
+            <returns>true, if it hanldes init with key and initialization vector iv, otherwise false</returns>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Encrypt(System.Byte[])">
             <summary>
             Generic CryptBounceCastle Encrypt member function

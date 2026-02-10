@@ -164,6 +164,32 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         }
 
+        /// <summary>
+        /// can this SymmBlockCipherAlgo key with initialization vector?
+        /// </summary>
+        /// <returns>true, if it hanldes init with key and initialization vector iv, otherwise false</returns>
+        internal bool CanAlgoKeyIV(IBlockCipher cryptoBlockCipher = null)
+        {
+            if (cryptoBlockCipher == null)
+                cryptoBlockCipher = CryptoBlockCipher;
+            string algoName = cryptoBlockCipher.AlgorithmName.ToUpper();
+            if (algoName.StartsWith("AES") || algoName.StartsWith("RIJNDAEL"))
+                return false;
+            if (algoName.StartsWith("ARIA") || algoName.StartsWith("ASCON"))
+                return false;
+            if (algoName.StartsWith("CAST"))
+                return false;
+            if (algoName.StartsWith("GOST") || algoName.StartsWith("IDEA"))
+                return false;
+            if (algoName.StartsWith("RC") || algoName.StartsWith("IDEA"))
+                return false;
+            if (algoName.StartsWith("SKIPJACK") || algoName.Equals("DESEDE"))
+                return false;
+            if (algoName.StartsWith("TEA") || algoName.StartsWith("XTEA"))
+                return false;
+            return true;
+        }
+
         #region EncryptDecryptBytes
 
         /// <summary>
@@ -215,10 +241,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
             ICipherParameters keyParamIV = new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(keyParam, Iv);
 
-            // if (Mode == "ECB")
+            if (Mode == "ECB" || !CanAlgoKeyIV(CryptoBlockCipher))
                 cipherMode.Init(true, keyParam);
-            // else
-            // cipherMode.Init(true, keyParam, keyParamIV);
+            else
+                cipherMode.Init(true, keyParamIV);
 
             if (PadBufBChipger == null && cipherMode != null)
                 PadBufBChipger = cipherMode;
@@ -284,10 +310,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
 
             // Decrypt            
-            // if (Mode == "ECB")
-            cipherMode.Init(false, keyParam);
-            // else
-            // cipherMode.init(false, keyParam, keyParamIV);
+            if (Mode == "ECB" || !CanAlgoKeyIV(CryptoBlockCipher))
+                cipherMode.Init(false, keyParam);
+            else
+                cipherMode.Init(false, keyParamIV);
 
 
             // decryptedData = cipherMode.ProcessBytes(cipherData);
