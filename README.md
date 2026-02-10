@@ -24,6 +24,21 @@ including the follwing symmetric cipher algorithms:
 - [Tea](https://de.wikipedia.org/wiki/Tiny_Encryption_Algorithm), [XTea](https://en.wikipedia.org/wiki/XTEA)
 - and my own simplest below average symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2	
 
+## What are advantages and disadvantages of Symmetric Block Cipher
+
+### Advantages
+Since symmetric block cipher ciphers each block in the same encrypting way
+<img width="800" height="347" alt="image" src="https://github.com/user-attachments/assets/27210f93-31d8-4002-851e-95748c5ad4d9" />
+
+parallel processing can be implemented quiet easy with average performance bust on huge multiprocessore machines.
+<img width="800" height="546" alt="image" src="https://github.com/user-attachments/assets/465a04bc-30ec-4058-be85-e0000f697402" />
+
+
+### Disadvantages
+
+<img width="800" height="541" alt="image" src="https://github.com/user-attachments/assets/90052c90-0fe1-477d-a505-5f92fb7506d5" />
+
+
 ## C# solution and all projects ported to .NetCore 10
 You need since 2025-11-15 Visual Studio 2026 and C# .NetCore 10.0 to compile C# csproj.
 
