@@ -168,7 +168,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// can this SymmBlockCipherAlgo key with initialization vector?
         /// </summary>
         /// <returns>true, if it hanldes init with key and initialization vector iv, otherwise false</returns>
-        internal bool CanAlgoKeyIV(IBlockCipher cryptoBlockCipher = null)
+        protected bool CanAlgoKeyIV(IBlockCipher cryptoBlockCipher = null)
         {
             if (cryptoBlockCipher == null)
                 cryptoBlockCipher = CryptoBlockCipher;
@@ -237,10 +237,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             }
 
             KeyParameter keyParam = (CryptoBlockCipher.AlgorithmName == "RC564" || CryptoBlockCipher.AlgorithmName == "RC5-64") ?
-                new Org.BouncyCastle.Crypto.Parameters.RC5Parameters(Key, 2) :
-                new Org.BouncyCastle.Crypto.Parameters.KeyParameter(Key);
-            ICipherParameters keyParamIV = new Org.BouncyCastle.Crypto.Parameters.ParametersWithIV(keyParam, Iv);
+                new RC5Parameters(Key, 2) : // RC5-64 with 2 rounds key initialization
+                new KeyParameter(Key);      // default KeyParameter
+            ICipherParameters keyParamIV = new ParametersWithIV(keyParam, Iv); // KeyParameter with init vector
 
+            // cipherMode init with initialization vector only when Mode isn't ECB and Algo is IV init capable
             if (Mode == "ECB" || !CanAlgoKeyIV(CryptoBlockCipher))
                 cipherMode.Init(true, keyParam);
             else
@@ -309,12 +310,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             ICipherParameters keyParamIV = new ParametersWithIV(keyParam, Iv);
 
 
-            // Decrypt            
+            // Decrypt with initialization vector only when !ECB + algorithm is IV capable            
             if (Mode == "ECB" || !CanAlgoKeyIV(CryptoBlockCipher))
                 cipherMode.Init(false, keyParam);
             else
                 cipherMode.Init(false, keyParamIV);
-
 
             // decryptedData = cipherMode.ProcessBytes(cipherData);
             if (cipherMode != null)

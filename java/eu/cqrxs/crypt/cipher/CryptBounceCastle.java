@@ -297,11 +297,11 @@ public class CryptBounceCastle  {
         
         CipherParameters keyParamIV = new ParametersWithIV(keyParam, iv);
 
-        // Decrypt
-        if (mode == "ECB" || !canAlgoKeyIV(CryptoBlockCipher))
+        // Decrypt with initialization vector only when !ECB + algorithm is IV capable
+		if (mode == "ECB" || !canAlgoKeyIV(CryptoBlockCipher))
 			cipherMode.init(false, keyParam);
         else
-            cipherMode.init(false, keyParamIV);
+			cipherMode.init(false, keyParamIV);
 
         // decryptedData = cipherMode.ProcessBytes(cipherData);
         if (cipherMode != null)
