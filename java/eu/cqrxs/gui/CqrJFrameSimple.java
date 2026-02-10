@@ -61,6 +61,7 @@ public class CqrJFrameSimple extends JFrame {
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
+	eu.cqrxs.gui.DropPanel dropPanel;
 	eu.cqrxs.gui.ImageViewer imKey, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
@@ -610,8 +611,14 @@ public class CqrJFrameSimple extends JFrame {
 		jLabel_fileIn.setFont(cryptFont);
 		jLabel_fileIn.setBounds(8, 172, 120, 24);
 		jLabel_fileIn.setText("[No input file loaded]");
-		jLabel_fileIn.setFont(cryptFont);		
 		getContentPane().add(jLabel_fileIn);
+
+
+		dropPanel = new DropPanel();
+		dropPanel.setFont(cryptFont);
+		dropPanel.setBounds(132, 108, 400, 96);
+		dropPanel.setName("DropPanel");
+		getContentPane().add(dropPanel);
 
 		try {
 			imOutFile = new ImageViewer();
