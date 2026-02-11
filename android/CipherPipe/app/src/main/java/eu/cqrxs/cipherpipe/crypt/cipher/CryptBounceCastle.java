@@ -76,7 +76,7 @@ public class CryptBounceCastle  {
         CryptoBlockCipherPadding = null;
         keyLen = 32;
         size = 256;
-        mode = "ECB";
+        mode = "CFB";
 
         privateKey = "";
         privateHash = "";
@@ -163,6 +163,34 @@ public class CryptBounceCastle  {
 
     }
 
+    
+	/**
+	 * canAlgoKeyIV
+	 * @param cryptoBlockCipher {@link BlockCipher}
+	 * @return true, if algo handles initialization with key and initialization vector
+	 */
+	protected boolean canAlgoKeyIV(BlockCipher cryptoBlockCipher)
+	{
+		if (cryptoBlockCipher == null)
+			cryptoBlockCipher = CryptoBlockCipher;
+		String algoName = cryptoBlockCipher.getAlgorithmName().toUpperCase();
+		if (algoName.startsWith("AES") || algoName.startsWith("RIJNDAEL"))
+			return false;
+		if (algoName.startsWith("ARIA") || algoName.startsWith("ASCON"))
+			return false;
+		if (algoName.startsWith("CAST"))
+			return false;
+		if (algoName.startsWith("GOST") || algoName.startsWith("IDEA"))
+			return false;
+		if (algoName.startsWith("RC") || algoName.startsWith("IDEA"))
+			return false;
+		if (algoName.startsWith("SKIPJACK") || algoName == "DESEDE")
+			return false;
+		if (algoName.startsWith("TEA") || algoName.startsWith("XTEA"))
+			return false;
+		return true;
+	}
+
 
     /***
      *  Generic CryptBounceCastle encrypt member function
@@ -214,10 +242,10 @@ public class CryptBounceCastle  {
 			keyParam = new org.bouncycastle.crypto.params.KeyParameter(key);
         CipherParameters keyParamIV = new org.bouncycastle.crypto.params.ParametersWithIV(keyParam, iv);
 
-        // if (Mode == "ECB")
-        cipherMode.init(true, keyParam);
-        // else
-        // cipherMode.Init(true, keyParamIV);
+        if (mode == "ECB" || !canAlgoKeyIV(CryptoBlockCipher))
+            cipherMode.init(true, keyParam);
+        else
+            cipherMode.Init(true, keyParamIV);
 
         if (PadBufBChipger == null && cipherMode != null)
             PadBufBChipger = cipherMode;
@@ -283,10 +311,10 @@ public class CryptBounceCastle  {
         CipherParameters keyParamIV = new ParametersWithIV(keyParam, iv);
 
         // Decrypt
-        //if (Mode == "ECB")
-        cipherMode.init(false, keyParam);
-        //else
-        //    cipherMode.Init(false, keyParamIV);
+        if (mode == "ECB" || !canAlgoKeyIV(CryptoBlockCipher))
+            cipherMode.init(false, keyParam);
+        else
+            cipherMode.Init(false, keyParamIV);
 
         // decryptedData = cipherMode.ProcessBytes(cipherData);
         if (cipherMode != null)

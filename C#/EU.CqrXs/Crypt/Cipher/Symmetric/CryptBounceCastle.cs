@@ -76,7 +76,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             CryptoBlockCipherPadding = null;
             KeyLen = 32;
             Size = 256;
-            Mode = "ECB";
+            Mode = "CFB";
 
             privateKey = string.Empty;
             privateHash = string.Empty;

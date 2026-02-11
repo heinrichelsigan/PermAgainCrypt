@@ -81,7 +81,7 @@ public class CryptParams {
         cipher = CipherEnum.Aes;
         size = 256;
         keyLen = 32;
-        cmode2 = CipherMode2.ECB;
+        cmode2 = CipherMode2.CFB;
         blockCipher = new AESEngine();
         keyHashing = KeyHash.Hex;
         blockSize = blockCipher.getBlockSize();
@@ -97,7 +97,7 @@ public class CryptParams {
         cipher = cipherAlgo;
         size = 256;
         keyLen = 32;
-        cmode2 = CipherMode2.ECB;
+        cmode2 = CipherMode2.CFB;
         keyHashing = KeyHash.Hex;
 
         switch (cipher) {
@@ -316,7 +316,7 @@ public class CryptParams {
     public CryptParams(CipherEnum cipherAlgo,
                        String secretKey,
                        String keyHashed) {
-        this(cipherAlgo, secretKey, keyHashed, CipherMode2.ECB);
+        this(cipherAlgo, secretKey, keyHashed, CipherMode2.CFB);
     }
 
     /***

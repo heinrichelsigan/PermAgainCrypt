@@ -22,7 +22,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         public static byte[] DesIv { get; private set; }
 
-        public static CipherMode CMode = CipherMode.ECB;
+        public static CipherMode CMode = CipherMode.CFB;
 
         public static TripleDESCryptoServiceProvider Des3;
 
@@ -32,36 +32,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         #region ctor helpers
 
-        protected internal void Gen3DesKey(ref byte[] keyBytes)
-        {
-            //var des3Tmp = new TripleDESCryptoServiceProvider();
-            //for (int lz = 0; lz < des3Tmp.LegalKeySizes.Length; lz++)
-            //{
-            //    KeySizes keySze = des3Tmp.LegalKeySizes[lz];
-            //    if (keySze.MinSize >= 8 && keySze.MinSize <= 256)
-            //    {
-            //        switch (keySze.MaxSize)
-            //        {
-            //            case 8:
-            //            case 16:
-            //            case 24:
-            //            case 32:
-            //                DesKeyLen = keySze.MaxSize;
-            //                break;
-            //            case 48:
-            //            case 64:
-            //            case 128:
-            //            case 192:
-            //            case 256:
-            //                DesKeyLen = (DesKeyLen < 0) ? keySze.MaxSize : DesKeyLen;
-            //                break;
-            //            default:
-            //                DesKeyLen = (DesKeyLen < 0) ? keySze.MaxSize : DesKeyLen;
-            //                break;
-            //        }
-            //    }
-            //}
-            
+        /// <summary>
+        /// GenDes3Key ctor helper method to generate a new key as keybytes
+        /// </summary>
+        /// <param name="keyBytes">ref passed keybytes</param>
+        protected internal void GenDes3Key(ref byte[] keyBytes)
+        {            
             List<byte> span = new List<byte>(keyBytes);
             while (span.Count < DesKeyLen)
                 span.AddRange(keyBytes);
@@ -75,7 +51,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             return;
         }
 
-        protected internal void Gen3DesIv(byte[] keyBytes, ref byte[] ivBytes)
+        /// <summary>
+        /// GenDes3Iv ctor helper method, that generates initalization vector IV bytes
+        /// generates 
+        /// </summary>
+        /// <param name="keyBytes">key bytes</param>
+        /// <param name="ivBytes">ref parameter to pass ivBytes</param>
+        protected internal void GenDes3Iv(byte[] keyBytes, ref byte[] ivBytes)
         {
             TripleDESCryptoServiceProvider desHelper = new TripleDESCryptoServiceProvider();
             desHelper.Key = keyBytes;
@@ -105,11 +87,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
     
 
         /// <summary>
-        /// 
+        /// default standard parameterless constructor of <see cref="Des3Net"/>
         /// </summary>
         public Des3Net() : this(Convert.FromBase64String(Constants.DES3_KEY), Convert.FromBase64String(Constants.DES3_IV)) { }
 
-        public Des3Net(string desKey, string hash, CipherMode cipherMode = CipherMode.ECB)
+        /// <summary>
+        /// Des3Net ctor with key, hash and <see cref="CipherMode" />
+        /// </summary>
+        public Des3Net(string desKey, string hash, CipherMode cipherMode = CipherMode.CFB)
         {
             if (string.IsNullOrEmpty(desKey))
                 desKey = Constants.DES3_KEY;
@@ -118,8 +103,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             byte[] key3Des = Encoding.UTF8.GetBytes(desKey);
             byte[] iv3Des = Encoding.UTF8.GetBytes(hash);
-            Gen3DesKey(ref key3Des);
-            Gen3DesIv(DesKey, ref iv3Des);
+            GenDes3Key(ref key3Des);
+            GenDes3Iv(DesKey, ref iv3Des);
             CMode = cipherMode;
 
             // MD5 md5 = new MD5CryptoServiceProvider();
@@ -132,7 +117,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             Des3.Padding = PaddingMode.PKCS7;
         }
 
-        public Des3Net(byte[] desKey, byte[] desIv, CipherMode cipherMode = CipherMode.ECB)
+        /// <summary>
+        /// ctor with byte[] for key, iv and <see cref="CipherMode">default now: CFB</see>
+        /// </summary>
+        public Des3Net(byte[] desKey, byte[] desIv, CipherMode cipherMode = CipherMode.CFB)
         {
             if (desKey == null || desKey.Length == 0)
             {
@@ -140,10 +128,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 desIv = Encoding.UTF8.GetBytes(Constants.DES3_IV);
             }
 
-            
             // MD5 md5 = new MD5CryptoServiceProvider(); // DesKey = md5.ComputeHash(desKey);
-            Gen3DesKey(ref desKey);
-            Gen3DesIv(DesKey, ref desIv);
+            GenDes3Key(ref desKey);
+            GenDes3Iv(DesKey, ref desIv);
             Des3 = new TripleDESCryptoServiceProvider();
             Des3.Key = DesKey;
             Des3.IV = DesIv;
@@ -153,6 +140,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         }
 
 
+        /// <summary>
+        /// ctor with standard <see cref="CryptParams"/>
+        /// </summary>
+        /// <param name="cparams"><see cref="CryptParams"/></param>
         public Des3Net(CryptParams cparams) : this(cparams.Key, cparams.Hash, cparams.CMode)
         {        
         }
@@ -220,7 +211,6 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             byte[] inBytes = System.Text.Encoding.UTF8.GetBytes(inString);
             byte[] encryptedBytes = Encrypt(inBytes);
             string encryptedText = Convert.ToBase64String(encryptedBytes);
-            // System.Text.Encoding.UTF8.GetString(encryptedBytes).TrimEnd('\0');
             return encryptedText;
         }
 

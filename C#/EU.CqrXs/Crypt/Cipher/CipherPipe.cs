@@ -53,7 +53,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// </summary>
         public CipherEnum[] OutPipe { get => inPipe.ToList().Reverse<CipherEnum>().ToArray(); }
 
-        public CipherMode2 CMode2 { get; set; } = CipherMode2.ECB;
+        public CipherMode2 CMode2 { get; set; } = CipherMode2.CFB;
 
         public CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
 
@@ -115,7 +115,7 @@ namespace EU.CqrXs.Crypt.Cipher
             encodeType = EncodingType.Base64;
             zType = ZipType.None;
             kHash = KeyHash.Hex;
-            CMode2 = CipherMode2.ECB;
+            CMode2 = CipherMode2.CFB;
         }
 
 
@@ -130,7 +130,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         public CipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8, 
             EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, 
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -156,7 +156,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         public CipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64, 
             ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -199,7 +199,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <exception cref="ArgumentException"></exception>
         public CipherPipe(byte[] keyBytes, uint maxpipe = 8, 
             EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex, 
-            CipherMode2 cmode2 = CipherMode2.ECB, bool verbose = false)
+            CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -247,7 +247,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="verbose"></param>
         public CipherPipe(string key, string hash, EncodingType encType = EncodingType.Base64,
             ZipType zpType = ZipType.None, KeyHash kh = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB, bool verbose = false)
+            CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
             : this(CryptHelper.GetKeyBytesSimple(key, hash, 16), Constants.MAX_PIPE_LEN, encType, zpType, kh, cmode2, verbose)
         {
             cipherKey = key;
@@ -260,7 +260,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="key"></param>
         /// <param name="verbose"></param>
         public CipherPipe(string key, bool verbose = false)
-            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.ECB, verbose) 
+            : this(key, EnDeCodeHelper.KeyToHex(key), EncodingType.Base64, ZipType.None, KeyHash.Hex, 
+                  CipherMode2.CFB, verbose) 
         {
             cipherKey = key;
         }
@@ -311,7 +312,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns>encrypted byte Array</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static byte[] EncryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, 
-            string secretKey, string hash, CipherMode2 cmode2 = CipherMode2.ECB)
+            string secretKey, string hash, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
@@ -385,7 +386,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns>decrypted byte Array</returns>
         public static byte[] DecryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, 
             string secretKey, string hash,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             if (string.IsNullOrEmpty(secretKey))
                 throw new ArgumentNullException("seretkey");
@@ -481,7 +482,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <exception cref="CException">is thrown on unknown type</exception>
         public static TRet EncrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
             EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None,
-            KeyHash kayHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.ECB)
+            KeyHash kayHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             byte[] stringBytes = new List<byte>().ToArray();
             // construct symmetric cipher pipeline with cryptKey, keyIv, encopding, zipBefore, keyHash and cmode2
@@ -542,7 +543,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <exception cref="CException">is thrown on unknown type</exception>
         public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
             EncodingType decoding = EncodingType.Base64, ZipType unzipAfter = ZipType.None,
-            KeyHash keyHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.ECB)
+            KeyHash keyHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.CFB)
         {
 
             hashIv = hashIv ?? keyHash.Hash(cryptKey);
@@ -690,7 +691,7 @@ namespace EU.CqrXs.Crypt.Cipher
             EncodingType encoding = EncodingType.Base64,
             ZipType zipBefore = ZipType.None,
             KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             if (string.IsNullOrEmpty(hashIv))
                 cipherHash = (!string.IsNullOrEmpty(cryptKey)) ? keyHash.Hash(cryptKey) : "";
@@ -731,7 +732,7 @@ namespace EU.CqrXs.Crypt.Cipher
             EncodingType decoding = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None,
             KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
 
             cipherKey = cryptKey;
@@ -761,7 +762,7 @@ namespace EU.CqrXs.Crypt.Cipher
 
         public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, 
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB) 
+            CipherMode2 cmode2 = CipherMode2.CFB) 
         {
             ZType = zipBefore;
             KHash = keyHash;
@@ -781,7 +782,7 @@ namespace EU.CqrXs.Crypt.Cipher
 
         public virtual byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, 
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 throw new ArgumentNullException("seretkey");
@@ -804,7 +805,7 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, string hashIV, 
             EncodingType encType = EncodingType.Base64,
             ZipType zipBefore = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             encodeType = encType;
             ZType = zipBefore;
@@ -834,7 +835,7 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, string hashIV,
             EncodingType encType = EncodingType.Base64,
             ZipType unzipAfter = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             encodeType = encType;
             ZType = unzipAfter;
@@ -882,7 +883,7 @@ namespace EU.CqrXs.Crypt.Cipher
         public virtual byte[] CryptCodeBytes(byte[] inBytes, string secretKey, string hashIV,
             bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
             ZipType zip = ZipType.None, KeyHash keyHash = KeyHash.Hex,
-            CipherMode2 cmode2 = CipherMode2.ECB)
+            CipherMode2 cmode2 = CipherMode2.CFB)
         {
             return (!directionDecrypt) ?
                 EncryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2) :

@@ -37,8 +37,7 @@ namespace EU.CqrXs.Spooler
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --Key={users key}   
     /// -D | --Decrypt 
-    /// -M | --mode={CBC|CFB|ECB}   
-    /// -S | --SymmCipher // use symmetric chipher only to encrypt
+    /// -M | --mode={CBC|CFB|ECB} default: CFB
     /// -V | --verbose
     /// -? | --help
     /// </summary>
@@ -54,8 +53,7 @@ namespace EU.CqrXs.Spooler
     /// -o | --OutDir={path to outcoming dir}
     /// -k | --Key=secretKey
     /// -D | --Decrypt 
-    /// -M | --mode={CBC|CFB|ECB}
-    /// -S | --SymmCipher   // use symmetric chipher only to encrypt 
+    /// -M | --mode={CBC|CFB|ECB} default: CFB
     /// -V | --verbose      // verbose output
     /// -? | --help\n";
         // generic spooler variables
@@ -78,7 +76,7 @@ namespace EU.CqrXs.Spooler
                                                 KeyHash.RipeMD256,KeyHash.Sha1, KeyHash.Sha256, KeyHash.Sha384, KeyHash.Sha512,
                                                 KeyHash.SCrypt, KeyHash.TupleHash, KeyHash.Whirlpool };
         static KeyHash keyHash = KeyHash.Hex;
-        static CipherMode2 cmode2 = CipherMode2.ECB;
+        static CipherMode2 cmode2 = CipherMode2.CFB;
 
         /// <summary>
         /// Console spooler app for en-/decrypting a huge amount of files
@@ -313,7 +311,7 @@ namespace EU.CqrXs.Spooler
                 case 'm':
                 case 'M':
                     if (!Enum.TryParse<CipherMode2>(optArgs[1], true, out cmode2))
-                        cmode2 = CipherMode2.ECB;
+                        cmode2 = CipherMode2.CFB;
                     optEnum = OptSpoolEnum.Mode;
                     optArgs[0] = optEnum.ToString();
                     return optArgs;

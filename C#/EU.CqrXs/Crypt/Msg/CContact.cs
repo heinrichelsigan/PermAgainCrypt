@@ -359,7 +359,8 @@ namespace EU.CqrXs.Crypt.Msg
             string pipeString = "", decrypted = "", keyHash = EnDeCodeHelper.KeyToHex(serverKey);
             try
             {
-                CipherPipe symmPipe = new CipherPipe(serverKey, keyHash, decoder, zipType, KeyHash.Hex, CipherMode2.ECB);
+                CipherPipe symmPipe = new CipherPipe(serverKey, keyHash, decoder, zipType, KeyHash.Hex, 
+                    CipherMode2.CFB);
                 pipeString = symmPipe.PipeString;
 
                 decrypted = Encoding.UTF8.GetString(symmPipe.DecodeDecrpytBytes(

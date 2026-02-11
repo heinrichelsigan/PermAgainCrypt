@@ -25,7 +25,7 @@ public class SecureCipherPipe extends CipherPipe {
     // private readonly CipherEnum[] outPipe;
     EncodeEnum  encodeType = EncodeEnum.Base64;
     // private readonly String pipeString;
-    CipherMode2 CMode2 = CipherMode2.ECB;
+    CipherMode2 CMode2 = CipherMode2.CFB;
 
 
     public ZipType getZipType() { return zType; }
@@ -61,7 +61,7 @@ public class SecureCipherPipe extends CipherPipe {
         inPipe = new CipherEnum[0];
         encodeType = EncodeEnum.Base64;
         zType = ZipType.None;
-        cMode2 = CipherMode2.ECB;
+        cMode2 = CipherMode2.CFB;
     }
 
     /**
@@ -183,7 +183,7 @@ public class SecureCipherPipe extends CipherPipe {
      * @param key only users secret key
      */
     public SecureCipherPipe(String key) {
-        this(key, EncodeEnum.Base64, ZipType.None, CipherMode2.ECB);
+        this(key, EncodeEnum.Base64, ZipType.None, CipherMode2.CFB);
         cipherKeyHash = key;
     }
 

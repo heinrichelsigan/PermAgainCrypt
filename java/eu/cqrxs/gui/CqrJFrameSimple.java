@@ -51,7 +51,7 @@ public class CqrJFrameSimple extends JFrame {
 	protected CipherEnum cipherEnum = CipherEnum.Aes;
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
-	protected CipherMode2 cmode2 = CipherMode2.ECB;
+	protected CipherMode2 cmode2 = CipherMode2.CFB;
 	
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
@@ -596,7 +596,7 @@ public class CqrJFrameSimple extends JFrame {
 		getContentPane().add(jComboBox_Encoding);
 		selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 
-		selectCipherMode2MenuItem(menuCMode2, CipherMode2.ECB);
+		selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
 		try {
 			imInFile = new ImageViewer();

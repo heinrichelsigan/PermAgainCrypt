@@ -21,7 +21,7 @@ namespace EU.CqrXs.Console
     ///         default: none
     /// -C | --CipherAlgos={[aes,des3,blowfish,fish2,fish3]|key}
     /// -M | --mode={ECB|CBC|CFB}   
-    ///         default: ECB
+    ///         default: CFB
     /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
     ///         default: base64
     /// -o | --outFile= | --outText=EnviromentVariable | --outStd        
@@ -39,7 +39,7 @@ namespace EU.CqrXs.Console
         static FileInfo? inFile = null, outFile = null;
         static byte[]? inBytes = null, outBytes = null;
         static string passKey = "";
-        static CipherMode2 cmode2 = CipherMode2.ECB;
+        static CipherMode2 cmode2 = CipherMode2.CFB;
         static ZipType zipType = ZipType.None;
         static EncodingType encodingType = EncodingType.None;
         static KeyHash keyHash = KeyHash.Hex;
@@ -125,7 +125,7 @@ namespace EU.CqrXs.Console
                         break;
                     case OptEnum.Mode:
                         if (!Enum.TryParse<CipherMode2>(optStr, out cmode2))
-                            cmode2 = CipherMode2.ECB;
+                            cmode2 = CipherMode2.CFB;
                         break;
                     case OptEnum.Encode:
                         encodingType = EncodingTypesExtensions.GetEnum(optStr);

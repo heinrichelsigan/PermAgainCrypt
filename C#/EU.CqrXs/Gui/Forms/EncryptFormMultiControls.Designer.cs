@@ -567,9 +567,11 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // menuCipherModeItemCFB
             // 
+            menuCipherModeItemCFB.Enabled = true;
             menuCipherModeItemCFB.Name = "menuCipherModeItemCFB";
             menuCipherModeItemCFB.Size = new Size(180, 22);
             menuCipherModeItemCFB.Text = "CFB";
+            menuCipherModeItemCFB.Checked = true;
             // 
             // menuCipherModeItemCTS
             // 
@@ -587,7 +589,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // menuCipherModeItemECB
             // 
-            menuCipherModeItemECB.Checked = true;
+            menuCipherModeItemECB.Checked = false;
             menuCipherModeItemECB.CheckState = CheckState.Checked;
             menuCipherModeItemECB.Name = "menuCipherModeItemECB";
             menuCipherModeItemECB.Size = new Size(180, 22);

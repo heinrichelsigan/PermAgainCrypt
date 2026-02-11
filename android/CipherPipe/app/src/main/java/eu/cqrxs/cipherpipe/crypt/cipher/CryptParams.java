@@ -52,7 +52,7 @@ public class CryptParams {
         cipher = CipherEnum.Aes;
         size = 256;
         keyLen = 32;
-        mode = "ECB";
+        mode = "CFB";
         blockCipher = new org.bouncycastle.crypto.engines.AESEngine();
         keyHashing = KeyHash.Hex;
         blockSize = blockCipher.getBlockSize();
@@ -63,7 +63,7 @@ public class CryptParams {
         cipher = cipherAlgo;
         size = 256;
         keyLen = 32;
-        mode = "ECB";
+        mode = "CFB";
         keyHashing = KeyHash.Hex;
 
         switch (cipher) {

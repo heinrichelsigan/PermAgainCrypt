@@ -592,10 +592,40 @@
             <seealso href="https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/" />
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.GenDes3Key(System.Byte[]@)">
+            <summary>
+            GenDes3Key ctor helper method to generate a new key as keybytes
+            </summary>
+            <param name="keyBytes">ref passed keybytes</param>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.GenDes3Iv(System.Byte[],System.Byte[]@)">
+            <summary>
+            GenDes3Iv ctor helper method, that generates initalization vector IV bytes
+            generates 
+            </summary>
+            <param name="keyBytes">key bytes</param>
+            <param name="ivBytes">ref parameter to pass ivBytes</param>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor">
             <summary>
-            
+            default standard parameterless constructor of <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net"/>
             </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(System.String,System.String,System.Security.Cryptography.CipherMode)">
+            <summary>
+            Des3Net ctor with key, hash and <see cref="T:System.Security.Cryptography.CipherMode" />
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(System.Byte[],System.Byte[],System.Security.Cryptography.CipherMode)">
+            <summary>
+            ctor with byte[] for key, iv and <see cref="T:System.Security.Cryptography.CipherMode">default now: CFB</see>
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
+            <summary>
+            ctor with standard <see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/>
+            </summary>
+            <param name="cparams"><see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/></param>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.Encrypt(System.Byte[])">
             <summary>

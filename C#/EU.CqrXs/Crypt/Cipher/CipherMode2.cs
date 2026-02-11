@@ -7,7 +7,7 @@ namespace EU.CqrXs.Crypt.Cipher
 {
 
     [Serializable]
-    [DefaultValue("ECB")]
+    [DefaultValue("CFB")]
     public enum CipherMode2 : byte
     {
         CBC = 0x0,
@@ -32,8 +32,8 @@ namespace EU.CqrXs.Crypt.Cipher
 
         public CiffreMode()
         {
-            CMode = CipherMode.ECB;
-            CMode2 = CipherMode2.ECB;
+            CMode = CipherMode.CFB;
+            CMode2 = CipherMode2.CFB;
         }
 
         public CiffreMode(CipherMode2 cipherMode2)
@@ -70,7 +70,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 CipherMode2.EAX => CipherMode.CBC,
                 CipherMode2.ECB => CipherMode.ECB,
                 CipherMode2.GOFB => CipherMode.CBC,
-                _ => CipherMode.ECB,
+                _ => CipherMode.CFB,
             };
         }
 
@@ -82,7 +82,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 CipherMode.CFB => CipherMode2.CFB,
                 CipherMode.CTS => CipherMode2.CTS,
                 CipherMode.ECB => CipherMode2.ECB,
-                _ => CipherMode2.ECB,
+                _ => CipherMode2.CFB,
             };
         }
 
@@ -119,12 +119,12 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns><see cref="T:CipherMode"/> array of ciphers for the pipe</returns>
         public static CipherMode2 ParseText(string text)
         {
-            CipherMode2 cipherMode = CipherMode2.ECB;
+            CipherMode2 cipherMode = CipherMode2.CFB;
             List<CipherMode2> cipherList = new List<CipherMode2>();
             text = text ?? "";
 
             if (!Enum.TryParse<CipherMode2>(text, out cipherMode))
-                cipherMode = CipherMode2.ECB;
+                cipherMode = CipherMode2.CFB;
 
             return cipherMode;
         }

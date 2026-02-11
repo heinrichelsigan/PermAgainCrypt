@@ -62,7 +62,7 @@ public class CryptBounceCastle  {
         CryptoBlockCipherPadding = null;
         keyLen = 32;
         size = 256;
-        mode = "ECB";
+        mode = "CFB";
 
         privateKey = "";
         privateHash = "";
