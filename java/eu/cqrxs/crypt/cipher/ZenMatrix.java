@@ -523,6 +523,7 @@ public class ZenMatrix implements BlockCipher  {
         byte[] retbytes = new byte[encryptedBytes.size()];
         int ib = 0;
         for (Byte bb : encryptedBytes) {
+
             retbytes[ib++] = (byte)(bb.byteValue());
         }
 

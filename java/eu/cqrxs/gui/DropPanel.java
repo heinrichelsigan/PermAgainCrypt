@@ -28,40 +28,111 @@ public class DropPanel extends JPanel {
     private Point dragPoint;
 
     private boolean dragOver = false;
-    private BufferedImage target;
-
-    private JLabel message, jLabel_fileIn;
-	private ImageViewer imInFile;
-	private URL fileInUrl;
+    private BufferedImage target, imgFileIn, imgFileOut;
+    private javax.swing.ImageIcon imgIconIn, imgIconOut;
+    public JLabel message, jLabelImgIn, jLabelFileIn,  jLabelImgOut, jLabelFileOut;
 	private Font monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
-    
-	
-	public DropPanel() {
-        
-        target = addImages(new String[] { "eu/cqrxs/gui/file.png", "file.png" });
+    public static CqrJFrameSimple jFrameSimple;
+
+    public DropPanel(CqrJFrameSimple simple) {
+
+        if (simple != null)
+            jFrameSimple = simple;
+        else
+            jFrameSimple = (CqrJFrameSimple)getParent();
 
         setLayout(null);
-        message = new JLabel();
-        message.setBounds(0, 0, 168, 96);
-        message.setFont(message.getFont().deriveFont(Font.BOLD, 11));
-        add(message);
-		try {
-			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
-			imInFile = new ImageViewer();
-			imInFile.setImageURL(fileInUrl);
-			imInFile.setBounds(4, 4 ,60, 60);
-			// imInFile.addMouseListener(aSymMouse);			
-			add(imInFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-		jLabel_fileIn = new JLabel();
-		jLabel_fileIn.setFont(monoSpaced);
-		jLabel_fileIn.setBounds(4, 68, 120, 24);
-		jLabel_fileIn.setText("[No input file loaded]");
-		add(jLabel_fileIn);
+        setSize(960, 108);
+        initGui();
     }
-	
+
+
+	public DropPanel() {
+
+        setLayout(null);
+        setSize(960, 108);
+        initGui();
+    }
+
+    public void initGui() {
+        try {
+
+            target = addImages(new String[] { "eu/cqrxs/gui/file.png", "file.png" });
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgFileOut = addImages((new String[] {"eu/cqrxs/gui/encrypted.png", "encrypted.png" }));
+
+            message = new JLabel();
+            message.setBounds(0, 0, 742, 96);
+            message.setFont(message.getFont().deriveFont(Font.BOLD, 11));
+            add(message);
+
+            jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
+            jLabelImgIn.setBounds(4, 4, 60, 60);
+            jLabelImgIn.setText("[No input file]");
+            add(jLabelImgIn);
+
+            jLabelFileIn = new JLabel();
+            jLabelFileIn.setFont(monoSpaced);
+            jLabelFileIn.setBounds(4, 68, 120, 24);
+            jLabelFileIn.setText("[No input file loaded]");
+            add(jLabelFileIn);
+
+            jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
+            jLabelImgOut.setBounds(880, 4, 60, 60);
+            add(jLabelImgOut);
+
+            jLabelFileOut = new JLabel();
+            jLabelFileOut.setFont(monoSpaced);
+            jLabelFileOut.setBounds(880, 68, 120, 24);
+            jLabelFileOut.setText("[No output file processed]");
+            add(jLabelFileOut);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * scales an Image to 60x60 to be shown as thumbnail
+     * @param bufImg {@link BufferedImage} to scale down to thumbnail size
+     * @return thumbnail image
+     */
+    static public BufferedImage getThumbnail(BufferedImage bufImg) {
+        int max_width = 60;
+        int max_height = 60;
+        int img_width = bufImg.getWidth();
+        int img_height = bufImg.getHeight();
+
+        float horizontal_ratio = 1;
+        float vertical_ratio = 1;
+
+
+        if (img_height > max_height) {
+            vertical_ratio = (float) max_height / (float) img_height;
+        }
+        if (img_width > max_width) {
+            horizontal_ratio = (float) max_width / (float) img_width;
+        }
+
+        float scale_ratio = 1;
+
+        if (vertical_ratio < horizontal_ratio) {
+            scale_ratio = vertical_ratio;
+        } else if (horizontal_ratio < vertical_ratio) {
+            scale_ratio = horizontal_ratio;
+        }
+
+        int dest_width = (int) (img_width * scale_ratio);
+        int dest_height = (int) (img_height * scale_ratio);
+
+        BufferedImage scaled = new BufferedImage(dest_width, dest_height, bufImg.getType());
+        Graphics graphics = scaled.getGraphics();
+        graphics.drawImage(bufImg, 0, 0, dest_width, dest_height, null);
+        graphics.dispose();
+
+        return scaled;
+    }
+
 	private BufferedImage addImages(String[] images) {
 		File file;
 		BufferedImage bimg = null;
@@ -131,12 +202,31 @@ public class DropPanel extends JPanel {
 
     protected void importFiles(final String droppedFile) {
 		// message.setText("'" + droppedFile + "'");
-		DbgWriter.msg("Dropped: " + droppedFile, true);
-		jLabel_fileIn.setText(droppedFile);
+
+        DbgWriter.msg("Dropped: " + droppedFile, true);
+
+
         Runnable run = new Runnable() {
             @Override
             public void run() {
-				jLabel_fileIn.setText(droppedFile);
+
+                int ridx = droppedFile.lastIndexOf('/');
+                if (ridx < 0)
+                    ridx = droppedFile.lastIndexOf('\\');
+                String imgInName = (ridx > 0) ?
+                        droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
+                        droppedFile;
+
+                imgFileIn = addImages(new String[] { droppedFile });
+                imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
+                remove(jLabelImgIn);
+                jLabelImgIn = new JLabel(imgIconIn);
+                jLabelImgIn.setBounds(4, 4, 60, 60);
+                add(jLabelImgIn);
+                jLabelFileIn.setText(imgInName);
+
+                jFrameSimple.open_delegate(droppedFile);
+                // ((CqrJFrameSimple)getParent()).open_delegate();
                 // message.setText("Drop: '" + droppedFile + "'.");
             }
         };

@@ -1407,6 +1407,7 @@ public class CqrJdFrame extends JFrame {
         try {
             if (cqrJFrameSimple == null)
                 cqrJFrameSimple = new CqrJFrameSimple(cqrJdFrame);
+			cqrJFrameSimple.setJFrameSimple(cqrJFrameSimple);
 
             cqrJFrameSimple.show();
             cqrJdFrame.hide();

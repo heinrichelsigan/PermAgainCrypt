@@ -43,7 +43,7 @@ public class CqrJFrameSimple extends JFrame {
     public static CqrJdFrame cqrJdFrame;
 	protected static byte[] openFileBytes, saveFileBytes;
     private static String[] args;
-    URL keyUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl;
+    URL keyUrl, addAlgoUrl, xUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -56,13 +56,13 @@ public class CqrJFrameSimple extends JFrame {
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
-	JLabel jLabel_fileIn, jLabel_fileOut, jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
+	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
 	JTextField jTextField_Key, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	eu.cqrxs.gui.DropPanel dropPanel;
-	eu.cqrxs.gui.ImageViewer imKey, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
+	eu.cqrxs.gui.ImageViewer imKey, imAddAlgo, imX;
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
@@ -112,10 +112,23 @@ public class CqrJFrameSimple extends JFrame {
 	}
 
     public CqrJFrameSimple(CqrJdFrame jFrameComplex) {
-        this();
         if (jFrameComplex != null)
             cqrJdFrame = jFrameComplex;
     }
+
+	public boolean setJFrameSimple(CqrJFrameSimple jFrameSimple) {
+		if (jFrameSimple == null)
+			return false;
+		cqrJFrameSimple = jFrameSimple;
+
+		setLayout(null);
+		setSize(1024,768);
+		Init();
+		setVisible(true);
+		Constants.DEBUG = false;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		return true;
+	}
     
 
     /**
@@ -505,9 +518,6 @@ public class CqrJFrameSimple extends JFrame {
 			keyUrl =  URI.create("https://area23.at/net/res/img/symbol/key_ring.gif").toURL();
 			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
 			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
-			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
-			fileEnCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/encrypted.png").toURL();
-			fileDeCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/decrypted.png").toURL();
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}
@@ -598,44 +608,13 @@ public class CqrJFrameSimple extends JFrame {
 
 		selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
-		try {
-			imInFile = new ImageViewer();
-			imInFile.setImageURL(fileInUrl);
-			imInFile.setBounds(8, 108 ,60,60);
-			imInFile.addMouseListener(aSymMouse);			
-			getContentPane().add(imInFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-		jLabel_fileIn = new JLabel();
-		jLabel_fileIn.setFont(cryptFont);
-		jLabel_fileIn.setBounds(8, 172, 120, 24);
-		jLabel_fileIn.setText("[No input file loaded]");
-		getContentPane().add(jLabel_fileIn);
-
-
-		dropPanel = new DropPanel();
+		dropPanel = new DropPanel(cqrJFrameSimple);
 		dropPanel.setFont(cryptFont);
-		dropPanel.setBounds(132, 108, 400, 96);
+		dropPanel.setBounds(8, 108, 960, 96);
 		dropPanel.setName("DropPanel");
+		// dropPanel.jLabelImgIn.addMouseListener(aSymMouse);
+		// dropPanel.jLabelImgOut.addMouseListener(aSymMouse);
 		getContentPane().add(dropPanel);
-
-		try {
-			imOutFile = new ImageViewer();
-			imOutFile.setImageURL(fileInUrl);
-			imOutFile.setBounds(912, 108, 60, 60);
-			imOutFile.addMouseListener(aSymMouse);
-			getContentPane().add(imOutFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}					
-		
-		jLabel_fileOut = new JLabel();
-		jLabel_fileOut.setFont(cryptFont);
-		jLabel_fileOut.setBounds(884, 172, 120, 24);
-		jLabel_fileOut.setText("[No output file processed]");		
-		getContentPane().add(jLabel_fileOut);				
-				
 		
 		jButton_encrypt = new JButton();
 		jButton_encrypt.setFont(cryptFont);
@@ -861,6 +840,44 @@ public class CqrJFrameSimple extends JFrame {
 		}
 	}
 
+
+	public void open_delegate(String fpath) {
+
+		if (fpath == null || fpath.isEmpty())
+			throw new IllegalArgumentException("fpath is null");
+
+		// String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
+
+		File f = new File(fpath);
+		openFileName = fpath;
+		for (int r = (fpath.length() -1); r > -1 ; r--) {
+			if (fpath.charAt(r) == '\\'  || fpath.charAt(r) == '/') {
+				openFileName = fpath.substring(r + 1, fpath.length());
+				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
+				break;
+			}
+		}
+		try{
+			openFileBytes = Files.readAllBytes(f.toPath());
+			saveFileBytes = new byte[0];
+			dropPanel.jLabelFileIn.setText(openFileName);
+			jButton_encrypt.requestFocus();
+		} catch (Exception e){
+			setInfoMsg("Exception during file open.");
+			JOptionPane.showMessageDialog(null, e);
+			e.printStackTrace();
+		}
+
+		if (openFileBytes.length < 2048)
+			jLabel_statusSource.setText(openFileBytes.length + " bytes");
+		if (openFileBytes.length > 2048 && openFileBytes.length < 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / 1024) + " KB.");
+		if (openFileBytes.length > 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / (1024*1024)) + " MB.");
+
+	}
+
+
 	protected void open_action() {                                 
 		
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
@@ -887,7 +904,7 @@ public class CqrJFrameSimple extends JFrame {
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
-			jLabel_fileIn.setText(openFileName);
+			dropPanel.jLabelFileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
@@ -930,7 +947,7 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			if (saveFileBytes != null && saveFileBytes.length > 0) {
 				Files.write(filePath, saveFileBytes);
-			    jLabel_fileIn.setText(saveFileName);
+			    dropPanel.jLabelFileIn.setText(saveFileName);
 			}
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
@@ -1061,14 +1078,13 @@ public class CqrJFrameSimple extends JFrame {
 				
                 saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, encodeType, zipType, cmode2);
                 saveFileSuffix = "";
-                saveFileSuffix += (pipe.getPipeString().length() > 0) ? "." + keyHash.getName() : "";
                 saveFileSuffix += (zipType != ZipType.None) ? ".gz" : "";
                 saveFileSuffix += (pipe.getPipeString().length() > 0) ?  "." + pipe.getPipeString() : "";
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
                 saveFileName = openFileName + saveFileSuffix;       
                 saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
 				
-				jLabel_fileOut.setText(saveFileName); 
+				dropPanel.jLabelFileOut.setText(saveFileName);
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1146,8 +1162,8 @@ public class CqrJFrameSimple extends JFrame {
                     }
                 }
 				saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
-				
-				jLabel_fileOut.setText(saveFileName); 
+
+				dropPanel.jLabelFileOut.setText(saveFileName);
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1306,12 +1322,12 @@ public class CqrJFrameSimple extends JFrame {
 				// keyHash.Hash(
 			} else if (object == imX) {
 				jTextField_Pipe.setText("");
-			} else if (object == imInFile) {
-				if (openFileBytes == null || openFileBytes.length < 1)
-					open_action();
-			} else if (object == imOutFile) {
-				if (saveFileBytes == null || saveFileBytes.length < 1)
-					save_action();
+			// } else if (object == dropPanel.jLabelImgIn) {
+			// 	if (openFileBytes == null || openFileBytes.length < 1)
+			// 		open_action();
+			//  } else if (object == dropPanel.jLabelImgOut) {
+			//  if (saveFileBytes == null || saveFileBytes.length < 1)
+			//  save_action();
 			} else {
 
 			}
