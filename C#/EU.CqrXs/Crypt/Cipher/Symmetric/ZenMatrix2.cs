@@ -4,6 +4,7 @@ using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Util;
 using System;
 using System.Globalization;
+using Org.BouncyCastle.Utilities.Encoders;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {
@@ -349,6 +350,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     processed[(int)sm] = mappedByte;
                 }
             }
+            
             return processed ?? new byte[0];
         }
 
