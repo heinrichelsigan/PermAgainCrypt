@@ -3,6 +3,8 @@ using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
+using Org.BouncyCastle.Crypto;
+using System;
 using System.Text;
 
 namespace EU.CqrXs.Console
@@ -10,7 +12,7 @@ namespace EU.CqrXs.Console
 
 
     /// <summary>
-    /// Console app pipe for crypt/decrypt zip/unzip encode/decode md5sum/shaSum
+    /// Console app pipe for crypt/decrypt zip/unzip encode/decode md5sum/shaSum     
     /// 
     /// EU.CqrXs.Console.Program 
     /// -i | --inFile= | --inText={string|EnviromentVariable} | --inStd    
@@ -28,6 +30,23 @@ namespace EU.CqrXs.Console
     /// -D | --Decrypt 
     /// -? | --gethelp
     /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    /// <listheader>code changes</listheader>
+    /// <item>
+    /// 2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+    /// Reason: Git security scans
+    /// consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+    /// fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+    /// </item>
+    /// <item>
+    /// 2026-mm-dd [enter pull request name here] [enter what you did here]
+    /// Reason: [enter a senseful reason]
+    /// consequences: [describe most impactful consequences of bugfix or code change request]
+    /// fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+    /// </item>
+    /// </list>
+    /// </remarks>
     internal class Program
     {
         const string BATCH_FILE_TEST = "Console_Test.bat";

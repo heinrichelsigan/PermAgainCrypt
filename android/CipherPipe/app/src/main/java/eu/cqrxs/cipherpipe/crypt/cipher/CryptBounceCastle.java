@@ -69,7 +69,11 @@ public class CryptBounceCastle  {
 
 
     /**
-     * parameterless default constructor
+     * CryptBounceCastle parameterless default constructor
+     * 2026-02-11: changed mode from "ECB" to "CFB"     
+     * Reason: Git security scans
+     * consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+     * fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
      */
     public CryptBounceCastle()  {
         CryptoBlockCipher = null;
