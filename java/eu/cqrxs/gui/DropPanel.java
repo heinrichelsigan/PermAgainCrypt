@@ -4,13 +4,18 @@ package eu.cqrxs.gui;
 // Posted by MadProgrammer, modified by community. See post 'Timeline' for change history
 // Retrieved 2026-02-10, License - CC BY-SA 3.0
 
+import eu.cqrxs.util.DbgWriter;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.event.*;
 import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
 import java.awt.datatransfer.Transferable;
+import java.lang.*;
+import java.net.*;
+import java.util.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,35 +30,53 @@ public class DropPanel extends JPanel {
     private boolean dragOver = false;
     private BufferedImage target;
 
-    private JLabel message;
+    private JLabel message, jLabel_fileIn;
+	private ImageViewer imInFile;
+	private URL fileInUrl;
+	private Font monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
+    
+	
+	public DropPanel() {
+        
+        target = addImages(new String[] { "eu/cqrxs/gui/file.png", "file.png" });
 
-    public DropPanel() {
-        File file;
-        boolean successLoadImage = false;
-        try {
-            file = new File("eu/cqrxs/gui/file.png");
-            target = ImageIO.read(file);
-            successLoadImage = true;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            successLoadImage = false;
-        }
-        if (!successLoadImage) {
-            try {
-                file = new File("file.png");
-                target = ImageIO.read(file);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        setLayout(new GridBagLayout());
+        setLayout(null);
         message = new JLabel();
-        message.setBounds(4, 4, 144, 36);
+        message.setBounds(0, 0, 168, 96);
         message.setFont(message.getFont().deriveFont(Font.BOLD, 11));
         add(message);
-
+		try {
+			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
+			imInFile = new ImageViewer();
+			imInFile.setImageURL(fileInUrl);
+			imInFile.setBounds(4, 4 ,60, 60);
+			// imInFile.addMouseListener(aSymMouse);			
+			add(imInFile);
+		} catch (Exception ex) {
+			ex.printStackTrace();			
+		}
+		jLabel_fileIn = new JLabel();
+		jLabel_fileIn.setFont(monoSpaced);
+		jLabel_fileIn.setBounds(4, 68, 120, 24);
+		jLabel_fileIn.setText("[No input file loaded]");
+		add(jLabel_fileIn);
     }
+	
+	private BufferedImage addImages(String[] images) {
+		File file;
+		BufferedImage bimg = null;
+		for (int fx = 0; fx < images.length; fx++) {
+			try {
+				file = new File(images[fx]);
+				bimg = ImageIO.read(file);
+				fx = images.length - 1;
+				break;
+			} catch (IOException ex) {
+				ex.printStackTrace();				
+			}
+		}
+		return bimg;
+	}
 
     @Override
     public Dimension getPreferredSize() {
@@ -107,24 +130,28 @@ public class DropPanel extends JPanel {
     }
 
     protected void importFiles(final String droppedFile) {
+		// message.setText("'" + droppedFile + "'");
+		DbgWriter.msg("Dropped: " + droppedFile, true);
+		jLabel_fileIn.setText(droppedFile);
         Runnable run = new Runnable() {
             @Override
             public void run() {
-                message.setText("Drop: '" + droppedFile + "'.");
+				jLabel_fileIn.setText(droppedFile);
+                // message.setText("Drop: '" + droppedFile + "'.");
             }
         };
         SwingUtilities.invokeLater(run);
     }
 
-    protected void importFiles(final List files) {
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-                message.setText("You dropped " + files.size() + " files");
-            }
-        };
-        SwingUtilities.invokeLater(run);
-    }
+    // protected void importFiles(final List files) {
+    //     Runnable run = new Runnable() {
+    //         @Override
+    //         public void run() {
+    //             message.setText("You dropped " + files.size() + " files");
+    //         }
+    //     };
+    //     SwingUtilities.invokeLater(run);
+    // }
 
     protected class DropTargetHandler implements DropTargetListener {
 
@@ -163,54 +190,73 @@ public class DropPanel extends JPanel {
         @Override
         public void drop(DropTargetDropEvent dtde) {
 
+			boolean dcompleted = false;
             SwingUtilities.invokeLater(new DragUpdate(false, null));
 
             Transferable transferable = dtde.getTransferable();
             if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                dtde.acceptDrop(dtde.getDropAction());
-                try {
-
-                    Object transferDataObjct = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-                    if (transferDataObjct instanceof List) {
-                        List transferData = (List) transferDataObjct;
-                        if (transferData != null &&
-                                (transferData.getHeight() > 0) &&
-                                (transferData.getWidth() > 0)) {
-                            importFiles(transferData);
-                            dtde.dropComplete(true);
-                        }
-                    }
-                    if (transferDataObjct instanceof ArrayList<?> fileList) {
+                
+				dtde.acceptDrop(dtde.getDropAction());				
+				Object transferDataObject;
+				
+                try {         
+					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+					if (transferDataObject instanceof ArrayList<?> fileList) {
                         Object[] dropFilesStr = fileList.toArray();
                         if (dropFilesStr.length > 0) {
                             String ds = dropFilesStr[0].toString();
                             importFiles(ds);
+							dcompleted = true;
+							dtde.dropComplete(true);
                         }
                     }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+				} catch (Exception exArrayList) {
+                    exArrayList.printStackTrace();
                 }
+				
+				if (!dcompleted) try {
+					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+					if (transferDataObject instanceof java.awt.List) {
+						java.awt.List transferData = (java.awt.List) transferDataObject;
+						if (transferData != null && (transferData.getItemCount() > 0)) {	
+								
+							String[] drpFilesStr = ((java.awt.List)transferData).getItems();
+							if (drpFilesStr.length > 0) {
+								String ds = drpFilesStr[0].toString();
+								importFiles(ds);
+								dcompleted = true;
+								dtde.dropComplete(true);
+							}
+						}
+					}
+				} catch (Exception exList) {
+					exList.printStackTrace();
+				}
+				
             } else {
                 dtde.rejectDrop();
             }
         }
+		
     }
 
+   
     public class DragUpdate implements Runnable {
 
-        private boolean dragOver;
-        private Point dragPoint;
+		private boolean dragOver;
+		private Point dragPoint;
 
-        public DragUpdate(boolean dragOver, Point dragPoint) {
-            this.dragOver = dragOver;
-            this.dragPoint = dragPoint;
-        }
+		public DragUpdate(boolean dragOver, Point dragPoint) {
+			this.dragOver = dragOver;
+			this.dragPoint = dragPoint;
+		}
 
-        @Override
-        public void run() {
-            DropPanel.this.dragOver = dragOver;
-            DropPanel.this.dragPoint = dragPoint;
-            DropPanel.this.repaint();
-        }
-    }
+		@Override
+		public void run() {
+			DropPanel.this.dragOver = dragOver;
+			DropPanel.this.dragPoint = dragPoint;
+			DropPanel.this.repaint();
+		}
+	}
+   
 }
