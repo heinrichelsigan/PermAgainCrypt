@@ -455,6 +455,22 @@
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aescng?view=net-8.0" />
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#cctor">
+            <summary>
+            static AesNet constructor
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#ctor">
+            <summary>
+            standard parameterless ctor of AesNet
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
+            <summary>
+            AesNet constructor with default crypto parameters
+            </summary>
+            <param name="cparams"></param>
+        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.Encrypt(System.Byte[])">
             <summary>
             AES Encrypt by using RijndaelManaged

@@ -11,6 +11,23 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
     /// AesNet native .Net AesCng without bouncy castle
     /// <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aescng?view=net-8.0" />
     /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    /// <listheader>code changes</listheader>
+    /// <item>
+    /// 2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+    /// Reason: Git security scans
+    /// consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+    /// fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+    /// </item>
+    /// <item>
+    /// 2026-mm-dd [enter pull request name here] [enter what you did here]
+    /// Reason: [enter a senseful reason]
+    /// consequences: [describe most impactful consequences of bugfix or code change request]
+    /// fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+    /// </item>
+    /// </list>
+    /// </remarks>
     public class AesNet
     {
 
@@ -32,11 +49,17 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         #region ctor
 
+        /// <summary>
+        /// static AesNet constructor
+        /// </summary>
         static AesNet()
         {
             AesKeyLen = 32;
         }
 
+        /// <summary>
+        /// standard parameterless ctor of AesNet
+        /// </summary>
         public AesNet() : this(Convert.FromBase64String(Constants.AES_KEY), Convert.FromBase64String(Constants.AES_IV)) { }
 
         public AesNet(string key, string hash, EncodingType encodeType = EncodingType.None, 
@@ -71,6 +94,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             AesAlgo.Padding = PaddingMode.ISO10126;
         }
 
+        /// <summary>
+        /// AesNet constructor with default crypto parameters
+        /// </summary>
+        /// <param name="cparams"></param>
         public AesNet(CryptParams cparams)
         {
             if (string.IsNullOrEmpty(cparams.Key) && string.IsNullOrEmpty(cparams.Hash))
