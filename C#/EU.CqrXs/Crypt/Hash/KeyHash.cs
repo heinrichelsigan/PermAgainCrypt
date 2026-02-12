@@ -1,5 +1,6 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
 using EU.CqrXs.Crypt.EnDeCoding;
+using EU.CqrXs.Util;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Utilities.Encoders;
 using System.ComponentModel;
@@ -125,7 +126,65 @@ namespace EU.CqrXs.Crypt.Hash
             }
             return KeyHash.Hex;
         }
-      
+
+        /// <summary>
+        /// GetKeyFromBaseBytes Extension method for byte[] baseBytes
+        /// </summary>
+        /// <param name="baseBytes">baseBytes from which keyBytes are extracted</param>
+        /// <param name="keyLen">length of keyBytes array</param>
+        /// <returns><see cref="T:byte[]">byte[] bytesKey</see></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static byte[] GetKeyFromBaseBytes(this byte[] baseBytes, int keyLen = 32)
+        {
+            if (baseBytes == null || baseBytes.Length == 0)
+                throw new ArgumentNullException("baseBytes");
+
+            byte[] hashBytes = EnDeCodeHelper.GetBytes(Hex16.ToHex16(baseBytes));
+
+            int keyByteCnt = -1;
+            keyLen = (keyLen > Constants.MAX_KEY_LEN) ? Constants.MAX_KEY_LEN : keyLen;
+            byte[] bytesKey = new byte[keyLen];
+
+            byte[] keyHashBytes = CryptHelper.KeyHashBytes(baseBytes, hashBytes);
+            keyByteCnt = keyHashBytes.Length;
+            byte[] keyHashTarBytes = new byte[keyByteCnt * 2 + 1];
+
+            if (keyByteCnt < keyLen)
+            {
+                keyHashTarBytes = keyHashBytes.TarBytes(CryptHelper.KeyHashBytes(hashBytes, baseBytes));
+                keyByteCnt = keyHashTarBytes.Length;
+                keyHashBytes = new byte[keyByteCnt];
+                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+            }
+            if (keyByteCnt < keyLen)
+            {
+                keyHashTarBytes = keyHashBytes.TarBytes(
+                    CryptHelper.KeyHashBytes(hashBytes, baseBytes),
+                    CryptHelper.KeyHashBytes(baseBytes, hashBytes)
+                );
+                keyByteCnt = keyHashTarBytes.Length;
+                keyHashBytes = new byte[keyByteCnt];
+                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+            }
+
+            while (keyByteCnt < keyLen)
+            {
+                keyHashTarBytes = keyHashBytes.TarBytes(keyHashBytes);
+                keyByteCnt = keyHashTarBytes.Length;
+                keyHashBytes = new byte[keyByteCnt];
+                Array.Copy(keyHashTarBytes, 0, keyHashBytes, 0, keyByteCnt);
+            }
+
+            if (keyLen <= keyByteCnt)
+            {
+                // Array.Copy(keyHashBytes, 0, tmpKey, 0, keyLen);
+                for (int bytIdx = 0; bytIdx < keyLen; bytIdx++)
+                    bytesKey[bytIdx] = keyHashBytes[bytIdx];
+            }
+
+            return bytesKey;
+
+        }
 
         public static string GetExtension(this KeyHash khash)
         {
@@ -154,7 +213,6 @@ namespace EU.CqrXs.Crypt.Hash
             return ".hex";
         }
 
-
         public static string Hash(this KeyHash hash, string stringToHash)
         {
             if (string.IsNullOrEmpty(stringToHash))
@@ -182,7 +240,7 @@ namespace EU.CqrXs.Crypt.Hash
                     return Hex.ToHexString(resBuf);
 
                 case KeyHash.CShake:
-                    digest = new Org.BouncyCastle.Crypto.Digests.CShakeDigest(256, inBytes, CryptHelper.GetKeyBytesFromBytes(inBytes, 32));
+                    digest = new Org.BouncyCastle.Crypto.Digests.CShakeDigest(256, inBytes, GetKeyFromBaseBytes(inBytes, 32));
                     resBuf = new byte[digest.GetDigestSize()];
                     digest.BlockUpdate(inBytes, 0, inBytes.Length);
                     digest.DoFinal(resBuf, 0);

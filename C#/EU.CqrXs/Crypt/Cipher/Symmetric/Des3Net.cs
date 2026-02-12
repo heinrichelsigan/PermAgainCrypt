@@ -28,6 +28,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
     /// </item>
     /// </list>
     /// </remarks>
+    [Obsolete("Des3Net pure .NET Core is obsolete (too few bits, too old) => use DESEde from https://bouncy-castle.org instead.", false)]
     public class Des3Net
     {
 

@@ -329,20 +329,17 @@ namespace EU.CqrXs.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 7:30, Channel 5: The Bionic Dog (Action/Adventure)
-        ///	The Bionic Dog drinks too much and kicks over the National
-        ///	Redwood Forest.
-        ///
-        ///7:30, Channel 8: The Bionic Dog (Action/Adventure)
-        ///	The Bionic Dog gets a hormonal short-circuit and violates the
-        ///	Mann Act with an interstate Greyhound bus.
+        ///   Looks up a localized string similar to Debian Hint #1: You can report a bug in a package with the &apos;reportbug&apos; command,
+        ///which is available in the reportbug package, either from the command-line or
+        ///with the new graphical frontend (available running &apos;reportbug --ui gtk&apos; or in
+        ///the menu).
         ///%
-        ///A &quot;critic&quot; is a man who creates nothing and thereby feels qualified to
-        ///judge the work of creative men. There is logic in this; he is unbiased
-        ///-- he hates all creative people equally.
-        ///		-- Robert Heinlein
+        ///Debian Hint #2: You can use &apos;dpkg-reconfigure &lt;package&gt;&apos; to change the
+        ///answers you gave to the questions asked when you first installed a package.
+        ///The &apos;configure-debian&apos; package provides a unified front end for doing this,
+        ///as well.
         ///%
-        ///Ther [rest of string was truncated]&quot;;.
+        ///Debian Hint #3: You  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string fortune_u8 {
             get {
