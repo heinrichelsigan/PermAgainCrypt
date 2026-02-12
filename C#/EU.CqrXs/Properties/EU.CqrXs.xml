@@ -1022,8 +1022,8 @@
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Multi functional 
-            <see cref="!:EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
-            <see cref="!:DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
             </summary>
             <param name="inBytes">incoming bytes</param>
             <param name="secretKey">user private key</param>

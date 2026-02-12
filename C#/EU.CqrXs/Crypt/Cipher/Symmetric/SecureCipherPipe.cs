@@ -718,8 +718,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// Multi functional 
-        /// <see cref="EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
-        /// <see cref="DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
+        /// <see cref="EncryptEncodeBytes(byte[], string, EncodingType, ZipType, CipherMode2)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, EncodingType, ZipType, CipherMode2)"/>
         /// </summary>
         /// <param name="inBytes">incoming bytes</param>
         /// <param name="secretKey">user private key</param>
@@ -788,6 +788,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     w = 60;
                     char ch = this.InPipe[i].GetCipherChar();
                     bmpName = $"arrow_right-{i}";
+                    if (i < 2)
+                        bmpName = (i == 0) ? "arrow_right-c" : "arrow_right-e";
+
                     object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
@@ -903,6 +906,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     int r = 7 - i;
                     char ch = this.OutPipe[i].GetCipherChar();
                     bmpName = $"arrow_right-{r}";
+                    if (i >= 6)
+                        bmpName = (i == 6) ? "arrow_right-e" : "arrow_right-c";
+
                     object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
@@ -926,7 +932,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     {
                         case 5: y = 84F; break;
                         case 6: y = 4F; break;
-                        case 7: y = 86F; break;
+                        case 7: x = offset; y = 72F; break;
                         default:
                             y = 1.5F + ((i % 4) * 23.0F); break;
                     }
