@@ -34,6 +34,7 @@ import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
 import javax.swing.*;
+import javax.swing.event.MenuKeyEvent;
 
 /**
  * class CqrJdFrame is main form for PermAgainCrypt in java
@@ -52,16 +53,18 @@ public class CqrJdFrame extends JFrame {
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
 	protected CipherMode2 cmode2 = CipherMode2.CFB;
-	
+
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
-	JLabel jLabel_fileIn, jLabel_fileOut, jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
+	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
 	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
+
+	eu.cqrxs.gui.DropPanel dropPanel;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
-	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX, imInFile = new eu.cqrxs.gui.ImageViewer(), imOutFile = new eu.cqrxs.gui.ImageViewer();
+	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX;
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
@@ -113,7 +116,17 @@ public class CqrJdFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-    public CqrJdFrame(CqrJFrameSimple jFrameSimple) {
+
+	public CqrJdFrame(CqrJdFrame jdFrame) {
+		this();
+		if (jdFrame != null)
+			cqrJdFrame = jdFrame;
+		else
+			cqrJdFrame = (CqrJdFrame)(getRootPane().getParent());
+	}
+
+
+	public CqrJdFrame(CqrJFrameSimple jFrameSimple) {
         this();
         if (jFrameSimple != null)
             cqrJFrameSimple = jFrameSimple;
@@ -146,7 +159,7 @@ public class CqrJdFrame extends JFrame {
 		menuMain_itemOpen.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuMain_itemOpen.setText("Open...");
 		menuMain_itemOpen.setActionCommand("Open...");
-		menuMain_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+		menuMain_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuMain_itemOpen.setMnemonic((int)'O');
 		menuMain_itemOpen.setFont(menuFont);
 		menuMain_itemOpen.addActionListener(aSymAction);
@@ -156,7 +169,7 @@ public class CqrJdFrame extends JFrame {
 		menuMain_itemSave.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuMain_itemSave.setText("Save");
 		menuMain_itemSave.setActionCommand("Save");
-		menuMain_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+		menuMain_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuMain_itemSave.setMnemonic((int)'S');
 		menuMain_itemSave.setFont(menuFont);
 		menuMain_itemSave.addActionListener(aSymAction);
@@ -227,7 +240,7 @@ public class CqrJdFrame extends JFrame {
 		menuMain.add(menuMain_itemShowSimple);
 
 		menuMain_itemExit.setText("Exit");
-		menuMain_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.ALT_MASK));
+		menuMain_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, MenuKeyEvent.ALT_DOWN_MASK));
 		menuMain_itemExit.setActionCommand("Exit");
 		menuMain_itemExit.setMnemonic((int)'X');
 		menuMain_itemExit.setFont(menuFont);
@@ -245,7 +258,7 @@ public class CqrJdFrame extends JFrame {
 		menuZip_itemNone.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemNone.setText("None");
 		menuZip_itemNone.setActionCommand("None");
-		menuZip_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemNone.setMnemonic((int)'N');
 		menuZip_itemNone.setFont(menuFont);
 		menuZip_itemNone.addActionListener(aSymAction);
@@ -255,7 +268,7 @@ public class CqrJdFrame extends JFrame {
 		menuZip_itemGz.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemGz.setText("GZip");
 		menuZip_itemGz.setActionCommand("GZip");
-		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemGz.setMnemonic((int)'G');
 		menuZip_itemGz.setFont(menuFont);
 		menuZip_itemGz.addActionListener(aSymAction);
@@ -265,7 +278,7 @@ public class CqrJdFrame extends JFrame {
 		menuZip_itemBz.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemBz.setText("BZip2"); 
 		menuZip_itemBz.setActionCommand("BZip2");
-		menuZip_itemBz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemBz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemBz.setMnemonic((int)'B');
 		menuZip_itemBz.setFont(menuFont);
 		menuZip_itemBz.addActionListener(aSymAction);
@@ -275,7 +288,7 @@ public class CqrJdFrame extends JFrame {
 		menuZip_itemZip.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemZip.setText("Zip");
 		menuZip_itemZip.setActionCommand("Zip");
-		menuZip_itemZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemZip.setMnemonic((int)'Z');
 		menuZip_itemZip.setFont(menuFont);
 		menuZip_itemZip.addActionListener(aSymAction);
@@ -285,7 +298,7 @@ public class CqrJdFrame extends JFrame {
 		menuZip_item7z.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_item7z.setText("7z");
 		menuZip_item7z.setActionCommand("7z");
-		menuZip_item7z.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_item7z.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_item7z.setEnabled(false);
 		menuZip_item7z.setMnemonic((int)'7');
 		menuZip_item7z.setFont(menuFont);
@@ -625,8 +638,6 @@ public class CqrJdFrame extends JFrame {
 			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
 			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
 			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
-			fileEnCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/encrypted.png").toURL();
-			fileDeCryptedUrl = URI.create("https://area23.at/net/res/img/crypt/decrypted.png").toURL();
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace();
 		}
@@ -743,38 +754,15 @@ public class CqrJdFrame extends JFrame {
 
 		selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
-		try {
-			imInFile = new ImageViewer();
-			imInFile.setImageURL(fileInUrl);
-			imInFile.setBounds(8, 144 ,60,60);	
-			imInFile.addMouseListener(aSymMouse);			
-			getContentPane().add(imInFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-		jLabel_fileIn = new JLabel();
-		jLabel_fileIn.setFont(cryptFont);
-		jLabel_fileIn.setBounds(8, 208, 120, 24);
-		jLabel_fileIn.setText("[No input file loaded]");
-		jLabel_fileIn.setFont(cryptFont);		
-		getContentPane().add(jLabel_fileIn);
-
-		try {
-			imOutFile = new ImageViewer();
-			imOutFile.setImageURL(fileInUrl);
-			imOutFile.setBounds(912, 144, 60, 60);		
-			imOutFile.addMouseListener(aSymMouse);
-			getContentPane().add(imOutFile);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}					
-		
-		jLabel_fileOut = new JLabel();
-		jLabel_fileOut.setFont(cryptFont);
-		jLabel_fileOut.setBounds(884, 208, 120, 24);
-		jLabel_fileOut.setText("[No output file processed]");		
-		getContentPane().add(jLabel_fileOut);				
-				
+		if (cqrJdFrame == null)
+			cqrJdFrame = (CqrJdFrame)(getRootPane().getParent());
+		dropPanel = new DropPanel(cqrJdFrame);
+		dropPanel.setFont(cryptFont);
+		dropPanel.setBounds(8, 136, 960, 96);
+		dropPanel.setName("DropPanel");
+		// dropPanel.jLabelImgIn.addMouseListener(aSymMouse);
+		// dropPanel.jLabelImgOut.addMouseListener(aSymMouse);
+		getContentPane().add(dropPanel);
 		
 		jButton_encrypt = new JButton();
 		jButton_encrypt.setFont(cryptFont);
@@ -852,7 +840,7 @@ public class CqrJdFrame extends JFrame {
 		jLabel_statusDestination.setFont(cryptFont);
 		jLabel_statusDestination.setText("");
 		getContentPane().add(jLabel_statusDestination);
-		
+
 		setVisible(true);	
 		
 	}
@@ -1057,6 +1045,50 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 
+
+	/**
+	 * open_delegate
+	 */
+	public void open_delegate(String fpath) {
+
+		if (fpath == null || fpath.isEmpty())
+			throw new IllegalArgumentException("fpath is null");
+
+		// String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
+
+		File f = new File(fpath);
+		openFileName = fpath;
+		for (int r = (fpath.length() -1); r > -1 ; r--) {
+			if (fpath.charAt(r) == '\\'  || fpath.charAt(r) == '/') {
+				openFileName = fpath.substring(r + 1, fpath.length());
+				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
+				break;
+			}
+		}
+		try{
+			openFileBytes = Files.readAllBytes(f.toPath());
+			saveFileBytes = new byte[0];
+			dropPanel.jLabelFileIn.setText(openFileName);
+			jButton_encrypt.requestFocus();
+		} catch (Exception e){
+			setInfoMsg("Exception during file open.");
+			JOptionPane.showMessageDialog(null, e);
+			e.printStackTrace();
+		}
+
+		if (openFileBytes.length < 2048)
+			jLabel_statusSource.setText(openFileBytes.length + " bytes");
+		if (openFileBytes.length > 2048 && openFileBytes.length < 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / 1024) + " KB.");
+		if (openFileBytes.length > 1048576)
+			jLabel_statusSource.setText((int)(openFileBytes.length / (1024*1024)) + " MB.");
+
+	}
+
+
+	/**
+	 * open_action action for file open
+	 */
 	protected void open_action() {                                 
 		
 		String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
@@ -1083,7 +1115,7 @@ public class CqrJdFrame extends JFrame {
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
-			jLabel_fileIn.setText(openFileName);
+			dropPanel.jLabelFileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
@@ -1126,7 +1158,7 @@ public class CqrJdFrame extends JFrame {
 		try {
 			if (saveFileBytes != null && saveFileBytes.length > 0) {
 				Files.write(filePath, saveFileBytes);
-			    jLabel_fileIn.setText(saveFileName);
+			    dropPanel.jLabelFileIn.setText(saveFileName);
 			}
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
@@ -1286,8 +1318,10 @@ public class CqrJdFrame extends JFrame {
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
                 saveFileName = openFileName + saveFileSuffix;       
                 saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
-				
-				jLabel_fileOut.setText(saveFileName); 
+
+				dropPanel.jLabelImgOut.setVisible(true);
+				dropPanel.jLabelFileOut.setVisible(true);
+				dropPanel.jLabelFileOut.setText(saveFileName);
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1368,8 +1402,10 @@ public class CqrJdFrame extends JFrame {
                     }
                 }
 				saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
-				
-				jLabel_fileOut.setText(saveFileName); 
+
+				dropPanel.jLabelFileOut.setText(saveFileName);
+				dropPanel.jLabelImgOut.setVisible(true);
+				dropPanel.jLabelFileOut.setVisible(true);
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1417,7 +1453,8 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 	
-	protected void help_action(ActionEvent event) {
+	@SuppressWarnings("deprecation")
+    protected void help_action(ActionEvent event) {
 	
 		String os = System.getProperty("os.name").toLowerCase();
 		Runtime rt = Runtime.getRuntime();
@@ -1530,12 +1567,12 @@ public class CqrJdFrame extends JFrame {
 				hashKey_action();
 			} else if (object == imX) {
 				jTextField_Pipe.setText("");
-			} else if (object == imInFile) {
-				if (openFileBytes == null || openFileBytes.length < 1)
-					open_action();
-			} else if (object == imOutFile) {
-				if (saveFileBytes == null || saveFileBytes.length < 1)
-					save_action();
+			// } else if (object == imInFile) {
+			// 	if (openFileBytes == null || openFileBytes.length < 1)
+			// 		open_action();
+			// } else if (object == imOutFile) {
+			// 	if (saveFileBytes == null || saveFileBytes.length < 1)
+			// 		save_action();
 			} else {
 
 			}
