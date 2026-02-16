@@ -590,7 +590,7 @@ namespace EU.CqrXs.Gui.Forms
             // menuCipherModeItemECB
             // 
             menuCipherModeItemECB.Checked = false;
-            menuCipherModeItemECB.CheckState = CheckState.Checked;
+            menuCipherModeItemECB.CheckState = CheckState.Unchecked;
             menuCipherModeItemECB.Name = "menuCipherModeItemECB";
             menuCipherModeItemECB.Size = new Size(180, 22);
             menuCipherModeItemECB.Text = "ECB";

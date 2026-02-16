@@ -18,8 +18,8 @@
     <Copyright>Copyright © 2000-2040 Copyleft https://cqrxs.eu</Copyright>
     <PackageProjectUrl>https://cqrxs.eu/download/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.211</AssemblyVersion>
-    <FileVersion>2.26.211</FileVersion>
+    <AssemblyVersion>2.26.216</AssemblyVersion>
+    <FileVersion>2.26.216</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
