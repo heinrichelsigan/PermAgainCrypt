@@ -4,10 +4,8 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
-using Org.BouncyCastle.Crypto;
 using System.Globalization;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher
@@ -958,6 +956,8 @@ namespace EU.CqrXs.Crypt.Cipher
                     w = 60;
                     char ch = this.InPipe[i].GetCipherChar();
                     bmpName = $"arrow_right-{i}";
+                    if (i < 2)
+                        bmpName = (i == 0) ? "arrow_right-c" : "arrow_right-e";
                     object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
@@ -981,18 +981,18 @@ namespace EU.CqrXs.Crypt.Cipher
                     string drawString = this.InPipe[i].ToString();
                     Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                     SolidBrush drawBrush = new SolidBrush(color);
-                    float x = offset + 1.0F;
+                    float x = offset;
                     float y = 2F + ((i % 4) * 23.0F);
                     switch (i)
                     {
-                        case 1: y = 84F; break;
-                        case 2: y = 1F; break;
-                        case 3: y = 86F; break;
-                        case 4: y = 2F; break;
-                        case 5:
-                        case 6:
-                        case 7:
-                            y = 1F + ((i % 4) * 23.0F);
+                        case 0: y = 1F; break;
+                        case 1: x = offset - 1.0F; y = 84F; break;
+                        case 2: x = offset - 1.5F; y = 1F;  break;
+                        case 3: x = offset - 2.0F; y = 86F; break;
+                        case 4: x = offset - 2.5F; y = 2F;  break;
+                        case 5: x = offset - 3.0F; y = 84F; break;
+                        case 6: x = offset - 3.5F; y = 2F;  break;
+                        case 7: x = offset - 4.0F; y = 76F;
                             drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold); break;
                         default: y = 1F + ((i % 4) * 23.0F); break;
                     }
@@ -1073,6 +1073,8 @@ namespace EU.CqrXs.Crypt.Cipher
                     int r = 7 - i;
                     char ch = this.OutPipe[i].GetCipherChar();
                     bmpName = $"arrow_right-{r}";
+                    if (i >= 6)
+                        bmpName = (i == 6) ? "arrow_right-e" : "arrow_right-c";
                     object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
                     ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
                     g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
@@ -1094,11 +1096,17 @@ namespace EU.CqrXs.Crypt.Cipher
                     float y = 1.5F + ((i % 4) * 23.0F);
                     switch (i)
                     {
-                        case 5: y = 84F; break;
-                        case 6: y = 4F; break;
-                        case 7: y = 86F; break;
-                        default:
-                            y = 1.5F + ((i % 4) * 23.0F); break;
+                        case 0: y = 1F; break;
+                        case 1: x = offset - 1.0F; y = 84F; break;
+                        case 2: x = offset - 1.5F; y = 1F; break;
+                        case 3: x = offset - 2.0F; y = 86F; break;
+                        case 4: x = offset - 2.5F; y = 2F; break;
+                        case 5: x = offset - 3.0F; y = 84F; break;
+                        case 6: x = offset - 3.5F; y = 2F; break;
+                        case 7:
+                            x = offset - 4.0F; y = 76F;
+                            drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold); break;
+                        default: y = 1F + ((i % 4) * 23.0F); break;
                     }
                     StringFormat drawFormat = new StringFormat();
                     drawFormat.FormatFlags = StringFormatFlags.NoWrap;

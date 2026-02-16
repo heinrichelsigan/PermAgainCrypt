@@ -1,5 +1,4 @@
-﻿using EU.CqrXs.Crypt.Cipher.Symmetric;
-using EU.CqrXs.Util;
+﻿using EU.CqrXs.Util;
 using System.ComponentModel;
 
 namespace EU.CqrXs.Crypt.Cipher

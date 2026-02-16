@@ -94,7 +94,7 @@ namespace EU.CqrXs.Crypt.Cipher
             Mode = "CFB";
 
             switch (Cipher)
-            {
+            {                
                 case CipherEnum.Aes:
                     BlockCipher = new Org.BouncyCastle.Crypto.Engines.AesEngine();
                     break;

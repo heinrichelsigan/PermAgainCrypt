@@ -73,10 +73,54 @@
             <param name="isPublic">true, if it's public key, false if it's private key</param>
             <returns>plain text string (decrypted)</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.Cipher.CipherMode2">
+            <summary>
+            CipherMode2 enumeration type for more cipher mode as found in standard <see cref="T:System.Security.Cryptography.CipherMode"/>
+            </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
+        </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.CiffreMode">
             <summary>
             <see cref="T:System.Security.Cryptography.CipherMode"/>
             </summary>
+        </member>
+        <member name="T:EU.CqrXs.Crypt.Cipher.CipherModeExtensions">
+            <summary>
+            Extension methods for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2">enum CipherMode2</see>
+            </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherModeExtensions.ParseText(System.String)">
             <summary>
@@ -114,6 +158,23 @@
             <summary>
             Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.CipherPipe.ZType">
             <summary>
@@ -414,6 +475,23 @@
             <summary>
             CryptParams parameters for encryption algorithm engine
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CryptParams.#ctor">
             <summary>
@@ -454,6 +532,23 @@
             AesNet native .Net AesCng without bouncy castle
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aescng?view=net-8.0" />
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#cctor">
             <summary>
@@ -510,6 +605,23 @@
             <see cref="T:Org.BouncyCastle.Crypto.Engines.SkipjackEngine"/>, <see cref="T:Org.BouncyCastle.Crypto.Engines.TeaEngine"/>, <see cref="T:Org.BouncyCastle.Crypto.Engines.TnepresEngine"/>,
             <see cref="T:Org.BouncyCastle.Crypto.Engines.XteaEngine"/>, ... and many more
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Size">
             <summary>
@@ -607,6 +719,23 @@
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
             <seealso href="https://www.c-sharpcorner.com/article/tripledes-encryption-and-decryption-in-c-sharp/" />
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.GenDes3Key(System.Byte[]@)">
             <summary>
@@ -675,6 +804,23 @@
             <summary>
             Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
             </summary>
+            <remarks>
+            <list type="bullet">
+            <listheader>code changes</listheader>
+            <item>
+            2026-02-11 alert-fix-13 changed mode from "ECB" to "CFB"     
+            Reason: Git security scans
+            consequences: no more fully deterministic math bijective proper symmertric cipher en-/decryption in pipe
+            fixed attacks: not so easy REPLY attacks with binary format header and heuristic key collection
+            </item>
+            <item>
+            2026-mm-dd [enter pull request name here] [enter what you did here]
+            Reason: [enter a senseful reason]
+            consequences: [describe most impactful consequences of bugfix or code change request]
+            fixed [vulnerability, code smell]: [Describe understandable precise in 1-2 setences]
+            </item>
+            </list>
+            </remarks>
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.ZType">
             <summary>
@@ -876,8 +1022,8 @@
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Multi functional 
-            <see cref="!:EncryptEncodeBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
-            <see cref="!:DecodeDecrpytBytes(byte[], string, string, EncodingType, ZipType, KeyHash, CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
             </summary>
             <param name="inBytes">incoming bytes</param>
             <param name="secretKey">user private key</param>
@@ -1726,6 +1872,15 @@
             KeyHash 
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Crypt.Hash.KeyHash_Extensions.GetKeyFromBaseBytes(System.Byte[],System.Int32)">
+            <summary>
+            GetKeyFromBaseBytes Extension method for byte[] baseBytes
+            </summary>
+            <param name="baseBytes">baseBytes from which keyBytes are extracted</param>
+            <param name="keyLen">length of keyBytes array</param>
+            <returns><see cref="T:byte[]">byte[] bytesKey</see></returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
         <member name="T:EU.CqrXs.Crypt.Hash.MD5Sum">
             <summary>
             MD5Sum hashes a md5 sum for a string, stream, byte[], 
@@ -1842,7 +1997,7 @@
             <summary>
             CContact derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/> is a container for any Google or Outlook contact
             TODO: refactor it!
-            </summary>
+            </summary>    
         </member>
         <member name="M:EU.CqrXs.Crypt.Msg.CContact.#ctor">
             <summary>
@@ -2459,20 +2614,17 @@
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.fortune_u8">
              <summary>
-               Looks up a localized string similar to 7:30, Channel 5: The Bionic Dog (Action/Adventure)
-            	The Bionic Dog drinks too much and kicks over the National
-            	Redwood Forest.
-            
-            7:30, Channel 8: The Bionic Dog (Action/Adventure)
-            	The Bionic Dog gets a hormonal short-circuit and violates the
-            	Mann Act with an interstate Greyhound bus.
+               Looks up a localized string similar to Debian Hint #1: You can report a bug in a package with the &apos;reportbug&apos; command,
+            which is available in the reportbug package, either from the command-line or
+            with the new graphical frontend (available running &apos;reportbug --ui gtk&apos; or in
+            the menu).
             %
-            A &quot;critic&quot; is a man who creates nothing and thereby feels qualified to
-            judge the work of creative men. There is logic in this; he is unbiased
-            -- he hates all creative people equally.
-            		-- Robert Heinlein
+            Debian Hint #2: You can use &apos;dpkg-reconfigure &lt;package&gt;&apos; to change the
+            answers you gave to the questions asked when you first installed a package.
+            The &apos;configure-debian&apos; package provides a unified front end for doing this,
+            as well.
             %
-            Ther [rest of string was truncated]&quot;;.
+            Debian Hint #3: You  [rest of string was truncated]&quot;;.
              </summary>
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.github_uri">
