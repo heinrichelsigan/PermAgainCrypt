@@ -1410,7 +1410,8 @@ public class CqrJdFrame extends JFrame {
 			cqrJFrameSimple.setJFrameSimple(cqrJFrameSimple);
 
             cqrJFrameSimple.show();
-            cqrJdFrame.hide();
+            cqrJdFrame.setVisible(false);
+			// cqrJdFrame.hide();
 		} catch (Exception exIO) {
 			exIO.printStackTrace();
 		}

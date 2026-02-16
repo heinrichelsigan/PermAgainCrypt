@@ -55,7 +55,6 @@ public class CqrJFrameSimple extends JFrame {
 	
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
-	JPanel jPanelCenter = new JPanel();
 	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
 	JTextField jTextField_Key, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
@@ -1085,7 +1084,8 @@ public class CqrJFrameSimple extends JFrame {
                 saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
 				
 				dropPanel.jLabelFileOut.setText(saveFileName);
-                
+                dropPanel.jLabelImgOut.setVisible(true);
+				dropPanel.jLabelFileOut.setVisible(true);
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
                 if (saveFileBytes.length > 2048 && saveFileBytes.length < 1048576) 

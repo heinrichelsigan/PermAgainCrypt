@@ -118,14 +118,14 @@ public class DropPanel extends JPanel {
 
         if (vertical_ratio < horizontal_ratio) {
             scale_ratio = vertical_ratio;
-        } else if (horizontal_ratio < vertical_ratio) {
+        } else if (horizontal_ratio <= vertical_ratio) {
             scale_ratio = horizontal_ratio;
         }
 
         int dest_width = (int) (img_width * scale_ratio);
         int dest_height = (int) (img_height * scale_ratio);
 
-        BufferedImage scaled = new BufferedImage(dest_width, dest_height, bufImg.getType());
+        BufferedImage scaled = new BufferedImage(dest_width, dest_height, BufferedImage.TYPE_INT_ARGB);
         Graphics graphics = scaled.getGraphics();
         graphics.drawImage(bufImg, 0, 0, dest_width, dest_height, null);
         graphics.dispose();
@@ -217,14 +217,28 @@ public class DropPanel extends JPanel {
                         droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
                         droppedFile;
 
-                imgFileIn = addImages(new String[] { droppedFile });
-                imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
-                remove(jLabelImgIn);
-                jLabelImgIn = new JLabel(imgIconIn);
-                jLabelImgIn.setBounds(4, 4, 60, 60);
-                add(jLabelImgIn);
-                jLabelFileIn.setText(imgInName);
+                if (droppedFile.toLowerCase().endsWith(".jpg")  ||
+					droppedFile.toLowerCase().endsWith(".jpeg")  ||
+					droppedFile.toLowerCase().endsWith(".png")  ||
+					droppedFile.toLowerCase().endsWith(".gif")  ||
+					droppedFile.toLowerCase().endsWith(".bmp")  ||
+					droppedFile.toLowerCase().endsWith(".tif")) 
+				{				
+					imgFileIn = addImages(new String[] { droppedFile });
+					imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
+				}
+				else {
+					imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+					imgIconIn = new ImageIcon(imgFileIn);
+				}
+				remove(jLabelImgIn);
+				jLabelImgIn = new JLabel(imgIconIn);
+				jLabelImgIn.setBounds(4, 4, 60, 60);
+				add(jLabelImgIn);
 
+                jLabelFileIn.setText(imgInName);
+				jLabelImgOut.setVisible(false);
+				jLabelFileOut.setVisible(false);
                 jFrameSimple.open_delegate(droppedFile);
                 // ((CqrJFrameSimple)getParent()).open_delegate();
                 // message.setText("Drop: '" + droppedFile + "'.");
@@ -283,13 +297,44 @@ public class DropPanel extends JPanel {
 			boolean dcompleted = false;
             SwingUtilities.invokeLater(new DragUpdate(false, null));
 
+			DbgWriter.msg("drop(DropTargetDropEvent " + dtde.toString() + ") {...}", true);
+
             Transferable transferable = dtde.getTransferable();
             if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                
+                 				
 				dtde.acceptDrop(dtde.getDropAction());				
 				Object transferDataObject;
 				
-                try {         
+				try {
+					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+					if (transferDataObject instanceof java.awt.List) {
+						DbgWriter.msg("transferDataObject instanceof java.awt.List", true);
+						java.awt.List transferData = (java.awt.List) transferDataObject;
+						if (transferData != null && (transferData.getItemCount() > 0)) {	
+								
+							String[] drpFilesStr = ((java.awt.List)transferData).getItems();
+							if (drpFilesStr.length > 0) {
+								String ds = drpFilesStr[0].toString();
+								importFiles(ds);
+								dcompleted = true;
+								dtde.dropComplete(true);
+							}
+						}
+					} else {						
+						Object[] dropFilesStr = ((java.util.AbstractList)transferDataObject).toArray(); 
+						// dropFilesStr = fileArray.asList<Object>().toArray();
+						if (dropFilesStr.length > 0) {
+							String ds = dropFilesStr[0].toString();
+							importFiles(ds);
+							dcompleted = true;
+							dtde.dropComplete(true);
+						}
+					}
+				} catch (Exception exList) {
+					exList.printStackTrace();
+				}
+				
+                if (!dcompleted) try {         
 					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 					if (transferDataObject instanceof ArrayList<?> fileList) {
                         Object[] dropFilesStr = fileList.toArray();
@@ -303,25 +348,6 @@ public class DropPanel extends JPanel {
 				} catch (Exception exArrayList) {
                     exArrayList.printStackTrace();
                 }
-				
-				if (!dcompleted) try {
-					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-					if (transferDataObject instanceof java.awt.List) {
-						java.awt.List transferData = (java.awt.List) transferDataObject;
-						if (transferData != null && (transferData.getItemCount() > 0)) {	
-								
-							String[] drpFilesStr = ((java.awt.List)transferData).getItems();
-							if (drpFilesStr.length > 0) {
-								String ds = drpFilesStr[0].toString();
-								importFiles(ds);
-								dcompleted = true;
-								dtde.dropComplete(true);
-							}
-						}
-					}
-				} catch (Exception exList) {
-					exList.printStackTrace();
-				}
 				
             } else {
                 dtde.rejectDrop();
