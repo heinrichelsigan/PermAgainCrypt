@@ -1,10 +1,4 @@
-﻿using EU.CqrXs.Crypt.EnDeCoding;
-using EU.CqrXs.Crypt.Cipher;
-using EU.CqrXs.Crypt.Cipher.Symmetric;
-using EU.CqrXs.Util;
-using System;
-using System.Globalization;
-using Org.BouncyCastle.Utilities.Encoders;
+﻿using EU.CqrXs.Util;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {

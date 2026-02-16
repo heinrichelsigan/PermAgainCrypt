@@ -1,6 +1,5 @@
 ﻿using EU.CqrXs.Util;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
