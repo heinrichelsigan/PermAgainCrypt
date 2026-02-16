@@ -460,3 +460,6 @@ Deploy/console/*.7z
 /Deploy/EU.CqrXs/EU.CqrXs.Console/Console_Test.bat
 /Deploy/EU.CqrXs/EU.CqrXs.Console/EU.CqrXs.xml
 /Deploy/EU.CqrXs/EU.CqrXs.Console/README.MD
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/Spooler_Test.bat
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/README.MD
+/Deploy/EU.CqrXs/EU.CqrXs.Spooler/EU.CqrXs.xml
