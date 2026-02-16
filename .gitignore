@@ -456,3 +456,7 @@ Deploy/console/*.7z
 # java temp
 /java/temp/
 
+/Deploy/EU.CqrXs/EU.CqrXs.Gui/EU.CqrXs.xml
+/Deploy/EU.CqrXs/EU.CqrXs.Console/Console_Test.bat
+/Deploy/EU.CqrXs/EU.CqrXs.Console/EU.CqrXs.xml
+/Deploy/EU.CqrXs/EU.CqrXs.Console/README.MD
