@@ -51,9 +51,9 @@ https://github.com/heinrichelsigan/PermAgainCrypt/releases/
 - https://youtu.be/tY2DPsZjbVQ
 
 ## Credits
-- Great Thanks to [the Legion of the Bouncy Castle](https://www.bouncycastle.org/), git: [bcgit](https://github.com/bcgit)
-- LibTom: [libtom/libtomcrypt](https://github.com/libtom/libtomcrypt) [libtom.net/](https://www.libtom.net/)
-- cryptopp: [weidai11/cryptopp](https://github.com/libtom/libtomcrypt) [cryptopp.com](https://cryptopp.com/)
+- Great Thanks to [the Legion of the Bouncy Castle](https://www.bouncycastle.org/), git [bcgit](https://github.com/bcgit)
+- [libtom.net](https://www.libtom.net/), git [libtom/libtomcrypt](https://github.com/libtom/libtomcrypt) 
+- [cryptopp.com](https://cryptopp.com/), git [weidai11/cryptopp](https://github.com/libtom/libtomcrypt) 
 
 ## WinFormCore:
 <img width="800" height="726" alt="image" src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/PermAgainCrypt_WinForm.gif" />
