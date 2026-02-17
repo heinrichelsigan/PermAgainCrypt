@@ -234,31 +234,28 @@ namespace EU.CqrXs.Console
                 System.Console.Error.WriteLine(errMsg);
 
             System.Console.Out.WriteLine("Usage:\t" + Path.GetFileName(progName) + @"
-    -i  ├─ --inFile= | --inText={string|EnviromentVariable} | --inStd    
-        |
-    -k  ├─ --key=passKey encrypt    
-    -H  ├─ --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hey|MD5|Oct|RipeMD256|SCrypt|Sha1|Sha256|Sha384|Sha512|Whirlpool|TupleHash}        
-        |      default: Hex
-    -z  ├─ --zip={gzip|bzip2|zip} 
-        |     default: none
-    -C  ├─ --CipherAlgost={algo1,algo2,...}
+    -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd    
+    -k  | --key=passKey encrypt    
+    -H  | --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hex|MD5|RipeMD256|SCrypt|Sha256|Sha512|Whirlpool|...}
+        |   default: Hex
+    -z  | --zip={gzip|bzip2|zip|none} 
+        |   default: none
+    -C  | --CipherAlgost={algo1,algo2,...}
         |   algo:
-        │     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
-        │       Aria,Camellia,CamelliaLight,Cast5,Cast6,
-        │       BlowFish,Fish2,Fish3,
-        │       Gost28147,Idea,Noekeon,
-        │       RC2,RC532,RC564,RC6,
-        │       Seed,SkipJack,Serpent,SM4,
-        │       Tea,Tnepres,XTea,
-        │       ZenMatrix,ZenMatrix2
-    -e  ├─ --encode={raw|hex16|hex32|base32|base64|uu}
+        |     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
+        |       Aria,Camellia,CamelliaLight,Cast5,Cast6,
+        |       BlowFish,Fish2,Fish3,
+        |       Gost28147,Idea,Noekeon,
+        |       RC2,RC532,RC564,RC6,
+        |       Seed,SkipJack,Serpent,SM4,
+        |       Tea,Tnepres,XTea,
+        |       ZenMatrix,ZenMatrix2
+    -e  | --encode={raw|hex16|base16|hex32|base32|hex64|base64|uu|xx}
         |   default: base64
-    -D  ├─ --Decrypt [ = Inverse_Pipe_Direction ]
-        |  
-    -o  ├─ --outFile= | --outText=EnviromentVariable | --outStd            
-        | 
-    -V  ├─ --verbose 
-    -?  ├─ --gethelp");
+    -D  | --Decrypt [ = Inverse_Pipe_Direction ]  
+    -o  | --outFile= | --outText=EnviromentVariable | --outStd            
+    -V  | --verbose 
+    -?  | --gethelp");
 
             System.Console.Out.WriteLine($"\nExamples: " + @"
 

@@ -6,6 +6,7 @@
 % Useful packages
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 \usepackage{xcolor}
 \usepackage{color}
 \usepackage[T1]{fontenc}
@@ -18,8 +19,7 @@
 \usepackage{layout}
 \usepackage{fancyhdr}
 \usepackage{float}
-\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
-\urlstyle{rm}
+
 \title{Making symmetric block cipher meta permutating again}
 \author{Heinrich Elsigan}
 
@@ -36,18 +36,22 @@ I’m interested in CSharp, Java, MSSQL, .Net Core, Android and politics, societ
 currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects.
 
 \begin{enumerate}
-    \item social media, development and other links: 
-    \item personal tech and political blog \href{https://blog.area23.at}{blog.area23.at}
+    \item personal tech and political blog \href{https://area23-at.blogspot.com/}{blog.area23.at}
 	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan/}
-	\item live demo .Net \href{https://area23.at/net/}{area23.at/net}
 	\item StackOverflow \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
-	\item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv} 
+    \item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv}
+    \item live demo .Net \href{https://area23.at/net/}{area23.at/net}		
 \end{enumerate}
 
 \end{abstract}
 
 
 \section{Thanks to}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Symmetric_Cipher_Pipeline.png}
+\caption{\label{fig:CipherPipeline}Cipher Pipeline}
+\end{figure}
 
 Normally, thanks to are always at the end of each paper,
 but the people or organizations I benefited from while trying to make AES strong again
@@ -62,17 +66,173 @@ raw experimental test form.
 	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
 \end{enumerate}
 
+
+\section{Software}
+
+Source code of PermAgainCrypt is hosted at Github.
+\href{https://github.com/heinrichelsigan/PermAgainCrypt/releases/}Github releases contains compiled and linked .exe files for windows, 
+but most users prefer download from a seperate download site \url{https://cqrxs.eu/}.
+
+\subsection{Git: PermAgainCrypt minimalistic repository}
+\url{https://github.com/heinrichelsigan/PermAgainCrypt/}
+
+\subsection{Download}
+Go to \url{https://cqrxs.eu/} or \url{https://io.cqrxs.eu/} and choose latest version.
+You can directly go to the download area \url{https://cqrxs.eu/download/} or \url{https://io.cqrxs.eu/download/}.
+Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bug, because 3-fish
+uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
+settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
+
+
+
+\section{Different Forms}
+
+\subsection{Documentation online en-/decrypt form}
+
+\begin{itemize}
+    \item \href{https://cqrxs.eu/net/Crypt/}{cqrxs.eu/net/Crypt}
+    \item \href{https://area23.at/net/Crypt/}{area23.at/net/Crypt}
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{Symmetric_Cipher_WebForm.jpg}
+\caption{\label{fig:SymmetricCipherWebForm}Symmetric Cipher WebForm}
+\end{figure}
+
+\begin{enumerate}
+    \item Key: When clicking key your entered key will be stored temporary in session.
+    \item Textbox secret key: Enter your Email address and secret key.
+    \item Buton Clear: Clear and reset the entire form.
+    \item Hyperlink Help: Show this help
+    \item RadioButtonList KeyHashes
+Choose the hash method to hash your secret key.
+    \item ImageButton Hash: Clicking will hash your key and display hashed key in textbox.    
+    \item TextBox Hash (readonly): Displays your hashed key.
+    \item Button “Set Pipe”: sets symmetric cipher pipe, dependent only on your entered key
+    \item Button “Hash Pipe”: sets symmetric cipher pipe, dependent primary on calculated hash
+and secondary on your entered key.
+    \item DropDown ZipTypes Choose encryption type (Please only GZip or Zip or None)
+    \item DropDown CipherTypes Choose a symmetric cipher to add it to the symmetric cipher
+pipe.
+    \item ImageButton „add algo“: Clicking on will add the in c. DropDown CipherTypes
+selected symmetric cipher algorithm to CipherPipe.
+    \item TextBox CipherPipe (readonly): Displays the current Cipher Pipe algorithms.
+    \item ImageButton “Clear Pipe”: Clicking on will clear only the entire Cipher Pipe
+    \item DropDown EncodingTypes: Choose the final binary to ascii encoder, default is Base64.
+Beware of using uuencode in Web, because <> will be interpreted as possible html
+injection.
+    \item TextArea Source: paste or enter Text here.
+    \item TextArea Destination: (readonly) After clicking Encrypt or Decrypt processed text will
+appear in the text area.
+    \item Button Encrypt: Encrypts the text from TextArea Source and displays encrypted text in
+TextArea Destination.
+    \item Button “Random Text”: Adds a short fortune to TextArea Source.
+    \item Button Decrypt: Decrypts text in TextArea Source and display decrypted text in
+TextArea Destination.
+\end{enumerate}
+
+
+\subsection{Documentation of WinForm}
+
+You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCrypt/releases}{github.com/heinrichelsigan/PermAgainCrypt/releases} to download newest Gui Form x86 and x64.
+\dots 
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{2026-01-25_WinForm_CSharp.png}
+\caption{\label{fig:WinForm_Csharp}WinForm CSharp}
+\end{figure}
+
+\subsection{Java JFrame based}
+
+\begin{itemize}
+\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
+\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{javax_swing_JFrame_java.jpg}
+\caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
+\end{figure}
+
+\section{Console and cmd programs}
+
+
+\subsection{Windows Console}
+
+Download the lastest Windows Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{20260217_ConsoleText.png}
+\caption{\label{fig:EU.CqrXs.Console.exe}Windows EU.CqrXs.Console.exe}
+\end{figure}
+
+\subsubsection{Usage:  EU.CqrXs.Console.exe}
+\begin{small}
+\begin{verbatim}
+Usage:  EU.CqrXs.Console.exe
+    -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd
+    -k  | --key=passKey encrypt
+    -H  | --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hex|MD5|RipeMD256|SCrypt|Sha256|Sha512|Whirlpool|...}
+        |   default: Hex
+    -z  | --zip={gzip|bzip2|zip|none}
+        |   default: none
+    -C  | --CipherAlgost={algo1,algo2,...}
+        |   algo:
+        |     Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
+        |       Aria,Camellia,CamelliaLight,Cast5,Cast6,
+        |       BlowFish,Fish2,Fish3,
+        |       Gost28147,Idea,Noekeon,
+        |       RC2,RC532,RC564,RC6,
+        |       Seed,SkipJack,Serpent,SM4,
+        |       Tea,Tnepres,XTea,
+        |       ZenMatrix,ZenMatrix2
+    -e  | --encode={raw|hex16|base16|hex32|base32|hex64|base64|uu|xx}
+        |   default: base64
+    -D  | --Decrypt [ = Inverse_Pipe_Direction ]
+    -o  | --outFile= | --outText=EnviromentVariable | --outStd
+    -V  | --verbose
+    -?  | --gethelp
+\end{verbatim}
+\end{small}
+
+\subsubsection{Examples:  EU.CqrXs.Console.exe}
+\begin{small}
+\begin{verbatim}
+
+    EU.CqrXs.Console.exe -i=.\README.MD -e=base16 -o=.\READMD.base16
+    EU.CqrXs.Console.exe -D  -i=.\READMD.base16 -e=base16 -o=.\READ_MD.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -k=Hallo -z=gzip  -C=BlowFish,Fish2,Fish3 
+        -e=base64 -o=.\README.MD.gz.BfF.base64
+    EU.CqrXs.Console.exe -D -i=.\README.MD.gz.BfF.base64 -e=base64 -C=BlowFish,Fish2,Fish3 
+        -p=Hallo -z=gzip -o=.\READ_GUNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -z=bz -k=heinrichelsigan.area23.at 
+        -H=Whirlpool -e=hex32 -o=.\README.MD.Whirlpool.bz.Hex32
+    EU.CqrXs.Console.exe -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 
+        -k=heinrichelsigan.area23.at -H=Whirlpool -z=bz -o=.\READ_BUNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu 
+        -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt 
+        -e=uu -o=.\README.MD.SCrypt.zip.uu
+    EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu 
+        -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 
+        -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
+
+    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt
+        -e=xx -o=.\README.MD.BCrypt.zip.xx
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu 
+        -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt
+\end{verbatim}
+\end{small}
+
+
 \section{Theory} 
 
 \subsection{8-staged symmetric block cipher pipeline}
 
 An eight staged symmetric block cipher crypto pipeline to improve advanced encryption standard based on meta DES, 3DES with P-Box S-Box.
 
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{Symmetric_Cipher_Pipeline.png}
-\caption{\label{fig:CipherPipeline}Cipher Pipeline}
-\end{figure}
 
 The following image shows you an example of a symmetric cipher 8 staged encryption pipe and the corresponding decryption inverse pipe.
 
@@ -95,6 +255,38 @@ Implementation is based on my blog article: \href{https://area23-at.blogspot.com
 \item and my own simplest symmetric block cipher alogrithms: ZenMatrix, ZenMatrix2
 \end{itemize}
 
+
+\subsection{What are advantages and disadvantages of Symmetric Block Cipher}
+
+\subsubsection{Advantages}
+Since symmetric block cipher ciphers each block in the same encrypting way
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SymmetricBlockCipher_Structure0.png}
+\caption{\label{fig:SymmetricBlockCipherStructure}Symmetric BlockCipher Structure}
+\end{figure}
+
+parallel processing can be implemented quiet easy with average performance bust on huge multiprocessore machines.
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SymmetricBlockCipher_Structure1.png}
+\caption{\label{fig:SymmetricBlockCipherParallelism}Symmetric BlockCipher Parallelism}
+\end{figure}
+
+\subsubsection{Disadvantages}
+
+Since we know often concrete structure of a file header, 
+because of more static tableized structure inside file header and the sepecific binary format signature (MIT magic cookie)
+
+REPLAY attacs could be used by trying encode only the 1st symmetric cipher block with some heuristic headers and
+possible keys.
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{SymmetricBlockCipher_Header_1st_Block.png}
+\caption{\label{fig:SymmetricBlockCipherHeader1stBlock}Symmetric BlockCipher Header 1st Block}
+\end{figure}
+
+
 \subsubsection{Most blockcipher algorithms break on a lot of 0 byte inside}
 Most blockcipher algorithms break, when you fill a > 2x BLOCKSIZE (byte)0 inside a text or some other file. You can generate such a NULL block with linux dd:
 \begin{small}
@@ -103,48 +295,7 @@ sudo nice -n -17 dd if=/dev/zero of=/mnt/h/zeros.txt bs=4k  count=64
 \end{verbatim}
 \end{small}
 
-That's why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to decrypt.
-
-\subsection{CSharp Code Example}
-\begin{small}
-\begin{verbatim}
-    /* CSharp constructing a CipherPipe */
-
-    // 1 with parameter key
-    string hash = KeyHash.Hex.Hash(key);
-    CipherPipe cPipe = new CipherPipe(key, hash, 
-        EncodingType.Base64, ZipType.None, KeyHash.Hex, 
-        CipherMode2.ECB);
-
-    // 2. with an array of ciphers, e.g. BlowFish;TwoFish;ThreeFish
-    string algos = "BlowFish;TwoFish;ThreeFish";
-    CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(algos);
-    cPipe = new CipherPipe(pipeAlgos, 8, 
-                EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                CipherMode2.ECB);
-
-    /* calling CipherPipe encrypt or decrypt */    
-    string s = "Text to encrypt", key = "myKey", hashIv = KeyHash.Hex.Hash(key);
-    // encrypt text
-    string encryptext = cPipe.EncrpytTextGoRounds(s, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.ECB);
-    // encrypt bytes
-    byte[] fbytes = System.Text.Encoding.Utf8.GetBytes(s);
-    byte[] cbytes = cPipe.EncryptEncodeBytes(fileBytes, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.ECB);
-    // decrypt text
-    string dcrypt = cPipe.DecryptTextRoundsGo(encryptext, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.ECB);
-    // decypt bytes
-    byte[] outBytes = cPipe.DecodeDecrpytBytes(cbytes, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.ECB);
-    
-\end{verbatim}
-\end{small}
+That's why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to encrypt.
 
 
 \subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
@@ -211,135 +362,96 @@ the matrix will look like this:
  \hline
 \end{tabular}
 
-\subsubsection{Mapping}
-This mean that a byte[8] e.g. 321F 0000 0000 0000 
-$x0 \implies x8$,
-$x1 \implies x7$,
-$x2 \implies x6$,
-$x3 \implies x4$,
-$xF \implies x0$,
-is mapped to 8880 8868 4888 8888.
 
-\section{Software}
-
-Source code of PermAgainCrypt is hoted at Github.
-Github releases contains compiled and linked .exe files for windows, 
-but most users prefer download from a seperate download site \url{https://cqrxs.eu/}.
-
-\subsection{Git: PermAgainCrypt minimalistic repository}
-\url{https://github.com/heinrichelsigan/PermAgainCrypt/}
-
-\subsection{Download}
-Go to \url{https://cqrxs.eu/} or \url{https://io.cqrxs.eu/} and choose latest version.
-You can directly go to the download area \url{https://cqrxs.eu/download/} or \url{https://io.cqrxs.eu/download/}.
-Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bug, because 3-fish
-uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
-settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
-
-
-\subsection{Documentation online en-/decrypt form}
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{Symmetric_Cipher_WebForm.jpg}
-\caption{\label{fig:SymmetricCipherWebForm}Symmetric Cipher WebForm}
-\end{figure}
-
-\begin{enumerate}
-    \item Key: When clicking key your entered key will be stored temporary in session.
-    \item Textbox secret key: Enter your Email address and secret key.
-    \item Buton Clear: Clear and reset the entire form.
-    \item Hyperlink Help: Show this help
-    \item RadioButtonList KeyHashes
-Choose the hash method to hash your secret key.
-    \item ImageButton Hash: Clicking will hash your key and display hashed key in textbox.    
-    \item TextBox Hash (readonly): Displays your hashed key.
-    \item Button “Set Pipe”: sets symmetric cipher pipe, dependent only on your entered key
-    \item Button “Hash Pipe”: sets symmetric cipher pipe, dependent primary on calculated hash
-and secondary on your entered key.
-    \item DropDown ZipTypes Choose encryption type (Please only GZip or Zip or None)
-    \item DropDown CipherTypes Choose a symmetric cipher to add it to the symmetric cipher
-pipe.
-    \item ImageButton „add algo“: Clicking on will add the in c. DropDown CipherTypes
-selected symmetric cipher algorithm to CipherPipe.
-    \item TextBox CipherPipe (readonly): Displays the current Cipher Pipe algorithms.
-    \item ImageButton “Clear Pipe”: Clicking on will clear only the entire Cipher Pipe
-    \item DropDown EncodingTypes: Choose the final binary to ascii encoder, default is Base64.
-Beware of using uuencode in Web, because <> will be interpreted as possible html
-injection.
-    \item TextArea Source: paste or enter Text here.
-    \item TextArea Destination: (readonly) After clicking Encrypt or Decrypt processed text will
-appear in the text area.
-    \item Button Encrypt: Encrypts the text from TextArea Source and displays encrypted text in
-TextArea Destination.
-    \item Button “Random Text”: Adds a short fortune to TextArea Source.
-    \item Button Decrypt: Decrypts text in TextArea Source and display decrypted text in
-TextArea Destination.
-\end{enumerate}
-
-
-\subsection{Documentation of WinForm}
-
-You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCrypt/releases}{github.com/heinrichelsigan/PermAgainCrypt/releases} to download \url{https://github.com/heinrichelsigan/PermAgainCrypt/releases/download/2026-01-25-Hex64-Console-JFrame-Latex-release-v2.26.125/2026-01-25_EU.CqrXs.Gui_x64.7z} 
-\dots 
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{2026-01-25_WinForm_CSharp.png}
-\caption{\label{fig:WinForm_Csharp}WinForm CSharp}
-\end{figure}
-
-\subsection{Documentation of Windows Console}
-
-Download the lastest Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{2026-01-27_EU_CqrXs_Console.jpg}
-\caption{\label{fig:EU.CqrXs.Console.exe}Windows EU.CqrXs.Console.exe}
-\end{figure}
-
-\subsection{Usage:  EU.CqrXs.Console.exe}
+\subsection{CSharp Code Example}
 \begin{small}
 \begin{verbatim}
-Usage:  EU.CqrXs.Console.exe
-    -i  --inFile= | --inText={string|EnviromentVariable} | --inStd
-    -k  --key=passKey encrypt
-    -H  --Hash {BCrypt|CShake|Dstu7564|Hey|MD5|RipeMD256|SCrypt|Sha1|Whirlpool|TupleHash}
-            default: Hex
-    -z  --zip={gzip|bzip2|zip}
-            default: none
-    -C  --CipherAlgost={algo1,algo2,...}
-            algo:
-                Aes,AesLight,Rijndael,Des,Des3,Dstu7624,
-                Aria,Camellia,CamelliaLight,Cast5,Cast6,
-                BlowFish,Fish2,Fish3,
-                Gost28147,Idea,Noekeon,
-                RC2,RC532,RC564,RC6,
-                Seed,SkipJack,Serpent,SM4,
-                Tea,Tnepres,XTea,
-                ZenMatrix,ZenMatrix2
-    -S  --SymmCipher
-    -e  --encode={raw|hex16|hex32|base32|base64|uu}
-            default: base64
-    -D  --Decrypt [ = Inverse_Pipe_Direction ]
-    -o  --outFile= | --outText=EnviromentVariable | --outStd
-    -V  --verbose
-    -?  --gethelp
+    /* CSharp constructing a CipherPipe */
 
+    // 1 with parameter key
+    string hash = KeyHash.Hex.Hash(key);
+    CipherPipe cPipe = new CipherPipe(key, hash, 
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, 
+        CipherMode2.CFB);
+
+    // 2. with an array of ciphers, e.g. BlowFish;TwoFish;ThreeFish
+    string algos = "BlowFish;TwoFish;ThreeFish";
+    CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(algos);
+    cPipe = new CipherPipe(pipeAlgos, 8, 
+                EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                CipherMode2.CFB);
+
+    /* calling CipherPipe encrypt or decrypt */    
+    string s = "Text to encrypt", key = "myKey", hashIv = KeyHash.Hex.Hash(key);
+    // encrypt text
+    string encryptext = cPipe.EncrpytTextGoRounds(s, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.CFB);
+    // encrypt bytes
+    byte[] fbytes = System.Text.Encoding.Utf8.GetBytes(s);
+    byte[] cbytes = cPipe.EncryptEncodeBytes(fileBytes, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.CFB);
+    // decrypt text
+    string dcrypt = cPipe.DecryptTextRoundsGo(encryptext, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.CFB);
+    // decypt bytes
+    byte[] outBytes = cPipe.DecodeDecrpytBytes(cbytes, key, hashIv, 
+                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
+                            CipherMode2.CFB);
+    
 \end{verbatim}
 \end{small}
 
+\subsection{Java Example}
 
-\subsection{Java JFrame based}
-
-\begin{itemize}
-\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
-\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
-\end{itemize}
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{javax_swing_JFrame_java.jpg}
-\caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
-\end{figure}
-
+\begin{small}
+\begin{verbatim}
+    boolean reverseDirection = false;       // variables we need later for cipher pipe
+    ZipType zipType = ZipType.None;
+    EncodeEnum encodingType = EncodeEnum.None;
+    KeyHash keyHash = KeyHash.Hex;
+    String inString = "Hallo, byte[] inside String will converted soonly!", outString = "";
+    String passKey = "MySecureKey", optCryptAlgos = "Aes,Des,Des3,Blowfish,Fish2,Fish3";
+    String[] algos = optCryptAlgos.split(",;:");   
+    byte[] outBytes = null, inBytes = inString.getBytes(StandardCharsets.UTF_8);
+    
+    CipherPipe pipe;                        // Create cipher pipe 4 en-/decrypting
+    if (passKey == null || passKey.isEmpty() || algos.length > 0) {
+        pipe =  new CipherPipe(algos, Constants.MAX_PIPE_LEN,
+                encodingType, zipType, keyHash, CipherMode2.CFB);  // CFB is default CipherMode
+        verbout("Created pipe without passkey: " + pipe.getPipeString());
+    } else {
+        pipe = new CipherPipe(passKey, keyHash.hash(passKey),
+                encodingType, zipType, keyHash, CipherMode2.CFB); // CFB instead old ECB
+        verbout("Created pipe with passkey=" + passKey + " pipe=" + pipe.getPipeString());
+    }
+    if (!reverseDirection) {                // encrypt
+        PrintPipe(pipe, reverseDirection);        
+        try {                               // CipherPipe encrypt encode
+            passKey = (passKey.length() == 0) ? " " : passKey;
+            outBytes = pipe.encryptEncodeBytes(inBytes,
+                        passKey, keyHash.hash(passKey),
+                        encodingType, zipType, keyHash, CipherMode2.CFB);
+        } catch (Exception exi) {
+            exi.printStackTrace();
+        }
+        outString = new String(outBytes);
+    } else {                                // decrypt
+        String inString = new String(inBytes);
+        PrintPipe(pipe, reverseDirection);        
+        try {                               // CipherPipe decode decrypt
+            passKey = (passKey == null || passKey.isEmpty()) ? "" : passKey;
+            outBytes = pipe.decodeDecrpytBytes(inBytes,
+                        passKey, (passKey.isEmpty() ? "" : keyHash.hash(passKey)),
+                        encodingType, zipType, keyHash, CipherMode2.CFB); 
+        } catch (Exception exi) {
+            exi.printStackTrace();
+        }
+    }
+\end{verbatim}
+\end{small}
 
 \subsection{How to write Mathematics}
 
