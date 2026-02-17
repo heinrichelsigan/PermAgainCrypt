@@ -33,6 +33,7 @@ import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
 import javax.swing.*;
+import javax.swing.event.MenuKeyEvent;
 
 /**
  * class CqrJdFrame is main form for PermAgainCrypt in java
@@ -157,7 +158,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuMain_itemOpen.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuMain_itemOpen.setText("Open...");
 		menuMain_itemOpen.setActionCommand("Open...");
-		menuMain_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, Event.CTRL_MASK));
+		menuMain_itemOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuMain_itemOpen.setMnemonic((int)'O');
 		menuMain_itemOpen.setFont(menuFont);
 		menuMain_itemOpen.addActionListener(aSymAction);
@@ -167,7 +168,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuMain_itemSave.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuMain_itemSave.setText("Save");
 		menuMain_itemSave.setActionCommand("Save");
-		menuMain_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
+		menuMain_itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuMain_itemSave.setMnemonic((int)'S');
 		menuMain_itemSave.setFont(menuFont);
 		menuMain_itemSave.addActionListener(aSymAction);
@@ -230,7 +231,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuMain.add(menuMain_itemShowComplex);
 
 		menuMain_itemExit.setText("Exit");
-		menuMain_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.ALT_MASK));
+		menuMain_itemExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X,  MenuKeyEvent.ALT_DOWN_MASK));
 		menuMain_itemExit.setActionCommand("Exit");
 		menuMain_itemExit.setMnemonic((int)'X');
 		menuMain_itemExit.setFont(menuFont);
@@ -248,7 +249,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_itemNone.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemNone.setText("None");
 		menuZip_itemNone.setActionCommand("None");
-		menuZip_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemNone.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemNone.setMnemonic((int)'N');
 		menuZip_itemNone.setEnabled(false);
 		menuZip_itemNone.setFont(menuFont);
@@ -259,7 +260,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_itemGz.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemGz.setText("GZip");
 		menuZip_itemGz.setActionCommand("GZip");
-		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemGz.setMnemonic((int)'G');
 		menuZip_itemGz.setFont(menuFont);
 		menuZip_itemGz.addActionListener(aSymAction);
@@ -269,7 +270,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_itemBz.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemBz.setText("BZip2"); 
 		menuZip_itemBz.setActionCommand("BZip2");
-		menuZip_itemBz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemBz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemBz.setMnemonic((int)'B');
 		menuZip_itemBz.setEnabled(false);
 		menuZip_itemBz.setFont(menuFont);
@@ -280,7 +281,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_itemZip.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_itemZip.setText("Zip");
 		menuZip_itemZip.setActionCommand("Zip");
-		menuZip_itemZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_itemZip.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemZip.setMnemonic((int)'Z');
 		menuZip_itemZip.setFont(menuFont);
 		menuZip_itemZip.setEnabled(false);
@@ -291,7 +292,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_item7z.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuZip_item7z.setText("7z");
 		menuZip_item7z.setActionCommand("7z");
-		menuZip_item7z.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+		menuZip_item7z.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_item7z.setEnabled(false);
 		menuZip_item7z.setMnemonic((int)'7');
 		menuZip_item7z.setEnabled(false);
@@ -1164,6 +1165,8 @@ public class CqrJFrameSimple extends JFrame {
 				saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
 
 				dropPanel.jLabelFileOut.setText(saveFileName);
+				dropPanel.jLabelImgOut.setVisible(true);
+				dropPanel.jLabelFileOut.setVisible(true);
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1199,10 +1202,14 @@ public class CqrJFrameSimple extends JFrame {
 
 	protected void showComplex_action(ActionEvent event) {
         try {
-            if (cqrJdFrame == null)
+            if (cqrJdFrame == null) {
                 cqrJdFrame = new CqrJdFrame(cqrJFrameSimple);
-		
-            cqrJdFrame.show();
+                //noinspection deprecation
+                cqrJdFrame.show();
+            } else {
+                cqrJdFrame.setVisible(true);
+            }
+
             setVisible(false);
             // cqrJFrameSimple.hide();
 		} catch (Exception exIO) {
@@ -1211,7 +1218,8 @@ public class CqrJFrameSimple extends JFrame {
 	}
 
 	
-	protected void help_action(ActionEvent event) {
+	@SuppressWarnings("deprecation")
+    protected void help_action(ActionEvent event) {
 	
 		String os = System.getProperty("os.name").toLowerCase();
 		Runtime rt = Runtime.getRuntime();

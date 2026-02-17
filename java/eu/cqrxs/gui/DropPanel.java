@@ -33,6 +33,7 @@ public class DropPanel extends JPanel {
     public JLabel message, jLabelImgIn, jLabelFileIn,  jLabelImgOut, jLabelFileOut;
 	private Font monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
     public static CqrJFrameSimple jFrameSimple;
+    public static CqrJdFrame jdFrame;
 
     public DropPanel(CqrJFrameSimple simple) {
 
@@ -46,12 +47,31 @@ public class DropPanel extends JPanel {
         initGui();
     }
 
+    public DropPanel(CqrJdFrame complex) {
+
+        if (complex != null)
+            jdFrame = complex;
+        else
+            jdFrame = (CqrJdFrame)getParent();
+        setLayout(null);
+        setSize(960, 108);
+        initGui();
+    }
+
 
 	public DropPanel() {
 
         setLayout(null);
         setSize(960, 108);
         initGui();
+    }
+
+    public void setCqrJdFrame(CqrJdFrame complex) {
+        if (complex != null)
+            jdFrame = complex;
+        else
+            jdFrame = (CqrJdFrame)getParent();
+
     }
 
     public void initGui() {
@@ -204,8 +224,43 @@ public class DropPanel extends JPanel {
 		// message.setText("'" + droppedFile + "'");
 
         DbgWriter.msg("Dropped: " + droppedFile, true);
+        int ridx = droppedFile.lastIndexOf('/');
+        if (ridx < 0)
+            ridx = droppedFile.lastIndexOf('\\');
+        String imgInName = (ridx > 0) ?
+                droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
+                droppedFile;
 
+        if (droppedFile.toLowerCase().endsWith(".jpg")  ||
+                droppedFile.toLowerCase().endsWith(".jpeg")  ||
+                droppedFile.toLowerCase().endsWith(".png")  ||
+                droppedFile.toLowerCase().endsWith(".gif")  ||
+                droppedFile.toLowerCase().endsWith(".bmp")  ||
+                droppedFile.toLowerCase().endsWith(".tif"))
+        {
+            imgFileIn = addImages(new String[] { droppedFile });
+            imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
+        }
+        else {
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgIconIn = new ImageIcon(imgFileIn);
+        }
+        remove(jLabelImgIn);
+        jLabelImgIn = new JLabel(imgIconIn);
+        jLabelImgIn.setBounds(4, 4, 60, 60);
+        add(jLabelImgIn);
 
+        jLabelFileIn.setText(imgInName);
+        jLabelImgOut.setVisible(false);
+        jLabelFileOut.setVisible(false);
+        // complex
+        if (jdFrame != null)
+            jdFrame.open_delegate(droppedFile);
+        // simple
+        if (jFrameSimple != null)
+            jFrameSimple.open_delegate(droppedFile);
+
+        /*
         Runnable run = new Runnable() {
             @Override
             public void run() {
@@ -239,12 +294,18 @@ public class DropPanel extends JPanel {
                 jLabelFileIn.setText(imgInName);
 				jLabelImgOut.setVisible(false);
 				jLabelFileOut.setVisible(false);
-                jFrameSimple.open_delegate(droppedFile);
+                // complex
+                if (jdFrame != null)
+                    jdFrame.open_delegate(droppedFile);
+                // simple
+                if (jFrameSimple != null)
+                    jFrameSimple.open_delegate(droppedFile);
                 // ((CqrJFrameSimple)getParent()).open_delegate();
                 // message.setText("Drop: '" + droppedFile + "'.");
             }
         };
         SwingUtilities.invokeLater(run);
+        */
     }
 
     // protected void importFiles(final List files) {

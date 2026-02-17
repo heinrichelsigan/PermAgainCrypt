@@ -63,6 +63,7 @@ public class CryptConsole  {
      * Main entry method
      * @param args String[]
      */
+    @SuppressWarnings("deprecation")
     public static void main(String[] args) {
         try {
             progName = CryptConsole.class
