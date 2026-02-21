@@ -214,11 +214,11 @@ namespace EU.CqrXs.Console
 
                 // Create cipher pipe for en-/decryption
                 SecureCipherPipe cpipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
-                                new SecureCipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, cmode2) :
-                                new SecureCipherPipe(passKey, encodingType, zipType, cmode2, verbose);
+                                new SecureCipherPipe(algos, Constants.MAX_PIPE_LEN, cmode2) :
+                                new SecureCipherPipe(passKey, cmode2, verbose);
 
                 PrintSecureCipherPipe(cpipe, reverseDirection);
-                outBytes = cpipe.CryptCodeBytes(inBytes, passKey ?? "", reverseDirection, encodingType, zipType, cmode2);
+                outBytes = cpipe.CryptCodeBytes(inBytes, passKey ?? "", reverseDirection, cmode2);
 
                 inBytes = outBytes;
 

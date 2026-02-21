@@ -18,8 +18,8 @@ EU.CqrXs.Console.exe -V -D -i=.\README.MD.Whirlpool.bz.Hex32 -e=hex32 -k=heinric
 EU.CqrXs.Console.exe -i=.\README.MD  -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -e=uu -o=.\README.MD.SCrypt.zip.uu
 EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -H=SCrypt -z=zip -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4  -o=.\READ_UNZIP.txt
 
-EU.CqrXs.Console.exe -i=.\README.MD -S -k=io.cqrxs.eu -o=.\README.MD.BCrypt.gz.base64
-    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.gz.base64 -S -k=io.cqrxs.eu  -o=.\README_SECURE.txt
+EU.CqrXs.Console.exe -i=.\README.MD -S -k=io.cqrxs.eu -o=.\README.MD.Crypt.gz.base64
+EU.CqrXs.Console.exe -D -i=.\README.MD.Crypt.gz.base64 -S -k=io.cqrxs.eu  -o=.\README_SECURE.txt
 
 
 start notepad READ_MD.txt

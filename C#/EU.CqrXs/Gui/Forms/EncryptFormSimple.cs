@@ -198,7 +198,7 @@ namespace EU.CqrXs.Gui.Forms
 
             this.textBoxPipe.Text = string.Empty;
             string hashhash = KeyHash.Whirlpool.Hash(KeyHash.SCrypt.Hash(this.textBoxKey.Text));
-            cPipe = new SecureCipherPipe(hashhash, GetEncoding(), GetZip(), GetCipherMode2());
+            cPipe = new SecureCipherPipe(hashhash, GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -221,7 +221,7 @@ namespace EU.CqrXs.Gui.Forms
 
             this.textBoxPipe.Text = string.Empty;
 
-            cPipe = new SecureCipherPipe(this.textBoxKey.Text, GetEncoding(), GetZip(), GetCipherMode2());
+            cPipe = new SecureCipherPipe(this.textBoxKey.Text, GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -294,8 +294,7 @@ namespace EU.CqrXs.Gui.Forms
                     return;
             }
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new SecureCipherPipe(pipeAlgos, 8,
-                                    GetEncoding(), GetZip(), GetCipherMode2());
+            cPipe = new SecureCipherPipe(pipeAlgos, 8, GetCipherMode2());
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateEncryptPipeImage());
 
@@ -310,8 +309,7 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
 
-                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, 
-                        GetEncoding(), GetZip(), GetCipherMode2());
+                    string encrypted = cPipe.EncrpytTextGoRounds(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, GetCipherMode2());
                     this.tabControlWithHexDest.EncoderType = GetEncoding();
                     this.tabControlWithHexDest.AsciiText = encrypted;
                     await this.statusLabelDestination.SetTextAsync($"destination chars: {this.tabControlWithHexDest.AsciiText.Length}");
@@ -347,8 +345,7 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
 
-                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text,
-                        GetEncoding(), GetZip(), GetCipherMode2());
+                    byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, GetCipherMode2());
                     string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
                     string outFilePath = (fileName + GetHash().GetExtension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
 
@@ -435,7 +432,7 @@ namespace EU.CqrXs.Gui.Forms
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new SecureCipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetCipherMode2());
+            cPipe = new SecureCipherPipe(pipeAlgos, 8, GetCipherMode2());
             // SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateDecryptPipeImage());
             await this.groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());
 
@@ -450,8 +447,7 @@ namespace EU.CqrXs.Gui.Forms
                 {
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
 
-                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, 
-                        GetEncoding(), GetZip(), GetCipherMode2());
+                    string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, GetCipherMode2());
                     this.tabControlWithHexDest.EncoderType = GetEncoding();
                     this.tabControlWithHexDest.AsciiText = decrypted;
 
@@ -484,8 +480,7 @@ namespace EU.CqrXs.Gui.Forms
                 try
                 {
                     byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(fileName);
-                    byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, 
-                        GetEncoding(), GetZip(), GetCipherMode2());
+                    byte[] outBytes = cPipe.DecodeDecrpytBytes(fileBytes, this.textBoxKey.Text, GetCipherMode2());
 
                     string outFileDecrypt = fileName.StripCiphersInFileName();
 

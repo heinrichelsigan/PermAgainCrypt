@@ -36,7 +36,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         #region fields and properties
 
         protected internal string cipherKeyHash = "";
-        protected internal ZipType zType = ZipType.None;
+        protected internal ZipType zType = ZipType.GZip;
         protected internal CipherEnum[] inPipe;
         protected internal EncodingType encodeType = EncodingType.Base64;
         // private readonly string pipeString;
@@ -44,12 +44,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <summary>
         /// ZType is current <see cref="ZipType"/>
         /// </summary>
-        public ZipType ZType { get => zType; set => zType = value; }
+        public ZipType ZType { get => zType; }
 
         /// <summary>
         /// Current <see cref="EncodeType"/> 
         /// </summary>
-        public EncodingType EncodeType { get => encodeType; set => encodeType = value; }
+        public EncodingType EncodeType { get => encodeType; }
 
         /// <summary>
         /// InPipe is current encryption pipe
@@ -111,11 +111,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="cipherEnums">array of <see cref="T:CipherEnum[]"/> as inpipe</param>
         /// <param name="maxpipe">size of max. pipe stages, can't be greater than 8</param>
-        /// <param name="encType"><see cref="EncodeType"/></param>
-        /// <param name="zpType"><see cref="ZipType"/></param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
-        public SecureCipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8,
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public SecureCipherPipe(CipherEnum[] cipherEnums, uint maxpipe = 8, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -124,8 +121,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             inPipe = new CipherEnum[isize];
             Array.Copy(cipherEnums, inPipe, isize);
 
-            encodeType = encType;
-            zType = zpType;
+            encodeType = EncodingType.Base64;
+            zType = ZipType.GZip;
             CMode2 = cmode2;
         }
 
@@ -134,11 +131,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="cipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        /// <param name="encType"><see cref="EncodeType"/></param>
-        /// <param name="zpType"><see cref="Zip.ZipType"/></param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
-        public SecureCipherPipe(string[] cipherAlgos, uint maxpipe = 8, EncodingType encType = EncodingType.Base64,
-            ZipType zpType = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public SecureCipherPipe(string[] cipherAlgos, uint maxpipe = 8, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -162,8 +156,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             inPipe = cipherEnums.ToArray();
 
-            encodeType = encType;
-            zType = zpType;
+            zType = ZipType.GZip;
+            encodeType = EncodingType.Base64;
             CMode2 = cmode2;
         }
 
@@ -171,16 +165,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// SecureCipherPipe ctor with array of user key bytes
         /// </summary>
         /// <param name="keyBytes">user key bytes</param>
-        /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        /// <param name="encType"><see cref="EncodeType"/></param>
-        /// <param name="zpType"><see cref="Zip.ZipType"/></param>
-        /// <param name="kh"><see cref="KeyHash"/></param>
+        /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>        
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <param name="verbose"></param>
         /// <exception cref="ArgumentException"></exception>
-        public SecureCipherPipe(byte[] keyBytes, uint maxpipe = 8,
-            EncodingType encType = EncodingType.Base64, ZipType zpType = ZipType.None,
-            CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
+        public SecureCipherPipe(byte[] keyBytes, uint maxpipe = 8, CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
         {
             // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
             maxpipe = (maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe; // if somebody wants more, he/she/it gets less
@@ -208,8 +197,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             inPipe = pipeList.ToArray();
 
-            zType = zpType;
-            encodeType = encType;
+            zType = ZipType.GZip;
+            encodeType = EncodingType.Base64;
             CMode2 = cmode2;
 
         }
@@ -219,13 +208,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="CryptHelper.GetUserKeyBytes(string, string, int)"/>
         /// </summary>
         /// <param name="keyHash">secret key to generate pipe</param>
-        /// <param name="encType"></param>
-        /// <param name="zpType"></param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <param name="verbose"></param>
-        public SecureCipherPipe(string keyHash, EncodingType encType = EncodingType.Base64,
-            ZipType zpType = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
-            : this(CryptHelper.GetKeyBytesSingle(keyHash, 16), Constants.MAX_PIPE_LEN, encType, zpType, cmode2, verbose)
+        public SecureCipherPipe(string keyHash, CipherMode2 cmode2 = CipherMode2.CFB, bool verbose = false)
+            : this(CryptHelper.GetKeyBytesSingle(keyHash, 16), Constants.MAX_PIPE_LEN, cmode2, verbose)
         {
             cipherKeyHash = keyHash;
         }
@@ -236,7 +222,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="key"></param>
         /// <param name="verbose"></param>
         public SecureCipherPipe(string key, bool verbose = false)
-            : this(key, EncodingType.Base64, ZipType.None, CipherMode2.CFB, verbose)
+            : this(key, CipherMode2.CFB, verbose)
         {
             cipherKeyHash = key;
         }
@@ -396,18 +382,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="tinSource">plain string, char[], byte[], IEnumerable{char}, IEnumerable{bytes}</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="encoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
-        /// <param name="zipBefore">Zip bytes with <see cref="ZipType"/> before passing them in encrypted stage pipeline. <see cref="ZipTypeExtensions.Zip(ZipType, byte[])"/></param>
         /// <param name="cmode2"></param>
         /// <returns>encrypted generic type</returns>
         /// <exception cref="CException">is thrown on unknown type</exception>
-        public static TRet EncrpytT<TRet, TIn>(TIn tinSource, string cryptKey,
-            EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None,
-            CipherMode2 cmode2 = CipherMode2.CFB)
+        public static TRet EncrpytT<TRet, TIn>(TIn tinSource, string cryptKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             byte[] stringBytes = new List<byte>().ToArray();
-            // construct symmetric cipher pipeline with cryptKey, keyIv, encopding, zipBefore, keyHash and cmode2
-            SecureCipherPipe cipherPipe = new SecureCipherPipe(cryptKey, encoding, zipBefore, cmode2, true);
+            // construct symmetric cipher pipeline with cryptKey and cmode2
+            SecureCipherPipe cipherPipe = new SecureCipherPipe(cryptKey, cmode2, false);
 
             if (tinSource is string inString)   // Transform string to bytes
                 stringBytes = Encoding.UTF8.GetBytes(inString);
@@ -421,12 +403,12 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 stringBytes = bytesEnumerable.ToArray();
             else throw new CException($"Unknown type Exception, type {typeof(TIn)} is not supported.");
 
-            // zip if requested
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(stringBytes) : stringBytes;
+            // zip GZ
+            byte[] zippedBytes = ZipType.GZip.Zip(stringBytes);
             // encrypt in a marry go round way
             byte[] encryptedBytes = cipherPipe.MerryGoRoundEncrpyt(zippedBytes, cryptKey, cmode2);
             // encode after encryption pipe
-            String encryptedString = encoding.GetEnCoder().Encode(encryptedBytes);
+            String encryptedString = EncodingType.Base64.GetEnCoder().Encode(encryptedBytes);
 
             TRet result = default(TRet);
             if (typeof(TRet) == typeof(string))
@@ -456,18 +438,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// <param name="tinSource">encrypted message</param>
         /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
         /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-        /// <param name="decoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
-        /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
-        /// <param name="mode2"></param>
+        /// <param name="cmode2"></param>
         /// <returns>Decrypted generic TRet</returns>
         /// <exception cref="CException">is thrown on unknown type</exception>
-        public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey,
-            EncodingType decoding = EncodingType.Base64, ZipType unzipAfter = ZipType.None,
-            CipherMode2 cmode2 = CipherMode2.CFB)
+        public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             byte[] stringBytes = new List<byte>().ToArray();
             // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
-            SecureCipherPipe cPipe = new SecureCipherPipe(cryptKey, decoding, unzipAfter, cmode2, true);
+            SecureCipherPipe cPipe = new SecureCipherPipe(cryptKey, cmode2, false);
             string pipeString = cPipe.PipeString;
             string incomingEncoded = string.Empty;
 
@@ -484,11 +462,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             else throw new CException($"Unknown type Exception, type {typeof(TIn)} is not supported.");
 
             // get bytes from encrypted encoded string dependent on the encoding type (uu, base64, base32,..)
-            byte[] cipherBytes = decoding.GetEnCoder().Decode(incomingEncoded);
+            byte[] cipherBytes = EncodingType.Base64.GetEnCoder().Decode(incomingEncoded);
             // staged decryption of bytes
             byte[] intermediatBytes = cPipe.DecrpytRoundGoMerry(cipherBytes, cryptKey, cmode2);
             // Unzip after if necessary
-            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
+            byte[] decryptedBytes = ZipType.GZip.Unzip(intermediatBytes);
 
             TRet result = default(TRet);
             if (typeof(TRet) == typeof(string))
@@ -579,13 +557,9 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="inString">plain text to encrypt</param>
         /// <param name="cryptKey">prviate key for encryption</param>
-        /// <param name="encoding"><see cref="EncodingType"/></param>
-        /// <param name="zipBefore"><see cref="ZipType"/></param>
         /// <param name="cmode2"></param>
         /// <returns>UTF9 emcoded encrypted string without binary data</returns>
-        public virtual string EncrpytTextGoRounds(string inString, string cryptKey,
-            EncodingType encoding = EncodingType.Base64, ZipType zipBefore = ZipType.None,
-            CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual string EncrpytTextGoRounds(string inString, string cryptKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             cipherKeyHash = (string.IsNullOrEmpty(cryptKey)) ? cipherKeyHash : cryptKey;
 
@@ -593,13 +567,13 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             // byte[] inBytes = EnDeCodeHelper.GetBytesFromString(inString);
             byte[] inBytes = System.Text.Encoding.UTF8.GetBytes(inString);
             // zip if requested
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
+            byte[] zippedBytes = (ZType != ZipType.None) ? ZType.Zip(inBytes) : inBytes;
 
             // now encrypt with pipe
             byte[] encryptedBytes = MerryGoRoundEncrpyt(zippedBytes, cipherKeyHash, CMode2);
 
             // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-            string encrypted = encoding.EnCode(encryptedBytes);
+            string encrypted = encodeType.EnCode(encryptedBytes);
 
             return encrypted;
         }
@@ -610,27 +584,23 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         /// <param name="cryptedEncodedMsg">encoded encrypted ASCII string</param>
         /// <param name="cryptKey">prviate key for encryption</param>
-        /// <param name="decoding"><see cref="EncodingType"/></param>
-        /// <param name="unzipAfter"><see cref="ZipType"/></param>
         /// <param name="cmode2"></param>
         /// <returns>decrypted UTF8 string, containing no binary data</returns>
-        public virtual string DecryptTextRoundsGo(string cryptedEncodedMsg, string cryptKey,
-            EncodingType decoding = EncodingType.Base64, ZipType unzipAfter = ZipType.None,
-            CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual string DecryptTextRoundsGo(string cryptedEncodedMsg, string cryptKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
 
             cipherKeyHash = (string.IsNullOrEmpty(cryptKey)) ? cipherKeyHash : cryptKey;
 
             // Decoded encoded bytes first, if necessary
-            byte[] cipherBytes = (decoding != EncodingType.None) ?
-                decoding.GetEnCoder().Decode(cryptedEncodedMsg) :
+            byte[] cipherBytes = (encodeType != EncodingType.None) ?
+                encodeType.GetEnCoder().Decode(cryptedEncodedMsg) :
                 System.Text.Encoding.UTF8.GetBytes(cryptedEncodedMsg);
 
 
             // perform multi crypt pipe stages
             byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cipherKeyHash, CMode2);
             // Unzip after all, if it's necessary
-            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
+            byte[] decryptedBytes = (ZType != ZipType.None) ? ZType.Unzip(intermediatBytes) : intermediatBytes;
 
             string decrypted = System.Text.Encoding.UTF8.GetString(decryptedBytes);
 
@@ -642,73 +612,61 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         }
 
 
-        public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey,
-            ZipType zipBefore = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual byte[] EncrpytGoRounds(byte[] inBytes, string secretKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;
-            ZType = zipBefore;
             CMode2 = cmode2;
 
             // zip if requested
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
+            byte[] zippedBytes = zType.Zip(inBytes);
             // encrypt in a marry go round way
             return MerryGoRoundEncrpyt(zippedBytes, cipherKeyHash, cmode2);
         }
 
 
-        public virtual byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey,
-            ZipType unzipAfter = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual byte[] DecrpytRoundsGo(byte[] cipherBytes, string secretKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;
-            ZType = unzipAfter;
             CMode2 = cmode2;
 
             // perform multi crypt pipe stages
             byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
             // Unzip after if necessary
-            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
+            byte[] decryptedBytes = ZType.Unzip(intermediatBytes);
 
             return decryptedBytes;
         }
 
 
-        public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey,
-            EncodingType encType = EncodingType.Base64,
-            ZipType zipBefore = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual byte[] EncryptEncodeBytes(byte[] inBytes, string secretKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
-            cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;
-            encodeType = encType;
-            ZType = zipBefore;
+            cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;            
             CMode2 = cmode2;
 
             // zip if requested
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.Zip(inBytes) : inBytes;
+            byte[] zippedBytes = (ZType != ZipType.None) ? ZType.Zip(inBytes) : inBytes;
             // now encrypt with pipe
             byte[] outBytes = MerryGoRoundEncrpyt(zippedBytes, cipherKeyHash, CMode2);
             // encode after encryption pipe
-            if (encType == EncodingType.None)
+            if (encodeType == EncodingType.None)
                 return outBytes;
 
-            return System.Text.Encoding.UTF8.GetBytes(encType.EnCode(outBytes));
+            return System.Text.Encoding.UTF8.GetBytes(encodeType.EnCode(outBytes));
         }
 
-        public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey,
-            EncodingType encType = EncodingType.Base64,
-            ZipType unzipAfter = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+        public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, CipherMode2 cmode2 = CipherMode2.CFB)
         {
-            cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;
-            encodeType = encType;
-            ZType = unzipAfter;
+            cipherKeyHash = (string.IsNullOrEmpty(secretKey)) ? cipherKeyHash : secretKey;            
             CMode2 = cmode2;
 
             // Decoded encoded bytes first, if necessary
-            byte[] cipherBytes = (encType != EncodingType.None) ?
+            byte[] cipherBytes = (encodeType != EncodingType.None) ?
                 encodeType.GetEnCoder().Decode(System.Text.Encoding.UTF8.GetString(encodedBytes)) :
                 encodedBytes;
             // perform multi crypt pipe stages
             byte[] intermediatBytes = DecrpytRoundGoMerry(cipherBytes, cipherKeyHash, CMode2);
             // Unzip after all, if it's necessary
-            byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.Unzip(intermediatBytes) : intermediatBytes;
+            byte[] decryptedBytes = (ZType != ZipType.None) ? ZType.Unzip(intermediatBytes) : intermediatBytes;
 
             return decryptedBytes;
         }
@@ -717,23 +675,20 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         /// <summary>
         /// Multi functional 
-        /// <see cref="EncryptEncodeBytes(byte[], string, EncodingType, ZipType, CipherMode2)"/>
-        /// <see cref="DecodeDecrpytBytes(byte[], string, EncodingType, ZipType, CipherMode2)"/>
+        /// <see cref="EncryptEncodeBytes(byte[], string, CipherMode2)"/>
+        /// <see cref="DecodeDecrpytBytes(byte[], string, CipherMode2)"/>
         /// </summary>
         /// <param name="inBytes">incoming bytes</param>
         /// <param name="secretKey">user private key</param>
-        /// <param name="directionDecrypt">true for decryption, false for encryption</param>
-        /// <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
-        /// <param name="zip">compression method to zip before or unzip after pipe processed</param>
+        /// <param name="directionDecrypt">true for decryption, false for encryption</param>        
         /// <param name="cmode2"></param>
         /// <returns>transformed byte array</returns>
         public virtual byte[] CryptCodeBytes(byte[] inBytes, string secretKey,
-            bool directionDecrypt = false, EncodingType encType = EncodingType.Base64,
-            ZipType zip = ZipType.None, CipherMode2 cmode2 = CipherMode2.CFB)
+            bool directionDecrypt = false, CipherMode2 cmode2 = CipherMode2.CFB)
         {
             return (!directionDecrypt) ?
-                EncryptEncodeBytes(inBytes, secretKey, encType, zip, cmode2) :
-                DecodeDecrpytBytes(inBytes, secretKey, encType, zip, cmode2);
+                EncryptEncodeBytes(inBytes, secretKey, cmode2) :
+                DecodeDecrpytBytes(inBytes, secretKey, cmode2);
         }
 
 

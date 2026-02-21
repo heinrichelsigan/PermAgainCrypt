@@ -204,9 +204,9 @@ namespace EU.CqrXs.Spooler
                     if (!decryptDirection) // encrypting
                     {
                         // CipherPipe and all CipherEnum's
-                        sPipe = new SecureCipherPipe(keyHash.Hash(passKey), encodingType, zipType, cmode2, true);
+                        sPipe = new SecureCipherPipe(keyHash.Hash(passKey), cmode2, false);
                         PrintSecureCipherPipe(sPipe, decryptDirection);
-                        outBytes = sPipe.EncryptEncodeBytes(inBytes, passKey, encodingType, zipType, cmode2);
+                        outBytes = sPipe.EncryptEncodeBytes(inBytes, passKey, cmode2);
                         ofName += sPipe.PipeFullExtension;
                     }
                     else if (file.IsPermAgainCryptFile()) // decrypting
@@ -224,7 +224,7 @@ namespace EU.CqrXs.Spooler
                         PrintSecureCipherPipe(sPipe, decryptDirection);
                         try
                         {
-                            outBytes = sPipe.DecodeDecrpytBytes(inBytes, passKey, encodingType, zipType, cmode2);
+                            outBytes = sPipe.DecodeDecrpytBytes(inBytes, passKey, cmode2);
                         }
                         catch (Exception exDecrypt)
                         {

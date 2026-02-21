@@ -1439,7 +1439,7 @@ namespace EU.CqrXs.Util
 
             if (cipherEnums.Count > 0)
             {
-                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, CipherMode2.CFB);
+                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, CipherMode2.CFB);
                 if (strippedFileName.Contains("." + secCipherPipe.PipeString))
                 {
                     strippedFileName = strippedFileName.Replace("." + secCipherPipe.PipeString, "");
@@ -1447,7 +1447,7 @@ namespace EU.CqrXs.Util
             }
 
             if (secCipherPipe == null || secCipherPipe.InPipe.Length == 0)
-                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, eType, zipTyp, CipherMode2.CFB);
+                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, CipherMode2.CFB);
 
             return strippedFileName;
         }

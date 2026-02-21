@@ -409,7 +409,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
             // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
-            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.EncodeType, sPipe.ZType);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key);
             // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
@@ -433,7 +433,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
-            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.EncodeType, sPipe.ZType);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key);
             // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
