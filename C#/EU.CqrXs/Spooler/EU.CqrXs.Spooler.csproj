@@ -43,7 +43,7 @@
 
   <ItemGroup>
     <Content Include="README.MD">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SatIcon.ico" />
   </ItemGroup>
@@ -54,9 +54,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
+
   <ItemGroup>
     <ProjectReference Include="..\EU.CqrXs.csproj" />
   </ItemGroup>
+
 
   <ItemGroup>
     <None Update="Spooler_Test.bat">

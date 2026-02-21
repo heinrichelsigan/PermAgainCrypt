@@ -7,8 +7,9 @@ Usage:  EU.CqrXs.Spooler.exe
         -i  | --inDir={SpoolerInFilesDirectory}
         -o  | --outDir={SpoolerOutFilesDirectory}
 		-D  | --Decrypt 	(decrypt instead of encrypt, by generating pipe from filename)
-        -V  | --verbose 	(verbose output)
 		-k  | --key={Key} 	(read from stdin, when parameter is missing to have real secret)
+        -V  | --verbose 	(verbose output)
+        -S  | --secure 	    (use SecureCipherPipe instead of CipherPipe)
         -?  | --gethelp		(shows that help)
 
 Example:

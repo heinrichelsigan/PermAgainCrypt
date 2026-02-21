@@ -154,9 +154,10 @@ namespace EU.CqrXs.Spooler
                 string ofName = Path.GetFileName(file);         // gets full filename without directory path
                 Verbose($"reading {inBytes.Length} bytes from file {ofName}");
 
+                keyHash = KeyHashes[((++hc) % KeyHashes.Length)];
+
                 if (!secureCipher)
-                {
-                    keyHash = KeyHashes[((++hc) % KeyHashes.Length)];
+                {                    
                     encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
                     zipType = ZipTypes[((++zc) % ZipTypes.Length)];
 
@@ -198,7 +199,6 @@ namespace EU.CqrXs.Spooler
                 {
                     encodingType = EncodingType.Base64;
                     zipType = ZipType.GZip;
-                    keyHash = KeyHash.Hex;
 
                     SecureCipherPipe sPipe;
                     if (!decryptDirection) // encrypting

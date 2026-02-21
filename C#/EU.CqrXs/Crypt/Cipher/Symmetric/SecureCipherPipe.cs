@@ -502,6 +502,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 return inBytes;
 
             cipherKeyHash = string.IsNullOrEmpty(secretKey) ? secretKey : secretKey;
+            if (cipherKeyHash.Length > 31)
+                cipherKeyHash = cipherKeyHash.Substring(0, 32);
             CMode2 = cmode2;
 
             int merry = 0;
@@ -531,8 +533,10 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         {
             if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
                 return cipherBytes;
-           
+
             cipherKeyHash = string.IsNullOrEmpty(secretKey) ? cipherKeyHash : secretKey;
+            if (cipherKeyHash.Length > 31)
+                cipherKeyHash = cipherKeyHash.Substring(0, 32);
             CMode2 = cmode2;
             
             KeyHash[] secureHashes = KeyHash_Extensions.GetSecureHashes();
@@ -541,7 +545,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             byte[] decryptedBytes = new byte[cipherBytes.Length];
             foreach (CipherEnum cipher in OutPipe)
             {
-                string cipherHashKey = secureHashes[merry % secureHashes.Length].Hash(cipherKeyHash);
+                string cipherHashKey = secureHashes[merry % secureHashes.Length].Hash(cipherKeyHash);                
                 if ((--merry) < 0) merry = secureHashes.Length - 1;
 
                 decryptedBytes = DecryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
