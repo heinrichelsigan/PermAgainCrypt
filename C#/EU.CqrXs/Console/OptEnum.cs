@@ -24,6 +24,7 @@ namespace EU.CqrXs.Console
         OutP = 0x7,
         DeCrypt = 0x8,
         // SymmCipher = 0x9,
+        SecureCipher = 0x10,
         Mode = 0xa,
         Verbose = 0xe,
         Help = 0xf
@@ -99,6 +100,11 @@ namespace EU.CqrXs.Console
                     return optArgs;
                 case 'D':
                     optEnum = OptEnum.DeCrypt;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
+                case 's':
+                case 'S':
+                    optEnum = OptEnum.SecureCipher;
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
                 case 'v':

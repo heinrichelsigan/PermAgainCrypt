@@ -10,9 +10,9 @@ pause
 del /s /v /q Out\*.*
 
 
-EU.CqrXs.Spooler.exe -V -S -k=jo@io.cqrxs.eu -i=In\ -o=Encrypt\ 
+EU.CqrXs.Spooler.exe -V -S -k=jo@io.cqrxs.eu -i=.\In\ -o=.\Encrypt\ 
 echo "Decompressing from directory!"
-EU.CqrXs.Spooler.exe -D -V -S -k=jo@io.cqrxs.eu -i=Encrypt\ -o=Out\ 
+EU.CqrXs.Spooler.exe -D -V -S -k=jo@io.cqrxs.eu -i=.\Encrypt\ -o=.\Out\ 
 del /s /v /q Encrypt\*.*
 pause
 del /s /v /q Out\*.*

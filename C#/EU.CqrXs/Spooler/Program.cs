@@ -37,7 +37,7 @@ namespace EU.CqrXs.Spooler
         OutDir = 0x2,
         Decrypt = 0x3,
         Key = 0x4,
-        // Symmetric = 0x5,
+        Secure = 0x5,
         Mode = 0x6,
         Verbose = 0xe,
         Help = 0xf
@@ -55,6 +55,7 @@ namespace EU.CqrXs.Spooler
     /// -k | --Key={users key}   
     /// -D | --Decrypt 
     /// -M | --mode={CBC|CFB|ECB} default: CFB
+    /// -S | --secure
     /// -V | --verbose
     /// -? | --help
     /// </summary>
@@ -71,10 +72,11 @@ namespace EU.CqrXs.Spooler
     /// -k | --Key=secretKey
     /// -D | --Decrypt 
     /// -M | --mode={CBC|CFB|ECB} default: CFB
+    /// -S | --secure
     /// -V | --verbose      // verbose output
     /// -? | --help\n";
         // generic spooler variables
-        static bool decryptDirection = false, verbose = false;
+        static bool decryptDirection = false, verbose = false, secureCipher = false;
         static string inDir = "", outDir = "", keyFile = "";
         static string[] keys = new string[0], files = new string[0];
 
@@ -147,48 +149,92 @@ namespace EU.CqrXs.Spooler
             foreach (string file in files)
             {
                 passKey = key; // keys[((kc++) % KeyHashes.Length)];
-                keyHash = KeyHashes[((++hc) % KeyHashes.Length)];
-                encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
-                zipType = ZipTypes[((++zc) % ZipTypes.Length)];
-
-                startDate = DateTime.Now;           
+                startDate = DateTime.Now;
                 inBytes = File.ReadAllBytes(file);        // read all bytes from file
                 string ofName = Path.GetFileName(file);         // gets full filename without directory path
                 Verbose($"reading {inBytes.Length} bytes from file {ofName}");
 
-                CipherPipe cPipe;
-                if (!decryptDirection) // encrypting
+                if (!secureCipher)
                 {
-                    // CipherPipe and all CipherEnum's
-                    cPipe = new CipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
-                    PrintCipherPipe(cPipe, decryptDirection);
-                    outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                    ofName += cPipe.PipeFullExtension;
-                }
-                else if (file.IsPermAgainCryptFile()) // decrypting
-                {
-                    keyHash = KeyHash.Hex;
-                    zipType = ZipType.None;
+                    keyHash = KeyHashes[((++hc) % KeyHashes.Length)];
+                    encodingType = AsciiEncoders[((++ec) % AsciiEncoders.Length)];
+                    zipType = ZipTypes[((++zc) % ZipTypes.Length)];
 
-                    ofName = ofName.StripCipherPipeFromFileName(out cPipe);
-                    if (cPipe != null)
+                    CipherPipe cPipe;
+                    if (!decryptDirection) // encrypting
                     {
-                        keyHash = cPipe.KHash;
-                        encodingType = cPipe.EncodeType;
-                        zipType = cPipe.ZType;
+                        // CipherPipe and all CipherEnum's
+                        cPipe = new CipherPipe(keyHash.Hash(passKey), passKey, encodingType, zipType, keyHash, cmode2);
+                        PrintCipherPipe(cPipe, decryptDirection);
+                        outBytes = cPipe.EncryptEncodeBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        ofName += cPipe.PipeFullExtension;
                     }
-                    PrintCipherPipe(cPipe, decryptDirection);
-                    try
+                    else if (file.IsPermAgainCryptFile()) // decrypting
                     {
-                        outBytes = cPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
-                    }
-                    catch (Exception exDecrypt)
-                    {
-                        decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
-                        outBytes = new byte[0];
-                        Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
+                        keyHash = KeyHash.Hex;
+                        zipType = ZipType.None;
+
+                        ofName = ofName.StripCipherPipeFromFileName(out cPipe);
+                        if (cPipe != null)
+                        {
+                            keyHash = cPipe.KHash;
+                            encodingType = cPipe.EncodeType;
+                            zipType = cPipe.ZType;
+                        }
+                        PrintCipherPipe(cPipe, decryptDirection);
+                        try
+                        {
+                            outBytes = cPipe.DecodeDecrpytBytes(inBytes, passKey, keyHash.Hash(passKey), encodingType, zipType, keyHash, cmode2);
+                        }
+                        catch (Exception exDecrypt)
+                        {
+                            decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {cPipe.PipeFullExtension}", exDecrypt);
+                            outBytes = new byte[0];
+                            Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
+                        }
                     }
                 }
+                else
+                {
+                    encodingType = EncodingType.Base64;
+                    zipType = ZipType.GZip;
+                    keyHash = KeyHash.Hex;
+
+                    SecureCipherPipe sPipe;
+                    if (!decryptDirection) // encrypting
+                    {
+                        // CipherPipe and all CipherEnum's
+                        sPipe = new SecureCipherPipe(keyHash.Hash(passKey), encodingType, zipType, cmode2, true);
+                        PrintSecureCipherPipe(sPipe, decryptDirection);
+                        outBytes = sPipe.EncryptEncodeBytes(inBytes, passKey, encodingType, zipType, cmode2);
+                        ofName += sPipe.PipeFullExtension;
+                    }
+                    else if (file.IsPermAgainCryptFile()) // decrypting
+                    {
+                        keyHash = KeyHash.Hex;
+                        zipType = ZipType.None;
+
+                        ofName = ofName.StripSecureCipherPipeFromFileName(out sPipe);
+                        if (sPipe != null)
+                        {
+                            keyHash = KeyHash.Hex;
+                            encodingType = sPipe.EncodeType;
+                            zipType = sPipe.ZType;
+                        }
+                        PrintSecureCipherPipe(sPipe, decryptDirection);
+                        try
+                        {
+                            outBytes = sPipe.DecodeDecrpytBytes(inBytes, passKey, encodingType, zipType, cmode2);
+                        }
+                        catch (Exception exDecrypt)
+                        {
+                            decryptExc = new CException($"{exDecrypt.GetType()} was thrown decrypting {ofName} with {sPipe.PipeFullExtension}", exDecrypt);
+                            outBytes = new byte[0];
+                            Verbose($"{exDecrypt.GetType()}: {exDecrypt.Message}\n\t{exDecrypt.ToString()}", true);
+                        }
+                    }
+                }                
+                
                 
                 string outFile = Path.Combine(outDir, ofName);
                 if (outBytes != null && outBytes.Length > 0)
@@ -333,6 +379,13 @@ namespace EU.CqrXs.Spooler
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
 
+                case 's':
+                case 'S':
+                    secureCipher = true;
+                    optEnum = OptSpoolEnum.Secure;
+                    optArgs[0] = optEnum.ToString();
+                    return optArgs;
+
                 case 'v':
                 case 'V':
                     optEnum = OptSpoolEnum.Verbose;
@@ -424,7 +477,27 @@ namespace EU.CqrXs.Spooler
                     $"EncodeType={cipherPipe.EncodeType} CipherMode={cipherPipe.CMode2} PipeString={cipherPipe.PipeString}");
             }
         }
-        
+
+
+        /// <summary>
+        /// Prints the properties of <see cref="SecureCipherPipe"/>
+        /// </summary>
+        /// <param name="secCipherPipe"><see cref="SecureCipherPipe"/></param>
+        /// <param name="outPipe">direction decrypt</param>
+        public static void PrintSecureCipherPipe(SecureCipherPipe secCipherPipe, bool outPipe = false)
+        {
+            if (verbose)
+            {
+                CipherEnum[] ciphers = (outPipe) ? secCipherPipe.OutPipe : secCipherPipe.InPipe;
+                System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
+                foreach (CipherEnum cipher in ciphers)
+                    System.Console.Write($"{cipher}=>");
+                System.Console.WriteLine($"\r\nSecureCipherPipe: ZipType={secCipherPipe.ZType} " +
+                    $"EncodeType={secCipherPipe.EncodeType} CipherMode={secCipherPipe.CMode2} PipeString={secCipherPipe.PipeString}");
+            }
+        }
+
+
         #endregion print verbose debug info
 
     }

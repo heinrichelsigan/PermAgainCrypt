@@ -1,4 +1,5 @@
 ﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
@@ -26,7 +27,8 @@ namespace EU.CqrXs.Console
     ///         default: CFB
     /// -e | --encode={raw|hex16|hex32|base32|base64|uu}
     ///         default: base64
-    /// -o | --outFile= | --outText=EnviromentVariable | --outStd        
+    /// -o | --outFile= | --outText=EnviromentVariable | --outStd      
+    /// -S | --secureCipher
     /// -D | --Decrypt 
     /// -? | --gethelp
     /// </summary>
@@ -54,7 +56,7 @@ namespace EU.CqrXs.Console
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
         static string? inName = null, outName = null, outEnviron = null, key = null;
-        static bool reverseDirection = false, verbose = false;
+        static bool reverseDirection = false, verbose = false, secureCipher = false;
         static FileInfo? inFile = null, outFile = null;
         static byte[]? inBytes = null, outBytes = null;
         static string passKey = "";
@@ -158,6 +160,9 @@ namespace EU.CqrXs.Console
                     case OptEnum.CipherAlgos:
                         encryptOptLater = optStr;
                         break;
+                    case OptEnum.SecureCipher:
+                        secureCipher = true;                             
+                        break;
                     case OptEnum.DeCrypt:
                         reverseDirection = true;
                         break;
@@ -200,6 +205,31 @@ namespace EU.CqrXs.Console
                     inBytes = new byte[outBytes.Length];
                     Array.Copy(outBytes, 0, inBytes, 0, outBytes.Length);
                 }
+            }
+
+            if (secureCipher)
+            {
+                zipType = ZipType.GZip;
+                encodingType = EncodingType.Base64;
+
+                // Create cipher pipe for en-/decryption
+                SecureCipherPipe cpipe = (algos.Length > 0 || string.IsNullOrEmpty(passKey)) ?
+                                new SecureCipherPipe(algos, Constants.MAX_PIPE_LEN, encodingType, zipType, cmode2) :
+                                new SecureCipherPipe(passKey, encodingType, zipType, cmode2, verbose);
+
+                PrintSecureCipherPipe(cpipe, reverseDirection);
+                outBytes = cpipe.CryptCodeBytes(inBytes, passKey ?? "", reverseDirection, encodingType, zipType, cmode2);
+
+                inBytes = outBytes;
+
+                if (outFile != null)
+                    File.WriteAllBytes(outFile.FullName, outBytes);
+                else if (string.IsNullOrEmpty(outName))
+                    System.Console.WriteLine(Encoding.UTF8.GetString(outBytes));
+                else if (!string.IsNullOrEmpty(outEnviron))
+                    System.Environment.SetEnvironmentVariable(outEnviron, Encoding.UTF8.GetString(outBytes));
+
+                return;
             }
 
             // Create cipher pipe for en-/decryption
@@ -253,6 +283,7 @@ namespace EU.CqrXs.Console
     -e  | --encode={raw|hex16|base16|hex32|base32|hex64|base64|uu|xx}
         |   default: base64
     -D  | --Decrypt [ = Inverse_Pipe_Direction ]  
+    -S  | --secureCipher (uses SecureCipherPipe with always GZip, Base64 and different hashes in every pipe stage)
     -o  | --outFile= | --outText=EnviromentVariable | --outStd            
     -V  | --verbose 
     -?  | --gethelp");
@@ -271,8 +302,8 @@ namespace EU.CqrXs.Console
     EU.CqrXs.Console.exe -i=.\README.MD -z=zip -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -e=uu -o=.\README.MD.SCrypt.zip.uu
     EU.CqrXs.Console.exe -D -i=.\README.MD.SCrypt.zip.uu -e=uu -k=io.cqrxs.eu -C=Aes,Blowfish,Des3,Fish2,Fish3,Seed,Serpent,SM4 -H=SCrypt -z=zip -o=.\READ_UNZIP.txt
 
-    EU.CqrXs.Console.exe -i=.\README.MD -S -z=zip -k=io.cqrxs.eu -H=BCrypt -e=xx -o=.\README.MD.BCrypt.zip.xx
-    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.zip.xx -S -e=xx -k=io.cqrxs.eu -H=BCrypt -z=zip -o=.\README_SYM_BCRYPT_UNZIP.txt\n\n");
+    EU.CqrXs.Console.exe -i=.\README.MD -S -k=io.cqrxs.eu  -o=.\README.MD.BCrypt.gz.base64
+    EU.CqrXs.Console.exe -D -i=.\README.MD.BCrypt.gz.base64 -S -k=io.cqrxs.eu  -o=.\README_SECURE.txt\n\n");
 
             System.Environment.Exit(0);
         }
@@ -289,6 +320,19 @@ namespace EU.CqrXs.Console
                     System.Console.Write($"{cipher}=>");                
                 System.Console.WriteLine($"\r\nCipherPipe: KeyHash={cipherPipe.KHash} ZipType={cipherPipe.ZType} " +
                     $"EncodeType={cipherPipe.EncodeType} PipeString={cipherPipe.PipeString}");
+            }
+        }
+
+        public static void PrintSecureCipherPipe(SecureCipherPipe sCipherPipe, bool outPipe = false)
+        {
+            if (verbose)
+            {
+                CipherEnum[] ciphers = (outPipe) ? sCipherPipe.OutPipe : sCipherPipe.InPipe;
+                System.Console.Write((string)((outPipe) ? "Out:\t" : " In:\t"));
+                foreach (CipherEnum cipher in ciphers)
+                    System.Console.Write($"{cipher}=>");
+                System.Console.WriteLine($"\r\nSecureCipherPipe: ZipType={sCipherPipe.ZType} EncodeType={sCipherPipe.EncodeType} " +
+                    $"ChipherMode={sCipherPipe.CMode2} PipeString={sCipherPipe.PipeString}");
             }
         }
         #endregion print only debug info

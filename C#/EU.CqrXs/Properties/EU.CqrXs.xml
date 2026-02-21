@@ -3177,6 +3177,17 @@
             <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
+        <member name="M:EU.CqrXs.Util.Extensions.StripSecureCipherPipeFromFileName(System.String,EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe@)">
+            <summary>
+            Extension <see cref="T:System.String"/>.StripSecureCipherPipeFromFileName(out SecureCipherPipe? secCipherPipe)
+            looks if a filename is <see cref="M:EU.CqrXs.Util.Extensions.IsPermAgainCryptFile(System.String)"/> and if true,
+            extracts PipeString out of filename and creates the corresponding pipe.
+            </summary>
+            <param name="fileName">file name to examine</param>
+            <param name="secCipherPipe">out parameter for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/></param>
+            <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
         <member name="M:EU.CqrXs.Util.Extensions.StripCiphersInFileName(System.String)">
             <summary>
             Extension <see cref="T:System.String"/>.StripCiphersInFileName() 
