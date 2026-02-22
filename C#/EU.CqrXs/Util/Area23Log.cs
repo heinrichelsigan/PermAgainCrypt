@@ -53,7 +53,7 @@ namespace EU.CqrXs.Util
         /// </summary>
         static Area23Log() 
         {
-            LogFile = LibPaths.LogFileSystemPath; 
+            LogFile = LibPaths.LogFileSystemPath;
             InitLog("");
         }
 

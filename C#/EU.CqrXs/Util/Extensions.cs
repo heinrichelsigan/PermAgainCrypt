@@ -5,13 +5,11 @@ using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Tls;
 using System.Drawing.Imaging;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Xml.Linq;
-// using static System.Net.Mime.MediaTypeNames;
 
 
 namespace EU.CqrXs.Util

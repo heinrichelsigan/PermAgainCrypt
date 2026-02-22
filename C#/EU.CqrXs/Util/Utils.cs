@@ -15,6 +15,23 @@ namespace EU.CqrXs.Util
     {
 
         /// <summary>
+        /// VSwapT a generic swapper
+        /// </summary>
+        /// <typeparam name="T">generics</typeparam>
+        /// <param name="t0">refernce in t0, reference out t1</param>
+        /// <param name="t1">efernce in t1, reference out t0</param>
+        public static void VSwapT<T>(ref T t0, ref T t1)
+        {
+            T tmp = t0;
+            t0 = t1;
+            t1 = tmp;
+
+            return ;
+        }
+
+
+
+        /// <summary>
         /// SwapT a generic swapper
         /// </summary>
         /// <typeparam name="T"></typeparam>

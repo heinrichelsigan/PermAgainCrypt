@@ -3445,6 +3445,14 @@
             <seeslo href="https://gist.github.com/riyadparvez/4467678">gist.github.com/riyadparvez</seeslo> for generic reflection
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Util.Utils.VSwapT``1(``0@,``0@)">
+            <summary>
+            VSwapT a generic swapper
+            </summary>
+            <typeparam name="T">generics</typeparam>
+            <param name="t0">refernce in t0, reference out t1</param>
+            <param name="t1">efernce in t1, reference out t0</param>
+        </member>
         <member name="M:EU.CqrXs.Util.Utils.SwapT``1(``0@,``0@)">
             <summary>
             SwapT a generic swapper
