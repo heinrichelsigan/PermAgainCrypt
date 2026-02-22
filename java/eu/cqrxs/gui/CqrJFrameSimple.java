@@ -15,12 +15,13 @@ import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.SecureCipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.gui.CqrJDialog;
-import eu.cqrxs.gui.ImageViewer;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.awt.*;
@@ -32,6 +33,7 @@ import java.lang.*;
 import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MenuKeyEvent;
 
@@ -56,14 +58,15 @@ public class CqrJFrameSimple extends JFrame {
 	
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
-	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
+	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination,
+			jLabelImgKey, jLabelImgHash, jLabelImgAddAlgo, jLabelImgX;
 	JTextField jTextField_Key, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	eu.cqrxs.gui.DropPanel dropPanel;
-	eu.cqrxs.gui.ImageViewer imKey, imAddAlgo, imX;
-	
+	BufferedImage imgKey, imgHash, imgAddAlgo, imgX;
+
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
 	
@@ -513,23 +516,19 @@ public class CqrJFrameSimple extends JFrame {
 		
 		jBar = AddMenus(lSymAction);
 		setJMenuBar(jBar);
-		
-		try {
-			keyUrl =  URI.create("https://area23.at/net/res/img/symbol/key_ring.gif").toURL();
-			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
-			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
-		} catch (MalformedURLException mue) {
-			mue.printStackTrace();
-		}
-		try {
-			imKey = new eu.cqrxs.gui.ImageViewer();
-			imKey.setImageURL(keyUrl);
-			imKey.setBounds(8,28,30,30);	
-			imKey.addMouseListener(aSymMouse);			
-			getContentPane().add(imKey);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
+
+		imgKey = addImages(new String[] { "eu/cqrxs/gui/key_ring.gif", "key_ring.gif" });
+		imgHash = addImages(new String[] { "eu/cqrxs/gui/a_hash.png", "a_hash.png" });
+		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/AddAesArrowHover.gif", "AddAesArrowHover.gif" });
+		imgX = addImages(new String[] { "eu/cqrxs/gui/close_delete.gif", "close_delete.gif" });
+
+		jLabelImgKey = new JLabel(new ImageIcon(imgKey));
+		jLabelImgKey.setBounds(12,26,30,30);
+		jLabelImgKey.setText("[Key]");
+		jLabelImgKey.setFont(cryptFont);
+		jLabelImgKey.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgKey);
+
 		jTextField_Key = new JTextField();
 		jTextField_Key.setFont(cryptFont);
 		jTextField_Key.setText("zen@area23.at");
@@ -567,17 +566,12 @@ public class CqrJFrameSimple extends JFrame {
 		jComboBox_Algo.setFont(cryptFont);
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
 		getContentPane().add(jComboBox_Algo);
-				
-		try {
-			imAddAlgo = new eu.cqrxs.gui.ImageViewer();
-			imAddAlgo.setImageURL(addAlgoUrl);
-			imAddAlgo.setBounds(230, 63, 32, 27);
-			imAddAlgo.addMouseListener(aSymMouse);
-			getContentPane().add(imAddAlgo);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-			
+
+		jLabelImgAddAlgo = new JLabel(new ImageIcon(imgAddAlgo));
+		jLabelImgAddAlgo.setBounds(230, 63, 32, 27);
+		jLabelImgAddAlgo.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgAddAlgo);
+
 		jTextField_Pipe = new JTextField();
 		jTextField_Pipe.setText("");
 		jTextField_Pipe.setBounds(264, 64, 578, 25);
@@ -586,18 +580,12 @@ public class CqrJFrameSimple extends JFrame {
 		jTextField_Pipe.setBackground(Color.WHITE);  
 		jTextField_Pipe.setFont(cryptFont);
 		getContentPane().add(jTextField_Pipe);
-		
-		
-		try {
-			imX = new eu.cqrxs.gui.ImageViewer();
-			imX.setImageURL(xUrl);
-			imX.setBounds(844, 64, 27, 27);
-			imX.addMouseListener(aSymMouse);
-			getContentPane().add(imX);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-				
+
+		jLabelImgX = new JLabel(new ImageIcon(imgX));
+		jLabelImgX.setBounds(844, 64, 27, 27);
+		jLabelImgX.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgX);
+
         String[] comboEncodeEnums = { EncodeEnum.Xx.getName(), EncodeEnum.Base64.getName() };
 		jComboBox_Encoding = new JComboBox(comboEncodeEnums);
 		jComboBox_Encoding.setBounds(876, 64, 120, 25);
@@ -695,6 +683,28 @@ public class CqrJFrameSimple extends JFrame {
 		
 		setVisible(true);	
 		
+	}
+
+
+	/**
+	 * addImages
+	 * @param imagePaths Array {@link String[]} with possible image paths
+	 * @return {@link BufferedImage}
+	 */
+	private BufferedImage addImages(String[] imagePaths) {
+		File file;
+		BufferedImage bimg = null;
+		for (int fx = 0; fx < imagePaths.length; fx++) {
+			try {
+				file = new File(imagePaths[fx]);
+				bimg = ImageIO.read(file);
+				fx = imagePaths.length - 1;
+				break;
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return bimg;
 	}
 
 	protected class ZipChangeListener implements ItemListener {
@@ -1322,13 +1332,13 @@ public class CqrJFrameSimple extends JFrame {
 	protected void MouseEventAction(MouseEvent e) {
 		Object object = e.getSource();
 		if (object != null) {
-			if (object == imAddAlgo) {
+			if (object == jLabelImgAddAlgo) {
 				cipherString = cipherEnum.toString();
 				String pipeText = jTextField_Pipe.getText();
 				jTextField_Pipe.setText(pipeText + cipherString + ";");
-			} else if (object == imKey) {
+			} else if (object == jLabelImgKey) {
 				// keyHash.Hash(
-			} else if (object == imX) {
+			} else if (object == jLabelImgX) {
 				jTextField_Pipe.setText("");
 			// } else if (object == dropPanel.jLabelImgIn) {
 			// 	if (openFileBytes == null || openFileBytes.length < 1)

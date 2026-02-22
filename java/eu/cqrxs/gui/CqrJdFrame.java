@@ -16,12 +16,13 @@ import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.gui.CqrJDialog;
-import eu.cqrxs.gui.ImageViewer;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.awt.*;
@@ -33,6 +34,7 @@ import java.lang.*;
 import java.net.http.*;
 import java.net.*;
 import java.time.Duration;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MenuKeyEvent;
 
@@ -44,7 +46,6 @@ public class CqrJdFrame extends JFrame {
 	public static CqrJdFrame cqrJdFrame;
     public static CqrJFrameSimple cqrJFrameSimple;
 	protected static byte[] openFileBytes, saveFileBytes;
-	URL keyUrl, hashUrl, addAlgoUrl, xUrl, fileInUrl, fileEnCryptedUrl, fileDeCryptedUrl, pipeUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -57,14 +58,16 @@ public class CqrJdFrame extends JFrame {
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
-	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination;
+	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination,
+			jLabelImgKey, jLabelImgHash, jLabelImgAddAlgo, jLabelImgX;
+
 	JTextField jTextField_Key, jTextField_Hash, jTextField_Pipe;
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 
+	BufferedImage imgKey, imgHash, imgAddAlgo, imgX;
 	eu.cqrxs.gui.DropPanel dropPanel;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
-	eu.cqrxs.gui.ImageViewer imKey, imHash, imAddAlgo, imX;
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
@@ -631,27 +634,20 @@ public class CqrJdFrame extends JFrame {
 		
 		jBar = AddMenus(lSymAction);
 		setJMenuBar(jBar);
-		
-		try {
-			keyUrl =  URI.create("https://area23.at/net/res/img/symbol/key_ring.gif").toURL();
-			hashUrl = URI.create("https://area23.at/net/res/img/crypt/a_hash.png").toURL();
-			addAlgoUrl = URI.create("https://area23.at/net/res/img/crypt/AddAesArrowHover.gif").toURL();
-			xUrl =  URI.create("https://area23.at/net/res/img/symbol/close_delete.gif").toURL();
-			fileInUrl = URI.create("https://area23.at/net/res/img/crypt/file.png").toURL();
-		} catch (MalformedURLException mue) {
-			mue.printStackTrace();
-		}
-		try {
-			imKey = new eu.cqrxs.gui.ImageViewer();
-			imKey.setImageURL(keyUrl);
-			imKey.setBounds(8,28,30,30);	
-			imKey.addMouseListener(aSymMouse);			
-			getContentPane().add(imKey);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
+
+		imgKey = addImages(new String[] { "eu/cqrxs/gui/key_ring.gif", "key_ring.gif" });
+		imgHash = addImages(new String[] { "eu/cqrxs/gui/a_hash.png", "a_hash.png" });
+		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/AddAesArrowHover.gif", "AddAesArrowHover.gif" });
+		imgX = addImages(new String[] { "eu/cqrxs/gui/close_delete.gif", "close_delete.gif" });
+
+		jLabelImgKey = new JLabel(new ImageIcon(imgKey));
+		jLabelImgKey.setBounds(12,25,30,30);
+		jLabelImgKey.setText("[Key]");
+		jLabelImgKey.setFont(cryptFont);
+		jLabelImgKey.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgKey);
+
 		jTextField_Key = new JTextField();
-		jTextField_Key.setFont(cryptFont);
 		jTextField_Key.setText("zen@area23.at");
 		jTextField_Key.setBounds(48,30,640,25);
 		jTextField_Key.setFont(cryptFont);		
@@ -671,21 +667,19 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Hash.addItemListener(new HashChangeListener());
 		getContentPane().add(jComboBox_Hash);
 		selectItemByString(jComboBox_Hash, menuHash, "Hex"); 	
-		
-		try {
-			imHash = new eu.cqrxs.gui.ImageViewer();
-			imHash.setImageURL(hashUrl);
-			imHash.setBounds(8, 69, 32, 30);		
-			imHash.addMouseListener(aSymMouse);
-			getContentPane().add(imHash);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}					
-		
+
+		jLabelImgHash = new JLabel(new ImageIcon(imgHash));
+		jLabelImgHash.setBounds(12, 67, 40, 30);
+		jLabelImgHash.setText("[Hash]");
+		jLabelImgHash.setFont(cryptFont);
+		jLabelImgHash.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgHash);
+
 		jTextField_Hash = new JTextField();
 		jTextField_Hash.setFont(cryptFont);
 		jTextField_Hash.setText("");		
 		jTextField_Hash.setBounds(48,69,823,25);
+
 		// jTextField_Hash.setEnabled(false);
 		jTextField_Hash.setEditable(false);
 		jTextField_Hash.setFont(cryptFont);
@@ -713,38 +707,28 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Algo.setFont(cryptFont);
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
 		getContentPane().add(jComboBox_Algo);
-				
-		try {
-			imAddAlgo = new eu.cqrxs.gui.ImageViewer();
-			imAddAlgo.setImageURL(addAlgoUrl);
-			imAddAlgo.setBounds(230, 111, 32, 27);	
-			imAddAlgo.addMouseListener(aSymMouse);
-			getContentPane().add(imAddAlgo);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-			
+
+		jLabelImgAddAlgo = new JLabel(new ImageIcon(imgAddAlgo));
+		jLabelImgAddAlgo.setBounds(230, 111, 32, 27);
+		jLabelImgAddAlgo.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgAddAlgo);
+
 		jTextField_Pipe = new JTextField();
 		jTextField_Pipe.setText("");
 		jTextField_Pipe.setBounds(264, 112, 578, 25);
 		jTextField_Pipe.setEditable(false);
+
 		// jTextField_Pipe.setEnabled(false);
 		jTextField_Pipe.setForeground(Color.BLACK);  
 		jTextField_Pipe.setBackground(Color.WHITE);  
 		jTextField_Pipe.setFont(cryptFont);
 		getContentPane().add(jTextField_Pipe);
-		
-		
-		try {
-			imX = new eu.cqrxs.gui.ImageViewer();
-			imX.setImageURL(xUrl);
-			imX.setBounds(844, 112, 27, 27);	
-			imX.addMouseListener(aSymMouse);
-			getContentPane().add(imX);
-		} catch (Exception ex) {
-			ex.printStackTrace();			
-		}
-				
+
+		jLabelImgX = new JLabel(new ImageIcon(imgX));
+		jLabelImgX.setBounds(844, 112, 27, 27);
+		jLabelImgX.addMouseListener(aSymMouse);
+		getContentPane().add(jLabelImgX);
+
 		jComboBox_Encoding =  new JComboBox(EncodeEnum.getNames());
 		jComboBox_Encoding.setBounds(876, 112, 120, 25);
 		jComboBox_Encoding.setFont(cryptFont);
@@ -843,6 +827,27 @@ public class CqrJdFrame extends JFrame {
 
 		setVisible(true);	
 		
+	}
+
+	/**
+	 * addImages
+	 * @param imagePaths Array {@link String[]} with possible image paths
+	 * @return {@link BufferedImage}
+	 */
+	private BufferedImage addImages(String[] imagePaths) {
+		File file;
+		BufferedImage bimg = null;
+		for (int fx = 0; fx < imagePaths.length; fx++) {
+			try {
+				file = new File(imagePaths[fx]);
+				bimg = ImageIO.read(file);
+				fx = imagePaths.length - 1;
+				break;
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return bimg;
 	}
 
 	protected class HashChangeListener implements ItemListener {
@@ -1557,15 +1562,15 @@ public class CqrJdFrame extends JFrame {
 	protected void MouseEventAction(MouseEvent e) {
 		Object object = e.getSource();
 		if (object != null) {
-			if (object == imAddAlgo) {
+			if (object == jLabelImgAddAlgo) {
 				cipherString = cipherEnum.toString();
 				String pipeText = jTextField_Pipe.getText();
 				jTextField_Pipe.setText(pipeText + cipherString + ";");
-			} else if (object == imKey) {
+			} else if (object == jLabelImgKey) {
 				// keyHash.Hash(
-			} else if (object == imHash) {
+			} else if (object == jLabelImgHash) {
 				hashKey_action();
-			} else if (object == imX) {
+			} else if (object == jLabelImgX) {
 				jTextField_Pipe.setText("");
 			// } else if (object == imInFile) {
 			// 	if (openFileBytes == null || openFileBytes.length < 1)

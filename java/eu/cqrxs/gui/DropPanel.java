@@ -153,14 +153,19 @@ public class DropPanel extends JPanel {
         return scaled;
     }
 
-	private BufferedImage addImages(String[] images) {
+    /**
+     * addImages
+     * @param imagePaths Array {@link String[]} with possible image paths
+     * @return {@link BufferedImage}
+     */
+	private BufferedImage addImages(String[] imagePaths) {
 		File file;
 		BufferedImage bimg = null;
-		for (int fx = 0; fx < images.length; fx++) {
+		for (int fx = 0; fx < imagePaths.length; fx++) {
 			try {
-				file = new File(images[fx]);
+				file = new File(imagePaths[fx]);
 				bimg = ImageIO.read(file);
-				fx = images.length - 1;
+				fx = imagePaths.length - 1;
 				break;
 			} catch (IOException ex) {
 				ex.printStackTrace();				
