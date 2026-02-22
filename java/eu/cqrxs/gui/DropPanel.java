@@ -5,12 +5,23 @@ package eu.cqrxs.gui;
 // Retrieved 2026-02-10, License - CC BY-SA 3.0
 
 import eu.cqrxs.util.DbgWriter;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.image.BufferedImage;
+import java.awt.Point;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.event.*;
-import java.awt.dnd.*;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.dnd.DnDConstants;
+
 import java.awt.image.BufferedImage;
 import java.awt.datatransfer.Transferable;
 import java.lang.*;
@@ -20,6 +31,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TooManyListenersException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.SwingUtilities;
 
 public class DropPanel extends JPanel {
 

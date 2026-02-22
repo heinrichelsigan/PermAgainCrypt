@@ -9,33 +9,67 @@
  */ 
 package eu.cqrxs.gui;
 
-import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.util.Constants;
-import eu.cqrxs.crypt.hash.KeyHash;
+import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.awt.*;
-import java.awt.event.*;
 import java.io.File;
 import java.io.InputStream;
 import java.io.BufferedInputStream;
-import java.lang.*;
-import java.net.http.*;
-import java.net.*;
+import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.DesktopManager;
+import javax.swing.DefaultDesktopManager;
+import javax.swing.KeyStroke;
+
 import javax.swing.event.MenuKeyEvent;
 
 /**
