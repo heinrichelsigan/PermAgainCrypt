@@ -35,8 +35,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.event.MenuKeyEvent;
 import javax.swing.SwingUtilities;
 
 public class DropPanel extends JPanel {
