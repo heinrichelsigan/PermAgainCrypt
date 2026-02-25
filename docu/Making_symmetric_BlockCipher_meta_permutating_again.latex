@@ -33,7 +33,7 @@
 
 Hi, I’m \href{https://heinrichelsigan.area23.at/}{Heinrich Elsigan}
 I’m interested in CSharp, Java, MSSQL, .Net Core, Android and politics, society and the future;
-currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects.
+currently working as freelancer (one person company) and planning a secure endpoint 2 entpoint chat and looking to collaborate on reviews for other repositories and projects. Article written in \LaTeX{}.
 
 \begin{enumerate}
     \item personal tech and political blog \href{https://area23-at.blogspot.com/}{blog.area23.at}
@@ -154,8 +154,36 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 \caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
-\section{Console and cmd programs}
 
+\subsection{Simple mode - SecureCipherPipe}
+
+Both C\# and Java Form contain a MenuItem "Simple mode"
+\begin{figure}
+    \centering
+    \includegraphics[width=0.25\linewidth]{2026-02-25_SimpelMode.png}
+    \caption{Menu item Simple mode}
+    \label{fig:Simple_Mode}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{2026-02-25_CSharp_SimpleMode.png}
+    \caption{Simple mode in C\#}
+    \label{fig:CSharp_SimpleMode}
+\end{figure}
+
+In the simple mode SecureCipherPipe is used as CipherPipe. Each stage of the pipe will not be encrypted with the same secure key; furthermore, each pipe stage will be encrypted with a secure hashed key with a different hash.
+
+\subsubsection{En-/Decryption between C\# Java in Simple mode}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{2026-02-25_SimpleModes_CsJava.png}
+    \caption{En-/Decryption in simple mode between C\# and Java}
+    \label{fig:Java2Csharp_SimpleMode}
+\end{figure}
+
+\section{Console and cmd programs}
 
 \subsection{Windows Console}
 
@@ -190,6 +218,7 @@ Usage:  EU.CqrXs.Console.exe
         |   default: base64
     -D  | --Decrypt [ = Inverse_Pipe_Direction ]
     -o  | --outFile= | --outText=EnviromentVariable | --outStd
+    -S  | -simpleMode
     -V  | --verbose
     -?  | --gethelp
 \end{verbatim}
@@ -238,7 +267,7 @@ The following image shows you an example of a symmetric cipher 8 staged encrypti
 
 Before entering the encryption pipe, the file can be zipped to avoid huge amount of symmetric cipher blocks and after exiting the encryption pipe the file can be ascii encoded with base64 mime, uuencode, xxencode or hex16, because symmetric chiphered binary files might lose their block padding.
 
-Implementation is based on my blog article: \href{https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html}{Making symmetric cipher encryption meta permutating again}, including the follwing symmetric cipher algorithms:
+Implementation is based on my blog article: \href{https://area23-at.blogspot.com/2024/04/making-symetric-chiffer-encryption.html}{Making symmetric cipher encryption meta permutating again}\cite{c1}, including the follwing symmetric cipher algorithms:
 
 \begin{itemize}
 \item \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Aes}, AesLight, \href{https://en.wikipedia.org/wiki/Advanced_Encryption_Standard}{Rijndael}
@@ -297,6 +326,38 @@ sudo nice -n -17 dd if=/dev/zero of=/mnt/h/zeros.txt bs=4k  count=64
 
 That's why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to encrypt.
 
+
+\subsection{Mathematical theory}
+
+Consider that there are full bijective desterministic inversible functions, 
+where inverse function 
+
+to  y_x = F(x,...) 
+
+is 
+x_y = f(y,..)
+
+then inverse function 
+
+to 
+\begin{math}
+y_x = {F( G( H( I( J( K( L( M( N(x, ...)))))))))
+\end{math}
+
+is 
+\begin{math}
+x_y = n( m( l( k( j( i( h( g( f(y,...))))))))).
+\end{math}
+
+You can see a mappings from ascii-8 $\Longrightarrow ascii-8,
+
+also always as Matrix from R256 $\Longrightarrow R256 
+
+or hexadecimal from Rx100 $\Longrightarrow Rx100
+
+you can see mappings from UTF-8  $\Longrightarrow \href{https://en.wikipedia.org/wiki/UTF-8#:~:text=UTF%2D8%20is%20a%20character,than%20any%20alternative%20text%20encoding.}{UTF-8}
+
+\dots
 
 \subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
 
@@ -362,8 +423,9 @@ the matrix will look like this:
  \hline
 \end{tabular}
 
+\section{Code Examples}
 
-\subsection{CSharp Code Example}
+\subsection{C\# Code Example}
 \begin{small}
 \begin{verbatim}
     /* CSharp constructing a CipherPipe */
@@ -453,13 +515,6 @@ the matrix will look like this:
 \end{verbatim}
 \end{small}
 
-\subsection{How to write Mathematics}
-
-\LaTeX{} is great at typesetting mathematics. Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-\[S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i\]
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
 \subsection{Good luck!}
 
 We hope you find PermAgainCrypt useful, and good luck.
@@ -467,6 +522,7 @@ We hope you find PermAgainCrypt useful, and good luck.
 
 \bibliographystyle{alpha}
 \bibliography{sample}
+
 
 \end{document}
 

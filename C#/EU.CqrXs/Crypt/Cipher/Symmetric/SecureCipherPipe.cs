@@ -30,65 +30,39 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
     /// </item>
     /// </list>
     /// </remarks>
-    public class SecureCipherPipe
+    public class SecureCipherPipe : CipherPipe
     {
 
         #region fields and properties
 
-        protected internal string cipherKeyHash = "";
-        protected internal ZipType zType = ZipType.GZip;
-        protected internal CipherEnum[] inPipe;
-        protected internal EncodingType encodeType = EncodingType.Base64;
-        // private readonly string pipeString;
+        private static readonly KeyHash[] secureHashes = {
+                KeyHash.BCrypt, KeyHash.Blake2xs, KeyHash.CShake, KeyHash.Dstu7564,
+                KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
+
+        protected string cipherKeyHash; // this is the hash of the user key, e.g. email address, which is used to generate the pipe and the keys for each stage in pipe
 
         /// <summary>
         /// ZType is current <see cref="ZipType"/>
         /// </summary>
-        public ZipType ZType { get => zType; }
+        public new ZipType ZType { get => ZipType.GZip; }
 
         /// <summary>
         /// Current <see cref="EncodeType"/> 
         /// </summary>
-        public EncodingType EncodeType { get => encodeType; }
+        public new EncodingType EncodeType { get => encodeType; }
 
-        /// <summary>
-        /// InPipe is current encryption pipe
-        /// </summary>
-        public CipherEnum[] InPipe { get => inPipe; set => inPipe = value; }
-
-        /// <summary>
-        /// OutPipe will always be generated from <see cref="InPipe"/>
-        /// </summary>
-        public CipherEnum[] OutPipe { get => inPipe.ToList().Reverse<CipherEnum>().ToArray(); }
-
-        public CipherMode2 CMode2 { get; set; } = CipherMode2.CFB;
-
-        public CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
-
-        /// <summary>
-        /// PipeString will always be generated on the fly from <see cref="InPipe"/>
-        /// </summary>
-        public string PipeString
+        public new string PipeFullExtension
         {
             get
             {
-                string pipeString = "";
-                foreach (CipherEnum cipher in inPipe)
-                    pipeString += cipher.GetCipherChar();
-                return pipeString;
-            }
-        }
-
-        public string PipeFullExtension
-        {
-            get
-            {
-                string miniPipe = (InPipe == null || InPipe.Length == 0) ? "" : "." + PipeString;
+                string miniPipe = (InPipe == null || InPipe.Length == 0) ? "" : "." + CMode2.ToString() + PipeString;
                 string miniPipeExt = zType.GetZipTypeExtension() + miniPipe + encodeType.GetEnCodingExtension();
                 return miniPipeExt;
             }
         }
-    
+
+        public static KeyHash[] GetSecureHashes() => secureHashes;
+
         #endregion fields and properties
 
         #region ctor SecureCipherPipe
@@ -99,9 +73,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         public SecureCipherPipe()
         {
             cipherKeyHash = ""; //
+            cipherHash = "";
+            cipherKey = "";
             inPipe = (new List<CipherEnum>()).ToArray();
             encodeType = EncodingType.Base64;
-            zType = ZipType.None;
+            zType = ZipType.GZip;
             CMode2 = CipherMode2.CFB;
         }
 
@@ -214,6 +190,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             : this(CryptHelper.GetKeyBytesSingle(keyHash, 16), Constants.MAX_PIPE_LEN, cmode2, verbose)
         {
             cipherKeyHash = keyHash;
+            cipherKey = cipherKeyHash;
+            cipherHash = "";            
         }
 
         /// <summary>
@@ -225,6 +203,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             : this(key, CipherMode2.CFB, verbose)
         {
             cipherKeyHash = key;
+            cipherKey = cipherKeyHash;
+            cipherHash = "";
         }
 
         public SecureCipherPipe(CipherPipe ciphPipe) : this()
@@ -233,6 +213,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             {
                 this.inPipe = ciphPipe.InPipe;
                 this.cipherKeyHash = ciphPipe.cipherKey;
+                this.cipherKey = ciphPipe.cipherKey;
+                this.cipherHash = "";
                 this.CMode = ciphPipe.CMode;
                 this.CMode2 = ciphPipe.CMode2;
                 this.encodeType = ciphPipe.EncodeType;
@@ -248,14 +230,14 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// ToJson 
         /// </summary>
         /// <returns>serialized string</returns>
-        public string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         /// <summary>
         /// FromJson
         /// </summary>
         /// <param name="json">serialized json</param>
         /// <returns><see cref="SecureCipherPipe"/></returns>
-        public SecureCipherPipe FromJson(string json)
+        public new SecureCipherPipe FromJson(string json)
         {
             SecureCipherPipe pipe = JsonConvert.DeserializeObject<SecureCipherPipe>(json);
             if (pipe == null)
@@ -506,8 +488,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 cipherKeyHash = cipherKeyHash.Substring(0, 32);
             CMode2 = cmode2;
 
-            int merry = 0;
-            KeyHash[] secureHashes = KeyHash_Extensions.GetSecureHashes();
+            int merry = 0;            
             byte[] encryptedBytes = new byte[inBytes.Length];
             foreach (CipherEnum cipher in InPipe)
             {
@@ -537,9 +518,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             cipherKeyHash = string.IsNullOrEmpty(secretKey) ? cipherKeyHash : secretKey;
             if (cipherKeyHash.Length > 31)
                 cipherKeyHash = cipherKeyHash.Substring(0, 32);
-            CMode2 = cmode2;
-            
-            KeyHash[] secureHashes = KeyHash_Extensions.GetSecureHashes();
+            CMode2 = cmode2;            
             int merry = secureHashes.Length - 1;
 
             byte[] decryptedBytes = new byte[cipherBytes.Length];
@@ -698,238 +677,6 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         #endregion multiple rounds en-de-cryption
 
-        #region graphics bmp creation
-
-        /// <summary>
-        /// GenerateEncryptPipeImage - generates image for symmetric cipher encryption pipeline
-        /// </summary>
-        /// <returns><see cref="Image">the image</see></returns>
-        public virtual Image GenerateEncryptPipeImage()
-        {
-            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resource.BlankEncrypt_640x108, new Size(640, 108)), ximage;
-            System.Drawing.Bitmap? gifStartImage = new Bitmap(Properties.Resource.BlankEncrypt_640x96, new Size(640, 108));
-            List<Bitmap> bitmaps = new List<Bitmap>();
-
-            string bmpName = "";
-            int w = 64, offset = 0, startset = 0;
-            if (this.ZType != EU.CqrXs.Zip.ZipType.None)
-            {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
-                {
-                    w = 60;
-
-                    ximage = new Bitmap(Properties.Resource.block_arrow_right_zip, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(0, 20, w, 64));
-
-                    string drawString = this.ZType.ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#df0fef"));
-                    float x = offset + 1.0F;
-                    float y = 82.5F;
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
-                    offset += w;
-                    startset += w;
-                }
-                gifStartImage = new Bitmap(mergeimg, 640, 108);
-                bitmaps.Add(gifStartImage);
-            }
-
-            startset = offset;
-
-            for (int i = 0; (i < this.InPipe.Length); i++)
-            {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
-                {
-                    w = 60;
-                    char ch = this.InPipe[i].GetCipherChar();
-                    bmpName = $"arrow_right-{i}";
-                    if (i < 2)
-                        bmpName = (i == 0) ? "arrow_right-c" : "arrow_right-e";
-
-                    object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
-                    ximage = new Bitmap(((System.Drawing.Bitmap)(obj)));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
-
-                    offset += w;
-                }
-                if (gifStartImage == null)
-                    gifStartImage = new Bitmap(mergeimg, 640, 108);
-                bitmaps.Add(new Bitmap(mergeimg, 640, 108));
-            }
-
-
-            offset = startset;
-
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
-            {
-                for (int i = 0; (i < this.InPipe.Length); i++)
-                {
-
-                    Color color = (i < 5) ? ColorTranslator.FromHtml("#0000ee") : ColorTranslator.FromHtml("#0000dd");
-                    string drawString = this.InPipe[i].ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(color);
-                    float x = offset + 1.0F;
-                    float y = 2F + ((i % 4) * 23.0F);
-                    switch (i)
-                    {
-                        case 0: y = 1F; break;
-                        case 1: x = offset - 1.0F;  y = 84F;    break;
-                        case 2: x = offset - 1.5F;  y = 1F;     break;
-                        case 3: x = offset - 2.0F;  y = 86F;    break;
-                        case 4: x = offset - 2.5F;  y = 2F;     break;
-                        case 5: x = offset - 3.0F;  y = 84F;    break;
-                        case 6: x = offset - 3.5F;  y = 2F;     break;
-                        case 7: x = offset - 4.0F;  y = 76F;   
-                            drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold); break;
-                        default: y = 1F + ((i % 4) * 23.0F); break;
-                    }
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
-                    offset += w;
-                }
-            }
-            bitmaps.Add(new Bitmap(mergeimg, 640, 108));
-            gifStartImage = new Bitmap(mergeimg, 640, 108);
-
-            if (this.EncodeType != EU.CqrXs.Crypt.EnDeCoding.EncodingType.None)
-            {
-                using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
-                {
-                    w = 60;
-                    ximage = new Bitmap(Properties.Resource.encoding_right_end_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
-                    string drawString = this.EncodeType.ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#bf0fef"));
-                    float x = offset + 1.0F;
-                    float y = 4.0F;
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-                }
-                bitmaps.Add(new Bitmap(mergeimg, 640, 108));
-                gifStartImage = new Bitmap(mergeimg, 640, 108);
-            }
-
-            //TimeSpan ts = new TimeSpan(0, 0, 0, 0, 125);
-            //GifEncoder gifAnimEncoder = new GifEncoder(bitmaps.ToArray(), 1, ts);
-            //Bitmap animGif = new Bitmap(gifAnimEncoder._memoryStream, false);
-            //return animGif;
-            // animGif.Save("H:\\tmp\\" + DateTime.Now.ToString("yyyy-MM-DD_hhmmss") + ".gif");
-            // gifAnimEncoder.Dispose();
-            return gifStartImage;
-
-        }
-
-
-        /// <summary>
-        /// GenerateDecryptPipeImage generates an image for decrypt symmetric cipher pipeline 
-        /// </summary>
-        /// <returns><see cref="Image">the image</see></returns>
-        public virtual Image GenerateDecryptPipeImage()
-        {
-            System.Drawing.Bitmap mergeimg = new Bitmap(Properties.Resource.BlankDecrypt_640x108, new Size(640, 108)), ximage;
-            string bmpName = "";
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeimg))
-            {
-                int w = 64, offset = 0, startset = 0;
-                if (this.EncodeType != EU.CqrXs.Crypt.EnDeCoding.EncodingType.None)
-                {
-                    w = 60;
-                    ximage = new Bitmap(Properties.Resource.encoding_right_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
-
-                    string drawString = this.EncodeType.ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
-                    float x = offset + 1F;
-                    float y = 86F;
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
-                    offset += w;
-                    startset += w;
-                }
-
-                for (int i = 0; (i < this.OutPipe.Length); i++)
-                {
-                    w = 60;
-                    int r = 7 - i;
-                    char ch = this.OutPipe[i].GetCipherChar();
-                    bmpName = $"arrow_right-{r}";
-                    if (i >= 6)
-                        bmpName = (i == 6) ? "arrow_right-e" : "arrow_right-c";
-
-                    object obj = Properties.Resource.ResourceManager.GetObject(bmpName, CultureInfo.CurrentCulture);
-                    ximage = new Bitmap(((System.Drawing.Bitmap)(obj)), new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
-
-                    offset += w;
-                }
-
-                offset = startset;
-                for (int i = 0; (i < this.OutPipe.Length); i++)
-                {
-                    w = 60;
-                    int r = 7 - i;
-
-                    Color color = (i < 4) ? ColorTranslator.FromHtml("#2200aa") : ColorTranslator.FromHtml("#0000dd");
-                    string drawString = this.OutPipe[i].ToString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(color);
-                    float x = offset + 2.0F;
-                    float y = 1.5F + ((i % 4) * 23.0F);
-                    switch (i)
-                    {
-                        case 0: y = 1F; break;
-                        case 1: x = offset - 1.0F;  y = 84F;    break;
-                        case 2: x = offset - 1.5F;  y = 1F;     break;
-                        case 3: x = offset - 2.0F;  y = 86F;    break;
-                        case 4: x = offset - 2.5F;  y = 2F;     break;
-                        case 5: x = offset - 3.0F;  y = 84F;    break;
-                        case 6: x = offset - 3.5F;  y = 2F;     break;
-                        case 7: x = offset - 4.0F;  y = 76F;     
-                            drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Bold); break;
-                        default: y = 1F + ((i % 4) * 23.0F); break;
-                    }
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.NoWrap;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
-                    offset += w;
-                }
-
-                if (this.ZType != EU.CqrXs.Zip.ZipType.None)
-                {
-                    w = 60;
-                    ximage = new Bitmap(Properties.Resource.compress_right_end_0, new Size(64, 64));
-                    g.DrawImage(ximage, new System.Drawing.Rectangle(offset, 20, w, 64));
-
-                    string drawString = this.ZType.GetUnzipString();
-                    Font drawFont = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
-                    SolidBrush drawBrush = new SolidBrush(ColorTranslator.FromHtml("#fa0ade"));
-                    float x = offset + 2.4F;
-                    float y = 3.8F;
-                    StringFormat drawFormat = new StringFormat();
-                    drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
-                    g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);
-
-                    offset += w;
-                }
-
-            }
-
-            return mergeimg;
-        }
-
-        #endregion graphics bmp creation
 
     }
 

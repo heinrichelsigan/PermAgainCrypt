@@ -7,6 +7,7 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
+using ProtoBuf.WellKnownTypes;
 using System.Security.Cryptography;
 
 
@@ -483,7 +484,7 @@ namespace EU.CqrXs.Gui.Forms
         protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
         {
             CipherEnum[] cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedText) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedText, out CipherEnum cipherEnum))
+            if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedItem.ToString()) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedItem.ToString(), out CipherEnum cipherEnum))
             {
                 if (cipherAlgos.Length < 8)
                 {
@@ -497,8 +498,8 @@ namespace EU.CqrXs.Gui.Forms
                             break;
                         case CipherEnum.Fish3:
                         //case CipherEnum.ThreeFish256:
-                        //    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
-                        //    break;
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
+                            break;
                         case CipherEnum.Serpent:
                             SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
                             break;
@@ -512,6 +513,7 @@ namespace EU.CqrXs.Gui.Forms
                             SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Des, "", true);
                             break;
                         case CipherEnum.Des3:
+                        case CipherEnum.Des3Net:
                             SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
                             break;
                         default:
@@ -521,7 +523,16 @@ namespace EU.CqrXs.Gui.Forms
                     cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
                     cPipe = new CipherPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
                     SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage(), "", true);
-                    SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
+                    System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = 3000 };
+                    setInfoMessageTimer.Elapsed += (s, en) =>
+                    {
+                        Task.Run(new System.Action(() =>
+                        {
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
+                        }));
+                        setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
+                    };
+                    setInfoMessageTimer.Start();                    
                 }
                 else
                 {

@@ -38,6 +38,9 @@ namespace EU.CqrXs.Gui.Forms
                      
             mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCFB, menuCipherModeItemECB };
 
+            this.comboBoxCompression.SelectedItem = ZipType.GZip.ToString();
+            this.comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
+
             tabControlWithHexDest.AsciiTextReadonly = true;
             buttonEncrypt.Click += new System.EventHandler(async (sender, e)
                 => await Encrypt_Click(sender, e));
@@ -448,6 +451,8 @@ namespace EU.CqrXs.Gui.Forms
                     await this.statusLabelSource.SetTextAsync($"source chars: {tabControlWithHexSrc.AsciiText.Length}");
 
                     string decrypted = cPipe.DecryptTextRoundsGo(this.tabControlWithHexSrc.AsciiText, this.textBoxKey.Text, GetCipherMode2());
+                    if (!decrypted.Contains("\r\n") && decrypted.Contains("\n")) 
+                        decrypted = decrypted.Replace("\n", Environment.NewLine);
                     this.tabControlWithHexDest.EncoderType = GetEncoding();
                     this.tabControlWithHexDest.AsciiText = decrypted;
 

@@ -19,39 +19,24 @@ import java.util.List;
 public class SecureCipherPipe extends CipherPipe {
 
     String cipherKeyHash = "";
-    ZipType zType = ZipType.None;
+    // ZipType zType = ZipType.None;
     // private readonly CipherEnum[] inPipe;
-    CipherEnum[] inPipe;
+    // CipherEnum[] inPipe;
     // private readonly CipherEnum[] outPipe;
-    EncodeEnum  encodeType = EncodeEnum.Base64;
+    // EncodeEnum  encodeType = EncodeEnum.Base64;
     // private readonly String pipeString;
-    CipherMode2 CMode2 = CipherMode2.CFB;
+    // CipherMode2 CMode2 = CipherMode2.CFB;
 
 
-    public ZipType getZipType() { return zType; }
+    // public virtual ZipType getZipType() { return zType; }
+    // public EncodeEnum getEncodeType() { return encodeType; }
+    // public CipherEnum[] getInPipe() { return inPipe; }
 
-    public EncodeEnum getEncodeType() { return encodeType; }
-
-    public CipherEnum[] getInPipe() { return inPipe; }
-
-
-    public CipherEnum[] getOutPipe() {
-        CipherEnum[] outEnums = new CipherEnum[inPipe.length];
-        int outIdx = 0;
-        for (int i = inPipe.length - 1; i >= 0; i--)
-            outEnums[outIdx++] = inPipe[i];
-
-        return outEnums;
-    }
-
-    public String getPipeString() {
-        String pipeString = "";
-
-        for (CipherEnum cipher : inPipe)
-            pipeString = pipeString + cipher.getCipherChar();
-
-        return pipeString;
-    }
+	final static KeyHash[] secureHashes = {
+			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
+			KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
+    
+	public static KeyHash[] getSecureHashes() { return secureHashes; }
 
     /**
      * parameterless constructor of SecureCipherPipe
@@ -60,7 +45,7 @@ public class SecureCipherPipe extends CipherPipe {
         cipherKeyHash = "";
         inPipe = new CipherEnum[0];
         encodeType = EncodeEnum.Base64;
-        zType = ZipType.None;
+        zType = ZipType.GZip;
         cMode2 = CipherMode2.CFB;
     }
 
@@ -117,7 +102,7 @@ public class SecureCipherPipe extends CipherPipe {
         }
 
         inPipe = cipherEnums.toArray(CipherEnum[]::new);
-        CMode2 = cmode2;
+        cMode2 = cmode2;
         encodeType = encType;
         zType = zpType;
     }
@@ -183,7 +168,7 @@ public class SecureCipherPipe extends CipherPipe {
      * @param key only users secret key
      */
     public SecureCipherPipe(String key) {
-        this(key, EncodeEnum.Base64, ZipType.None, CipherMode2.CFB);
+        this(key, EncodeEnum.Base64, ZipType.GZip, CipherMode2.CFB);
         cipherKeyHash = key;
     }
 
@@ -366,13 +351,12 @@ public class SecureCipherPipe extends CipherPipe {
         int merry = 0;
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        KeyHash[] keyHashes = KeyHash.getSecureHashes();
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
 
         for (CipherEnum cipher : inPipe) {
 
-            String cipherHashKey = keyHashes[(merry % keyHashes.length)].hash(cipherKeyHash);
-            if ((++merry) > (keyHashes.length -1)) merry = 0;
+            String cipherHashKey = secureHashes[(merry % secureHashes.length)].hash(cipherKeyHash);
+            if ((++merry) > (secureHashes.length -1)) merry = 0;
 
             encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
             inBytes = encryptedBytes;
@@ -398,15 +382,14 @@ public class SecureCipherPipe extends CipherPipe {
         if ((hashKey == null && cipherKeyHash == null) || (hashKey.length() == 0 && cipherKeyHash.length() == 0))
             throw new IllegalArgumentException("hashKey");
 
-        cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        KeyHash[] keyHashes = KeyHash.getSecureHashes();
-        int roundsGo = keyHashes.length - 1;
+        cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;        
+        int roundsGo = secureHashes.length - 1;
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
         for (CipherEnum cipher : getOutPipe()) {
 
-            String cipherHashKey = keyHashes[(roundsGo % keyHashes.length)].hash(cipherKeyHash);
-            if ((--roundsGo) < 0) roundsGo = keyHashes.length - 1;
+            String cipherHashKey = secureHashes[(roundsGo % secureHashes.length)].hash(cipherKeyHash);
+            if ((--roundsGo) < 0) roundsGo = secureHashes.length - 1;
 
             decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
             cipherBytes = decryptedBytes;
@@ -430,7 +413,7 @@ public class SecureCipherPipe extends CipherPipe {
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
         zType = zipBefore;
         encodeType = encoding;
-        CMode2 = cmode2;
+        cMode2 = cmode2;
 
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
@@ -442,7 +425,7 @@ public class SecureCipherPipe extends CipherPipe {
             exZip.printStackTrace();
         }
         // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);                
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);                
 
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
         String encrypted = encoding.encodeBytesToString(encryptedBytes);
@@ -466,7 +449,7 @@ public class SecureCipherPipe extends CipherPipe {
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
         zType = zipBefore;
         encodeType = encoding;
-        CMode2 = cmode2;
+        cMode2 = cmode2;
 
         try {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
@@ -475,7 +458,7 @@ public class SecureCipherPipe extends CipherPipe {
             exZip.printStackTrace();
         }
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
 
         return encryptedBytes;
     }
@@ -503,7 +486,7 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
 
         // perform multi crypt pipe stages
-        byte[] intermediatBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
+        byte[] intermediatBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
 		// Unzip after all, if it's necessary
 		byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.unzip(intermediatBytes) : intermediatBytes;
@@ -579,7 +562,7 @@ public class SecureCipherPipe extends CipherPipe {
             exZip.printStackTrace();
         }
 
-        return merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);
+        return merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
     }
 
 
@@ -597,7 +580,7 @@ public class SecureCipherPipe extends CipherPipe {
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
         zType = unzipAfter;
         cMode2 = cmode2;
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
@@ -624,7 +607,7 @@ public class SecureCipherPipe extends CipherPipe {
             exZip.printStackTrace();
         }
 
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
 
         String cryptedEncoded = encType.encodeBytesToString(outBytes);
         return cryptedEncoded;
@@ -659,7 +642,7 @@ public class SecureCipherPipe extends CipherPipe {
             exZip.printStackTrace();
         }
 
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cmode2);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
 
         byte[] encryptedBytes = new byte[0];
         if (encType != EncodeEnum.None)
@@ -685,7 +668,7 @@ public class SecureCipherPipe extends CipherPipe {
         zType = unzipAfter;
 
         byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
@@ -725,7 +708,7 @@ public class SecureCipherPipe extends CipherPipe {
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
 
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?

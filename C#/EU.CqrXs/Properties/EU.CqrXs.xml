@@ -832,21 +832,6 @@
             Current <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncodeType"/> 
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.InPipe">
-            <summary>
-            InPipe is current encryption pipe
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.OutPipe">
-            <summary>
-            OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.InPipe"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.PipeString">
-            <summary>
-            PipeString will always be generated on the fly from <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.InPipe"/>
-            </summary>
-        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor">
             <summary>
             parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/>
@@ -1013,18 +998,6 @@
             <param name="directionDecrypt">true for decryption, false for encryption</param>        
             <param name="cmode2"></param>
             <returns>transformed byte array</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.GenerateEncryptPipeImage">
-            <summary>
-            GenerateEncryptPipeImage - generates image for symmetric cipher encryption pipeline
-            </summary>
-            <returns><see cref="T:System.Drawing.Image">the image</see></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.GenerateDecryptPipeImage">
-            <summary>
-            GenerateDecryptPipeImage generates an image for decrypt symmetric cipher pipeline 
-            </summary>
-            <returns><see cref="T:System.Drawing.Image">the image</see></returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix">
              <summary>

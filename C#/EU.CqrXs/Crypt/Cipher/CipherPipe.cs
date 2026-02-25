@@ -289,7 +289,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// ToJson 
         /// </summary>
         /// <returns>serialized string</returns>
-        public string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public virtual string ToJson() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         /// <summary>
         /// FromJson
@@ -616,8 +616,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="hashIv">hash key iv relational to secret key</param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <returns>encrypted byte[]</returns>
-        public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv,
-            CipherMode2 cmode2)
+        public virtual byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv, CipherMode2 cmode2)
         {
             if (InPipe == null || inPipe.Length == 0)   // return immideate, when zero round cipher merry go round
                 return inBytes;
@@ -656,8 +655,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <param name="hashIv">hash relational to secret kay</param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
-        public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv,
-            CipherMode2 cmode2)
+        public virtual byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv, CipherMode2 cmode2)
         {
             if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
                 return cipherBytes;

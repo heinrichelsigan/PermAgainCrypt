@@ -27,31 +27,22 @@ import javax.crypto.Cipher;
 public class CipherPipe {
 
     String cipherKey = "", cipherHash = "";
-    ZipType zType = ZipType.None;
+    protected ZipType zType = ZipType.None;
     // private readonly CipherEnum[] inPipe;
-    CipherEnum[] inPipe;
+    protected CipherEnum[] inPipe;
     // private readonly CipherEnum[] outPipe;
-    EncodeEnum  encodeType = EncodeEnum.Base64;
-    KeyHash kHash = KeyHash.Hex;
+    protected EncodeEnum  encodeType = EncodeEnum.Base64;
+    private KeyHash kHash = KeyHash.Hex;
     // private readonly String pipeString;
-    CipherMode2 cMode2 = CipherMode2.CFB;
+    protected CipherMode2 cMode2 = CipherMode2.CFB;
 
+	public ZipType getZipType() { return zType; }
 
-    public ZipType getZipType() {
-        return zType;
-    }
+    public EncodeEnum getEncodeType() { return encodeType; }
 
-    public EncodeEnum getEncodeType() {
-        return encodeType;
-    }
+    public KeyHash getKeyHash() { return kHash; }
 
-    public KeyHash getKeyHash() {
-        return kHash;
-    }
-
-    public CipherEnum[] getInPipe() {
-        return inPipe;
-    }
+    public CipherEnum[] getInPipe() { return inPipe; }
 
 
     public CipherEnum[] getOutPipe() {
@@ -460,6 +451,7 @@ public class CipherPipe {
         String hash = (hashIv != null && hashIv.length() > 0) ? hashIv : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(secretKey);
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         cipherHash = hash;
+		cMode2 = cmode2;
 
         byte[] encryptedBytes = new byte[inBytes.length];
         System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
@@ -498,6 +490,7 @@ public class CipherPipe {
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         String hash = (hashIv != null && hashIv.length() > 0) ? hashIv : (kHash != null) ? kHash.hash(secretKey) : KeyHash.Hex.hash(cipherKey);
         cipherHash = hash;
+		cMode2 = cmode2;
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
         for (CipherEnum cipher : getOutPipe())
@@ -572,7 +565,8 @@ public class CipherPipe {
         kHash = keyHash;
         zType = zipBefore;
         encodeType = encoding;
-
+		cMode2 = cmode2;
+		
         try {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
@@ -580,7 +574,7 @@ public class CipherPipe {
             exZip.printStackTrace();
         }
         // perform multi crypt pipe stages
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv, cmode2);
+        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv, cMode2);
 
         return encryptedBytes;
     }
@@ -665,7 +659,7 @@ public class CipherPipe {
         encodeType = decoding;
         cMode2 = cmode2;
         // perform multi crypt pipe stages
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, cmode2);
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cryptKey, hashIv, cMode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
@@ -707,7 +701,7 @@ public class CipherPipe {
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cmode2);
+        return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cMode2);
     }
 
 
@@ -735,7 +729,7 @@ public class CipherPipe {
         cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
         cipherHash = keyHash.hash(cipherKey);
         cMode2 = cmode2;
-        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash, cmode2);
+        byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKey, cipherHash, cMode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
@@ -770,7 +764,7 @@ public class CipherPipe {
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, cmode2);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, cMode2);
         String cryptedEncoded = encType.encodeBytesToString(outBytes);
         return cryptedEncoded;
     }
@@ -817,7 +811,7 @@ public class CipherPipe {
         } catch (Exception exZip) {
             exZip.printStackTrace();
         }
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cmode2);
+        byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cMode2);
         byte[] encryptedBytes = new byte[0];
         if (encType != EncodeEnum.None)
         {
@@ -853,7 +847,7 @@ public class CipherPipe {
         cipherHash = keyHash.hash(secretKey);
 
         byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), cmode2);
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), cMode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(outBytes) : outBytes;
@@ -902,7 +896,7 @@ public class CipherPipe {
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
 
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV, cmode2);
+        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, hashIV, cMode2);
         try {
             byte[] unzipBytes = (unzipAfter != ZipType.None) ?
                     unzipAfter.unzip(outBytes) : outBytes;
