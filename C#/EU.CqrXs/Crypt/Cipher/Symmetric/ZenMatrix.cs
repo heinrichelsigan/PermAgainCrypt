@@ -25,8 +25,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
         private const string SYMMCIPHERALGONAME = "ZenMatrix";
         protected internal const int ZEN_SIZE = 0x10;
-        protected internal static int BLOCK_SIZE = 256;
-        protected internal static readonly int[] BLOCK_SIZES = { 16, 64, 128, 256, 1024, 4096, 16384, 65536 };
+        protected internal static int BLOCK_SIZE = 16;
+        // protected internal static readonly int[] BLOCK_SIZES = { 16, 64, 128, 256, 1024, 4096, 16384, 65536 };
         protected internal bool initialised = false;
         protected internal bool forEncryption;
 
@@ -293,11 +293,11 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// </summary>
         public ZenMatrix(int bs = 16)
         {
-            for (int i = 0; i < BLOCK_SIZES.Length; i++)
-            {
-                if (bs == BLOCK_SIZES[i])
-                    BLOCK_SIZE = BLOCK_SIZES[i];
-            }
+            //for (int i = 0; i < BLOCK_SIZES.Length; i++)
+            //{
+            //    if (bs == BLOCK_SIZES[i])
+            //        BLOCK_SIZE = BLOCK_SIZES[i];
+            //}
             byte sbcnt = 0x0;
             MatrixPermutationKey = new byte[ZEN_SIZE];
             foreach (byte s in MatrixPermutationBase)
