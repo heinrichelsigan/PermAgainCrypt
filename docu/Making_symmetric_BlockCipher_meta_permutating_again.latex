@@ -154,27 +154,234 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 \caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
-
 \subsection{Simple mode - SecureCipherPipe}
-
-Both C\# and Java Form contain a MenuItem "Simple mode"
-\begin{figure}
-    \centering
-    \includegraphics[width=0.25\linewidth]{2026-02-25_SimpelMode.png}
-    \caption{Menu item Simple mode}
-    \label{fig:Simple_Mode}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{2026-02-25_CSharp_SimpleMode.png}
-    \caption{Simple mode in C\#}
-    \label{fig:CSharp_SimpleMode}
-\end{figure}
 
 In the simple mode SecureCipherPipe is used as CipherPipe. Each stage of the pipe will not be encrypted with the same secure key; furthermore, each pipe stage will be encrypted with a secure hashed key with a different hash.
 
+WebForm for simple mode is \url{https://area23.at/net/Crypt/AesImprove.aspx} 
+
+or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Simple_SecureCipherPipe.png}
+    \caption{Simple SecureCipherPipe}
+    \label{fig:Simple_SecureCipherPipe}
+\end{figure}
+
+\subsubsection{SecureCipherPipe fragments in java}
+\begin{small}
+\begin{verbatim}
+package eu.cqrxs.crypt.cipher;
+import eu.cqrxs.crypt.encoding.+,
+
+// [...]
+
+/**
+ * SecureCipherPipe is symmetric block cipher encryption and decryption pipe line
+ */
+public class SecureCipherPipe extends CipherPipe {
+
+    String cipherKeyHash = "";
+    final static KeyHash[] secureHashes = {
+    			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
+    			KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
+
+    /**
+     * parameterless constructor of SecureCipherPipe
+     */
+    public SecureCipherPipe() {
+        cipherKeyHash = "";
+        inPipe = new CipherEnum[0];
+        encodeType = EncodeEnum.Base64;
+        zType = ZipType.GZip;
+        cMode2 = CipherMode2.CFB;
+    }
+
+    /**
+     * SecureCipherPipe constructor with following parameters
+     * @param cipherEnums an array of {@link CipherEnum}
+     * @param maxpipe maximum pipeline size {@link eu.cqrxs.util.Constants}.MAX_PIPE_LEN
+     * @param encType {@link EncodeEnum}
+     * @param zpType {@link ZipType}
+     * @param cmode2 {@link CipherMode2}
+     */
+    public SecureCipherPipe(CipherEnum[] cipherEnums, int maxpipe, EncodeEnum encType, 
+                                            ZipType zpType, CipherMode2 cmode2) {
+        // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+        maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
+
+        int isize = Math.min(((int)cipherEnums.length), ((int)maxpipe));
+        inPipe = new CipherEnum[isize];
+        for (int ib = 0; (ib < cipherEnums.length && ib < isize); ib++) {
+            inPipe[ib] = cipherEnums[ib];
+        }
+        cMode2 = cmode2;
+        encodeType = encType;
+        zType = zpType;
+    }
+
+    // [...]
+
+    /**
+     * SecureCipherPipe ctor with array of user key bytes
+     * @param keyBytes user key bytes
+     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
+     * @param encType {@link EncodeEnum}
+     * @param zpType {@link ZipType}
+     * @param cmode2 {@link CipherMode2}
+     */
+    public SecureCipherPipe(byte[] keyBytes, int maxpipe, EncodeEnum encType, 
+                                    ZipType zpType, CipherMode2 cmode2) {
+        // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
+        maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
+        // [...]
+    }
+
+    /**
+     * Constructs a SecureCipherPipe from key and hash
+     * @param key users secret key per default email address
+     * @param encType {@link EncodeEnum}
+     * @param zpType {@link ZipType}
+     * @param cmode2 {@link CipherMode2}
+     */
+    public SecureCipherPipe(String key, EncodeEnum encType, ZipType zpType, CipherMode2 cmode2) {
+        this(CryptHelper.getKeyBytesSingle(key, 16), Constants.MAX_PIPE_LEN, encType, zpType, cmode2);
+        cipherKeyHash = key;
+    }
+
+    /**
+     * SecureCipherPipe constructor with single users key argument
+     * all other parameters are set to default
+     * @param key only users secret key
+     */
+    public SecureCipherPipe(String key) {
+        this(key, EncodeEnum.Base64, ZipType.GZip, CipherMode2.CFB);
+        cipherKeyHash = key;
+    }
+
+    /**
+     * encryptBytesFast generic encrypt bytes to bytes
+     * @param inBytes array of bytes
+     * @param cipherAlgo {@link CipherEnum}
+     * @param hashKey users secret key for encryption
+     * @param cmode2 {@link CipherMode2}
+     * @return byte array of encrypted bytes
+     */
+    public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String hashKey, 
+                                        CipherMode2 cmode2) throws InvalidCipherTextException {
+        if (hashKey == null || hashKey.length() < 1)
+            throw new IllegalArgumentException("hashKey");
+        byte[] encryptBytes = inBytes;
+        CryptParams cpParams = new CryptParams(cipherAlgo, hashKey, hashKey, cmode2);
+        
+        switch (cipherAlgo) {            
+            case ZenMatrix:
+                encryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).encrypt(inBytes, true);
+                break;            
+            default:
+                CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
+                encryptBytes = cryptBounceCastle.encrypt(inBytes);
+                break;
+        }
+        return encryptBytes;
+    }
+
+    /**
+     * Generic decrypt bytes to bytes
+     * @param cipherBytes enrypted bytes
+     * @param cipherAlgo {@link CipherEnum}
+     * @param hashKey users secret key
+     * @param cmode2 {@link CipherMode2}
+     * @return decrypted bytes for one cipher algo
+     */
+    public static byte[] decryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, String hashKey,
+                                    CipherMode2 cmode2) throws InvalidCipherTextException {
+        if (hashKey == null || hashKey.length() == 0)
+            throw new IllegalArgumentException("hashKey");
+        byte[] decryptBytes = cipherBytes; 
+        CryptParams cpParams = new CryptParams(cipherAlgo, hashKey, hashKey, cmode2);
+
+        switch (cipherAlgo) {            
+            case ZenMatrix:
+                decryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).decrypt(cipherBytes);
+                break;
+            default:
+                CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
+                decryptBytes = cryptBounceCastle.decrypt(cipherBytes);
+                break;
+        }
+        return decryptBytes; // TODO: EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
+    }
+
+    /**
+     * merryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
+     * @param inBytes plain byte[] to encrypt
+     * @param hashKey user secret key to use for all symmetric cipher algorithms in the pipe
+     * @param cmode2 {@link CipherMode2}
+     * @return encrypted byte[]
+     */
+    public byte[] merryGoRoundEncrpyt(byte[] inBytes, String hashKey, CipherMode2 cmode2)
+                    throws InvalidCipherTextException {
+        if (inPipe.length == 0)
+            return inBytes;
+        if ((hashKey == null && cipherKeyHash == null) || 
+            (hashKey.length() == 0 && cipherKeyHash.length() == 0))
+                throw new IllegalArgumentException("hashKey");
+        int merry = 0;
+        byte[] encryptedBytes = new byte[inBytes.length];
+        System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
+        cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
+
+        for (CipherEnum cipher : inPipe) {
+            String cipherHashKey = secureHashes[(merry % secureHashes.length)].hash(cipherKeyHash);
+            if ((++merry) > (secureHashes.length -1)) merry = 0;
+            encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
+            inBytes = encryptedBytes;
+        }
+
+        return encryptedBytes;
+    }
+
+    /**
+     * decrpytRoundGoMerry against clock turn -
+     *    starts merry to turn arround from right to left against clock hour cycle
+     * @param cipherBytes encrypted byte array
+     * @param hashKey user secret key, normally email address
+     * @param cmode2 {@link CipherMode2}
+     * @return byte[]
+     */
+    public byte[] decrpytRoundGoMerry(byte[] cipherBytes, String hashKey, CipherMode2 cmode2) 
+                    throws InvalidCipherTextException {
+        if (inPipe.length == 0)
+            return cipherBytes;
+        if ((hashKey == null && cipherKeyHash == null) || 
+            (hashKey.length() == 0 && cipherKeyHash.length() == 0))
+                throw new IllegalArgumentException("hashKey");
+        cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;        
+        int roundsGo = secureHashes.length - 1;
+        byte[] decryptedBytes = new byte[cipherBytes.length];
+        
+        for (CipherEnum cipher : getOutPipe()) {
+            String cipherHashKey = secureHashes[(roundsGo % secureHashes.length)].hash(cipherKeyHash);
+            if ((--roundsGo) < 0) roundsGo = secureHashes.length - 1;
+            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
+            cipherBytes = decryptedBytes;
+        }
+
+        return decryptedBytes;
+    }
+    // [...]
+}
+\end{verbatim}
+\end{small}
+
+
 \subsubsection{En-/Decryption between C\# Java in Simple mode}
+
+We can see, that simple mode is intercompatible between java and C\#.
+Here you see a text encrypted in simple mode in java
+and decrypted in C\#.
 
 \begin{figure}
     \centering
