@@ -516,6 +516,16 @@ namespace EU.CqrXs.Gui.Forms
                         case CipherEnum.Des3Net:
                             SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
                             break;
+                        case CipherEnum.RC2:
+                        case CipherEnum.RC532:
+                        case CipherEnum.RC564:
+                        case CipherEnum.RC6:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.RC, "", true);                            
+                           break;
+                        case CipherEnum.Camellia:
+                        case CipherEnum.CamelliaLight:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Camellia, "", true);
+                            break;
                         default:
                             break;
                     }

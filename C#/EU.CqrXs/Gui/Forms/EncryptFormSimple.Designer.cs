@@ -94,12 +94,15 @@ namespace EU.CqrXs.Gui.Forms
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             comboBoxCompression = new ComboBox();
             comboBoxEncoding = new ComboBox();
+            comboBoxAlgo = new ComboBox();
+            pictureBoxAddAlgo = new PictureBox();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxDelete).BeginInit();
             statusStrip.SuspendLayout();
             panelButtonsMessage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).BeginInit();
             SuspendLayout();
             // 
             // menuStripEncrypt
@@ -456,10 +459,10 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxKey.BackColor = SystemColors.ControlLightLight;
             textBoxKey.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxKey.Location = new Point(48, 27);
+            textBoxKey.Location = new Point(48, 26);
             textBoxKey.Margin = new Padding(1);
             textBoxKey.Name = "textBoxKey";
-            textBoxKey.Size = new Size(813, 27);
+            textBoxKey.Size = new Size(692, 23);
             textBoxKey.TabIndex = 4;
             textBoxKey.Text = "ftp@ftp.cdrom.com";
             textBoxKey.TextChanged += textBoxKey_TextChanged;
@@ -468,7 +471,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBoxKey.BackColor = SystemColors.Control;
             pictureBoxKey.Image = Properties.Resources.key_ring;
-            pictureBoxKey.Location = new Point(8, 27);
+            pictureBoxKey.Location = new Point(8, 24);
             pictureBoxKey.Margin = new Padding(1);
             pictureBoxKey.Name = "pictureBoxKey";
             pictureBoxKey.Size = new Size(30, 30);
@@ -480,7 +483,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             buttonSetPipeline.BackColor = SystemColors.Control;
             buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonSetPipeline.Location = new Point(876, 27);
+            buttonSetPipeline.Location = new Point(876, 24);
             buttonSetPipeline.Margin = new Padding(1);
             buttonSetPipeline.Name = "buttonSetPipeline";
             buttonSetPipeline.Size = new Size(120, 27);
@@ -505,13 +508,13 @@ namespace EU.CqrXs.Gui.Forms
             // 
             textBoxPipe.BackColor = SystemColors.ControlLightLight;
             textBoxPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            textBoxPipe.Location = new Point(96, 64);
+            textBoxPipe.Location = new Point(256, 64);
             textBoxPipe.Margin = new Padding(1);
             textBoxPipe.MaxLength = 8192;
             textBoxPipe.Name = "textBoxPipe";
             textBoxPipe.ReadOnly = true;
-            textBoxPipe.Size = new Size(644, 27);
-            textBoxPipe.TabIndex = 14;
+            textBoxPipe.Size = new Size(615, 23);
+            textBoxPipe.TabIndex = 16;
             // 
             // buttonEncrypt
             // 
@@ -541,11 +544,11 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBoxDelete.BackColor = SystemColors.Control;
             pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(742, 64);
+            pictureBoxDelete.Location = new Point(876, 62);
             pictureBoxDelete.Margin = new Padding(1);
             pictureBoxDelete.Name = "pictureBoxDelete";
             pictureBoxDelete.Size = new Size(27, 27);
-            pictureBoxDelete.TabIndex = 15;
+            pictureBoxDelete.TabIndex = 17;
             pictureBoxDelete.TabStop = false;
             pictureBoxDelete.Click += pictureBoxDelete_Click;
             // 
@@ -566,11 +569,11 @@ namespace EU.CqrXs.Gui.Forms
             // 
             buttonHashPipe.BackColor = SystemColors.Control;
             buttonHashPipe.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonHashPipe.Location = new Point(876, 64);
+            buttonHashPipe.Location = new Point(751, 24);
             buttonHashPipe.Margin = new Padding(1);
             buttonHashPipe.Name = "buttonHashPipe";
             buttonHashPipe.Size = new Size(120, 27);
-            buttonHashPipe.TabIndex = 18;
+            buttonHashPipe.TabIndex = 6;
             buttonHashPipe.Text = "Hash Pipe";
             buttonHashPipe.UseVisualStyleBackColor = false;
             buttonHashPipe.Click += Hash_Pipe_Click;
@@ -683,7 +686,7 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxCompression.FormattingEnabled = true;
             comboBoxCompression.Items.AddRange(new object[] { "GZip" });
-            comboBoxCompression.Location = new Point(6, 65);
+            comboBoxCompression.Location = new Point(6, 64);
             comboBoxCompression.Margin = new Padding(1);
             comboBoxCompression.MaxDropDownItems = 32;
             comboBoxCompression.Name = "comboBoxCompression";
@@ -698,12 +701,38 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxEncoding.FormattingEnabled = true;
             comboBoxEncoding.Items.AddRange(new object[] { "Base64", "Xx" });
-            comboBoxEncoding.Location = new Point(772, 65);
+            comboBoxEncoding.Location = new Point(905, 64);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;
             comboBoxEncoding.Name = "comboBoxEncoding";
             comboBoxEncoding.Size = new Size(89, 23);
-            comboBoxEncoding.TabIndex = 16;
+            comboBoxEncoding.TabIndex = 19;
+            // 
+            // comboBoxAlgo
+            // 
+            comboBoxAlgo.BackColor = SystemColors.Control;
+            comboBoxAlgo.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxAlgo.DropDownWidth = 160;
+            comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxAlgo.FormattingEnabled = true;
+            comboBoxAlgo.Location = new Point(92, 64);
+            comboBoxAlgo.Margin = new Padding(1);
+            comboBoxAlgo.MaxDropDownItems = 32;
+            comboBoxAlgo.Name = "comboBoxAlgo";
+            comboBoxAlgo.Size = new Size(129, 23);
+            comboBoxAlgo.TabIndex = 14;
+            // 
+            // pictureBoxAddAlgo
+            // 
+            pictureBoxAddAlgo.BackColor = SystemColors.ControlLight;
+            pictureBoxAddAlgo.Image = Properties.Resources.AddAesArrowHover;
+            pictureBoxAddAlgo.Location = new Point(222, 62);
+            pictureBoxAddAlgo.Margin = new Padding(1);
+            pictureBoxAddAlgo.Name = "pictureBoxAddAlgo";
+            pictureBoxAddAlgo.Size = new Size(32, 27);
+            pictureBoxAddAlgo.TabIndex = 15;
+            pictureBoxAddAlgo.TabStop = false;
+            pictureBoxAddAlgo.Click += pictureBoxAddAlgo_Click;
             // 
             // EncryptFormSimple
             // 
@@ -711,6 +740,8 @@ namespace EU.CqrXs.Gui.Forms
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1004, 725);
+            Controls.Add(comboBoxAlgo);
+            Controls.Add(pictureBoxAddAlgo);
             Controls.Add(comboBoxEncoding);
             Controls.Add(comboBoxCompression);
             Controls.Add(tabControlWithHexDest);
@@ -745,6 +776,7 @@ namespace EU.CqrXs.Gui.Forms
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
             panelButtonsMessage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxAddAlgo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -812,6 +844,8 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem warnOnEmptyPipeToolStripMenuItem;
         protected internal ComboBox comboBoxCompression;        
         protected internal ComboBox comboBoxEncoding;
+        protected internal ComboBox comboBoxAlgo;
+        protected internal PictureBox pictureBoxAddAlgo;
     }
 
 

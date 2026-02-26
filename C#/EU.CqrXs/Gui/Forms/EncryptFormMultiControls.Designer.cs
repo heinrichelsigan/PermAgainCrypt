@@ -776,21 +776,7 @@ namespace EU.CqrXs.Gui.Forms
             // menuOptionsMenuWindowsitemAbout
             // 
             menuOptionsMenuWindowsitemAbout.Name = "menuOptionsMenuWindowsitemAbout";
-            menuOptionsMenuWindowsitemAbout.Size = new Size(32, 19);
-            // 
-            // comboBoxAlgo
-            // 
-            comboBoxAlgo.BackColor = SystemColors.Control;
-            comboBoxAlgo.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxAlgo.DropDownWidth = 160;
-            comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxAlgo.FormattingEnabled = true;
-            comboBoxAlgo.Location = new Point(102, 4);
-            comboBoxAlgo.Margin = new Padding(1);
-            comboBoxAlgo.MaxDropDownItems = 32;
-            comboBoxAlgo.Name = "comboBoxAlgo";
-            comboBoxAlgo.Size = new Size(120, 23);
-            comboBoxAlgo.TabIndex = 12;
+            menuOptionsMenuWindowsitemAbout.Size = new Size(32, 19);            
             // 
             // textBoxKey
             // 
@@ -816,6 +802,19 @@ namespace EU.CqrXs.Gui.Forms
             pictureBoxKey.TabStop = false;
             pictureBoxKey.Click += pictureBoxKey_Click;
             // 
+            // buttonSetPipeline
+            // 
+            buttonSetPipeline.BackColor = SystemColors.Control;
+            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
+            buttonSetPipeline.Location = new Point(751, 28);
+            buttonSetPipeline.Margin = new Padding(1);
+            buttonSetPipeline.Name = "buttonSetPipeline";
+            buttonSetPipeline.Size = new Size(120, 27);
+            buttonSetPipeline.TabIndex = 5;
+            buttonSetPipeline.Text = "Set Pipeline";
+            buttonSetPipeline.UseVisualStyleBackColor = false;
+            buttonSetPipeline.Click += SetPipeline_Click;
+            // 
             // pictureBoxHash
             // 
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -840,30 +839,33 @@ namespace EU.CqrXs.Gui.Forms
             textBoxHash.Size = new Size(948, 22);
             textBoxHash.TabIndex = 9;
             // 
-            // buttonSetPipeline
+            // comboBoxCompression
             // 
-            buttonSetPipeline.BackColor = SystemColors.Control;
-            buttonSetPipeline.Font = new Font("Lucida Sans Typewriter", 10F);
-            buttonSetPipeline.Location = new Point(751, 28);
-            buttonSetPipeline.Margin = new Padding(1);
-            buttonSetPipeline.Name = "buttonSetPipeline";
-            buttonSetPipeline.Size = new Size(120, 27);
-            buttonSetPipeline.TabIndex = 5;
-            buttonSetPipeline.Text = "Set Pipeline";
-            buttonSetPipeline.UseVisualStyleBackColor = false;
-            buttonSetPipeline.Click += SetPipeline_Click;
+            comboBoxCompression.BackColor = SystemColors.Control;
+            comboBoxCompression.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxCompression.FormattingEnabled = true;
+            comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
+            comboBoxCompression.Location = new Point(6, 4);
+            comboBoxCompression.Margin = new Padding(1);
+            comboBoxCompression.MaxDropDownItems = 32;
+            comboBoxCompression.Name = "comboBoxCompression";
+            comboBoxCompression.Size = new Size(94, 23);
+            comboBoxCompression.TabIndex = 11;
             // 
-            // buttonReset
+            // comboBoxAlgo
             // 
-            buttonReset.BackColor = SystemColors.Control;
-            buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
-            buttonReset.Location = new Point(874, 4);
-            buttonReset.Margin = new Padding(1);
-            buttonReset.Name = "buttonReset";
-            buttonReset.Size = new Size(120, 27);
-            buttonReset.TabIndex = 25;
-            buttonReset.Text = "Reset Form";
-            buttonReset.UseVisualStyleBackColor = false;
+            comboBoxAlgo.BackColor = SystemColors.Control;
+            comboBoxAlgo.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxAlgo.DropDownWidth = 160;
+            comboBoxAlgo.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxAlgo.FormattingEnabled = true;
+            comboBoxAlgo.Location = new Point(102, 4);
+            comboBoxAlgo.Margin = new Padding(1);
+            comboBoxAlgo.MaxDropDownItems = 32;
+            comboBoxAlgo.Name = "comboBoxAlgo";
+            comboBoxAlgo.Size = new Size(120, 23);
+            comboBoxAlgo.TabIndex = 12;            
             // 
             // pictureBoxAddAlgo
             // 
@@ -889,6 +891,33 @@ namespace EU.CqrXs.Gui.Forms
             textBoxPipe.Size = new Size(578, 23);
             textBoxPipe.TabIndex = 14;
             // 
+            // pictureBoxDelete
+            // 
+            pictureBoxDelete.BackColor = SystemColors.Control;
+            pictureBoxDelete.Image = Properties.Resources.image_delete;
+            pictureBoxDelete.Location = new Point(837, 2);
+            pictureBoxDelete.Margin = new Padding(1);
+            pictureBoxDelete.Name = "pictureBoxDelete";
+            pictureBoxDelete.Size = new Size(27, 27);
+            pictureBoxDelete.TabIndex = 15;
+            pictureBoxDelete.TabStop = false;
+            pictureBoxDelete.Click += pictureBoxDelete_Click;
+            // 
+            // comboBoxEncoding
+            // 
+            comboBoxEncoding.BackColor = SystemColors.Control;
+            comboBoxEncoding.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxEncoding.DropDownWidth = 144;
+            comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxEncoding.FormattingEnabled = true;
+            comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
+            comboBoxEncoding.Location = new Point(868, 4);
+            comboBoxEncoding.Margin = new Padding(1);
+            comboBoxEncoding.MaxDropDownItems = 32;
+            comboBoxEncoding.Name = "comboBoxEncoding";
+            comboBoxEncoding.Size = new Size(126, 23);
+            comboBoxEncoding.TabIndex = 16;
+            // 
             // buttonEncrypt
             // 
             buttonEncrypt.BackColor = SystemColors.Control;
@@ -913,46 +942,17 @@ namespace EU.CqrXs.Gui.Forms
             buttonDecrypt.Text = "Decrypt";
             buttonDecrypt.UseVisualStyleBackColor = false;
             // 
-            // pictureBoxDelete
+            // buttonReset
             // 
-            pictureBoxDelete.BackColor = SystemColors.Control;
-            pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(837, 2);
-            pictureBoxDelete.Margin = new Padding(1);
-            pictureBoxDelete.Name = "pictureBoxDelete";
-            pictureBoxDelete.Size = new Size(27, 27);
-            pictureBoxDelete.TabIndex = 15;
-            pictureBoxDelete.TabStop = false;
-            pictureBoxDelete.Click += pictureBoxDelete_Click;
-            // 
-            // comboBoxCompression
-            // 
-            comboBoxCompression.BackColor = SystemColors.Control;
-            comboBoxCompression.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxCompression.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxCompression.FormattingEnabled = true;
-            comboBoxCompression.Items.AddRange(new object[] { "None", "BZip2", "GZip", "Zip" });
-            comboBoxCompression.Location = new Point(6, 4);
-            comboBoxCompression.Margin = new Padding(1);
-            comboBoxCompression.MaxDropDownItems = 32;
-            comboBoxCompression.Name = "comboBoxCompression";
-            comboBoxCompression.Size = new Size(94, 23);
-            comboBoxCompression.TabIndex = 11;
-            // 
-            // comboBoxEncoding
-            // 
-            comboBoxEncoding.BackColor = SystemColors.Control;
-            comboBoxEncoding.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxEncoding.DropDownWidth = 144;
-            comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBoxEncoding.FormattingEnabled = true;
-            comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(868, 4);
-            comboBoxEncoding.Margin = new Padding(1);
-            comboBoxEncoding.MaxDropDownItems = 32;
-            comboBoxEncoding.Name = "comboBoxEncoding";
-            comboBoxEncoding.Size = new Size(126, 23);
-            comboBoxEncoding.TabIndex = 16;
+            buttonReset.BackColor = SystemColors.Control;
+            buttonReset.Font = new Font("Lucida Sans Typewriter", 9.75F);
+            buttonReset.Location = new Point(874, 4);
+            buttonReset.Margin = new Padding(1);
+            buttonReset.Name = "buttonReset";
+            buttonReset.Size = new Size(120, 27);
+            buttonReset.TabIndex = 25;
+            buttonReset.Text = "Reset Form";
+            buttonReset.UseVisualStyleBackColor = false;                       
             // 
             // buttonRandomText
             // 

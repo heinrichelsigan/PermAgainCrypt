@@ -73,7 +73,11 @@ namespace EU.CqrXs.Gui.Forms
             }
 
             foreach (var cipherModeItem in mCipherModes)
-                cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));            
+                cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));
+
+            this.comboBoxAlgo.Items.Clear();
+            foreach (string cipher in GetCipherEnums())
+                this.comboBoxAlgo.Items.Add(cipher.ToString());
 
             this.Load += new System.EventHandler(async (sender, e)
                 => await EncryptFormSimple_LoadAsync(sender, e));
@@ -269,6 +273,81 @@ namespace EU.CqrXs.Gui.Forms
             await this.statusLabelMsg.SetTextAsync("");
             await SetInfoMessageAsync("reset", ToolTipIcon.Info, 6000);
 
+        }
+
+        /// <summary>
+        /// pictureBoxAddAlgo_Click - adds selected algorithm to pipeline
+        /// </summary>
+        /// <param name="sender">object sender</param>
+        /// <param name="e">EventArgs e</param>
+        protected internal void pictureBoxAddAlgo_Click(object sender, EventArgs e)
+        {
+            CipherEnum[] cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
+            if (!string.IsNullOrEmpty(comboBoxAlgo.SelectedItem.ToString()) && Enum.TryParse<CipherEnum>(comboBoxAlgo.SelectedItem.ToString(), out CipherEnum cipherEnum))
+            {
+                if (cipherAlgos.Length < 8)
+                {
+                    switch (cipherEnum)
+                    {
+                        case CipherEnum.BlowFish:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.blowfish, "", true);
+                            break;
+                        case CipherEnum.Fish2:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TwoFish, "", true);
+                            break;
+                        case CipherEnum.Fish3:
+                            //case CipherEnum.ThreeFish256:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.ThreeFish, "", true);
+                            break;
+                        case CipherEnum.Serpent:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Serpent, "", true);
+                            break;
+                        case CipherEnum.XTea:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.XTea, "", true);
+                            break;
+                        case CipherEnum.Tea:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Tea, "", true);
+                            break;
+                        case CipherEnum.Des:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Des, "", true);
+                            break;
+                        case CipherEnum.Des3:
+                        case CipherEnum.Des3Net:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.TripleDes, "", true);
+                            break;
+                        case CipherEnum.RC2:
+                        case CipherEnum.RC532:
+                        case CipherEnum.RC564:
+                        case CipherEnum.RC6:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.RC, "", true);
+                            break;
+                        case CipherEnum.Camellia:
+                        case CipherEnum.CamelliaLight:
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.Camellia, "", true);
+                            break;
+                        default:
+                            break;
+                    }
+                    this.textBoxPipe.Text += cipherEnum.ToString() + ";";
+                    cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
+                    cPipe = new SecureCipherPipe(cipherAlgos, 8, GetCipherMode2());
+                    SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage(), "", true);
+                    System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = 3000 };
+                    setInfoMessageTimer.Elapsed += (s, en) =>
+                    {
+                        Task.Run(new System.Action(() =>
+                        {
+                            SetPictureBoxImage(groupBoxFiles.pictureBoxFileIn, Properties.Resources.file, "", true);
+                        }));
+                        setInfoMessageTimer.Stop(); // Stop the timer(otherwise keeps on calling)
+                    };
+                    setInfoMessageTimer.Start();
+                }
+                else
+                {
+                    SetInfoMessage("Max 8 algorithms in pipe reached!", ToolTipIcon.Warning, 2000);
+                }
+            }
         }
 
         #endregion ButtonPictureBoxClickEvents

@@ -288,4 +288,10 @@
   <data name="TextLengthTooHuge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TextLengthTooHuge.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="RC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Algos\RC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Camellia" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Algos\Camellia.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

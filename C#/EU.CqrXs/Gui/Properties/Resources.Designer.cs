@@ -133,6 +133,16 @@ namespace EU.CqrXs.Gui.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Camellia {
+            get {
+                object obj = ResourceManager.GetObject("Camellia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ChiffrePentacle {
             get {
                 object obj = ResourceManager.GetObject("ChiffrePentacle", resourceCulture);
@@ -345,6 +355,16 @@ namespace EU.CqrXs.Gui.Properties {
         internal static System.Drawing.Bitmap key_ring {
             get {
                 object obj = ResourceManager.GetObject("key_ring", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RC {
+            get {
+                object obj = ResourceManager.GetObject("RC", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
