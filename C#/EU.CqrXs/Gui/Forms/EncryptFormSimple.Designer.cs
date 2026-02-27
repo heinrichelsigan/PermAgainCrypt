@@ -700,7 +700,7 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxEncoding.DropDownWidth = 144;
             comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxEncoding.FormattingEnabled = true;
-            comboBoxEncoding.Items.AddRange(new object[] { "Base64", "Xx" });
+            comboBoxEncoding.Items.AddRange(new object[] { "Base64" });
             comboBoxEncoding.Location = new Point(905, 64);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;

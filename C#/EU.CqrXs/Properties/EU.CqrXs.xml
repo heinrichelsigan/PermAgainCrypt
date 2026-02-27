@@ -822,16 +822,6 @@
             </list>
             </remarks>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.ZType">
-            <summary>
-            ZType is current <see cref="T:EU.CqrXs.Zip.ZipType"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncodeType">
-            <summary>
-            Current <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncodeType"/> 
-            </summary>
-        </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor">
             <summary>
             parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/>

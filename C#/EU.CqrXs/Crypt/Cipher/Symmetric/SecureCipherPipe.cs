@@ -40,17 +40,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
 
         protected string cipherKeyHash; // this is the hash of the user key, e.g. email address, which is used to generate the pipe and the keys for each stage in pipe
-
-        /// <summary>
-        /// ZType is current <see cref="ZipType"/>
-        /// </summary>
-        public new ZipType ZType { get => ZipType.GZip; }
-
-        /// <summary>
-        /// Current <see cref="EncodeType"/> 
-        /// </summary>
-        public new EncodingType EncodeType { get => encodeType; }
-
+      
         public new string PipeFullExtension
         {
             get
@@ -60,8 +50,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 return miniPipeExt;
             }
         }
-
-        public static KeyHash[] GetSecureHashes() => secureHashes;
+        
 
         #endregion fields and properties
 
@@ -217,8 +206,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 this.cipherHash = "";
                 this.CMode = ciphPipe.CMode;
                 this.CMode2 = ciphPipe.CMode2;
-                this.encodeType = ciphPipe.EncodeType;
-                this.zType = ciphPipe.ZType;
+                this.encodeType = EncodingType.Base64; // default is base64, because it is the most common encoding type for encrypted binary data
+                this.zType = ZipType.GZip; // default is GZip, because it is the most common zip type
             }
         }
 
