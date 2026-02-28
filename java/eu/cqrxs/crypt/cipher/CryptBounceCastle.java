@@ -189,7 +189,7 @@ public class CryptBounceCastle  {
         var cipher = CryptoBlockCipher;
 		plainData = (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") ?
 			EnDeCodeHelper.getBytesFromBytes(plainData, 64, true) : plainData;
-        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);		
+        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CFBBlockCipher(CryptoBlockCipher, size), CryptoBlockCipherPadding);
 
         switch (mode)
         {
@@ -202,10 +202,10 @@ public class CryptBounceCastle  {
             case "CFB":
                 cipherMode = new PaddedBufferedBlockCipher(new CFBBlockCipher(CryptoBlockCipher, size), CryptoBlockCipherPadding);
                 break;
-            case "CCM":
-                org.bouncycastle.crypto.modes.CCMBlockCipher ccmCipher = new CCMBlockCipher(CryptoBlockCipher);
-                cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ccmCipher, CryptoBlockCipherPadding);
-                break;
+            // case "CCM":
+            //     org.bouncycastle.crypto.modes.CCMBlockCipher ccmCipher = new CCMBlockCipher(CryptoBlockCipher);
+            //     cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ccmCipher, CryptoBlockCipherPadding);
+            //     break;
             case "CTS":
                 org.bouncycastle.crypto.modes.CTSBlockCipher ctsCipher = new CTSBlockCipher(CryptoBlockCipher);
                 cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ctsCipher, CryptoBlockCipherPadding);
@@ -255,7 +255,7 @@ public class CryptBounceCastle  {
      */
     public byte[] decrypt(byte[] cipherData) throws InvalidCipherTextException {
         var cipher = CryptoBlockCipher;
-        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CBCBlockCipher(CryptoBlockCipher), CryptoBlockCipherPadding);
+        PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CFBBlockCipher(CryptoBlockCipher, size), CryptoBlockCipherPadding);
 
         switch (mode)
         {
@@ -268,10 +268,10 @@ public class CryptBounceCastle  {
             case "CFB":
                 cipherMode = new PaddedBufferedBlockCipher(new CFBBlockCipher(CryptoBlockCipher, size), CryptoBlockCipherPadding);
                 break;
-            case "CCM":
-                org.bouncycastle.crypto.modes.CCMBlockCipher ccmCipher = new CCMBlockCipher(CryptoBlockCipher);
-                cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ccmCipher, CryptoBlockCipherPadding);
-                break;
+            // case "CCM":
+            //     org.bouncycastle.crypto.modes.CCMBlockCipher ccmCipher = new CCMBlockCipher(CryptoBlockCipher);
+            //     cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ccmCipher, CryptoBlockCipherPadding);
+            //     break;
             case "CTS":
                 org.bouncycastle.crypto.modes.CTSBlockCipher ctsCipher = new CTSBlockCipher(CryptoBlockCipher);
                 cipherMode = new PaddedBufferedBlockCipher((BlockCipher)ctsCipher, CryptoBlockCipherPadding);

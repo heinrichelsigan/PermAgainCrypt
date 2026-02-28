@@ -12,6 +12,7 @@ import java.util.HashSet;
 
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
+import eu.cqrxs.util.CException;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.NotImplementedError;
@@ -739,6 +740,39 @@ public class CipherPipe {
         }
         return decryptedBytes;
     }
+
+
+    /**
+     *
+     /**
+     * cryptCodeBytes encrypt or decrypt bytes
+     * @param inBytes bytes to transform
+     * @param secretKey user's key
+     * @param directionDecrypt true for decrypt, false for encrypt
+     * @param encType {@link EncodeEnum}
+     * @param zip {@link ZipType}
+     * @param keyHash {@link KeyHash}
+     * @param cmode2 {@link CipherMode2}
+     * @return transformed bytes
+     */
+    public byte[] CryptCodeBytes(byte[] inBytes, String secretKey, String hashIV,
+                                         boolean directionDecrypt, EncodeEnum encType,
+                                         ZipType zip, KeyHash keyHash,
+                                         CipherMode2 cmode2) {
+        byte[] outBytes;
+        try {
+            outBytes = (!directionDecrypt) ?
+                    encryptEncodeBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2) :
+                    decodeDecrpytBytes(inBytes, secretKey, hashIV, encType, zip, keyHash, cmode2);
+        } catch (Exception exc) {
+            throw new CException("Exception in CryptCodeBytes", (Throwable)exc);
+        }
+        return outBytes;
+    }
+
+
+
+
 
     @Deprecated
     public String encrpytEncode(

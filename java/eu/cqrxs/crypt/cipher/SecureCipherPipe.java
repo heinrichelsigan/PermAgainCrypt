@@ -2,6 +2,7 @@ package eu.cqrxs.crypt.cipher;
 
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
+import eu.cqrxs.util.CException;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.zip.ZipType;
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -19,24 +20,10 @@ import java.util.List;
 public class SecureCipherPipe extends CipherPipe {
 
     String cipherKeyHash = "";
-    // ZipType zType = ZipType.None;
-    // private readonly CipherEnum[] inPipe;
-    // CipherEnum[] inPipe;
-    // private readonly CipherEnum[] outPipe;
-    // EncodeEnum  encodeType = EncodeEnum.Base64;
-    // private readonly String pipeString;
-    // CipherMode2 CMode2 = CipherMode2.CFB;
-
-
-    // public virtual ZipType getZipType() { return zType; }
-    // public EncodeEnum getEncodeType() { return encodeType; }
-    // public CipherEnum[] getInPipe() { return inPipe; }
 
 	final static KeyHash[] secureHashes = {
 			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
 			KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
-    
-	public static KeyHash[] getSecureHashes() { return secureHashes; }
 
     /**
      * parameterless constructor of SecureCipherPipe
@@ -53,11 +40,9 @@ public class SecureCipherPipe extends CipherPipe {
      * SecureCipherPipe constructor with following parameters
      * @param cipherEnums an array of {@link CipherEnum}
      * @param maxpipe maximum pipeline size {@link eu.cqrxs.util.Constants}.MAX_PIPE_LEN
-     * @param encType {@link EncodeEnum}
-     * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      */
-    public SecureCipherPipe(CipherEnum[] cipherEnums, int maxpipe, EncodeEnum encType, ZipType zpType, CipherMode2 cmode2) {
+    public SecureCipherPipe(CipherEnum[] cipherEnums, int maxpipe, CipherMode2 cmode2) {
 
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
@@ -70,8 +55,8 @@ public class SecureCipherPipe extends CipherPipe {
         // System.arraycopy(cipherEnums, 0, inPipe, 0, isize);
 
         cMode2 = cmode2;
-        encodeType = encType;
-        zType = zpType;
+        encodeType = EncodeEnum.Base64;
+        zType = ZipType.GZip;
     }
 
     /**
@@ -79,11 +64,9 @@ public class SecureCipherPipe extends CipherPipe {
      *
      * @param cipherAlgos array of [@link String[]} as inpipe
      * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
-     * @param encType {@link EncodeEnum}
-     * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * */
-    public SecureCipherPipe(String[] cipherAlgos, int maxpipe, EncodeEnum encType, ZipType zpType, CipherMode2 cmode2) {
+    public SecureCipherPipe(String[] cipherAlgos, int maxpipe, CipherMode2 cmode2) {
 
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
@@ -103,8 +86,8 @@ public class SecureCipherPipe extends CipherPipe {
 
         inPipe = cipherEnums.toArray(CipherEnum[]::new);
         cMode2 = cmode2;
-        encodeType = encType;
-        zType = zpType;
+        encodeType = EncodeEnum.Base64;
+        zType = ZipType.GZip;
     }
 
 
@@ -112,11 +95,9 @@ public class SecureCipherPipe extends CipherPipe {
      * SecureCipherPipe ctor with array of user key bytes
      * @param keyBytes user key bytes
      * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
-     * @param encType {@link EncodeEnum}
-     * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      */
-    public SecureCipherPipe(byte[] keyBytes, int maxpipe, EncodeEnum encType, ZipType zpType, CipherMode2 cmode2) {
+    public SecureCipherPipe(byte[] keyBytes, int maxpipe, CipherMode2 cmode2) {
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
 
@@ -145,20 +126,18 @@ public class SecureCipherPipe extends CipherPipe {
             }
         }
         cMode2 = cmode2;
-        zType = zpType;
-        encodeType = encType;
+        encodeType = EncodeEnum.Base64;
+        zType = ZipType.GZip;
     }
 
     /**
      * Constructs a SecureCipherPipe from key and hash
      * @param key users secret key per default email address
-     * @param encType {@link EncodeEnum}
-     * @param zpType {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      */
-    public SecureCipherPipe(String key, EncodeEnum encType, ZipType zpType, CipherMode2 cmode2) {
+    public SecureCipherPipe(String key, CipherMode2 cmode2) {
 
-        this(CryptHelper.getKeyBytesSingle(key, 16), Constants.MAX_PIPE_LEN, encType, zpType, cmode2);
+        this(CryptHelper.getKeyBytesSingle(key, 16), Constants.MAX_PIPE_LEN, cmode2);
         cipherKeyHash = key;
     }
 
@@ -168,7 +147,7 @@ public class SecureCipherPipe extends CipherPipe {
      * @param key only users secret key
      */
     public SecureCipherPipe(String key) {
-        this(key, EncodeEnum.Base64, ZipType.GZip, CipherMode2.CFB);
+        this(key, CipherMode2.CFB);
         cipherKeyHash = key;
     }
 
@@ -211,40 +190,9 @@ public class SecureCipherPipe extends CipherPipe {
             // case CipherEnum.ZenMatrix2:
             //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
             //  break;
-            case Aes:
-            case AesLight:
-            case Aria:
-            case BlowFish:
-            case Camellia:
-            case Cast5:
-            case Cast6:
-            case Des:
-            case Des3:
-            case Dstu7624:
-            case Fish2:
-            case Fish3:
-            case Gost28147:
-            case Idea:
-            case Noekeon:
-            case RC2:
-            case RC532:
-			case RC564:
-            case RC6:
-            case Rijndael:
-            case Seed:
-            case Serpent:
-            case SM4:
-            case SkipJack:
-            case Tea:
-            case Tnepres:
-            case XTea:
-            // case ZenMatrix:
-            // case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
-                // TODO: full port standard bouncycastle wrapper to java
-                // TODO: compare and test with C#
                 break;
         }
 
@@ -290,43 +238,11 @@ public class SecureCipherPipe extends CipherPipe {
             // case ZenMatrix2:
             //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
             //     break;
-            case Aes:
-            case AesLight:
-            case Aria:
-            case BlowFish:
-            case Camellia:
-            case Cast5:
-            case Cast6:
-            case Des:
-            case Des3:
-            case Dstu7624:
-            case Fish2:
-            case Fish3:
-            case Gost28147:
-            case Idea:
-            case Noekeon:
-            case RC2:
-            case RC532:
-            case RC564:
-            case RC6:
-            case Rijndael:
-            case Seed:
-            case Serpent:
-            case SM4:
-            case SkipJack:
-            case Tea:
-            case Tnepres:
-            case XTea:
-            // case ZenMatrix:
-            // case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 decryptBytes = cryptBounceCastle.decrypt(cipherBytes);
-                // TODO: full port standard bouncycastle wrapper to java
-                // TODO: compare and test with C#
                 break;
         }
-
 
         return decryptBytes; // TODO: EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
     }
@@ -402,24 +318,22 @@ public class SecureCipherPipe extends CipherPipe {
      * EncrpytTextGoRounds encrypts text with cipher pipe pipeline
      * @param inString plain text to encrypt
      * @param hashKey private hash key
-     * @param encoding {@link EncodeEnum}
-     * @param zipBefore {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return UTF8 encoded encrypted String without binary data
      */
-    public String encrpytTextGoRounds(String inString, String hashKey, EncodeEnum encoding, ZipType zipBefore, CipherMode2 cmode2)
+    public String encrpytTextGoRounds(String inString, String hashKey, CipherMode2 cmode2)
                                 throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        zType = zipBefore;
-        encodeType = encoding;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         // Transform String to bytes
         byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
 
 		try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
@@ -428,7 +342,7 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);                
 
         // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-        String encrypted = encoding.encodeBytesToString(encryptedBytes);
+        String encrypted = encodeType.encodeBytesToString(encryptedBytes);
 
         return encrypted;
     }
@@ -438,21 +352,19 @@ public class SecureCipherPipe extends CipherPipe {
      * encrpytFileBytesGoRounds encrypts a data byte[] array
      * @param inBytes binary data
      * @param hashKey private key to be hashed in symmetric merry go round karusell with 8 different hash algos
-     * @param encoding {@link EncodeEnum}
-     * @param zipBefore {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return binary data
      */
-    public byte[] encrpytFileBytesGoRounds(byte[] inBytes, String hashKey, EncodeEnum encoding, ZipType zipBefore, CipherMode2 cmode2)
+    public byte[] encrpytFileBytesGoRounds(byte[] inBytes, String hashKey, CipherMode2 cmode2)
                                 throws InvalidCipherTextException {
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        zType = zipBefore;
-        encodeType = encoding;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
@@ -468,28 +380,26 @@ public class SecureCipherPipe extends CipherPipe {
      * decryptTextRoundsGo
      * @param cryptedEncodedMsg encoded byte array
 	 * @param hashKey  Unique deterministic key which will be hashed at each stage of with a different secure hash {@link KeyHash}.secureHashes
-     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
-     * @param unzipAfter zip bytes with {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException from bouncy-castle
 	 * @throws IOException Input/OutputException
      */
-    public String decryptTextRoundsGo(String cryptedEncodedMsg, String hashKey, EncodeEnum decoding, ZipType unzipAfter, CipherMode2 cmode2)
+    public String decryptTextRoundsGo(String cryptedEncodedMsg, String hashKey, CipherMode2 cmode2)
                             throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        zType = unzipAfter;
-        encodeType = decoding;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
-        byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
+        byte[] cipherBytes = encodeType.decodeStringToBytes(cryptedEncodedMsg);
 
         // perform multi crypt pipe stages
         byte[] intermediatBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
 		// Unzip after all, if it's necessary
-		byte[] decryptedBytes = (unzipAfter != ZipType.None) ? unzipAfter.unzip(intermediatBytes) : intermediatBytes;
+		byte[] decryptedBytes = (zType != ZipType.None) ? zType.unzip(intermediatBytes) : intermediatBytes;
 
         // Get String from decrypted bytes
         String decrypted = (inPipe.length == 0) ?
@@ -512,8 +422,6 @@ public class SecureCipherPipe extends CipherPipe {
      * @param cipherBytes encoded byte array
 	 * @param hashKey Unique deterministic key, which will be hashed with a different {@link KeyHash} secure hash at each stage of the pipe
      *                to generate a secure hashed key
-     * @param decoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
-     * @param unzipAfter zip bytes with {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException
@@ -522,16 +430,16 @@ public class SecureCipherPipe extends CipherPipe {
                                     throws InvalidCipherTextException  {
 
         cipherKeyHash = (hashKey == null || hashKey.length() == 0) ? hashKey : cipherKeyHash;
-        zType = unzipAfter;
-        encodeType = decoding;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         // perform multi crypt pipe stages
         byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cmode2);
 
         try {
-            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
-                    unzipAfter.unzip(decryptedBytes) : decryptedBytes;
+            byte[] unzipBytes = (unzipAfter != zType.None) ?
+                    zType.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
             exUnzip.printStackTrace();
@@ -544,19 +452,19 @@ public class SecureCipherPipe extends CipherPipe {
      * encrpytGoRounds encrypts a data byte[] array
      * @param inBytes binary data
      * @param hashKey prviate key for encryption, will be hashed to a different hashKey at each stage of pipe
-     * @param zipBefore {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return encrypted binary data bytes
      */
-    public byte[] encrpytGoRounds(byte[] inBytes, String hashKey, ZipType zipBefore, CipherMode2 cmode2)
+    public byte[] encrpytGoRounds(byte[] inBytes, String hashKey, CipherMode2 cmode2)
                             throws InvalidCipherTextException {
 
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
-        zType = zipBefore;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
@@ -570,7 +478,6 @@ public class SecureCipherPipe extends CipherPipe {
      * decrpytRoundsGo decrypts encrypted bytes
      * @param cipherBytes encrypted binary data
      * @param hashKey prviate key for encryption
-     * @param unzipAfter {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return decrypted bytes
      */
@@ -578,12 +485,13 @@ public class SecureCipherPipe extends CipherPipe {
             throws InvalidCipherTextException {
         
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
-        zType = unzipAfter;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
         byte[] decryptedBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
         try {
-            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
-                    unzipAfter.unzip(decryptedBytes) : decryptedBytes;
+            byte[] unzipBytes = (zType != ZipType.None) ?
+                    zType.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
             exUnzip.printStackTrace();
@@ -592,16 +500,16 @@ public class SecureCipherPipe extends CipherPipe {
     }
 
     @Deprecated
-    public String encrpytEncode(byte[] inBytes, String hashKey, EncodeEnum encType, ZipType zipBefore, CipherMode2 cmode2)
+    public String encrpytEncode(byte[] inBytes, String hashKey, CipherMode2 cmode2)
                         throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
-        encodeType = encType;
-        zType = zipBefore;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
@@ -609,7 +517,7 @@ public class SecureCipherPipe extends CipherPipe {
 
         byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
 
-        String cryptedEncoded = encType.encodeBytesToString(outBytes);
+        String cryptedEncoded = encodeType.encodeBytesToString(outBytes);
         return cryptedEncoded;
     }
 
@@ -619,24 +527,22 @@ public class SecureCipherPipe extends CipherPipe {
      * @param inBytes String to encrypt multiple times
      * @param hashKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
-     * @param zipBefore zip bytes with {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return encrypted byte array
      * @throws InvalidCipherTextException
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] encryptEncodeBytes(byte[] inBytes, String hashKey,EncodeEnum encType, ZipType zipBefore, CipherMode2 cmode2)
+    public byte[] encryptEncodeBytes(byte[] inBytes, String hashKey, CipherMode2 cmode2)
             throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
-        encodeType = encType;
-        zType = zipBefore;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
+            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
             exZip.printStackTrace();
@@ -645,34 +551,33 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
 
         byte[] encryptedBytes = new byte[0];
-        if (encType != EncodeEnum.None)
+        if (encodeType != EncodeEnum.None)
         {
-            String cryptedEncoded = encType.encodeBytesToString(outBytes);
+            String cryptedEncoded = encodeType.encodeBytesToString(outBytes);
             encryptedBytes = cryptedEncoded.getBytes(Charset.forName("UTF-8"));
         }
         else
             encryptedBytes = outBytes;
-
 
         return encryptedBytes;
     }
 
 
     @Deprecated
-    public byte[] decodeDecrpyt(String encoded, String hashKey, EncodeEnum encType, ZipType unzipAfter, CipherMode2 cmode2)
+    public byte[] decodeDecrpyt(String encoded, String hashKey, CipherMode2 cmode2)
                         throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
         cMode2 = cmode2;
-        encodeType = encType;
-        zType = unzipAfter;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
 
         byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
         byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
         try {
-            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
-                    unzipAfter.unzip(outBytes) : outBytes;
+            byte[] unzipBytes = (zType != ZipType.None) ?
+                    zType.unzip(outBytes) : outBytes;
             outBytes = unzipBytes;
         } catch (Exception exUnzip) {
             exUnzip.printStackTrace();
@@ -686,24 +591,22 @@ public class SecureCipherPipe extends CipherPipe {
      * @param encodedBytes encoded byte array
      * @param hashKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
      *      	and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-     * @param encType {@link EncodeEnum} type for encoding encrypted bytes back in plain text
-     * @param unzipAfter zip bytes with {@link ZipType}
      * @param cmode2 {@link CipherMode2}
      * @return plain bytes
      * @throws InvalidCipherTextException
      * @throws IllegalArgumentException
 	 * @throws IOException
      */
-    public byte[] decodeDecrpytBytes(byte[] encodedBytes, String hashKey, EncodeEnum encType, ZipType unzipAfter, CipherMode2 cmode2)
+    public byte[] decodeDecrpytBytes(byte[] encodedBytes, String hashKey, CipherMode2 cmode2)
                                 throws InvalidCipherTextException, IOException {
 
         cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? hashKey : cipherKeyHash;
-        encodeType = encType;
-        zType = unzipAfter;
+        zType = ZipType.GZip;
+        encodeType = EncodeEnum.Base64;
         cMode2 = cmode2;
 
         byte[] cipherBytes = encodedBytes;
-        if (encType != EncodeEnum.None)  {
+        if (encodeType != EncodeEnum.None)  {
             String encoded =  new String(encodedBytes, StandardCharsets.UTF_8);
             cipherBytes = encodeType.decodeStringToBytes(encoded);
         }
@@ -711,8 +614,8 @@ public class SecureCipherPipe extends CipherPipe {
         byte[] outBytes = decrpytRoundGoMerry(cipherBytes, cipherKeyHash, cMode2);
 
         try {
-            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
-                    unzipAfter.unzip(outBytes) : outBytes;
+            byte[] unzipBytes = (zType != ZipType.None) ?
+                    zType.unzip(outBytes) : outBytes;
             outBytes = unzipBytes;
         } catch (Exception exUnzip) {
             exUnzip.printStackTrace();
@@ -721,5 +624,26 @@ public class SecureCipherPipe extends CipherPipe {
         return outBytes;
     }
 
+
+    /**
+     * cryptCodeBytes encrypt or decrypt bytes
+     * @param inBytes bytes to transform
+     * @param secretKey user's key
+     * @param directionDecrypt true for decrypt, false for encrypt
+     * @param cmode2 {@link CipherMode2}
+     * @return transformed bytes
+     */
+    public byte[] cryptCodeBytes(byte[] inBytes, String secretKey,
+                                 boolean directionDecrypt, CipherMode2 cmode2) {
+        byte[] outBytes;
+        try {
+            outBytes = (!directionDecrypt) ?
+                    encryptEncodeBytes(inBytes, secretKey, cmode2) :
+                    decodeDecrpytBytes(inBytes, secretKey, cmode2);
+        } catch (Exception exc) {
+            throw new CException("Exception in CryptCodeBytes", (Throwable)exc);
+        }
+        return outBytes;
+    }
 
 }

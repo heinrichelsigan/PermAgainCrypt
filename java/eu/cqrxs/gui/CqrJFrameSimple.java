@@ -1010,7 +1010,7 @@ public class CqrJFrameSimple extends JFrame {
 			String key = jTextField_Key.getText().toString();
 			String hashed = keyHash.hash(key);
 
-			SecureCipherPipe pipe = new SecureCipherPipe(key, encodeType, zipType, cmode2);
+			SecureCipherPipe pipe = new SecureCipherPipe(key, cmode2);
 
 			CipherEnum[] cipherEnums = pipe.getInPipe();
 			String pipeSting = "";
@@ -1031,7 +1031,7 @@ public class CqrJFrameSimple extends JFrame {
 			String key = jTextField_Key.getText().toString();
 			String hashed = KeyHash.Whirlpool.hash(KeyHash.SCrypt.hash(key));
             
-			SecureCipherPipe pipe = new SecureCipherPipe(hashed, encodeType, zipType, cmode2);
+			SecureCipherPipe pipe = new SecureCipherPipe(hashed, cmode2);
 
 			CipherEnum[] cipherEnums = pipe.getInPipe();
 			String pipeSting = "";
@@ -1084,7 +1084,7 @@ public class CqrJFrameSimple extends JFrame {
 		if (cipherPipeString.length() > 0) {
 			ciphers = CipherEnum.parsePipeText(cipherPipeString);
 		}
-		SecureCipherPipe pipe = new SecureCipherPipe(ciphers, 8, encodeType, zipType, cmode2);
+		SecureCipherPipe pipe = new SecureCipherPipe(ciphers, 8,  cmode2);
 
 		String encrypted = "";
 		CipherEnum[] cipherEnums = pipe.getInPipe();
@@ -1107,7 +1107,7 @@ public class CqrJFrameSimple extends JFrame {
 				if (plain.length()> 1048576)
 					jLabel_statusSource.setText((int)(plain.length() / (1024*1024)) + " MB");
 				
-				encrypted = pipe.encrpytTextGoRounds(plain, key, encodeType, zipType, cmode2);
+				encrypted = pipe.encrpytTextGoRounds(plain, key, cmode2);
 			    jTextAreaDestination.setText(encrypted);
 								
 				setInfoMsg("source text encrypted");
@@ -1120,7 +1120,7 @@ public class CqrJFrameSimple extends JFrame {
             }
             if (openFileBytes != null  && openFileBytes.length > 0) {
 				
-                saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, encodeType, zipType, cmode2);
+                saveFileBytes = pipe.encryptEncodeBytes(openFileBytes, key, cmode2);
                 saveFileSuffix = "";
                 saveFileSuffix += (zipType != ZipType.None) ? ".gz" : "";
                 saveFileSuffix += (pipe.getPipeString().length() > 0) ?  "." + pipe.getPipeString() : "";
@@ -1157,7 +1157,7 @@ public class CqrJFrameSimple extends JFrame {
 			ciphers = CipherEnum.parsePipeText(cipherPipeString);
 		}
 
-		SecureCipherPipe pipe = new SecureCipherPipe(ciphers, 8, encodeType, zipType, cmode2);
+		SecureCipherPipe pipe = new SecureCipherPipe(ciphers, 8, cmode2);
 
 		String plain = "";
 		CipherEnum[] cipherEnums = pipe.getOutPipe();
@@ -1183,7 +1183,7 @@ public class CqrJFrameSimple extends JFrame {
 				if (encrypted.length()> 1048576)
 					jLabel_statusSource.setText((int)(encrypted.length() / (1024*1024)) + " MB");
 				
-				decrypted = pipe.decryptTextRoundsGo(encrypted, key, encodeType, zipType, cmode2);
+				decrypted = pipe.decryptTextRoundsGo(encrypted, key, cmode2);
 			    jTextAreaDestination.setText(decrypted);
 				
 				if (decrypted.length() < 2048)
@@ -1196,7 +1196,7 @@ public class CqrJFrameSimple extends JFrame {
 				setInfoMsg("source text decrypted");
             }
             if (openFileBytes != null && openFileBytes.length > 0) {
-                saveFileBytes = pipe.decodeDecrpytBytes(openFileBytes, key, encodeType, zipType, cmode2);
+                saveFileBytes = pipe.decodeDecrpytBytes(openFileBytes, key, cmode2);
                 int ptCnt = 0;
                 for (int ix = 0; ix < openFileName.length(); ix++) {
                     if (openFileName.charAt(ix) == '.') {
