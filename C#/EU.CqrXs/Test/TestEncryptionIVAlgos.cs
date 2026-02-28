@@ -48,7 +48,7 @@ namespace EU.CqrXs.Test
             }
 
             string simage = simg + ".png";
-            string imgFile = Path.Combine(LibPaths.TempDir, simage);
+            string imgFile = Path.Combine(Area23Log.TempDir, simage);
 
             mergeImage.Save(imgFile, ImageFormat.Png);
 

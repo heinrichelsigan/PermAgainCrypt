@@ -2,7 +2,6 @@
 using EU.CqrXs.Crypt.Cipher.Symmetric;
 using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
-using EU.CqrXs.Crypt.Msg;
 using EU.CqrXs.Gui.Helper;
 using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;

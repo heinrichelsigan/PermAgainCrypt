@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Configuration;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace EU.CqrXs.Util
@@ -15,7 +16,133 @@ namespace EU.CqrXs.Util
         private static readonly object _lock = new object(), _outerLock = new object();
         private static readonly Lazy<Area23Log> instance = new Lazy<Area23Log>(() => new Area23Log());
 
+        private static int daysave = -1;
         private static int checkedToday = DateTime.UtcNow.Date.Day;
+
+        private static string systemDirPath = "";
+        private static string logDirPath = "";
+        private static string logFilePath = "";
+        private static string tempDirPath = "";
+
+        public static readonly char _sepCh = Path.DirectorySeparatorChar;
+
+        /// <summary>
+        /// SystemDirPath return system directory path, 
+        /// if defined in App.Config, 
+        /// otherwise applcation directory of base exe.
+        /// </summary>
+        public static string SystemDirPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(systemDirPath))
+                {
+                    for (int sysDirTry = 0; sysDirTry < 8; sysDirTry++)
+                    {
+                        try
+                        {
+                            switch (sysDirTry)
+                            {
+                                case 0:
+                                    if (_sepCh == '/' && Path.DirectorySeparatorChar == '/' && _sepCh == Path.DirectorySeparatorChar &&
+                                            ConfigurationManager.AppSettings[Constants.APP_DIR_PATH_UNIX] != null &&
+                                            ConfigurationManager.AppSettings[Constants.APP_DIR_PATH_UNIX] != "")
+                                        systemDirPath = ConfigurationManager.AppSettings[Constants.APP_DIR_PATH_UNIX];
+                                    break;
+                                case 1:
+                                    if (ConfigurationManager.AppSettings[Constants.APP_DIR_PATH_WIN] != null)
+                                        systemDirPath = ConfigurationManager.AppSettings[Constants.APP_DIR_PATH_WIN];
+                                    break;
+                                case 2: systemDirPath = Path.GetFullPath(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName); break;
+                                case 3: systemDirPath = Path.GetFullPath(Environment.ProcessPath); break;
+                                case 4: systemDirPath = Path.GetFullPath(Assembly.GetExecutingAssembly().Location); break;
+                                case 5: systemDirPath = AppContext.BaseDirectory; break;
+                                case 6: if (AppDomain.CurrentDomain != null) systemDirPath = AppDomain.CurrentDomain.BaseDirectory; break;
+                                case 7: systemDirPath = Path.GetFullPath(Assembly.GetExecutingAssembly().CodeBase); break;
+                                case 8: systemDirPath = Path.GetFullPath(Environment.GetCommandLineArgs()[0]); break;
+                                default:
+                                    systemDirPath = Path.GetFullPath(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName); break;
+                            }
+                        }
+                        catch { }
+
+                        if (!string.IsNullOrEmpty(systemDirPath) && Directory.Exists(systemDirPath))
+                            break;
+                    }
+
+                    if (!systemDirPath.EndsWith(_sepCh))
+                        systemDirPath += _sepCh;
+
+                    string sysDir = systemDirPath;
+                    if (sysDir.EndsWith($"{_sepCh}{Constants.WIN_X86}{_sepCh}") || sysDir.EndsWith($"{_sepCh}{Constants.WIN_X64}{_sepCh}"))
+                        sysDir = sysDir.Replace($"{_sepCh}{Constants.WIN_X86}{_sepCh}", _sepCh.ToString()).Replace($"{_sepCh}{Constants.WIN_X64}{_sepCh}", _sepCh.ToString());
+                    if (sysDir.EndsWith($"{_sepCh}{Constants.NET9_WINDOWS7}{_sepCh}") || sysDir.EndsWith($"{_sepCh}{Constants.NET9_WINDOWS8}{_sepCh}"))
+                        sysDir = sysDir.Replace($"{_sepCh}{Constants.NET9_WINDOWS7}{_sepCh}", _sepCh.ToString()).Replace($"{_sepCh}{Constants.NET9_WINDOWS8}{_sepCh}", _sepCh.ToString());
+                    if (sysDir.EndsWith($"{_sepCh}{Constants.RELEASE_DIR}{_sepCh}") || sysDir.EndsWith($"{_sepCh}{Constants.DEBUG_DIR}{_sepCh}"))
+                        sysDir = sysDir.Replace($"{_sepCh}{Constants.RELEASE_DIR}{_sepCh}", _sepCh.ToString()).Replace($"{_sepCh}{Constants.DEBUG_DIR}{_sepCh}", _sepCh.ToString());
+                    if (sysDir.EndsWith($"{_sepCh}{Constants.BIN_DIR}{_sepCh}") || sysDir.EndsWith($"{_sepCh}{Constants.OBJ_DIR}{_sepCh}"))
+                        sysDir = sysDir.Replace($"{_sepCh}{Constants.BIN_DIR}{_sepCh}", _sepCh.ToString()).Replace($"{_sepCh}{Constants.OBJ_DIR}{_sepCh}", _sepCh.ToString());
+
+                    if (Directory.Exists(sysDir))
+                        systemDirPath = sysDir;
+
+                }
+
+                return systemDirPath;
+            }
+        }
+
+        /// <summary>
+        /// Path to temp directory
+        /// </summary>
+        public static string TempDir
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(tempDirPath))
+                {
+                    tempDirPath = Environment.GetEnvironmentVariable("LOCALAPPDATA") ?? "";
+                    if (!string.IsNullOrEmpty(tempDirPath) && Directory.Exists(tempDirPath))
+                        tempDirPath = Path.Combine(tempDirPath, "Temp");
+                    else
+                        tempDirPath = Path.Combine(
+                            Environment.GetEnvironmentVariable("windir") ?? Environment.GetEnvironmentVariable("SystemRoot") ?? "C:\\Windows",
+                            "Temp");
+
+                    if (!Directory.Exists(tempDirPath))
+                        Directory.CreateDirectory(tempDirPath);
+                }
+                return tempDirPath;
+            }
+        }
+
+        /// <summary>
+        /// SystemDirLogPath gets the default full path to logfile in file system
+        /// </summary>
+        public static string SystemDirLogPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(logDirPath))
+                {
+                    logDirPath = (SystemDirPath.EndsWith(Path.DirectorySeparatorChar)) ? SystemDirPath : SystemDirPath + _sepCh;
+
+                    if (!Directory.Exists(logDirPath))
+                    {
+                        try
+                        {
+                            if (Constants.DirCreate && !Constants.NOLog)
+                                Directory.CreateDirectory(logDirPath);
+                        }
+                        catch { }
+                    }
+                }
+                return logDirPath;
+            }
+        }
+
+        public static string LogFileSystemPath { get => SystemDirLogPath + Constants.AppLogFile; }
+
 
         /// <summary>
         /// Get the Logger
@@ -53,7 +180,7 @@ namespace EU.CqrXs.Util
         /// </summary>
         static Area23Log() 
         {
-            LogFile = LibPaths.LogFileSystemPath;
+            LogFile = LogFileSystemPath;
             InitLog("");
         }
 
@@ -71,9 +198,9 @@ namespace EU.CqrXs.Util
                 AppName = appName;
 
             if (!string.IsNullOrEmpty(AppName))
-                LogFile = LibPaths.GetLogFilePath(AppName);
+                LogFile = GetLogFilePath(AppName);
             else
-                LogFile = LibPaths.LogFileSystemPath;
+                LogFile = LogFileSystemPath;
         }
 
         public static void SetLogFile(string logFilePath, bool createDirectory = false)
@@ -96,7 +223,7 @@ namespace EU.CqrXs.Util
 
         public static void SetLogFileByAppName(string appName = "")
         {
-            LogFile = (!string.IsNullOrEmpty(appName)) ? LibPaths.GetLogFilePath(appName) : LibPaths.LogFileSystemPath;
+            LogFile = (!string.IsNullOrEmpty(appName)) ? GetLogFilePath(appName) : LogFileSystemPath;
         }
 
         /// <summary>
@@ -112,7 +239,7 @@ namespace EU.CqrXs.Util
             {
                 if (string.IsNullOrEmpty(LogFile) || !CheckedToday || !File.Exists(LogFile))
                 {
-                    LogFile = (!string.IsNullOrEmpty(appName)) ? LibPaths.GetLogFilePath(appName) : LibPaths.LogFileSystemPath;
+                    LogFile = (!string.IsNullOrEmpty(appName)) ? GetLogFilePath(appName) : LogFileSystemPath;
 
                     if (!File.Exists(LogFile))
                     {
@@ -246,6 +373,37 @@ namespace EU.CqrXs.Util
             if (level < 2)
                 LogStatic($"{logPrefix} \t{ex.GetType()} StackTrace: \t{ex.StackTrace}");
         }
+
+
+        /// <summary>
+        /// GetLogFilePath - gets individual named logfile with substring appName
+        /// </summary>
+        /// <param name="appName">application name to customize logfile name</param>
+        /// <returns>Full file path to log file in file system</returns>
+        public static string GetLogFilePath(string appName)
+        {
+            int day = DateTime.UtcNow.DayOfYear;
+            if (daysave != day)
+            {
+                daysave = day;
+                logFilePath = "";
+            }
+            if (string.IsNullOrEmpty(logFilePath))
+            {
+                logFilePath = SystemDirLogPath + DateTime.UtcNow.Area23Date() + Constants.UNDER_SCORE + appName + Constants.LOG_EXT;
+                if (!File.Exists(logFilePath))
+                {
+                    try
+                    {
+                        if (!Constants.NOLog)
+                            File.Create(logFilePath);
+                    }
+                    catch { }
+                }
+            }
+            return logFilePath;
+        }
+
 
         #endregion static members
 

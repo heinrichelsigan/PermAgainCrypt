@@ -299,7 +299,7 @@ namespace EU.CqrXs.Spooler
                             }
                             else
                             {
-                                inDir = Path.Combine(LibPaths.TempDir, string.IsNullOrEmpty(inDir) ? "spool_in" : inDir);
+                                inDir = Path.Combine(Area23Log.TempDir, string.IsNullOrEmpty(inDir) ? "spool_in" : inDir);
                                 try
                                 {
                                     if (!Directory.Exists(inDir))
@@ -340,7 +340,7 @@ namespace EU.CqrXs.Spooler
                             }
                             else if (!string.IsNullOrEmpty(outDir) && !outDir.Contains(Path.DirectorySeparatorChar))
                             {
-                                outDir = Path.Combine(LibPaths.TempDir, "spool_out");
+                                outDir = Path.Combine(Area23Log.TempDir, "spool_out");
                                 try
                                 {
                                     if (!Directory.Exists(outDir))

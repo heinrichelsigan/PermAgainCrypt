@@ -7,7 +7,6 @@ using EU.CqrXs.Gui.Properties;
 using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
-using ProtoBuf.WellKnownTypes;
 using System.Security.Cryptography;
 
 
@@ -1202,14 +1201,14 @@ namespace EU.CqrXs.Gui.Forms
                     switch (writeCnt++)
                     {
                         case 0:
-                            outFilePath = Path.Combine(LibPaths.TempDir, Path.GetFileName(outFilePath));
+                            outFilePath = Path.Combine(Area23Log.TempDir, Path.GetFileName(outFilePath));
                             break;
                         case 1:
-                            outFilePath = Path.Combine(LibPaths.TempDir, "D" + Path.GetFileName(outFilePath));
+                            outFilePath = Path.Combine(Area23Log.TempDir, "D" + Path.GetFileName(outFilePath));
                             break;
                         default:
                             RandomName rname = new RandomName();
-                            outFilePath = Path.Combine(LibPaths.TempDir, rname.GetNewString(), Path.GetExtension(outFilePath));
+                            outFilePath = Path.Combine(Area23Log.TempDir, rname.GetNewString(), Path.GetExtension(outFilePath));
                             break;
                     }
 

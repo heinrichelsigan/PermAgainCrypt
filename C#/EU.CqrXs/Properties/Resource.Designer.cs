@@ -19,7 +19,7 @@ namespace EU.CqrXs.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resource {
@@ -61,7 +61,7 @@ namespace EU.CqrXs.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area23.At.Framework.Core.
+        ///   Looks up a localized string similar to EU.CqrXs.
         /// </summary>
         internal static string app_name {
             get {
@@ -348,7 +348,7 @@ namespace EU.CqrXs.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
+        ///   Looks up a localized string similar to https://github.com/heinrichelsigan/PermAgainCrypt/.
         /// </summary>
         internal static string github_uri {
             get {
@@ -357,13 +357,7 @@ namespace EU.CqrXs.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;h1&gt;Area23.At.Framework.Library&lt;/h1&gt;
-        ///&lt;p&gt;C# .Net Samples for apache2 mod_mono
-        ///by Heinrich Elsigan (&lt;a href=&quot;mailto:he@area23.at&quot;&gt;heinrich.elsigan@area23.at&lt;/a&gt;).
-        ///&lt;/p&gt;
-        ///&lt;hr /&gt;
-        ///Code is open source under GPL 3 and publicly accessible via &lt;a href=&quot;https://github.com/&quot; target=&quot;_blank&quot;&gt;GitHub&lt;/a&gt; repository &lt;a href=&quot;https://github.com/heinrichelsigan/area23.at/&quot; target=&quot;_blank&quot;&gt;github.com/heinrichelsigan/area23.at&lt;/a&gt;.
-        ///&lt;br /&gt;.
+        ///   Looks up a localized string similar to https://cqrxs.io/help/.
         /// </summary>
         internal static string help_text {
             get {

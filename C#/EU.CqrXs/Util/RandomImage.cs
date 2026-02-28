@@ -42,7 +42,7 @@ namespace EU.CqrXs.Util
             }
 
             this.RandomBitmap = mergeImage;
-            this.SaveFileName = Path.Combine(LibPaths.TempDir, simg);
+            this.SaveFileName = Path.Combine(Area23Log.TempDir, simg);
 
             mergeImage.Save(this.SaveFileName, ImageFormat.Png);
 

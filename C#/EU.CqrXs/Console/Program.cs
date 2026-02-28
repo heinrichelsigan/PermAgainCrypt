@@ -122,7 +122,7 @@ namespace EU.CqrXs.Console
                         if (string.IsNullOrEmpty(outName))
                             ; // to stdout                    
                         else
-                            if (args[i].ToLower().Contains("file") || optStr.Contains(LibPaths.SepChar) || optStr.Contains('.') || !args[i].ToLower().Contains("text"))
+                            if (args[i].ToLower().Contains("file") || optStr.Contains(Area23Log._sepCh) || optStr.Contains('.') || !args[i].ToLower().Contains("text"))
                         {
                             string odir = Path.GetDirectoryName(optStr);
                             if (Directory.Exists(odir))

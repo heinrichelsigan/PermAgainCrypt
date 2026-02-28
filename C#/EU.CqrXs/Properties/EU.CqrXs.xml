@@ -14,65 +14,6 @@
             For root first Exception <see cref="P:EU.CqrXs.Crypt.CException.LastException"/> is always <see cref="T:null"/>
             </summary>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Asymmetric.DH">
-            <summary>
-            Diffie Hellman key exchange
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa">
-            <summary>
-            Rsa Asymmetric cipher 
-            see https://github.dev/Ulterius/server/blob/770d1821de43cf1d0a93c79025995bdd812a76ee/RemoteTaskServer/Utilities/Security/Rsa.cs#L71#L87
-            https://github.dev/ThePBone/GalaxyBudsClient/blob/a06eff7713fde924466ae1a214571a2b6f0d1a42/GalaxyBudsClient/Utils/EncryptionUtils.cs#L18#L34
-            https://github.dev/Ulterius/server/blob/770d1821de43cf1d0a93c79025995bdd812a76ee/RemoteTaskServer/Utilities/Security/Rsa.cs#L71#L87
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.GenerateNewRsaKeyPair">
-            <summary>
-            GenerateNewRsaKeyPair - generates a new rsa key pair
-            </summary>
-            <returns><see cref="T:Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.GetRsaKeyPair(System.String,System.String)">
-            <summary>
-            Get Rsa Key Pair by private and public key
-            </summary>
-            <param name="pubKey"></param>
-            <param name="privKey"></param>
-            <returns><see cref="T:Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.Encrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
-            <summary>
-            Rsa encrypt bytes with public key
-            </summary>
-            <param name="bytesToEncrypt"><see cref="T:byte[]">bytes to encrypt</see></param>
-            <param name="pair"></param>
-            <returns>encrypted <see cref="T:yte[]"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.Decrypt(System.Byte[],Org.BouncyCastle.Crypto.AsymmetricCipherKeyPair)">
-            <summary>
-            Rsa Decrypt
-            </summary>
-            <param name="bytesToDecrypt"></param>
-            <param name="pair"></param>
-            <returns></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.EncryptString(System.String,System.Boolean)">
-            <summary>
-            Encrypts a string
-            </summary>
-            <param name="inPlainString">plain text string</param>
-            <param name="isPublic">true, if it's public key, false if it's private key</param>
-            <returns>Base64 encoded encrypted byte[]</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Asymmetric.Rsa.DecryptString(System.String,System.Boolean)">
-            <summary>
-            Decrypts a string, that is truely a base64 encoded encrypted byte[]
-            </summary>
-            <param name="inCryptString">base64 encoded string from encrypted byte[]</param>
-            <param name="isPublic">true, if it's public key, false if it's private key</param>
-            <returns>plain text string (decrypted)</returns>
-        </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.CipherMode2">
             <summary>
             CipherMode2 enumeration type for more cipher mode as found in standard <see cref="T:System.Security.Cryptography.CipherMode"/>
@@ -1309,42 +1250,6 @@
             <param name="encrypt">true for encryption, false for decryption</param>
             <returns>An <see cref="T:byte[]"/> array with 2  0x0 - 0xf segments (most significant + least significant) bit</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.CryptSettings">
-            <summary>
-            Comes from SecureChat, maybe we will need it in a different kind in future.
-            TODO: adapt it with low priority.
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.CryptSettings.#ctor">
-            <summary>
-            CryptSettings constructor maybe needed public for NewTonSoftJson serializing object
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.CryptSettings.#ctor(System.DateTime)">
-            <summary>
-            ctor with inital timestamp
-            </summary>
-            <param name="timeStamp"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.CryptSettings.Load(System.String)">
-            <summary>
-            loads json serialized Settings data string from 
-            <see cref="P:EU.CqrXs.Util.LibPaths.SystemDirPath"/> + <see cref="F:EU.CqrXs.Util.Constants.JSON_SAVE_FILE"/>
-            and deserialize it to singleton instance <see cref="T:EU.CqrXs.Crypt.CryptSettings"/> of <seealso cref="T:System.Lazy`1"/>
-            </summary>
-            <param name="jsonFileName">fileName of serialized json</param>
-            <returns>singelton <see cref="P:EU.CqrXs.Crypt.CryptSettings.Instance"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.CryptSettings.Save(EU.CqrXs.Crypt.CryptSettings,System.String)">
-            <summary>
-            json serializes <see cref="T:EU.CqrXs.Crypt.CryptSettings"/> and 
-            saves json serialized data string to 
-            <see cref="P:EU.CqrXs.Util.LibPaths.SystemDirPath"/> + <see cref="F:EU.CqrXs.Util.Constants.JSON_SAVE_FILE"/>
-            </summary>
-            <param name="settings">settings to save</param>
-            <param name="jsonFileName">filename, where writing serialized json</param>
-            <returns>true on successfully save</returns>
-        </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.Base16">
             <summary>
             RawString hexadecimal byte encoding / decoding
@@ -1937,474 +1842,6 @@
             <param name="fileName">optional filename to add after hash</param>
             <returns>Sha512 hash with optional fileName</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.CContact">
-            <summary>
-            CContact derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/> is a container for any Google or Outlook contact
-            TODO: refactor it!
-            </summary>    
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CContact.#ctor">
-            <summary>
-            Parameterless default constructor
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CContact.#ctor(System.String,EU.CqrXs.Crypt.Msg.SerType)">
-            <summary>
-            ctor with serialized string and serialization type
-            </summary>
-            <param name="serialized">serialized or mime string</param>
-            <param name="serType">serialized type</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CContact.GetRowParams">
-            <summary>
-            <see cref="T:object[]">RowParams</see> gets an object array of row parameters to show in <see cref="T:System.Windows.Forms.DataGridView"/>
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CContact.ToJsonEncrypt(System.String,EU.CqrXs.Crypt.Msg.CContact,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            ToJsonEncrypt
-            </summary>
-            <param name="serverKey">server key to encrypt</param>
-            <param name="ccntct"><see cref="T:EU.CqrXs.Crypt.Msg.CContact"/> to encrypt and serialize</param>
-            <param name="encoder"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
-            <param name="zipType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
-            <returns>a serialized <see cref="T:System.String" /> of encrypted <see cref="T:EU.CqrXs.Crypt.Msg.CContact"/></returns>
-            <exception cref="T:EU.CqrXs.Crypt.CException"></exception>
-            <exception cref="T:System.ArgumentNullException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CContact.FromJsonDecrypt(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            FromJsonDecrypt
-            </summary>
-            <param name="serverKey">server key to decrypt</param>
-            <param name="serialized">serialized string of <see cref="T:EU.CqrXs.Crypt.Msg.CContact"/></param>
-            <param name="decoder"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
-            <param name="zipType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
-            <returns>deserialized and decrypted <see cref="T:EU.CqrXs.Crypt.Msg.CContact"/></returns>
-            <exception cref="T:EU.CqrXs.Crypt.CException">thrown, 
-            when serialized string to decrypt and deserialize is either null or empty 
-            or <see cref="T:EU.CqrXs.Crypt.Msg.CContact"/> can't be decrypted and deserialized.
-            </exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.CFile">
-            <summary>
-            CFile derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg" /> represents any file in what ever filesystem.
-            TODO: need to refactor!
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.#ctor(System.String,EU.CqrXs.Crypt.Msg.SerType)">
-            <summary>
-            Constructor CqrFile from an json, xml or raw serialized plaintext
-            </summary>
-            <param name="plainText"></param>
-            <param name="msgType"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.#ctor(EU.CqrXs.Crypt.Msg.CFile)">
-            <summary>
-            CFile constructor with antoher <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> to clone
-            </summary>
-            <param name="cFile"><see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> to clone</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.GetWebPage">
-            <summary>
-            Get Html Page embedding CqrFile
-            </summary>
-            <returns>html as string rendered</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.GetFileNameContentLength">
-            <summary>
-            GetFileNameContentLength write <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> and  Data.Length
-            </summary>
-            <returns>CqrFileName + " [" + Data.Length + "]";</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.ToJsonEncrypt(System.String,EU.CqrXs.Crypt.Msg.CFile@,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            ToJsonEncrypt
-            </summary>
-            <param name="serverKey">server key to encrypt</param>        
-            <param name="cfile"><see cref="T:EU.CqrXs.Crypt.Msg.CFile"/></param>
-            <param name="encoder"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
-            <param name="zipType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
-            <returns>serialized json string</returns>
-            <exception cref="T:EU.CqrXs.Crypt.CException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CFile.FromJsonDecrypt(System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            FromJsonDecrypt
-            </summary>
-            <param name="serverKey">server key to decrypt</param>
-            <param name="serialized">serialized string of <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/></param>
-            <returns>deserialized and decrypted <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/></returns>
-            <exception cref="T:EU.CqrXs.Crypt.CException">thrown, 
-            when serialized string to decrypt and deserialize is either null or empty 
-            or <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> can't be decrypted and deserialized.
-            </exception>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.CImage">
-            <summary>
-            CImage is a image derived from <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/>
-            <see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> has almost same properties and some small mappings  as <see cref="T:EU.CqrXs.Crypt.Msg.CFile"/> 
-            and additionally member functions for conversion or import from File or <see cref="T:System.Drawing.Image"/> entity:
-            <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingBitmap"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.FromDrawingImage(System.Drawing.Image,System.String)"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingImage(EU.CqrXs.Crypt.Msg.CImage)"/> <see cref="M:EU.CqrXs.Crypt.Msg.CImage.ToFile(EU.CqrXs.Crypt.Msg.CImage)"/>
-            TODO: refactor it
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.CImage.ImageFileName">
-            <summary>
-            File Name with extension of Image wraps <see cref="P:EU.CqrXs.Crypt.Msg.CFile.FileName"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.CImage.ImageMimeType">
-            <summary>
-            Mime Type of Image
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.CImage.ImageData">
-            <summary>
-            byte[] of Image Raw Data wraps <see cref="P:EU.CqrXs.Crypt.Msg.CFile.Data"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.CImage.ImageBase64">
-            <summary>
-            Base64 mime encoded string of raw data
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.#ctor">
-            <summary>
-            Default empty constructor (needed for json serialize and deserialize)
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.#ctor(System.String,System.Byte[])">
-            <summary>
-            Ctor with filename and byte[] data
-            </summary>
-            <param name="fileName"></param>
-            <param name="data"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.#ctor(System.String,System.String)">
-            <summary>
-            Ctor with filename and mime encoded base64 string
-            </summary>
-            <param name="fileName"></param>
-            <param name="base64Image"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.#ctor(System.Drawing.Image,System.String)">
-            <summary>
-            Ctor with <see cref="T:System.Drawing.Image"/> and fileName
-            </summary>
-            <param name="image"> <see cref="T:System.Drawing.Image"/>  <see cref="T:System.Drawing.Bitmap"/></param>
-            <param name="fileName">fileName for the image,
-            if fileName is null or empty
-            then a name <see cref="M:EU.CqrXs.Util.Extensions.Area23DateTimeWithMillis(System.DateTime)"/></param> + "_image." + extension based mime type will be given
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingBitmap">
-            <summary>
-            ToDrawingBitmap converts this <see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> to <see cref="T:System.Drawing.Bitmap"/>
-            </summary>
-            <returns>transformed see cref="System.Drawing.Bitmap"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.ToDrawingImage(EU.CqrXs.Crypt.Msg.CImage)">
-            <summary>
-            ToDrawingImage converts a <see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> to a <see cref="T:System.Drawing.Image"/>
-            </summary>
-            <param name="cImage"><see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> to convert</param>
-            <returns>converted <see cref="T:System.Drawing.Image"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CImage.FromDrawingImage(System.Drawing.Image,System.String)">
-            <summary>
-            FromDrawingImage converts a <see cref="T:EU.CqrXs.Crypt.Msg.CImage"/> from a <see cref="T:System.Drawing.Image"/>
-            </summary>
-            <param name="image"><see cref="T:System.Drawing.Image"/></param>
-            <param name="imgName"><see cref="T:System.String">string imgName</see></param>
-            <returns><see cref="T:EU.CqrXs.Crypt.Msg.CImage">converted CqrImage</see></returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.CMsg">
-            <summary>
-            CMsg is basic message of encryptable / decryptable entities
-            TODO: need to refactor soonly
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CMsg.#ctor">
-            <summary>
-            Parameterless constructor CMsg
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CMsg.#ctor(System.String,EU.CqrXs.Crypt.Msg.SerType)">
-            <summary>
-            this constructor requires a serialized or rawstring in msg
-            </summary>
-            <param name="serializedString">serialized string</param>
-            <param name="msgArt">Serialization type</param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CMsg.#ctor(System.String,System.String,EU.CqrXs.Crypt.Msg.SerType,System.String)">
-            <summary>
-            this ctor requires a plainstring and serialize it in _SerializedMsg
-            </summary>
-            <param name="plainTextMsg">plain text message</param>
-            <param name="hash"></param>
-            <param name="msgArt"></param>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CMsg.Cerialize">
-            <summary>
-            Serialize all CC classes to json
-            </summary>
-            <returns>json serialized string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.CryptMsg`1">
-            <summary>
-            <see cref="T:EU.CqrXs.Crypt.Msg.CryptMsg`1"/> derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/> is a generic crypt container, 
-            where instanciated generic object from <typeparamref name="TC"/> will be serialized and encrypted.
-            For decrypting containing generic object serialized crypted string will be decrypted and deserialized and mapped into
-            TODO: refactoring of en-/decryption
-            </summary>
-            <typeparam name="TC">generic type parameter</typeparam>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CryptMsg`1.EncryptToJson(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            Serialize <see cref="T:CSrvMsg{TC}"/> to Json Stting
-            </summary>
-            <returns>json serialized string</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.CryptMsg`1.ToJsonEncrypt(System.String,EU.CqrXs.Crypt.Msg.CryptMsg{`0},EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType)">
-            <summary>
-            Serialize <see cref="T:EU.CqrXs.Crypt.Msg.CryptMsg`1"/> to Json Stting
-            </summary>
-            <returns>json serialized string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.IMsgAble">
-            <summary>
-            interface for all en-/decryptable entities derived from <see cref="T:EU.CqrXs.Crypt.Msg.CMsg"/>
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Cerializer">
-            <summary>
-            <see cref="T:EU.CqrXs.Crypt.Msg.SerType"/> is serializing type, for now Json = 0x1000, Xml = 0x2000, maybe protbuf later
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Message">
-            <summary>
-            basic Message is needed for en-/decryption
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Hash">
-            <summary>
-            simple hash to know, if the pipe is matching
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Crypt.Msg.IMsgAble.Md5Hash">
-            <summary>
-            standard md5sum of bytes or message string
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.IMsgAble.Cerialize">
-            <summary>
-            Serializes the current object to a string representation.
-            </summary>
-            <returns>A string that represents the serialized form of the object.</returns>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.IMsgAble.DeCerialize``1(System.String)">
-            <summary>
-            Deserializes the specified string to an object of type T.
-            </summary>
-            <typeparam name="T">The type of the object to deserialize to.</typeparam>
-            <param name="serializedText">The serializedText string to deserialize. Cannot be null or empty.</param>
-            <returns>An instance of type T deserialized from the serializedText string, or null if the input is null, empty, or cannot be
-            deserialized to type T.</returns>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.SerType">
-            <summary>
-            Serializer enumeration type with default to json
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Crypt.Msg.SerializationTypeExtension">
-            <summary>
-            Extension methods for enum <see cref="T:EU.CqrXs.Crypt.Msg.SerType"/>
-            <see cref="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.Cerialize``1(EU.CqrXs.Crypt.Msg.SerType,``0)"/>
-            <see cref="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.DeCerialize``1(EU.CqrXs.Crypt.Msg.SerType,System.String)"/>
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Crypt.Msg.SerializationTypeExtension.Cerialize``1(EU.CqrXs.Crypt.Msg.SerType,``0)">
-            <summary>
-            Cerialize
-            </summary>
-            <typeparam name="T">class to serialize</typeparam>
-            <param name="serType">cerialized type</param>
-            <param name="t">instance to serialize</param>
-            <returns>serialized string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Net.NameService.DnsHelper">
-            <summary>
-            Dns Domain Name Service Helper
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.NameService.DnsHelper.GetHostEntryByHostName(System.String)">
-            <summary>
-            GetHostEntryByHostName gets an IPHostEntry for a dns hostname
-            </summary>
-            <param name="hostname">hostname</param>
-            <returns><see cref="T:System.Net.IPHostEntry"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.NameService.DnsHelper.GetIpAddrsByHostName(System.String)">
-            <summary>
-            GetIpAddrsByHostName get all ip addresses except loopback for a dns hostname
-            </summary>
-            <param name="hostname">hostname</param>
-            <returns><see cref="T:System.Collections.Generic.List`1">IEnumerable{IPAddress}</see></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.NameService.DnsHelper.GetHostNamesByHostName(System.String)">
-            <summary>
-            GetDnsHostNamesByHostName gets official reverse lookup hostname for a hostname
-            </summary>
-            <param name="hostname"></param>
-            <returns><see cref="T:System.Collections.Generic.IList`1">IList{string}</see></returns>
-        </member>
-        <member name="T:EU.CqrXs.Net.NetworkAddresses">
-            <summary>
-            NetworkAddresses provides several members to get all local network addresses (except loopback)
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.NetworkAddresses.GetConnectedIpAddresses(System.Collections.Generic.List{System.Net.IPAddress})">
-            <summary>
-            GetConnectedIpAddresses gets connected IPAddress list.
-            </summary>
-            <param name="serverIps"><see cref="T:System.Collections.Generic.List`1"/></param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.NetworkAddresses.GetConnectedIpAddressesAsync(System.Collections.Generic.List{System.Net.IPAddress})">
-            <summary>
-            GetConnectedIpAddressesAsync
-            </summary>
-            <param name="serverIps">serverIPs List to connect and verify, if connection is possible through</param>
-            <returns><see cref="T:Task{List{IPAddress}}"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.NetworkAddresses.GetIpAddresses">
-            <summary>
-            GetIpAddresses gets all IPAddresses except loopback adapter
-            </summary>
-            <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.NetworkAddresses.GetIpAddresses(System.Net.Sockets.AddressFamily)">
-            <summary>
-            GetIpAddresses returns all IPAddresses for a certain <see cref="T:System.Net.Sockets.AddressFamily">AddressFamily</see>
-            </summary>
-            <param name="addressFamily">only <see cref="F:System.Net.Sockets.AddressFamily.InterNetwork"/>.
-            <see cref="F:System.Net.Sockets.AddressFamily.InterNetworkV6">AddressFamily.InterNetworkV6</see> and 
-            <seealso cref="F:System.Net.Sockets.AddressFamily.Unix"/> are supported.</param>
-            <returns><see cref="T:System.Collections.Generic.IList`1"/></returns>
-            <exception cref="T:System.Net.ProtocolViolationException"></exception>
-        </member>
-        <member name="M:EU.CqrXs.Net.NetworkAddresses.GetMacAddress">
-            <summary>
-            GetMacAddress returns Mac Address
-            </summary>
-            <returns><see cref="T:System.Collections.Generic.IList`1"/></returns>
-        </member>
-        <member name="T:EU.CqrXs.Net.WebHttp.HttpClientRequest">
-            <summary>
-            HttpClientRequest encapsulation
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.HttpClientRequest.GetResponseByUrl(System.String)">
-            <summary>
-            Gets an async <see cref="T:System.Threading.Tasks.Task`1"/> for an url
-            </summary>
-            <param name="url">url to fetch</param>
-            <returns><see cref="T:System.Threading.Tasks.Task`1"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.HttpClientRequest.PostUrlMsg(System.String,System.String)">
-            <summary>
-            Posts a message to the specified <see cref="T:System.String">url</see>
-            </summary>
-            <param name="url">url to connect</param>
-            <param name="msg">message to post</param>
-            <returns>true on http(s) POST success</returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.HttpClientRequest.GetClientIP(System.String)">
-            <summary>
-            Gets the external gateway or host client IP address
-            </summary>
-            <param name="urlR">default: https://area23.at/net/R.aspx</param>
-            <returns>IP Address of client host or in case of SNAT IP Address of 1st internet provider gateway of client host</returns>
-            <exception cref="T:System.InvalidOperationException"></exception>
-        </member>
-        <member name="T:EU.CqrXs.Net.WebHttp.TcpClientWebRequest">
-            <summary>
-            <see cref="T:EU.CqrXs.Net.WebHttp.TcpClientWebRequest"/> performs web request raw on tcp socket 
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.TcpClientWebRequest.MakeWebRequest(System.Net.IPAddress,System.Collections.Generic.List{System.Net.IPAddress}@,System.Int32)">
-            <summary>
-            MakeWebRequest
-            </summary>
-            <param name="serverIp">server ip address</param>
-            <param name="clientIPs"></param>
-            <param name="serverPort">server port (default 80)</param>
-            <returns>client address as string</returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.TcpClientWebRequest.MakeWebRequestAsync(System.Net.IPAddress,System.Int32)">
-            <summary>
-            MakeWebRequestAsync
-            </summary>
-            <param name="serverIp">server ip address</param>
-            <param name="serverPort">server port (default 80)</param>
-            <returns><see cref="T:System.Threading.Tasks.Task`1"/></returns>
-        </member>
-        <member name="T:EU.CqrXs.Net.WebHttp.WebClientRequest">
-            <summary>
-            WebClientRequest implements a static WebClient Request via <see cref="T:System.Net.WebClient"/>
-            and mainly provides
-            <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)"/>
-            <see cref="!:LatestAtImages(string)"/>
-            via basic static methods
-            <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)"/>
-            <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)"/>
-            <see cref="M:EU.CqrXs.Net.WebHttp.WebClientRequest.DownloadBytes(System.String,System.String,System.Text.Encoding)"/>
-            funtionality.
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.#cctor">
-            <summary>
-            static constructor
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.DownloadString(System.String,System.String,System.String,System.Text.Encoding)">
-            <summary>
-            DownloadString downloads a string from an uri
-            </summary>
-            <param name="url"></param>
-            <param name="secretKey"></param>
-            <param name="keyIv"></param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
-            <returns>downloaded string</returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.DownloadBytes(System.String,System.String,System.Text.Encoding)">
-            <summary>
-            DownloadBytes
-            </summary>
-            <param name="url"><see cref="T:string">uri</see></param>
-            <param name="filePath"><see cref="T:string">file path to write downloaded image</see></param>
-            <param name="encoding"></param>
-            <returns><see cref="T:FileInfo?" /> of downloaded image file</returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.PostMessage(System.String,System.String,System.String,System.String,System.Text.Encoding)">
-            <summary>
-            PostMessage posts message via <see cref="M:System.Net.WebClient.UploadString(System.String,System.String)"/>
-            </summary>
-            <param name="msg"></param>
-            <param name="url"></param>
-            <param name="hostname"></param>
-            <param name="serverIp"></param>
-            <param name="encoding"></param>
-            <returns></returns>
-        </member>
-        <member name="M:EU.CqrXs.Net.WebHttp.WebClientRequest.ExternalClientIpFromServer(System.String,System.Text.Encoding)">
-            <summary>
-            ExternalClientIpFromServer gets external network ip for client from server
-            </summary>
-            <param name="url">default: https://cqrxs.eu/net/R.aspx https://area23.at/net/R.aspx</param>
-            <param name="encoding"><see cref="T:System.Text.Encoding"/></param>
-            <returns>external official gateway <see cref="T:System.Net.IPAddress">ip address</see> of client</returns>
-        </member>
         <member name="T:EU.CqrXs.Properties.Resource">
             <summary>
               A strongly-typed resource class, for looking up localized strings, etc.
@@ -2423,7 +1860,7 @@
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.app_name">
             <summary>
-              Looks up a localized string similar to Area23.At.Framework.Core.
+              Looks up a localized string similar to EU.CqrXs.
             </summary>
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.arrow_right_0">
@@ -2573,19 +2010,13 @@
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.github_uri">
             <summary>
-              Looks up a localized string similar to https://github.com/heinrichelsigan/area23.at/.
+              Looks up a localized string similar to https://github.com/heinrichelsigan/PermAgainCrypt/.
             </summary>
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.help_text">
-             <summary>
-               Looks up a localized string similar to &lt;h1&gt;Area23.At.Framework.Library&lt;/h1&gt;
-            &lt;p&gt;C# .Net Samples for apache2 mod_mono
-            by Heinrich Elsigan (&lt;a href=&quot;mailto:he@area23.at&quot;&gt;heinrich.elsigan@area23.at&lt;/a&gt;).
-            &lt;/p&gt;
-            &lt;hr /&gt;
-            Code is open source under GPL 3 and publicly accessible via &lt;a href=&quot;https://github.com/&quot; target=&quot;_blank&quot;&gt;GitHub&lt;/a&gt; repository &lt;a href=&quot;https://github.com/heinrichelsigan/area23.at/&quot; target=&quot;_blank&quot;&gt;github.com/heinrichelsigan/area23.at&lt;/a&gt;.
-            &lt;br /&gt;.
-             </summary>
+            <summary>
+              Looks up a localized string similar to https://cqrxs.io/help/.
+            </summary>
         </member>
         <member name="P:EU.CqrXs.Properties.Resource.ImageAesArrow">
             <summary>
@@ -2644,6 +2075,23 @@
             simple static logger via NLog
             </summary>
         </member>
+        <member name="P:EU.CqrXs.Util.Area23Log.SystemDirPath">
+            <summary>
+            SystemDirPath return system directory path, 
+            if defined in App.Config, 
+            otherwise applcation directory of base exe.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Util.Area23Log.TempDir">
+            <summary>
+            Path to temp directory
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Util.Area23Log.SystemDirLogPath">
+            <summary>
+            SystemDirLogPath gets the default full path to logfile in file system
+            </summary>
+        </member>
         <member name="P:EU.CqrXs.Util.Area23Log.Logger">
             <summary>
             Get the Logger
@@ -2700,6 +2148,13 @@
             <param name="message">logging <see cref="T:System.String">string message</see></param>
             <param name="ex">logging <see cref="T:System.Exception">Exception ex</see></param>
             <param name="level"><see cref="T:System.Int32">int log level</see>: 0 for Trace, 1 for Debug, ..., 4 for Error, 5 for Fatal</param>
+        </member>
+        <member name="M:EU.CqrXs.Util.Area23Log.GetLogFilePath(System.String)">
+            <summary>
+            GetLogFilePath - gets individual named logfile with substring appName
+            </summary>
+            <param name="appName">application name to customize logfile name</param>
+            <returns>Full file path to log file in file system</returns>
         </member>
         <member name="T:EU.CqrXs.Util.Constants">
             <summary>
@@ -3141,131 +2596,6 @@
             </summary>
             <param name="fileName"><see cref="T:System.String"/> with extension</param>
             <returns>stripped string</returns>
-        </member>
-        <member name="T:EU.CqrXs.Util.JsonHelper">
-            <summary>
-            JsonHelper class for reading and writing json serialized store file.
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Util.LibPaths">
-            <summary>
-            LibPaths provides filesystem paths and directories for different needed locations, e.g. log + config files
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.LibPaths.#cctor">
-            <summary>
-            static constructor
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.LibPaths.SystemDirPath">
-            <summary>
-            SystemDirPath return system directory path, 
-            if defined in App.Config, 
-            otherwise applcation directory of base exe.
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.LibPaths.TempDir">
-            <summary>
-            Path to temp directory
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.LibPaths.SystemDirResPath">
-            <summary>
-            SystemDirResPath returns path to subdirector <see cref="F:EU.CqrXs.Util.Constants.RES_DIR"/> of base directory <see cref="P:EU.CqrXs.Util.LibPaths.SystemDirPath"/>.
-            If subdirectory <see cref="F:EU.CqrXs.Util.Constants.RES_DIR"/> will be created, if it not allready exist inside directory <see cref="P:EU.CqrXs.Util.LibPaths.SystemDirPath"/>.        
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.LibPaths.SystemDirLogPath">
-            <summary>
-            SystemDirLogPath gets the default full path to logfile in file system
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.LibPaths.GetLogFilePath(System.String)">
-            <summary>
-            GetLogFilePath - gets individual named logfile with substring appName
-            </summary>
-            <param name="appName">application name to customize logfile name</param>
-            <returns>Full file path to log file in file system</returns>
-        </member>
-        <member name="P:EU.CqrXs.Util.MimeTypeExtSig.FileExt">
-            <summary>
-            File Extension
-            </summary>
-        </member>
-        <member name="P:EU.CqrXs.Util.MimeTypeExtSig.MimeTyp">
-            <summary>
-            Mime type name
-            </summary>
-        </member>
-        <member name="F:EU.CqrXs.Util.MimeTypeExtSig.SigBytesList">
-            <summary>
-            detection list of bytes signature
-            </summary>
-        </member>
-        <member name="T:EU.CqrXs.Util.MimeSignature">
-            <summary>
-            MimeType gets mime type out of content byte[] (and filename) by MIT magick cookie
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.MimeSignature.GetMimeType(System.Byte[],System.String)">
-            <summary>
-            GetMimeType
-            </summary>
-            <param name="fileBytes"><see cref="T:byte[]">byte[] binary array</see></param>
-            <param name="fileName">save filename</param>
-            <returns>detected mime type by binary byte pattern, 
-            if no specific mime type detect => default application/octet-stream</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.MimeSignature.GetFileExtForMimeTypeApache(System.String)">
-            <summary>
-            GetFileExtForMimeTypeApache
-            </summary>
-            <param name="mimeString">Mime type string in format genericType/specificType, e.g.:
-            image/bmp
-            image/gif
-            image/x-icon
-            image/jpeg
-            audio/mpeg
-            audio/ogg
-            application/msword
-            </param>
-            <returns>extension based on windows / dos rules with 3 <see cref="T:System.Char"/></returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.MimeSignature.GetMimeTypeForImageBytes(System.Byte[])">
-            <summary>
-            Get Image mime type for image bytes
-            </summary>
-            <param name="bytes"></param>
-            <returns></returns>
-        </member>
-        <member name="T:EU.CqrXs.Util.MimeType">
-            <summary>
-            MimeType gets mime type out of content byte[] (and filename) by MIT magick cookie
-            </summary>
-        </member>
-        <member name="M:EU.CqrXs.Util.MimeType.GetMimeType(System.Byte[],System.String)">
-            <summary>
-            GetMimeType
-            </summary>
-            <param name="fileBytes"><see cref="T:byte[]">byte[] binary array</see></param>
-            <param name="fileName">save filename</param>
-            <returns>detected mime type by binary byte pattern, 
-            if no specific mime type detect => default application/octet-stream</returns>
-        </member>
-        <member name="M:EU.CqrXs.Util.MimeType.GetFileExtForMimeTypeApache(System.String)">
-            <summary>
-            GetFileExtForMimeTypeApache
-            </summary>
-            <param name="mimeString">Mime type string in format genericType/specificType, e.g.:
-            image/bmp
-            image/gif
-            image/x-icon
-            image/jpeg
-            audio/mpeg
-            audio/ogg
-            application/msword
-            </param>
-            <returns>extension based on windows / dos rules with 3 <see cref="T:System.Char"/></returns>
         </member>
         <member name="T:EU.CqrXs.Util.ProcessCmd">
             <summary>

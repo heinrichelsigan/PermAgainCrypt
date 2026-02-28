@@ -66,9 +66,6 @@
 
   <ItemGroup>
     <Compile Include="Crypt\CException.cs" />
-    <Compile Include="Crypt\Cipher\Asymmetric\DH.cs" />
-    <Compile Include="Crypt\Cipher\Asymmetric\Dsa.cs" />
-    <Compile Include="Crypt\Cipher\Asymmetric\Rsa.cs" />
     <Compile Include="Crypt\Cipher\CipherMode2.cs" />
     <Compile Include="Crypt\Cipher\CipherEnum.cs" />
     <Compile Include="Crypt\Cipher\CipherPipe.cs" />
@@ -80,7 +77,6 @@
     <Compile Include="Crypt\Cipher\Symmetric\SecureCipherPipe.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix.cs" />
     <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
-    <Compile Include="Crypt\CqrSettings.cs" />
     <Compile Include="Crypt\EnDeCoding\Base16.cs" />
     <Compile Include="Crypt\EnDeCoding\Base32.cs" />
     <Compile Include="Crypt\EnDeCoding\Hex64.cs" />
@@ -100,27 +96,11 @@
     <Compile Include="Crypt\Hash\SCrypt.cs" />
     <Compile Include="Crypt\Hash\Sha256Sum.cs" />
     <Compile Include="Crypt\Hash\Sha512Sum.cs" />
-    <Compile Include="Crypt\Msg\CContact.cs" />
-    <Compile Include="Crypt\Msg\CFile.cs" />
-    <Compile Include="Crypt\Msg\CImage.cs" />
-    <Compile Include="Crypt\Msg\CMsg.cs" />
-    <Compile Include="Crypt\Msg\CryptMsg.cs" />
-    <Compile Include="Crypt\Msg\IMsgAble.cs" />
-    <Compile Include="Crypt\Msg\SerType.cs" />
-    <Compile Include="Net\NameService\DnsHelper.cs" />
-    <Compile Include="Net\NetworkAddresses.cs" />
-    <Compile Include="Net\WebHttp\HttpClientRequest.cs" />
-    <Compile Include="Net\WebHttp\TcpClientWebRequest.cs" />
-    <Compile Include="Net\WebHttp\WebClientRequest.cs" />
     <Compile Include="Properties\Resource.Designer.cs" />
     <Compile Include="Util\Area23EventArgs.cs" />
     <Compile Include="Util\Area23Log.cs" />
     <Compile Include="Util\Constants.cs" />
     <Compile Include="Util\Extensions.cs" />
-    <Compile Include="Util\JsonHelper.cs" />
-    <Compile Include="Util\LibPaths.cs" />
-    <Compile Include="Util\MimeSignature.cs" />
-    <Compile Include="Util\MimeType.cs" />
     <Compile Include="Util\ProcessCmd.cs" />
     <Compile Include="Util\RandomImage.cs" />
     <Compile Include="Util\RegistryAccessor.cs" />
@@ -164,11 +144,10 @@
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
-    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Bcl.TimeProvider" Version="10.0.3" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
     <PackageReference Include="Microsoft.NETCore.Targets" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="protobuf-net" Version="3.2.56" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
   </ItemGroup>
 

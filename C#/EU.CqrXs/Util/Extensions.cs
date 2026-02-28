@@ -216,9 +216,9 @@ namespace EU.CqrXs.Util
         public static string ToFile(this byte[] bytes, string? filePath = null, string? fileName = null, string? fext = null)
         {
             if (string.IsNullOrEmpty(filePath) || !Directory.Exists(filePath))
-                filePath = LibPaths.SystemDirPath;
-            if (!filePath.EndsWith(LibPaths.SepChar))
-                filePath += LibPaths.SepChar;
+                filePath = Area23Log.SystemDirPath;
+            if (!filePath.EndsWith(Area23Log._sepCh))
+                filePath += Area23Log._sepCh;
 
             if (string.IsNullOrEmpty(fileName))
                 fileName = DateTime.UtcNow.Area23DateTimeWithMillis();
