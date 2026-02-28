@@ -238,7 +238,6 @@ public class SecureCipherPipe extends CipherPipe {
                 CipherEnum cipherAlgo = CipherEnum.Aes;
                 cipherAlgo = CipherEnum.valueOf(algo);
                 cipherEnums.add(cipherAlgo);
-
                 if (++cnt > maxpipe)
                     break;
             }
@@ -288,7 +287,7 @@ public class SecureCipherPipe extends CipherPipe {
     }
 
     /**
-     * Constructs a SecureCipherPipe from key and hash
+     * Constructs a SecureCipherPipe from key 
      * @param key users secret key per default email address
      * @param cmode2 {@link CipherMode2}
      */
@@ -586,7 +585,7 @@ Since symmetric block cipher ciphers each block in the same encrypting way
 \caption{\label{fig:SymmetricBlockCipherStructure}Symmetric BlockCipher Structure}
 \end{figure}
 
-parallel processing can be implemented quiet easy with average performance bust on huge multiprocessore machines.
+parallel processing can be implemented quiet easy with average performance bust on huge multiprocessor machines.
 
 \begin{figure}
 \includegraphics[width=1\textwidth]{SymmetricBlockCipher_Structure1.png}
@@ -595,10 +594,10 @@ parallel processing can be implemented quiet easy with average performance bust 
 
 \subsubsection{Disadvantages}
 
-Since we know often concrete structure of a file header, 
-because of more static tableized structure inside file header and the sepecific binary format signature (MIT magic cookie)
+Since we often know concrete structure of a file header, 
+because of more static tableized structure inside file header and the specific binary format signature (MIT magic cookie)
 
-REPLAY attacs could be used by trying encode only the 1st symmetric cipher block with some heuristic headers and
+REPLAY algorithms could be used by trying encode only the 1st symmetric cipher block with some heuristic headers and
 possible keys.
 
 \begin{figure}
@@ -615,15 +614,15 @@ sudo nice -n -17 dd if=/dev/zero of=/mnt/h/zeros.txt bs=4k  count=64
 \end{verbatim}
 \end{small}
 
-That's why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to encrypt.
+That is why we have added a gzip, bzip2, zip before to compress illegal character blocks inside the file to encrypt.
 
 
 \subsection{Mathematical theory}
 
 Consider that there are full bijective desterministic inversible functions, 
-where inverse function 
+where the inverse function 
 
-to  y_x = F(x,...) 
+of  y_x = F(x,...) 
 
 is 
 x_y = f(y,..)
@@ -809,7 +808,7 @@ the matrix will look like this:
 \subsection{Good luck!}
 
 We hope you find PermAgainCrypt useful, and good luck.
-\href{https://cqrxs.eu/help/}{help library}  or use the contacts at  \url{https://heinrichelsigan.area23.at}.
+To contact me, use the contacts at \url{https://heinrichelsigan.area23.at}.
 
 \bibliographystyle{alpha}
 \bibliography{sample}
