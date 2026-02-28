@@ -25,13 +25,7 @@ import java.awt.Font;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -145,7 +139,7 @@ public class CqrJFrameSimple extends JFrame {
 		Init();
 		setVisible(true);
 		Constants.DEBUG = false;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
     public CqrJFrameSimple(CqrJdFrame jFrameComplex) {
@@ -163,7 +157,7 @@ public class CqrJFrameSimple extends JFrame {
 		Init();
 		setVisible(true);
 		Constants.DEBUG = false;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		return true;
 	}
     
@@ -300,6 +294,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuZip_itemGz.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, MenuKeyEvent.CTRL_DOWN_MASK));
 		menuZip_itemGz.setMnemonic((int)'G');
 		menuZip_itemGz.setFont(menuFont);
+		menuZip_itemGz.setEnabled(true);
 		menuZip_itemGz.addActionListener(aSymAction);
 		menuZip.add(menuZip_itemGz);
 		
@@ -393,7 +388,8 @@ public class CqrJFrameSimple extends JFrame {
 		menuEncoding_itemXx.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuEncoding_itemXx.setText("Xx");
 		menuEncoding_itemXx.setActionCommand("Xx");
-		menuEncoding_itemXx.setFont(menuFont);		
+		menuEncoding_itemXx.setFont(menuFont);
+		menuEncoding_itemXx.setEnabled(false);
 		menuEncoding_itemXx.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemXx);
 
@@ -401,16 +397,17 @@ public class CqrJFrameSimple extends JFrame {
 		menuEncoding_itemHex64 = new JMenuItem();
 		menuEncoding_itemHex64.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuEncoding_itemHex64.setText("Hex64");
-		menuEncoding_itemHex64.setActionCommand("Hex64");
+		// menuEncoding_itemHex64.setActionCommand("Hex64");
 		menuEncoding_itemHex64.setFont(menuFont);
 		menuEncoding_itemHex64.setEnabled(false);
-		menuEncoding_itemHex64.addActionListener(aSymAction);
+		// menuEncoding_itemHex64.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemHex64);
 
 		menuEncoding_itemBase64 = new JMenuItem();
 		menuEncoding_itemBase64.setHorizontalTextPosition(SwingConstants.RIGHT);
 		menuEncoding_itemBase64.setText("Base64");
 		menuEncoding_itemBase64.setActionCommand("Base64");
+		menuEncoding_itemBase64.setEnabled(true);
 		menuEncoding_itemBase64.setFont(menuFont);		
 		menuEncoding_itemBase64.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemBase64);
@@ -551,6 +548,22 @@ public class CqrJFrameSimple extends JFrame {
 		jBar = AddMenus(lSymAction);
 		setJMenuBar(jBar);
 
+		this.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent e) {
+				try {
+					if (cqrJdFrame == null) {
+						cqrJdFrame = new CqrJdFrame(cqrJFrameSimple);
+						//noinspection deprecation
+						cqrJdFrame.show();
+					} else {
+						cqrJdFrame.setVisible(true);
+					}
+				} catch (Exception exi) {
+					DbgWriter.msg(exi.toString(), true);
+				}
+			}
+		});
+
 		imgKey = addImages(new String[] { "eu/cqrxs/gui/key_ring.gif", "key_ring.gif" });
 		imgHash = addImages(new String[] { "eu/cqrxs/gui/a_hash.png", "a_hash.png" });
 		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/AddAesArrowHover.gif", "AddAesArrowHover.gif" });
@@ -620,7 +633,7 @@ public class CqrJFrameSimple extends JFrame {
 		jLabelImgX.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgX);
 
-        String[] comboEncodeEnums = { EncodeEnum.Xx.getName(), EncodeEnum.Base64.getName() };
+        String[] comboEncodeEnums = { EncodeEnum.Base64.getName() };
 		jComboBox_Encoding = new JComboBox(comboEncodeEnums);
 		jComboBox_Encoding.setBounds(876, 64, 120, 25);
 		jComboBox_Encoding.setFont(cryptFont);
@@ -1065,7 +1078,7 @@ public class CqrJFrameSimple extends JFrame {
 			jTextField_Key.setText("zen@area23.at");
 			// TODO: reset JComboBoxes jComboBox_Algo
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
-			selectItemByString(jComboBox_Zip, menuZip, "None");
+			selectItemByString(jComboBox_Zip, menuZip, "GZip");
 			
 			setInfoMsg("Form cleared.");
 		} catch (Exception e) {
@@ -1255,7 +1268,7 @@ public class CqrJFrameSimple extends JFrame {
             }
 
             setVisible(false);
-            // cqrJFrameSimple.hide();
+            cqrJFrameSimple.dispose();
 		} catch (Exception exIO) {
 			exIO.printStackTrace();
 		}

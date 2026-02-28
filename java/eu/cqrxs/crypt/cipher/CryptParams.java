@@ -102,10 +102,12 @@ public class CryptParams {
 
         switch (cipher) {
             case Aes:
-            /* case AesNet: // TODO: Implement interface IBlockCipher in AesNet
-                blockCipher = new AESEngine();
+                blockCipher = new  AESEngine();
                 break;
-             */
+            case JAes:
+                size = 128;
+                blockCipher = new JAes(size);
+                break;
             case AesLight:
                 size = 128;
                 blockCipher = new AESLightEngine();
