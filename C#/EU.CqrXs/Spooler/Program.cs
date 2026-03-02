@@ -95,6 +95,7 @@ namespace EU.CqrXs.Spooler
                                                 KeyHash.SCrypt, KeyHash.TupleHash, KeyHash.Whirlpool };
         static KeyHash keyHash = KeyHash.Hex;
         static CipherMode2 cmode2 = CipherMode2.CFB;
+        static bool cModeSet = false;
 
         /// <summary>
         /// Console spooler app for en-/decrypting a huge amount of files
@@ -375,6 +376,7 @@ namespace EU.CqrXs.Spooler
                     if (!Enum.TryParse<CipherMode2>(optArgs[1], true, out cmode2))
                         cmode2 = CipherMode2.CFB;
                     optEnum = OptSpoolEnum.Mode;
+                    cModeSet = true;
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
 
@@ -382,6 +384,8 @@ namespace EU.CqrXs.Spooler
                 case 'S':
                     secureCipher = true;
                     optEnum = OptSpoolEnum.Secure;
+                    if (!cModeSet)
+                        cmode2 = CipherMode2.ECB; // for secure cipher, default to ECB, because of the additional security measures in SecureCipherPipe
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
 

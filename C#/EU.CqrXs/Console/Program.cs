@@ -74,6 +74,7 @@ namespace EU.CqrXs.Console
             encodingType = EncodingType.None;
             Constants.DirCreate = false;
             Constants.NOLog = true;
+            bool modeSet = false;
             string encryptOptLater = "";
 
             if (args.Length <= 0)
@@ -146,6 +147,7 @@ namespace EU.CqrXs.Console
                     case OptEnum.Mode:
                         if (!Enum.TryParse<CipherMode2>(optStr, out cmode2))
                             cmode2 = CipherMode2.CFB;
+                        modeSet = true;
                         break;
                     case OptEnum.Encode:
                         encodingType = EncodingTypesExtensions.GetEnum(optStr);
@@ -160,6 +162,7 @@ namespace EU.CqrXs.Console
                         encryptOptLater = optStr;
                         break;
                     case OptEnum.SecureCipher:
+                        if (!modeSet) cmode2 = CipherMode2.ECB; // for secure cipher pipe, default to ECB mode, because of the random IV and heuristic key collection, no more deterministic math bijective proper symmertric cipher en-/decryption in pipe, so no more REPLY attacks with binary format header and heuristic key collection
                         secureCipher = true;                             
                         break;
                     case OptEnum.DeCrypt:
