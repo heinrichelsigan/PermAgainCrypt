@@ -82,7 +82,7 @@ public class CqrJFrameSimple extends JFrame {
 	protected CipherEnum cipherEnum = CipherEnum.Aes;
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
-	protected CipherMode2 cmode2 = CipherMode2.CFB;
+	protected CipherMode2 cmode2 = CipherMode2.ECB;
 	
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
 	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
@@ -441,7 +441,7 @@ public class CqrJFrameSimple extends JFrame {
 		menuCMode2_CCM.setFont(menuFont);
 		menuCMode2_CCM.setEnabled(false);
 		// menuCMode2_CCM.addActionListener(aSymAction);
-		menuCMode2.add(menuCMode2_CFB);
+		menuCMode2.add(menuCMode2_CCM);
 
 		menuCMode2_CTS = new JMenuItem();
 		menuCMode2_CTS.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -641,7 +641,7 @@ public class CqrJFrameSimple extends JFrame {
 		getContentPane().add(jComboBox_Encoding);
 		selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 
-		selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
+		selectCipherMode2MenuItem(menuCMode2, CipherMode2.ECB);
 
 		dropPanel = new DropPanel(cqrJFrameSimple);
 		dropPanel.setFont(cryptFont);

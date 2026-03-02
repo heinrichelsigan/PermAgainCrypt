@@ -194,7 +194,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 return false;
             if (algoName.StartsWith("ARIA") || algoName.StartsWith("ASCON"))
                 return false;
-            if (algoName.StartsWith("CAST"))
+            if (algoName.StartsWith("CAST") || algoName.StartsWith("DES3"))
                 return false;
             if (algoName.StartsWith("GOST") || algoName.StartsWith("IDEA"))
                 return false;

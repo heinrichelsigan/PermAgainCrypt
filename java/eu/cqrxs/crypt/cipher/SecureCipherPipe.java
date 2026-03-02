@@ -33,7 +33,7 @@ public class SecureCipherPipe extends CipherPipe {
         inPipe = new CipherEnum[0];
         encodeType = EncodeEnum.Base64;
         zType = ZipType.GZip;
-        cMode2 = CipherMode2.CFB;
+        cMode2 = CipherMode2.ECB;
     }
 
     /**
@@ -147,7 +147,7 @@ public class SecureCipherPipe extends CipherPipe {
      * @param key only users secret key
      */
     public SecureCipherPipe(String key) {
-        this(key, CipherMode2.CFB);
+        this(key, CipherMode2.ECB);
         cipherKeyHash = key;
     }
 
@@ -187,8 +187,8 @@ public class SecureCipherPipe extends CipherPipe {
             case ZenMatrix:
                 encryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
-            case ZenMatrix3:
-                encryptBytes = (new ZenMatrix3(hashKey, hashKey, false)).encrypt(inBytes, true);
+            case ZenMatrix2:
+                encryptBytes = (new ZenMatrix2(hashKey, hashKey, false)).encrypt(inBytes, true);
                 break;
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
@@ -235,8 +235,8 @@ public class SecureCipherPipe extends CipherPipe {
             case ZenMatrix:
                 decryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
-            case ZenMatrix3:
-                decryptBytes = (new ZenMatrix3(hashKey, hashKey, false)).decrypt(cipherBytes);
+            case ZenMatrix2:
+                decryptBytes = (new ZenMatrix2(hashKey, hashKey, false)).decrypt(cipherBytes);
                 break;
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
@@ -271,8 +271,8 @@ public class SecureCipherPipe extends CipherPipe {
 
         for (CipherEnum cipher : inPipe) {
 
-            String cipherHashKey = secureHashes[(merry % secureHashes.length)].hash(cipherKeyHash);
-            if ((++merry) > (secureHashes.length -1)) merry = 0;
+            String cipherHashKey = secureHashes[(merry % inPipe.length)].hash(cipherKeyHash);
+            if ((++merry) > (inPipe.length -1)) merry = 0;
 
             encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
             inBytes = encryptedBytes;
@@ -299,14 +299,13 @@ public class SecureCipherPipe extends CipherPipe {
             throw new IllegalArgumentException("hashKey");
 
         cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;        
-        int roundsGo = secureHashes.length - 1;
+        int roundsGo = inPipe.length - 1;
 
         byte[] decryptedBytes = new byte[cipherBytes.length];
         for (CipherEnum cipher : getOutPipe()) {
 
-            String cipherHashKey = secureHashes[(roundsGo % secureHashes.length)].hash(cipherKeyHash);
-            if ((--roundsGo) < 0) roundsGo = secureHashes.length - 1;
-
+            String cipherHashKey = secureHashes[(roundsGo % inPipe.length)].hash(cipherKeyHash);
+            if ((--roundsGo) < 0) roundsGo =  inPipe.length - 1;
             decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
             cipherBytes = decryptedBytes;
         }

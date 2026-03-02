@@ -34,43 +34,35 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
     private final static String SYMMCIPHERALGONAME = "ZenMatrix2";
     public final static int ZEN_SIZE = 0x100;
     static int BLOCK_SIZE = 256;
+   
+   
+    final static byte[] matrixPermutationBase = {
+            0x0, 0x1, 0x2, 0x3, 
+			0x4, 0x5, 0x6, 0x7,
+            0x8, 0x9, 0xa, 0xb, 
+			0xc, 0xd, 0xe, 0xf
+    };
+    final static int[] magicOrder = {
+            0x8,    0x3,    0x1,    0xe,
+            0x9,    0xf,    0x5,    0xc,
+            0x4,    0xd,    0xa,    0x7,
+            0xb,    0x2,    0x0,    0x6
+    };
+    protected byte[] privateBytes2 = new byte[0x10];
 
-    final static byte[] matrixPermutationBase2 = {
-                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-				0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-				0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
-				0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
-				0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
-				0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e, 0x5f,
-				0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
-				0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7d, 0x7e, 0x7f,
-                (byte)0x80, (byte)0x81, (byte)0x82, (byte)0x83, (byte)0x84, (byte)0x85, (byte)0x86, (byte)0x87, (byte)0x88, (byte)0x89, (byte)0x8a, (byte)0x8b, (byte)0x8c, (byte)0x8d, (byte)0x8e, (byte)0x8f,
-				(byte)0x90, (byte)0x91, (byte)0x92, (byte)0x93, (byte)0x94, (byte)0x95, (byte)0x96, (byte)0x97, (byte)0x98, (byte)0x99, (byte)0x9a, (byte)0x9b, (byte)0x9c, (byte)0x9d, (byte)0x9e, (byte)0x9f,
-				(byte)0xa0, (byte)0xa1, (byte)0xa2, (byte)0xa3, (byte)0xa4, (byte)0xa5, (byte)0xa6, (byte)0xa7, (byte)0xa8, (byte)0xa9, (byte)0xaa, (byte)0xab, (byte)0xac, (byte)0xad, (byte)0xae, (byte)0xaf,
-				(byte)0xb0, (byte)0xb1, (byte)0xb2, (byte)0xb3, (byte)0xb4, (byte)0xb5, (byte)0xb6, (byte)0xb7, (byte)0xb8, (byte)0xb9, (byte)0xba, (byte)0xbb, (byte)0xbc, (byte)0xbd, (byte)0xbe, (byte)0xbf,
-				(byte)0xc0, (byte)0xc1, (byte)0xc2, (byte)0xc3, (byte)0xc4, (byte)0xc5, (byte)0xc6, (byte)0xc7, (byte)0xc8, (byte)0xc9, (byte)0xca, (byte)0xcb, (byte)0xcc, (byte)0xcd, (byte)0xce, (byte)0xcf,
-				(byte)0xd0, (byte)0xd1, (byte)0xd2, (byte)0xd3, (byte)0xd4, (byte)0xd5, (byte)0xd6, (byte)0xd7, (byte)0xd8, (byte)0xd9, (byte)0xda, (byte)0xdb, (byte)0xdc, (byte)0xdd, (byte)0xde, (byte)0xdf,
-				(byte)0xe0, (byte)0xe1, (byte)0xe2, (byte)0xe3, (byte)0xe4, (byte)0xe5, (byte)0xe6, (byte)0xe7, (byte)0xe8, (byte)0xe9, (byte)0xea, (byte)0xeb, (byte)0xec, (byte)0xed, (byte)0xee, (byte)0xef,
-				(byte)0xf0, (byte)0xf1, (byte)0xf2, (byte)0xf3, (byte)0xf4, (byte)0xf5, (byte)0xf6, (byte)0xf7, (byte)0xf8, (byte)0xf9, (byte)0xfa, (byte)0xfb, (byte)0xfc, (byte)0xfd, (byte)0xfe, (byte)0xff
-	};
-    
-    protected byte[] privateBytes2 = new byte[0x100];
+    public byte[] matrixPermutationKey;
+    protected byte[] _inverseMatrix = new byte[0];
 
-    public byte[] matrixPermutationKey2;
-    protected byte[] _inverseMatrix2 = new byte[0];
-
-    protected byte[] getInverseMatrix2() {
-        if (_inverseMatrix2 == null ||
-                _inverseMatrix2.length < 0x100 ||
-                (_inverseMatrix2[0] == (byte)0x0 && _inverseMatrix2[1] == (byte)0x0 &&
-                    _inverseMatrix2[0xe] == (byte)0x0 && _inverseMatrix2[0xf] == (byte)0x0) ||
-                (_inverseMatrix2[0] == (byte)0x0 && _inverseMatrix2[1] == (byte)0x1 &&
-                    _inverseMatrix2[0xe] == (byte)0xe  && _inverseMatrix2[0xf] == (byte)0xf))
+    protected byte[] getInverseMatrix() {
+        if (_inverseMatrix == null ||
+                _inverseMatrix.length < 0x10 ||
+                (_inverseMatrix[0] == (byte)0x0 && _inverseMatrix[1] == (byte)0x0 && _inverseMatrix[0xf] == (byte)0x0) ||
+                (_inverseMatrix[0] == (byte)0x0 && _inverseMatrix[1] == (byte)0x1 && _inverseMatrix[0xf] == (byte)0xf))
         {
-            _inverseMatrix2 = buildInverseMatrix2(matrixPermutationKey2, 0x100);
+            _inverseMatrix = ZenMatrix.buildInverseMatrix(matrixPermutationKey, 0x10);
         }
 
-        return _inverseMatrix2;
+        return _inverseMatrix;
     }
 
     /* #region IBlockCipher interface  */
@@ -86,37 +78,30 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
 
     @Override
     public void reset() {
-        super.reset();
 		byte sbcnt = 0x0;
-        matrixPermutationKey2 = new byte[0x100];
-        privateBytes2 = new byte[0x100];
-        for (byte s : matrixPermutationBase2)  {
-            try {
-                short sbshort = (short)sbcnt;
-                privateBytes2[sbshort % 0x100] = (byte) 0x0;
-                matrixPermutationKey2[sbshort % 0x100] = (byte)s;
-            } catch (Exception exi) {
-                DbgWriter.msgex(exi, false);
-            }
-            sbcnt++;
+		super.reset();
+        matrixPermutationKey = new byte[0x10];
+        for (byte s : matrixPermutationBase)  {
+            privateBytes2[sbcnt % 0x10] = (byte)0x0;
+            matrixPermutationKey[sbcnt++] = s;
         }
-        _inverseMatrix2 = buildInverseMatrix2(matrixPermutationKey2, 0x100);
-		DbgWriter.msg(("ZenMatrix2 reseted"), false);
+        _inverseMatrix = buildInverseMatrix(matrixPermutationKey, 0x10);
+		DbgWriter.msg(("ZenMatrix reseted"), false);
 		initialised = false;
     }
 
-    @Override
+
     public void init(boolean forEncryption, CipherParameters parameters)  {
-        super.init(forEncryption, parameters);
-		
-		if (!(parameters instanceof KeyParameter) && !(parameters instanceof ParametersWithIV))
+        if (!(parameters instanceof KeyParameter) && !(parameters instanceof ParametersWithIV))
             throw new IllegalArgumentException("parameters: only KeyParameter or ParametersWithIV expected.");
 
+		reset();
+		super.init(forEncryption, parameters);
 		this.forEncryption = forEncryption;
-		DbgWriter.msg(("ZenMatrix2 init(boolean forEncryption = " + String.valueOf(forEncryption) + ", ...) ..."), false);
+		DbgWriter.msg(("ZenMatrix init(boolean forEncryption = " + String.valueOf(forEncryption) + ", ...) ..."), false);
 				
         try  {
-            privateBytes2 = ((KeyParameter)parameters).getKey();
+            this.privateBytes2 = ((KeyParameter)parameters).getKey();
         }  catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -131,16 +116,16 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
             if (bKey.length == 0 && bIv.length == 0)
                 throw new IllegalArgumentException("parameters: KeyParameter and/or ParametersWithIV contain a null or empty key or iv.");
 
-			privateBytes2 = CryptHelper.getKeyHashBytes(bKey, bIv, 0x100);
+            this.privateBytes2 = CryptHelper.tarBytes(bKey, bIv);
 			DbgWriter.msg(("\tprivateBytes2.lenght = " + privateBytes2.length +  " bKey.length = " + bKey.length +  " bIv.length = " + bIv.length), false);
         }
 										        
-		genBuildWithBytes2(privateBytes2, false);
+		genBuildWithBytes(privateBytes2, false);
         initialised = true;
     }
 
     /**
-     * Processes one BLOCK with BLOCK_SIZE {@link ZenMatrix2}.BLOCK_SIZE
+     * Processes one BLOCK with BLOCK_SIZE {@link ZenMatrix}.BLOCK_SIZE
      * @param inBuf in bytes buffer
      * @param inOff in bytes offset
      * @param outBuf out bytes buffer
@@ -148,7 +133,8 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
      * @return BLOCKSIZE of processed bytes or when no bytes processed ß
      * @throws RuntimeException
      */
-    public int processBlock2(byte[] inBuf, int inOff, byte[] outBuf, int outOff)
+    @Override
+    public int processBlock(byte[] inBuf, int inOff, byte[] outBuf, int outOff)
             throws DataLengthException, IllegalStateException {
         if (privateBytes2 == null)
             throw new RuntimeException(SYMMCIPHERALGONAME + " engine not initialised");
@@ -179,11 +165,11 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
                 byte b = inOffBuf[aCnt];
                 byte mappedByte;
                 mappedByte = mapByteValue2(b, forEncryption)[0];
-                byte sm = (byte)(forEncryption ? matrixPermutationKey2[aCnt % 0x100] : _inverseMatrix2[aCnt % 0x100]);
-                int pos = bCnt + ((int)sm) % 0x100;
+                byte sm = forEncryption ? matrixPermutationKey[aCnt % 0x10] : _inverseMatrix[aCnt % 0x10];
+                int pos = bCnt + ((int)sm) % 0x10;
                 processed[pos] = mappedByte;
-                if (aCnt != 0 && aCnt % 0x100 == 0)
-                    bCnt += 0x100;
+                if (aCnt != 0 && aCnt % 0x10 == 0)
+                    bCnt += 0x10;
             }
 
 			byte[] outBytes = processed;
@@ -202,24 +188,17 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
     /* #endregion IBlockCipher interface */
     /* #region ctor_init_gen_reverse */
 
-    public ZenMatrix2() {
-        this(256);
-    }
-
-
-
     /**
      * public constructor
      * @param bs
      */
     public ZenMatrix2(int bs)  {
-		BLOCK_SIZE = (bs < 256) ? 256 : bs;
+        for (int i = 0; i < BLOCK_SIZES.length; i++)  {
+            if (bs == BLOCK_SIZES[i])
+                BLOCK_SIZE = BLOCK_SIZES[i];
+        }
         reset();
     }
-
-        
-    /* #endregion IBlockCipher interface */
-    /* #region ctor_init_gen_reverse */
 
 
     /**
@@ -229,14 +208,15 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
      * @param fullSymmetric fullSymmetric means that zen matrix is it's inverse element and decrypts back to plain text, when encrypting twice or ²
      */
     public ZenMatrix2(String secretKey, String hashIV, boolean fullSymmetric) {
-        this(256);
+        this(16);
         if (secretKey.isEmpty())
             throw new IllegalArgumentException("secretKey is null or empty");
 
+		reset();
 		symmetric = fullSymmetric;
-        byte[] keyBytes2 = CryptHelper.getUserKeyBytes(secretKey, hashIV, 0x100);
+        byte[] keyBytes = CryptHelper.getUserKeyBytes(secretKey, hashIV, 0x10);
 
-        genBuildWithBytes2(keyBytes2, fullSymmetric);
+        genBuildWithBytes(keyBytes, fullSymmetric);
     }
 
 
@@ -254,12 +234,12 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
 
     /***
      * initializes a {@link ZenMatrix2} with an array of key bytes
-     * @param keyBytes2 user key bytes to init algorithm instance
+     * @param keyBytes user key bytes to init algorithm instance
      * @param fullSymmetric if true inverse matrix is same as encrypt matrix V * M * M = V * M * MInverse = V
      */
-    public ZenMatrix2(byte[] keyBytes2, boolean fullSymmetric) {
+    public ZenMatrix2(byte[] keyBytes, boolean fullSymmetric) {
         this(16);
-        genBuildWithBytes2(keyBytes2, fullSymmetric);
+        genBuildWithBytes(keyBytes, fullSymmetric);
     }
 
 
@@ -267,85 +247,81 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
 
     /**
      * Generates / builds a ZenMatrix2 with key bytes
-     * @param keyBytes2 users keybytes created by users key and key hash iv
+     * @param keyBytes users keybytes created by users key and key hash iv
      *                  must have at least 4 bytes and will be truncated after
      *                  16 bytes only the first 16 bytes will be taken from keyBytes for {@link ZenMatrix}
      * @param fullSymmetric fullSymmetric means that zen matrix is it's inverse element and decrypts back to plain text, when encrypting twice or ²
      */
-    protected void genBuildWithBytes2(byte[] keyBytes2, boolean fullSymmetric)  {
-        if ((keyBytes2 == null || keyBytes2.length < 4))
-            throw new RuntimeException("byte[] keyBytes2 is null or keyBytes2.Length < 4");
+    protected void genBuildWithBytes(byte[] keyBytes, boolean fullSymmetric)  {
+        if ((keyBytes == null || keyBytes.length < 4))
+            throw new RuntimeException("byte[] keyBytes is null or keyBytes.length < 4");
 
-        genBuildWithBytes(keyBytes2, fullSymmetric);
 		symmetric = fullSymmetric;
-
-        if (keyBytes2.length < 0x100)
-            privateBytes2 = CryptHelper.getKeyBytesSingle(keyBytes2, 0x100);
-        else
-        {
-            for (int l = 0, k = keyBytes2.length - 1; (k >= 0 && l < 0x100); k--, l++)
-                privateBytes2[l] = (byte)keyBytes2[k];
-        }
-
-		String kbs = "ZenMatrix2 genBuildWithBytes(byte keyBytes.length =" + keyBytes2.length + ", fullSymmetric " +  fullSymmetric + ")\n\tKeyBytes = ";
+		super.genBuildWithBytes(keyBytes, fullSymmetric);
+		
+		String kbs = "ZenMatrix genBuildWithBytes(byte keyBytes.length =" + keyBytes.length + ", fullSymmetric " +  fullSymmetric + ")\n\tKeyBytes = ";				
+        for (int j = 0; j < keyBytes.length; kbs += String.format("%x", keyBytes[j++]));
 		DbgWriter.msg(kbs, false);
         // InitMatrixSymChiffer();
         int ba = 0, bb = 0;
-
+        System.arraycopy(keyBytes, 0, privateBytes2, 0, Math.min(keyBytes.length, 0x10));
 		
-        byte[] permutationKeyHash2 = new byte[0];
-		ArrayList<Byte> byteList2 = new ArrayList<Byte>();
-		for (int bl = 0; bl < keyBytes2.length; byteList2.add(Byte.valueOf(keyBytes2[bl++])));
+        byte[] permutationKeyHash = new byte[0];
+		ArrayList<Byte> byteList = new ArrayList<Byte>();
+		for (int bl = 0; bl < keyBytes.length; byteList.add(Byte.valueOf(keyBytes[bl++]))); 
 		
-        // MatrixDict is only needed, when (fullSymmetric == true)f
-        HashMap<Byte, Byte> matrixDict2 = new HashMap<Byte, Byte>();
+        // MatrixDict is only needed, when (fullSymmetric == true)
+        HashMap<Byte, Byte> matrixDict = new HashMap<Byte, Byte>();
 
-        // Simplest method to fill deterministic up privateBytes2 from keyBytes with keyBytes.Length < 16
-        // for (int i = keyBytes.Length; i < 0x100; i++)
-        // {
-        //       if (i < 0x08)
-        //          privateBytes2[i] = (byte)keyBytes[i % keyBytes.Length];
-        //      else
-        //          privateBytes2[i] = (byte)keyBytes[0x08 - (i - 0x07)];
-        // }
+		if (keyBytes.length < 0x10) {
+			// Simplest method to fill deterministic up privateBytes2 from keyBytes with keyBytes.length < 16
+			for (int i = keyBytes.length; i < 0x10; i++)
+			{
+				   if (i < 0x08)
+					  privateBytes2[i] = (byte)keyBytes[i % keyBytes.length];
+				  else
+					  privateBytes2[i] = (byte)keyBytes[0x08 - (i - 0x07)];
+			}
+		} else {
+			for (int l = 0, k = keyBytes.length - 1; (k >= 0 && l < 0x10); k--, l++) {
+				privateBytes2[l] = (byte)keyBytes[k];
+			}
+		}
         //
+		
 		byte keyByte;
 		
-        for (Byte KeyByte : byteList2) {
+        for (Byte KeyByte : byteList) {
 			keyByte = KeyByte.byteValue();
-            byte b = (byte)(keyByte % 0x100);
+            byte b = (byte)(keyByte % 0x10);
 			Byte B = Byte.valueOf(b);
-            for (int i = 0; i < 0x100; i++)
+            for (int i = 0; i < 0x20; i++)
             {
 				B = Byte.valueOf(b);
-                if (arrayContains(permutationKeyHash2, b) || ((int)b) == ba) {
-                    if (i < 0x100)
-                        b =  ((byte)(((int)(keyByte) +
-                                (magicOrder[i % 10] * magicOrder[i % 10])) % 0x100));
-                    else if (i >= 0x100)
-                        b = ((byte) (((int) (keyByte) + i) % 0x100));
-                }
+                if (arrayContains(permutationKeyHash, b) || ((int)b) == ba)
+                    b = (i >= 0x10) ? ((byte)(((int)(keyByte) + i) % 0x10)) :
+                            ((byte)(((int)(keyByte) + magicOrder[i]) % 0x10));
                 else break;
             }
 			B = Byte.valueOf(b);
 
-            if (!arrayContains(permutationKeyHash2, b)) {
+            if (!arrayContains(permutationKeyHash, b)) {
 				b = B.byteValue();
                 bb = (int)b;
                 if (ba != bb) {
                     if (fullSymmetric) {
 				    	Byte BA = Byte.valueOf((byte)ba);
 				    	Byte BB = Byte.valueOf((byte)bb);
-                        if (!matrixDict2.keySet().contains(B) && !matrixDict2.containsValue(BA)) {
-                            matrixDict2.put(BA, BB);
-                            matrixDict2.put(BB, BA);
+                        if (!matrixDict.keySet().contains(B) && !matrixDict.containsValue(BA)) {
+                            matrixDict.put(BA, BB);
+                            matrixDict.put(BB, BA);
                         }
                     }
 
-                    permutationKeyHash2 = arrayAdd(permutationKeyHash2, b);
+                    permutationKeyHash = arrayAdd(permutationKeyHash, b);
                     // TODO:
 					int bc = 0; 
-					swap(matrixPermutationKey2, (int)ba, (int)bb);
+					swap(matrixPermutationKey, (int)ba, (int)bb);				
 					
                     ba++;
                 }
@@ -353,102 +329,84 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
         }
 		
 		String perm = "KeyBytes: ";
-		for (int j=0; j < keyBytes2.length; perm += String.format("%x", keyBytes2[j++]));
-        for (int j=0; j<256; j++)
-			perm += (j < permutationKeyHash2.length && j < matrixPermutationKey2.length) ?
-				String.format("\n%02x \t=> %02x => %02x", j, permutationKeyHash2[j], matrixPermutationKey2[j]) :
-				String.format("\n%02x \t=> permKeyHash.Count: %02d, matrixPermKey.Count: %02d",
-                        j, permutationKeyHash2.length,  matrixPermutationKey2.length);
+		for (int j=0; j < keyBytes.length; perm += String.format("%x", keyBytes[j++]));               
+        for (int j=0; j<16; j++) 
+			perm += (j < permutationKeyHash.length && j < matrixPermutationKey.length) ?
+				String.format("\n%02x \t=> %02x => %02x", j, permutationKeyHash[j], matrixPermutationKey[j]) :
+				String.format("\n%02x \t=> permKeyHash.Count: %02d, matrixPermKey.Count: %02d", j, permutationKeyHash.length,  matrixPermutationKey.length);			
 		DbgWriter.msg(("ZenMatrix " +  perm), false);	
 
         if (fullSymmetric) {
-            /* #region fullSymmetric => InverseMatrix = MatrixPermutationKey2; */
-            if (matrixDict2.size() < 0xff)  {
-                for (int k = 0; k < 0x100; k++) {
-                    if (!matrixDict2.keySet().contains(Byte.valueOf((byte)k))) {
-                        for (int l = 0xff; l >= 0; l--)  {
-                            if (matrixDict2.values().contains(Byte.valueOf((byte)l)))
+            /* #region fullSymmetric => InverseMatrix = MatrixPermutationKey; */
+            if (matrixDict.size() < 0x0f)  {
+                for (int k = 0; k < 0x10; k++) {
+                    if (!matrixDict.keySet().contains(Byte.valueOf((byte)k))) {
+                        for (int l = 0x0f; l >= 0; l--)  {
+                            if (matrixDict.values().contains(Byte.valueOf((byte)l)))
                                 continue;
 
-                            matrixDict2.put(Byte.valueOf((byte)k), Byte.valueOf((byte)l));
-                            if (!matrixDict2.keySet().contains(Byte.valueOf((byte)l)))
-                                matrixDict2.put(Byte.valueOf((byte)l), Byte.valueOf((byte)k));
+                            matrixDict.put(Byte.valueOf((byte)k), Byte.valueOf((byte)l));
+                            if (!matrixDict.keySet().contains(Byte.valueOf((byte)l)))
+                                matrixDict.put(Byte.valueOf((byte)l), Byte.valueOf((byte)k));
                             break;
                         }
                     }
                 }
             }
-            if (matrixDict2.size() == 0x100) {
+            if (matrixDict.size() == 0x10) {
                 byte bKey, bValue;
-                permutationKeyHash2 = new byte[0x100];
-                for (int n = 0; n < 0x100; n++) {
+                permutationKeyHash = new byte[16];
+                for (int n = 0; n < 0x10; n++) {
 					bKey = (byte)n;
                     Byte BKey = Byte.valueOf(bKey);
-                    Byte BValue = matrixDict2.get(BKey);
+                    Byte BValue = matrixDict.get(BKey);
                     bValue = (byte)BValue.byteValue();
-                    permutationKeyHash2[n] = bValue;
-                    matrixPermutationKey2[(int)bKey] = bValue;
-                    matrixPermutationKey2[(int)bValue] = bKey;
+                    permutationKeyHash[n] = bValue;
+                    matrixPermutationKey[(int)bKey] = bValue;
+                    matrixPermutationKey[(int)bValue] = bKey;
                 }
             }
-            /* #endregion fullSymmetric => InverseMatrix = MatrixPermutationKey2; */
+            /* #endregion fullSymmetric => InverseMatrix = MatrixPermutationKey; */
 
-            _inverseMatrix2 = matrixPermutationKey2;
+            _inverseMatrix = matrixPermutationKey;
         }  
 		else  {
             /* #region bugfix for missing permutations */
-            byte[] strikeBytes2 = {
-                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-                0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
-                0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
-                0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d, 0x3e, 0x3f,
-                0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
-                0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x5b, 0x5c, 0x5d, 0x5e, 0x5f,
-                0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
-                0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78, 0x79, 0x7a, 0x7b, 0x7c, 0x7d, 0x7e, 0x7f,
-                (byte)0x80, (byte)0x81, (byte)0x82, (byte)0x83, (byte)0x84, (byte)0x85, (byte)0x86, (byte)0x87, (byte)0x88, (byte)0x89, (byte)0x8a, (byte)0x8b, (byte)0x8c, (byte)0x8d, (byte)0x8e, (byte)0x8f,
-                (byte)0x90, (byte)0x91, (byte)0x92, (byte)0x93, (byte)0x94, (byte)0x95, (byte)0x96, (byte)0x97, (byte)0x98, (byte)0x99, (byte)0x9a, (byte)0x9b, (byte)0x9c, (byte)0x9d, (byte)0x9e, (byte)0x9f,
-                (byte)0xa0, (byte)0xa1, (byte)0xa2, (byte)0xa3, (byte)0xa4, (byte)0xa5, (byte)0xa6, (byte)0xa7, (byte)0xa8, (byte)0xa9, (byte)0xaa, (byte)0xab, (byte)0xac, (byte)0xad, (byte)0xae, (byte)0xaf,
-                (byte)0xb0, (byte)0xb1, (byte)0xb2, (byte)0xb3, (byte)0xb4, (byte)0xb5, (byte)0xb6, (byte)0xb7, (byte)0xb8, (byte)0xb9, (byte)0xba, (byte)0xbb, (byte)0xbc, (byte)0xbd, (byte)0xbe, (byte)0xbf,
-                (byte)0xc0, (byte)0xc1, (byte)0xc2, (byte)0xc3, (byte)0xc4, (byte)0xc5, (byte)0xc6, (byte)0xc7, (byte)0xc8, (byte)0xc9, (byte)0xca, (byte)0xcb, (byte)0xcc, (byte)0xcd, (byte)0xce, (byte)0xcf,
-                (byte)0xd0, (byte)0xd1, (byte)0xd2, (byte)0xd3, (byte)0xd4, (byte)0xd5, (byte)0xd6, (byte)0xd7, (byte)0xd8, (byte)0xd9, (byte)0xda, (byte)0xdb, (byte)0xdc, (byte)0xdd, (byte)0xde, (byte)0xdf,
-                (byte)0xe0, (byte)0xe1, (byte)0xe2, (byte)0xe3, (byte)0xe4, (byte)0xe5, (byte)0xe6, (byte)0xe7, (byte)0xe8, (byte)0xe9, (byte)0xea, (byte)0xeb, (byte)0xec, (byte)0xed, (byte)0xee, (byte)0xef,
-                (byte)0xf0, (byte)0xf1, (byte)0xf2, (byte)0xf3, (byte)0xf4, (byte)0xf5, (byte)0xf6, (byte)0xf7, (byte)0xf8, (byte)0xf9, (byte)0xfa, (byte)0xfb, (byte)0xfc, (byte)0xfd, (byte)0xfe, (byte)0xff
-            };
+            byte[] strikeBytes = {  (byte)0x0, (byte)0x1, (byte)0x2, (byte)0x3, (byte)0x4, (byte)0x5, (byte)0x6, (byte)0x7,
+                    (byte)0x8, (byte)0x9, (byte)0xa, (byte)0xb, (byte)0xc, (byte)0xd, (byte)0xe, (byte)0xf  };
+            HashSet<Byte> strikeList = new HashSet<Byte>();
+            for (int sl = 0; sl < strikeBytes.length; sl++) 
+                strikeList.add(Byte.valueOf(strikeBytes[sl]));
 
-            HashSet<Byte> strikeList2 = new HashSet<Byte>();
-            for (int sl = 0; sl < strikeBytes2.length; sl++)
-                strikeList2.add(Byte.valueOf(strikeBytes2[sl]));
-
-            for (int i = 0; i < (byte)0x100; i++)  {
+            for (int i = 0; i < 0x10; i++)  {
 				
-                if ((permutationKeyHash2.length <= i) && strikeList2.size() > 0) {
-                    Byte[] strikeArray2 = strikeList2.toArray(Byte[]::new);
-                    permutationKeyHash2 = arrayAdd(permutationKeyHash2, strikeArray2[0].byteValue());
+                if ((permutationKeyHash.length <= i) && strikeList.size() > 0) {
+                    Byte[] strikeArray = strikeList.toArray(Byte[]::new);
+                    permutationKeyHash = arrayAdd(permutationKeyHash, strikeArray[0].byteValue());
                 }
-                byte inbyte = (byte)i;
+
+				byte inbyte = (byte)i;
                 Byte InByte = Byte.valueOf(inbyte);
-				if (permutationKeyHash2[i] != inbyte) {
+				if (permutationKeyHash[i] != inbyte) {	
 					
-					inbyte = (byte)permutationKeyHash2[i];
-                    matrixPermutationKey2[i] = inbyte;
+					inbyte = (byte)permutationKeyHash[i];
+                    matrixPermutationKey[i] = inbyte;
                 }
-                if (strikeList2.contains(InByte))
-                    strikeList2.remove(InByte);
+                if (strikeList.contains(InByte))
+                    strikeList.remove(InByte);
             }
 			
             /* #endregion bugfix for missing permutations */
         }
-		_inverseMatrix2 = buildInverseMatrix2(matrixPermutationKey2, 0x100);
+		_inverseMatrix = buildInverseMatrix(matrixPermutationKey, 0x10);
 
         perm = "KeyBytes: ";
-		for (int j=0; j < keyBytes2.length; perm += String.format("%x", keyBytes2[j++]));
-        for (int j=0; j<16; perm += String.format("\n%2x \t=> %02x => %2x",
-                j, permutationKeyHash2[j], matrixPermutationKey2[j++])) ;
+		for (int j=0; j < keyBytes.length; perm += String.format("%x", keyBytes[j++]));               
+        for (int j=0; j<16; perm += String.format("\n%2x \t=> %02x => %2x", j, permutationKeyHash[j], matrixPermutationKey[j++])) ;
 		DbgWriter.msg(("ZenMatrix " +  perm), false);	
         perm = "";
-        for (int j=0; j<16; perm += String.format("\n%x \t=> %x ", j, _inverseMatrix2[j++]));
-		DbgWriter.msg(("ZenMatrix2 " +  perm), false);
+        for (int j=0; j<16; perm += String.format("\n%x \t=> %x ", j, _inverseMatrix[j++]));
+		DbgWriter.msg(("ZenMatrix " +  perm), false);	
 
         initialised = true;        		
     }
@@ -458,7 +416,7 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
     /* #region ProcessEncryptDecryptBytes */
 
     /***
-     * processBytes2 processes bytes for encryption or decryption depending on {@link forEncryption}
+     * ProcessBytes processes bytes for encryption or decryption depending on {@link forEncryption}
      *         processes the next len=16 bytes to encrypt, starting at offSet
      *         or processes the next len=16 bytes to decrypt, starting at offSet
      * @param inBytes bytes array to encrypt
@@ -466,16 +424,15 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
      * @param len of byte block (default 16)
      * @return byte[len] (default: 16) segment of encrypted bytes
      */
-    protected byte[] processBytes2(byte[] inBytes, int offSet, int len) {
+    protected byte[] processBytes(byte[] inBytes, int offSet, int len) {
         int aCnt = 0, bCnt = 0;
         if (offSet < inBytes.length && offSet + len <= inBytes.length) {
             byte[] processed = new byte[len];
             for (aCnt = 0, bCnt = offSet; bCnt < offSet + len; aCnt++, bCnt++) {
                 byte b = inBytes[bCnt];
                 byte mappedByte = mapByteValue2(b, forEncryption)[0];
-                byte pos = (forEncryption) ? matrixPermutationKey2[aCnt % 0x100] : _inverseMatrix2[aCnt % 0x100];
-                short spos =  ((short) pos >= 0) ? (short) pos : (short)(256 + pos);
-                processed[spos] = mappedByte;
+                byte pos = (forEncryption) ? matrixPermutationKey[aCnt % 0x10] : _inverseMatrix[aCnt % 0x10];
+                processed[(int)pos] = mappedByte;
             }
 
             return processed;
@@ -484,39 +441,98 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
         return new byte[0];
     }
 
-    protected byte[] processBlocks2(byte[] inBytes)
-    {
-        int aCnt = 0, bCnt = 0;
-        byte[] processed = new byte[(int)inBytes.length];
-        System.arraycopy(inBytes, 0, processed, 0, inBytes.length);
+	protected byte[] processBlocks2(byte[] inBytes)
+	{
+		int aCnt = 0, bCnt = 0;
+		byte[] processed = new byte[(int)inBytes.length];
+		System.arraycopy(inBytes, 0, processed, 0, inBytes.length);
 
-        for (int bs = 0; bs < inBytes.length; bs += 0x100)
-        {
-            for (int cs = 0, ds = 0; cs < 0x100 && (bs + cs) < inBytes.length; cs += 0x10)
-            {
-                int sm = (int)(0x10 * (int)((forEncryption) ?
-                        matrixPermutationKey[ds] : _inverseMatrix[ds]));
-                System.arraycopy(inBytes, bs + cs, processed, bs + sm, 0x10);
-                ds++;
-            }
-        }
+		for (int bs = 0; bs < inBytes.length; bs += 0x100)
+		{
+			for (int cs = 0, ds = 0; cs < 0x100 && (bs + cs) < inBytes.length; cs += 0x10)
+			{
+				int sm = (int)(0x10 * (int)((forEncryption) ?
+						matrixPermutationKey[ds] : _inverseMatrix[ds]));
+				System.arraycopy(inBytes, bs + cs, processed, bs + sm, 0x10);
+				ds++;
+			}
+		}
 
-        return (processed != null && processed.length > 0) ? processed : new byte[0];
-    }
-
-
+		return (processed != null && processed.length > 0) ? processed : new byte[0];
+	}
 
     /* #endregion ProcessEncryptDecryptBytes */
     /* #region encrypt decrypt */
 
+    /**
+     * in case of encryption,
+     *         pads 0 or random buffer at end of inBytes,
+     *         so that inBytes % BLOCK_SIZE == 0
+     *         in case of decryption,
+     *         trims remaining padding buffer from inBytes
+     *         encryption or decryption are triggered via {@link forEncryption}
+     * @param inBytes input bytes to pad
+     * @param useRandom >use random padding
+     * @return padded or unpadded out bytes
+     */
+    public byte[] padBuffer(byte[] inBytes, boolean useRandom) {
+        int ilen = inBytes.length;                          // length of data bytes
+        int oSize = (BLOCK_SIZE - (ilen % BLOCK_SIZE));     // oSize is rounded up to next number % BLOCK_SIZE == 0
+        byte[] outBytes;
+
+        if (forEncryption)  {                               // add buffer for encryption to inbytes
+            int olen = ((int)(ilen + oSize));             // olen is (long)(ilen + oSize)
+            byte[] padbuf = new byte[oSize];                // padding buffer
+            outBytes = new byte[olen];                      // out bytes with random padding bytes at end
+
+            if (!useRandom)
+                for (int ic = 0; ic < padbuf.length; padbuf[ic++] = (byte)0) ;
+            else  {
+                java.util.Random rnd = new java.util.Random(ilen);
+                rnd.nextBytes(padbuf);
+            }
+
+            for (int i = 0, j = 0; i < olen; i++) {
+                // outBytes[i] = (i < ilen) ? inBytes[i] : ((i == ilen || i == (olen - 1)) ? (byte)0x0 : buf[j++]);
+                if (i < ilen)
+                    outBytes[i] = inBytes[i];               // copy full inBytes to outBytes
+                else if (i == ilen)
+                    outBytes[i] = (byte)0x0;                // write 0x0 at end of inBytes
+                else if (i == ilen + 1)
+                    outBytes[i] = (byte)0xff;                // write 0xff as stop byte at first byte of padding buffer
+                else if (i == (olen - 1))
+                    outBytes[i] = (byte)0x0;                // terminate outBytes with NULL
+                else if (i > (ilen + 1))
+                    outBytes[i] = padbuf[j++];              // fill rest with padding buffer
+
+            }
+        } else {                                            // truncate padding buffer to get trimmed decrypted output
+
+            int olen = inBytes.length;
+            boolean last0 = false;
+
+            for (olen = ilen; (olen > 0 && !last0); olen--) {
+                if ((inBytes[olen - 1] == (byte)0xff) && inBytes[olen - 2] == (byte)0x0) {
+                    last0 = true;
+                    break;
+                }
+            }
+
+            outBytes = (olen > 1) ? new byte[olen] : new byte[ilen];
+            System.arraycopy(inBytes, 0, outBytes, 0, outBytes.length);
+        }
+
+        return outBytes;
+
+    }
 
     /**
      * MatrixSymChiffer Encrypt member function
      * @param pdata plain data as
      * @return encrypted data
      */
-    @Override
-    public byte[] encrypt(byte[] pdata, boolean randomBuffer) {
+	@Override
+	public byte[] encrypt(byte[] pdata, boolean randomBuffer) {
         // Check arguments.
         if (pdata == null || pdata.length <= 0)
             throw new IllegalArgumentException("ZenMatrix byte[] Encrypt(byte[] pdata): ArgumentNullException pdata = null or Lenght 0.");
@@ -524,24 +540,30 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
         forEncryption = true;
         byte[] obytes = padBuffer(pdata, randomBuffer);
 
+		int b = 0;
         List<Byte> encryptedBytes = new ArrayList<Byte>();
-        for (int i = 0; i < obytes.length; i += 0x100)  {
-            for (byte pb : processBytes2(obytes, i, 0x100))  {
+        for (int i = 0; i < obytes.length; i += 0x10)  {
+            for (byte pb : processBytes(obytes, i, 0x10))  {
                 encryptedBytes.add(Byte.valueOf(pb));
             }
+			b++;
         }
 
-        byte[] rBytes = new byte[encryptedBytes.size()];
+        byte[] retbytes = new byte[encryptedBytes.size()];
         int ib = 0;
         for (Byte bb : encryptedBytes) {
-            rBytes[ib++] = (byte)(bb.byteValue());
+
+            retbytes[ib++] = (byte)(bb.byteValue());
         }
-        byte[] processed2 = processBlocks2(rBytes);
+		
+		byte[] processed2 = retbytes;
+		if (b >= 16)
+			processed2 = processBlocks2(retbytes);
 
         return processed2; // encryptedBytes.toArray();
     }
 
-    @Override
+	@Override
 	public byte[] encrypt(byte[] pdata) {
 		return encrypt(pdata, false);
 	}
@@ -551,18 +573,23 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
      * @param ecdata encrypted byte array
      * @return decrypted plain bytes
      */
-    @Override
+	@Override
     public byte[] decrypt(byte[] ecdata)  {   
         if (ecdata == null || ecdata.length <= 0)
             throw new IllegalArgumentException("ZenMatrix byte[] Encrypt(byte[] ecdata): ArgumentNullException ecdata = null or lenght 0.");
 
         forEncryption = false;
         int eclen = ecdata.length;
+		
+		byte[] processed2 = ecdata;
+		if (eclen > 255)
+		{
+			processed2 = processBlocks2(ecdata);
+		}
 
-        byte[] preProcessed = processBlocks2(ecdata);
         List<Byte> decBytes = new ArrayList<Byte>();
-        for (int pc = 0; pc < preProcessed.length; pc += 256)  {
-            for (byte rb : processBytes(preProcessed, pc, 256))
+        for (int pc = 0; pc < ecdata.length; pc += 16)  {
+            for (byte rb : processBytes(ecdata, pc, 16))
             {
                 decBytes.add(Byte.valueOf(rb));
             }
@@ -574,9 +601,9 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
             outBytes[ib++] = (byte)(bb.byteValue());
         }
 
-        byte[] retBytes = padBuffer(outBytes, false);
+        byte[] retbytes = padBuffer(outBytes, false);
 
-        return retBytes;
+        return retbytes;
     }
 
 
@@ -586,99 +613,74 @@ public class ZenMatrix2 extends ZenMatrix implements BlockCipher  {
 
 
     /**
-     * buildInverseMatrix2, builds the determinant decryption matrix for sbyte[16] encryption matrix
-     * @param matrix2 byte[16] encryption matrix
+     * buildInverseMatrix, builds the determinant decryption matrix for sbyte[16] encryption matrix
+     * @param matrix byte[16] encryption matrix
      * @param size byte size
      * @return byte[16] decryption matrix (determinante)
      */
-    public static byte[] buildInverseMatrix2(byte[] matrix2, int size) {
-        size = (size < 0x100) ? 0x100 : size;
-        if (matrix2 != null && matrix2.length == size)  {
+    public static byte[] buildInverseMatrix(byte[] matrix, int size) {
+        size = (size < 0x10) ? 0x10 : size;
+        if (matrix != null && matrix.length == size)  {
             byte[] inverseM = new byte[size];
             for (int m = 0; m < size; m++)  {
-                byte sm;
-                try {
-                    sm = matrix2[m];
-                    short ssm =  ((short) sm >= 0) ? (short) sm : (short)(256 + sm);
-                    inverseM[(short)ssm] = (byte)m;
-                } catch (Exception exin) {
-                    DbgWriter.msgex(exin, false);
-                }
+                byte sm = matrix[m];
+                inverseM[(int)sm] = (byte)m;
             }
             return inverseM;
         }
         String msg = "byte[] matrix is null or matrix.Length != " + String.valueOf(size) + ".";
-        throw new NotImplementedError("ZenMatrix2");
-        // return buildInverseMatrix(matrix2, 0x100);
+        throw new NotImplementedError("ZenMatrix");
     }
 
     /**
-     * MapByteValue2 splits a byte in 2 0x0 to 0xf segments and map both trough {@see MatrixPermutationKey2} in case of encrypt,
+     * MapByteValue2 splits a byte in 2 0x0 to 0xf segments and map both trough {@see MatrixPermutationKey} in case of encrypt,
      * @param inByte in byte to map
      * @param encrypt  mapped out byte
      * @return byte[]
      */
-    protected byte[] mapByteValue2(byte inByte,  boolean encrypt) {
+    protected  byte[] mapByteValue2(byte inByte,  boolean encrypt) {
         byte[] outSBytes = new byte[4];
         // ArrayList<Byte> outSBytes = new ArrayList<Byte>(2);
         byte outByte;
         String s = String.format("%02x", inByte);
+        byte maskLsb = (byte)0x0f;
+        byte maskMsb = (byte)0xf0;
+		byte lsbIn = (byte)((inByte & 0x0f) % 16);
+		lsbIn = (byte)(mapChar(s.charAt(1)));
+        // byte lsbIn = (byte)(inByte & maskLsb);
+
+		byte msbIn = (byte)((inByte & 0xf0) / 0x10); 
+        msbIn = (byte)(mapChar(s.charAt(0)));
+        // byte msbIn = (byte)(inByte & maskMsb);
         byte lsbOut, msbOut;
-        short sbshort =  ((short) inByte >= 0) ? (short) inByte : (short)(256 + inByte);
         if (encrypt)
         {
-            outByte = (byte)matrixPermutationKey2[sbshort];
+            lsbOut = matrixPermutationKey[(byte)lsbIn];
+            msbOut = matrixPermutationKey[(byte)msbIn];
+            outByte = (byte)((msbOut * 0x10) + lsbOut);
+            outSBytes[0] = outByte;
+			outSBytes[1] = (byte)inByte;
+            outSBytes[2] = msbOut;
+            outSBytes[3] = lsbOut;            
         }
         else // if decrypt
         {
-            outByte = (byte)_inverseMatrix2[sbshort];
+            lsbOut = _inverseMatrix[(byte)lsbIn];
+            msbOut = _inverseMatrix[(byte)msbIn];
+			outByte = (byte)((msbOut * 0x10) + lsbOut);
+			outSBytes[0] = outByte;
+            outSBytes[1] = (byte)inByte;
+            outSBytes[2] = msbOut;
+            outSBytes[3] = lsbOut;            
         }
-        outSBytes[0] = outByte;
-        outSBytes[1] = (byte)inByte;
-        outSBytes[2] = (byte)(outByte & 0x0F);
-        outSBytes[3] = (byte)((outByte & 0xF0) / 0x10);
+
+		// String s = "OutBytes: " + String.valueOf(outSBytes[0]) + " " + String.valueOf(outSBytes[1]) + " "  + String.valueOf(outSBytes[2])  + " "  + String.valueOf(outSBytes[3]);
+		// (new DbgWriter()).msg(s, true);
 
         return outSBytes;
     }
 
 
-    /***
-     * swap values in array by index positions i, j
-     * @param arr {@link byte[]} array
-     * @param i first position index to swap
-     * @param j second (last) position index to swap
-     */
-    public static void swap(short[] arr, int i, int j) {
-        // error checking
-        if (arr == null || i == j) {
-            return;
-        }
-        if (i < 0 || j < 0 || i > arr.length - 1 || j > arr.length - 1) {
-            return;
-        }
-        // looks good, swap the values
-        short t0 = arr[i];
-        short t1 = arr[j];
-        arr[i] = t1;
-        arr[j] = t0;
-    }
-
-
-    public boolean arrayContainsS(short[] barr, short  b) {
-        for (int bc = 0; bc < barr.length; bc++)
-            if (barr[bc]==b)
-                return true;
-        return false;
-    }
-
-    public short[] arrayAddS(short[] barr, short b) {
-        short[] nbarr = new short[barr.length + 1];
-        for (int bc = 0; bc < nbarr.length; bc++)
-            nbarr[bc] = (bc < barr.length) ? barr[bc] : b;
-        barr = nbarr;
-        return nbarr;
-    }
-
-    /* #endregion static helpers swap byte and SwapT{T} generic */
+   /* #endregion static helpers swap byte and SwapT{T} generic */
 
 }

@@ -141,8 +141,9 @@ namespace EU.CqrXs.Gui.Forms
                 }
             }
 
-            menuCipherModeItemCFB.Checked = true;
-            return CipherMode2.CFB;
+            this.menuCipherModeItemECB.Checked = true;
+            // menuCipherModeItemCFB.Checked = true;
+            return CipherMode2.ECB;
         }
 
         #endregion MenuCompressionEncodingZipHash
