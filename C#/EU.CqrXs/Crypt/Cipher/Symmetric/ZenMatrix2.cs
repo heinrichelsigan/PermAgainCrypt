@@ -92,10 +92,41 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         public new int GetBlockSize() => BLOCK_SIZE;
 
 
+        public override void Init(bool forEncryption, ICipherParameters parameters)
+        {
+            base.Init(forEncryption, parameters);
+            if (!(parameters is KeyParameter) && !(parameters is ParametersWithIV))
+                throw new ArgumentException("only KeyParameter or ParametersWithIV expected.", "parameters");
+
+            if (parameters is KeyParameter)
+            {
+                this.privateBytes2 = ((KeyParameter)parameters).GetKey();
+            }
+            if (parameters is ParametersWithIV)
+            {
+                byte[] bKey = new byte[0];
+                if (((ParametersWithIV)parameters).Parameters is KeyParameter)
+                    bKey = ((KeyParameter)(((ParametersWithIV)parameters).Parameters)).GetKey();
+                byte[] bIv = ((ParametersWithIV)parameters).GetIV();
+
+                bKey = (bKey == null || bKey.Length == 0) ? new byte[0] : bKey;
+                bIv = (bIv == null || bIv.Length == 0) ? new byte[0] : bIv;
+                if (bKey.Length == 0 && bIv.Length == 0)
+                    throw new ArgumentNullException("parameters", "KeyParameter and/or ParametersWithIV contain a null or empty key or iv.");
+
+                this.privateBytes2 = CryptHelper.GetKeyHashBytes(bKey, bIv, 0x100);
+            }
+            this.forEncryption = forEncryption;
+
+            ZenMatrixGenWithBytes2(privateBytes2, false);
+            initialised = true;
+        }
+
+
         #endregion IBlockCipher interface
 
 
-        #region ctor_init_gen_reverse
+            #region ctor_init_gen_reverse
 
         public ZenMatrix2(int bs) : base(bs)
         {
@@ -153,7 +184,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         /// and decrypts back to plain text, when encrypting twice or ²</param> 
         public ZenMatrix2(byte[] keyBytes2, bool fullSymmetric = false) : this()
         {
-            ZenMatrixGenWithBytes2(keyBytes2, fullSymmetric);
+            byte[] keyBytes100 = CryptHelper.GetKeyBytesSingle(keyBytes2, 0x100);
+            ZenMatrixGenWithBytes2(keyBytes100, fullSymmetric);
         }
 
         /// <summary>
@@ -203,7 +235,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
 
             if (keyBytes2.Length < 0x100)
             {
-                privateBytes2 = CryptHelper.GetKeyHashBytes(keyBytes2, privateBytes, 0x100);
+                privateBytes2 = CryptHelper.GetKeyBytesSingle(keyBytes2, 0x100);
             }
             else
             {

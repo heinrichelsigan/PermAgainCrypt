@@ -106,6 +106,12 @@ namespace EU.CqrXs.Crypt.Cipher
             if (string.IsNullOrEmpty(keyHash))
                 throw new ArgumentNullException("keyHash");
             byte[] keyBytes = EnDeCodeHelper.GetBytes(keyHash);
+            return GetKeyBytesSingle(keyBytes, keyLen);
+        }
+
+        public static byte[] GetKeyBytesSingle(byte[] keyBytes, int keyLen = 16)
+        { 
+
             byte[] outBytes = new byte[keyLen];
             if (keyBytes.Length >= keyLen)
             {
@@ -120,7 +126,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 return outBytes;
             }
             
-            byte[] bigBytes = smallBytes.TarBytes(EnDeCodeHelper.GetBytes(keyHash), keyBytes);
+            byte[] bigBytes = smallBytes.TarBytes(keyBytes);
             if (bigBytes.Length >= keyLen)
             {
                 Array.Copy(bigBytes, 0, outBytes, 0, keyLen);

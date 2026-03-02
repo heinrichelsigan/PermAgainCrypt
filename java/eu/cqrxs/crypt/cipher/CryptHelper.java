@@ -99,6 +99,7 @@ public class CryptHelper {
      * @return doubled concatendated string of (secretKey + hash)
      * @throws IllegalArgumentException key
      */
+	 @Deprecated
     public static byte[] KeyUserHashBytes(String key, String keyHash, boolean merge)  {
         if (key == null || key.length() < 1)
             throw new IllegalArgumentException("key");
@@ -156,7 +157,7 @@ public class CryptHelper {
 
 
     /**
-     * getKeyBytesSingle gets single user key bytes from users key and key hash
+     * getKeyBytesSingle gets single user key bytes from users key
      * @param key users secret key
      * @param keyLen length that keybytes should have afterwards
      * @return generated user keybyte array from key and hash
@@ -166,21 +167,31 @@ public class CryptHelper {
             throw new IllegalArgumentException("key");
 
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
-        byte[] outBytes = new byte[keyLen];
+		return getKeyBytesSingle(keyBytes, keyLen);
+	}
+	
+	/**
+     * getKeyBytesSingle gets single user key bytes from users keyBytes
+     * @param keyBytes users secret keyBytes
+     * @param keyLen length that keybytes should have afterwards
+     * @return generated user keybyte array from keyBytes
+     */
+	public static byte[] getKeyBytesSingle(byte[] keyBytes, int keyLen) {
+        
+		byte[] outBytes = new byte[keyLen];
         if (keyBytes.length >= keyLen) {
             System.arraycopy(keyBytes, 0, outBytes, 0, keyLen);
             return outBytes;
         }
 
-        byte[] smallBytes = tarBytes(keyBytes, key.getBytes(Charset.forName("UTF-8")));
+        byte[] smallBytes = keyHashBytes(keyBytes, keyBytes, true);
 
         if (smallBytes.length >= keyLen) {
             System.arraycopy(smallBytes, 0, outBytes, 0, keyLen);
             // System.arraycopy()
             return outBytes;
         }
-        byte[] bigBytes = tarBytes(smallBytes,
-                tarBytes(key.getBytes(Charset.forName("UTF-8")), keyBytes));
+        byte[] bigBytes = tarBytes(smallBytes, keyBytes);                
         if (bigBytes.length >= keyLen) {
             System.arraycopy(bigBytes, 0, outBytes, 0, keyLen);
             // System.arraycopy()
@@ -188,7 +199,7 @@ public class CryptHelper {
         }
 
         // return outBytes;
-        return getUserKeyBytes(key, key, keyLen);
+        return getKeyHashBytes(smallBytes, bigBytes, keyLen);
     }
 
     /**
@@ -209,7 +220,7 @@ public class CryptHelper {
             return outBytes;
         }
 
-        byte[] smallBytes = tarBytes(keyBytes, keyHash.getBytes(Charset.forName("UTF-8")));
+        byte[] smallBytes = keyHashBytes(keyBytes, keyBytes, true);
 
         if (smallBytes.length >= keyLen) {
             System.arraycopy(smallBytes, 0, outBytes, 0, keyLen);			
@@ -225,7 +236,7 @@ public class CryptHelper {
         }
 
 		// return outBytes;
-		return getUserKeyBytes(key, keyHash, keyLen);                
+		return getKeyHashBytes(smallBytes, bigBytes, keyLen);                
     }
 
 
@@ -234,7 +245,7 @@ public class CryptHelper {
         * @param key users secret key
         * @param keyHash hashed key
         * @param keyLen total length of new generated key bytes
-        * @return user key bytes
+        * @return user key hash bytes
         */
         public static byte[] getUserKeyBytes(String key, String keyHash, int keyLen)  {
             if (key == null || key.length() == 0)
@@ -247,10 +258,27 @@ public class CryptHelper {
                 hashBytes = ((new Hex16Coder()).encodeBytesToString(keyBytes)).getBytes(Charset.forName("UTF-8"));
             else
                 hashBytes = keyHash.getBytes(Charset.forName("UTF-8"));
+						
+			return getKeyHashBytes(keyBytes, hashBytes, keyLen);
+		}
+
+		/**
+		 * getKeyHashBytes
+         * @param keyBytes users secret keyBytes
+		 * @param hashBytes 
+         * @param keyHash hashed key
+         * @param keyLen total length of new generated key bytes
+         * @return user key hash bytes
+         */
+        public static byte[] getKeyHashBytes(byte[] keyBytes, byte[] hashBytes, int keyLen)  {
+			
+			if (keyBytes == null || keyBytes.length == 0)
+                throw new IllegalArgumentException("keyBytes");
+			if (hashBytes == null || hashBytes.length == 0)
+				hashBytes = ((new Hex16Coder()).encodeBytesToString(keyBytes)).getBytes(Charset.forName("UTF-8"));
 
             int keyByteCnt = -1;
             keyLen = (keyLen > Constants.MAX_KEY_LEN) ? Constants.MAX_KEY_LEN : keyLen;
-            String keyByteHashString = key;
             byte[] tmpKey = new byte[keyLen];
 
             byte[] keyHashBytes = keyHashBytes(keyBytes, hashBytes, true);

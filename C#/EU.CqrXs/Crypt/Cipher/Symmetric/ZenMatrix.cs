@@ -2,6 +2,7 @@
 using EU.CqrXs.Util;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
+using System.Security.Policy;
 
 namespace EU.CqrXs.Crypt.Cipher.Symmetric
 {
@@ -154,7 +155,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
         public int GetBlockSize() => BLOCK_SIZE;
 
 
-        public void Init(bool forEncryption, ICipherParameters parameters)
+        public virtual void Init(bool forEncryption, ICipherParameters parameters)
         {
             if (!(parameters is KeyParameter) && !(parameters is ParametersWithIV))
                 throw new ArgumentException("only KeyParameter or ParametersWithIV expected.", "parameters");
@@ -165,7 +166,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
             }
             if (parameters is ParametersWithIV)
             {
-                byte[] bKey = new byte[0];                
+                byte[] bKey = new byte[0];
                 if (((ParametersWithIV)parameters).Parameters is KeyParameter)
                     bKey = ((KeyParameter)(((ParametersWithIV)parameters).Parameters)).GetKey();
                 byte[] bIv = ((ParametersWithIV)parameters).GetIV();
@@ -175,9 +176,8 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                 if (bKey.Length == 0 && bIv.Length == 0)
                     throw new ArgumentNullException("parameters", "KeyParameter and/or ParametersWithIV contain a null or empty key or iv.");
 
-                this.privateBytes = bKey.TarBytes(bIv);
+                this.privateBytes = CryptHelper.GetKeyHashBytes(bKey, bIv, 0x10);
             }
-
             this.forEncryption = forEncryption;
 
             ZenMatrixGenWithBytes(privateBytes, false);
