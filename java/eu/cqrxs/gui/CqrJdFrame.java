@@ -82,9 +82,9 @@ public class CqrJdFrame extends JFrame {
 	protected static byte[] openFileBytes, saveFileBytes;
 	/// at/net/res/img/crypt/file.png");/
 	 		
-	protected KeyHash keyHash = KeyHash.Hex;
-	protected eu.cqrxs.zip.ZipType zipType = eu.cqrxs.zip.ZipType.None;
-	protected CipherEnum cipherEnum = CipherEnum.Aes;
+	public KeyHash keyHash = KeyHash.Hex;
+	public eu.cqrxs.zip.ZipType zipType = eu.cqrxs.zip.ZipType.None;
+	public CipherEnum cipherEnum = CipherEnum.Aes;
 	protected String cipherString, encodeString, openFileName, saveFileName, saveFileSuffix = "";
 	protected EncodeEnum encodeType = EncodeEnum.Base64;
 	protected CipherMode2 cmode2 = CipherMode2.CFB;
@@ -1480,8 +1480,8 @@ public class CqrJdFrame extends JFrame {
 	
 	protected void showSimple_action(ActionEvent event) {
         try {
-            if (cqrJFrameSimple == null)
-                cqrJFrameSimple = new CqrJFrameSimple(cqrJdFrame);
+            // if (cqrJFrameSimple == null) 
+            cqrJFrameSimple = new CqrJFrameSimple(cqrJdFrame);
 			cqrJFrameSimple.setJFrameSimple(cqrJFrameSimple);
 
             cqrJFrameSimple.show();

@@ -278,11 +278,12 @@ public class CipherPipe {
 
         switch (cipherAlgo)
         {
-            /*
-            case CipherEnum.AesNet:
-                AesNet aesNet = new AesNet(secretKey, hash);
-                encryptBytes = aesNet.Encrypt(inBytes);
+
+            case CipherEnum.JAes:
+                JAes jAes = new JAes(128, secretKey);
+                encryptBytes = jAes.encrypt(inBytes);
             break;
+            /*
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 encryptBytes = des3.Encrypt(inBytes);
@@ -325,13 +326,9 @@ public class CipherPipe {
             case Tea:
             case Tnepres:
             case XTea:
-            // case ZenMatrix:
-            // case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
-                // TODO: full port standard bouncycastle wrapper to java
-                // TODO: compare and test with C#
                 break;
         }
 
@@ -366,11 +363,11 @@ public class CipherPipe {
 
         switch (cipherAlgo)
         {
-            /*
-            case CipherEnum.AesNet:
-                AesNet aesNet = new AesNet(secretKey, hash);
-                decryptBytes = aesNet.Decrypt(cipherBytes);
+            case CipherEnum.JAes:
+                JAes jAes = new JAes(128, secretKey);
+                decryptBytes = jAes.decrypt(cipherBytes);
                 break;
+            /*
             case CipherEnum.Des3Net:
                 Des3Net des3 = new Des3Net(secretKey, hash);
                 decryptBytes = des3.Decrypt(cipherBytes);
