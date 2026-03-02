@@ -187,6 +187,11 @@ public class ZenMatrix implements BlockCipher  {
     /* #endregion IBlockCipher interface */
     /* #region ctor_init_gen_reverse */
 
+    public ZenMatrix() {
+        this(16);
+    }
+
+
     /**
      * public constructor
      * @param bs
@@ -631,9 +636,6 @@ public class ZenMatrix implements BlockCipher  {
             outSBytes[3] = lsbOut;            
         }
 
-		// String s = "OutBytes: " + String.valueOf(outSBytes[0]) + " " + String.valueOf(outSBytes[1]) + " "  + String.valueOf(outSBytes[2])  + " "  + String.valueOf(outSBytes[3]);
-		// (new DbgWriter()).msg(s, true);
-
         return outSBytes;
     }
 
@@ -644,7 +646,7 @@ public class ZenMatrix implements BlockCipher  {
 	 * @param i first position index to swap
 	 * @param j second (last) position index to swap
 	 */
-    static void swap(byte[] arr, int i, int j) {
+    public static void swap(byte[] arr, int i, int j) {
         // error checking
         if (arr == null || i == j) {
             return;
@@ -665,7 +667,7 @@ public class ZenMatrix implements BlockCipher  {
 	 * @param b first byte value to swap with byte d
 	 * @param d second (last) byte value  to swap with b
 	 */
-    static void swapValue(byte[] arr, byte b, byte d) {
+    public static void swapValue(byte[] arr, byte b, byte d) {
         // error checking
         if (arr == null || b == d) 
             return;

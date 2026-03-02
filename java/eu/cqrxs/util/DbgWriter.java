@@ -30,5 +30,10 @@ public class DbgWriter {
             System.out.println(daTime + " \t" + s);
         }
 	}
+	public static void msgex(Exception ex, boolean ignoreDbg) {
+		if (ex != null && ex.getMessage().length() > 0) {
+			DbgWriter.msg(ex.toString(), ignoreDbg);
+		}
+	}
 	
 }

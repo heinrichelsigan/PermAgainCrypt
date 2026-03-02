@@ -559,7 +559,7 @@ public class CqrJFrameSimple extends JFrame {
 						cqrJdFrame.setVisible(true);
 					}
 				} catch (Exception exi) {
-					DbgWriter.msg(exi.toString(), true);
+					DbgWriter.msgex(exi, false);
 				}
 			}
 		});

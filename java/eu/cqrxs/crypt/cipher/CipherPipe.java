@@ -296,9 +296,9 @@ public class CipherPipe {
             case ZenMatrix:
                 encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
-            // case CipherEnum.ZenMatrix2:
-            //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-            //  break;
+            case CipherEnum.ZenMatrix2:
+                encryptBytes = (new ZenMatrix2(secretKey, hashedKey, false)).encrypt(inBytes, true);
+                break;
             case Aes:
             case AesLight:
             case Aria:
@@ -380,9 +380,9 @@ public class CipherPipe {
             case ZenMatrix:
                 decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
-            // case ZenMatrix2:
-            //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-            //     break;
+            case ZenMatrix2:
+                 decryptBytes = (new ZenMatrix2(secretKey, hash, false)).decrypt(cipherBytes);
+                 break;
             case Aes:
             case AesLight:
             case Aria:

@@ -244,7 +244,7 @@ public class DropPanel extends JPanel {
     protected void importFiles(final String droppedFile) {
 		// message.setText("'" + droppedFile + "'");
 
-        DbgWriter.msg("Dropped: " + droppedFile, true);
+        DbgWriter.msg("Dropped: " + droppedFile, false);
         int ridx = droppedFile.lastIndexOf('/');
         if (ridx < 0)
             ridx = droppedFile.lastIndexOf('\\');
@@ -379,7 +379,7 @@ public class DropPanel extends JPanel {
 			boolean dcompleted = false;
             SwingUtilities.invokeLater(new DragUpdate(false, null));
 
-			DbgWriter.msg("drop(DropTargetDropEvent " + dtde.toString() + ") {...}", true);
+			DbgWriter.msg("drop(DropTargetDropEvent " + dtde.toString() + ") {...}", false);
 
             Transferable transferable = dtde.getTransferable();
             if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -390,7 +390,7 @@ public class DropPanel extends JPanel {
 				try {
 					transferDataObject = (Object) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 					if (transferDataObject instanceof java.awt.List) {
-						DbgWriter.msg("transferDataObject instanceof java.awt.List", true);
+						DbgWriter.msg("transferDataObject instanceof java.awt.List", false);
 						java.awt.List transferData = (java.awt.List) transferDataObject;
 						if (transferData != null && (transferData.getItemCount() > 0)) {	
 								
