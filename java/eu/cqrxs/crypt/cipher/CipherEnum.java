@@ -59,7 +59,7 @@ public enum CipherEnum  {
     AesLight(0x1b),
     ZenMatrix(0x1c),
 
-    JTripleDes(0x1d),
+    ZenMatrix3(0x1d),
     JAes(0x1e),
     ZenMatrix2(0x1f),
 
@@ -167,7 +167,7 @@ public enum CipherEnum  {
             case 0x1c:
                 return 'z';        // ZenMatrix
             case 0x1d:
-                return 'e';        // Des3Net
+                return 'e';        // ZenMatrix3
             case 0x1e:
                 return 'E';    // JAes
             case 0x1f:
@@ -293,7 +293,7 @@ public enum CipherEnum  {
             case 0x1c:
                 return "ZenMatrix";        // ZenMatrix
             case 0x1d:
-                return "Des3Net";        // Des3Net
+                return "ZenMatrix3";        // Des3Net
             case 0x1e:
                 return "JAes";        // JAes
             case 0x1f:

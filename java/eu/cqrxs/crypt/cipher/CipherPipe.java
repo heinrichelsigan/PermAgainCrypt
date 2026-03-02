@@ -296,8 +296,8 @@ public class CipherPipe {
             case ZenMatrix:
                 encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
-            case CipherEnum.ZenMatrix2:
-                encryptBytes = (new ZenMatrix2(secretKey, hashedKey, false)).encrypt(inBytes, true);
+            case ZenMatrix3:
+                encryptBytes = (new ZenMatrix3(secretKey, hashedKey, false)).encrypt(inBytes, true);
                 break;
             case Aes:
             case AesLight:
@@ -326,6 +326,7 @@ public class CipherPipe {
             case Tea:
             case Tnepres:
             case XTea:
+            case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 encryptBytes = cryptBounceCastle.encrypt(inBytes);
@@ -380,8 +381,8 @@ public class CipherPipe {
             case ZenMatrix:
                 decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
-            case ZenMatrix2:
-                 decryptBytes = (new ZenMatrix2(secretKey, hash, false)).decrypt(cipherBytes);
+            case ZenMatrix3:
+                 decryptBytes = (new ZenMatrix3(secretKey, hash, false)).decrypt(cipherBytes);
                  break;
             case Aes:
             case AesLight:
@@ -411,7 +412,7 @@ public class CipherPipe {
             case Tnepres:
             case XTea:
             // case ZenMatrix:
-            // case ZenMatrix2:
+            case ZenMatrix2:
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                 decryptBytes = cryptBounceCastle.decrypt(cipherBytes);

@@ -187,8 +187,8 @@ public class SecureCipherPipe extends CipherPipe {
             case ZenMatrix:
                 encryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
-            case CipherEnum.ZenMatrix2:
-                encryptBytes = (new ZenMatrix2(hashKey, hashKey, false)).encrypt(inBytes, true);
+            case ZenMatrix3:
+                encryptBytes = (new ZenMatrix3(hashKey, hashKey, false)).encrypt(inBytes, true);
                 break;
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
@@ -235,8 +235,8 @@ public class SecureCipherPipe extends CipherPipe {
             case ZenMatrix:
                 decryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;
-            case ZenMatrix2:
-                decryptBytes = (new ZenMatrix2(hashKey, hashKey, false)).decrypt(cipherBytes);
+            case ZenMatrix3:
+                decryptBytes = (new ZenMatrix3(hashKey, hashKey, false)).decrypt(cipherBytes);
                 break;
             default:
                 CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
