@@ -1,5 +1,4 @@
-﻿using EU.CqrXs.Crypt.Cipher.Symmetric;
-using EU.CqrXs.Crypt.EnDeCoding;
+﻿using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
@@ -383,7 +382,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 // case CipherEnum.ZenMatrix:
                 // case CipherEnum.ZenMatrix2:
                 default:
-                    Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
+                    CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                     encryptBytes = cryptBounceCastle.Encrypt(inBytes);
                     break;
             }
@@ -461,7 +460,7 @@ namespace EU.CqrXs.Crypt.Cipher
                 // case CipherEnum.ZenMatrix:
                 // case CipherEnum.ZenMatrix2:
                 default:                    
-                    Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
+                    CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
                     break;
             }

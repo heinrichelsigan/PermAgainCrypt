@@ -4,7 +4,7 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Security.Policy;
 
-namespace EU.CqrXs.Crypt.Cipher.Symmetric
+namespace EU.CqrXs.Crypt.Cipher
 {
 
     /// <summary>

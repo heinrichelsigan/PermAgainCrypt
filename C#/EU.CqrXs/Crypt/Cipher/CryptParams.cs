@@ -1,5 +1,4 @@
-﻿using EU.CqrXs.Crypt.Cipher.Symmetric;
-using EU.CqrXs.Crypt.Hash;
+﻿using EU.CqrXs.Crypt.Hash;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Engines;
 

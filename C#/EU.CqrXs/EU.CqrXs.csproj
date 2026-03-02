@@ -55,8 +55,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Crypt\Cipher\Symmetric\RC564.cs" />
-    <Compile Remove="Crypt\Cipher\Symmetric\Serpent.cs" />
     <Compile Remove="Crypt\Hash\PasswdCrypt.cs" />
     <Compile Remove="Crypt\Hash\Sparkle.cs" />
     <Compile Remove="Crypt\Cipher\Crpyt.cs" />
@@ -71,12 +69,12 @@
     <Compile Include="Crypt\Cipher\CipherPipe.cs" />
     <Compile Include="Crypt\Cipher\CryptHelper.cs" />
     <Compile Include="Crypt\Cipher\CryptParams.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\AesNet.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\CryptBounceCastle.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\Des3Net.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\SecureCipherPipe.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix.cs" />
-    <Compile Include="Crypt\Cipher\Symmetric\ZenMatrix2.cs" />
+    <Compile Include="Crypt\Cipher\AesNet.cs" />
+    <Compile Include="Crypt\Cipher\CryptBounceCastle.cs" />
+    <Compile Include="Crypt\Cipher\Des3Net.cs" />
+    <Compile Include="Crypt\Cipher\SecureCipherPipe.cs" />
+    <Compile Include="Crypt\Cipher\ZenMatrix.cs" />
+    <Compile Include="Crypt\Cipher\ZenMatrix2.cs" />
     <Compile Include="Crypt\EnDeCoding\Base16.cs" />
     <Compile Include="Crypt\EnDeCoding\Base32.cs" />
     <Compile Include="Crypt\EnDeCoding\Hex64.cs" />
@@ -121,7 +119,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="README.md" />
   </ItemGroup>
 

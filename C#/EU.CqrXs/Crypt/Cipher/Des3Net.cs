@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EU.CqrXs.Crypt.Cipher.Symmetric
+namespace EU.CqrXs.Crypt.Cipher
 {
 
     /// <summary>

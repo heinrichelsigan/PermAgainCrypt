@@ -6,7 +6,7 @@ using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Paddings;
 using Org.BouncyCastle.Crypto.Parameters;
 
-namespace EU.CqrXs.Crypt.Cipher.Symmetric
+namespace EU.CqrXs.Crypt.Cipher
 {
 
     /// <summary>

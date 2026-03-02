@@ -1,4 +1,5 @@
-﻿using EU.CqrXs.Crypt.EnDeCoding;
+﻿using EU.CqrXs.Crypt.Cipher;
+using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
@@ -7,7 +8,7 @@ using System.Globalization;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EU.CqrXs.Crypt.Cipher.Symmetric
+namespace EU.CqrXs.Crypt.Cipher
 {
 
     /// <summary>
@@ -279,7 +280,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     encryptBytes = (new ZenMatrix2(secretKey, secretKey, false)).Encrypt(inBytes);
                     break;                
                 default:
-                    Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
+                    CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                     encryptBytes = cryptBounceCastle.Encrypt(inBytes);
                     break;
             }
@@ -326,7 +327,7 @@ namespace EU.CqrXs.Crypt.Cipher.Symmetric
                     break;                
 					
                 default:
-                    Symmetric.CryptBounceCastle cryptBounceCastle = new Symmetric.CryptBounceCastle(cpParams, true);
+                    CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
                     decryptBytes = cryptBounceCastle.Decrypt(cipherBytes);
                     break;
             }

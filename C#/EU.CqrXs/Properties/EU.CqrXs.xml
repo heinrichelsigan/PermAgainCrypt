@@ -468,7 +468,7 @@
             <param name="cipherAlgo"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/></param>
             <returns><see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/></returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet">
+        <member name="T:EU.CqrXs.Crypt.Cipher.AesNet">
             <summary>
             AesNet native .Net AesCng without bouncy castle
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.aescng?view=net-8.0" />
@@ -491,23 +491,23 @@
             </list>
             </remarks>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#cctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.#cctor">
             <summary>
             static AesNet constructor
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.#ctor">
             <summary>
             standard parameterless ctor of AesNet
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
             <summary>
             AesNet constructor with default crypto parameters
             </summary>
             <param name="cparams"></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.Encrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.Encrypt(System.Byte[])">
             <summary>
             AES Encrypt by using RijndaelManaged
             </summary>
@@ -515,7 +515,7 @@
             <returns>Array of encrypted data byte</returns>
             <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.Decrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.Decrypt(System.Byte[])">
             <summary>
             AES Decrypt by using RijndaelManaged
             </summary>
@@ -523,7 +523,7 @@
             <returns>Array of plain data byte</returns>
             <exception cref="T:System.ArgumentNullException">is thrown when input enrypted <see cref="T:byte[]"/> is null or zero length</exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.EncryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.EncryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Encrypts a string
             </summary>
@@ -531,14 +531,14 @@
             <param name="encType"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType" /></param>
             <returns>Base64 encoded encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.AesNet.DecryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.AesNet.DecryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Decrypts a string, that is truely a base64 encoded encrypted byte[]
             </summary>
             <param name="inCryptString">base64 encoded string from encrypted byte[]</param>
             <returns>plain text string (decrypted)</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle">
+        <member name="T:EU.CqrXs.Crypt.Cipher.CryptBounceCastle">
             <summary>
             Generic CryptBounceCastle Encryption / Decryption class
             supports <see cref="T:Org.BouncyCastle.Crypto.Engines.CamelliaEngine"/>, <see cref="T:Org.BouncyCastle.Crypto.Engines.Gost28147Engine"/>, <see cref="T:Org.BouncyCastle.Crypto.Engines.RC2Engine"/>,
@@ -564,45 +564,45 @@
             </list>
             </remarks>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Size">
+        <member name="P:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.Size">
             <summary>
             Block Size
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.KeyLen">
+        <member name="P:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.KeyLen">
             <summary>
             KeyLen byte[KeyLen] of Key and Iv
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.CryptoBlockCipher">
+        <member name="P:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.CryptoBlockCipher">
             <summary>
             Base symmetric key block cipher interface, contains at runtime block cipher instance to constructor
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.CryptoBlockCipherPadding">
+        <member name="P:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.CryptoBlockCipherPadding">
             <summary>
             IBlockCipherPadding BlockCipherPadding mode
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Mode">
+        <member name="P:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.Mode">
             <summary>
             Valid modes are currently "CBC", "ECB", "CFB", "CCM", "CTS", "EAX", "GOFB"
             <see cref="N:Org.BouncyCastle.Crypto.Modes"/> for crypto modes details.
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.#ctor">
             <summary>
             parameterless default constructor
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams,System.Boolean)">
             <summary>
             Generic CryptBounceCastle constructor
             </summary>
             <param name="cparams">parameters to crypt</param>
-            <param name="init">init <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle"/> first time with a new key</param>
+            <param name="init">init <see cref="T:EU.CqrXs.Crypt.Cipher.CryptBounceCastle"/> first time with a new key</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.GetUserKeyBytes(System.String,System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.GetUserKeyBytes(System.String,System.String)">
             <summary>
             GetUserKeyBytes gets symetric chiffer private byte[KeyLen] encryption / decryption key
             </summary>
@@ -610,13 +610,13 @@
             <param name="secretHash">user host ip address</param>
             <returns>Array of byte with length KeyLen</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.CanAlgoKeyIV(Org.BouncyCastle.Crypto.IBlockCipher)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.CanAlgoKeyIV(Org.BouncyCastle.Crypto.IBlockCipher)">
             <summary>
             can this SymmBlockCipherAlgo key with initialization vector?
             </summary>
             <returns>true, if it hanldes init with key and initialization vector iv, otherwise false</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Encrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.Encrypt(System.Byte[])">
             <summary>
             Generic CryptBounceCastle Encrypt member function
             difference between out parameter encryptedData and return value, are 2 different encryption methods, but with the same result at the end
@@ -624,7 +624,7 @@
             <param name="plainData">plain data as <see cref="T:byte[]"/></param>
             <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.Decrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.Decrypt(System.Byte[])">
             <summary>
             Generic CryptBounceCastle Decrypt member function
             difference between out parameter decryptedData and return value, are 2 different decryption methods, but with the same result at the end
@@ -632,7 +632,7 @@
             <param name="cipherData">encrypted <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.EncryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.EncryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Generic CryptBounceCastle Encrypt String method
             </summary>
@@ -643,7 +643,7 @@
             </param>
             <returns>encoded encrypted string, default base64 encoded</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.CryptBounceCastle.DecryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.CryptBounceCastle.DecryptString(System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType)">
             <summary>
             Generic CryptBounceCastle Decrypt String method
             </summary>
@@ -654,7 +654,7 @@
             </param>
             <returns>plain text decrypted string</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net">
+        <member name="T:EU.CqrXs.Crypt.Cipher.Des3Net">
             <summary>
             Des3Net native .Net triple des without bouncy castle
             <see href="https://learn.microsoft.com/en-us/dotnet/api/system.security.cryptography.tripledes.-ctor?view=net-8.0" />
@@ -678,13 +678,13 @@
             </list>
             </remarks>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.GenDes3Key(System.Byte[]@)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.GenDes3Key(System.Byte[]@)">
             <summary>
             GenDes3Key ctor helper method to generate a new key as keybytes
             </summary>
             <param name="keyBytes">ref passed keybytes</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.GenDes3Iv(System.Byte[],System.Byte[]@)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.GenDes3Iv(System.Byte[],System.Byte[]@)">
             <summary>
             GenDes3Iv ctor helper method, that generates initalization vector IV bytes
             generates 
@@ -692,56 +692,56 @@
             <param name="keyBytes">key bytes</param>
             <param name="ivBytes">ref parameter to pass ivBytes</param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.#ctor">
             <summary>
-            default standard parameterless constructor of <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net"/>
+            default standard parameterless constructor of <see cref="T:EU.CqrXs.Crypt.Cipher.Des3Net"/>
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(System.String,System.String,System.Security.Cryptography.CipherMode)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.#ctor(System.String,System.String,System.Security.Cryptography.CipherMode)">
             <summary>
             Des3Net ctor with key, hash and <see cref="T:System.Security.Cryptography.CipherMode" />
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(System.Byte[],System.Byte[],System.Security.Cryptography.CipherMode)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.#ctor(System.Byte[],System.Byte[],System.Security.Cryptography.CipherMode)">
             <summary>
             ctor with byte[] for key, iv and <see cref="T:System.Security.Cryptography.CipherMode">default now: CFB</see>
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.#ctor(EU.CqrXs.Crypt.Cipher.CryptParams)">
             <summary>
             ctor with standard <see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/>
             </summary>
             <param name="cparams"><see cref="T:EU.CqrXs.Crypt.Cipher.CryptParams"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.Encrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.Encrypt(System.Byte[])">
             <summary>
             3Des encrypt bytes
             </summary>
             <param name="inBytes">Hex bytes</param>
             <returns>byte[] encrypted bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.Decrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.Decrypt(System.Byte[])">
             <summary>
             3Des decrypt bytes
             </summary>
             <param name="cipherBytes">Hex bytes encrypted</param>
             <returns>byte[] decrypted bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.EncryptString(System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.EncryptString(System.String)">
             <summary>
             3Des encrypt string
             </summary>
             <param name="inString">string in plain text</param>
             <returns>Base64 encoded encrypted byte array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.Des3Net.DecryptString(System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.Des3Net.DecryptString(System.String)">
             <summary>
             3Des decrypts string
             </summary>
             <param name="cipherText">Base64 encoded encrypted byte[]</param>
             <returns>plain text string</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe">
+        <member name="T:EU.CqrXs.Crypt.Cipher.SecureCipherPipe">
             <summary>
             Provides a simple crypt pipe for <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/>
             </summary>
@@ -763,12 +763,12 @@
             </list>
             </remarks>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor">
             <summary>
-            parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/>
+            parameterless default constructor for <see cref="T:EU.CqrXs.Crypt.Cipher.SecureCipherPipe"/>
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.CipherEnum[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor(EU.CqrXs.Crypt.Cipher.CipherEnum[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             SecureCipherPipe constructor with an array of <see cref="T:CipherEnum[]"/> as inpipe
             </summary>
@@ -776,7 +776,7 @@
             <param name="maxpipe">size of max. pipe stages, can't be greater than 8</param>
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor(System.String[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             SecureCipherPipe constructor with an array of <see cref="T:string[]"/> cipherAlgos as inpipe
             </summary>
@@ -784,7 +784,7 @@
             <param name="maxpipe">maximum lentgh <see cref="F:EU.CqrXs.Util.Constants.MAX_PIPE_LEN"/></param>
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor(System.Byte[],System.UInt32,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
             SecureCipherPipe ctor with array of user key bytes
             </summary>
@@ -794,36 +794,36 @@
             <param name="verbose"></param>
             <exception cref="T:System.ArgumentException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor(System.String,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor(System.String,EU.CqrXs.Crypt.Cipher.CipherMode2,System.Boolean)">
             <summary>
-            Constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/> from key and hash
+            Constructs a <see cref="T:EU.CqrXs.Crypt.Cipher.SecureCipherPipe"/> from key and hash
             by getting <see cref="T:byte[]">byte[] keybytes</see> with <see cref="M:EU.CqrXs.Crypt.Cipher.CryptHelper.GetUserKeyBytes(System.String,System.String,System.Int32)"/>
             </summary>
             <param name="keyHash">secret key to generate pipe</param>
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <param name="verbose"></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.#ctor(System.String,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.#ctor(System.String,System.Boolean)">
             <summary>
             SecureCipherPipe ctor with only key
             </summary>
             <param name="key"></param>
             <param name="verbose"></param>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.ToJson">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.ToJson">
             <summary>
             ToJson 
             </summary>
             <returns>serialized string</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.FromJson(System.String)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.FromJson(System.String)">
             <summary>
             FromJson
             </summary>
             <param name="json">serialized json</param>
-            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/></returns>
+            <returns><see cref="T:EU.CqrXs.Crypt.Cipher.SecureCipherPipe"/></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.EncryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic encrypt bytes to bytes
             </summary>
@@ -834,7 +834,7 @@
             <returns>encrypted byte Array</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.DecryptBytesFast(System.Byte[],EU.CqrXs.Crypt.Cipher.CipherEnum,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Generic decrypt bytes to bytes
             </summary>
@@ -843,7 +843,7 @@
             <param name="secretKey">secret key to decrypt</param>
             <returns>decrypted byte Array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncrpytT``2(``1,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.EncrpytT``2(``1,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             EncrpytT
             </summary>
@@ -864,7 +864,7 @@
             <returns>encrypted generic type</returns>
             <exception cref="T:EU.CqrXs.Crypt.CException">is thrown on unknown type</exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecrpytT``2(``1,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.DecrpytT``2(``1,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
              DecrpytT generic decryption method
             </summary>
@@ -881,7 +881,7 @@
             <returns>Decrypted generic TRet</returns>
             <exception cref="T:EU.CqrXs.Crypt.CException">is thrown on unknown type</exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
             </summary>
@@ -890,7 +890,7 @@
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <returns>encrypted byte[]</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.DecrpytRoundGoMerry(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             DecrpytRoundGoMerry against clock turn -
             starts merry to turn arround from right to left against clock hour cycle 
@@ -900,7 +900,7 @@
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncrpytTextGoRounds(System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.EncrpytTextGoRounds(System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             EncrpytTextGoRounds encrypts text with cipher pipe pipeline
             </summary>
@@ -909,7 +909,7 @@
             <param name="cmode2"></param>
             <returns>UTF9 emcoded encrypted string without binary data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecryptTextRoundsGo(System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.DecryptTextRoundsGo(System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             decrypt encoded encrypted text
             </summary>
@@ -918,11 +918,11 @@
             <param name="cmode2"></param>
             <returns>decrypted UTF8 string, containing no binary data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.Boolean,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.CryptCodeBytes(System.Byte[],System.String,System.Boolean,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>
             Multi functional 
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
-            <see cref="M:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.EncryptEncodeBytes(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
+            <see cref="M:EU.CqrXs.Crypt.Cipher.SecureCipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)"/>
             </summary>
             <param name="inBytes">incoming bytes</param>
             <param name="secretKey">user private key</param>
@@ -930,9 +930,9 @@
             <param name="cmode2"></param>
             <returns>transformed byte array</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix">
+        <member name="T:EU.CqrXs.Crypt.Cipher.ZenMatrix">
              <summary>
-             <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/>, a very simple symmetric block cipher
+             <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/>, a very simple symmetric block cipher
              hex shifting and position swapping reduced to 0x0 .. 0xf mapping matrix
              Implements <see cref="T:Org.BouncyCastle.Crypto.IBlockCipher">Org.BouncyCastle.Crypto.IBlockCipher</see>
             
@@ -944,7 +944,7 @@
              <see href="https://opensource.org/license/mit">opensource.org/license/mit</see>
              </summary>
         </member>
-        <member name="F:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationBase">
+        <member name="F:EU.CqrXs.Crypt.Cipher.ZenMatrix.MatrixPermutationBase">
             <summary>
             MatrixPermutationBase is a Permutation Matrix where every value will mapped to itself
             ( 
@@ -966,12 +966,12 @@
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
             </summary>
         </member>
-        <member name="F:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MagicOrder">
+        <member name="F:EU.CqrXs.Crypt.Cipher.ZenMatrix.MagicOrder">
             <summary>
             MagicOrder is a byte[], that helps filling up keybytes up 16 bytes deterministic, when keybytes lesser then 16
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.MatrixPermutationKey">
             <summary>
             abstraction of a 0x10 => 0x10 matrix, for example if 
             MatrixPermutationKey = { 0x8, 0x3, 0x1, 0xe, 0x9, 0xf, 0x5, 0xc, 0x4, 0xd, 0xa, 0x7, 0xb, 0x2, 0x0, 0x6 }
@@ -1004,7 +1004,7 @@
             value 0xe will be mapped to 0x0     14 →   0
             value 0xf will be mapped to 0x6     15 →   6         
             
-            a full symmetric <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/> would like:
+            a full symmetric <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.MatrixPermutationKey"/> would like:
                 0    1    2    3    4    5    6    7    8    9    a    b    c    d    e    f
              { 0x8, 0x3, 0xe, 0x1, 0x9, 0xf, 0xb, 0xd, 0x0, 0x4, 0xc, 0x6, 0xa, 0x7, 0x2, 0x5 }
             
@@ -1017,20 +1017,20 @@
              value 0xf is   already mapped back to 0x5 !                            f →	5
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.InverseMatrix">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.InverseMatrix">
             <summary>
             Inverse Matrix 
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.PermutationKeyHash">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.PermutationKeyHash">
             <summary>
-            PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/>
+            PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.MatrixPermutationKey"/>
             Advantage of <see cref="T:HashSet{byte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.ProcessBlock(System.Byte[],System.Int32,System.Byte[],System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.ProcessBlock(System.Byte[],System.Int32,System.Byte[],System.Int32)">
             <summary>
-            Processes one BLOCK with BLOCK_SIZE <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.BLOCK_SIZE"/>
+            Processes one BLOCK with BLOCK_SIZE <see cref="F:EU.CqrXs.Crypt.Cipher.ZenMatrix.BLOCK_SIZE"/>
             </summary>
             <param name="inBuf"></param>
             <param name="inOff"></param>
@@ -1039,14 +1039,14 @@
             <returns></returns>
             <exception cref="T:System.IO.InvalidDataException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.#ctor(System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.#ctor(System.Int32)">
             <summary>
             public constructor
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.#ctor(System.String,System.String,System.Boolean,EU.CqrXs.Crypt.Hash.KeyHash)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.#ctor(System.String,System.String,System.Boolean,EU.CqrXs.Crypt.Hash.KeyHash)">
             <summary>
-            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/> with secret user key string and hash iv
+            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/> with secret user key string and hash iv
             </summary>
             <param name="secretKey">user's secret key</param>
             <param name="hashIV">private key hash iv string</param>
@@ -1055,26 +1055,26 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.#ctor(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.#ctor(System.Byte[],System.Boolean)">
             <summary>
-            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/> with an array of key bytes
+            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/> with an array of key bytes
             </summary>
             <param name="keyBytes">array of key bytes</param>
             <param name="fullSymmetric">
             fullSymmetric means that zen matrix is it's inverse element 
             and decrypts back to plain text, when encrypting twice or ²</param> 
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.InitMatrixSymChiffer">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.InitMatrixSymChiffer">
             <summary>
             InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.ZenMatrixGenWithBytes(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.ZenMatrixGenWithBytes(System.Byte[],System.Boolean)">
             <summary>
             Generates ZenMatrix with key bytes
             </summary>
             <param name="keyBytes">must have at least 4 bytes and will be truncated after 16 bytes
-            only the first 16 bytes will be taken from keyBytes for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/>
+            only the first 16 bytes will be taken from keyBytes for <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/>
             </param>
             <returns>true, if init was with same key successfull</returns>
             <param name="fullSymmetric">
@@ -1082,9 +1082,9 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.ProcessBytes(System.Byte[],System.Int32,System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.ProcessBytes(System.Byte[],System.Int32,System.Int32)">
             <summary>
-            ProcessBytes processes bytes for encryption or decryption depending on <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.forEncryption"/>
+            ProcessBytes processes bytes for encryption or decryption depending on <see cref="F:EU.CqrXs.Crypt.Cipher.ZenMatrix.forEncryption"/>
                 processes the next len=16 bytes to encrypt, starting at offSet
                 or processes the next len=16 bytes to decrypt, starting at offSet
             </summary>
@@ -1093,51 +1093,51 @@
             <param name="len">len of byte block (default 16)</param>
             <returns>byte[len] (default: 16) segment of encrypted bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.PadBuffer(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.PadBuffer(System.Byte[],System.Boolean)">
             <summary>
             in case of encryption, 
                 pads 0 or random buffer at end of inBytes,
                 so that inBytes % BLOCK_SIZE == 0 
             in case of decryption,
                 trims remaining padding buffer from inBytes
-            encryption or decryption are triggered via <see cref="F:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.forEncryption"/>
+            encryption or decryption are triggered via <see cref="F:EU.CqrXs.Crypt.Cipher.ZenMatrix.forEncryption"/>
             </summary>
             <param name="inBytes">input bytes to pad </param>
             <param name="useRandom">use random padding</param>
             <returns>padded or unpadded out bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.Encrypt(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.Encrypt(System.Byte[],System.Boolean)">
             <summary>
             MatrixSymChiffer Encrypt member function
             </summary>
             <param name="pdata">plain data as <see cref="T:byte[]"/></param>
             <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.Decrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.Decrypt(System.Byte[])">
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
             <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.MapByteValue(System.Byte@,System.Byte@,System.Boolean)">
             <summary>
-            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.MatrixPermutationKey"/> in case of encrypt,
-            through <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.InverseMatrix"/> in case of decryption.
+            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.MatrixPermutationKey"/> in case of encrypt,
+            through <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix.InverseMatrix"/> in case of decryption.
             </summary>
             <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
             <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
             <param name="encrypt">true for encryption, false for decryption</param>
             <returns>An <see cref="T:byte[]"/> array with 2  0x0 - 0xf segments (most significant and least significant) bit</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix.BuildInverseMatrix(System.Byte[],System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix.BuildInverseMatrix(System.Byte[],System.Int32)">
             <summary>
             BuildInverseMatrix, builds the determinant decryption matrix for byte[16] encryption matrix
             </summary>
             <param name="matrix">byte[16] encryption matrix</param>
             <returns><see cref="T:byte[]">byte[16]</see> decryption matrix (determinante)</returns>
         </member>
-        <member name="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2">
+        <member name="T:EU.CqrXs.Crypt.Cipher.ZenMatrix2">
             <summary>
             More complex but still lightweight byte mapping from 0x0 .. to 0xf as symmetric cipher matrix
             position swaps and byte mappings are seperated in 2 matrizes 
@@ -1150,31 +1150,31 @@
             maybe this encryption is already invented, but created at Git by zen@area23.at (Heinrich Elsigan)
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.MatrixPermutationKey2">
             <summary>
             abstraction of a 0x10 => 0x10 matrix, for example
-            <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/> 
+            <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.MatrixPermutationKey2"/> 
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.InverseMatrix2">
             <summary>
             Inverse Matrix 2 
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.PermutationKeyHash2">
+        <member name="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.PermutationKeyHash2">
             <summary>
-            PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/>
+            PermutationKeyHash is same as <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.MatrixPermutationKey2"/>
             Advantage of <see cref="T:HashSet{byte}"/> is, that no duplicated values can be inside
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.#ctor">
             <summary>
             public constructor
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor(System.String,System.String,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.#ctor(System.String,System.String,System.Boolean)">
             <summary>
-            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/> with secret user key string and hash iv
+            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/> with secret user key string and hash iv
             </summary>
             <param name="secretKey">user's secret key</param>
             <param name="hashIV">private key hash iv string</param>
@@ -1183,26 +1183,26 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.#ctor(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.#ctor(System.Byte[],System.Boolean)">
             <summary>
-            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/> with an array of key bytes
+            initializes a <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/> with an array of key bytes
             </summary>
             <param name="keyBytes2"><see cref="T:byte[]">array of key bytes</see></param>
             <param name="fullSymmetric">
             fullSymmetric means that zen matrix is it's inverse element 
             and decrypts back to plain text, when encrypting twice or ²</param> 
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.InitMatrixSymChiffer2">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.InitMatrixSymChiffer2">
             <summary>
             InitMatrixSymChiffer - base initialization of variables, needed for matrix sym chiffer encryption
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.ZenMatrixGenWithBytes2(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.ZenMatrixGenWithBytes2(System.Byte[],System.Boolean)">
             <summary>
             Generates ZenMatrix with key bytes
             </summary>
             <param name="keyBytes2">must have at least 4 bytes and will be truncated after 16 bytes
-            only the first 16 bytes will be taken from keyBytes for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix"/>
+            only the first 16 bytes will be taken from keyBytes for <see cref="T:EU.CqrXs.Crypt.Cipher.ZenMatrix"/>
             </param>
             <returns>true, if init was with same key successfull</returns>
             <param name="fullSymmetric">
@@ -1210,7 +1210,7 @@
             and decrypts back to plain text, when encrypting twice or ²</param>       
             <exception cref="T:System.ApplicationException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.ProcessBytes2(System.Byte[],System.Int32,System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.ProcessBytes2(System.Byte[],System.Int32,System.Int32)">
             <summary>
             ProcessBytes2  processes the next len=16 bytes to encrypt or decrypt, starting at offSet
             </summary>
@@ -1219,31 +1219,31 @@
             <param name="len">len of byte block (default 16)</param>
             <returns>byte[len] (default: 16) segment of decrypted bytes</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.Encrypt(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.Encrypt(System.Byte[],System.Boolean)">
             <summary>
             MatrixSymChiffer Encrypt member function
             </summary>
             <param name="pdata">plain data as <see cref="T:byte[]"/></param>
             <returns>encrypted data <see cref="T:byte[]">bytes</see></returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.Decrypt(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.Decrypt(System.Byte[])">
             <summary>
             MatrixSymChiffer Decrypt member function
             </summary>
             <param name="ecdata">encrypted cipher <see cref="T:byte[]">bytes</see></param>
             <returns>decrypted plain byte[] data</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.BuildInverseMatrix2(System.Byte[],System.Int32)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.BuildInverseMatrix2(System.Byte[],System.Int32)">
             <summary>
             BuildInverseMatrix, builds the determinant decryption matrix for byte[16] encryption matrix
             </summary>
             <param name="matrix">byte[16] encryption matrix</param>
             <returns><see cref="T:byte[]">byte[16]</see> decryption matrix (determinante)</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.Cipher.ZenMatrix2.MapByteValue2(System.Byte@,System.Byte@,System.Boolean)">
             <summary>
-            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.MatrixPermutationKey2"/> in case of encrypt,
-            through <see cref="P:EU.CqrXs.Crypt.Cipher.Symmetric.ZenMatrix2.InverseMatrix2"/> in case of decryption.
+            MapByteValue splits a byte in 2 0x0 - 0xf segments and map both trough <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.MatrixPermutationKey2"/> in case of encrypt,
+            through <see cref="P:EU.CqrXs.Crypt.Cipher.ZenMatrix2.InverseMatrix2"/> in case of decryption.
             </summary>
             <param name="inByte"><see cref="T:System.Byte"/> in byte to map</param>
             <param name="outByte"><see cref="T:System.Byte"/> mapped out byte</param>
@@ -2576,14 +2576,14 @@
             <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Util.Extensions.StripSecureCipherPipeFromFileName(System.String,EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe@)">
+        <member name="M:EU.CqrXs.Util.Extensions.StripSecureCipherPipeFromFileName(System.String,EU.CqrXs.Crypt.Cipher.SecureCipherPipe@)">
             <summary>
             Extension <see cref="T:System.String"/>.StripSecureCipherPipeFromFileName(out SecureCipherPipe? secCipherPipe)
             looks if a filename is <see cref="M:EU.CqrXs.Util.Extensions.IsPermAgainCryptFile(System.String)"/> and if true,
             extracts PipeString out of filename and creates the corresponding pipe.
             </summary>
             <param name="fileName">file name to examine</param>
-            <param name="secCipherPipe">out parameter for <see cref="T:EU.CqrXs.Crypt.Cipher.Symmetric.SecureCipherPipe"/></param>
+            <param name="secCipherPipe">out parameter for <see cref="T:EU.CqrXs.Crypt.Cipher.SecureCipherPipe"/></param>
             <returns>stripped filename by CipherPipe PermAgainCrypt characters</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
