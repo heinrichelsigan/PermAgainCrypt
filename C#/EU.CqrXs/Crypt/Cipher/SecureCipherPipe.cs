@@ -551,7 +551,7 @@ namespace EU.CqrXs.Crypt.Cipher
             byte[] encryptedBytes = MerryGoRoundEncrpyt(zippedBytes, cipherKeyHash, CMode2);
 
             // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-            string encrypted = encodeType.EnCode(encryptedBytes);
+            string encrypted = encodeType.GetEnCoder().Encode(encryptedBytes);
 
             return encrypted;
         }
@@ -629,7 +629,7 @@ namespace EU.CqrXs.Crypt.Cipher
             if (encodeType == EncodingType.None)
                 return outBytes;
 
-            return System.Text.Encoding.UTF8.GetBytes(encodeType.EnCode(outBytes));
+            return System.Text.Encoding.UTF8.GetBytes(encodeType.GetEnCoder().Encode(outBytes));
         }
 
         public virtual byte[] DecodeDecrpytBytes(byte[] encodedBytes, string secretKey, CipherMode2 cmode2)
