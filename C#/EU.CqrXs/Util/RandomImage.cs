@@ -13,6 +13,11 @@ namespace EU.CqrXs.Util
 
         public string SaveFileName { get; private set; }
 
+        string[] bmpNames = new string[]
+        {
+            "filesymbol", "file_encrypted", "file_encrypted2", "file_encrypted_broken", "file_pdf", "file_zip", "file_powerpoint", "file_word", "file_excel"
+        };
+
         public RandomImage()
         {
             GetNewImage();
@@ -26,16 +31,20 @@ namespace EU.CqrXs.Util
             if (string.IsNullOrEmpty(simg) || File.Exists(SaveFileName))
                 simg = rand.GetHexString(5, true) + ".png";
 
-            Bitmap mergeImage = new Bitmap(Properties.Resource.filesymbol);
+            int ix = ((int)rand.NextInt64(bmpNames.Length) % bmpNames.Length);
+            Bitmap bmpx = (System.Drawing.Bitmap)Properties.Resource.ResourceManager.GetObject(bmpNames[ix], Properties.Resource.Culture);
+
+            Bitmap mergeImage = new Bitmap(bmpx);
 
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(mergeImage))
             {
-                Color color = ColorTranslator.FromHtml("#0000dd");
+                Color color = (ix < 7) ? ColorTranslator.FromHtml("#0000dd") 
+                    : ColorTranslator.FromHtml("#efefef");
                 string drawString = simg.Substring(0, 5);
                 Font drawFont = new Font("Microsoft Sans Serif", 8, FontStyle.Regular);
                 SolidBrush drawBrush = new SolidBrush(color);
-                float x = 10.5F;
-                float y = 4.0F;
+                float x = (ix < 7) ? 14F : 15F;
+                float y = 5F;
                 StringFormat drawFormat = new StringFormat();
                 drawFormat.FormatFlags = StringFormatFlags.FitBlackBox;
                 g.DrawString(drawString, drawFont, drawBrush, x, y, drawFormat);

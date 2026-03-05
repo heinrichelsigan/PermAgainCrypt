@@ -1994,6 +1994,46 @@
               Looks up a localized resource of type System.Drawing.Bitmap.
             </summary>
         </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_encrypted">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_encrypted_broken">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_encrypted2">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_excel">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_pdf">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_powerpoint">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_word">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Properties.Resource.file_zip">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
         <member name="P:EU.CqrXs.Properties.Resource.filesymbol">
             <summary>
               Looks up a localized resource of type System.Drawing.Bitmap.
