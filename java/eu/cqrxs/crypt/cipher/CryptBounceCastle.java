@@ -164,9 +164,7 @@ public class CryptBounceCastle  {
 			return false;
 		if (algoName.startsWith("ARIA") || algoName.startsWith("ASCON"))
 			return false;
-		if (algoName.startsWith("CAST"))
-			return false;
-		if (algoName.startsWith("GOST") || algoName.startsWith("IDEA"))
+		if (algoName.startsWith("CAST") || algoName.startsWith("GOST"))
 			return false;
 		if (algoName.startsWith("RC") || algoName.startsWith("IDEA"))
 			return false;
