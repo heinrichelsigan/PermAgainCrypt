@@ -1101,10 +1101,17 @@ namespace EU.CqrXs.Gui.Forms
 
         internal void menuMainFormSimple_Click(object sender, EventArgs e)
         {
-            if (Program.formSimple == null)
+            if (Program.formSimple == null || Program.formSimple.Disposing)
                 Program.formSimple = new EncryptFormSimple();
-
-            Program.formSimple.Show();
+            try
+            {
+                Program.formSimple.Show();
+            } 
+            catch (Exception exShow)
+            {
+                Program.formSimple = new EncryptFormSimple();
+                Program.formSimple.Show();
+            }
             this.Hide();
             Program.formComplex.Hide();
             Program.formSimple.Focus();
@@ -1279,6 +1286,53 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion OpenSave    
 
+        #region close dispose 
+
+        protected internal override void menuFileExit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Program.ReleaseCloseDisposeMutex();
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
+            }
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
+            }
+
+            Application.ExitThread();
+            Dispose();
+            Application.Exit();
+            Environment.Exit(0);
+        }
+
+
+        protected internal override void menuFileExit_Close(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                Program.ReleaseCloseDisposeMutex();
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
+            }
+            
+
+            Application.ExitThread();
+            Dispose();
+            Application.Exit();
+            Environment.Exit(0);
+        }
+
+        #endregion close dispose
 
         #region Media Methods
 

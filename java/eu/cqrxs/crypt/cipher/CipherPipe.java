@@ -29,12 +29,9 @@ public class CipherPipe {
 
     String cipherKey = "", cipherHash = "";
     protected ZipType zType = ZipType.None;
-    // private readonly CipherEnum[] inPipe;
     protected CipherEnum[] inPipe;
-    // private readonly CipherEnum[] outPipe;
     protected EncodeEnum  encodeType = EncodeEnum.Base64;
     private KeyHash kHash = KeyHash.Hex;
-    // private readonly String pipeString;
     protected CipherMode2 cMode2 = CipherMode2.CFB;
 
 	public ZipType getZipType() { return zType; }
@@ -276,23 +273,11 @@ public class CipherPipe {
         byte[] encryptBytes = inBytes;
         CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hashedKey, cmode2);
 
-        switch (cipherAlgo)
-        {
-
+        switch (cipherAlgo) {
             case CipherEnum.JAes:
                 JAes jAes = new JAes(128, secretKey);
                 encryptBytes = jAes.encrypt(inBytes);
-            break;
-            /*
-            case CipherEnum.Des3Net:
-                Des3Net des3 = new Des3Net(secretKey, hash);
-                encryptBytes = des3.Encrypt(inBytes);
-                break;             
-            case CipherEnum.Rsa:
-                AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
-                encryptBytes = Asymmetric.Rsa.Encrypt(inBytes, keyPair);
-                break;
-            */
+				break;            
             case ZenMatrix:
                 encryptBytes = (new ZenMatrix(secretKey, hashedKey, false, KeyHash.Hex)).encrypt(inBytes, true);
                 break;
@@ -362,22 +347,11 @@ public class CipherPipe {
         byte[] decryptBytes = cipherBytes; 
         CryptParams cpParams = new CryptParams(cipherAlgo, secretKey, hash, cmode2);
 
-        switch (cipherAlgo)
-        {
+        switch (cipherAlgo) {
             case CipherEnum.JAes:
                 JAes jAes = new JAes(128, secretKey);
                 decryptBytes = jAes.decrypt(cipherBytes);
-                break;
-            /*
-            case CipherEnum.Des3Net:
-                Des3Net des3 = new Des3Net(secretKey, hash);
-                decryptBytes = des3.Decrypt(cipherBytes);
-                break
-            case CipherEnum.Rsa:
-                AsymmetricCipherKeyPair keyPair = Asymmetric.Rsa.RsaGenWithKey(Constants.RSA_PUB, Constants.RSA_PRV);
-                decryptBytes = Asymmetric.Rsa.DecryptWithPrivate(cipherBytes, keyPair);
-                break;
-            */
+                break;            
             case ZenMatrix:
                 decryptBytes = (new ZenMatrix(secretKey, hash, false, KeyHash.Hex)).decrypt(cipherBytes);
                 break;

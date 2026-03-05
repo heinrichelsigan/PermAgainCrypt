@@ -133,7 +133,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             foreach (var cipherModeItem in mCipherModes)
             {
-                if (cipherModeItem.Checked)
+                if (cipherModeItem.Checked || cipherModeItem.CheckState == CheckState.Checked)
                 {
                     string cipherModeString = cipherModeItem.Name.Replace("menuCipherModeItem", "");
                     CipherMode2 cmode2 = CipherModeExtensions.ParseText(cipherModeString);
@@ -141,9 +141,10 @@ namespace EU.CqrXs.Gui.Forms
                 }
             }
 
-            this.menuCipherModeItemECB.Checked = true;
+            this.menuCipherModeItemCFB.Checked = true;
+            this.menuCipherModeItemCFB.CheckState = CheckState.Checked; 
             // menuCipherModeItemCFB.Checked = true;
-            return CipherMode2.ECB;
+            return CipherMode2.CFB;
         }
 
         #endregion MenuCompressionEncodingZipHash
@@ -741,6 +742,50 @@ namespace EU.CqrXs.Gui.Forms
             Program.formSimple.Hide();
             Program.formComplex.Show();
         }
+
+        protected internal override void menuFileExit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Program.formSimple.Hide(); 
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormSimple", "menuFileExit_Click", ex);
+            }
+            try
+            {
+                Program.formComplex.Show();
+                // this.Close();
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormSimple", "menuFileExit_Click", ex);
+            }
+
+        }
+
+
+        protected internal override void menuFileExit_Close(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                Program.formComplex.Show(); 
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormSimple", "menuFileExit_Click", ex);
+            }
+            try
+            {
+                Program.formSimple.Hide();
+            }
+            catch (Exception ex)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormSimple", "menuFileExit_Click", ex);
+            }
+        }
+
 
         /// <summary>
         /// menuFileOpen_Click opens a file dialog to select a file to encrypt/decrypt

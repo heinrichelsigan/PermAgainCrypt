@@ -59,9 +59,7 @@ namespace EU.CqrXs.Spooler
     /// -? | --help
     /// </summary>
     internal class Program
-    {
-        const string BATCH_FILE_TEST = "Spooler_Test.bat";
-        const string README_FILE = "README.MD";
+    {        
         static readonly string? progName = System.Environment.ProcessPath;
         static readonly string? progDirectory = Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
         static readonly string progFilename = (!string.IsNullOrEmpty(progName)) ? Path.GetFileName(progName) : "EU.CqrXs.SpoolTest.exe";
@@ -95,7 +93,6 @@ namespace EU.CqrXs.Spooler
                                                 KeyHash.SCrypt, KeyHash.TupleHash, KeyHash.Whirlpool };
         static KeyHash keyHash = KeyHash.Hex;
         static CipherMode2 cmode2 = CipherMode2.CFB;
-        static bool cModeSet = false;
 
         /// <summary>
         /// Console spooler app for en-/decrypting a huge amount of files
@@ -375,17 +372,14 @@ namespace EU.CqrXs.Spooler
                 case 'M':
                     if (!Enum.TryParse<CipherMode2>(optArgs[1], true, out cmode2))
                         cmode2 = CipherMode2.CFB;
-                    optEnum = OptSpoolEnum.Mode;
-                    cModeSet = true;
+                    optEnum = OptSpoolEnum.Mode;                    
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
 
                 case 's':
                 case 'S':
                     secureCipher = true;
-                    optEnum = OptSpoolEnum.Secure;
-                    if (!cModeSet)
-                        cmode2 = CipherMode2.ECB; // for secure cipher, default to ECB, because of the additional security measures in SecureCipherPipe
+                    optEnum = OptSpoolEnum.Secure;                   
                     optArgs[0] = optEnum.ToString();
                     return optArgs;
 

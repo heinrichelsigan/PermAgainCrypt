@@ -641,7 +641,7 @@ public class CqrJFrameSimple extends JFrame {
 		getContentPane().add(jComboBox_Encoding);
 		selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 
-		selectCipherMode2MenuItem(menuCMode2, CipherMode2.ECB);
+		selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
 		dropPanel = new DropPanel(cqrJFrameSimple);
 		dropPanel.setFont(cryptFont);

@@ -323,15 +323,19 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         protected internal virtual void menuFileExit_Click(object sender, EventArgs e)
-        {
+        {       
             try
             {
-                Program.ReleaseCloseDisposeMutex();
+                this.Close();
             }
             catch (Exception ex)
             {
                 Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
+            }         
+        }
+
+        protected internal virtual void menuFileExit_Close(object sender, FormClosedEventArgs e)
+        {
             try
             {
                 this.Close();
@@ -340,18 +344,6 @@ namespace EU.CqrXs.Gui.Forms
             {
                 Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
             }
-
-            Application.ExitThread();
-            Dispose();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        protected internal virtual void menuFileExit_Close(object sender, FormClosedEventArgs e)
-        {
-            Application.ExitThread();
-            Application.Exit();
-            Environment.Exit(0);
         }
 
         #endregion AboutHelpExitClose
@@ -407,7 +399,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
             // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
-            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.CMode2);
             // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
@@ -431,7 +423,7 @@ namespace EU.CqrXs.Gui.Forms
         {
             // string encodingOutFile = await System.IO.File.ReadAllTextAsync(outFilePath);
             byte[] fileBytes = await System.IO.File.ReadAllBytesAsync(outFilePath);
-            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key);
+            byte[] outBytes = sPipe.DecodeDecrpytBytes(fileBytes, key, sPipe.CMode2);
             // string outFileDecrypt = Path.GetFileName(outFilePath).Replace(cPipe.ZType.GetZipTypeExtension(), "").Replace("." + cPipe.PipeString, "").Replace(cPipe.EncodeType.GetEnCodingExtension(), "");
             byte[] inBytes = await File.ReadAllBytesAsync(inFilePath);
 
