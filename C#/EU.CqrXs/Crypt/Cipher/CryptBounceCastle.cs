@@ -190,19 +190,17 @@ namespace EU.CqrXs.Crypt.Cipher
             if (cryptoBlockCipher == null)
                 cryptoBlockCipher = CryptoBlockCipher;
             string algoName = cryptoBlockCipher.AlgorithmName.ToUpper();
-            if (algoName.StartsWith("AES") || algoName.StartsWith("RIJNDAEL"))
+            if (algoName.StartsWith("AES", StringComparison.CurrentCultureIgnoreCase) || algoName.StartsWith("RIJNDAEL", StringComparison.CurrentCultureIgnoreCase))
                 return false;
-            if (algoName.StartsWith("ARIA") || algoName.StartsWith("ASCON"))
+            if (algoName.StartsWith("ARIA", StringComparison.CurrentCultureIgnoreCase) || algoName.StartsWith("ASCON", StringComparison.CurrentCultureIgnoreCase))
                 return false;
-            if (algoName.StartsWith("CAST") || algoName.StartsWith("DES3"))
+            if (algoName.StartsWith("CAST", StringComparison.CurrentCultureIgnoreCase) || algoName.StartsWith("GOST", StringComparison.CurrentCultureIgnoreCase))
                 return false;
-            if (algoName.StartsWith("GOST") || algoName.StartsWith("IDEA"))
+            if (algoName.StartsWith("IDEA", StringComparison.CurrentCultureIgnoreCase) || algoName.StartsWith("RC", StringComparison.CurrentCultureIgnoreCase)) 
                 return false;
-            if (algoName.StartsWith("RC") || algoName.StartsWith("IDEA"))
+            if (algoName.StartsWith("SKIPJACK", StringComparison.CurrentCultureIgnoreCase) || algoName.Equals("DESEDE"))
                 return false;
-            if (algoName.StartsWith("SKIPJACK") || algoName.Equals("DESEDE"))
-                return false;
-            if (algoName.StartsWith("TEA") || algoName.StartsWith("XTEA"))
+            if (algoName.StartsWith("TEA", StringComparison.CurrentCultureIgnoreCase) || algoName.StartsWith("XTEA", StringComparison.CurrentCultureIgnoreCase))
                 return false;
             return true;
         }
