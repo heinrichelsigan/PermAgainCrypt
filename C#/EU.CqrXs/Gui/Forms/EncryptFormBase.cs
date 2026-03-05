@@ -323,27 +323,25 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         protected internal virtual void menuFileExit_Click(object sender, EventArgs e)
-        {       
-            try
-            {
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }         
+        {
+            menuFileExit_Click(sender, e);
         }
 
         protected internal virtual void menuFileExit_Close(object sender, FormClosedEventArgs e)
         {
             try
             {
-                this.Close();
+                Program.ReleaseCloseDisposeMutex();
             }
             catch (Exception ex)
             {
                 Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
+            }           
+
+            Application.ExitThread();
+            Dispose();
+            Application.Exit();
+            Environment.Exit(0);
         }
 
         #endregion AboutHelpExitClose

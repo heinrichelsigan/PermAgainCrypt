@@ -72,16 +72,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainItemOneTwoThreeFish.Click += new System.EventHandler(async (sender, e)
                  => await menuMainItemOneTwoThreeFish_Click(sender, e));
 
-            menuMainItemSimple.Click += menuMainFormSimple_Click;
-            try
-            {
-                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e)
-                    => await menuHelpCharHexDecOctBin_Click(sender, e));
-            }
-            catch (Exception exBtnClick)
-            {
-                Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()", "error in delegating menuHelpCharHexDecOctBin.Click exception", exBtnClick, 2);
-            }
+            menuMainItemSimple.Click += menuMainFormSimple_Click;            
 
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
@@ -1070,17 +1061,6 @@ namespace EU.CqrXs.Gui.Forms
             await base.menuHelp_Click(sender, e);
         }
 
-        protected internal virtual async Task menuCharHexDecOctBinAsync_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            await dia.ShowDialogAsync();
-        }
-
-        protected internal virtual void menuCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            dia.ShowDialog();
-        }
 
         /// <summary>
         /// Shows OneTwoThreeFish Demo form 
@@ -1091,6 +1071,8 @@ namespace EU.CqrXs.Gui.Forms
         protected internal virtual async Task menuMainItemOneTwoThreeFish_Click(object sender, EventArgs e)
         {
             OneTwoThreeFish oneTwoThreeFish = new OneTwoThreeFish();
+            this.Hide();
+            Program.formComplex.Hide();
             DialogResult result = await oneTwoThreeFish.ShowDialogAsync();
             if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
                 result == DialogResult.Ignore)
@@ -1286,54 +1268,6 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion OpenSave    
 
-        #region close dispose 
-
-        protected internal override void menuFileExit_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Program.ReleaseCloseDisposeMutex();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-            try
-            {
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-
-            Application.ExitThread();
-            Dispose();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-
-        protected internal override void menuFileExit_Close(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                Program.ReleaseCloseDisposeMutex();
-            }
-            catch (Exception ex)
-            {
-                Area23Log.LogOriginMsgEx("BaseChatForm", "menuFileExit_Click", ex);
-            }
-            
-
-            Application.ExitThread();
-            Dispose();
-            Application.Exit();
-            Environment.Exit(0);
-        }
-
-        #endregion close dispose
-
         #region Media Methods
 
         protected internal void SetInfoMessage(string message, ToolTipIcon toolIcon = ToolTipIcon.Info, int duration = 4000)
@@ -1432,31 +1366,6 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion Media Methods
 
-
-        protected internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
-            DialogResult dresult = await dialog.ShowDialogAsync();
-            if (dresult == DialogResult.OK)
-                return;
-            else if (dresult != DialogResult.Continue)
-                return;
-
-            string topLevelDomain = ".at", url = "";
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
-                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
-
-            switch (++ufcnt)
-            {
-                case 1: url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images"; break;
-                case 2: url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay"; break;
-                case 0:
-                default: ufcnt %= 3; url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd"; break;
-            }
-
-            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
-            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
-        }
 
         
     }

@@ -82,7 +82,6 @@
         <Compile Update="Controls\TabConrolWithHex.cs">
           <SubType>Component</SubType>
         </Compile>
-        <Compile Update="Forms\CharHexDecOctBinDialog.cs" />
         <Compile Update="Forms\EncryptFormSimple.cs">
           <SubType>Form</SubType>
         </Compile>

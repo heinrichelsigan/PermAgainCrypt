@@ -60,16 +60,7 @@ namespace EU.CqrXs.Gui.Forms
                 => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
-            menuMainComplex.Click += menuMainComplex_Click;
-            try
-            {
-                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async (sender, e)
-                    => await menuHelpCharHexDecOctBin_Click(sender, e));
-            }
-            catch (Exception exBtnClick)
-            {
-                Area23Log.LogOriginMsgEx("EncryptFormMultiControls ctor()", "error in delegating menuHelpCharHexDecOctBin.Click exception", exBtnClick, 2);
-            }
+            menuMainComplex.Click += menuMainComplex_Click;           
 
             foreach (var cipherModeItem in mCipherModes)
                 cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));
@@ -715,18 +706,6 @@ namespace EU.CqrXs.Gui.Forms
             await base.menuHelp_Click(sender, e);
         }
 
-        protected internal virtual async Task menuCharHexDecOctBinAsync_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            await dia.ShowDialogAsync();
-        }
-
-        protected internal virtual void menuCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            dia.ShowDialog();
-        }
-
         /// <summary>
         /// Switches to complex WinForm <see cref="EncryptFormMultiControls"/>
         /// </summary>
@@ -952,31 +931,6 @@ namespace EU.CqrXs.Gui.Forms
 
 
             }
-        }
-
-        protected internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
-            DialogResult dresult = await dialog.ShowDialogAsync();
-            if (dresult == DialogResult.OK)
-                return;
-            else if (dresult != DialogResult.Continue)
-                return;
-
-            string topLevelDomain = ".at", url = "";
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
-                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
-
-            switch (++ufcnt)
-            {
-                case 1: url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images"; break;
-                case 2: url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay"; break;
-                case 0:
-                default: ufcnt %= 3; url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd"; break;
-            }
-
-            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
-            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
         }
 
         #endregion menus    

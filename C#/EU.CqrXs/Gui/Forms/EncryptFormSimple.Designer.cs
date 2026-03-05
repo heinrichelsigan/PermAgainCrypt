@@ -68,7 +68,6 @@ namespace EU.CqrXs.Gui.Forms
             menuHelp = new ToolStripMenuItem();
             menuAbout = new ToolStripMenuItem();
             menuHelpHelp = new ToolStripMenuItem();
-            menuHelpCharHexDecOctBin = new ToolStripMenuItem();
             menuHelpUrlFetch = new ToolStripMenuItem();
             menuOptionsMenuWindowsCharHexDecOctBin = new ToolStripMenuItem();
             menuOptionsMenuWindowsitemAbout = new ToolStripMenuItem();
@@ -133,7 +132,7 @@ namespace EU.CqrXs.Gui.Forms
             menuFileOpen.ForeColor = SystemColors.MenuText;
             menuFileOpen.Name = "menuFileOpen";
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
-            menuFileOpen.Size = new Size(170, 22);
+            menuFileOpen.Size = new Size(180, 22);
             menuFileOpen.Text = "Open";
             menuFileOpen.Click += menuFileOpen_Click;
             // 
@@ -143,7 +142,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainSave.ForeColor = SystemColors.MenuText;
             menuMainSave.Name = "menuMainSave";
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuMainSave.Size = new Size(170, 22);
+            menuMainSave.Size = new Size(180, 22);
             menuMainSave.Text = "Save";
             menuMainSave.Click += menuMainSave_Click;
             // 
@@ -152,14 +151,14 @@ namespace EU.CqrXs.Gui.Forms
             toolStripSeparator2.BackColor = SystemColors.Menu;
             toolStripSeparator2.ForeColor = SystemColors.MenuText;
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(167, 6);
+            toolStripSeparator2.Size = new Size(177, 6);
             // 
             // menuMainSetPipe
             // 
             menuMainSetPipe.BackColor = SystemColors.Menu;
             menuMainSetPipe.ForeColor = SystemColors.MenuText;
             menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(170, 22);
+            menuMainSetPipe.Size = new Size(180, 22);
             menuMainSetPipe.Text = "Set Pipe";
             menuMainSetPipe.Click += SetPipeline_Click;
             // 
@@ -168,7 +167,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainHashPipe.BackColor = SystemColors.Menu;
             menuMainHashPipe.ForeColor = SystemColors.MenuText;
             menuMainHashPipe.Name = "menuMainHashPipe";
-            menuMainHashPipe.Size = new Size(170, 22);
+            menuMainHashPipe.Size = new Size(180, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
@@ -177,14 +176,14 @@ namespace EU.CqrXs.Gui.Forms
             toolStripSeparator3.BackColor = SystemColors.Menu;
             toolStripSeparator3.ForeColor = SystemColors.MenuHighlight;
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(167, 6);
+            toolStripSeparator3.Size = new Size(177, 6);
             // 
             // menuMainEncrypt
             // 
             menuMainEncrypt.BackColor = SystemColors.Menu;
             menuMainEncrypt.ForeColor = SystemColors.MenuText;
             menuMainEncrypt.Name = "menuMainEncrypt";
-            menuMainEncrypt.Size = new Size(170, 22);
+            menuMainEncrypt.Size = new Size(180, 22);
             menuMainEncrypt.Text = "Encrypt";
             // 
             // menuMainDecrypt
@@ -192,7 +191,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainDecrypt.BackColor = SystemColors.Menu;
             menuMainDecrypt.ForeColor = SystemColors.MenuText;
             menuMainDecrypt.Name = "menuMainDecrypt";
-            menuMainDecrypt.Size = new Size(170, 22);
+            menuMainDecrypt.Size = new Size(180, 22);
             menuMainDecrypt.Text = "Decrypt";
             // 
             // menuMainDownloadImage
@@ -200,7 +199,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainDownloadImage.BackColor = SystemColors.Menu;
             menuMainDownloadImage.ForeColor = SystemColors.MenuText;
             menuMainDownloadImage.Name = "menuMainDownloadImage";
-            menuMainDownloadImage.Size = new Size(170, 22);
+            menuMainDownloadImage.Size = new Size(180, 22);
             menuMainDownloadImage.Text = "Ramdom Image";
             menuMainDownloadImage.Click += LoadImage_Click;
             // 
@@ -209,7 +208,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainRandomText.BackColor = SystemColors.Menu;
             menuMainRandomText.ForeColor = SystemColors.MenuText;
             menuMainRandomText.Name = "menuMainRandomText";
-            menuMainRandomText.Size = new Size(170, 22);
+            menuMainRandomText.Size = new Size(180, 22);
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
@@ -218,7 +217,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainReset.BackColor = SystemColors.Menu;
             menuMainReset.ForeColor = SystemColors.MenuText;
             menuMainReset.Name = "menuMainReset";
-            menuMainReset.Size = new Size(170, 22);
+            menuMainReset.Size = new Size(180, 22);
             menuMainReset.Text = "Reset";
             // 
             // toolStripSeparator1
@@ -226,7 +225,7 @@ namespace EU.CqrXs.Gui.Forms
             toolStripSeparator1.BackColor = SystemColors.Menu;
             toolStripSeparator1.ForeColor = SystemColors.MenuHighlight;
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(167, 6);
+            toolStripSeparator1.Size = new Size(177, 6);
             // 
             // menuMainComplex
             // 
@@ -234,7 +233,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainComplex.ForeColor = SystemColors.MenuText;
             menuMainComplex.ImageAlign = ContentAlignment.MiddleLeft;
             menuMainComplex.Name = "menuMainComplex";
-            menuMainComplex.Size = new Size(170, 22);
+            menuMainComplex.Size = new Size(180, 22);
             menuMainComplex.Text = "Complex Mode";
             // 
             // toolStripSeparator4
@@ -242,7 +241,7 @@ namespace EU.CqrXs.Gui.Forms
             toolStripSeparator4.BackColor = SystemColors.Menu;
             toolStripSeparator4.ForeColor = SystemColors.MenuText;
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(167, 6);
+            toolStripSeparator4.Size = new Size(177, 6);
             // 
             // menuFileExit
             // 
@@ -250,7 +249,7 @@ namespace EU.CqrXs.Gui.Forms
             menuFileExit.ForeColor = SystemColors.MenuText;
             menuFileExit.Name = "menuFileExit";
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
-            menuFileExit.Size = new Size(170, 22);
+            menuFileExit.Size = new Size(180, 22);
             menuFileExit.Text = "Exit";
             menuFileExit.Click += menuFileExit_Click;
             // 
@@ -277,7 +276,6 @@ namespace EU.CqrXs.Gui.Forms
             // menuCipherModeItemCBC
             // 
             menuCipherModeItemCBC.BackColor = SystemColors.Menu;
-            menuCipherModeItemCBC.Enabled = true;
             menuCipherModeItemCBC.ForeColor = SystemColors.MenuText;
             menuCipherModeItemCBC.Name = "menuCipherModeItemCBC";
             menuCipherModeItemCBC.Size = new Size(106, 22);
@@ -295,7 +293,6 @@ namespace EU.CqrXs.Gui.Forms
             // menuCipherModeItemCFB
             // 
             menuCipherModeItemCFB.BackColor = SystemColors.Menu;
-            menuCipherModeItemCFB.Enabled = true;
             menuCipherModeItemCFB.Checked = true;
             menuCipherModeItemCFB.CheckState = CheckState.Checked;
             menuCipherModeItemCFB.ForeColor = SystemColors.MenuText;
@@ -326,7 +323,6 @@ namespace EU.CqrXs.Gui.Forms
             menuCipherModeItemECB.BackColor = SystemColors.Menu;
             menuCipherModeItemECB.ForeColor = SystemColors.MenuText;
             menuCipherModeItemECB.Name = "menuCipherModeItemECB";
-            menuCipherModeItemECB.Enabled = true;
             menuCipherModeItemECB.Size = new Size(106, 22);
             menuCipherModeItemECB.Text = "ECB";
             // 
@@ -411,7 +407,7 @@ namespace EU.CqrXs.Gui.Forms
             // menuHelp
             // 
             menuHelp.BackColor = SystemColors.MenuBar;
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp, menuHelpCharHexDecOctBin });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuAbout, menuHelpHelp });
             menuHelp.Font = new Font("Lucida Sans Typewriter", 10F);
             menuHelp.ForeColor = SystemColors.MenuText;
             menuHelp.Name = "menuHelp";
@@ -423,7 +419,7 @@ namespace EU.CqrXs.Gui.Forms
             menuAbout.BackColor = SystemColors.Menu;
             menuAbout.ForeColor = SystemColors.MenuText;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(202, 22);
+            menuAbout.Size = new Size(161, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -432,16 +428,8 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.ForeColor = SystemColors.MenuText;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(202, 22);
+            menuHelpHelp.Size = new Size(161, 22);
             menuHelpHelp.Text = "Help";
-            // 
-            // menuHelpCharHexDecOctBin
-            // 
-            menuHelpCharHexDecOctBin.BackColor = SystemColors.Menu;
-            menuHelpCharHexDecOctBin.ForeColor = SystemColors.MenuText;
-            menuHelpCharHexDecOctBin.Name = "menuHelpCharHexDecOctBin";
-            menuHelpCharHexDecOctBin.Size = new Size(202, 22);
-            menuHelpCharHexDecOctBin.Text = "CharHexDecOctBin";
             // 
             // menuHelpUrlFetch
             // 
@@ -827,7 +815,6 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuFileSettingsItemAutomaticallySaveToTemp;
         private Controls.GroupBoxFiles groupBoxFiles;
         private Panel panelButtonsMessage;
-        internal ToolStripMenuItem menuHelpCharHexDecOctBin;
         private Controls.TabControlWithHex tabControlWithHexSrc;
         private Controls.TabControlWithHex tabControlWithHexDest;
         protected internal ToolStripMenuItem menuMainComplex;

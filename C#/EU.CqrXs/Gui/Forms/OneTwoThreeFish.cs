@@ -57,15 +57,7 @@ namespace EU.CqrXs.Gui.Forms
                 => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
-            try
-            {
-                menuHelpCharHexDecOctBin.Click += new System.EventHandler(async(sender, e)
-                    => await menuHelpCharHexDecOctBin_Click(sender, e));
-            }
-            catch (Exception exBtnClick)
-            {
-                Area23Log.LogOriginMsgEx("OneTwoThreeFish ctor()", "error creating menuHelpCharHexDecOctBin.Click delegate", exBtnClick, 2);
-            }
+            menuMainComplex.Click += menuMainComplex_Click;
 
             ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
@@ -891,17 +883,6 @@ namespace EU.CqrXs.Gui.Forms
             await base.menuHelp_Click(sender, e);
         }
 
-        protected internal virtual async Task menuCharHexDecOctBinAsync_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            await dia.ShowDialogAsync();
-        }
-
-        protected internal virtual void menuCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dia = new CharHexDecOctBinDialog();
-            dia.ShowDialog();
-        }
 
         /// <summary>
         /// Shows a new encrypt form classic on menu new
@@ -1089,6 +1070,22 @@ namespace EU.CqrXs.Gui.Forms
 
         #endregion OpenSave    
 
+        /// <summary>
+        /// Switches to complex WinForm <see cref="EncryptFormMultiControls"/>
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns><see cref="Task"/></returns>
+        protected internal virtual void menuMainComplex_Click(object sender, EventArgs e)
+        {
+            if (Program.formComplex == null)
+                Program.formComplex = new EncryptFormMultiControls();
+
+            this.Hide();
+            // Program.formSimple.Hide();
+            Program.formComplex.Show();
+        }
+
 
         #region Media Methods
 
@@ -1187,41 +1184,6 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         #endregion Media Methods
-
-
-        internal async Task menuHelpCharHexDecOctBin_Click(object sender, EventArgs e)
-        {
-            CharHexDecOctBinDialog dialog = new CharHexDecOctBinDialog();
-            DialogResult dresult = await dialog.ShowDialogAsync();
-            if (dresult == DialogResult.OK)
-                return;
-            else if (dresult != DialogResult.Continue)
-                return;
-
-            //RandomName rname = new RandomName();
-            //UrlFetchDialog dia = new UrlFetchDialog(rname.GetNewString());
-            string topLevelDomain = ".at", url = "";
-            int ufcnt = (AppDomain.CurrentDomain.GetData("UrlFetch") == null) ?
-                (int)0 : (int)AppDomain.CurrentDomain.GetData("UrlFetch");
-
-            switch (++ufcnt)
-            {
-                case 1:
-                    url = $"https://www.qwant.com/?q=site%3A{topLevelDomain}&t=images";
-                    break;
-                case 2:
-                    url = $"https://duckduckgo.com/?q=site%3A{topLevelDomain}&df=d&ia=images&iax=images&iaf=time%3ADay";
-                    break;
-                case 0:
-                default:
-                    ufcnt %= 3;
-                    url = $"https://search.brave.com/images?q=site%3A{topLevelDomain}&source=web&tf=pd";
-                    break;
-            }
-
-            AppDomain.CurrentDomain.SetData("UrlFetch", ufcnt);
-            System.Windows.Forms.Help.ShowHelp(this, url, HelpNavigator.TableOfContents, "duckduckgo.com");
-        }
 
     }
 
