@@ -66,6 +66,7 @@
     <Compile Include="Crypt\CException.cs" />
     <Compile Include="Crypt\Cipher\CipherMode2.cs" />
     <Compile Include="Crypt\Cipher\CipherEnum.cs" />
+    <Compile Include="Crypt\Cipher\MatrixPipe.cs" />
     <Compile Include="Crypt\Cipher\CipherPipe.cs" />
     <Compile Include="Crypt\Cipher\CryptHelper.cs" />
     <Compile Include="Crypt\Cipher\CryptParams.cs" />
