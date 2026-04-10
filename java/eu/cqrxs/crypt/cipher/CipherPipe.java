@@ -3,6 +3,9 @@ package eu.cqrxs.crypt.cipher;
 // import androidx.core.content.res.TypedArrayUtils;
 // import com.google.common.primitives.Bytes;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +24,7 @@ import eu.cqrxs.zip.ZipType;
 import org.bouncycastle.crypto.*;
 
 import javax.crypto.Cipher;
+import javax.imageio.ImageIO;
 
 /**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
@@ -1066,6 +1070,45 @@ public class CipherPipe {
             decrypted = decrypted.substring(0, decrypted.length() - 1);
 
         return decrypted;
+    }
+
+    /**
+     * drawCipherPipe draws a cipher pipe image for a specified pipe
+     * state of method: prototype (not fully working)
+     * @param pipe the specific chipher pipe
+     * @return {@link BufferedImage}
+     */
+    public static BufferedImage drawCipherPipe(CipherPipe pipe) {
+        String path = "eu/cqrxs/gui/"; // base path of the images
+
+        // load source images
+        BufferedImage imgGz = new BufferedImage(92, 108, BufferedImage.TYPE_INT_ARGB),
+                imgAes = new BufferedImage(60, 108, BufferedImage.TYPE_INT_ARGB),
+                imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
+        try {
+            imgGz = ImageIO.read(new File(path + "gz.png"));
+            imgAes = ImageIO.read(new File(path + "aes.png"));
+            imgEncoding = ImageIO.read(new File(path + "encoding.png"));
+        } catch (IOException ioex) {
+            ioex.printStackTrace();
+        }
+
+        // create the new image, canvas size is the max. of both image sizes
+        int w = 640;
+        int h = 108;
+        BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+        // paint both images, preserving the alpha channels
+        Graphics g = combined.getGraphics();
+        g.drawImage(imgGz, 0, 8, null);
+        g.drawImage(imgAes, 92, 24, null);
+        g.drawImage(imgEncoding, 152, 20, null);
+
+        g.dispose();
+
+        // Save as new image
+        // ImageIO.write(combined, "PNG", new File(path, "combined.png"));
+        return combined;
     }
 
 }
