@@ -214,21 +214,21 @@ public class CryptHelper {
             throw new IllegalArgumentException("key");
 
         byte[] keyBytes = key.getBytes(Charset.forName("UTF-8"));
+		byte[] hashBytes = keyHash.getBytes(Charset.forName("UTF-8"));
         byte[] outBytes = new byte[keyLen];
         if (keyBytes.length >= keyLen) {            
 			System.arraycopy(keyBytes, 0, outBytes, 0, keyLen);			
             return outBytes;
         }
 
-        byte[] smallBytes = keyHashBytes(keyBytes, keyBytes, true);
+        byte[] smallBytes = keyHashBytes(keyBytes, hashBytes, true);
 
         if (smallBytes.length >= keyLen) {
             System.arraycopy(smallBytes, 0, outBytes, 0, keyLen);			
             // System.arraycopy()
             return outBytes;
         }
-        byte[] bigBytes = tarBytes(smallBytes,
-                tarBytes(keyHash.getBytes(Charset.forName("UTF-8")), keyBytes));
+        byte[] bigBytes = tarBytes(smallBytes, tarBytes(keyBytes, hashBytes));
         if (bigBytes.length >= keyLen) {
             System.arraycopy(bigBytes, 0, outBytes, 0, keyLen);			
             // System.arraycopy()

@@ -1603,9 +1603,21 @@ public class CqrJdFrame extends JFrame {
 		Object object = e.getSource();
 		if (object != null) {
 			if (object == jLabelImgAddAlgo) {
+				
 				cipherString = cipherEnum.toString();
 				String pipeText = jTextField_Pipe.getText();
 				jTextField_Pipe.setText(pipeText + cipherString + ";");
+				
+				String cipherPipeString = jTextField_Pipe.getText();
+				String pipeString = "";
+				CipherEnum[] ciphers = new CipherEnum[0];
+				if (cipherPipeString.length() > 0) 
+					ciphers = CipherEnum.parsePipeText(cipherPipeString);
+				
+				CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash, cmode2);
+				BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);	
+				dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
+				
 			} else if (object == jLabelImgKey) {
 				// keyHash.Hash(
 			} else if (object == jLabelImgHash) {
