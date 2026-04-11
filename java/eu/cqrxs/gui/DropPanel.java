@@ -45,9 +45,9 @@ public class DropPanel extends JPanel {
     private Point dragPoint;
 
     private boolean dragOver = false;
-    private BufferedImage target, imgFileIn, imgFileOut;
-    private javax.swing.ImageIcon imgIconIn, imgIconOut;
-    public JLabel message, jLabelImgIn, jLabelFileIn,  jLabelImgOut, jLabelFileOut;
+    private BufferedImage target, imgFileIn, imgFileOut, imgCipherPipe;
+    private javax.swing.ImageIcon imgIconIn, imgIconOut, imgIconPipe;
+    public JLabel message, jLabelImgIn, jLabelFileIn,  jLabelImgOut, jLabelFileOut, jLabelCipherPipe;
 	private Font monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
     public static CqrJFrameSimple jFrameSimple;
     public static CqrJdFrame jdFrame;
@@ -97,7 +97,8 @@ public class DropPanel extends JPanel {
             target = addImages(new String[] { "eu/cqrxs/gui/file.png", "file.png" });
             imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
             imgFileOut = addImages((new String[] {"eu/cqrxs/gui/encrypted.png", "encrypted.png" }));
-
+			imgCipherPipe = addImages((new String[] {"eu/cqrxs/gui/cipherpipeblank.png", "cipherpipeblank.png" }));
+			
             message = new JLabel();
             message.setBounds(0, 0, 742, 96);
             message.setFont(message.getFont().deriveFont(Font.BOLD, 11));
@@ -113,6 +114,11 @@ public class DropPanel extends JPanel {
             jLabelFileIn.setBounds(4, 68, 120, 24);
             jLabelFileIn.setText("[No input file loaded]");
             add(jLabelFileIn);
+
+			jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
+			jLabelCipherPipe.setBounds(108, 0, 640, 96);
+			jLabelCipherPipe.setText("[blank cipher pipe]");
+			add(jLabelCipherPipe);
 
             jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
             jLabelImgOut.setBounds(880, 4, 60, 60);
