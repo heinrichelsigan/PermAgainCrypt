@@ -1,8 +1,5 @@
 package eu.cqrxs.crypt.cipher;
 
-// import androidx.core.content.res.TypedArrayUtils;
-// import com.google.common.primitives.Bytes;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -698,8 +695,6 @@ public class CipherPipe {
                 KeyHash keyHash,
                 CipherMode2 cmode2)
             throws InvalidCipherTextException {
-        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-        //     throw new IllegalArgumentException("seretkey");
 
         zType = unzipAfter;
         kHash = keyHash;
@@ -746,38 +741,6 @@ public class CipherPipe {
         return outBytes;
     }
 
-
-
-
-
-    @Deprecated
-    public String encrpytEncode(
-                    byte[] inBytes,
-                    String secretKey,
-                    EncodeEnum encType,
-                    ZipType zipBefore,
-                    KeyHash keyHash,
-                    CipherMode2 cmode2)
-            throws InvalidCipherTextException, IOException {
-
-        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-        //     throw new IllegalArgumentException("secretKey");
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(cipherKey);
-        encodeType = encType;
-        zType = zipBefore;
-        kHash = keyHash;
-        cMode2 = cmode2;
-        try {
-            byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
-            inBytes = zippedBytes;
-        } catch (Exception exZip) {
-            exZip.printStackTrace();
-        }
-        byte[] outBytes = merryGoRoundEncrpyt(inBytes, secretKey, cipherHash, cMode2);
-        String cryptedEncoded = encType.encodeBytesToString(outBytes);
-        return cryptedEncoded;
-    }
 
     /**
      *  encryptEncodeBytes
@@ -836,38 +799,6 @@ public class CipherPipe {
     }
 
 
-    @Deprecated
-    public byte[] decodeDecrpyt(
-                    String encoded,
-                    String secretKey,
-                    EncodeEnum encType,
-                    ZipType unzipAfter,
-                    KeyHash keyHash,
-                    CipherMode2 cmode2)
-            throws InvalidCipherTextException, IOException {
-
-        if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-            throw new IllegalArgumentException("seretkey");
-
-        cMode2 = cmode2;
-        encodeType = encType;
-        zType = unzipAfter;
-        kHash = keyHash;
-        cipherKey = (secretKey != null && secretKey.length() > 0) ? secretKey : cipherKey;
-        cipherHash = keyHash.hash(secretKey);
-
-        byte[] cipherBytes = encodeType.decodeStringToBytes(encoded);
-        byte[] outBytes = decrpytRoundGoMerry(cipherBytes, secretKey, keyHash.hash(secretKey), cMode2);
-        try {
-            byte[] unzipBytes = (unzipAfter != ZipType.None) ?
-                    unzipAfter.unzip(outBytes) : outBytes;
-            outBytes = unzipBytes;
-        } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
-        }
-        return outBytes;
-    }
-
     /**
      *  decodeDecrpytBytes
      * @param encodedBytes encoded byte array
@@ -888,9 +819,6 @@ public class CipherPipe {
                         EncodeEnum encType, ZipType unzipAfter, KeyHash keyHash,
                         CipherMode2 cmode2)
                     throws InvalidCipherTextException, IOException {
-
-        // if ((secretKey == null && cipherKey == null) || (secretKey.length() == 0 && cipherKey.length() == 0))
-        //     throw new IllegalArgumentException("seretkey");
         cMode2 = cmode2;
         encodeType = encType;
         zType = unzipAfter;
@@ -918,159 +846,6 @@ public class CipherPipe {
         return outBytes;
     }
 
-
-
-    /**
-     * encrpytToString
-     * @param inString String to encrypt multiple times
-     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
-     *     /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-     * @param encoding {@link EncodeEnum} type for encoding encrypted bytes back in plain text
-     * @param zipBefore zip bytes with {@link ZipType}
-     * @param keyHash {@link KeyHash} hashing enum => use hash(...) for hashing
-     * @param cmode2 {@link CipherMode2}
-     * @return encrypted String
-     * @throws InvalidCipherTextException comes from bouncy-castle
-     * @throws IOException input/output Exception
-     */
-    @Deprecated
-    public static String encrpytToString(String inString, String cryptKey,
-                EncodeEnum encoding,
-                ZipType zipBefore,
-                KeyHash keyHash,
-                CipherMode2 cmode2)
-            throws InvalidCipherTextException, IOException {
-        // construct symmetric cipher pipeline with cryptKey
-        CipherPipe cyptPipe = new CipherPipe(cryptKey);
-
-        // Transform String to bytes
-        byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
-        // perform multi crypt pipe stages
-        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(inBytes, cryptKey, zipBefore, keyHash, cmode2);
-        // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-        String encrypted = encoding.encodeBytesToString(encryptedBytes);
-
-        return encrypted;
-    }
-
-    @Deprecated
-    public static String encrpytBytesToString(byte[] plainBytes, String cryptKey,
-                                    EncodeEnum encoding,
-                                    ZipType zipBefore,
-                                    KeyHash keyHash,
-                                    CipherMode2 cmode2)
-                                throws InvalidCipherTextException, IOException {
-        // construct symmetric cipher pipeline with cryptKey
-        CipherPipe cyptPipe = new CipherPipe(cryptKey);
-
-        // perform multi crypt pipe stages
-        byte[] encryptedBytes = cyptPipe.encrpytGoRounds(
-                plainBytes, cryptKey, zipBefore, keyHash, cmode2);
-        // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-        String encrypted = encoding.encodeBytesToString(encryptedBytes);
-
-        return encrypted;
-    }
-
-    @Deprecated
-    public static byte[] encrpytStringToBytes(String inString, String cryptKey,
-                                          EncodeEnum encoding,
-                                          ZipType zipBefore,
-                                          KeyHash keyHash,
-                                          CipherMode2 cmode2)
-                                    throws InvalidCipherTextException {
-        // construct symmetric cipher pipeline with cryptKey and pass pipeString as out param
-        CipherPipe cryptPipe = new CipherPipe(cryptKey);
-        // Transform String to bytes
-        byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
-        // perform multi crypt pipe stages
-        byte[] encryptedBytes = cryptPipe.encrpytGoRounds(
-                inBytes, cryptKey, zipBefore, keyHash, cmode2);
-
-        return encryptedBytes;
-    }
-
-
-
-    /**
-     * DecrpytToString
-     * @param cryptedEncodedMsg encrypted message
-     * @param cryptKey Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline
-     *          and unique crypt key for each symmetric cipher algorithm in each stage of the pipe
-     * @param decoding {@link EncodeEnum}
-     * @param unzipAfter {@link ZipType}
-     * @param keyHash {@link KeyHash}
-     * @param cmode2 {@link CipherMode2}
-     * @return Decrypted stirng
-     * @throws InvalidCipherTextException
-     * @throws IOException
-     */
-    @Deprecated
-    public static String decrpytToString(String cryptedEncodedMsg, String cryptKey,
-                                        EncodeEnum decoding,
-                                        ZipType unzipAfter,
-                                        KeyHash keyHash,
-                                        CipherMode2 cmode2)
-                        throws InvalidCipherTextException, IOException {
-        // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
-        CipherPipe cryptPipe = new CipherPipe(cryptKey);
-
-        // get bytes from encrypted encoded String dependent on the encoding type(uu, base64, base32,..)
-        byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
-        // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
-                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
-
-        // Get String from decrypted bytes
-        String decrypted = unroundedMerryBytes.toString();
-        // find first \0 = NULL char in String and truncate all after first \0 apperance in String
-        while (decrypted.charAt(decrypted.length() - 1) == '\0')
-            decrypted = decrypted.substring(0, decrypted.length() - 1);
-
-        return decrypted;
-    }
-
-    @Deprecated
-    public static byte[] decrpytStringToBytes(String cryptedEncodedMsg, String cryptKey,
-                                            EncodeEnum decoding,
-                                            ZipType unzipAfter,
-                                            KeyHash keyHash,
-                                            CipherMode2 cmode2)
-                    throws InvalidCipherTextException, IOException {
-        // create symmetric cipher pipe for decryption with crypt key
-        CipherPipe cryptPipe = new CipherPipe(cryptKey);
-
-        // get bytes from encrypted encoded String dependent on the encoding type (uu, base64, base32,..)
-        byte[] cipherBytes = decoding.decodeStringToBytes(cryptedEncodedMsg);
-        // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
-                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
-
-        return unroundedMerryBytes;
-    }
-
-    @Deprecated
-    public static String decrpytBytesToString(byte[] cipherBytes, String cryptKey,
-                                            EncodeEnum decoding,
-                                            ZipType unzipAfter,
-                                            KeyHash keyHash,
-                                            CipherMode2 cmode2)
-                                throws InvalidCipherTextException {
-        // create symmetric cipher pipe for decryption with crypt key and pass pipeString as out param
-        CipherPipe cryptPipe = new CipherPipe(cryptKey);
-
-        // staged decryption of bytes
-        byte[] unroundedMerryBytes = cryptPipe.decrpytRoundsGo(
-                cipherBytes, cryptKey, unzipAfter, keyHash, cmode2);
-
-        // Get String from decrypted bytes
-        String decrypted =  unroundedMerryBytes.toString();
-        // find first \0 = NULL char in String and truncate all after first \0 apperance in String
-        while (decrypted.charAt(decrypted.length() - 1) == '\0')
-            decrypted = decrypted.substring(0, decrypted.length() - 1);
-
-        return decrypted;
-    }
 
     /**
      * drawCipherPipe draws a cipher pipe image for a specified pipe
@@ -1157,5 +932,93 @@ public class CipherPipe {
         // ImageIO.write(combined, "PNG", new File(path, "combined.png"));
         return combined;
     }
+
+
+    /**
+     * drawDecryptCipherPipe draws a cipher pipe image for a specified pipe
+     * state of method: prototype (not fully working)
+     * @param pipe the specific chipher pipe
+     * @return {@link BufferedImage}
+     */
+    public static BufferedImage drawDecryptCipherPipe(CipherPipe pipe) {
+        String path = "eu/cqrxs/gui/"; // base path of the images
+
+        if (pipe == null) {
+            BufferedImage imgPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgPipeBlank = ImageIO.read(new File(path + "decryptcipherpipe.png"));
+            } catch (IOException ioex1) {
+                ioex1.printStackTrace();
+            }
+            return imgPipeBlank;
+        }
+
+        int xoffset = 0;
+        int w = 640;
+        int h = 96;
+        BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        // paint both images, preserving the alpha channels
+        Graphics g = combined.getGraphics();
+
+        if (pipe.zType == ZipType.GZip) {
+
+            BufferedImage imgGz = new BufferedImage(76, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgGz = ImageIO.read(new File(path + "gz.png"));
+            } catch (IOException ioex2) {
+                ioex2.printStackTrace();
+            }
+            g.drawImage(imgGz, xoffset, 0, null);
+            xoffset += 76;
+        } else {
+            BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
+            } catch (IOException ioex2) {
+                ioex2.printStackTrace();
+            }
+            g.drawImage(imgStart, xoffset, 0, null);
+            xoffset += 32;
+        }
+
+        CipherEnum[] inPipe = pipe.getInPipe();
+        if (inPipe != null && inPipe.length > 0) {
+            for (int i = 0; i < inPipe.length; i++) {
+                CipherEnum cipher = inPipe[i];
+                BufferedImage imgAes = new BufferedImage(60, 96, BufferedImage.TYPE_INT_ARGB);
+                try {
+                    imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
+                } catch (Exception ex3) {
+                    ex3.printStackTrace();
+                    try {
+                        imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
+                        // imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
+                    } catch (IOException ioex4) {
+                        ioex4.printStackTrace();
+                    }
+                }
+
+                g.drawImage(imgAes, xoffset, 0, null);
+                xoffset += 60;
+            }
+        }
+        if (pipe.encodeType != EncodeEnum.None) {
+            BufferedImage imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgEncoding = ImageIO.read(new File(path + "encoding.png"));
+            } catch (IOException ioex5) {
+                ioex5.printStackTrace();
+            }
+            g.drawImage(imgEncoding, xoffset, 0, null);
+        }
+
+
+        g.dispose();
+
+        // Save as new image
+        // ImageIO.write(combined, "PNG", new File(path, "combined.png"));
+        return combined;
+    }
+
 
 }
