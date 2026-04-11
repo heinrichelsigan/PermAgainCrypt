@@ -1225,7 +1225,14 @@ public class CqrJdFrame extends JFrame {
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
 			
-			
+			BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+			dropPanel.remove(dropPanel.jLabelCipherPipe);
+			dropPanel.jLabelCipherPipe = new JLabel(new ImageIcon(pipeImg));
+			dropPanel.jLabelCipherPipe.setBounds(108, 0, 640, 96);
+			dropPanel.jLabelCipherPipe.setText(pipe.getPipeString());
+			dropPanel.add(dropPanel.jLabelCipherPipe);
+			// dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
+
 			setInfoMsg("Set pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
@@ -1262,7 +1269,15 @@ public class CqrJdFrame extends JFrame {
 			for (int ci = 0; ci < cipherEnums.length; ci++)
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
-			
+
+			BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+			dropPanel.remove(dropPanel.jLabelCipherPipe);
+			dropPanel.jLabelCipherPipe = new JLabel(new ImageIcon(pipeImg));
+			dropPanel.jLabelCipherPipe.setBounds(108, 0, 640, 96);
+			dropPanel.jLabelCipherPipe.setText(pipe.getPipeString());
+			dropPanel.add(dropPanel.jLabelCipherPipe);
+
+
 			setInfoMsg("Hashed pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {

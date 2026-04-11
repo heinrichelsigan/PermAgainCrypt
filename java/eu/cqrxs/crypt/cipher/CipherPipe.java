@@ -1081,28 +1081,66 @@ public class CipherPipe {
     public static BufferedImage drawCipherPipe(CipherPipe pipe) {
         String path = "eu/cqrxs/gui/"; // base path of the images
 
-        // load source images
-        BufferedImage imgGz = new BufferedImage(92, 108, BufferedImage.TYPE_INT_ARGB),
-                imgAes = new BufferedImage(60, 108, BufferedImage.TYPE_INT_ARGB),
-                imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
-        try {
-            imgGz = ImageIO.read(new File(path + "gz.png"));
-            imgAes = ImageIO.read(new File(path + "aes.png"));
-            imgEncoding = ImageIO.read(new File(path + "encoding.png"));
-        } catch (IOException ioex) {
-            ioex.printStackTrace();
+        if (pipe == null) {
+            BufferedImage imgPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgPipeBlank = ImageIO.read(new File(path + "cipherpipeblank.png"));
+            } catch (IOException ioex1) {
+                ioex1.printStackTrace();
+            }
+            return imgPipeBlank;
         }
 
-        // create the new image, canvas size is the max. of both image sizes
+        int xoffset = 0;
         int w = 640;
-        int h = 108;
+        int h = 96;
         BufferedImage combined = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-
         // paint both images, preserving the alpha channels
         Graphics g = combined.getGraphics();
-        g.drawImage(imgGz, 0, 8, null);
-        g.drawImage(imgAes, 92, 24, null);
-        g.drawImage(imgEncoding, 152, 20, null);
+
+        if (pipe.zType == ZipType.GZip) {
+
+            BufferedImage imgGz = new BufferedImage(96, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgGz = ImageIO.read(new File(path + "gz.png"));
+            } catch (IOException ioex2) {
+                ioex2.printStackTrace();
+            }
+            g.drawImage(imgGz, xoffset, 0, null);
+            xoffset += 96;
+        }
+
+        CipherEnum[] inPipe = pipe.getInPipe();
+        if (inPipe != null && inPipe.length > 0) {
+            for (int i = 0; i < inPipe.length; i++) {
+                CipherEnum cipher = inPipe[i];
+                BufferedImage imgAes = new BufferedImage(60, 96, BufferedImage.TYPE_INT_ARGB);
+                try {
+                    imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
+                } catch (Exception ex3) {
+                    ex3.printStackTrace();
+                    try {
+                        imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
+                        // imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
+                    } catch (IOException ioex4) {
+                        ioex4.printStackTrace();
+                    }
+                }
+
+               g.drawImage(imgAes, xoffset, 0, null);
+               xoffset += 60;
+           }
+        }
+        if (pipe.encodeType != EncodeEnum.None) {
+            BufferedImage imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgEncoding = ImageIO.read(new File(path + "encoding.png"));
+            } catch (IOException ioex5) {
+                ioex5.printStackTrace();
+            }
+            g.drawImage(imgEncoding, xoffset, 0, null);
+        }
+
 
         g.dispose();
 
