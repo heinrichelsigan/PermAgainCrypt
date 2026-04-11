@@ -8,6 +8,7 @@
  */ 
 package eu.cqrxs.gui;
 
+import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.crypt.hash.KeyHash;
@@ -1030,7 +1031,9 @@ public class CqrJFrameSimple extends JFrame {
 			for (int ci = 0; ci < cipherEnums.length; ci++)
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
-			
+
+			BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+			dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
 			
 			setInfoMsg("Set pipe to: " + pipe.getPipeString());
 			
@@ -1051,7 +1054,10 @@ public class CqrJFrameSimple extends JFrame {
 			for (int ci = 0; ci < cipherEnums.length; ci++)
 				pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 			jTextField_Pipe.setText(pipeSting);
-			
+
+			BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+			dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
+
 			setInfoMsg("Hashed pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
@@ -1079,7 +1085,9 @@ public class CqrJFrameSimple extends JFrame {
 			// TODO: reset JComboBoxes jComboBox_Algo
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 			selectItemByString(jComboBox_Zip, menuZip, "GZip");
-			
+
+			dropPanel.setPipeImg(null, "");
+
 			setInfoMsg("Form cleared.");
 		} catch (Exception e) {
 			e.printStackTrace();

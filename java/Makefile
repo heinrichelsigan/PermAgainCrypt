@@ -24,10 +24,7 @@ cqrxs:
 	
 	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/crypt/hash/KeyHash.java eu/cqrxs/crypt/hash/OpenBSDCrypt.java eu/cqrxs/crypt/hash/BCrypt.java eu/cqrxs/crypt/hash/SCrypt.java  eu/cqrxs/crypt/hash/MD5.java eu/cqrxs/crypt/hash/Sha256.java eu/cqrxs/crypt/hash/Sha512.java 
 	
-	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
-
-    javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/util/Fortune.java eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java 
-
+	javac -classpath $(MYCLASSPATH) $(JAVACFLAGS) eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java eu/cqrxs/util/Fortune.java eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java
 	
 	echo "build finished"
 

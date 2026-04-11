@@ -1297,7 +1297,8 @@ public class CqrJdFrame extends JFrame {
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 			selectItemByString(jComboBox_Hash, menuHash, "Hex");
 			selectItemByString(jComboBox_Zip, menuZip, "None");
-			
+
+			dropPanel.setPipeImg(null, "");
 			setInfoMsg("Form cleared.");
 		} catch (Exception e) {
 			e.printStackTrace();

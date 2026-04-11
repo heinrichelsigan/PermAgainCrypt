@@ -177,12 +177,26 @@ public class DropPanel extends JPanel {
     }
 
 
+    /**
+     * setPipeImg sets CipherPipe image
+     * @param pipeImg image to set, if null reset to default image
+     * @param pipeString pipeString
+     */
     public void setPipeImg(BufferedImage pipeImg, String pipeString) {
+
         remove(jLabelCipherPipe);
-        jLabelCipherPipe = new JLabel(new ImageIcon(pipeImg));
-        jLabelCipherPipe.setBounds(108, 0, 640, 96);
-        jLabelCipherPipe.setText(pipeString);
-        add(jLabelCipherPipe);
+
+        if (pipeImg == null) {
+            jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
+            jLabelCipherPipe.setBounds(108, 0, 640, 96);
+            jLabelCipherPipe.setText("[blank cipher pipe]");
+            add(jLabelCipherPipe);
+        }  else {
+            jLabelCipherPipe = new JLabel(new ImageIcon(pipeImg));
+            jLabelCipherPipe.setBounds(108, 0, 640, 96);
+            jLabelCipherPipe.setText(pipeString);
+            add(jLabelCipherPipe);
+        }
         repaint();
     }
 
