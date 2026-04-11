@@ -183,6 +183,7 @@ public class DropPanel extends JPanel {
         jLabelCipherPipe.setBounds(108, 0, 640, 96);
         jLabelCipherPipe.setText(pipeString);
         add(jLabelCipherPipe);
+        repaint();
     }
 
     /**

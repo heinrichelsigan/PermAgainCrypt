@@ -1100,14 +1100,23 @@ public class CipherPipe {
 
         if (pipe.zType == ZipType.GZip) {
 
-            BufferedImage imgGz = new BufferedImage(96, 96, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage imgGz = new BufferedImage(76, 96, BufferedImage.TYPE_INT_ARGB);
             try {
                 imgGz = ImageIO.read(new File(path + "gz.png"));
             } catch (IOException ioex2) {
                 ioex2.printStackTrace();
             }
             g.drawImage(imgGz, xoffset, 0, null);
-            xoffset += 96;
+            xoffset += 76;
+        } else {
+            BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
+            } catch (IOException ioex2) {
+                ioex2.printStackTrace();
+            }
+            g.drawImage(imgStart, xoffset, 0, null);
+            xoffset += 32;
         }
 
         CipherEnum[] inPipe = pipe.getInPipe();
