@@ -220,6 +220,21 @@ namespace EU.CqrXs.Crypt.Cipher
             }
         }
 
+        public SecureCipherPipe(SecureCipherPipe sCiphPipe) : this()
+        {
+            if (sCiphPipe != null)
+            {
+                this.inPipe = sCiphPipe.InPipe;
+                this.cipherKeyHash = sCiphPipe.cipherKey;
+                this.cipherKey = sCiphPipe.cipherKey;
+                this.cipherHash = "";
+                this.CMode = sCiphPipe.CMode;
+                this.CMode2 = sCiphPipe.CMode2;
+                this.encodeType = EncodingType.Base64; // default is base64, because it is the most common encoding type for encrypted binary data
+                this.zType = ZipType.GZip; // default is GZip, because it is the most common zip type
+            }
+        }
+
         #endregion ctor SecureCipherPipe
 
         #region json

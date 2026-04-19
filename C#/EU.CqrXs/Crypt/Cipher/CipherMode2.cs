@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using EU.CqrXs.Zip;
+using System.ComponentModel;
 using System.Security.Cryptography;
 
 namespace EU.CqrXs.Crypt.Cipher
@@ -135,6 +136,22 @@ namespace EU.CqrXs.Crypt.Cipher
             return list.ToArray();
         }
 
+        public static string GetCipherMode2Extension(this CipherMode2 cmode2)
+        {
+            switch (cmode2)
+            {
+                case CipherMode2.CBC: return ".CBC";
+                case CipherMode2.CCM: return ".CCM";
+                case CipherMode2.CFB: return ".CFB";
+                case CipherMode2.CTS: return ".CTS";
+                case CipherMode2.EAX: return ".EAX";
+                case CipherMode2.ECB: return ".ECB";
+                case CipherMode2.GOFB: return ".GOFB";
+                default: break;
+            }
+            
+            return "." + cmode2.ToString();
+        }
 
 
         public static CipherMode2[] GetCipherModes2()

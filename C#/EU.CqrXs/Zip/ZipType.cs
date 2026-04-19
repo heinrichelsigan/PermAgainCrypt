@@ -62,7 +62,7 @@ namespace EU.CqrXs.Zip
             }
             return string.Empty;
         }
-
+       
 
         public static ZipType GetZipTypeFromValue(short zValue)
         {

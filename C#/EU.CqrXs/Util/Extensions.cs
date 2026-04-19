@@ -1569,6 +1569,8 @@ namespace EU.CqrXs.Util
 
             } while (dotIdx >= 0);
 
+            CipherMode2 cMode2 = CipherMode2.CFB;
+            CipherMode2[] cModes2 = { CipherMode2.CBC, CipherMode2.CFB, CipherMode2.ECB, CipherMode2.CTS };
             ZipType zipTyp = ZipType.None;
             KeyHash kHash = KeyHash.Hex;
             EncodingType eType = EncodingType.None;
@@ -1580,6 +1582,20 @@ namespace EU.CqrXs.Util
                     eType = encTyp;
                     strippedFileName = fileName.Replace("." + encTyp.ToString(), "").Replace("." + encTyp.ToString().ToLower(), "");
                     break;
+                }
+            }
+
+            foreach (CipherMode2 cMode in cModes2)
+            {
+                if (strippedFileName.EndsWith(cMode.GetCipherMode2Extension(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    cMode2 = cMode;
+                    strippedFileName = strippedFileName.Replace(cMode.GetCipherMode2Extension(), "");
+                }
+                else if (strippedFileName.Contains(cMode.GetCipherMode2Extension(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    cMode2 = cMode;
+                    strippedFileName = strippedFileName.Replace(cMode.GetCipherMode2Extension(), "");
                 }
             }
 

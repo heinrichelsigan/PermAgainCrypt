@@ -8,6 +8,7 @@ using EU.CqrXs.Gui.Sound;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using System.Security.Cryptography;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 
 namespace EU.CqrXs.Gui.Forms
@@ -137,6 +138,54 @@ namespace EU.CqrXs.Gui.Forms
             // menuCipherModeItemCFB.Checked = true;
             return CipherMode2.CFB;
         }
+
+
+        protected internal void SetCipherMode(CipherMode2 cMode2)
+        {
+            foreach (var cipherModeItem in mCipherModes)
+                cipherModeItem.Checked = false;
+
+            for (int ci = 0; ci < mCipherModes.Length; ci++)
+            {
+                var cipherModeItem2 = mCipherModes[ci];
+                if (cipherModeItem2.Text != null && cipherModeItem2.Text.Equals(cMode2.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    cipherModeItem2.Checked = true;
+                    break;
+                }
+            }
+            if (cPipe != null)
+            {
+                cPipe.CMode2 = cMode2;
+                groupBoxFiles.pictureBoxRunningPipe.Image = cPipe?.GenerateEncryptPipeImage();
+            }
+            SetInfoMessage($"CipherMode {cMode2.ToString()} set.", ToolTipIcon.Info, 2000);
+        }
+
+
+        protected internal async Task SetCipherModeAsync(CipherMode2 cMode2)
+        {
+            foreach (var cipherModeItem in mCipherModes)
+                cipherModeItem.Checked = false;
+
+            for (int ci = 0; ci < mCipherModes.Length; ci++)
+            {
+                var cipherModeItem2 = mCipherModes[ci];
+                if (cipherModeItem2.Name != null && cipherModeItem2.Name.Equals(cMode2.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    cipherModeItem2.Checked = true;
+                    break;
+                }
+            }
+            if (cPipe != null)
+            {
+                cPipe.CMode2 = cMode2;
+                await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe?.GenerateEncryptPipeImage());                
+            }
+            await SetInfoMessageAsync($"CipherMode {cMode2.ToString()} set.", ToolTipIcon.Info, 2000);
+
+        }
+
 
         #endregion MenuCompressionEncodingZipHash
 
@@ -421,7 +470,7 @@ namespace EU.CqrXs.Gui.Forms
 
                     byte[] encodedBytes = cPipe.EncryptEncodeBytes(fileBytes, this.textBoxKey.Text, GetCipherMode2());
                     string miniPipe = string.IsNullOrEmpty(cPipe.PipeString) ? "" : "." + cPipe.PipeString;
-                    string outFilePath = (fileName + GetHash().GetExtension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
+                    string outFilePath = (fileName + GetCipherMode2().GetCipherMode2Extension() + GetZip().GetZipTypeExtension() + miniPipe + GetEncoding().GetEnCodingExtension());
 
                     Cursor.Current = new Cursor(iconSandClock.Handle);
                     await this.statusLabelMsg.SetTextAsync("encryption time: " + DateTime.Now.Subtract(start).ToString());
@@ -690,6 +739,7 @@ namespace EU.CqrXs.Gui.Forms
                         {
                             this.textBoxPipe.Text += cipher.ToString() + ";";
                         }
+                        SetCipherMode(cPipe.CMode2);
                         SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage());
                     }
                 }
