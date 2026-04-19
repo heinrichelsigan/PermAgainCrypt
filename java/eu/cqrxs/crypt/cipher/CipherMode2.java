@@ -14,7 +14,6 @@ import eu.cqrxs.util.Constants;
 
 import java.util.*;
 
-
 /**
  * CipherMode2 represents the enumerator for all cipher modes to en-/decrypt
  */
@@ -130,8 +129,6 @@ public enum CipherMode2 {
     }
 
 
-
-
     /**
      * getCipherMode2
      * @param bvalue byte value
@@ -159,4 +156,3 @@ public enum CipherMode2 {
     }
 
 }
-

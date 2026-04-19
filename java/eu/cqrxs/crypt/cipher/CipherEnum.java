@@ -372,11 +372,6 @@ public enum CipherEnum  {
         return cipherEnums;
     }
 
-    // public static CipherEnum fromSymmCipherEnum(SymmCipherEnum symmCipherEnum) {
-    //     return symmCipherEnum.toCipherEnum();
-    // }
-
-
     /**
      * getEnum
      * @param ch column character
