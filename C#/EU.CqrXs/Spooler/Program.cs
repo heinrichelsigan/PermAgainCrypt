@@ -202,6 +202,10 @@ namespace EU.CqrXs.Spooler
                     {
                         // CipherPipe and all CipherEnum's
                         sPipe = new SecureCipherPipe(keyHash.Hash(passKey), cmode2, false);
+                        sPipe.ZType = zipType;
+                        sPipe.EncodeType = encodingType;
+                        sPipe.KHash = KeyHash.Hex;
+
                         PrintSecureCipherPipe(sPipe, decryptDirection);
                         outBytes = sPipe.EncryptEncodeBytes(inBytes, passKey, cmode2);
                         ofName += sPipe.PipeFullExtension;
@@ -231,7 +235,6 @@ namespace EU.CqrXs.Spooler
                         }
                     }
                 }                
-                
                 
                 string outFile = Path.Combine(outDir, ofName);
                 if (outBytes != null && outBytes.Length > 0)

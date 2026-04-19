@@ -135,7 +135,7 @@ namespace EU.CqrXs.Zip
                     {
                         dbz2bytes = BZip2.BUnZip(compressedBytes);
                     }
-                    catch (Exception exZip)
+                    catch (Exception exBZ2)
                     {
                         dbz2bytes = BZip2.BUnZip2Bytes(compressedBytes);
                     }
@@ -143,7 +143,18 @@ namespace EU.CqrXs.Zip
                         dbz2bytes = compressedBytes;
                     return dbz2bytes;
                 case ZipType.GZip:
-                    return GZ.GUnZipBytes(compressedBytes);
+                    byte[] gzBytes = new List<byte>().ToArray();
+                    // try
+                    // {
+                    gzBytes = GZ.GUnZipBytes(compressedBytes);
+                    // }
+                    //                     catch (Exception exGZ)
+                    // {
+                    // gzBytes = GZ.GUnZip(compressedBytes);
+                    // }
+                    // if (gzBytes.Length < (compressedBytes.Length - 16))
+                    //      gzBytes = compressedBytes;
+                    return gzBytes;
                 case ZipType.Zip:
                     return WinZip.UnZip(compressedBytes);
                 case ZipType.Z7: // TODO
