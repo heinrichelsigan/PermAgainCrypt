@@ -18,8 +18,8 @@
     <Copyright>Copyleft ©  2000 - 2040</Copyright>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
-    <AssemblyVersion>2.26.411</AssemblyVersion>
-	<FileVersion>2.26.411</FileVersion>
+    <AssemblyVersion>2.26.420</AssemblyVersion>
+	<FileVersion>2.26.420</FileVersion>
     <Description>Symmetric Crypt Pipe WinForm Heinrich Elsigan he@area23.at</Description>
     <StartupObject>EU.CqrXs.Gui.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
@@ -27,6 +27,8 @@
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <UseWPF>False</UseWPF>
     <ApplicationIcon>Resources\icon\TripleDes.ico</ApplicationIcon>
+    <PackageReadmeFile>README.MD</PackageReadmeFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -127,5 +129,12 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\EU.CqrXs.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>

@@ -2914,7 +2914,7 @@
             SerializeToXml gemeric to xml serialize
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="obj">object to serialize</param>
+            <param name="tObj">object to serialize</param>
             <returns>xml serialized string</returns>
         </member>
         <member name="M:EU.CqrXs.Util.Utils.DeserializeFromXml``1(System.String)">
@@ -2922,7 +2922,7 @@
             DeserializeFromXml generic T from xml deserializer
             </summary>
             <typeparam name="T"></typeparam>
-            <param name="xml">sml serialized string</param>
+            <param name="serializedXml">sml serialized string</param>
             <returns>generic T</returns>
         </member>
         <member name="M:EU.CqrXs.Util.Utils.SerializeToJsonl``1(``0)">

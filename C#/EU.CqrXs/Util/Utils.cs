@@ -116,54 +116,46 @@ namespace EU.CqrXs.Util
         /// SerializeToXml gemeric to xml serialize
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="obj">object to serialize</param>
+        /// <param name="tObj">object to serialize</param>
         /// <returns>xml serialized string</returns>
-        public static string SerializeToXml<T>(T obj)
+        public static string SerializeToXml<T>(T tObj)
         {
             string xml = string.Empty;
             try
             {
                 using StringWriter writer = new StringWriter();
                 XmlSerializer serializer = new XmlSerializer(typeof(T));
-                serializer.Serialize(writer, obj);
+                serializer.Serialize(writer, tObj);
                 xml = writer.ToString();
             }
             catch (Exception exSerialize)
             {
-                Area23Log.LogOriginMsgEx("Utils", 
-                    $"Exception {exSerialize.GetType()} in static byte[]? SerializeToXml<T = {obj.GetType()}>(T obj, out serialized)  {exSerialize.Message}",
-                    exSerialize);
+                Area23Log.LogOriginMsgEx("Utils", $"Exception {exSerialize.GetType()} in static byte[]? SerializeToXml<T = {tObj.GetType()}>(T tObj, out serialized)  {exSerialize.Message}", exSerialize);
             }
-
             return xml;
-
         }
-
 
         /// <summary>
         /// DeserializeFromXml generic T from xml deserializer
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="xml">sml serialized string</param>
+        /// <param name="serializedXml">sml serialized string</param>
         /// <returns>generic T</returns>
-        public static T? DeserializeFromXml<T>(string xml)
+        public static T? DeserializeFromXml<T>(string serializedXml)
         {
             T? result = default;
             try
             {
                 XmlSerializer ser = new XmlSerializer(typeof(T));
-                using (var tr = new StringReader(xml))
+                using (var tr = new StringReader(serializedXml))
                 {
                     result = (T)ser.Deserialize(tr);
                 }
             }
             catch (Exception exDeserialize)
             {
-                Area23Log.LogOriginMsgEx("Utils", 
-                    $"Exception {exDeserialize.GetType()} in static T? ({result.GetType()}) DeserializeFromXml<T = {result.GetType()}>(string xml) {exDeserialize.Message}",
-                    exDeserialize);
+                Area23Log.LogOriginMsgEx("Utils", $"Exception {exDeserialize.GetType()} in static T? ({result.GetType()}) DeserializeFromXml<T = {result.GetType()}>(string xml) {exDeserialize.Message}", exDeserialize);
             }
-
             return result;
         }
 

@@ -18,8 +18,9 @@
     <Copyright>Copyright © 2000-2040 Copyleft https://cqrxs.eu</Copyright>
     <PackageProjectUrl>https://cqrxs.eu/download/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.411</AssemblyVersion>
-    <FileVersion>2.26.411</FileVersion>
+    <AssemblyVersion>2.26.420</AssemblyVersion>
+    <FileVersion>2.26.420</FileVersion>
+    <PackageReadmeFile>README.MD</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -36,10 +37,6 @@
     <WarningLevel>4</WarningLevel>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="README.MD" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="README.MD">
@@ -61,6 +58,10 @@
 
 
   <ItemGroup>
+    <None Update="README.MD">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="Spooler_Test.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
