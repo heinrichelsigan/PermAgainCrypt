@@ -1,11 +1,8 @@
-﻿using EU.CqrXs.Crypt.Cipher;
-using EU.CqrXs.Crypt.EnDeCoding;
+﻿using EU.CqrXs.Crypt.EnDeCoding;
 using EU.CqrXs.Crypt.Hash;
 using EU.CqrXs.Util;
 using EU.CqrXs.Zip;
 using Newtonsoft.Json;
-using System.Globalization;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace EU.CqrXs.Crypt.Cipher
@@ -52,7 +49,8 @@ namespace EU.CqrXs.Crypt.Cipher
         {
             get
             {
-                string miniPipe = (InPipe == null || InPipe.Length == 0) ? "" : "." + CMode2.ToString() + PipeString;
+                string miniPipe = (InPipe == null || InPipe.Length == 0) ? "" : "." + CMode2.ToString() + "." + PipeString;
+                    // (InPipe == null || InPipe.Length == 0) ? "" : "." + PipeString;
                 string miniPipeExt = zType.GetZipTypeExtension() + miniPipe + encodeType.GetEnCodingExtension();
                 return miniPipeExt;
             }
@@ -74,7 +72,7 @@ namespace EU.CqrXs.Crypt.Cipher
             inPipe = (new List<CipherEnum>()).ToArray();
             encodeType = EncodingType.Base64;
             zType = ZipType.GZip;
-            CMode2 = CipherMode2.ECB;
+            CMode2 = CipherMode2.CFB;
         }
 
 
@@ -121,12 +119,14 @@ namespace EU.CqrXs.Crypt.Cipher
 
                     cipherEnums.Add(cipherAlgo);
 
-                    if (++cnt > maxpipe)
+                    if ((cipherEnums.Count > (maxpipe - 1)) || ++cnt > maxpipe)
                         break;
                 }
             }
 
-            inPipe = cipherEnums.ToArray();
+            int pipeSize = Math.Min(cipherEnums.Count, Constants.MAX_PIPE_LEN);
+            inPipe = new CipherEnum[pipeSize];
+            Array.Copy(cipherEnums.ToArray(), inPipe, pipeSize);
 
             zType = ZipType.GZip;
             encodeType = EncodingType.Base64;
@@ -149,13 +149,13 @@ namespace EU.CqrXs.Crypt.Cipher
             List<CipherEnum> pipeList = new List<CipherEnum>();
 
             HashSet<byte> hashBytes = new HashSet<byte>();
-            for (int i = 0; i < keyBytes.Length && pipeList.Count < maxpipe; i++)
+            for (int i = 0, j = 0; i < keyBytes.Length && j < maxpipe && pipeList.Count < maxpipe; i++)
             {
                 byte cb = (byte)((int)((int)keyBytes[i] % 0x1d));
                 // TODO: future design
                 // if (hashBytes.Contains(cb)) // mit magic add to generate deterministic more on same bytes
                 //     cb = (byte)((int)(cb + Math.Pow(2, i) + keyBytes.Length) % 0x1d);                
-                if (!hashBytes.Contains(cb))
+                if (!hashBytes.Contains(cb) && pipeList.Count < maxpipe + 1)
                 {
                     hashBytes.Add(cb);
                     CipherEnum cipherEnm = CipherEnumExtensions.ByteCipherDict[cb];
@@ -163,10 +163,13 @@ namespace EU.CqrXs.Crypt.Cipher
 
                     if (verbose)
                         Console.Out.WriteLine("keybyts[" + i + "]=" + keyBytes[i] + " byte cb = " + (int)cb + " CipherEnum: " + cipherEnm);
+                    j++;
                 }
             }
 
-            inPipe = pipeList.ToArray();
+            int pipeSize = Math.Min(pipeList.Count, Constants.MAX_PIPE_LEN);
+            inPipe = new CipherEnum[pipeSize];
+            Array.Copy(pipeList.ToArray(), inPipe, pipeSize);
 
             zType = ZipType.GZip;
             encodeType = EncodingType.Base64;

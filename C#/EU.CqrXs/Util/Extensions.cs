@@ -1406,6 +1406,8 @@ namespace EU.CqrXs.Util
                 }
             }
 
+            CipherMode2[] cmodes2 = { CipherMode2.CBC, CipherMode2.CFB, CipherMode2.ECB, CipherMode2.CTS };
+            CipherMode2 cmode2 = CipherMode2.CFB;
             ZipType[] zipTypes = { ZipType.BZip2, ZipType.GZip, ZipType.Zip };
             ZipType zipTyp = ZipType.None;
             foreach (ZipType zType in zipTypes)
@@ -1419,6 +1421,20 @@ namespace EU.CqrXs.Util
                 {
                     zipTyp = zType;
                     strippedFileName = strippedFileName.Replace(zipTyp.GetZipTypeExtension() + ".", ".");
+                }
+            }
+
+            foreach (CipherMode2 cMode in cmodes2)
+            {
+                if (strippedFileName.EndsWith("." + cMode.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    cmode2 = cMode;
+                    strippedFileName = strippedFileName.Replace("." + cMode.ToString(), "");
+                }
+                else if (strippedFileName.Contains("." + cMode.ToString(), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    cmode2 = cMode;
+                    strippedFileName = strippedFileName.Replace("." + cMode.ToString(), "");
                 }
             }
 
@@ -1436,7 +1452,7 @@ namespace EU.CqrXs.Util
 
             if (cipherEnums.Count > 0)
             {
-                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, CipherMode2.CFB);
+                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, cmode2);
                 if (strippedFileName.Contains("." + secCipherPipe.PipeString))
                 {
                     strippedFileName = strippedFileName.Replace("." + secCipherPipe.PipeString, "");
@@ -1444,7 +1460,7 @@ namespace EU.CqrXs.Util
             }
 
             if (secCipherPipe == null || secCipherPipe.InPipe.Length == 0)
-                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, CipherMode2.CFB);
+                secCipherPipe = new SecureCipherPipe(cipherEnums.ToArray(), 8, cmode2);
 
             return strippedFileName;
         }

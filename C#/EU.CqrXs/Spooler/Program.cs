@@ -204,7 +204,7 @@ namespace EU.CqrXs.Spooler
                         sPipe = new SecureCipherPipe(keyHash.Hash(passKey), cmode2, false);
                         sPipe.ZType = zipType;
                         sPipe.EncodeType = encodingType;
-                        sPipe.KHash = KeyHash.Hex;
+                        
 
                         PrintSecureCipherPipe(sPipe, decryptDirection);
                         outBytes = sPipe.EncryptEncodeBytes(inBytes, passKey, cmode2);
@@ -218,9 +218,9 @@ namespace EU.CqrXs.Spooler
                         ofName = ofName.StripSecureCipherPipeFromFileName(out sPipe);
                         if (sPipe != null)
                         {
-                            keyHash = KeyHash.Hex;
                             encodingType = sPipe.EncodeType;
                             zipType = sPipe.ZType;
+                            cmode2 = sPipe.CMode2;
                         }
                         PrintSecureCipherPipe(sPipe, decryptDirection);
                         try
