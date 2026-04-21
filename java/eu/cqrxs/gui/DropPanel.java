@@ -116,7 +116,7 @@ public class DropPanel extends JPanel {
             jLabelFileIn = new JLabel();
             jLabelFileIn.setFont(monoSpaced);
             jLabelFileIn.setBounds(4, 68, 144, 24);
-            jLabelFileIn.setText("[No input file loaded]");
+            jLabelFileIn.setText("[No file loaded]");
             add(jLabelFileIn);
 
 			jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
@@ -125,13 +125,13 @@ public class DropPanel extends JPanel {
             add(jLabelCipherPipe);
 
             jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
-            jLabelImgOut.setBounds(860, 4, 60, 60);
+            jLabelImgOut.setBounds(862, 4, 60, 60);
             add(jLabelImgOut);
 
             jLabelFileOut = new JLabel();
             jLabelFileOut.setFont(monoSpaced);
-            jLabelFileOut.setBounds(860, 68, 144, 24);
-            jLabelFileOut.setText("[No output file processed]");
+            jLabelFileOut.setBounds(862, 68, 144, 24);
+            jLabelFileOut.setText("[No output generated]");
             add(jLabelFileOut);
 
         } catch (Exception ex) {
@@ -181,6 +181,138 @@ public class DropPanel extends JPanel {
     }
 
 
+
+    /**
+     * setFileIconLabelIn sets label of input file and image icon
+     * @param fileInName full path to file
+     */
+	public void setFileIconLabelIn(final String fileInName) {
+		remove(jLabelImgIn);
+		remove(jLabelFileIn);					
+		
+		int ridx = fileInName.lastIndexOf('/');
+        if (ridx < 0)
+            ridx = fileInName.lastIndexOf('\\');
+        String imgInName = (ridx > 0) ?
+                fileInName.substring(ridx + 1, fileInName.length() - 1) :
+                fileInName;
+		
+		if (fileInName.toLowerCase().endsWith(".jpg")  ||
+                fileInName.toLowerCase().endsWith(".jpeg")  ||
+                fileInName.toLowerCase().endsWith(".png")  ||
+                fileInName.toLowerCase().endsWith(".gif")  ||
+                fileInName.toLowerCase().endsWith(".bmp")  ||
+                fileInName.toLowerCase().endsWith(".tif"))
+        {
+			imgFileIn = addImages(new String[] { fileInName });
+            imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
+        }
+        else {
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgIconIn = new ImageIcon(imgFileIn);
+        }
+		
+		jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
+		jLabelImgIn.setVisible(true);	
+		jLabelImgIn.setBounds(4, 4, 72, 60);
+		jLabelImgIn.setText(imgInName);
+		add(jLabelImgIn);
+		
+		jLabelFileIn = new JLabel();
+		jLabelFileIn.setVisible(true);	
+		jLabelFileIn.setFont(monoSpaced);
+		jLabelFileIn.setBounds(4, 68, 144, 24);
+		jLabelFileIn.setText(imgInName);
+		add(jLabelFileIn);
+		
+		repaint();
+	}
+
+    /**
+     * setFileIconLabelOut sets label of output file and image icon
+     * @param fileOutName full path to file
+     */
+	public void setFileIconLabelOut(String fileOutName) {
+					
+		remove(jLabelImgOut);
+		remove(jLabelFileOut);
+		
+		int ridx = fileOutName.lastIndexOf('/');
+        if (ridx < 0)
+            ridx = fileOutName.lastIndexOf('\\');
+        String imgOutName = (ridx > 0) ?
+                fileOutName.substring(ridx + 1, fileOutName.length() - 1) :
+                fileOutName;
+		
+		if (fileOutName.toLowerCase().endsWith(".jpg")  ||
+                fileOutName.toLowerCase().endsWith(".jpeg")  ||
+                fileOutName.toLowerCase().endsWith(".png")  ||
+                fileOutName.toLowerCase().endsWith(".gif")  ||
+                fileOutName.toLowerCase().endsWith(".bmp")  ||
+                fileOutName.toLowerCase().endsWith(".tif"))
+        {
+			imgFileOut = addImages(new String[] { fileOutName });
+            imgIconOut = new ImageIcon(getThumbnail(imgFileOut));
+        }
+        else {
+            imgFileOut  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgIconOut = new ImageIcon(imgFileOut);
+        }
+
+		jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
+		jLabelImgOut.setVisible(true);		
+		jLabelImgOut.setBounds(862, 4, 60, 60);		
+		add(jLabelImgOut);
+		
+		jLabelFileOut = new JLabel();
+		jLabelFileOut.setVisible(true);
+		jLabelFileOut.setFont(monoSpaced);
+		jLabelFileOut.setBounds(862, 68, 144, 24);
+		jLabelFileOut.setText(imgOutName);
+		add(jLabelFileOut);
+		
+		repaint();
+		
+	}
+
+
+	/**
+     * resetFileLabels resets input and output images and image file labels
+     */
+	public void resetFileLabels() {
+		
+		imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+		imgFileOut = addImages((new String[] {"eu/cqrxs/gui/encrypted.png", "encrypted.png" }));
+			
+		remove(jLabelImgIn);
+		remove(jLabelFileIn);					
+		remove(jLabelImgOut);
+		remove(jLabelFileOut);
+		
+		jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
+		jLabelImgIn.setBounds(4, 4, 72, 60);
+		jLabelImgIn.setText("[No input file]");
+		add(jLabelImgIn);
+		
+		jLabelFileIn = new JLabel();
+		jLabelFileIn.setFont(monoSpaced);
+		jLabelFileIn.setBounds(4, 68, 144, 24);
+		jLabelFileIn.setText("[No file loaded]");
+		add(jLabelFileIn);
+
+		jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
+		jLabelImgOut.setBounds(862, 4, 60, 60);
+		add(jLabelImgOut);
+		
+		jLabelFileOut = new JLabel();
+		jLabelFileOut.setFont(monoSpaced);
+		jLabelFileOut.setBounds(862, 68, 144, 24);
+		jLabelFileOut.setText("[No output generated]");
+		add(jLabelFileOut);
+		
+		repaint();
+	}
+
     /**
      * setPipeImg sets CipherPipe image
      * @param pipeImg image to set, if null reset to default image
@@ -192,12 +324,12 @@ public class DropPanel extends JPanel {
 
         if (pipeImg == null) {
             jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
-            jLabelCipherPipe.setBounds(108, 0, 640, 96);
+            jLabelCipherPipe.setBounds(112, 2, 640, 96);
             jLabelCipherPipe.setText("[blank cipher pipe]");
             add(jLabelCipherPipe);
         }  else {
             jLabelCipherPipe = new JLabel(new ImageIcon(pipeImg));
-            jLabelCipherPipe.setBounds(108, 0, 640, 96);
+            jLabelCipherPipe.setBounds(112, 2, 640, 96);
             jLabelCipherPipe.setText(pipeString);
             add(jLabelCipherPipe);
         }
@@ -276,6 +408,7 @@ public class DropPanel extends JPanel {
         }
     }
 
+	
     protected void importFiles(final String droppedFile) {
 		// message.setText("'" + droppedFile + "'");
 
@@ -315,53 +448,6 @@ public class DropPanel extends JPanel {
         // simple
         if (jFrameSimple != null)
             jFrameSimple.open_delegate(droppedFile);
-
-        /*
-        Runnable run = new Runnable() {
-            @Override
-            public void run() {
-
-                int ridx = droppedFile.lastIndexOf('/');
-                if (ridx < 0)
-                    ridx = droppedFile.lastIndexOf('\\');
-                String imgInName = (ridx > 0) ?
-                        droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
-                        droppedFile;
-
-                if (droppedFile.toLowerCase().endsWith(".jpg")  ||
-					droppedFile.toLowerCase().endsWith(".jpeg")  ||
-					droppedFile.toLowerCase().endsWith(".png")  ||
-					droppedFile.toLowerCase().endsWith(".gif")  ||
-					droppedFile.toLowerCase().endsWith(".bmp")  ||
-					droppedFile.toLowerCase().endsWith(".tif")) 
-				{				
-					imgFileIn = addImages(new String[] { droppedFile });
-					imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
-				}
-				else {
-					imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
-					imgIconIn = new ImageIcon(imgFileIn);
-				}
-				remove(jLabelImgIn);
-				jLabelImgIn = new JLabel(imgIconIn);
-				jLabelImgIn.setBounds(4, 4, 60, 60);
-				add(jLabelImgIn);
-
-                jLabelFileIn.setText(imgInName);
-				jLabelImgOut.setVisible(false);
-				jLabelFileOut.setVisible(false);
-                // complex
-                if (jdFrame != null)
-                    jdFrame.open_delegate(droppedFile);
-                // simple
-                if (jFrameSimple != null)
-                    jFrameSimple.open_delegate(droppedFile);
-                // ((CqrJFrameSimple)getParent()).open_delegate();
-                // message.setText("Drop: '" + droppedFile + "'.");
-            }
-        };
-        SwingUtilities.invokeLater(run);
-        */
     }
 
     // protected void importFiles(final List files) {

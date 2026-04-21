@@ -562,7 +562,7 @@ public class CqrJdFrame extends JFrame {
 		menuCMode2_CCM.setFont(menuFont);
 		menuCMode2_CCM.setEnabled(false);
 		// menuCMode2_CCM.addActionListener(aSymAction);
-		menuCMode2.add(menuCMode2_CFB);
+		menuCMode2.add(menuCMode2_CCM);
 
 		menuCMode2_CTS = new JMenuItem();
 		menuCMode2_CTS.setHorizontalTextPosition(SwingConstants.RIGHT);
@@ -1154,7 +1154,8 @@ public class CqrJdFrame extends JFrame {
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
-			dropPanel.jLabelFileIn.setText(openFileName);
+			dropPanel.setFileIconLabelIn(filename);
+			// dropPanel.jLabelFileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
@@ -1197,7 +1198,8 @@ public class CqrJdFrame extends JFrame {
 		try {
 			if (saveFileBytes != null && saveFileBytes.length > 0) {
 				Files.write(filePath, saveFileBytes);
-			    dropPanel.jLabelFileIn.setText(saveFileName);
+				dropPanel.setFileIconLabelOut(filename);
+			    // dropPanel.jLabelFileIn.setText(saveFileName);
 			}
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
@@ -1293,13 +1295,18 @@ public class CqrJdFrame extends JFrame {
 			jTextField_Pipe.setText("");
 			jTextField_Hash.setText("");
 			jTextField_Key.setText("zen@area23.at");
+			
 			// TODO: reset JComboBoxes jComboBox_Algo
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 			selectItemByString(jComboBox_Hash, menuHash, "Hex");
 			selectItemByString(jComboBox_Zip, menuZip, "None");
+			// reset CipherMode2 to CFB
+			selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
 			dropPanel.setPipeImg(null, "");
+			dropPanel.resetFileLabels();			
 			setInfoMsg("Form cleared.");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1361,13 +1368,15 @@ public class CqrJdFrame extends JFrame {
                 saveFileSuffix += (zipType != ZipType.None) ? ".gz" : "";
                 saveFileSuffix += (pipe.getPipeString().length() > 0) ?  "." + pipe.getPipeString() : "";
                 saveFileSuffix += (encodeType != EncodeEnum.None) ? "." + encodeType.getName() : ".base64";
-                saveFileName = openFileName + saveFileSuffix;       
-                saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
+                saveFileName = openFileName + saveFileSuffix; 
+                String saveFileNameOnly = saveFileToTemp(saveFileName, saveFileBytes);
 
-				dropPanel.jLabelImgOut.setVisible(true);
-				dropPanel.jLabelFileOut.setVisible(true);
-				dropPanel.jLabelFileOut.setText(saveFileName);
-                
+				try {
+					dropPanel.setFileIconLabelOut(saveFileName);
+				} catch (Exception exImgLablOut) {
+					exImgLablOut.printStackTrace();
+				}
+				
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
                 if (saveFileBytes.length > 2048 && saveFileBytes.length < 1048576) 
@@ -1446,11 +1455,13 @@ public class CqrJdFrame extends JFrame {
                         }
                     }
                 }
-				saveFileName = saveFileToTemp(saveFileName, saveFileBytes);
+				String saveFileNameOnly = saveFileToTemp(saveFileName, saveFileBytes);
 
-				dropPanel.jLabelFileOut.setText(saveFileName);
-				dropPanel.jLabelImgOut.setVisible(true);
-				dropPanel.jLabelFileOut.setVisible(true);
+				try {
+					dropPanel.setFileIconLabelOut(saveFileName);
+				} catch (Exception exImgLablOut) {
+					exImgLablOut.printStackTrace();
+				}
                 
 				if (saveFileBytes.length < 2048)
                     jLabel_statusDestination.setText(saveFileBytes.length + " bytes"); 
@@ -1459,7 +1470,7 @@ public class CqrJdFrame extends JFrame {
                 if (saveFileBytes.length > 1048576) 
                     jLabel_statusDestination.setText((int)(saveFileBytes.length / (1024*1024)) + " MB.");
                 
-					save_action();
+				save_action();
             } 
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());

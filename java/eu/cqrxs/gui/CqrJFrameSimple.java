@@ -962,7 +962,8 @@ public class CqrJFrameSimple extends JFrame {
 		try{
 			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
-			dropPanel.jLabelFileIn.setText(openFileName);
+			dropPanel.setFileIconLabelIn(filename);
+			// dropPanel.jLabelFileIn.setText(openFileName);
 			jButton_encrypt.requestFocus();
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
@@ -1005,7 +1006,8 @@ public class CqrJFrameSimple extends JFrame {
 		try {
 			if (saveFileBytes != null && saveFileBytes.length > 0) {
 				Files.write(filePath, saveFileBytes);
-			    dropPanel.jLabelFileIn.setText(saveFileName);
+				dropPanel.setFileIconLabelOut(filename);
+			    // dropPanel.jLabelFileIn.setText(saveFileName);
 			}
 			else 
 				throw new java.lang.IllegalStateException("saveFileBytes is null or len == 0");
@@ -1082,13 +1084,17 @@ public class CqrJFrameSimple extends JFrame {
 			jTextAreaDestination.setText("");
 			jTextField_Pipe.setText("");
 			jTextField_Key.setText("zen@area23.at");
+				
 			// TODO: reset JComboBoxes jComboBox_Algo
 			selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
 			selectItemByString(jComboBox_Zip, menuZip, "GZip");
+			// reset CipherMode2 to CFB
+			selectCipherMode2MenuItem(menuCMode2, CipherMode2.CFB);
 
 			dropPanel.setPipeImg(null, "");
-
+			dropPanel.resetFileLabels();	
 			setInfoMsg("Form cleared.");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
