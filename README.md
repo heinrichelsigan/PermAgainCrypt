@@ -119,7 +119,7 @@ U:\source\PermAgainCrypt\Deploy\console\x86>
 
 # [Java](https://github.com/heinrichelsigan/PermAgainCrypt/tree/main/java)
 
-<img width="1007" height="764" alt="2026-01-25_javax_swing_JFrame_java" src="https://github.com/user-attachments/assets/fb449450-0dcd-481e-a75f-572efbf8d5ee" />
+<img width="1007" height="764" alt="2026-01-25_javax_swing_JFrame_java" src="https://raw.githubusercontent.com/heinrichelsigan/PermAgainCrypt/refs/heads/main/docu/2026-01-25_javax_swing_JFrame_java.png" />
 
 ## Java C# compare encoding / decoding
 
