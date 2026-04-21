@@ -38,6 +38,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+/**
+ * class DropPanel 	encapsulates functionality for drag'n'drop files into 
+ * 					and shows start and end image and symmetric cipher pipe image
+ */
 public class DropPanel extends JPanel {
 
     private DropTarget dropTarget;
@@ -105,28 +109,28 @@ public class DropPanel extends JPanel {
             add(message);
 
             jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
-            jLabelImgIn.setBounds(4, 4, 60, 60);
+            jLabelImgIn.setBounds(4, 4, 72, 60);
             jLabelImgIn.setText("[No input file]");
             add(jLabelImgIn);
 
             jLabelFileIn = new JLabel();
             jLabelFileIn.setFont(monoSpaced);
-            jLabelFileIn.setBounds(4, 68, 120, 24);
+            jLabelFileIn.setBounds(4, 68, 144, 24);
             jLabelFileIn.setText("[No input file loaded]");
             add(jLabelFileIn);
 
 			jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
-			jLabelCipherPipe.setBounds(108, 0, 640, 96);
+			jLabelCipherPipe.setBounds(112, 2, 640, 96);
             jLabelCipherPipe.setText("[blank cipher pipe]");
             add(jLabelCipherPipe);
 
             jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
-            jLabelImgOut.setBounds(880, 4, 60, 60);
+            jLabelImgOut.setBounds(860, 4, 60, 60);
             add(jLabelImgOut);
 
             jLabelFileOut = new JLabel();
             jLabelFileOut.setFont(monoSpaced);
-            jLabelFileOut.setBounds(880, 68, 120, 24);
+            jLabelFileOut.setBounds(860, 68, 144, 24);
             jLabelFileOut.setText("[No output file processed]");
             add(jLabelFileOut);
 

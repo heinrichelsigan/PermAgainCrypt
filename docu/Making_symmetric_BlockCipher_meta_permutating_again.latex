@@ -29,22 +29,7 @@
 
 \tableofcontents
 
-\begin{abstract}
-
-Hi, I’m \href{https://heinrichelsigan.area23.at/}{Heinrich Elsigan}
-I am interested in C\#, Java, MSSQL, .Net Core, Android and politics, society and the future;
-currently working as freelancer (one person company) and planning a secure endpoint 2 endpoint chat and looking to collaborate on reviews for other repositories and projects. Article written in \LaTeX{}.
-
-\begin{enumerate}
-    \item personal tech and political blog \href{https://area23-at.blogspot.com/}{blog.area23.at}
-	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan/}
-	\item StackOverflow \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
-    \item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv}
-    \item live demo .Net \href{https://area23.at/net/}{area23.at/net}		
-\end{enumerate}
-
-\end{abstract}
-
+\pagebreak
 
 \section{Thanks to}
 
@@ -66,6 +51,7 @@ raw experimental test form.
 	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
 \end{enumerate}
 
+\pagebreak
 
 \section{Software}
 
@@ -83,7 +69,7 @@ Attention, version before March 2025 have a 3-fish over Aes-Engine encryption bu
 uses AES default block size and key length and Bouncy Castle Aes-Engine parameters. It works, but
 settings AES default engine for 3-fish, isn’t so serious and please download version after March 30.
 
-
+\pagebreak
 
 \section{Different Forms}
 
@@ -131,7 +117,6 @@ TextArea Destination.
 TextArea Destination.
 \end{enumerate}
 
-
 \subsection{Documentation of WinForm}
 
 You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCrypt/releases}{github.com/heinrichelsigan/PermAgainCrypt/releases} to download newest Gui Form x86 and x64.
@@ -142,24 +127,102 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 \caption{\label{fig:WinForm_Csharp}WinForm CSharp}
 \end{figure}
 
-\subsection{Java JFrame based}
+\pagebreak 
 
-\begin{itemize}
-\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
-\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
-\end{itemize}
+\subsection{Java}
+
+\subsubsection{Java PreRequesites JDK release date > 2018 installed}
+\begin{enumerate}
+    \item openjdk-21 to openjdk-26
+    \item Oracle OpenJDK 26
+    \item IBM Semeru 26 (AdoptOpenJDK OpenJ9)
+    \item Amazon Coretto 26
+    \item BellSoft Liberica JDK 26
+    \item Eclipse Temurin (AdoptOpenJDK HotSpot)
+    \item Alibaba Dragonwell 21.0.10
+    \item GraalVM Community Edition 25.0.2
+    \item JetBrains Runtime 25.0.2
+    \item Microsoft OpenJDK 25.0.2	
+\end{enumerate}
 
 \begin{figure}
 \includegraphics[width=1\textwidth]{javax_swing_JFrame_java.jpg}
 \caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
+\pagebreak
+
+\subsubsection{Java on Windows: Compile, build, launch}
+
+Change following lines in winmake.bat depdendent on your JDK installation and bouncy-castle version:
+
+\begin{small}
+\begin{verbatim}
+echo Setting bouncy-castle jar
+SET BCJAR=bcprov-lts8on-2.73.10.jar
+echo Setting Path and CLASSPATH
+SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
+SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\openjdk-25\lib
+SET MYCLASSPATH=%CLASSPATH%;.\;.\%BCJAR%;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;
+\end{verbatim}
+\end{small}
+
+run: winmake.bat
+\newline which calls finally 
+\begin{small}
+\begin{verbatim}
+java.exe -classpath %MYCLASSPATH% eu\cqrxs\gui\CqrJdFrame.java
+java.exe -classpath %MYCLASSPATH% eu\cqrxs\console\CryptConsole.java
+\end{verbatim}
+\end{small}
+
+
+\subsubsection{Java on Linux (similiar on any other Unix or unix based MacOs on Apple)}
+
+Change Makefile dependent on your JDK installation and bouncy-castle version, then run make
+\begin{small}
+\begin{verbatim}
+make clean; make all; make launch
+\end{verbatim}
+\end{small}
+
+Optional change these lines in jmake.sh depdendent on your JDK installation and bouncy-castle version: remember: classpath seperator under unix is : and NOT semicolon ;
+\begin{small}
+\begin{verbatim}
+echo "setting bouncy castle jar and MYCLASSPATH"
+BCJAR=bcprov-lts8on-2.73.10.jar
+MYCLASSPATH="$CLASSPATH:./:./$BCJAR:./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/fw/net/:./eu/cqrxs/fw/util/:./eu/cqrxs/fw/crypt/:./eu/cqrxs/fw/crypt/encoding/:./eu/cqrxs/fw/crypt/cipher/:./eu/cqrxs/fw/crypt/hash/:"
+\end{verbatim}
+\end{small}
+run: sh jmake.sh
+\newline which calls finally:
+\begin{small}
+\begin{verbatim}
+JAVAFLAGS=--enable-native-access=ALL-UNNAMED
+echo "launching eu/cqrxs/gui/CqrJdFrame.java"
+java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/gui/CqrJdFrame.java
+
+echo "run eu/cqrxs/console/ConsoleApp"
+java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java 
+\end{verbatim}
+\end{small}
+
+
+
+\subsubsection{Java is JFrame based}
+\begin{itemize}
+\item \url{https://docs.oracle.com/javase/8/docs/api/javax/swing/JFrame.html}
+\item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
+\end{itemize}
+
+
+\pagebreak
+
 \subsection{Simple mode - SecureCipherPipe}
 
 In the simple mode SecureCipherPipe is used as CipherPipe. Each stage of the pipe will not be encrypted with the same secure key; furthermore, each pipe stage will be encrypted with a secure hashed key with a different hash.
-
+\newline
 WebForm for simple mode is \url{https://area23.at/net/Crypt/AesImprove.aspx} 
-
 or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
 
 \begin{figure}
@@ -169,296 +232,7 @@ or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
     \label{fig:Simple_SecureCipherPipe}
 \end{figure}
 
-\subsubsection{SecureCipherPipe fragments in java}
-\begin{small}
-\begin{verbatim}
-package eu.cqrxs.crypt.cipher;
-import eu.cqrxs.crypt.encoding.+,
-
-// [...]
-/**
- * SecureCipherPipe is symmetric block cipher encryption and decryption pipe line
- */
-public class SecureCipherPipe extends CipherPipe {
-
-    String cipherKeyHash = "";
-
-	final static KeyHash[] secureHashes = {
-			KeyHash.BCrypt, KeyHash.Blake2xs,  KeyHash.CShake, KeyHash.Dstu7564,
-			KeyHash.OpenBSDCrypt, KeyHash.SCrypt, KeyHash.RipeMD256, KeyHash.Whirlpool };
-
-    /**
-     * parameterless constructor of SecureCipherPipe
-     */
-    public SecureCipherPipe() {
-        cipherKeyHash = "";
-        inPipe = new CipherEnum[0];
-        encodeType = EncodeEnum.Base64;
-        zType = ZipType.GZip;
-        cMode2 = CipherMode2.CFB;
-    }
-
-    /**
-     * SecureCipherPipe constructor with following parameters
-     * @param cipherEnums an array of {@link CipherEnum}
-     * @param maxpipe maximum pipeline size {@link eu.cqrxs.util.Constants}.MAX_PIPE_LEN
-     * @param cmode2 {@link CipherMode2}
-     */
-    public SecureCipherPipe(CipherEnum[] cipherEnums, int maxpipe, CipherMode2 cmode2) {
-        // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
-        maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
-
-        int isize = Math.min(((int)cipherEnums.length), ((int)maxpipe));
-        inPipe = new CipherEnum[isize];
-        for (int ib = 0; (ib < cipherEnums.length && ib < isize); ib++) {
-            inPipe[ib] = cipherEnums[ib];
-        }
-        // System.arraycopy(cipherEnums, 0, inPipe, 0, isize);
-        cMode2 = cmode2;
-        encodeType = EncodeEnum.Base64;
-        zType = ZipType.GZip;
-    }
-
-    /**
-     * SecureCipherPipe constructor with 
-     *  an array of [@link String[]} cipherAlgos as inpipe
-     *
-     * @param cipherAlgos array of [@link String[]} as inpipe
-     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
-     * @param cmode2 {@link CipherMode2}
-     * */
-    public SecureCipherPipe(String[] cipherAlgos, int maxpipe, CipherMode2 cmode2) {
-        // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
-        maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
-
-        List<CipherEnum> cipherEnums = new ArrayList<CipherEnum>();
-        int cnt = 0;
-        for (String algo : cipherAlgos) {
-            if (algo != null && algo.length() > 0) {
-                CipherEnum cipherAlgo = CipherEnum.Aes;
-                cipherAlgo = CipherEnum.valueOf(algo);
-                cipherEnums.add(cipherAlgo);
-                if (++cnt > maxpipe)
-                    break;
-            }
-        }
-        inPipe = cipherEnums.toArray(CipherEnum[]::new);
-        cMode2 = cmode2;
-        encodeType = EncodeEnum.Base64;
-        zType = ZipType.GZip;
-    }
-
-
-    /**
-     * SecureCipherPipe ctor with array of user key bytes
-     * @param keyBytes user key bytes
-     * @param maxpipe maximum length {@link Constants}.MAX_PIPE_LEN
-     * @param cmode2 {@link CipherMode2}
-     */
-    public SecureCipherPipe(byte[] keyBytes, int maxpipe, CipherMode2 cmode2) {
-        // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
-        maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
-        short scnt = 0;
-        List<CipherEnum> pipeList = new ArrayList<CipherEnum>();
-
-        HashSet<Byte> hashBytes = new HashSet<Byte>();
-        for (int i = 0; i < keyBytes.length && pipeList.size() < maxpipe; i++) {
-            byte bb = (byte)((int)((int)keyBytes[i] % 0x1d));
-            Byte cb = Byte.valueOf(bb);
-            if (!hashBytes.contains(cb)) {
-                hashBytes.add(cb);
-                CipherEnum cipherEnm = CipherEnum.getByteCipherDict().get(cb);
-				System.out.println("keybyts[" + i + "]="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName());
-                pipeList.add(cipherEnm);
-            }
-        }
-        try {
-            inPipe = new CipherEnum[pipeList.size()];
-            inPipe = pipeList.toArray(CipherEnum[]::new);
-        } catch (Exception ex) {
-            inPipe = new CipherEnum[pipeList.size()];
-            for (int ib = 0; ib < pipeList.size(); ib++) {
-                inPipe[ib] = pipeList.get(ib);
-            }
-        }
-        cMode2 = cmode2;
-        encodeType = EncodeEnum.Base64;
-        zType = ZipType.GZip;
-    }
-
-    /**
-     * Constructs a SecureCipherPipe from key 
-     * @param key users secret key per default email address
-     * @param cmode2 {@link CipherMode2}
-     */
-    public SecureCipherPipe(String key, CipherMode2 cmode2) {
-        this(CryptHelper.getKeyBytesSingle(key, 16), Constants.MAX_PIPE_LEN, cmode2);
-        cipherKeyHash = key;
-    }
-
-    /**
-     * SecureCipherPipe constructor with single users key argument
-     * all other parameters are set to default
-     * @param key only users secret key
-     */
-    public SecureCipherPipe(String key) {
-        this(key, CipherMode2.CFB);
-        cipherKeyHash = key;
-    }
-
-
-    /**
-     * encryptBytesFast generic encrypt bytes to bytes
-     * @param inBytes array of bytes
-     * @param cipherAlgo {@link CipherEnum}
-     * @param hashKey users secret key for encryption
-     * @param cmode2 {@link CipherMode2}
-     * @return byte array of encrypted bytes
-     */
-    public static byte[] encryptBytesFast(byte[] inBytes, CipherEnum cipherAlgo, String hashKey, CipherMode2 cmode2) throws InvalidCipherTextException {
-        if (hashKey == null || hashKey.length() < 1)
-            throw new IllegalArgumentException("hashKey");
-        byte[] encryptBytes = inBytes;
-        CryptParams cpParams = new CryptParams(cipherAlgo, hashKey, hashKey, cmode2);
-
-        switch (cipherAlgo) {
-            case ZenMatrix:
-                encryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).encrypt(inBytes, true);
-                break;
-            // case CipherEnum.ZenMatrix2:
-            //  encryptBytes = (new ZenMatrix2(secretKey, hash, false)).Encrypt(inBytes);
-            //  break;
-            default:
-                CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
-                encryptBytes = cryptBounceCastle.encrypt(inBytes);
-                break;
-        }
-        return encryptBytes;
-    }
-
-
-    /**
-     * Generic decrypt bytes to bytes
-     * @param cipherBytes enrypted bytes
-     * @param cipherAlgo {@link CipherEnum}
-     * @param hashKey users secret key
-     * @param cmode2 {@link CipherMode2}
-     * @return decrypted bytes for one cipher algo
-     */
-    public static byte[] decryptBytesFast(byte[] cipherBytes, CipherEnum cipherAlgo, String hashKey, CipherMode2 cmode2) throws InvalidCipherTextException {
-        if (hashKey == null || hashKey.length() == 0)
-            throw new IllegalArgumentException("hashKey");
-        byte[] decryptBytes = cipherBytes; 
-        CryptParams cpParams = new CryptParams(cipherAlgo, hashKey, hashKey, cmode2);
-
-        switch (cipherAlgo) {            
-            case ZenMatrix:
-                decryptBytes = (new ZenMatrix(hashKey, hashKey, false, KeyHash.Hex)).decrypt(cipherBytes);
-                break;
-            // case ZenMatrix2:
-            //     decryptBytes = (new ZenMatrix2(secretKey, hash, false)).Decrypt(cipherBytes);
-            //     break;
-            default:
-                CryptBounceCastle cryptBounceCastle = new CryptBounceCastle(cpParams, true);
-                decryptBytes = cryptBounceCastle.decrypt(cipherBytes);
-                break;
-        }
-        return decryptBytes; 
-        // TODO: EnDeCodeHelper.GetBytesTrimNulls(decryptBytes);
-    }
-
-
-    /**
-     * merryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
-     * @param inBytes plain byte[] to encrypt
-     * @param hashKey user secret key to use for all symmetric cipher algorithms in the pipe
-     * @param cmode2 {@link CipherMode2}
-     * @return encrypted byte[]
-     */
-    public byte[] merryGoRoundEncrpyt(byte[] inBytes, String hashKey, CipherMode2 cmode2) throws InvalidCipherTextException {
-        if (inPipe.length == 0)
-            return inBytes;
-        if ((hashKey == null && cipherKeyHash == null) || 
-            (hashKey.length() == 0 && cipherKeyHash.length() == 0))
-            throw new IllegalArgumentException("hashKey");
-
-        int merry = 0;
-        byte[] encryptedBytes = new byte[inBytes.length];
-        System.arraycopy(inBytes, 0, encryptedBytes, 0, inBytes.length);
-        cipherKeyHash = (hashKey != null && hashKey.length() > 0) ? 
-                            hashKey : cipherKeyHash;
-        for (CipherEnum cipher : inPipe) {
-            String cipherHashKey = secureHashes[(merry % inPipe.length)].hash(cipherKeyHash);
-            if ((++merry) > (inPipe.length -1)) merry = 0;
-
-            encryptedBytes = encryptBytesFast(inBytes, cipher, cipherHashKey, cmode2); 
-            inBytes = encryptedBytes;
-        }
-        return encryptedBytes;
-    }
-
-    /**
-     * decrpytRoundGoMerry against clock turn -
-     * starts merry to turn arround from right to left against clock hour cycle
-     * @param cipherBytes encrypted byte array
-     * @param hashKey user secret key, normally email address
-     * @param cmode2 {@link CipherMode2}
-     * @return byte[]
-     */
-    public byte[] decrpytRoundGoMerry(byte[] cipherBytes, String hashKey, CipherMode2 cmode2) throws InvalidCipherTextException {
-        if (inPipe.length == 0)
-            return cipherBytes;
-        if ((hashKey == null && cipherKeyHash == null) || 
-            (hashKey.length() == 0 && cipherKeyHash.length() == 0))
-            throw new IllegalArgumentException("hashKey");
-        cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? 
-                        hashKey : cipherKeyHash;        
-        int roundsGo = inPipe.length - 1;
-
-        byte[] decryptedBytes = new byte[cipherBytes.length];
-        for (CipherEnum cipher : getOutPipe()) {
-            String cipherHashKey = secureHashes[(roundsGo % inPipe.length)].hash(cipherKeyHash);
-            if ((--roundsGo) < 0) roundsGo = inPipe.length - 1;
-
-            decryptedBytes = decryptBytesFast(cipherBytes, cipher, cipherHashKey, cmode2);
-            cipherBytes = decryptedBytes;
-        }
-        return decryptedBytes;
-    }
-
-    /**
-     * EncrpytTextGoRounds encrypts text with cipher pipe pipeline
-     * @param inString plain text to encrypt
-     * @param hashKey private hash key
-     * @param cmode2 {@link CipherMode2}
-     * @return UTF8 encoded encrypted String without binary data
-     */
-    public String encrpytTextGoRounds(String inString, String hashKey, CipherMode2 cmode2)
-                                throws InvalidCipherTextException, IOException {
-
-        cipherKeyHash = (hashKey != null && !hashKey.isEmpty()) ? hashKey : cipherKeyHash;
-        zType = ZipType.GZip;
-        encodeType = EncodeEnum.Base64;
-        cMode2 = cmode2;
-        // Transform String to bytes
-        byte[] inBytes = inString.getBytes(StandardCharsets.UTF_8);
-		try {
-            byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
-            inBytes = zippedBytes;
-        } catch (Exception exZip) {
-            exZip.printStackTrace();
-        }
-        // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
-        byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);                
-        // Encode pipes by encodingType, e.g. base64, uu, hex16, ...
-        String encrypted = encodeType.encodeBytesToString(encryptedBytes);
-        return encrypted;
-    }
-    // [...]
-}
-\end{verbatim}
-\end{small}
-
+\pagebreak
 
 \subsubsection{En-/Decryption between C\# Java in Simple mode}
 
@@ -473,16 +247,15 @@ and decrypted in C\#.
     \label{fig:Java2Csharp_SimpleMode}
 \end{figure}
 
+\dots
+
+\pagebreak 
+
 \section{Console and cmd programs}
 
 \subsection{Windows Console}
 
 Download the lastest Windows Console from \href{https://io.cqrxs.eu/download/EU.CqrXs.Console/}{io.cqrxs.eu/download/EU.CqrXs.Console/}
-
-\begin{figure}
-\includegraphics[width=1\textwidth]{20260217_ConsoleText.png}
-\caption{\label{fig:EU.CqrXs.Console.exe}Windows EU.CqrXs.Console.exe}
-\end{figure}
 
 \subsubsection{Usage:  EU.CqrXs.Console.exe}
 \begin{small}
@@ -514,7 +287,15 @@ Usage:  EU.CqrXs.Console.exe
 \end{verbatim}
 \end{small}
 
-\subsubsection{Examples:  EU.CqrXs.Console.exe}
+
+\begin{figure}
+\includegraphics[width=1\textwidth]{20260217_ConsoleText.png}
+\caption{\label{fig:EU.CqrXs.Console.exe}Windows EU.CqrXs.Console.exe}
+\end{figure}
+
+
+
+\subsubsection{Examples: EU.CqrXs.Console.exe}
 \begin{small}
 \begin{verbatim}
 
@@ -545,6 +326,8 @@ Usage:  EU.CqrXs.Console.exe
 \end{verbatim}
 \end{small}
 
+
+\pagebreak 
 
 \section{Theory} 
 
@@ -619,35 +402,40 @@ That is why we have added a gzip, bzip2, zip before to compress illegal characte
 
 \subsection{Mathematical theory}
 
-Consider that there are full bijective desterministic inversible functions, 
-where the inverse function 
-
-of  y_x = F(x,...) 
-
+Consider that there are full bijective desterministic inversible functions, \newline
+where the inverse function of  
+\begin{math}
+y_x = F(x,...) 
+\end{math}
 is 
+\begin{math}
 x_y = f(y,..)
-
-then inverse function 
-
+\end{math}
+\newline then inverse function 
+\newline
 to 
 \begin{math}
 y_x = {F( G( H( I( J( K( L( M( N(x, ...)))))))))
 \end{math}
-
+\newline
 is 
 \begin{math}
 x_y = n( m( l( k( j( i( h( g( f(y,...))))))))).
 \end{math}
-
+\newline
+\newline
 You can see a mappings from ascii-8 $\Longrightarrow ascii-8,
-
+\newline
 also always as Matrix from R256 $\Longrightarrow R256 
-
+\newline
 or hexadecimal from Rx100 $\Longrightarrow Rx100
-
+\newline
 you can see mappings from UTF-8  $\Longrightarrow \href{https://en.wikipedia.org/wiki/UTF-8#:~:text=UTF%2D8%20is%20a%20character,than%20any%20alternative%20text%20encoding.}{UTF-8}
-
+\newline
 \dots
+
+\pagebreak
+
 
 \subsection{ZenMatrix a simplest possible algortihm to basically understand symmetric blockcipher}
 
@@ -713,49 +501,45 @@ the matrix will look like this:
  \hline
 \end{tabular}
 
+\pagebreak
 \section{Code Examples}
 
 \subsection{C\# Code Example}
 \begin{small}
-\begin{verbatim}
-    /* CSharp constructing a CipherPipe */
-
-    // 1 with parameter key
-    string hash = KeyHash.Hex.Hash(key);
+\begin{verbatim}    
+    string s = "This is another boring example text to test CipherPipe en-/decryption.";
+    string hash = KeyHash.Hex.Hash(key), key = "myKey", hashIv = KeyHash.Hex.Hash(key);
+    
+    // 1. CSharp constructing a CipherPipe with parameter key and hash
     CipherPipe cPipe = new CipherPipe(key, hash, 
-        EncodingType.Base64, ZipType.None, KeyHash.Hex, 
-        CipherMode2.CFB);
-
-    // 2. with an array of ciphers, e.g. BlowFish;TwoFish;ThreeFish
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);
+        
+    // 2. constructing with an array of ciphers, e.g. BlowFish;TwoFish;ThreeFish
     string algos = "BlowFish;TwoFish;ThreeFish";
     CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(algos);
     cPipe = new CipherPipe(pipeAlgos, 8, 
-                EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                CipherMode2.CFB);
-
-    /* calling CipherPipe encrypt or decrypt */    
-    string s = "Text to encrypt", key = "myKey", hashIv = KeyHash.Hex.Hash(key);
-    // encrypt text
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);    
+                
+    // 3. calling CipherPipe encrypt text
     string encryptext = cPipe.EncrpytTextGoRounds(s, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.CFB);
-    // encrypt bytes
-    byte[] fbytes = System.Text.Encoding.Utf8.GetBytes(s);
-    byte[] cbytes = cPipe.EncryptEncodeBytes(fileBytes, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.CFB);
-    // decrypt text
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);
+                            
+    // 4. calling CipherPipe encrypt bytes
+    byte[] cbytes = cPipe.EncryptEncodeBytes(System.Text.Encoding.Utf8.GetBytes(s), 
+        key, hashIv, EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);                        
+                        
+    // 5. calling CipherPipe decrypt text
     string dcrypt = cPipe.DecryptTextRoundsGo(encryptext, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.CFB);
-    // decypt bytes
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);
+                          
+    // 6. calling CipherPipe decypt bytes
     byte[] outBytes = cPipe.DecodeDecrpytBytes(cbytes, key, hashIv, 
-                            EncodingType.Base64, ZipType.None, KeyHash.Hex,
-                            CipherMode2.CFB);
-    
+        EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);
+                            
 \end{verbatim}
 \end{small}
 
+\pagebreak
 \subsection{Java Example}
 
 \begin{small}
@@ -805,13 +589,34 @@ the matrix will look like this:
 \end{verbatim}
 \end{small}
 
+\pagebreak
+
 \subsection{Good luck!}
 
 We hope you find PermAgainCrypt useful, and good luck.
 To contact me, use the contacts at \url{https://heinrichelsigan.area23.at}.
 
+
+\begin{abstract}
+
+Hi, I’m \href{https://heinrichelsigan.area23.at/}{Heinrich Elsigan}
+I am interested in C\#, Java, MSSQL, .Net Core, Android and politics, society and the future;
+currently working as freelancer (one person company) and planning a secure endpoint 2 endpoint chat and looking to collaborate on reviews for other repositories and projects. Article written in \LaTeX{}.
+
+\begin{enumerate}
+    \item personal tech and political blog \href{https://area23-at.blogspot.com/}{blog.area23.at}
+	\item GitHub repositories \href{https://github.com/heinrichelsigan}{github.com/heinrichelsigan/}
+	\item StackOverflow \href{https://stackoverflow.com/users/12213151/heinrich-elsigan?tab=profile}{stackoverflow.com/users/12213151/heinrich-elsigan}
+    \item Curriculum vitae \href{https://heinrichelsigan.area23.at/cv}{heinrichelsigan.area23.at/cv}
+    \item live demo .Net \href{https://area23.at/net/}{area23.at/net}		
+\end{enumerate}
+
+\end{abstract}
+
+
 \bibliographystyle{alpha}
 \bibliography{sample}
+
 
 
 \end{document}
