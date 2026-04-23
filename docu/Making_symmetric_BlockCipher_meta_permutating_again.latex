@@ -44,10 +44,12 @@ are more important than a simple proof of concept showing that it works, except 
 raw experimental test form.
 
 \begin{enumerate}
-	\item \url{https://bouncycastle.org/}
-	\item \url{https://schneier.com/}
-	\item \url{https://github.com/dotnet/}
-	\item \url{https://github.com/microsoft}
+    \item git:\href{https://github.com/dotnet/}{github.com/dotnet}
+	\item git:\href{https://github.com/microsoft}{github.com/microsoft}
+	\item \href{https://www.bouncycastle.org/}{Legion of the Bouncy Castle}, git:\href{https://github.com/bcgit}{bcgit}
+    \item \href{https://www.libtom.net/}{libtom.net}, git:\href{https://github.com/libtom/libtomcrypt}{libtom/libtomcrypt}
+    \item \href{https://cryptopp.com/}{cryptopp.com} git:\href{https://github.com/weidai11/cryptopp}{weidai11/cryptopp}
+	\item \url{https://schneier.com/}	
 	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
 \end{enumerate}
 
@@ -86,34 +88,40 @@ settings AES default engine for 3-fish, isn’t so serious and please download v
 \end{figure}
 
 \begin{enumerate}
-    \item Key: When clicking key your entered key will be stored temporary in session.
-    \item Textbox secret key: Enter your Email address and secret key.
-    \item Buton Clear: Clear and reset the entire form.
-    \item Hyperlink Help: Show this help
-    \item RadioButtonList KeyHashes
+    \item \textit{ImageButton} \textbf{Key}: When clicking key your entered key will be stored temporary in session.
+    \item \textit{Textbox} \textbf{secret key}: Enter your Email address and secret key.
+    \item \textit{Buton} \textbf{Clear}: Clear and reset the entire form.
+    \item \textit{DropDown} \textbf{CipherMode2} with Options \textit{CBC}, \textit{CFB} and full deterministic \textit{ECB} (without IV)
+    \item \textit{Hyperlink} \textbf{Help}: Show this help
+    \item \textit{RadioButtonList} \textbf{KeyHashes}
 Choose the hash method to hash your secret key.
-    \item ImageButton Hash: Clicking will hash your key and display hashed key in textbox.    
-    \item TextBox Hash (readonly): Displays your hashed key.
-    \item Button “Set Pipe”: sets symmetric cipher pipe, dependent only on your entered key
-    \item Button “Hash Pipe”: sets symmetric cipher pipe, dependent primary on calculated hash
+    \item \textit{ImageButton} \textbf{Hash}: Clicking will hash your key and display hashed key in textbox.    
+    \item \textit{TextBox} \textbf{Hashtext} (readonly): Displays your hashed key.
+    \item \textit{Button} \textbf{Set Pipe}: sets symmetric cipher pipe, dependent only on your entered key
+    \item \textit{Button} \textbf{Hash Pipe}: sets symmetric cipher pipe, dependent primary on calculated hash
 and secondary on your entered key.
-    \item DropDown ZipTypes Choose encryption type (Please only GZip or Zip or None)
-    \item DropDown CipherTypes Choose a symmetric cipher to add it to the symmetric cipher
+    \item \textit{DropDown} \textbf{ZipTypes} Choose encryption type (Please only GZip or Zip or None)
+    \item \textit{DropDown} \textbf{CipherTypes} Choose a symmetric cipher to add it to the symmetric cipher
 pipe.
-    \item ImageButton „add algo“: Clicking on will add the in c. DropDown CipherTypes
+    \item \textit{ImageButton} \textbf{add algo}: Clicking on will add the in c. DropDown CipherTypes
 selected symmetric cipher algorithm to CipherPipe.
-    \item TextBox CipherPipe (readonly): Displays the current Cipher Pipe algorithms.
-    \item ImageButton “Clear Pipe”: Clicking on will clear only the entire Cipher Pipe
-    \item DropDown EncodingTypes: Choose the final binary to ascii encoder, default is Base64.
+    \item \textit{TextBox} \textbf{CipherPipe} (readonly): Displays the current Cipher Pipe algorithms.
+    \item \textit{ImageButton} \textbf{Clear Pipe}: Clicking on will clear only the entire Cipher Pipe
+    \item \textit{DropDown} \textbf{EncodingTypes}: Choose the final binary to ascii encoder, default is Base64.
 Beware of using uuencode in Web, because <> will be interpreted as possible html
 injection.
-    \item TextArea Source: paste or enter Text here.
-    \item TextArea Destination: (readonly) After clicking Encrypt or Decrypt processed text will
+    \item \textit{Selector} \textbf{Choose File} to upload a plain or an encrypted file to be processed
+    \item \textit{Label} \textbf{Filename} displays uploaded filename or "No file choosen."
+    \item \textit{Button} \textbf{Encrypt file} encrypts a plain file with cipherpipe to an encrypted file
+    \item \textit{Chechbox} \textbf{encode file} if checked, performs bin2ascii encoding at the end stage of pipeline, if not checked binary data after last stage of cipherpipeline will be written.
+    \item \textit{Button} \textbf{Decrypt file} decrypts an encrypted uploaded file. You must care, that the settings match to the file, when it was encrypted
+    \item \textit{TextArea} \textbf{Source}: paste or enter Text here.
+    \item \textit{TextArea} \textbf{Destination}: (readonly) After clicking Encrypt or Decrypt processed text will
 appear in the text area.
-    \item Button Encrypt: Encrypts the text from TextArea Source and displays encrypted text in
-TextArea Destination.
-    \item Button “Random Text”: Adds a short fortune to TextArea Source.
-    \item Button Decrypt: Decrypts text in TextArea Source and display decrypted text in
+    \item \textit{Button} \textbf{Encrypt}: Encrypts text from TextArea Source and displays encrypted text in
+\textit{TextArea} \textbf{Destination}.
+    \item \textit{Button} \textbf{Random Text}: Adds a short fortune to \textit{TextArea} \textbf{Source}.
+    \item \textit{Button} \textbf{Decrypt}: Decrypts text in TextArea Source and display decrypted text in
 TextArea Destination.
 \end{enumerate}
 
@@ -121,13 +129,19 @@ TextArea Destination.
 
 You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCrypt/releases}{github.com/heinrichelsigan/PermAgainCrypt/releases} to download newest Gui Form x86 and x64.
 \dots 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{2026-04-23_WinForm_CSharp.png}
+    \caption{WinForm CSharp}
+    \label{fig:WinForm_CSharp}
+\end{figure}
+
+\pagebreak 
 
 \begin{figure}
 \includegraphics[width=1\textwidth]{2026-01-25_WinForm_CSharp.png}
 \caption{\label{fig:WinForm_Csharp}WinForm CSharp}
 \end{figure}
-
-\pagebreak 
 
 \subsection{Java}
 
@@ -146,8 +160,9 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 \end{enumerate}
 
 \begin{figure}
-\includegraphics[width=1\textwidth]{javax_swing_JFrame_java.jpg}
-\caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
+    \centering
+    \includegraphics[width=0.5\textwidth]{javax_swing_JFrame_java.jpg}
+    \caption{\label{fig:javax.swing.JFrame.java}javax.swing.JFrame.java}
 \end{figure}
 
 \pagebreak
@@ -215,15 +230,11 @@ java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java
 \item \url{https://github.com/openjdk-mirror/jdk7u-jdk/blob/master/src/share/classes/javax/swing/JFrame.java}
 \end{itemize}
 
-
 \pagebreak
 
 \subsection{Simple mode - SecureCipherPipe}
 
 In the simple mode SecureCipherPipe is used as CipherPipe. Each stage of the pipe will not be encrypted with the same secure key; furthermore, each pipe stage will be encrypted with a secure hashed key with a different hash.
-\newline
-WebForm for simple mode is \url{https://area23.at/net/Crypt/AesImprove.aspx} 
-or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
 
 \begin{figure}
     \centering
@@ -232,9 +243,21 @@ or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
     \label{fig:Simple_SecureCipherPipe}
 \end{figure}
 
+WebForm for simple mode is \url{https://area23.at/net/Crypt/AesImprove.aspx} 
+or  \url{https://cqrxs.eu/net/Crypt/AesImprove.aspx}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\linewidth]{2026-04-23_WebForm_AesPipeline_Simple.png}
+    \caption{WebForm AesPipeline Simple}
+    \label{fig:WebForm_AesPipeline_Simple}
+\end{figure}
+
+\dots
+
 \pagebreak
 
-\subsubsection{En-/Decryption between C\# Java in Simple mode}
+\subsection{En-/Decryption between C\# Java in Simple mode}
 
 We can see, that simple mode is intercompatible between java and C\#.
 Here you see a text encrypted in simple mode in java
@@ -402,6 +425,7 @@ That is why we have added a gzip, bzip2, zip before to compress illegal characte
 
 \subsection{Mathematical theory}
 
+\begin{large}    
 Consider that there are full bijective desterministic inversible functions, \newline
 where the inverse function of  
 \begin{math}
@@ -415,24 +439,30 @@ x_y = f(y,..)
 \newline
 to 
 \begin{math}
-y_x = {F( G( H( I( J( K( L( M( N(x, ...)))))))))
+y_x = F( G( H( I( J( K( L( M( N(x, ...)))))))))
 \end{math}
-\newline
-is 
+\newline is 
 \begin{math}
-x_y = n( m( l( k( j( i( h( g( f(y,...))))))))).
+x_y = n( m( l( k( j( i( h( g( f(y,...)))))))))
 \end{math}
+.
 \newline
+
+You can see a mappings from ascii-8  
+$\longmapsto$ 
+ascii-8,
 \newline
-You can see a mappings from ascii-8 $\Longrightarrow ascii-8,
+also always as Matrix from R256 
+$\longmapsto$ R256 
 \newline
-also always as Matrix from R256 $\Longrightarrow R256 
+or hexadecimal from  Rx100  
+$\longmapsto$ Rx100.
 \newline
-or hexadecimal from Rx100 $\Longrightarrow Rx100
+you can see mappings from UTF-8 
+$\longrightarrow$
+\href{https://en.wikipedia.org/wiki/UTF-8#:~:text=UTF%2D8%20is%20a%20character,than%20any%20alternative%20text%20encoding.}{UTF-8}
 \newline
-you can see mappings from UTF-8  $\Longrightarrow \href{https://en.wikipedia.org/wiki/UTF-8#:~:text=UTF%2D8%20is%20a%20character,than%20any%20alternative%20text%20encoding.}{UTF-8}
-\newline
-\dots
+\end{large}
 
 \pagebreak
 
@@ -544,7 +574,7 @@ the matrix will look like this:
 
 \begin{small}
 \begin{verbatim}
-    boolean reverseDirection = false;       // variables we need later for cipher pipe
+    boolean reverseDirection = false;		// variables we need later for cipher pipe
     ZipType zipType = ZipType.None;
     EncodeEnum encodingType = EncodeEnum.None;
     KeyHash keyHash = KeyHash.Hex;
