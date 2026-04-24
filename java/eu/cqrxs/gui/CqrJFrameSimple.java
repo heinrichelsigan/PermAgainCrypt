@@ -565,10 +565,10 @@ public class CqrJFrameSimple extends JFrame {
 			}
 		});
 
-		imgKey = addImages(new String[] { "eu/cqrxs/gui/key_ring.gif", "key_ring.gif" });
-		imgHash = addImages(new String[] { "eu/cqrxs/gui/a_hash.png", "a_hash.png" });
-		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/AddAesArrowHover.gif", "AddAesArrowHover.gif" });
-		imgX = addImages(new String[] { "eu/cqrxs/gui/close_delete.gif", "close_delete.gif" });
+		imgKey = addImages(new String[] { "eu/cqrxs/gui/img/key_ring.gif", "img/key_ring.gif" });
+		imgHash = addImages(new String[] { "eu/cqrxs/gui/img/a_hash.png", "img/a_hash.png" });
+		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/img/AddAesArrowHover.gif", "img/AddAesArrowHover.gif" });
+		imgX = addImages(new String[] { "eu/cqrxs/gui/img/close_delete.gif", "img/close_delete.gif" });
 
 		jLabelImgKey = new JLabel(new ImageIcon(imgKey));
 		jLabelImgKey.setBounds(12,26,30,30);
@@ -1263,10 +1263,10 @@ public class CqrJFrameSimple extends JFrame {
 	
 	protected void about_action(ActionEvent event) {
         try {
-            if (new File("/eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
-			    cqrJDialog = new CqrJDialog("/eu/cqrxs/gui/cqrxs-eu.jpg");
-            else if (new File("eu/cqrxs/gui/cqrxs-eu.jpg").isFile())
-			    cqrJDialog = new CqrJDialog("eu/cqrxs/gui/cqrxs-eu.jpg");
+            if (new File("/eu/cqrxs/gui/img/cqrxs-eu.jpg").isFile())
+			    cqrJDialog = new CqrJDialog("/eu/cqrxs/gui/img/cqrxs-eu.jpg");
+            else if (new File("eu/cqrxs/gui/img/cqrxs-eu.jpg").isFile())
+			    cqrJDialog = new CqrJDialog("eu/cqrxs/gui/img/cqrxs-eu.jpg");
             else
                 cqrJDialog = new CqrJDialog();
 

@@ -15,13 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 
 public class CqrJDialog extends JDialog { /* implements MouseListener  { */
@@ -30,6 +24,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 	JLabel jLabel;
 	JButton jButtonExit = new JButton();
 	JTextField jTextField = new JTextField();
+	static Color backColor, bgColor;
 	File file;
 	BufferedImage img;
 	ImageIcon icon;
@@ -37,28 +32,22 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 	
 	public CqrJDialog() throws IOException {
 		
-		String filename = "eu/cqrxs/gui/cqrxs-eu.jpg";
+		String filename = "eu/cqrxs/gui/img/cqrxs-eu.jpg";
 		file = new File(filename);
 		img = ImageIO.read(file);
 		
-		setModal(true);		
-        setResizable(false);		
-        setTitle("About PermAgainCrypt: cqrxs.eu");
-		
+		setModal(true);
         Init();
 	}
 	
  	public CqrJDialog(String filename) throws IOException {
 		
 		if (filename == null || filename.length() == 0)			
-			filename = "eu/cqrxs/gui/cqrxs-eu.jpg";
+			filename = "eu/cqrxs/gui/img/cqrxs-eu.jpg";
 		file = new File(filename);
 		img = ImageIO.read(file);
 		
-		setModal(true);		
-        setResizable(false);		
-        setTitle("About CqrJd: cqrxs.eu");
-		
+		setModal(true);
         Init();
 	}
 
@@ -77,35 +66,45 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 	
 	public void Init() {
 		
-		setLayout(null);		
-		setSize(820, 600);			
+		setLayout(null);
+		setSize(800, 492);
+		setResizable(false);
+		setTitle("About CqrJd: cqrxs.eu");
+
+		backColor = Color.decode("#04339d");
+		bgColor = Color.BLUE;
+		getContentPane().setBackground(backColor);
 			
         icon = new ImageIcon(img);
-		jPanelCenter.setBounds(24, 20, 752, 400);
+		jPanelCenter.setBounds(12, 8, 772, 332);
 		jPanelCenter.setLayout(new FlowLayout());
-		jPanelCenter.setBackground(Color.BLUE);  		
+		jPanelCenter.setBackground(backColor);
 		JLabel jLabel = new JLabel();
 		jLabel.setIcon(icon);
 		jPanelCenter.add(jLabel);
 		getContentPane().add(jPanelCenter);
 			
 		jTextField = new JTextField();
-		jTextField.setBounds(144, 440, 144, 27);
+		jTextField.setBounds(32, 408, 144, 27);
 		jTextField.setText(Constants.APP_NAME + " " + Constants.VERSION);
-		jTextField.setEnabled(false);
+		jTextField.setBackground(Color.WHITE);
+		jTextField.setForeground(Color.BLACK);
+		jTextField.setEditable(false);
 		getContentPane().add(jTextField);
+
 		jButtonExit = new JButton();
 		jButtonExit.setText("Exit");
-		getContentPane().add(jButtonExit);
-		jButtonExit.setBounds(24, 440, 96, 27);
+		jButtonExit.setBackground(Color.LIGHT_GRAY);
+		jButtonExit.setForeground(Color.BLACK);
+		jButtonExit.setBounds(668, 408, 96, 27);
 		jButtonExit.setActionCommand("jexit");
-		// addMouseListener(this);
-		// jPanelCenter.addMouseListener(this);
-		
+		getContentPane().add(jButtonExit);
 		// setVisible(true);
 		try {
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		} catch (Exception ex) { }
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		
 		SymAction lSymAction = new SymAction();
 		jButtonExit.addActionListener(lSymAction);
@@ -117,48 +116,17 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		public void actionPerformed(ActionEvent event)
 		{
 			Object object = event.getSource();
-					
 			if (object == jButtonExit)
-				appExit(event);				
+				closeJDialog(event);
 		}
 	}
-	
 
-	public void appExit(ActionEvent event) {
+	public void closeJDialog(ActionEvent event) {
 		// We don't log exit events ;)
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.removeAll();
 		this.dispose();
 		// System.exit(0);
 	}
-	/*
-	public void eventOutput(String eventDescription, MouseEvent e) {
-        jTextField.setText(eventDescription + " detected on "
-                + e.getComponent().getClass().getName()
-                + ".");        
-    }
-     
-    public void mousePressed(MouseEvent e) {
-        eventOutput("Mouse pressed (# of clicks: "
-                + e.getClickCount() + ")", e);
-    }
-     
-    public void mouseReleased(MouseEvent e) {
-        eventOutput("Mouse released (# of clicks: "
-                + e.getClickCount() + ")", e);
-    }
-     
-    public void mouseEntered(MouseEvent e) {
-        eventOutput("Mouse entered", e);
-    }
-     
-    public void mouseExited(MouseEvent e) {
-        eventOutput("Mouse exited", e);
-    }
-     
-    public void mouseClicked(MouseEvent e) {
-        eventOutput("Mouse clicked (# of clicks: "
-                + e.getClickCount() + ")", e);
-    }
-	*/
+
 }

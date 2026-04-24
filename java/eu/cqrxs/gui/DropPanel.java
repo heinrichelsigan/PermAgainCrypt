@@ -115,10 +115,10 @@ public class DropPanel extends JPanel {
     public void initGui() {
         try {
 
-            target = addImages(new String[] { "eu/cqrxs/gui/file.png", "file.png" });
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
-            imgFileOut = addImages((new String[] {"eu/cqrxs/gui/encrypted.png", "encrypted.png" }));
-			imgCipherPipe = addImages((new String[] {"eu/cqrxs/gui/cipherpipeblank.png", "cipherpipeblank.png" }));
+            target = addImages(new String[] { "eu/cqrxs/gui/img/file.png", "img/file.png" });
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
+            imgFileOut = addImages((new String[] {"eu/cqrxs/gui/img/encrypted.png", "img/encrypted.png" }));
+			imgCipherPipe = addImages((new String[] {"eu/cqrxs/gui/img/cipherpipeblank.png", "img/cipherpipeblank.png" }));
 			
             message = new JLabel();
             message.setBounds(0, 0, 742, 96);
@@ -182,7 +182,7 @@ public class DropPanel extends JPanel {
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
             imgIconIn = new ImageIcon(imgFileIn);
         }
 		
@@ -229,7 +229,7 @@ public class DropPanel extends JPanel {
             imgIconOut = new ImageIcon(getThumbnail(imgFileOut));
         }
         else {
-            imgFileOut  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgFileOut  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
             imgIconOut = new ImageIcon(imgFileOut);
         }
 
@@ -254,8 +254,8 @@ public class DropPanel extends JPanel {
      */
 	public void resetFileLabels() {
 		
-		imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
-		imgFileOut = addImages((new String[] {"eu/cqrxs/gui/encrypted.png", "encrypted.png" }));
+		imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
+		imgFileOut = addImages((new String[] {"eu/cqrxs/gui/img/encrypted.png", "img/encrypted.png" }));
 			
 		remove(jLabelImgIn);
 		remove(jLabelFileIn);					
@@ -352,7 +352,7 @@ public class DropPanel extends JPanel {
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
             imgIconIn = new ImageIcon(imgFileIn);
         }
         remove(jLabelImgIn);

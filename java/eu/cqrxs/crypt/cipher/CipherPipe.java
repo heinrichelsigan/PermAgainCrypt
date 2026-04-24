@@ -854,7 +854,7 @@ public class CipherPipe {
      * @return {@link BufferedImage}
      */
     public static BufferedImage drawCipherPipe(CipherPipe pipe) {
-        String path = "eu/cqrxs/gui/"; // base path of the images
+        String path = "eu/cqrxs/gui/img/"; // base path of the images
 
         if (pipe == null) {
             BufferedImage imgPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
@@ -954,7 +954,7 @@ public class CipherPipe {
      */
     public static BufferedImage drawDecryptCipherPipe(CipherPipe pipe) {
 
-        String path = "eu/cqrxs/gui/"; // base path of the images
+        String path = "eu/cqrxs/gui/img/"; // base path of the images
 
         if (pipe == null) {
             BufferedImage imgStartPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
