@@ -917,10 +917,22 @@ public class CipherPipe {
         }
         if (pipe.encodeType != EncodeEnum.None) {
             BufferedImage imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
+            String encodeFileName = "encode_";
             try {
-                imgEncoding = ImageIO.read(new File(path + "encoding.png"));
-            } catch (IOException ioex5) {
-                ioex5.printStackTrace();
+                switch (pipe.encodeType) {
+                    case EncodeEnum.Hex16:  encodeFileName += "hex16.png"; break;
+                    case EncodeEnum.Hex32:  encodeFileName += "hex32.png"; break;
+                    case EncodeEnum.Hex64:  encodeFileName += "hex64.png"; break;
+                    case EncodeEnum.Base16:  encodeFileName += "base16.png"; break;
+                    case EncodeEnum.Base32:  encodeFileName += "base32.png"; break;
+                    case EncodeEnum.Base64:  encodeFileName += "base64.png"; break;
+                    case EncodeEnum.Uu:  encodeFileName += "uu.png"; break;
+                    case EncodeEnum.Xx:  encodeFileName += "xx.png"; break;
+                    default: encodeFileName += "0.png"; break;
+                }
+                imgEncoding = ImageIO.read(new File(path + encodeFileName));
+            } catch (IOException exLoadEncodeImage) {
+                exLoadEncodeImage.printStackTrace();
             }
             g.drawImage(imgEncoding, xoffset, 0, null);
         }
@@ -941,16 +953,17 @@ public class CipherPipe {
      * @return {@link BufferedImage}
      */
     public static BufferedImage drawDecryptCipherPipe(CipherPipe pipe) {
+
         String path = "eu/cqrxs/gui/"; // base path of the images
 
         if (pipe == null) {
-            BufferedImage imgPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
+            BufferedImage imgStartPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgPipeBlank = ImageIO.read(new File(path + "decryptcipherpipe.png"));
-            } catch (IOException ioex1) {
-                ioex1.printStackTrace();
+                imgStartPipeBlank = ImageIO.read(new File(path + "decryptcipherpipe.png"));
+            } catch (Exception exImageStartBlank) {
+                exImageStartBlank.printStackTrace();
             }
-            return imgPipeBlank;
+            return imgStartPipeBlank;
         }
 
         int xoffset = 0;
@@ -960,58 +973,57 @@ public class CipherPipe {
         // paint both images, preserving the alpha channels
         Graphics g = combined.getGraphics();
 
-        if (pipe.zType == ZipType.GZip) {
-
-            BufferedImage imgGz = new BufferedImage(76, 96, BufferedImage.TYPE_INT_ARGB);
+        if (pipe.encodeType != EncodeEnum.None) {
+            BufferedImage imgDecoding = new BufferedImage(80, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgGz = ImageIO.read(new File(path + "gz.png"));
-            } catch (IOException ioex2) {
-                ioex2.printStackTrace();
+                imgDecoding = ImageIO.read(new File(path + "decodingasciitobin.png"));
+            } catch (Exception exImageDecoding) {
+                exImageDecoding.printStackTrace();
             }
-            g.drawImage(imgGz, xoffset, 0, null);
-            xoffset += 76;
+            g.drawImage(imgDecoding, xoffset, 0, null);
+            xoffset += 80;
         } else {
             BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
             try {
                 imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
-            } catch (IOException ioex2) {
-                ioex2.printStackTrace();
+            } catch (Exception exIMageStartBlank) {
+                exIMageStartBlank.printStackTrace();
             }
             g.drawImage(imgStart, xoffset, 0, null);
             xoffset += 32;
         }
 
-        CipherEnum[] inPipe = pipe.getInPipe();
-        if (inPipe != null && inPipe.length > 0) {
-            for (int i = 0; i < inPipe.length; i++) {
-                CipherEnum cipher = inPipe[i];
+        CipherEnum[] outPipe = pipe.getOutPipe();
+        if (outPipe != null && outPipe.length > 0) {
+            for (int j = 0; j < outPipe.length; j++) {
+                CipherEnum cipher = outPipe[j];
                 BufferedImage imgAes = new BufferedImage(60, 96, BufferedImage.TYPE_INT_ARGB);
                 try {
                     imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
-                } catch (Exception ex3) {
-                    ex3.printStackTrace();
+                } catch (Exception exImageAlgo) {
+                    exImageAlgo.printStackTrace();
                     try {
                         imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
-                        // imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
-                    } catch (IOException ioex4) {
-                        ioex4.printStackTrace();
+                    } catch (Exception exImageFileAlgo) {
+                        exImageFileAlgo.printStackTrace();
                     }
                 }
-
                 g.drawImage(imgAes, xoffset, 0, null);
                 xoffset += 60;
             }
         }
-        if (pipe.encodeType != EncodeEnum.None) {
-            BufferedImage imgEncoding = new BufferedImage(124, 108, BufferedImage.TYPE_INT_ARGB);
-            try {
-                imgEncoding = ImageIO.read(new File(path + "encoding.png"));
-            } catch (IOException ioex5) {
-                ioex5.printStackTrace();
-            }
-            g.drawImage(imgEncoding, xoffset, 0, null);
-        }
 
+        if (pipe.zType == ZipType.GZip) { // finish image with gunzip
+
+            BufferedImage imgGz = new BufferedImage(80, 96, BufferedImage.TYPE_INT_ARGB);
+            try {
+                imgGz = ImageIO.read(new File(path + "gunzip.png"));
+            } catch (Exception exImageGunzip) {
+                exImageGunzip.printStackTrace();
+            }
+            g.drawImage(imgGz, xoffset, 0, null);
+            xoffset += 76;
+        }
 
         g.dispose();
 

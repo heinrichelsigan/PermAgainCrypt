@@ -1121,6 +1121,9 @@ public class CqrJFrameSimple extends JFrame {
 		dbgMsg(String.format("PipeString: %s \nEncoding: %s zipping; %s", 
 		 		pipeString, encodeType.getName(), zipType.getName()), 2, false);
 		saveFileName = "";
+		BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+		dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
+
 		try {
 			dbgMsg(String.format("pipe.encrypt with key=%s, \nencode=%s, zip=%s", 
 			 	key, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
@@ -1194,6 +1197,8 @@ public class CqrJFrameSimple extends JFrame {
 		
         dbgMsg(String.format("Out pipe: %s \nEncoding: %s zipping; %s",
 		        pipeSting, encodeType.getName(),  zipType.getName()), 1, true);
+		BufferedImage pipeDecryptImg = CipherPipe.drawDecryptCipherPipe(pipe);
+		dropPanel.setPipeImg(pipeDecryptImg, pipe.getPipeString());
 
 		String decrypted = "";
         saveFileName = "";
@@ -1245,8 +1250,8 @@ public class CqrJFrameSimple extends JFrame {
                     jLabel_statusDestination.setText((int)(saveFileBytes.length / 1024) + " KB."); 
                 if (saveFileBytes.length > 1048576) 
                     jLabel_statusDestination.setText((int)(saveFileBytes.length / (1024*1024)) + " MB.");
-                
-					save_action();
+
+				save_action();
             } 
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());

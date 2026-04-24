@@ -1093,8 +1093,6 @@ public class CqrJdFrame extends JFrame {
 		if (fpath == null || fpath.isEmpty())
 			throw new IllegalArgumentException("fpath is null");
 
-		// String initDirectory = (java.io.File.separatorChar == '/') ? System.getenv("HOME") : System.getenv("USERPROFILE");
-
 		File f = new File(fpath);
 		openFileName = fpath;
 		for (int r = (fpath.length() -1); r > -1 ; r--) {
@@ -1151,7 +1149,7 @@ public class CqrJdFrame extends JFrame {
 			}
 		}		
 		
-		try{
+		try {
 			openFileBytes = Files.readAllBytes(f.toPath());			
 			saveFileBytes = new byte[0];
 			dropPanel.setFileIconLabelIn(filename);
@@ -1334,6 +1332,10 @@ public class CqrJdFrame extends JFrame {
 		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
 		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
 		saveFileName = "";
+
+		BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
+		dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
+
 		try {
 			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
 			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
@@ -1405,6 +1407,8 @@ public class CqrJdFrame extends JFrame {
 		}
 
 		CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash, cmode2);
+		BufferedImage pipeDecryptImg = CipherPipe.drawDecryptCipherPipe(pipe);
+		dropPanel.setPipeImg(pipeDecryptImg, pipe.getPipeString());
 
 		String plain = "";
 		CipherEnum[] cipherEnums = pipe.getOutPipe();

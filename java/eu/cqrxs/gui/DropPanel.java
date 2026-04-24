@@ -56,6 +56,21 @@ public class DropPanel extends JPanel {
     public static CqrJFrameSimple jFrameSimple;
     public static CqrJdFrame jdFrame;
 
+
+    /**
+     * DropPanel parameterless default constructor
+     */
+    public DropPanel() {
+
+        setLayout(null);
+        setSize(960, 108);
+        initGui();
+    }
+
+    /**
+     * DropPanel constructor
+     * @param simple {@link CqrJFrameSimple} parent caller as ctor parameter
+     */
     public DropPanel(CqrJFrameSimple simple) {
 
         if (simple != null)
@@ -68,6 +83,10 @@ public class DropPanel extends JPanel {
         initGui();
     }
 
+    /**
+     * DropPanel constructor
+     * @param complex {@link CqrJdFrame} parent caller as construćting parameter
+     */
     public DropPanel(CqrJdFrame complex) {
 
         if (complex != null)
@@ -79,22 +98,20 @@ public class DropPanel extends JPanel {
         initGui();
     }
 
-
-	public DropPanel() {
-
-        setLayout(null);
-        setSize(960, 108);
-        initGui();
-    }
-
+    /**
+     * setCqrJdFrame sets parent caller after constructor later
+     * @param complex {@link CqrJdFrame}
+     */
     public void setCqrJdFrame(CqrJdFrame complex) {
         if (complex != null)
             jdFrame = complex;
         else
             jdFrame = (CqrJdFrame)getParent();
-
     }
 
+    /**
+     * initGui inits all graphical elements in DropPanel before leaving any constructor
+     */
     public void initGui() {
         try {
 
@@ -138,49 +155,6 @@ public class DropPanel extends JPanel {
             ex.printStackTrace();
         }
     }
-
-    /**
-     * scales an Image to 60x60 to be shown as thumbnail
-     * @param bufImg {@link BufferedImage} to scale down to thumbnail size
-     * @return thumbnail image
-     */
-    static public BufferedImage getThumbnail(BufferedImage bufImg) {
-        int max_width = 60;
-        int max_height = 60;
-        int img_width = bufImg.getWidth();
-        int img_height = bufImg.getHeight();
-
-        float horizontal_ratio = 1;
-        float vertical_ratio = 1;
-
-
-        if (img_height > max_height) {
-            vertical_ratio = (float) max_height / (float) img_height;
-        }
-        if (img_width > max_width) {
-            horizontal_ratio = (float) max_width / (float) img_width;
-        }
-
-        float scale_ratio = 1;
-
-        if (vertical_ratio < horizontal_ratio) {
-            scale_ratio = vertical_ratio;
-        } else if (horizontal_ratio <= vertical_ratio) {
-            scale_ratio = horizontal_ratio;
-        }
-
-        int dest_width = (int) (img_width * scale_ratio);
-        int dest_height = (int) (img_height * scale_ratio);
-
-        BufferedImage scaled = new BufferedImage(dest_width, dest_height, BufferedImage.TYPE_INT_ARGB);
-        Graphics graphics = scaled.getGraphics();
-        graphics.drawImage(bufImg, 0, 0, dest_width, dest_height, null);
-        graphics.dispose();
-
-        return scaled;
-    }
-
-
 
     /**
      * setFileIconLabelIn sets label of input file and image icon
@@ -275,7 +249,6 @@ public class DropPanel extends JPanel {
 		
 	}
 
-
 	/**
      * resetFileLabels resets input and output images and image file labels
      */
@@ -357,6 +330,89 @@ public class DropPanel extends JPanel {
 		return bimg;
 	}
 
+    protected void importFiles(final String droppedFile) {
+        // message.setText("'" + droppedFile + "'");
+
+        DbgWriter.msg("Dropped: " + droppedFile, false);
+        int ridx = droppedFile.lastIndexOf('/');
+        if (ridx < 0)
+            ridx = droppedFile.lastIndexOf('\\');
+        String imgInName = (ridx > 0) ?
+                droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
+                droppedFile;
+
+        if (droppedFile.toLowerCase().endsWith(".jpg")  ||
+                droppedFile.toLowerCase().endsWith(".jpeg")  ||
+                droppedFile.toLowerCase().endsWith(".png")  ||
+                droppedFile.toLowerCase().endsWith(".gif")  ||
+                droppedFile.toLowerCase().endsWith(".bmp")  ||
+                droppedFile.toLowerCase().endsWith(".tif"))
+        {
+            imgFileIn = addImages(new String[] { droppedFile });
+            imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
+        }
+        else {
+            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
+            imgIconIn = new ImageIcon(imgFileIn);
+        }
+        remove(jLabelImgIn);
+        jLabelImgIn = new JLabel(imgIconIn);
+        jLabelImgIn.setBounds(4, 4, 60, 60);
+        add(jLabelImgIn);
+
+        jLabelFileIn.setText(imgInName);
+        jLabelImgOut.setVisible(false);
+        jLabelFileOut.setVisible(false);
+        // complex
+        if (jdFrame != null)
+            jdFrame.open_delegate(droppedFile);
+        // simple
+        if (jFrameSimple != null)
+            jFrameSimple.open_delegate(droppedFile);
+    }
+
+
+    /**
+     * scales an Image to 60x60 to be shown as thumbnail
+     * @param bufImg {@link BufferedImage} to scale down to thumbnail size
+     * @return thumbnail image
+     */
+    static public BufferedImage getThumbnail(BufferedImage bufImg) {
+        int max_width = 60;
+        int max_height = 60;
+        int img_width = bufImg.getWidth();
+        int img_height = bufImg.getHeight();
+
+        float horizontal_ratio = 1;
+        float vertical_ratio = 1;
+
+
+        if (img_height > max_height) {
+            vertical_ratio = (float) max_height / (float) img_height;
+        }
+        if (img_width > max_width) {
+            horizontal_ratio = (float) max_width / (float) img_width;
+        }
+
+        float scale_ratio = 1;
+
+        if (vertical_ratio < horizontal_ratio) {
+            scale_ratio = vertical_ratio;
+        } else if (horizontal_ratio <= vertical_ratio) {
+            scale_ratio = horizontal_ratio;
+        }
+
+        int dest_width = (int) (img_width * scale_ratio);
+        int dest_height = (int) (img_height * scale_ratio);
+
+        BufferedImage scaled = new BufferedImage(dest_width, dest_height, BufferedImage.TYPE_INT_ARGB);
+        Graphics graphics = scaled.getGraphics();
+        graphics.drawImage(bufImg, 0, 0, dest_width, dest_height, null);
+        graphics.dispose();
+
+        return scaled;
+    }
+
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(400, 400);
@@ -408,58 +464,12 @@ public class DropPanel extends JPanel {
         }
     }
 
-	
-    protected void importFiles(final String droppedFile) {
-		// message.setText("'" + droppedFile + "'");
 
-        DbgWriter.msg("Dropped: " + droppedFile, false);
-        int ridx = droppedFile.lastIndexOf('/');
-        if (ridx < 0)
-            ridx = droppedFile.lastIndexOf('\\');
-        String imgInName = (ridx > 0) ?
-                droppedFile.substring(ridx + 1, droppedFile.length() - 1) :
-                droppedFile;
-
-        if (droppedFile.toLowerCase().endsWith(".jpg")  ||
-                droppedFile.toLowerCase().endsWith(".jpeg")  ||
-                droppedFile.toLowerCase().endsWith(".png")  ||
-                droppedFile.toLowerCase().endsWith(".gif")  ||
-                droppedFile.toLowerCase().endsWith(".bmp")  ||
-                droppedFile.toLowerCase().endsWith(".tif"))
-        {
-            imgFileIn = addImages(new String[] { droppedFile });
-            imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
-        }
-        else {
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/file.png", "file.png" }));
-            imgIconIn = new ImageIcon(imgFileIn);
-        }
-        remove(jLabelImgIn);
-        jLabelImgIn = new JLabel(imgIconIn);
-        jLabelImgIn.setBounds(4, 4, 60, 60);
-        add(jLabelImgIn);
-
-        jLabelFileIn.setText(imgInName);
-        jLabelImgOut.setVisible(false);
-        jLabelFileOut.setVisible(false);
-        // complex
-        if (jdFrame != null)
-            jdFrame.open_delegate(droppedFile);
-        // simple
-        if (jFrameSimple != null)
-            jFrameSimple.open_delegate(droppedFile);
-    }
-
-    // protected void importFiles(final List files) {
-    //     Runnable run = new Runnable() {
-    //         @Override
-    //         public void run() {
-    //             message.setText("You dropped " + files.size() + " files");
-    //         }
-    //     };
-    //     SwingUtilities.invokeLater(run);
-    // }
-
+    /**
+     * DropTargetHandler implements {@link DropTargetListener}
+     * provides the event members:
+     * processDrag, dragEnter, dragOver, dropActionChanged, dragExit, drop
+     */
     protected class DropTargetHandler implements DropTargetListener {
 
         protected void processDrag(DropTargetDragEvent dtde) {
@@ -559,7 +569,11 @@ public class DropPanel extends JPanel {
 		
     }
 
-   
+
+    /**
+     * DragUpdate implements {@link Runnable}
+     * is responsible for Drag Over Update position point
+     */
     public class DragUpdate implements Runnable {
 
 		private boolean dragOver;
