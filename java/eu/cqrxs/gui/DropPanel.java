@@ -52,6 +52,7 @@ public class DropPanel extends JPanel {
     private BufferedImage target, imgFileIn, imgFileOut, imgCipherPipe;
     private javax.swing.ImageIcon imgIconIn, imgIconOut, imgIconPipe;
     public JLabel message, jLabelImgIn, jLabelFileIn,  jLabelImgOut, jLabelFileOut, jLabelCipherPipe;
+	static Color backColor, bgColor;
 	private Font monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
     public static CqrJFrameSimple jFrameSimple;
     public static CqrJdFrame jdFrame;
@@ -62,8 +63,6 @@ public class DropPanel extends JPanel {
      */
     public DropPanel() {
 
-        setLayout(null);
-        setSize(960, 108);
         initGui();
     }
 
@@ -78,8 +77,6 @@ public class DropPanel extends JPanel {
         else
             jFrameSimple = (CqrJFrameSimple)getParent();
 
-        setLayout(null);
-        setSize(960, 108);
         initGui();
     }
 
@@ -93,8 +90,7 @@ public class DropPanel extends JPanel {
             jdFrame = complex;
         else
             jdFrame = (CqrJdFrame)getParent();
-        setLayout(null);
-        setSize(960, 108);
+		
         initGui();
     }
 
@@ -113,7 +109,14 @@ public class DropPanel extends JPanel {
      * initGui inits all graphical elements in DropPanel before leaving any constructor
      */
     public void initGui() {
-        try {
+        		
+		setLayout(null);
+        setSize(960, 108);
+		bgColor = Color.LIGHT_GRAY;
+		backColor = Color.decode("#eeeeee");		
+		setBackground(backColor);
+		
+		try {
 
             target = addImages(new String[] { "eu/cqrxs/gui/img/file.png", "img/file.png" });
             imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));

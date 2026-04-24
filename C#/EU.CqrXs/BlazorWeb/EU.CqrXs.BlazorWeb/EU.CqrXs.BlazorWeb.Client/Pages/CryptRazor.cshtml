@@ -1,0 +1,85 @@
+﻿@page
+@model EU.CqrXs.BlazorWeb.Client.Pages.CryptRazorModel
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Cool Crypt (apache2 mod_mono)</title>
+    <link rel="stylesheet" href="../res/css/area23.at.mono.css" />
+    <meta charset="utf-8" />
+    <meta name="keywords" content="encode decode uuencode uudecode mime base64 symmmetric chipher pipeline aes 3des blowfish serpent twofish threefish des encrypt decrypt" />
+    <meta name="description" content="Cool Crypt symmmetric chipher pipeline" />
+    <script type="text/javascript">
+
+            function changeCryptBackgroundFile() {
+                var divAes = document.getElementById("DivCryptImprove");
+                if (divAes != null) {
+                    divAes.setAttribute("style", "padding-left: 40px; margin-left: 2px; background-image: url('../res/img/crypt/AesBGFile.gif'); background-repeat: no-repeat; background-color: transparent;");
+                    divAes.style.backgroundImage = "url('../res/img/crypt/AesBGFile.gif')";
+                }
+            }
+
+            function changeCryptBackgroundText() {
+                var divAes = document.getElementById("DivCryptImprove");
+                if (divAes != null) {
+                    divAes.setAttribute("style", "padding-left: 40px; margin-left: 2px; background-image: url('../res/img/crypt/AesBGText.gif'); background-repeat: no-repeat; background-color: transparent;");
+                    divAes.style.backgroundImage = "url('../res/img/crypt/AesBGText.gif')";
+                }
+            }
+
+            function hashMouseOut(img) {
+                if (img.src == "../res/img/crypt/a_hash.png")
+                    img.src = "../res/img/crypt/a_hash_key_hover.png";
+                else if (img.src == "../res/img/crypt/a_hash_key_hover.png")
+                    img.src = "../res/img/crypt/a_hash.png";
+            }
+
+    </script>
+</head>>
+<body>
+    <h2>Enryption method</h2>
+
+    <div style="background-color: transparent; padding-left: 40px; margin-left: 2px;">
+        <div class="odDiv">
+            <span class="leftSpan" style="width: 60px; min-width: 48px; max-width: 60px">&nbsp;Key:&nbsp;</span>
+            <span class="centerSpan" style="width: 60px; min-width: 48px; max-width: 72px">
+                <!-- ImageButton ID="ImageButton_Key" runat="server" ClientIDMode="Static"
+                                 OnClick="Button_Key_Click" ImageUrl="../res/img/crypt/a_right_key.png" AlternateText="save your user key in session" /-->
+            </span>
+            <span class="centerSpan" style="margin-left: 2px; max-width: 600px; min-width: 520px">
+                <TextBox itemid="TextBox_Key" 
+                            Text="heinrich.elsigan@area23.at"
+                            title="Enter your personal email address or secret key here"
+                            style="max-width: 554px; column-count=256"  />
+            </span>            
+            <span class="centerSpan" style="width: 68px; min-width: 60px; max-width: 72px">
+                <Button itemid="Button_Clear" Text="clear" title="Clear SymChiffre Pipeline" />
+                &nbsp;
+            </span>            
+            <span class="rightSpan" style="width: 68px; min-width: 48px; max-width: 72px">                
+                CipherMode2 &nbsp;
+                <div class="d-flex gap-2 mb-4">
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <select class="form-select">
+                            <option value="CBC">CBC</option>
+                            <option value="CFB">CFB</option>
+                            <option value="ECB">ECB</option>
+                        </select>                 
+                    </div>
+                </div>
+                &nbsp;<a href="Help.pdf" title="help howto" target="_blank">Help</a>&nbsp;
+            </span>
+        </div>
+        
+    <hr />
+   </div>
+<hr />
+<h3>Great thanks to <a href="https://www.bouncycastle.org/download/bouncy-castle-c/" target="_blank">bouncycastle.org</a>!</h3>
+</body>
+</html>
+@{
+
+}

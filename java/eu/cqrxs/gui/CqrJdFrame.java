@@ -104,7 +104,7 @@ public class CqrJdFrame extends JFrame {
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
-	static Color defaultMenuItemBg, selectionBg;
+	static Color defaultMenuItemBg, selectionBg, backColor, bgColor;
 	
 	JMenuBar jBar = new JMenuBar();
 	// JMenuBar jMenuBar = new JMenuBar();
@@ -663,6 +663,10 @@ public class CqrJdFrame extends JFrame {
 		
         monoSpaceFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
 		cryptFont = new Font("Dialog", Font.PLAIN, 11);
+		bgColor = Color.LIGHT_GRAY;
+		backColor = Color.decode("#acdccc");		
+		// setBackground(backColor);
+		
 		SymAction lSymAction = new SymAction();
 		SymMouse aSymMouse = new SymMouse();
 		
