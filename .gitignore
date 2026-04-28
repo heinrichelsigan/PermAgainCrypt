@@ -403,6 +403,12 @@ FodyWeavers.xsd
 *.des3
 *.aes
 
+java/META-INF
+java/native
+java/org
+java/out
+
+
 # Framework documentation XML
 EU.CqrXs.xml
 

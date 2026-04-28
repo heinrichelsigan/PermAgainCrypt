@@ -158,18 +158,21 @@ public class CryptConsole  {
             // else if (optEnum == OptEnum.SymmCipher) // prefetch SymmCipherMod
             //     useSymmCipher = true;
 	        else if (optEnum == OptEnum.Zip) { // prefetch Zip
-		        if (optStr.toLowerCase().contains("gz") ||
-			        optStr.toLowerCase().contains("gunzip"))
-			        zipType = ZipType.GZip;
+
 		        if (optStr.toLowerCase().contains("zip") ||
-			        optStr.toLowerCase().contains("unzip"))
+			            optStr.toLowerCase().contains("unzip"))
 			        zipType = ZipType.Zip;
-		        if (optStr.toLowerCase().contains("bz") ||
-			        optStr.toLowerCase().contains("bunz") ||
-			        optStr.toLowerCase().contains("2"))
+		        else if (optStr.toLowerCase().contains("bz") ||
+			            optStr.toLowerCase().contains("bunz") ||
+			            optStr.toLowerCase().contains("2"))
 			        zipType = ZipType.BZip2;
-		    else
-			    usage("unrecognized zip option: " + optStr);
+                else if ((optStr.length() > 2) ||
+                        optStr.toLowerCase().contains("gzip") ||
+                        optStr.toLowerCase().contains("gz") ||
+                        optStr.toLowerCase().contains("gunzip"))
+                    zipType = ZipType.GZip;
+		        else
+			        usage("unrecognized zip option: " + optStr);
 	        }
  	        else if (optEnum == OptEnum.Encode) {
 	 	        encodingType = EncodeEnum.getEncodingTypeFromString(optStr);
