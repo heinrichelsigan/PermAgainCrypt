@@ -5,6 +5,7 @@
 package eu.cqrxs.gui;
 
 import eu.cqrxs.util.Constants;
+import eu.cqrxs.util.DbgWriter;
 
 import java.awt.Window;
 import java.awt.Color;
@@ -103,7 +104,7 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		try {
 			setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			DbgWriter.msgex(ex, true);
 		}
 		
 		SymAction lSymAction = new SymAction();

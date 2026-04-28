@@ -78,7 +78,7 @@ public class UuCoder extends java.beans.Encoder implements IEncodable  {
         try { 
             uuEncString = uue.encode(inBytes);
         } catch (Exception uuEncodeEx)  {
-            uuEncodeEx.printStackTrace();
+            DbgWriter.msgex(uuEncodeEx, true);
             byte[] outBytes = encodeBytesToBytes(inBytes);
             uuEncString = new String(outBytes, StandardCharsets.UTF_8);
         }
@@ -106,7 +106,7 @@ public class UuCoder extends java.beans.Encoder implements IEncodable  {
         try {
             plainBytes = uud.decodeBuffer(encodedString);
         } catch (IOException ioUuDecEx) {
-            ioUuDecEx.printStackTrace();
+            DbgWriter.msgex(ioUuDecEx, true);
             byte[] inBytes = encodedString.getBytes(Charset.forName("UTF-8"));
             plainBytes = decodeBytesToBytes(inBytes);
         }
@@ -131,11 +131,11 @@ public class UuCoder extends java.beans.Encoder implements IEncodable  {
                 new eu.cqrxs.crypt.encoding.uu.UUEncoder();
             uuEncoded = uue.encode(inBytes);
         } catch (Exception exUu) {
-            exUu.printStackTrace();
+            DbgWriter.msgex(exUu, true);
             try {
                 uuEncoded = encodeBytesToString(inBytes);
             } catch (IOException ioex) {
-                ioex.printStackTrace();
+                DbgWriter.msgex(ioex, true);
                 uuEncoded = "";
             }
         }
@@ -163,7 +163,7 @@ public class UuCoder extends java.beans.Encoder implements IEncodable  {
         try {
             uuDecBytes = uud.decodeBuffer(encodedString);
         } catch (IOException ioUuDecEx) {
-            ioUuDecEx.printStackTrace();
+            DbgWriter.msgex(ioUuDecEx, true);
             uuDecBytes = decodeStringToBytes(encodedString);
         }
         String uuDecString = new String(uuDecBytes, StandardCharsets.UTF_8);

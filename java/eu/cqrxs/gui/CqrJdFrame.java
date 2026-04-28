@@ -898,7 +898,7 @@ public class CqrJdFrame extends JFrame {
 				fx = imagePaths.length - 1;
 				break;
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				DbgWriter.msgex(ex, true);
 			}
 		}
 		return bimg;
@@ -1130,7 +1130,7 @@ public class CqrJdFrame extends JFrame {
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
 			JOptionPane.showMessageDialog(null, e);
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 
 		if (openFileBytes.length < 2048)
@@ -1178,7 +1178,7 @@ public class CqrJdFrame extends JFrame {
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
 			JOptionPane.showMessageDialog(null, e);
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}                
 		
 		if (openFileBytes.length < 2048)
@@ -1224,8 +1224,8 @@ public class CqrJdFrame extends JFrame {
 		} catch (Exception ex) {
 			setInfoMsg("Exception during file save.");
 			JOptionPane.showMessageDialog(null, ex);
-			
-			ex.printStackTrace();
+
+			DbgWriter.msgex(ex, true);
 		}
 			
 	}
@@ -1251,7 +1251,7 @@ public class CqrJdFrame extends JFrame {
 			setInfoMsg("Set pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 	
@@ -1291,7 +1291,7 @@ public class CqrJdFrame extends JFrame {
 			setInfoMsg("Hashed pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 		
@@ -1326,7 +1326,7 @@ public class CqrJdFrame extends JFrame {
 			setInfoMsg("Form cleared.");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 	
@@ -1396,7 +1396,7 @@ public class CqrJdFrame extends JFrame {
 				try {
 					dropPanel.setFileIconLabelOut(saveFileName);
 				} catch (Exception exImgLablOut) {
-					exImgLablOut.printStackTrace();
+					DbgWriter.msgex(exImgLablOut, true);
 				}
 				
 				if (saveFileBytes.length < 2048)
@@ -1408,7 +1408,7 @@ public class CqrJdFrame extends JFrame {
 
             }
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			DbgWriter.msgex(ex, true);
 			setInfoMsg("Exception during encrypt.");
 			// jTextAreaDestination.setText(ex.toString());
 		}
@@ -1484,7 +1484,7 @@ public class CqrJdFrame extends JFrame {
 				try {
 					dropPanel.setFileIconLabelOut(saveFileName);
 				} catch (Exception exImgLablOut) {
-					exImgLablOut.printStackTrace();
+					DbgWriter.msgex(exImgLablOut, true);
 				}
                 
 				if (saveFileBytes.length < 2048)
@@ -1498,7 +1498,7 @@ public class CqrJdFrame extends JFrame {
             } 
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());
-			ex.printStackTrace();
+			DbgWriter.msgex(ex, true);
 			setInfoMsg("Exception during decrypt.");
 		}
 	}
@@ -1515,7 +1515,7 @@ public class CqrJdFrame extends JFrame {
 
 			cqrJDialog.showDialog(cqrJdFrame);
 		} catch (Exception exIO) {
-			exIO.printStackTrace();
+			DbgWriter.msgex(exIO, true);
 		}
 	}
 	
@@ -1530,7 +1530,7 @@ public class CqrJdFrame extends JFrame {
             cqrJdFrame.setVisible(false);
 			// cqrJdFrame.hide();
 		} catch (Exception exIO) {
-			exIO.printStackTrace();
+			DbgWriter.msgex(exIO, true);
 		}
 	}
 	
@@ -1548,9 +1548,9 @@ public class CqrJdFrame extends JFrame {
                 desktop.browse(new URI(url));
 				success = true;            
             } catch (URISyntaxException e) {
-				e.printStackTrace();
+				DbgWriter.msgex(e, true);
 			} catch (Exception ex) {
-                ex.printStackTrace();
+				DbgWriter.msgex(ex, true);
 			}
 		}
 		if (!success) {
@@ -1562,7 +1562,7 @@ public class CqrJdFrame extends JFrame {
 				else // if (os.indexOf("x") >=0 || os.indexOf("bsd") >= 0)
 					rt.exec("xdg-open "  + url);	
 			} catch (Exception rtException) {
-				rtException.printStackTrace();
+				DbgWriter.msgex(rtException, true);
 			}
 		}		
 	}
@@ -1589,7 +1589,7 @@ public class CqrJdFrame extends JFrame {
 			int byteRead = bis.read(byBuf, 0, 10000);
 			img = Toolkit.getDefaultToolkit().createImage(byBuf);
  	 	} catch(Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
  		}
 		return img;
 	}
@@ -1629,7 +1629,7 @@ public class CqrJdFrame extends JFrame {
 			jTextAreaDestination.append("Headers: " + response.headers().allValues("content-type"));
 			jTextAreaDestination.append("Body: \n " + response.body());  
 		} catch (Exception ioEx) {
-			ioEx.printStackTrace();
+			DbgWriter.msgex(ioEx, true);
 			jTextAreaDestination.append("Exception: " + ioEx + "\n");		
 		}
 		

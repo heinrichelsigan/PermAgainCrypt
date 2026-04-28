@@ -102,7 +102,7 @@ public class ZenMatrix implements BlockCipher  {
         try  {
             this.privateBytes = ((KeyParameter)parameters).getKey();
         }  catch (Exception ex) {
-            ex.printStackTrace();
+            DbgWriter.msgex(ex, true);
         }
         if (parameters instanceof  ParametersWithIV) {     
 			byte[] bKey = new byte[0];				

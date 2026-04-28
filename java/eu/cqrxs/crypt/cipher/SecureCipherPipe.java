@@ -317,7 +317,7 @@ public class SecureCipherPipe extends CipherPipe {
             byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
         // use EncrpytFileBytesGoRounds for operations zip before and pipe cycöe encryption
         byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);                
@@ -348,7 +348,7 @@ public class SecureCipherPipe extends CipherPipe {
             byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
         // perform multi crypt pipe stages
         byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
@@ -423,7 +423,7 @@ public class SecureCipherPipe extends CipherPipe {
                     zType.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
 
         return decryptedBytes;
@@ -448,7 +448,7 @@ public class SecureCipherPipe extends CipherPipe {
             byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
 
         return merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
@@ -475,7 +475,7 @@ public class SecureCipherPipe extends CipherPipe {
                     zType.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
         return decryptedBytes;
     }
@@ -493,7 +493,7 @@ public class SecureCipherPipe extends CipherPipe {
             byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
 
         byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
@@ -526,7 +526,7 @@ public class SecureCipherPipe extends CipherPipe {
             byte[] zippedBytes = (zType != ZipType.None) ? zType.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
 
         byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKeyHash, cMode2);
@@ -561,7 +561,7 @@ public class SecureCipherPipe extends CipherPipe {
                     zType.unzip(outBytes) : outBytes;
             outBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
         return outBytes;
     }
@@ -599,7 +599,7 @@ public class SecureCipherPipe extends CipherPipe {
                     zType.unzip(outBytes) : outBytes;
             outBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
 
         return outBytes;

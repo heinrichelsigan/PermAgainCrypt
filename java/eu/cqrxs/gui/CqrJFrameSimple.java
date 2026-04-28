@@ -15,17 +15,14 @@ import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.SecureCipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
-import eu.cqrxs.gui.CqrJDialog;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
-import eu.cqrxs.zip.GZ;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Desktop;
 import java.awt.Toolkit;
-import java.awt.Window;
 import java.awt.event.*;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -75,7 +72,7 @@ public class CqrJFrameSimple extends JFrame {
     public static CqrJdFrame cqrJdFrame;
 	protected static byte[] openFileBytes, saveFileBytes;
     private static String[] args;
-    URL keyUrl, addAlgoUrl, xUrl;
+    // URL keyUrl, addAlgoUrl, xUrl;
 	/// at/net/res/img/crypt/file.png");/
 	 		
 	protected KeyHash keyHash = KeyHash.Hex;
@@ -763,7 +760,7 @@ public class CqrJFrameSimple extends JFrame {
 				fx = imagePaths.length - 1;
 				break;
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				DbgWriter.msgex(ex, true);
 			}
 		}
 		return bimg;
@@ -937,7 +934,7 @@ public class CqrJFrameSimple extends JFrame {
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
 			JOptionPane.showMessageDialog(null, e);
-			e.printStackTrace();
+			DbgWriter.msgex(e, false);
 		}
 
 		if (openFileBytes.length < 2048)
@@ -982,7 +979,7 @@ public class CqrJFrameSimple extends JFrame {
 		} catch (Exception e){
 			setInfoMsg("Exception during file open.");
 			JOptionPane.showMessageDialog(null, e);
-			e.printStackTrace();
+			DbgWriter.msgex(e, false);
 		}                
 		
 		if (openFileBytes.length < 2048)
@@ -1028,8 +1025,8 @@ public class CqrJFrameSimple extends JFrame {
 		} catch (Exception ex) {
 			setInfoMsg("Exception during file save.");
 			JOptionPane.showMessageDialog(null, ex);
-			
-			ex.printStackTrace();
+
+			DbgWriter.msgex(ex, true);
 		}
 			
 	}
@@ -1054,7 +1051,7 @@ public class CqrJFrameSimple extends JFrame {
 			setInfoMsg("Set pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 	
@@ -1077,7 +1074,7 @@ public class CqrJFrameSimple extends JFrame {
 			setInfoMsg("Hashed pipe to: " + pipe.getPipeString());
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 		
@@ -1110,7 +1107,7 @@ public class CqrJFrameSimple extends JFrame {
 			setInfoMsg("Form cleared.");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
 		}
 	}
 	
@@ -1184,7 +1181,7 @@ public class CqrJFrameSimple extends JFrame {
 
             }
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			DbgWriter.msgex(ex, true);
 			setInfoMsg("Exception during encrypt.");
 			// jTextAreaDestination.setText(ex.toString());
 		}
@@ -1269,7 +1266,7 @@ public class CqrJFrameSimple extends JFrame {
             } 
 		} catch (Exception ex) {
 			// jTextAreaDestination.setText(ex.toString());
-			ex.printStackTrace();
+			DbgWriter.msgex(ex, true);
 			setInfoMsg("Exception during decrypt.");
 		}
 	}
@@ -1286,7 +1283,7 @@ public class CqrJFrameSimple extends JFrame {
 
 			cqrJDialog.showDialog(cqrJFrameSimple);
 		} catch (Exception exIO) {
-			exIO.printStackTrace();
+			DbgWriter.msgex(exIO, true);
 		}
 	}
 
@@ -1303,7 +1300,7 @@ public class CqrJFrameSimple extends JFrame {
             setVisible(false);
             cqrJFrameSimple.dispose();
 		} catch (Exception exIO) {
-			exIO.printStackTrace();
+			DbgWriter.msgex(exIO, true);
 		}
 	}
 
@@ -1322,9 +1319,9 @@ public class CqrJFrameSimple extends JFrame {
                 desktop.browse(new URI(url));
 				success = true;            
             } catch (URISyntaxException e) {
-				e.printStackTrace();
+				DbgWriter.msgex(e, true);
 			} catch (Exception ex) {
-                ex.printStackTrace();
+				DbgWriter.msgex(ex, true);
 			}
 		}
 		if (!success) {
@@ -1336,7 +1333,7 @@ public class CqrJFrameSimple extends JFrame {
 				else // if (os.indexOf("x") >=0 || os.indexOf("bsd") >= 0)
 					rt.exec("xdg-open "  + url);	
 			} catch (Exception rtException) {
-				rtException.printStackTrace();
+				DbgWriter.msgex(rtException, true);
 			}
 		}		
 	}
@@ -1363,7 +1360,7 @@ public class CqrJFrameSimple extends JFrame {
 			int byteRead = bis.read(byBuf, 0, 10000);
 			img = Toolkit.getDefaultToolkit().createImage(byBuf);
  	 	} catch(Exception e) {
-			e.printStackTrace();
+			DbgWriter.msgex(e, true);
  		}
 		return img;
 	}
@@ -1403,7 +1400,7 @@ public class CqrJFrameSimple extends JFrame {
 			jTextAreaDestination.append("Headers: " + response.headers().allValues("content-type"));
 			jTextAreaDestination.append("Body: \n " + response.body());  
 		} catch (Exception ioEx) {
-			ioEx.printStackTrace();
+			DbgWriter.msgex(ioEx, true);
 			jTextAreaDestination.append("Exception: " + ioEx + "\n");		
 		}
 		

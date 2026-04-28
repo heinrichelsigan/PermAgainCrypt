@@ -141,7 +141,7 @@ public enum KeyHash {
 					try {
 						hexs = hex.formatHex(resBuf);
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						DbgWriter.msgex(ex, true);
 						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
 					}
 					return hexs;
@@ -156,7 +156,7 @@ public enum KeyHash {
 					try {
 						hexs = hex.formatHex(resBuf);
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						DbgWriter.msgex(ex, true);
 						hexs = (new eu.cqrxs.crypt.encoding.Hex16Coder()).encodeBytesToString(resBuf);
 					}
 					return hexs;
@@ -238,7 +238,7 @@ public enum KeyHash {
 					try {
 						hexs = hex.formatHex(resBuf);
 					} catch (Exception ex) {
-						ex.printStackTrace();
+						DbgWriter.msgex(ex, true);
 						hexs = (new Hex16Coder()).encodeBytesToString(resBuf);
 					}
 					return hexs;
@@ -246,8 +246,8 @@ public enum KeyHash {
 				default:
 					break;
 			}
-		} catch (Exception exi) { 
-			exi.printStackTrace();
+		} catch (Exception exi) {
+			DbgWriter.msgex(exi, true);
 		}
 		return "";
     }

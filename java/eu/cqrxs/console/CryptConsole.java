@@ -16,6 +16,7 @@ import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.Constants;
+import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.zip.ZipType;
 
 import org.bouncycastle.crypto.InvalidCipherTextException;
@@ -73,7 +74,7 @@ public class CryptConsole  {
                     .toURI()
                     .getPath();
         } catch (Exception e) {
-            e.printStackTrace();
+            DbgWriter.msgex(e, true);
             progName = "CryptConsole.java";
         }
 
@@ -108,14 +109,14 @@ public class CryptConsole  {
                         try {
                             inBytes = Files.readAllBytes(inFile.toPath());
                         } catch (Exception exx) {
-                            exx.printStackTrace();
+                            DbgWriter.msgex(exx, true);
                         }
                     } else if (Files.exists(Paths.get(inName))) {
                         inFile = new java.io.File(inName);
                         try {
                             inBytes = Files.readAllBytes(inFile.toPath());
-                        } catch (Exception exx) {
-                            exx.printStackTrace();
+                        } catch (Exception ex2) {
+                            DbgWriter.msgex(ex2, true);
                         }
                     }
                 }
@@ -204,7 +205,7 @@ public class CryptConsole  {
                 // }
                 System.arraycopy(buf, 0, inBytes, 0, buflen);
             } catch (IOException e) {
-			    e.printStackTrace();
+                DbgWriter.msgex(e, true);
 		    }
 	    }
 
@@ -244,7 +245,7 @@ public class CryptConsole  {
                             passKey,  keyHash.hash(passKey),
                         encodingType, zipType, keyHash, CipherMode2.CFB); // TODO: fix it
             } catch (Exception exi) {
-                exi.printStackTrace();
+                DbgWriter.msgex(exi, true);
             }
             outString = new String(outBytes);
         } else { // decrypt
@@ -258,7 +259,7 @@ public class CryptConsole  {
                         passKey, (passKey.isEmpty() ? "" : keyHash.hash(passKey)),
                         encodingType, zipType, keyHash, CipherMode2.CFB); 
             } catch (Exception exi) {
-                exi.printStackTrace();
+                DbgWriter.msgex(exi, true);
             }
         }
 
@@ -272,7 +273,7 @@ public class CryptConsole  {
                 Files.write(fpath, outBytes);
                 verbout(outBytes.length + " bytes written to file " + fpath.toString());
             } catch (Exception exIO) {
-                exIO.printStackTrace();
+                DbgWriter.msgex(exIO, true);
             }
         }
 		else if (outName != null && outName.length() > 0)
@@ -290,7 +291,7 @@ public class CryptConsole  {
                     rt.exec(outEnviron + "="  + new String(outBytes) +
                             "; export $" + outEnviron.toString());
             } catch (Exception rtException) {
-                rtException.printStackTrace();
+                DbgWriter.msgex(rtException, true);
             }
             // System.setenv(outEnviron, new String(outBytes));
         }

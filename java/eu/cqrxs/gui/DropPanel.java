@@ -155,7 +155,7 @@ public class DropPanel extends JPanel {
             add(jLabelFileOut);
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            DbgWriter.msgex(ex, true);
         }
     }
 
@@ -327,7 +327,7 @@ public class DropPanel extends JPanel {
 				fx = imagePaths.length - 1;
 				break;
 			} catch (IOException ex) {
-				ex.printStackTrace();				
+                DbgWriter.msgex(ex, true);
 			}
 		}
 		return bimg;
@@ -441,7 +441,7 @@ public class DropPanel extends JPanel {
         try {
             getMyDropTarget().addDropTargetListener(getDropTargetHandler());
         } catch (TooManyListenersException ex) {
-            ex.printStackTrace();
+            DbgWriter.msgex(ex, true);
         }
     }
 
@@ -547,7 +547,7 @@ public class DropPanel extends JPanel {
 						}
 					}
 				} catch (Exception exList) {
-					exList.printStackTrace();
+                    DbgWriter.msgex(exList, true);
 				}
 				
                 if (!dcompleted) try {         
@@ -562,7 +562,7 @@ public class DropPanel extends JPanel {
                         }
                     }
 				} catch (Exception exArrayList) {
-                    exArrayList.printStackTrace();
+                    DbgWriter.msgex(exArrayList, true);
                 }
 				
             } else {

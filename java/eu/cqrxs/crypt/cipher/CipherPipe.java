@@ -548,7 +548,7 @@ public class CipherPipe {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
         // perform multi crypt pipe stages
         byte[] encryptedBytes = merryGoRoundEncrpyt(inBytes, cryptKey, hashIv, cMode2);
@@ -642,7 +642,7 @@ public class CipherPipe {
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
         return decryptedBytes;
     }
@@ -676,7 +676,7 @@ public class CipherPipe {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
         return merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cMode2);
     }
@@ -710,7 +710,7 @@ public class CipherPipe {
                     unzipAfter.unzip(decryptedBytes) : decryptedBytes;
             decryptedBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
         return decryptedBytes;
     }
@@ -785,7 +785,7 @@ public class CipherPipe {
             byte[] zippedBytes = (zipBefore != ZipType.None) ? zipBefore.zip(inBytes) : inBytes;
             inBytes = zippedBytes;
         } catch (Exception exZip) {
-            exZip.printStackTrace();
+            DbgWriter.msgex(exZip, true);
         }
         byte[] outBytes = merryGoRoundEncrpyt(inBytes, cipherKey, cipherHash, cMode2);
         byte[] encryptedBytes = new byte[0];
@@ -843,7 +843,7 @@ public class CipherPipe {
                     unzipAfter.unzip(outBytes) : outBytes;
             outBytes = unzipBytes;
         } catch (Exception exUnzip) {
-            exUnzip.printStackTrace();
+            DbgWriter.msgex(exUnzip, true);
         }
 
         return outBytes;
@@ -864,7 +864,7 @@ public class CipherPipe {
             try {
                 imgPipeBlank = ImageIO.read(new File(path + "cipherpipeblank.png"));
             } catch (IOException ioex1) {
-                ioex1.printStackTrace();
+                DbgWriter.msgex(ioex1, true);
             }
             return imgPipeBlank;
         }
@@ -882,7 +882,7 @@ public class CipherPipe {
             try {
                 imgGz = ImageIO.read(new File(path + "gz.png"));
             } catch (IOException ioex2) {
-                ioex2.printStackTrace();
+                DbgWriter.msgex(ioex2, true);
             }
             g.drawImage(imgGz, xoffset, 0, null);
             xoffset += 76;
@@ -890,8 +890,8 @@ public class CipherPipe {
             BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
             try {
                 imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
-            } catch (IOException ioex2) {
-                ioex2.printStackTrace();
+            } catch (IOException ioex3) {
+                DbgWriter.msgex(ioex3, true);
             }
             g.drawImage(imgStart, xoffset, 0, null);
             xoffset += 32;
@@ -905,12 +905,12 @@ public class CipherPipe {
                 try {
                     imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
                 } catch (Exception ex3) {
-                    ex3.printStackTrace();
+                    DbgWriter.msgex(ex3, true);
                     try {
                         imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
                         // imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
                     } catch (IOException ioex4) {
-                        ioex4.printStackTrace();
+                        DbgWriter.msgex(ioex4, true);
                     }
                 }
 
@@ -935,7 +935,7 @@ public class CipherPipe {
                 }
                 imgEncoding = ImageIO.read(new File(path + encodeFileName));
             } catch (IOException exLoadEncodeImage) {
-                exLoadEncodeImage.printStackTrace();
+                DbgWriter.msgex(exLoadEncodeImage, true);
             }
             g.drawImage(imgEncoding, xoffset, 0, null);
         }
@@ -964,7 +964,7 @@ public class CipherPipe {
             try {
                 imgStartPipeBlank = ImageIO.read(new File(path + "decryptcipherpipe.png"));
             } catch (Exception exImageStartBlank) {
-                exImageStartBlank.printStackTrace();
+                DbgWriter.msgex(exImageStartBlank, true);
             }
             return imgStartPipeBlank;
         }
@@ -981,7 +981,7 @@ public class CipherPipe {
             try {
                 imgDecoding = ImageIO.read(new File(path + "decodingasciitobin.png"));
             } catch (Exception exImageDecoding) {
-                exImageDecoding.printStackTrace();
+                DbgWriter.msgex(exImageDecoding, true);
             }
             g.drawImage(imgDecoding, xoffset, 0, null);
             xoffset += 80;
@@ -990,7 +990,7 @@ public class CipherPipe {
             try {
                 imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
             } catch (Exception exIMageStartBlank) {
-                exIMageStartBlank.printStackTrace();
+                DbgWriter.msgex(exIMageStartBlank, true);
             }
             g.drawImage(imgStart, xoffset, 0, null);
             xoffset += 32;
@@ -1004,11 +1004,11 @@ public class CipherPipe {
                 try {
                     imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
                 } catch (Exception exImageAlgo) {
-                    exImageAlgo.printStackTrace();
+                    DbgWriter.msgex(exImageAlgo, true);
                     try {
                         imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
                     } catch (Exception exImageFileAlgo) {
-                        exImageFileAlgo.printStackTrace();
+                        DbgWriter.msgex(exImageFileAlgo, true);
                     }
                 }
                 g.drawImage(imgAes, xoffset, 0, null);
@@ -1022,7 +1022,7 @@ public class CipherPipe {
             try {
                 imgGz = ImageIO.read(new File(path + "gunzip.png"));
             } catch (Exception exImageGunzip) {
-                exImageGunzip.printStackTrace();
+                DbgWriter.msgex(exImageGunzip, true);
             }
             g.drawImage(imgGz, xoffset, 0, null);
             xoffset += 76;

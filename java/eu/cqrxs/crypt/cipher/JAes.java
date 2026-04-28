@@ -74,7 +74,7 @@ public class JAes implements BlockCipher {
         try  {
             privateBytes = ((KeyParameter)parameters).getKey();
         }  catch (Exception ex) {
-            ex.printStackTrace();
+            DbgWriter.msgex(ex, true);
         }
         if (parameters instanceof  ParametersWithIV) {
             byte[] bKey = new byte[0];
