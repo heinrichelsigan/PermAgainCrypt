@@ -9,6 +9,8 @@
 
 package eu.cqrxs.crypt.encoding;
 
+import org.bouncycastle.util.encoders.Encoder;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +22,7 @@ import eu.cqrxs.util.*;
  * UuCoder provides UUEncoder and UUDecode
  *
  */
-public class UuCoder extends java.beans.Encoder implements IEncodable  {
+public class UuCoder implements IEncodable  {
 
         final static byte[] UUEncMap = new byte[] {
           0x60, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,

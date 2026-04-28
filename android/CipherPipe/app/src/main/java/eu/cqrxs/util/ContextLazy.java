@@ -10,13 +10,14 @@
 
 package eu.cqrxs.util;
 
-import javax.naming.InitialContext;
+// import javax.naming.InitialContext;
 
 /**
   * ContextLazy - provides a lazy singelton for application context
   *
   */
 public class ContextLazy {
+    /*
     private static ContextLazy instance;
     private InitialContext mContext;
 	
@@ -36,4 +37,5 @@ public class ContextLazy {
         mContext = context;
     }
 
+    */
 }

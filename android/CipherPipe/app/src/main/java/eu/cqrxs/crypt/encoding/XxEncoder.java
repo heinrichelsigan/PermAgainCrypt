@@ -22,7 +22,7 @@ import java.io.ByteArrayOutputStream;
  * 2026-01-21 last functionality that works
  *
  */
-public class XxEncoder extends java.beans.Encoder implements IEncodable  {
+public class XxEncoder  implements IEncodable  {
 
 	final static byte[] XXEncMap = new byte[] {
 		0x2B, 0x2D, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35,

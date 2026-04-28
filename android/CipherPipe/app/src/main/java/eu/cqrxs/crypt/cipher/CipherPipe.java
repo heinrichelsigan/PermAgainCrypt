@@ -9,8 +9,8 @@
 
 package eu.cqrxs.crypt.cipher;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+// import java.awt.*;
+// import java.awt.image.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +30,9 @@ import eu.cqrxs.zip.ZipType;
 import org.bouncycastle.crypto.*;
 
 import javax.crypto.Cipher;
-import javax.imageio.ImageIO;
+import android.graphics.*;
+
+import androidx.annotation.NonNull;
 
 /**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
@@ -91,7 +93,7 @@ public class CipherPipe {
      * @param kh {@link KeyHash}
      * @param cmode2 {@link CipherMode2}
      */
-    public CipherPipe(CipherEnum[] cipherEnums,
+    public CipherPipe(@NonNull CipherEnum[] cipherEnums,
                       int maxpipe,
                       EncodeEnum encType,
                       ZipType zpType,
@@ -859,12 +861,12 @@ public class CipherPipe {
     }
 
 
-    /**
-     * drawCipherPipe draws a cipher pipe image for a specified pipe
-     * state of method: prototype (not fully working)
-     * @param pipe the specific chipher pipe
-     * @return {@link BufferedImage}
-     */
+    /*
+     // * drawCipherPipe draws a cipher pipe image for a specified pipe
+     // * state of method: prototype (not fully working)
+     // * @param pipe the specific chipher pipe
+     // * @return {@link BufferedImage}
+     //
     public static BufferedImage drawCipherPipe(CipherPipe pipe) {
         String path = "eu/cqrxs/gui/img/"; // base path of the images
 
@@ -958,12 +960,12 @@ public class CipherPipe {
     }
 
 
-    /**
-     * drawDecryptCipherPipe draws a cipher pipe image for a specified pipe
-     * state of method: prototype (not fully working)
-     * @param pipe the specific chipher pipe
-     * @return {@link BufferedImage}
-     */
+     //
+     // * drawDecryptCipherPipe draws a cipher pipe image for a specified pipe
+     // * state of method: prototype (not fully working)
+     // * @param pipe the specific chipher pipe
+     // * @return {@link BufferedImage}
+     //
     public static BufferedImage drawDecryptCipherPipe(CipherPipe pipe) {
 
         String path = "eu/cqrxs/gui/img/"; // base path of the images
@@ -1043,6 +1045,6 @@ public class CipherPipe {
         // ImageIO.write(combined, "PNG", new File(path, "combined.png"));
         return combined;
     }
-
+     */
 
 }

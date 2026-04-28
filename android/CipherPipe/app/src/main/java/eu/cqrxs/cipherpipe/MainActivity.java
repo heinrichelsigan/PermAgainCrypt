@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     EncodeEnum encodeType = EncodeEnum.Base64;
     ZipType zipType = ZipType.None;
 
+    CipherMode2 cmode = CipherMode2.CFB;
+
     static boolean firstTimeInit = true, firstTimeInitEncodings = true;
 
     CipherEnum cipher;
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 String hashed = keyHash.hash(key);
                 editKeyHash.setText(hashed);
 
-                CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash);
+                CipherPipe pipe = new CipherPipe(key, hashed, encodeType, zipType, keyHash, cmode);
 
                 CipherEnum[] cipherEnums = pipe.getInPipe();
                 String pipeSting = "";
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 String hashed = keyHash.hash(key);
                 editKeyHash.setText(hashed);
 
-                CipherPipe pipe = new CipherPipe(hashed, key, encodeType, zipType, keyHash);
+                CipherPipe pipe = new CipherPipe(hashed, key, encodeType, zipType, keyHash, cmode);
 
                 CipherEnum[] cipherEnums = pipe.getInPipe();
                 String pipeSting = "";
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         btnRandText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String fortune = eu.cqrxs.cipherpipe.util.Fortune.getFortune();
+                String fortune = eu.cqrxs.util.Fortune.getFortune();
                 editTextSource.setText(fortune);
             }
         });
@@ -174,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 if (cipherPipeString.length() > 0) {
                     ciphers = CipherEnum.parsePipeText(cipherPipeString);
                 }
-                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash, cmode);
                 String plain = editTextSource.getText().toString();
 
                 String pipeSting = pipe.getPipeString();
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 if (cipherPipeString.length() > 0) {
                     ciphers = CipherEnum.parsePipeText(cipherPipeString);
                 }
-                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash);
+                CipherPipe pipe = new CipherPipe(ciphers, 8, encodeType, zipType, keyHash, cmode);
 
                 String encrypted = editTextSource.getText().toString();
                 CipherEnum[] cipherEnums = pipe.getOutPipe();
@@ -346,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
 
         String encrypted = "";
         try {
-            encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash);
+            encrypted = pipe.encrpytTextGoRounds(plain, key, hashed, encodeType, zipType, keyHash, cmode);
         } catch (Exception exi) {
             showTextDestination.setText(exi.toString());
         }
@@ -357,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
         String decrypted = "";
         try {
-            decrypted =  pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash);
+            decrypted =  pipe.decryptTextRoundsGo(encrypted, key, hashed, encodeType, zipType, keyHash, cmode);
         } catch (Exception exi) {
             showTextDestination.setText(exi.toString());
         }
