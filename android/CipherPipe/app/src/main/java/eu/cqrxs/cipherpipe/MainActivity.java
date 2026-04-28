@@ -28,11 +28,36 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.SortedMap;
 
-import eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum;
-import eu.cqrxs.cipherpipe.crypt.cipher.CipherPipe;
-import eu.cqrxs.cipherpipe.crypt.hash.*;
-import eu.cqrxs.cipherpipe.crypt.encoding.*;
-import eu.cqrxs.cipherpipe.zip.ZipType;
+import eu.cqrxs.crypt.cipher.CipherEnum;
+import eu.cqrxs.crypt.cipher.CipherPipe;
+import eu.cqrxs.crypt.cipher.SecureCipherPipe;
+import eu.cqrxs.crypt.cipher.CryptParams;
+import eu.cqrxs.crypt.cipher.CryptHelper;
+import eu.cqrxs.crypt.cipher.CipherMode2;
+import eu.cqrxs.crypt.cipher.CryptBounceCastle;
+import eu.cqrxs.crypt.cipher.JAes;
+
+import eu.cqrxs.crypt.hash.KeyHash;
+import eu.cqrxs.crypt.hash.BCrypt;
+import eu.cqrxs.crypt.hash.SCrypt;
+import eu.cqrxs.crypt.hash.MD5;
+import eu.cqrxs.crypt.hash.OpenBSDCrypt;
+import eu.cqrxs.crypt.hash.Sha256;
+import eu.cqrxs.crypt.hash.Sha512;
+
+import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.crypt.encoding.IEncodable;
+import eu.cqrxs.crypt.encoding.EnDeCodeHelper;
+import eu.cqrxs.crypt.encoding.Hex16Coder;
+import eu.cqrxs.crypt.encoding.Hex32Coder;
+import eu.cqrxs.crypt.encoding.Hex64Coder;
+import eu.cqrxs.crypt.encoding.Base16Coder;
+import eu.cqrxs.crypt.encoding.Base64Coder;
+import eu.cqrxs.crypt.encoding.UuCoder;
+import eu.cqrxs.crypt.encoding.XxEncoder;
+
+import eu.cqrxs.zip.GZ;
+import eu.cqrxs.zip.ZipType;
 
 
 public class MainActivity extends AppCompatActivity {
