@@ -86,7 +86,7 @@ public class CqrJFrameSimple extends JFrame {
 	protected CipherMode2 cmode2 = CipherMode2.ECB;
 	
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
-	JComboBox jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
+	JComboBox<String> jComboBox, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination,
 			jLabelImgKey, jLabelImgHash, jLabelImgAddAlgo, jLabelImgX;
 	JTextField jTextField_Key, jTextField_Pipe;
@@ -128,6 +128,25 @@ public class CqrJFrameSimple extends JFrame {
      */
 	public static void main(String args[]) {
         CqrJFrameSimple.args = args;
+		Constants.DEBUG = false;
+		if (args != null && args.length > 0) {
+			for (int ai = 0; ai < args.length; ai++) {
+				if (args[ai] != null && !args[ai].isEmpty() && args[ai].length() > 0 &&
+					(
+						args[ai].toLowerCase().contains("verbose") ||
+						args[ai].toLowerCase().contains("-v") ||
+						args[ai].toLowerCase().contains("/v") ||
+						args[ai].toLowerCase().contains("debug") ||
+						args[ai].toLowerCase().contains("dbg") ||
+						args[ai].toLowerCase().contains("-d") ||
+						args[ai].toLowerCase().contains("/d")
+					)) {
+					Constants.DEBUG = true;
+				}
+
+			}
+		}
+		cqrJdFrame = new CqrJdFrame();
         cqrJFrameSimple = new CqrJFrameSimple();
 	}
 		
@@ -135,11 +154,8 @@ public class CqrJFrameSimple extends JFrame {
      * main constructor for CqrJFrameSimple
      */
 	public CqrJFrameSimple() {
-		setLayout(null);
-		setSize(1024,768);
+
 		Init();
-		setVisible(true);
-		Constants.DEBUG = false;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
@@ -153,12 +169,9 @@ public class CqrJFrameSimple extends JFrame {
 			return false;
 		cqrJFrameSimple = jFrameSimple;
 
-		setLayout(null);
-		setSize(1024,768);
 		Init();
-		setVisible(true);
-		Constants.DEBUG = false;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 		return true;
 	}
     
@@ -534,6 +547,7 @@ public class CqrJFrameSimple extends JFrame {
         return jBar;
 	}
 
+	@SuppressWarnings("deprecation")
 	public void Init() {
 		
 		// getRootPane().putClientProperty("defeatSystemEventQueueCheck", Boolean.TRUE);					
@@ -550,11 +564,11 @@ public class CqrJFrameSimple extends JFrame {
 		setJMenuBar(jBar);
 
 		this.addWindowListener(new WindowAdapter(){
-			public void windowClosing(WindowEvent e) {
+			@SuppressWarnings("deprecation")
+            public void windowClosing(WindowEvent e) {
 				try {
 					if (cqrJdFrame == null) {
 						cqrJdFrame = new CqrJdFrame(cqrJFrameSimple);
-						//noinspection deprecation
 						cqrJdFrame.show();
 					} else {
 						cqrJdFrame.setVisible(true);
@@ -602,14 +616,14 @@ public class CqrJFrameSimple extends JFrame {
 		
 
         String[] zipTypeNames = { ZipType.GZip.getName() };
-		jComboBox_Zip = new JComboBox(zipTypeNames);
+		jComboBox_Zip = new JComboBox<>(zipTypeNames);
 		jComboBox_Zip.setBounds(8, 64, 96, 25);
 		jComboBox_Zip.setFont(cryptFont);
 		jComboBox_Zip.addItemListener(new ZipChangeListener());
 		getContentPane().add(jComboBox_Zip);
 		selectItemByString(jComboBox_Zip, menuZip, "GZip");
 
-		jComboBox_Algo = new JComboBox(CipherEnum.getNames());
+		jComboBox_Algo = new JComboBox<>(CipherEnum.getNames());
 		jComboBox_Algo.setBounds(108, 64, 120, 25);
 		jComboBox_Algo.setFont(cryptFont);
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
@@ -635,7 +649,7 @@ public class CqrJFrameSimple extends JFrame {
 		getContentPane().add(jLabelImgX);
 
         String[] comboEncodeEnums = { EncodeEnum.Base64.getName() };
-		jComboBox_Encoding = new JComboBox(comboEncodeEnums);
+		jComboBox_Encoding = new JComboBox<>(comboEncodeEnums);
 		jComboBox_Encoding.setBounds(876, 64, 120, 25);
 		jComboBox_Encoding.setFont(cryptFont);
 		jComboBox_Encoding.addItemListener(new EncodeChangeListener());
@@ -1276,11 +1290,11 @@ public class CqrJFrameSimple extends JFrame {
 		}
 	}
 
-	protected void showComplex_action(ActionEvent event) {
+	@SuppressWarnings("deprecation")
+    protected void showComplex_action(ActionEvent event) {
         try {
             if (cqrJdFrame == null) {
                 cqrJdFrame = new CqrJdFrame(cqrJFrameSimple);
-                //noinspection deprecation
                 cqrJdFrame.show();
             } else {
                 cqrJdFrame.setVisible(true);
@@ -1335,7 +1349,7 @@ public class CqrJFrameSimple extends JFrame {
 	
     protected void dbgMsg(String s, int level, boolean ignoreDbg) {
 		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
-            System.out.println(level + ": \t" + s);
+			DbgWriter.dbgmsg(s, level, ignoreDbg);
         }
     }
 	

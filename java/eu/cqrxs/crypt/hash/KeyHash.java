@@ -116,8 +116,7 @@ public enum KeyHash {
     public String hash(String instr) {
 		try {
 			int xval = getValue();
-            if (Constants.DEBUG)
-                System.out.println("KeyHash: " + xval + " " + getName());
+            DbgWriter.msg("KeyHash: " + xval + " " + getName(), false);
 			if (instr == null || instr.isEmpty())
 				throw new IllegalArgumentException("public static string hash(String instr) inBytes from instr is null!");
 			byte[] inBytes = instr.getBytes(StandardCharsets.UTF_8);

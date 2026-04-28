@@ -84,6 +84,7 @@ public class CryptBounceCastle  {
      * @param cparams parameters to crypt
      * @param init init first time with a new key
      */
+    @SuppressWarnings("deprecation")
     public CryptBounceCastle(CryptParams cparams, boolean init)  {
         CryptoBlockCipher = (cparams.blockCipher == null) ? new AESEngine() : cparams.blockCipher;
         if (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64")
@@ -183,6 +184,7 @@ public class CryptBounceCastle  {
      * @param plainData plain data byte[] array
      * @return encrypted byte[] array
      */
+    @SuppressWarnings("deprecation")
     public byte[] encrypt(byte[] plainData)  throws InvalidCipherTextException {
         var cipher = CryptoBlockCipher;
 		plainData = (CryptoBlockCipher.getAlgorithmName() == "RC564" || CryptoBlockCipher.getAlgorithmName() == "RC5-64") ?
@@ -251,6 +253,7 @@ public class CryptBounceCastle  {
      * @param cipherData encrypted byte[] arrey
      * @return decrypted plain byte[] data
      */
+    @SuppressWarnings("deprecation")
     public byte[] decrypt(byte[] cipherData) throws InvalidCipherTextException {
         var cipher = CryptoBlockCipher;
         PaddedBufferedBlockCipher cipherMode = new PaddedBufferedBlockCipher(new CFBBlockCipher(CryptoBlockCipher, size), CryptoBlockCipherPadding);

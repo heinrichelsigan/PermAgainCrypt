@@ -4,6 +4,7 @@ import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.CException;
 import eu.cqrxs.util.Constants;
+import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.zip.ZipType;
 import org.bouncycastle.crypto.InvalidCipherTextException;
 
@@ -111,7 +112,8 @@ public class SecureCipherPipe extends CipherPipe {
             if (!hashBytes.contains(cb)) {
                 hashBytes.add(cb);
                 CipherEnum cipherEnm = CipherEnum.getByteCipherDict().get(cb);
-				System.out.println("keybyts[" + i + "]="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName());
+                String dmsg = "keybyts[" + i + "]="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName();
+                DbgWriter.msg(dmsg, false);
                 pipeList.add(cipherEnm);
             }
         }

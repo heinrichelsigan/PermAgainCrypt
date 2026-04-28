@@ -59,5 +59,5 @@ echo "build finished"
 sleep 1
 echo "launching eu/cqrxs/gui/CqrJdFrame.java"
 sleep 1
-java --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/gui/CqrJdFrame.java
+java --enable-native-access=ALL-UNNAMED -cp $MYCLASSPATH eu/cqrxs/gui/CqrJdFrame.java --verbose
 

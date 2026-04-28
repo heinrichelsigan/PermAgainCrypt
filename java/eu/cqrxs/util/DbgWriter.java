@@ -18,8 +18,8 @@ import java.util.Date;
  */
 public class DbgWriter {
 
-	public void msg(String s, int level, boolean ignoreDbg) {
-		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
+	public static void dbgmsg(String s, int level, boolean ignoreDbg) {
+		if (s != null && !s.isEmpty() && (Constants.DEBUG || ignoreDbg)) {
             System.out.println(level + ": \t" + s);
         }
     }
@@ -31,7 +31,7 @@ public class DbgWriter {
         }
 	}
 	public static void msgex(Exception ex, boolean ignoreDbg) {
-		if (ex != null && ex.getMessage().length() > 0) {
+		if (ex != null && !ex.getMessage().isEmpty()) {
 			DbgWriter.msg(ex.toString(), ignoreDbg);
 		}
 	}

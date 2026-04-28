@@ -41,6 +41,16 @@ run: cqrxs console
 	sleep 1
 	java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java 
 
+debug: cqrxs
+	echo "launching eu/cqrxs/gui/CqrJdFrame.java --verbose"
+	sleep 1
+	java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/gui/CqrJdFrame.java --debug
+
+verbose: cqrxs
+	echo "launching eu/cqrxs/gui/CqrJdFrame.java --verbose"
+	sleep 1
+	java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/gui/CqrJdFrame.java --verbose
+
 
 jar: cqrxs console
 	echo "building eu.cqrxs.jar " 

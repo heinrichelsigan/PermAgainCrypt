@@ -162,6 +162,7 @@ public class CipherPipe {
         // What ever is entered here as parameter, maxpipe has to be not greater 8, because of no such agency
         maxpipe = ((maxpipe > Constants.MAX_PIPE_LEN) ? Constants.MAX_PIPE_LEN : maxpipe); // if somebody wants more, he/she/it gets less
 
+        String dmsg = "";
         short scnt = 0;
         List<CipherEnum> pipeList = new ArrayList<CipherEnum>();
 
@@ -172,10 +173,12 @@ public class CipherPipe {
             if (!hashBytes.contains(cb)) {
                 hashBytes.add(cb);
                 CipherEnum cipherEnm = CipherEnum.getByteCipherDict().get(cb);
-				System.out.println("keybyts[" + i + "]="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName());
+                dmsg += "keybyts[" + i + "]="+ keyBytes[i] + " byte bb = " + (int)bb + " CipherEnum: " + cipherEnm.getName() + "\n \t";
                 pipeList.add(cipherEnm);
             }
         }
+        if (dmsg != null && !dmsg.isEmpty() && !dmsg.isBlank())
+            DbgWriter.dbgmsg(dmsg, 2, false);
 
         try {
             inPipe = new CipherEnum[pipeList.size()];

@@ -39,6 +39,7 @@ import eu.cqrxs.util.Constants;
 /**
  * Crypt Params
  */
+@SuppressWarnings("deprecation")
 public class CryptParams {
 
     public CipherEnum cipher;
@@ -82,6 +83,7 @@ public class CryptParams {
         size = 256;
         keyLen = 32;
         cmode2 = CipherMode2.CFB;
+        //noinspection deprecation
         blockCipher = new AESEngine();
         keyHashing = KeyHash.Hex;
         blockSize = blockCipher.getBlockSize();

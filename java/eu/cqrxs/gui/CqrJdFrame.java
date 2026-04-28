@@ -90,7 +90,7 @@ public class CqrJdFrame extends JFrame {
 	protected CipherMode2 cmode2 = CipherMode2.CFB;
 
 	JButton jButton_setPipe, jButton_hashPipe, jButton_encrypt, jButton_decrypt, jButton_randomText, jButton_resetForm;
-	JComboBox jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
+	JComboBox<String> jComboBox, jComboBox_Hash, jComboBox_Zip, jComboBox_Algo, jComboBox_Encoding;
 	JPanel jPanelCenter = new JPanel();
 	JLabel jLabel_infoMessage, jLabel_statusSource, jLabel_statusDestination,
 			jLabelImgKey, jLabelImgHash, jLabelImgAddAlgo, jLabelImgX;
@@ -138,6 +138,25 @@ public class CqrJdFrame extends JFrame {
      * @param args command line arguments
      */
 	public static void main(String args[]) {
+
+		Constants.DEBUG = false;
+		if (args != null && args.length > 0) {
+			for (String arg : args) {
+				if ((arg != null && arg.length() > 0) &&
+					(
+						arg.toLowerCase().contains("verbose") ||
+						arg.toLowerCase().contains("-v") ||
+						arg.toLowerCase().contains("/v") ||
+						arg.toLowerCase().contains("debug") ||
+						arg.toLowerCase().contains("dbg") ||
+						arg.toLowerCase().contains("-d") ||
+						arg.toLowerCase().contains("/d")
+					)
+				) {
+					Constants.DEBUG = true;
+				}
+			}
+		}
 		cqrJdFrame = new CqrJdFrame();
 	}
 		
@@ -145,11 +164,8 @@ public class CqrJdFrame extends JFrame {
      * main constructor for CqrJdFrame
      */
 	public CqrJdFrame() {
-		setLayout(null);
-		setSize(1024,768);
+
 		Init();
-		setVisible(true);
-		Constants.DEBUG = false;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
@@ -698,8 +714,8 @@ public class CqrJdFrame extends JFrame {
 		jButton_setPipe.setActionCommand("setPipe");
 		jButton_setPipe.addActionListener(lSymAction);
 		getContentPane().add(jButton_setPipe);
-		
-		jComboBox_Hash = new JComboBox(KeyHash.getNames());
+
+		jComboBox_Hash = new JComboBox<>(KeyHash.getNames());
 		jComboBox_Hash.setBounds(700, 30, 168, 25);
 		jComboBox_Hash.setFont(cryptFont);
 		jComboBox_Hash.addItemListener(new HashChangeListener());
@@ -733,14 +749,14 @@ public class CqrJdFrame extends JFrame {
 		jButton_hashPipe.addActionListener(lSymAction);
 		getContentPane().add(jButton_hashPipe);	
 		
-		jComboBox_Zip = new JComboBox(ZipType.getNames());
+		jComboBox_Zip = new JComboBox<>(ZipType.getNames());
 		jComboBox_Zip.setBounds(8, 112, 96, 25);
 		jComboBox_Zip.setFont(cryptFont);
 		jComboBox_Zip.addItemListener(new ZipChangeListener());
 		getContentPane().add(jComboBox_Zip);
 		selectItemByString(jComboBox_Zip, menuZip, "None");
 
-		jComboBox_Algo = new JComboBox(CipherEnum.getNames());
+		jComboBox_Algo = new JComboBox<>(CipherEnum.getNames());
 		jComboBox_Algo.setBounds(108, 112, 120, 25);
 		jComboBox_Algo.setFont(cryptFont);
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
@@ -767,7 +783,7 @@ public class CqrJdFrame extends JFrame {
 		jLabelImgX.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgX);
 
-		jComboBox_Encoding =  new JComboBox(EncodeEnum.getNames());
+		jComboBox_Encoding =  new JComboBox<>(EncodeEnum.getNames());
 		jComboBox_Encoding.setBounds(876, 112, 120, 25);
 		jComboBox_Encoding.setFont(cryptFont);
 		jComboBox_Encoding.addItemListener(new EncodeChangeListener());
@@ -1503,7 +1519,8 @@ public class CqrJdFrame extends JFrame {
 		}
 	}
 	
-	protected void showSimple_action(ActionEvent event) {
+	@SuppressWarnings("deprecation")
+    protected void showSimple_action(ActionEvent event) {
         try {
             // if (cqrJFrameSimple == null) 
             cqrJFrameSimple = new CqrJFrameSimple(cqrJdFrame);
