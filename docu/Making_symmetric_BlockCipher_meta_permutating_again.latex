@@ -44,13 +44,19 @@ are more important than a simple proof of concept showing that it works, except 
 raw experimental test form.
 
 \begin{enumerate}
-    \item git:\href{https://github.com/dotnet/}{github.com/dotnet}
-	\item git:\href{https://github.com/microsoft}{github.com/microsoft}
-	\item \href{https://www.bouncycastle.org/}{Legion of the Bouncy Castle}, git:\href{https://github.com/bcgit}{bcgit}
-    \item \href{https://www.libtom.net/}{libtom.net}, git:\href{https://github.com/libtom/libtomcrypt}{libtom/libtomcrypt}
-    \item \href{https://cryptopp.com/}{cryptopp.com} git:\href{https://github.com/weidai11/cryptopp}{weidai11/cryptopp}
-	\item \url{https://schneier.com/}	
-	\item \url{https://git.lysator.liu.se/nettle/nettle} (real easy to read c/c++ code)
+    \item Microsoft C\# .Net repositories
+    \begin{itemize}
+        \item \href{https://dot.net}{dot.net}, git:\href{https://github.com/dotnet/}{dotnet}
+	   \item \href{https://opensource.microsoft.com/}{opensource.microsoft.com}, git:\href{https://github.com/microsoft}{microsoft}
+    \end{itemize}
+    \item Modern crypto libraries and blogs
+    \begin{itemize}
+    	\item \href{https://www.bouncycastle.org/}{Legion of the Bouncy Castle}, git:\href{https://github.com/bcgit}{bcgit}
+        \item \href{https://www.libtom.net/}{libtom.net}, git:\href{https://github.com/libtom/libtomcrypt}{libtom/libtomcrypt}
+        \item \href{https://cryptopp.com/}{cryptopp.com} git:\href{https://github.com/weidai11/cryptopp}{weidai11/cryptopp}
+    	\item \href{https://schneier.com/}{Bruce Schneier's blog (blowfish,twofish,threefish)}
+    	\item \href{https://git.lysator.liu.se/nettle/nettle}{GNU Nettle}
+    \end{itemize}
 \end{enumerate}
 
 \pagebreak
@@ -132,7 +138,7 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 \begin{figure}
     \centering
     \includegraphics[width=0.6\linewidth]{2026-04-23_WinForm_CSharp.png}
-    \caption{WinForm CSharp}
+    \caption{WinForm C\#}
     \label{fig:WinForm_CSharp}
 \end{figure}
 
@@ -140,7 +146,7 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 
 \begin{figure}
 \includegraphics[width=1\textwidth]{2026-01-25_WinForm_CSharp.png}
-\caption{\label{fig:WinForm_Csharp}WinForm CSharp}
+\caption{\label{fig:WinForm_Csharp}WinForm C\#}
 \end{figure}
 
 \subsection{Java}
@@ -167,27 +173,35 @@ You can also go directly to \href{https://github.com/heinrichelsigan/PermAgainCr
 
 \pagebreak
 
+\subsubsection{Java using JAR without recompiling}
+
+this probably works easy on almost every system (apple not tested).
+Change into java directory of repository and then run in ternminal / shell:
+\begin{small}
+\begin{verbatim}
+java -jar eu.cqrxs.gui.jar --main-class eu.cqrxs.gui.CqrJdFrame
+echo "or shorter´java -jar eu.cqrxs.gui.jar"
+java -jar eu.cqrxs.gui.jar 
+\end{verbatim}
+\end{small}
+
+
 \subsubsection{Java on Windows: Compile, build, launch}
 
 Change following lines in winmake.bat depdendent on your JDK installation and bouncy-castle version:
 
 \begin{small}
 \begin{verbatim}
-echo Setting bouncy-castle jar
 SET BCJAR=bcprov-lts8on-2.73.10.jar
-echo Setting Path and CLASSPATH
 SET Path=%Path%;%USERPROFILE%\.jdks\openjdk-25\bin
 SET CLASSPATH=%CLASSPATH%;%USERPROFILE%\.jdks\openjdk-25\lib
 SET MYCLASSPATH=%CLASSPATH%;.\;.\%BCJAR%;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\fw\net\;.\eu\cqrxs\fw\util\;.\eu\cqrxs\fw\crypt\;.\eu\cqrxs\fw\crypt\encoding\;.\eu\cqrxs\fw\crypt\cipher\;.\eu\cqrxs\fw\crypt\hash\;
 \end{verbatim}
 \end{small}
-
-run: winmake.bat
-\newline which calls finally 
+run: winmake.bat, which calls finally 
 \begin{small}
 \begin{verbatim}
 java.exe -classpath %MYCLASSPATH% eu\cqrxs\gui\CqrJdFrame.java
-java.exe -classpath %MYCLASSPATH% eu\cqrxs\console\CryptConsole.java
 \end{verbatim}
 \end{small}
 
@@ -204,25 +218,17 @@ make clean; make all; make launch
 Optional change these lines in jmake.sh depdendent on your JDK installation and bouncy-castle version: remember: classpath seperator under unix is : and NOT semicolon ;
 \begin{small}
 \begin{verbatim}
-echo "setting bouncy castle jar and MYCLASSPATH"
 BCJAR=bcprov-lts8on-2.73.10.jar
 MYCLASSPATH="$CLASSPATH:./:./$BCJAR:./eu/cqrxs/:./eu/cqrxs/gui/:./eu/cqrxs/fw/net/:./eu/cqrxs/fw/util/:./eu/cqrxs/fw/crypt/:./eu/cqrxs/fw/crypt/encoding/:./eu/cqrxs/fw/crypt/cipher/:./eu/cqrxs/fw/crypt/hash/:"
 \end{verbatim}
 \end{small}
-run: sh jmake.sh
-\newline which calls finally:
+run: sh jmake.sh, which calls finally:
 \begin{small}
 \begin{verbatim}
 JAVAFLAGS=--enable-native-access=ALL-UNNAMED
-echo "launching eu/cqrxs/gui/CqrJdFrame.java"
 java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/gui/CqrJdFrame.java
-
-echo "run eu/cqrxs/console/ConsoleApp"
-java $(JAVAFLAGS) -cp $(MYCLASSPATH) eu/cqrxs/console/CryptConsole.java 
 \end{verbatim}
 \end{small}
-
-
 
 \subsubsection{Java is JFrame based}
 \begin{itemize}
@@ -540,7 +546,7 @@ the matrix will look like this:
     string s = "This is another boring example text to test CipherPipe en-/decryption.";
     string hash = KeyHash.Hex.Hash(key), key = "myKey", hashIv = KeyHash.Hex.Hash(key);
     
-    // 1. CSharp constructing a CipherPipe with parameter key and hash
+    // 1. C\# constructing a CipherPipe with parameter key and hash
     CipherPipe cPipe = new CipherPipe(key, hash, 
         EncodingType.Base64, ZipType.None, KeyHash.Hex, CipherMode2.CFB);
         
@@ -574,7 +580,7 @@ the matrix will look like this:
 
 \begin{small}
 \begin{verbatim}
-    boolean reverseDirection = false;		// variables we need later for cipher pipe
+    boolean reverseDirection = false;       // variables we need later for cipher pipe
     ZipType zipType = ZipType.None;
     EncodeEnum encodingType = EncodeEnum.None;
     KeyHash keyHash = KeyHash.Hex;
