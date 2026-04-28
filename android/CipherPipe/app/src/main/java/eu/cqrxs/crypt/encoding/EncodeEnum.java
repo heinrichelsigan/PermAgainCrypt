@@ -1,0 +1,344 @@
+/**
+ * @author           <a href="mailto:heinrich.elsigan@cqrxs.eu">Heinrich Elsigan</a>
+ * @version          V 2.26.428
+ * @since            API 27 Oreo 8.1
+ *
+ * eu.cqrxs.crypt.encoding.EncodeEnum
+ * Coded 2021-2033 by <a href="mailto:he@area23.at">Heinrich Elsigan</a>
+ * <a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+ *
+ * Thanx to the legion of <a href="https://bouncycastle.org/">bouncycastle.org/</a>
+ */
+
+
+package eu.cqrxs.crypt.encoding;
+
+import eu.cqrxs.util.NotImplementedError;
+
+import java.io.IOException;
+import java.lang.String;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * EncodeEnum represents the enumerator for all Encoding to ascii algorithms
+ */
+public enum EncodeEnum  {
+    None(0),
+    Base16(0x200),
+    Hex16(0x300),
+    Base32(0x400),
+    Hex32(0x500),
+    Uu(0x600),
+    Hex64(0x700),
+    Base64(0x800),
+    Xx(0x900);
+
+
+    /**
+     * NOTE: Enum constructor must have private or package scope. You can not use the public access modifier.
+     */
+    EncodeEnum(int value) {
+        this.value = value;
+    }
+
+    private final int value;
+
+    /**
+     * getValue
+     * @return (@link int) value
+     */
+    public int getValue() { return value; }
+
+
+    /**
+     * getName
+     * @return name of enum
+     */
+    public String getName() {
+        int xvalue = getValue();
+        switch (xvalue) {
+            case 0:
+                return "None";
+            case 0x200:
+                return "Base16";
+            case 0x300:
+                return "Hex16";
+            case 0x400:
+                return "Base32";
+            case 0x500:
+                return "Hex32";
+            case 0x600:
+                return "Uu";
+            case 0x700:
+                return "Hex64";
+            case 0x800:
+                return "Base64";
+            case 0x900:
+                return "Xx";
+            default:
+                break;
+        }
+        return  "None";
+    }
+
+
+    public String encode(String inString) {
+        int xvalue = getValue();
+        switch (xvalue) {
+            case 0:
+                return inString;
+            case 0x200:
+                return new Base16Coder().encode(inString);
+            case 0x300:
+                return new Hex16Coder().encode(inString);
+            case 0x400:
+				byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
+				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                 				
+            case 0x500:
+                return new Hex32Coder().encode(inString);
+            case 0x600:
+                return new UuCoder().encode(inString);
+            case 0x700:
+                return new Hex64Coder().encode(inString);
+                // throw new NotImplementedError("base58 not implemented");
+            case 0x800: // Base64
+                return new Base64Coder().encode(inString);
+            case 0x900: // Xx
+                return new XxEncoder().encode(inString);
+            default:
+                break;
+        }
+        return inString;
+    }
+
+    /**
+     * decode transforms am encoded String to a readable text String
+     * @param encodedString an encoded String
+     * @return a readable plain text String
+     * @exception IllegalArgumentException is thrown when base64 encoded String is null or empty
+     * @exception IOException is thrown, when UUDecoder().decodeBuffer(uuEncString) fails
+     */
+    public String decode(String encodedString) throws IOException {
+        int xvalue = getValue();
+        switch (xvalue) {
+            case 0:
+                return encodedString;
+            case 0x200:
+                return new Base16Coder().decode(encodedString);
+            case 0x300:
+                return new Hex16Coder().decode(encodedString);
+            case 0x400:
+                // throw new NotImplementedError("base32 not implemented");
+				byte[] outBytes = org.bouncycastle.util.encoders.Base32.decode(encodedString);
+				return new String(outBytes, StandardCharsets.UTF_8);
+            case 0x500:
+                return new Hex32Coder().decode(encodedString);
+            case 0x600:
+                return new UuCoder().decode(encodedString);
+            case 0x700:
+                return new Hex64Coder().decode(encodedString);
+                // throw new NotImplementedError("base58 not implemented");
+            case 0x800:
+                return new Base64Coder().decode(encodedString);
+            case 0x900:
+                return new XxEncoder().decode(encodedString);
+                // throw new NotImplementedError("xx not implemented");
+			default:
+                break;
+        }
+        return encodedString;
+    }
+
+    /**
+     * encodeBytesToString - converts a binary byte array into an encoded String
+     * @param inBytes byte array
+     * @return an ASCII encoded String
+     * @exception IllegalArgumentException is thrown when inBytes is null or empty
+     * @exception IOException is thrown when encoding to ASCII encoded String fails
+     */
+    public String encodeBytesToString(byte[] inBytes) throws IOException {
+        if (inBytes == null || inBytes.length < 1)
+            throw new IllegalArgumentException("public static string encodeBytesToString(byte[] inBytes == NULL)");
+
+        int xvalue = getValue();
+        switch (xvalue) {
+            case 0:
+                return new String(inBytes, StandardCharsets.UTF_8);
+            case 0x200:
+                return new Base16Coder().encodeBytesToString(inBytes);
+            case 0x300:
+                return new Hex16Coder().encodeBytesToString(inBytes);
+            case 0x400:
+				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                
+            case 0x500:
+                return new Hex32Coder().encodeBytesToString(inBytes);
+            case 0x600:
+                return new UuCoder().encodeBytesToString(inBytes);
+            case 0x700:
+                return new Hex64Coder().encodeBytesToString(inBytes);
+                // throw new NotImplementedError("base58 not implemented");
+            case 0x800:
+                return new Base64Coder().encodeBytesToString(inBytes);
+            case 0x900:
+                return new XxEncoder().encodeBytesToString(inBytes);
+                // throw new NotImplementedError("xx not implemented");
+            default:
+                break;
+        }
+        return new String(inBytes, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * decodeStringToBytes transforms an uu encoded string into an binary byte[] array
+     * @param encodedString: an uu encoded String
+     * @return binary byte array
+     * @exception IllegalArgumentException is thrown when uu encoded String is null or empty
+     * @exception IOException is thrown when Decoder decoding failed
+     */
+    public byte[] decodeStringToBytes(String encodedString) throws IOException {
+        if (encodedString == null || encodedString.length() == 0)
+            throw new IllegalArgumentException("public static byte[] decodeStringToBytes(String encodedString), encodedString == NULL || encodedString == \"\"");
+
+        int xvalue = getValue();
+        switch (xvalue) {
+            case 0:
+                return encodedString.getBytes(Charset.forName("UTF-8"));
+            case 0x200:
+                return new Base16Coder().decodeStringToBytes(encodedString);
+            case 0x300:
+                return new Hex16Coder().decodeStringToBytes(encodedString);
+            case 0x400:
+				// throw new NotImplementedError("base32 not implemented");
+				return org.bouncycastle.util.encoders.Base32.decode(encodedString);
+            case 0x500:
+                return new Hex32Coder().decodeStringToBytes(encodedString);
+            case 0x600:
+                byte[] plainBytes = new byte[0];
+                try {
+                    plainBytes = (new UuCoder()).decodeStringToBytes(encodedString);
+                } catch (IOException ioEx) {
+                    throw ioEx;
+                }
+                return plainBytes;
+            case 0x700:
+                return new Hex64Coder().decodeStringToBytes(encodedString);
+                // throw new NotImplementedError("base58 not implemented");
+            case 0x800:
+                return new Base64Coder().decodeStringToBytes(encodedString);
+            case 0x900:
+				return new XxEncoder().decodeStringToBytes(encodedString);
+                // throw new NotImplementedError("xx not implemented");				
+            default:
+                break;
+        }
+        return encodedString.getBytes(StandardCharsets.UTF_8);
+    }
+
+
+    public static String[] getNames() {
+        int cnt = 0;
+        List<String> encodingTypeList = new ArrayList<>();
+        for (EncodeEnum encodingType : EncodeEnum.values())  {
+            encodingTypeList.add(encodingType.getName());
+            cnt++;
+        }
+
+        return encodingTypeList.toArray(new String[cnt]);
+    }
+
+    public static Set<EncodeEnum> getEncodingTypes() {
+        Set<EncodeEnum> allElementsInEncodingType = EnumSet.allOf(EncodeEnum.class);
+        return allElementsInEncodingType;
+    }
+
+    public static String getEnCodingExtension(EncodeEnum etype) {
+        int xvalue = etype.getValue();
+        switch (xvalue) {
+            case 0:
+                return "";
+            case 0x200:
+                return ".base16";
+            case 0x300:
+                return ".hex16";
+            case 0x400:
+                return ".base32";
+            case 0x500:
+                return ".hex32";
+            case 0x600:
+                return ".uu";
+            case 0x700:
+                return ".hex64";
+            case 0x800:
+                return ".base64";
+            case 0x900:
+                return ".xx";
+            default:
+                break;
+        }
+        return "";
+    }
+
+    public static EncodeEnum getEncodingTypeFromString(String enCodingString) {
+        if (enCodingString != null && !enCodingString.isEmpty()) {
+
+            if (enCodingString.charAt(0) == 'B' ||
+                    enCodingString.charAt(0) == 'b') {
+
+                if (enCodingString.contains("16"))
+                    return EncodeEnum.Base16;
+                if (enCodingString.contains("32"))
+                    return EncodeEnum.Base32;
+                if (enCodingString.contains("64"))
+                    return EncodeEnum.Base64;
+
+                return EncodeEnum.Base64;
+            } else if (enCodingString.charAt(0) == 'H' ||
+                    enCodingString.charAt(0) == 'h') {
+
+                if (enCodingString.contains("16"))
+                    return EncodeEnum.Hex16;
+                if (enCodingString.contains("32"))
+                    return EncodeEnum.Hex32;
+                if (enCodingString.contains("64"))
+                    return EncodeEnum.Hex64;
+            } else if (enCodingString.charAt(0) == 'X' ||
+                    enCodingString.charAt(0) == 'x') {
+
+                return EncodeEnum.Xx;
+            } else if (enCodingString.charAt(0) == 'U' ||
+                    enCodingString.charAt(0) == 'u') {
+
+                return EncodeEnum.Uu;
+            } else if (enCodingString.charAt(0) == 'N' ||
+                    enCodingString.charAt(0) == 'n' ||
+                    enCodingString.charAt(0) == '0' ||
+                    enCodingString.charAt(0) == 'R' ||
+                    enCodingString.charAt(0) == 'r') {
+
+                return EncodeEnum.None;
+            }
+
+        }
+        return EncodeEnum.None;
+    }
+
+    /**
+     * getEnum
+     * @param eName String
+     * @return the enum {@link EncodeEnum}
+     */
+    public static EncodeEnum getEnum(String eName) {
+        for (EncodeEnum encodEnum : EncodeEnum.values()) {
+            if (encodEnum.getName() == eName)
+                return encodEnum;
+        }
+        return EncodeEnum.None;
+    }
+
+}
+

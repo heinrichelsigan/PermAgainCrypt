@@ -25,9 +25,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_24
+        targetCompatibility JavaVersion.VERSION_24
     }
+    buildToolsVersion '36.0.0'
 }
 
 dependencies {
@@ -36,9 +37,9 @@ dependencies {
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.fragment
-    implementation 'org.bouncycastle:bcprov-jdk18on:1.72'
-    implementation 'org.bouncycastle:bcpkix-jdk18on:1.72'
-    implementation 'org.bouncycastle:bcutil-jdk18on:1.72'
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.84'
+    implementation 'org.bouncycastle:bcpkix-jdk18on:1.84'
+    implementation 'org.bouncycastle:bcutil-jdk18on:1.84'
     implementation libs.firebase.crashlytics.buildtools
     implementation libs.common
     testImplementation libs.junit
