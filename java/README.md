@@ -6,6 +6,14 @@
 - openjdk-21
 - openjdk-25
 
+## jar file without recompiling
+```
+java -jar eu.cqrxs.gui.jar --main-class eu.cqrxs.gui.CqrJdFrame
+```
+```
+java -jar eu.cqrxs.gui.jar
+```
+
 ## Windows 
 
 - change following lines in *winmake.bat* depdendent on your JDK installation and bouncy-castle version:
