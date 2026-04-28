@@ -2,17 +2,176 @@
 
 <PageTitle>BlazorCrypt</PageTitle>
 
-<h1>BlazorCrypt</h1>
+<h2>Enryption method</h2>
 
-<p role="status">Current count: @currentCount</p>
-
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+    <div style="background-color: transparent; padding-left: 40px; margin-left: 2px;">
+        <div class="odDiv">
+            <span class="leftSpan" style="width: 60px; min-width: 48px; max-width: 60px">&nbsp;Key:&nbsp;</span>
+            <span class="centerSpan" style="width: 60px; min-width: 48px; max-width: 72px">
+            <img itemid="ImageKey" src="img/crypt/a_key.png" alt="save your user key in sessione"
+                    @onclick="ImageKey_Click" />
+            </span>
+            <span class="centerSpan" style="margin-left: 2px; max-width: 600px; min-width: 520px">
+            <InputText id="TextBoxKey" itemid="TextBoxKey" @bind-Value="TextBoxKey_Text" 
+                title=" Enter your personal email address or secret key here"                
+                style="max-width: 554px; column-count=256" />
+            </span>            
+            <span class="centerSpan" style="width: 68px; min-width: 60px; max-width: 72px">
+                <Button type="button"  itemid="ButtonClear" Text="clear" title="Clear SymChiffre Pipeline" @onclick="ButtonClear_Click"  />
+                &nbsp;
+            </span>            
+            <span class="rightSpan" style="width: 68px; min-width: 48px; max-width: 72px">                                
+                <div class="d-flex gap-2 mb-4">
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <select class="form-select">
+                            <option value="CBC">CBC</option>
+                            <option value="CFB">CFB</option>
+                            <option value="ECB">ECB</option>
+                        </select>                 
+                    </div>
+                </div>
+                &nbsp;<a href="Help.pdf" title="help howto" target="_blank">Help</a>&nbsp;
+            </span>
+        </div>
+        <div class="odDiv" style="margin-top: 4px;">
+            <span class="leftSpan" style="white-space: nowrap; width:92%; text-align: left;">
+                <div class="d-flex gap-2 mb-4">
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <select class="form-select">
+                            <option value="BCrypt">bcrypt</option>
+                            <option value="Blake2xs">blake2xs</option>
+                            <option value="CShake">cshake</option>
+                            <option value="Dstu7564">dstu7564</option>
+                            <option value="Hex" selected="true">hex</option>
+                            <option value="MD5">md5</option>                        
+                            <option value="OpenBSDCrypt">openbsd</option>
+                            <option value="RipeMD256">ripemd256</option>
+                            <option value="SCrypt">scrypt</option>
+                            <option value="Sha1">sha1</option>
+                            <option value="Sha256">sha256</option>
+                            <option value="Sha384">sha384</option>
+                            <option value="Sha512">sha512</option>
+                            <option value="TupleHash">tuplehash</option>
+                            <option value="Whirlpool">whirlpool</option>
+                        </select>
+                    </div>
+                </div>
+            </span>
+            <span class="centerSpan" style="margin-left: 20px; max-width: 800px; min-width: 720px;">
+                &nbsp;
+            </span>
+        </div>
+        <div class="odDiv" style="margin-top: 2px">
+            <span class="leftSpan" style="width: 60px; min-width: 48px; max-width: 60px">hash</span>
+            <span class="centerSpan" style="margin-left: 8px; width: 60px; min-width: 48px; max-width: 72px">
+                <img id="mageButtonHash" src="img/crypt/a_hash.png" alt="generate new hash from key"
+                    onmouseover="document.getElementById('ImageHash').src = 'img/crypt/a_hash_key_over.gif'; return false;"
+                    onmouseout="document.getElementById('ImageHash').src = 'img/crypt/a_hash.png'; return false;"
+                    @onclick ="ImageButtonHash_Click" />
+            </span>
+            <span class="centerSpan" style="margin-left: 2px; max-width: 600px; min-width: 520px;">                
+                <TextBox itemid="TextBoxIV"
+                        Text="@TextBoxIV_Text"
+                        title="key generated hash"
+                        style="width: 560px; max-width: 580px; column-count=256;" />
+                
+            </span>
+            <span class="rightSpan" style="width: 136px; min-width: 96px; max-width: 144px">
+                <Button type="button" itemid="ButtonSetPipe" Text="set pipe" title="set symmetric cipher pipeline" @onclick="ButtonSetPipe_Click" 
+                    style="width: 68px; min-width: 60px; max-width: 72px" />
+                <Button type="button" itemid="ButtonHashPipe" Text="hash pipe" title="hash symmetric cipher pipeline" @onclick="ButtonHashPipe_Click"
+                    style="width: 68px; min-width: 60px; max-width: 72px" />                
+            </span>
+        </div>
+        <hr />
+        <h3>En-/Decrypt file</h3>
+        <!--
+        <div class="odDiv" style="vertical-align: top; clear: both">
+            <span class="leftSpan" style="vertical-align: top;">
+                <INPUT id="oFile" type="file" runat="server" NAME="oFile" />
+            </span>
+            <span class="centerSpan" style="max-width: 72px; vertical-align: top;">
+                <asp:Button ID="Button_EncryptFile" runat="server" ClientIDMode="Static"
+                            Text="Encrypt file" ToolTip="Encrypt file"
+                            OnClientClick="changeCryptBackgroundFile();" OnClick="Button_EncryptFile_Click" />
+            </span>
+            <span class="centerSpan" style="vertical-align: top;">
+                <asp:CheckBox ID="CheckBox_Encode" runat="server" ClientIDMode="Static"
+                              Text="encode file" ToolTip="Encode file (e.g. hex16, base64, uu) after encryption"
+                              Checked="true" />
+            </span>
+            <span class="rightSpan" style="vertical-align: top;">
+                <asp:Button ID="Button_DecryptFile" runat="server" ToolTip="Decrypt file"
+                            Text="Decrypt file"
+                            OnClick="Button_DecryptFile_Click" OnClientClick="javascript:changeCryptBackgroundFile();" />
+            </span>
+        </div>
+        <div style="clear: left;" id="divFileResult" runat="server" visible="true">
+            <span id="SpanLeftFile" runat="server" class="leftSpan" style="vertical-align: top;" visible="false">
+                <a id="aUploaded" runat="server" alt="Uploaded File" href="../res/img/crypt/file.png">
+                    <img id="imgIn" runat="server" border="0" alt="" src="../res/img/crypt/file.png" />
+                </a>
+            </span>
+            <span id="SpanLabel" runat="server" class="centerSpan" visible="False">
+                <asp:Literal id="uploadResult" Runat="server"></asp:Literal>
+            </span>
+            <span class="centerSpan">&nbsp;</span>
+            <span id="SpanRightFile" runat="server" class="rightSpan" style="vertical-align: top;" visible="false">
+                <a id="aTransFormed" runat="server" alt="Transformed File" href="../res/fortune.u8">
+                    <img id="imgOut" runat="server" border="0" alt="File transformed" src="../res/img/crypt/file.png" />
+                </a>
+            </span>
+        </div>
+        <br />
+        <h3>En-/Decrypt text</h3>
+        <div id="DivCrypTextArea" class="CryptTextArea">
+            <asp:TextBox ID="TextBoxSource" runat="server" TextMode="MultiLine" MaxLength="262144" Rows="10" Columns="64" ValidateRequestMode="Enabled" ToolTip="[Enter text to en-/decrypt here]" Text="" Width="512px" CssClass="CryptTextArea" ClientIDMode="Static"></asp:TextBox>
+            <asp:TextBox ID="TextBoxDestionation" runat="server" TextMode="MultiLine" Rows="10" Columns="64" MaxLength="262144" ReadOnly="true" ValidateRequestMode="Enabled" ToolTip="Destination Text" Width="512px" CssClass="CryptTextArea" ClientIDMode="Static"></asp:TextBox>
+            <br />
+            <asp:Button ID="Button_Encrypt" runat="server" Text="Encrypt" ToolTip="Encrypt" OnClick="Button_Encrypt_Click" CssClass="CryptTextArea" ClientIDMode="Static" />&nbsp;
+            <asp:Button ID="Button_RandomText" runat="server" Text="Random Text" ToolTip="Decrypt" OnClick="Button_RandomText_Click" CssClass="CryptTextArea" ClientIDMode="Static" />&nbsp;
+            <asp:Button ID="Button_Decrypt" runat="server" Text="Decrypt" ToolTip="Decrypt" OnClick="Button_Decrypt_Click" CssClass="CryptTextArea" ClientIDMode="Static" />
+        </div>
+        -->
+    </div>
+    <hr />
+<h3>Great thanks to <a href="https://www.bouncycastle.org/download/bouncy-castle-c/" target="_blank">bouncycastle.org</a>!</h3>
 
 @code {
     private int currentCount = 0;
+    public string TextBoxKey_Text { get; set; } = string.Empty;
+    public string TextBoxIV_Text { get; set; } = string.Empty;
 
-    private void IncrementCount()
+    private void ImageButtonHash_Click()
     {
+        TextBoxIV_Text = $"hash_{TextBoxKey_Text}_{currentCount}";
+        currentCount++;
+    }
+
+    private void ImageKey_Click()
+    {
+        TextBoxKey_Text = $"key_{currentCount}";
+        currentCount++;
+    }
+
+
+    private void ButtonSetPipe_Click()     
+    {
+        TextBoxIV_Text = $"setpipe_{TextBoxKey_Text}_{currentCount}";
+        currentCount++;
+    }
+
+
+    private void ButtonHashPipe_Click()
+    {
+        TextBoxIV_Text = $"setpipe_{TextBoxKey_Text}_{currentCount}";
+        currentCount++;
+    }
+
+    private void ButtonClear_Click()
+    {
+        TextBoxKey_Text = string.Empty;
+        TextBoxIV_Text = string.Empty;
         currentCount++;
     }
 }
