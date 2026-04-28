@@ -61,6 +61,8 @@ jobs:
           # The OpenAPI Specification URL or Swagger Path or Public Postman collection URL.
           # oas-url: "http://netbanking.apisec.ai:8080/v2/api-docs"
           # The email address to which the penetration test report will be sent.
+          apisec-project: "PermAgainCrypt"
+          apisec-email-report: "true"
           email: "ethical@cqrxs.eu"
           sarif-result-file: "ethicalcheck-results.sarif"
 
