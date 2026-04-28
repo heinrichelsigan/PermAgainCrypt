@@ -1,8 +1,14 @@
-package eu.cqrxs.crypt.cipher;
+/**
+ * @author           <a href="mailto:heinrich.elsigan@cqrxs.eu">Heinrich Elsigan</a>
+ * @version          V 1.0.1
+ * @since            API 27 Oreo 8.1
+ *
+ *
+ * Coded 2021-2026 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://area23.at">area23.at</a>
+ */
 
-// import static eu.cqrxs.cipherpipe.crypt.cipher.CipherEnum.CamelliaLight;
-// import androidx.core.content.res.TypedArrayUtils;
-// import com.google.common.primitives.Bytes;
+package eu.cqrxs.crypt.cipher;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
