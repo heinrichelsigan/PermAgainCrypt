@@ -18,9 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.Test", "EU.CqrXs\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.Spooler", "EU.CqrXs\Spooler\EU.CqrXs.Spooler.csproj", "{09309A79-5D7C-8699-D5B4-962982A594C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.BlazorWeb", "EU.CqrXs\BlazorWeb\EU.CqrXs.BlazorWeb\EU.CqrXs.BlazorWeb\EU.CqrXs.BlazorWeb.csproj", "{91435FE4-E5FB-43D0-9829-FE4E058F7D71}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.BlazorWeb.Client", "EU.CqrXs\BlazorWeb\EU.CqrXs.BlazorWeb\EU.CqrXs.BlazorWeb.Client\EU.CqrXs.BlazorWeb.Client.csproj", "{926828F7-4CBE-45B3-B859-971D9A34BBD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EU.CqrXs.Web.BlazorMicrosoftIdentity", "S:\PermAgainCrypt\C#\EU.CqrXs\Web\BlazorMicrosoftIdentity\EU.CqrXs.Web.BlazorMicrosoftIdentity.csproj", "{75903C6F-54A3-7932-A5B8-C6DE91154EB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,14 +46,10 @@ Global
 		{09309A79-5D7C-8699-D5B4-962982A594C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09309A79-5D7C-8699-D5B4-962982A594C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09309A79-5D7C-8699-D5B4-962982A594C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91435FE4-E5FB-43D0-9829-FE4E058F7D71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91435FE4-E5FB-43D0-9829-FE4E058F7D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91435FE4-E5FB-43D0-9829-FE4E058F7D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91435FE4-E5FB-43D0-9829-FE4E058F7D71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{926828F7-4CBE-45B3-B859-971D9A34BBD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{926828F7-4CBE-45B3-B859-971D9A34BBD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{926828F7-4CBE-45B3-B859-971D9A34BBD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{926828F7-4CBE-45B3-B859-971D9A34BBD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75903C6F-54A3-7932-A5B8-C6DE91154EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75903C6F-54A3-7932-A5B8-C6DE91154EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75903C6F-54A3-7932-A5B8-C6DE91154EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75903C6F-54A3-7932-A5B8-C6DE91154EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

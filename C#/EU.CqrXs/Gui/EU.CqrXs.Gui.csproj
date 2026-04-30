@@ -10,7 +10,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -24,7 +24,6 @@
     <StartupObject>EU.CqrXs.Gui.Program</StartupObject>
     <Title>Symmetric Crypt Permutation Pipe Form .NetCore</Title>
     <PackageIcon>CryptPenacle.png</PackageIcon>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <UseWPF>False</UseWPF>
     <ApplicationIcon>Resources\icon\TripleDes.ico</ApplicationIcon>
     <PackageReadmeFile>README.MD</PackageReadmeFile>

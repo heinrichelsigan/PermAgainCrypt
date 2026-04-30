@@ -1,0 +1,183 @@
+﻿@page "/CryptRazor"
+@model EU.CqrXs.Web.BlazorMicrosoftIdentity.Pages.CryptRazor
+@{
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Cool Crypt (apache2 mod_mono)</title>
+    <link rel="stylesheet" href="css/area23.at.mono.css" />
+    <meta charset="utf-8" />
+    <meta name="keywords" content="encode decode uuencode uudecode mime base64 symmmetric chipher pipeline aes 3des blowfish serpent twofish threefish des encrypt decrypt" />
+    <meta name="description" content="Cool Crypt symmmetric chipher pipeline" />
+    <script type="text/javascript">
+
+            function changeCryptBackgroundFile() {
+                var divAes = document.getElementById("DivCryptImprove");
+                if (divAes != null) {
+                    divAes.setAttribute("style", "padding-left: 40px; margin-left: 2px; background-image: url('img/crypt/AesBGFile.gif'); background-repeat: no-repeat; background-color: transparent;");
+                    divAes.style.backgroundImage = "url('img/crypt/AesBGFile.gif')";
+                }
+            }
+
+            function changeCryptBackgroundText() {
+                var divAes = document.getElementById("DivCryptImprove");
+                if (divAes != null) {
+                    divAes.setAttribute("style", "padding-left: 40px; margin-left: 2px; background-image: url('img/crypt/AesBGText.gif'); background-repeat: no-repeat; background-color: transparent;");
+                    divAes.style.backgroundImage = "url('img/crypt/AesBGText.gif')";
+                }
+            }
+
+            function hashMouseOut(img) {
+                if (img.src == "img/crypt/a_hash.png")
+                    img.src = "img/crypt/a_hash_key_hover.png";
+                else if (img.src == "img/crypt/a_hash_key_hover.png")
+                    img.src = "img/crypt/a_hash.png";
+            }
+
+    </script>
+</head>>
+<body>
+    <h2>Enryption method</h2>
+
+    <div style="background-color: transparent; padding-left: 40px; margin-left: 2px;">
+        <div class="odDiv">
+            <span class="leftSpan" style="width: 60px; min-width: 48px; max-width: 60px">&nbsp;Key:&nbsp;</span>
+            <span class="centerSpan" style="width: 60px; min-width: 48px; max-width: 72px">
+                <!-- ImageButton ID="ImageButton_Key" runat="server" ClientIDMode="Static"
+                                 OnClick="Button_Key_Click" ImageUrl="../res/img/crypt/a_right_key.png" AlternateText="save your user key in session" /-->
+            </span>
+            <span class="centerSpan" style="margin-left: 2px; max-width: 600px; min-width: 520px">
+                <TextBox itemid="TextBoxKey" 
+                            Text="@Model.TextBoxKey_Text"
+                            title="Enter your personal email address or secret key here"
+                            style="max-width: 554px; column-count=256"  />
+            </span>            
+            <span class="centerSpan" style="width: 68px; min-width: 60px; max-width: 72px">
+                <Button type="button"  itemid="ButtonClear" Text="clear" title="Clear SymChiffre Pipeline"   />
+                &nbsp;
+            </span>            
+            <span class="rightSpan" style="width: 68px; min-width: 48px; max-width: 72px">                
+                CipherMode2 &nbsp;
+                <div class="d-flex gap-2 mb-4">
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <select class="form-select">
+                            <option value="CBC">CBC</option>
+                            <option value="CFB">CFB</option>
+                            <option value="ECB">ECB</option>
+                        </select>                 
+                    </div>
+                </div>
+                &nbsp;<a href="Help.pdf" title="help howto" target="_blank">Help</a>&nbsp;
+            </span>
+        </div>
+        <div class="odDiv" style="margin-top: 4px;">
+            <span class="leftSpan" style="white-space: nowrap; width:92%; text-align: left;">
+                <div class="d-flex gap-2 mb-4">
+                    <div style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+                        <select class="form-select">
+                            <option value="BCrypt">bcrypt</option>
+                            <option value="Blake2xs">blake2xs</option>
+                            <option value="CShake">cshake</option>
+                            <option value="Dstu7564">dstu7564</option>
+                            <option value="Hex" selected="true">hex</option>
+                            <option value="MD5">md5</option>                        
+                            <option value="OpenBSDCrypt">openbsd</option>
+                            <option value="RipeMD256">ripemd256</option>
+                            <option value="SCrypt">scrypt</option>
+                            <option value="Sha1">sha1</option>
+                            <option value="Sha256">sha256</option>
+                            <option value="Sha384">sha384</option>
+                            <option value="Sha512">sha512</option>
+                            <option value="TupleHash">tuplehash</option>
+                            <option value="Whirlpool">whirlpool</option>
+                        </select>
+                    </div>
+                </div>
+            </span>
+            <span class="centerSpan" style="margin-left: 20px; max-width: 800px; min-width: 720px;">
+                &nbsp;
+            </span>
+        </div>
+        <div class="odDiv" style="margin-top: 2px">
+            <span class="leftSpan" style="width: 60px; min-width: 48px; max-width: 60px">hash</span>
+            <span class="centerSpan" style="margin-left: 8px; width: 60px; min-width: 48px; max-width: 72px">
+                <img id="mageButtonHash" src="img/crypt/a_hash.png" alt="generate new hash from key"
+                    onmouseover="document.getElementById('ImageHash').src = 'img/crypt/a_hash_key_over.gif'; return false;"
+                    onmouseout="document.getElementById('ImageHash').src = 'img/crypt/a_hash.png'; return false;" />
+            </span>
+            <span class="centerSpan" style="margin-left: 2px; max-width: 600px; min-width: 520px;">                
+                <TextBox itemid="TextBoxIV"
+                        Text="@Model.TextBoxIV_Text"
+                        title="key generated hash"
+                        style="width: 560px; max-width: 580px; column-count=256;" />
+                
+            </span>
+            <span class="rightSpan" style="width: 136px; min-width: 96px; max-width: 144px">
+                <Button type="button" itemid="ButtonSetPipe" Text="set pipe" title="set symmetric cipher pipeline"
+                    style="width: 68px; min-width: 60px; max-width: 72px" />
+                <Button type="button" itemid="ButtonHashPipe" Text="hash pipe" title="hash symmetric cipher pipeline"
+                    style="width: 68px; min-width: 60px; max-width: 72px" />                
+            </span>
+        </div>
+        <hr />
+        <h3>En-/Decrypt file</h3>
+        <!--
+        <div class="odDiv" style="vertical-align: top; clear: both">
+            <span class="leftSpan" style="vertical-align: top;">
+                <INPUT id="oFile" type="file" runat="server" NAME="oFile" />
+            </span>
+            <span class="centerSpan" style="max-width: 72px; vertical-align: top;">
+                <asp:Button ID="Button_EncryptFile" runat="server" ClientIDMode="Static"
+                            Text="Encrypt file" ToolTip="Encrypt file"
+                            OnClientClick="changeCryptBackgroundFile();" OnClick="Button_EncryptFile_Click" />
+            </span>
+            <span class="centerSpan" style="vertical-align: top;">
+                <asp:CheckBox ID="CheckBox_Encode" runat="server" ClientIDMode="Static"
+                              Text="encode file" ToolTip="Encode file (e.g. hex16, base64, uu) after encryption"
+                              Checked="true" />
+            </span>
+            <span class="rightSpan" style="vertical-align: top;">
+                <asp:Button ID="Button_DecryptFile" runat="server" ToolTip="Decrypt file"
+                            Text="Decrypt file"
+                            OnClick="Button_DecryptFile_Click" OnClientClick="javascript:changeCryptBackgroundFile();" />
+            </span>
+        </div>
+        <div style="clear: left;" id="divFileResult" runat="server" visible="true">
+            <span id="SpanLeftFile" runat="server" class="leftSpan" style="vertical-align: top;" visible="false">
+                <a id="aUploaded" runat="server" alt="Uploaded File" href="../res/img/crypt/file.png">
+                    <img id="imgIn" runat="server" border="0" alt="" src="../res/img/crypt/file.png" />
+                </a>
+            </span>
+            <span id="SpanLabel" runat="server" class="centerSpan" visible="False">
+                <asp:Literal id="uploadResult" Runat="server"></asp:Literal>
+            </span>
+            <span class="centerSpan">&nbsp;</span>
+            <span id="SpanRightFile" runat="server" class="rightSpan" style="vertical-align: top;" visible="false">
+                <a id="aTransFormed" runat="server" alt="Transformed File" href="../res/fortune.u8">
+                    <img id="imgOut" runat="server" border="0" alt="File transformed" src="../res/img/crypt/file.png" />
+                </a>
+            </span>
+        </div>
+        <br />
+        <h3>En-/Decrypt text</h3>
+        <div id="DivCrypTextArea" class="CryptTextArea">
+            <asp:TextBox ID="TextBoxSource" runat="server" TextMode="MultiLine" MaxLength="262144" Rows="10" Columns="64" ValidateRequestMode="Enabled" ToolTip="[Enter text to en-/decrypt here]" Text="" Width="512px" CssClass="CryptTextArea" ClientIDMode="Static"></asp:TextBox>
+            <asp:TextBox ID="TextBoxDestionation" runat="server" TextMode="MultiLine" Rows="10" Columns="64" MaxLength="262144" ReadOnly="true" ValidateRequestMode="Enabled" ToolTip="Destination Text" Width="512px" CssClass="CryptTextArea" ClientIDMode="Static"></asp:TextBox>
+            <br />
+            <asp:Button ID="Button_Encrypt" runat="server" Text="Encrypt" ToolTip="Encrypt" OnClick="Button_Encrypt_Click" CssClass="CryptTextArea" ClientIDMode="Static" />&nbsp;
+            <asp:Button ID="Button_RandomText" runat="server" Text="Random Text" ToolTip="Decrypt" OnClick="Button_RandomText_Click" CssClass="CryptTextArea" ClientIDMode="Static" />&nbsp;
+            <asp:Button ID="Button_Decrypt" runat="server" Text="Decrypt" ToolTip="Decrypt" OnClick="Button_Decrypt_Click" CssClass="CryptTextArea" ClientIDMode="Static" />
+        </div>
+        -->
+    </div>
+    <hr />
+<h3>Great thanks to <a href="https://www.bouncycastle.org/download/bouncy-castle-c/" target="_blank">bouncycastle.org</a>!</h3>
+</body>
+</html>
+

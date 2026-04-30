@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFramework>net10.0-windows7.0</TargetFramework>
-	<IsTrimmable>true</IsTrimmable>
+	<TargetFramework>net10.0-windows</TargetFramework>
 	<UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -12,9 +11,6 @@
 	<RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
     <AssemblyVersion>2.26.420</AssemblyVersion>
     <FileVersion>2.26.420</FileVersion>
-	<IsTrimmable>true</IsTrimmable>
-	<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
-	<PlatformTarget>AnyCPU</PlatformTarget>
     <IncludeSymbols>true</IncludeSymbols>
     <Title>EU.CqrXs [minimalistic]</Title>
     <Description>EU.CqrXs is a reduced Area23.At.Framework.Core framework with minimalistic helper methods</Description>
@@ -23,7 +19,6 @@
     <DocumentationFile>Properties\EU.CqrXs.xml</DocumentationFile>
     <NuGetAuditMode>all</NuGetAuditMode>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <PackageReadmeFile>README.MD</PackageReadmeFile>
   </PropertyGroup>
