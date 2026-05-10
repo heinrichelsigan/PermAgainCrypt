@@ -2748,6 +2748,14 @@
             See the GNU Library General Public License for more details.    
             </summary>
         </member>
+        <member name="M:EU.CqrXs.Util.ProcessCmd.Sanitize(System.String,System.Boolean)">
+            <summary>
+            Sanitize cmd or arguments to prevent injection attacks
+            </summary>
+            <param name="cmdArgs">cmd or arguments</param>
+            <param name="isCmd">true, if cmdArgs is executing cmd, false if cmdArgs are arguments of command</param>
+            <returns>sanitized string without illegal characters or escape sequences for standard cmd.exe or shell like bash, csh, ...</returns>
+        </member>
         <member name="M:EU.CqrXs.Util.ProcessCmd.Execute(System.String,System.String,System.Boolean)">
             <summary>
             Execute a binary or shell cmd
@@ -2767,6 +2775,16 @@
             <param name="quoteArgs"><see cref="T:System.Boolean">bool quoteArgs</see> set each single argument under double quote, when passing it to cmdPath</param>
             <param name="useShellExecute"><see cref="T:System.Boolean">bool useShellExecute</see> true, when using system shell to execute cmdPath</param>
             <returns>Console output of executed command</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:EU.CqrXs.Util.ProcessCmd.ExecStdIn(System.String,System.String,System.Boolean)">
+            <summary>
+            Execute a binary or shell cmd
+            </summary>
+            <param name="filepath">full or relative filepath to executable</param>
+            <param name="arguments">arguments passed to executable</param>
+            <param name="useShellExecute">set Process.StartInfo.UseShellExecute</param>
+            <returns>standard output of process pexecec it.</returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="T:EU.CqrXs.Util.RegistryAccessor">
