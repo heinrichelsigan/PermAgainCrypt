@@ -1,7 +1,15 @@
-/* 
-    class NetworkAddresses provides basic network interfaces and local addresses facility
-
-*/
+/**
+ *
+ * @author           Heinrich Elsigan
+ * @version          V 2.26.512
+ * @since            JDK 8
+ *
+ * Coded 2000-2040 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+ *
+ * soucre: NetworkAddresses.java
+ * class: NetworkAddresses provides basic network interfaces and local addresses facility
+ */
 package eu.cqrxs.net.addr;
 
 import java.io.*;

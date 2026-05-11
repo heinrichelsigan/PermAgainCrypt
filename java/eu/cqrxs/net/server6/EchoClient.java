@@ -1,7 +1,18 @@
-/* 
-	source: EchoClient.java
-	mainclass: EchoClient
-*/
+/**
+ *
+ * @author           Heinrich Elsigan
+ * @version          V 2.26.512
+ * @since            JDK 8
+ *
+ * <p>Coded 2000-2040 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+ * </p>
+ * <pre>
+ * <u>source:</u> EchoClient.java
+ * <u>main class:</u> EchoClient
+ * <u>examples:</u> java  eu/cqrxs/net/server6/EchoClient.java 44.233.186.238 43 KERNEL.ORG
+ * </pre>
+ */
 package eu.cqrxs.net.server6;
 
 import java.util.*;
@@ -135,8 +146,8 @@ public class EchoClient {
 				
 				switch (inByte) {
 			    	case T_EOF:
-			    	case T_CR:
-			    	case T_LF: 
+			    	// case T_CR:
+			    	// case T_LF: 
 						finished = true; break;
 			    	case T_BS: 
 						; break; //IGNORE BACKSPACE

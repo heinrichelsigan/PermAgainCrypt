@@ -9,14 +9,15 @@
  */ 
 package eu.cqrxs.gui;
 
-import eu.cqrxs.util.Constants;
 import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.CipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.gui.CqrJDialog;
+import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.gui.ImageHelper;
 import eu.cqrxs.util.Fortune;
 import eu.cqrxs.zip.ZipType;
 import eu.cqrxs.zip.GZ;
@@ -99,7 +100,6 @@ public class CqrJdFrame extends JFrame {
 	JTextArea jTextAreaSource, jTextAreaDestination;
 	JScrollPane scrollSource, scrollDestination;
 
-	BufferedImage imgKey, imgHash, imgAddAlgo, imgX;
 	eu.cqrxs.gui.DropPanel dropPanel;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	
@@ -689,12 +689,12 @@ public class CqrJdFrame extends JFrame {
 		jBar = AddMenus(lSymAction);
 		setJMenuBar(jBar);
 
-		imgKey = addImages(new String[] { "eu/cqrxs/gui/img/key_ring.gif", "img/key_ring.gif" });
-		imgHash = addImages(new String[] { "eu/cqrxs/gui/img/a_hash.png", "img/a_hash.png" });
-		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/img/AddAesArrowHover.gif", "img/AddAesArrowHover.gif" });
-		imgX = addImages(new String[] { "eu/cqrxs/gui/img/close_delete.gif", "img/close_delete.gif" });
+        // Source - https://stackoverflow.com/q/2483283
+        // Posted by Mr CooL, modified by community. See post 'Timeline' for change history
+        // Retrieved 2026-05-12, License - CC BY-SA 3.0
+        // setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("eu/cqrxs/gui/img/key_ring.gif")));
 
-		jLabelImgKey = new JLabel(new ImageIcon(imgKey));
+		jLabelImgKey = new JLabel(ImageHelper.getKeyRing());
 		jLabelImgKey.setBounds(12,25,30,30);
 		jLabelImgKey.setText("[Key]");
 		jLabelImgKey.setFont(cryptFont);
@@ -720,9 +720,9 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Hash.setFont(cryptFont);
 		jComboBox_Hash.addItemListener(new HashChangeListener());
 		getContentPane().add(jComboBox_Hash);
-		selectItemByString(jComboBox_Hash, menuHash, "Hex"); 	
+		selectItemByString(jComboBox_Hash, menuHash, "Hex");
 
-		jLabelImgHash = new JLabel(new ImageIcon(imgHash));
+		jLabelImgHash = new JLabel(ImageHelper.getImgHash());
 		jLabelImgHash.setBounds(12, 67, 40, 30);
 		jLabelImgHash.setText("[Hash]");
 		jLabelImgHash.setFont(cryptFont);
@@ -762,7 +762,7 @@ public class CqrJdFrame extends JFrame {
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
 		getContentPane().add(jComboBox_Algo);
 
-		jLabelImgAddAlgo = new JLabel(new ImageIcon(imgAddAlgo));
+		jLabelImgAddAlgo = new JLabel(ImageHelper.getAesArrowHover());
 		jLabelImgAddAlgo.setBounds(230, 111, 32, 27);
 		jLabelImgAddAlgo.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgAddAlgo);
@@ -778,7 +778,7 @@ public class CqrJdFrame extends JFrame {
 		jTextField_Pipe.setFont(cryptFont);
 		getContentPane().add(jTextField_Pipe);
 
-		jLabelImgX = new JLabel(new ImageIcon(imgX));
+		jLabelImgX = new JLabel(ImageHelper.getCloseDelete());
 		jLabelImgX.setBounds(844, 112, 27, 27);
 		jLabelImgX.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgX);
@@ -883,26 +883,6 @@ public class CqrJdFrame extends JFrame {
 		
 	}
 
-	/**
-	 * addImages
-	 * @param imagePaths Array {@link String[]} with possible image paths
-	 * @return {@link BufferedImage}
-	 */
-	private BufferedImage addImages(String[] imagePaths) {
-		File file;
-		BufferedImage bimg = null;
-		for (int fx = 0; fx < imagePaths.length; fx++) {
-			try {
-				file = new File(imagePaths[fx]);
-				bimg = ImageIO.read(file);
-				fx = imagePaths.length - 1;
-				break;
-			} catch (IOException ex) {
-				DbgWriter.msgex(ex, true);
-			}
-		}
-		return bimg;
-	}
 
 	protected class HashChangeListener implements ItemListener {
 		@Override
@@ -1118,7 +1098,7 @@ public class CqrJdFrame extends JFrame {
 		for (int r = (fpath.length() -1); r > -1 ; r--) {
 			if (fpath.charAt(r) == '\\'  || fpath.charAt(r) == '/') {
 				openFileName = fpath.substring(r + 1, fpath.length());
-				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
+                DbgWriter.msg("openFileName = " + openFileName + " index r = " + r, false);
 				break;
 			}
 		}
@@ -1154,7 +1134,7 @@ public class CqrJdFrame extends JFrame {
 		// chooser.setFileFilter(new FileNameExtensionFilter("all files", "*.*"));
 		int fileDialogResult = chooser.showOpenDialog(null);
 		if (fileDialogResult == JFileChooser.CANCEL_OPTION || fileDialogResult == JFileChooser.ERROR_OPTION) {
-			dbgMsg("open_action JFileChooser returned: " + fileDialogResult, 2, true);
+			DbgWriter.msg("open_action JFileChooser returned: " + fileDialogResult, false);
 			return;
 		}
 		
@@ -1164,7 +1144,7 @@ public class CqrJdFrame extends JFrame {
 		for (int r = (filename.length() -1); r > -1 ; r--) {
 			if (filename.charAt(r) == '\\'  || filename.charAt(r) == '/') {
 				openFileName = filename.substring(r + 1, filename.length());
-				dbgMsg("openFileName = " + openFileName + " index r = " + r, 1, true);
+				DbgWriter.msg("openFileName = " + openFileName + " index r = " + r, false);
                 break;
 			}
 		}		
@@ -1199,7 +1179,7 @@ public class CqrJdFrame extends JFrame {
         // chooser.setFileFilter(new FileNameExtensionFilter("save file", saveFileSuffix));
 		int fileDialogResult = chooser.showSaveDialog(cqrJdFrame);
 		if (fileDialogResult == JFileChooser.CANCEL_OPTION || fileDialogResult == JFileChooser.ERROR_OPTION) {
-			dbgMsg("save_action JFileChooser returned: " + fileDialogResult, 2, true);
+			DbgWriter.msg("save_action JFileChooser returned: " + fileDialogResult, false);
 			return;
         }
 	
@@ -1349,16 +1329,16 @@ public class CqrJdFrame extends JFrame {
 		for (int ci = 0; ci < cipherEnums.length; ci++)
 			pipeString = pipeString + cipherEnums[ci].getName() + ";";
         
-		dbgMsg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
-		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), 2, false);
+		DbgWriter.msg(String.format("PipeString: %s \nEncoding: %s Hashing: %s zipping; %s", 
+		 		pipeString, encodeType.getName(), keyHash.getName(), zipType.getName()), false);
 		saveFileName = "";
 
 		BufferedImage pipeImg = CipherPipe.drawCipherPipe(pipe);
 		dropPanel.setPipeImg(pipeImg, pipe.getPipeString());
 
 		try {
-			dbgMsg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
-			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, false);
+			DbgWriter.msg(String.format("pipe.encrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s", 
+			 	key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), false);
 
 			if (plain != null && plain.length() > 0) {
 		    	
@@ -1436,14 +1416,14 @@ public class CqrJdFrame extends JFrame {
 		for (int ci = 0; ci < cipherEnums.length; ci++)
 			pipeSting = pipeSting + cipherEnums[ci].getName() + ";";
 		
-        dbgMsg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
-		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), 1, true);
+        DbgWriter.msg(String.format("Out pipe: %s \nEncoding: %s Hashing: %s zipping; %s",
+		        pipeSting, encodeType.getName(), keyHash.getName(), zipType.getName()), false);
 
 		String decrypted = "";
         saveFileName = "";
 		try {
-			dbgMsg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
-			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), 4, true);
+			DbgWriter.msg(String.format("pipe.decrypt with key=%s, hash=%s, \nencode=%s keyHash=%s, zip=%s",
+			        key, hashed, encodeType.getName(), keyHash.getName(), zipType.getName()), false);
 			
             if (encrypted != null && encrypted.length() > 0) {
                 
@@ -1572,27 +1552,6 @@ public class CqrJdFrame extends JFrame {
 		System.exit(0);
 	}
 	
-	
-    protected void dbgMsg(String s, int level, boolean ignoreDbg) {
-		if (s != null && s.length() > 0 && (Constants.DEBUG || ignoreDbg)) {
-            System.out.println(level + ": \t" + s);
-        }
-    }
-	
-	protected Image setJarIncludedImage(String imgstr) {
-		Image img = null;
-		try {
-			InputStream is = getClass().getResourceAsStream(imgstr);
-			BufferedInputStream bis = new BufferedInputStream(is);
-			// a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
-			byte[] byBuf = new byte[10000];  // is.read(byBuf);  or something like that...
-			int byteRead = bis.read(byBuf, 0, 10000);
-			img = Toolkit.getDefaultToolkit().createImage(byBuf);
- 	 	} catch(Exception e) {
-			DbgWriter.msgex(e, true);
- 		}
-		return img;
-	}
 	
 	protected void MakeWebRequest() {
 		
@@ -1723,13 +1682,13 @@ public class CqrJdFrame extends JFrame {
         }
 
         String spath = temp + dirSep + fonly;
-        dbgMsg("fname=" + fname + " fonly=" + fonly + " spath = " + spath, 1, true); 
+        DbgWriter.msg("fname=" + fname + " fonly=" + fonly + " spath = " + spath, false);
         Path fpath = java.nio.file.Paths.get(spath);
 
          try { 
              if (fbytes != null && fbytes.length > 0) { 
                 Files.write(fpath, fbytes); 
-                dbgMsg("filea: " + fbytes.length + " bytes writtem.", 1, true);                
+                DbgWriter.msg("filea: " + fbytes.length + " bytes writtem.", false); 
             } else 
                 throw new java.lang.IllegalStateException("fbytes is null or len == 0"); 
         } catch (Exception ex) { 

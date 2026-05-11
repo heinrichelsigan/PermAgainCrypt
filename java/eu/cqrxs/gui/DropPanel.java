@@ -10,6 +10,7 @@
 package eu.cqrxs.gui;
 
 import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.gui.ImageHelper;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -123,17 +124,17 @@ public class DropPanel extends JPanel {
 		
 		try {
 
-            target = addImages(new String[] { "eu/cqrxs/gui/img/file.png", "img/file.png" });
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
-            imgFileOut = addImages((new String[] {"eu/cqrxs/gui/img/encrypted.png", "img/encrypted.png" }));
-			imgCipherPipe = addImages((new String[] {"eu/cqrxs/gui/img/cipherpipeblank.png", "img/cipherpipeblank.png" }));
+            target = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+            imgFileOut = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/encrypted.png"), 66, 66);
+			imgCipherPipe = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/cipherpipeblank.png"), 640, 96);
 			
             message = new JLabel();
             message.setBounds(0, 0, 742, 96);
             message.setFont(message.getFont().deriveFont(Font.BOLD, 11));
             add(message);
 
-            jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
+            jLabelImgIn = new JLabel(ImageHelper.getFileIcon());
             jLabelImgIn.setBounds(4, 4, 72, 60);
             jLabelImgIn.setText("[No input file]");
             add(jLabelImgIn);
@@ -144,12 +145,12 @@ public class DropPanel extends JPanel {
             jLabelFileIn.setText("[No file loaded]");
             add(jLabelFileIn);
 
-			jLabelCipherPipe = new JLabel(new ImageIcon(imgCipherPipe));
+			jLabelCipherPipe = new JLabel(ImageHelper.getJarImageIcon("eu/cqrxs/gui/img/cipherpipeblank.png"));
 			jLabelCipherPipe.setBounds(112, 2, 640, 96);
             jLabelCipherPipe.setText("[blank cipher pipe]");
             add(jLabelCipherPipe);
 
-            jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
+            jLabelImgOut = new JLabel(ImageHelper.getEncrypted());
             jLabelImgOut.setBounds(862, 4, 60, 60);
             add(jLabelImgOut);
 
@@ -176,7 +177,7 @@ public class DropPanel extends JPanel {
         if (ridx < 0)
             ridx = fileInName.lastIndexOf('\\');
         String imgInName = (ridx > 0) ?
-                fileInName.substring(ridx + 1, fileInName.length() - 1) :
+                fileInName.substring(ridx + 1, fileInName.length()) :
                 fileInName;
 		
 		if (fileInName.toLowerCase().endsWith(".jpg")  ||
@@ -186,11 +187,11 @@ public class DropPanel extends JPanel {
                 fileInName.toLowerCase().endsWith(".bmp")  ||
                 fileInName.toLowerCase().endsWith(".tif"))
         {
-			imgFileIn = addImages(new String[] { fileInName });
+			imgFileIn = ImageHelper.addImages(new String[] { fileInName });
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
+            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
             imgIconIn = new ImageIcon(imgFileIn);
         }
 		
@@ -223,7 +224,7 @@ public class DropPanel extends JPanel {
         if (ridx < 0)
             ridx = fileOutName.lastIndexOf('\\');
         String imgOutName = (ridx > 0) ?
-                fileOutName.substring(ridx + 1, fileOutName.length() - 1) :
+                fileOutName.substring(ridx + 1, fileOutName.length()) :
                 fileOutName;
 		
 		if (fileOutName.toLowerCase().endsWith(".jpg")  ||
@@ -233,12 +234,12 @@ public class DropPanel extends JPanel {
                 fileOutName.toLowerCase().endsWith(".bmp")  ||
                 fileOutName.toLowerCase().endsWith(".tif"))
         {
-			imgFileOut = addImages(new String[] { fileOutName });
+			imgFileOut = ImageHelper.addImages(new String[] { fileOutName });
             imgIconOut = new ImageIcon(getThumbnail(imgFileOut));
         }
         else {
-            imgFileOut  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
-            imgIconOut = new ImageIcon(imgFileOut);
+            imgFileOut  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+            imgIconOut = ImageHelper.getFileIcon();
         }
 
 		jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
@@ -262,15 +263,15 @@ public class DropPanel extends JPanel {
      */
 	public void resetFileLabels() {
 		
-		imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
-		imgFileOut = addImages((new String[] {"eu/cqrxs/gui/img/encrypted.png", "img/encrypted.png" }));
+		imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+		imgFileOut = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/encrypted.png"), 66, 66);
 			
 		remove(jLabelImgIn);
 		remove(jLabelFileIn);					
 		remove(jLabelImgOut);
 		remove(jLabelFileOut);
 		
-		jLabelImgIn = new JLabel(new ImageIcon(imgFileIn));
+		jLabelImgIn = new JLabel(ImageHelper.getFileIcon());
 		jLabelImgIn.setBounds(4, 4, 72, 60);
 		jLabelImgIn.setText("[No input file]");
 		add(jLabelImgIn);
@@ -281,7 +282,7 @@ public class DropPanel extends JPanel {
 		jLabelFileIn.setText("[No file loaded]");
 		add(jLabelFileIn);
 
-		jLabelImgOut = new JLabel(new ImageIcon(imgFileOut));
+		jLabelImgOut = new JLabel(ImageHelper.getEncrypted());
 		jLabelImgOut.setBounds(862, 4, 60, 60);
 		add(jLabelImgOut);
 		
@@ -317,26 +318,6 @@ public class DropPanel extends JPanel {
         repaint();
     }
 
-    /**
-     * addImages
-     * @param imagePaths Array {@link String[]} with possible image paths
-     * @return {@link BufferedImage}
-     */
-	private BufferedImage addImages(String[] imagePaths) {
-		File file;
-		BufferedImage bimg = null;
-		for (int fx = 0; fx < imagePaths.length; fx++) {
-			try {
-				file = new File(imagePaths[fx]);
-				bimg = ImageIO.read(file);
-				fx = imagePaths.length - 1;
-				break;
-			} catch (IOException ex) {
-                DbgWriter.msgex(ex, true);
-			}
-		}
-		return bimg;
-	}
 
     protected void importFiles(final String droppedFile) {
         // message.setText("'" + droppedFile + "'");
@@ -356,12 +337,12 @@ public class DropPanel extends JPanel {
                 droppedFile.toLowerCase().endsWith(".bmp")  ||
                 droppedFile.toLowerCase().endsWith(".tif"))
         {
-            imgFileIn = addImages(new String[] { droppedFile });
+            imgFileIn = ImageHelper.addImages(new String[] { droppedFile });
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = addImages((new String[] {"eu/cqrxs/gui/img/file.png", "img/file.png" }));
-            imgIconIn = new ImageIcon(imgFileIn);
+            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getFileIcon().getImage(), 66, 66);
+            imgIconIn =  ImageHelper.getFileIcon();
         }
         remove(jLabelImgIn);
         jLabelImgIn = new JLabel(imgIconIn);

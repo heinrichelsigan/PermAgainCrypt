@@ -24,6 +24,7 @@ import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.util.CException;
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.gui.ImageHelper;
 import eu.cqrxs.util.NotImplementedError;
 import eu.cqrxs.zip.ZipType;
 
@@ -31,6 +32,7 @@ import org.bouncycastle.crypto.*;
 
 import javax.crypto.Cipher;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 /**
  * CipherPipe is symmetric block cipher encryption and decryption pipe line
@@ -871,8 +873,8 @@ public class CipherPipe {
         if (pipe == null) {
             BufferedImage imgPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgPipeBlank = ImageIO.read(new File(path + "cipherpipeblank.png"));
-            } catch (IOException ioex1) {
+                imgPipeBlank = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "cipherpipeblank.png"), 640, 96);
+            } catch (Exception ioex1) {
                 DbgWriter.msgex(ioex1, true);
             }
             return imgPipeBlank;
@@ -889,8 +891,8 @@ public class CipherPipe {
 
             BufferedImage imgGz = new BufferedImage(76, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgGz = ImageIO.read(new File(path + "gz.png"));
-            } catch (IOException ioex2) {
+                imgGz = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "gz.png"), 76, 96);
+            } catch (Exception ioex2) {
                 DbgWriter.msgex(ioex2, true);
             }
             g.drawImage(imgGz, xoffset, 0, null);
@@ -898,8 +900,8 @@ public class CipherPipe {
         } else {
             BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
-            } catch (IOException ioex3) {
+                imgStart = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "pipestartblock.png"), 32, 96);
+            } catch (Exception ioex3) {
                 DbgWriter.msgex(ioex3, true);
             }
             g.drawImage(imgStart, xoffset, 0, null);
@@ -912,13 +914,12 @@ public class CipherPipe {
                 CipherEnum cipher = inPipe[i];
                 BufferedImage imgAes = new BufferedImage(60, 96, BufferedImage.TYPE_INT_ARGB);
                 try {
-                    imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
+                    imgAes = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + cipher.toString().toLowerCase() + ".png"), 60, 96);
                 } catch (Exception ex3) {
                     DbgWriter.msgex(ex3, true);
                     try {
-                        imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
-                        // imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
-                    } catch (IOException ioex4) {
+                        imgAes = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "cipheralgo.png"), 60, 96);
+                    } catch (Exception ioex4) {
                         DbgWriter.msgex(ioex4, true);
                     }
                 }
@@ -942,13 +943,12 @@ public class CipherPipe {
                     case EncodeEnum.Xx:  encodeFileName += "xx.png"; break;
                     default: encodeFileName += "0.png"; break;
                 }
-                imgEncoding = ImageIO.read(new File(path + encodeFileName));
-            } catch (IOException exLoadEncodeImage) {
+                imgEncoding = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + encodeFileName), 80, 96);
+            } catch (Exception exLoadEncodeImage) {
                 DbgWriter.msgex(exLoadEncodeImage, true);
             }
             g.drawImage(imgEncoding, xoffset, 0, null);
         }
-
 
         g.dispose();
 
@@ -971,7 +971,7 @@ public class CipherPipe {
         if (pipe == null) {
             BufferedImage imgStartPipeBlank = new BufferedImage(640, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgStartPipeBlank = ImageIO.read(new File(path + "decryptcipherpipe.png"));
+                imgStartPipeBlank = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "decryptcipherpipe.png"), 640, 96);
             } catch (Exception exImageStartBlank) {
                 DbgWriter.msgex(exImageStartBlank, true);
             }
@@ -988,7 +988,7 @@ public class CipherPipe {
         if (pipe.encodeType != EncodeEnum.None) {
             BufferedImage imgDecoding = new BufferedImage(80, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgDecoding = ImageIO.read(new File(path + "decodingasciitobin.png"));
+                imgDecoding = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "decodingasciitobin.png"), 80, 96);
             } catch (Exception exImageDecoding) {
                 DbgWriter.msgex(exImageDecoding, true);
             }
@@ -997,7 +997,7 @@ public class CipherPipe {
         } else {
             BufferedImage imgStart = new BufferedImage(32, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgStart = ImageIO.read(new File(path + "pipestartblock.png"));
+                imgStart = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "pipestartblock.png"), 32, 96);
             } catch (Exception exIMageStartBlank) {
                 DbgWriter.msgex(exIMageStartBlank, true);
             }
@@ -1011,11 +1011,11 @@ public class CipherPipe {
                 CipherEnum cipher = outPipe[j];
                 BufferedImage imgAes = new BufferedImage(60, 96, BufferedImage.TYPE_INT_ARGB);
                 try {
-                    imgAes = ImageIO.read(new File(path + cipher.toString().toLowerCase() + ".png"));
+                    imgAes = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + cipher.toString().toLowerCase() + ".png"), 60, 96);
                 } catch (Exception exImageAlgo) {
                     DbgWriter.msgex(exImageAlgo, true);
                     try {
-                        imgAes = ImageIO.read(new File(path + "cipheralgo.png"));
+                        imgAes = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "cipheralgo.png"), 60, 96);
                     } catch (Exception exImageFileAlgo) {
                         DbgWriter.msgex(exImageFileAlgo, true);
                     }
@@ -1029,7 +1029,7 @@ public class CipherPipe {
 
             BufferedImage imgGz = new BufferedImage(80, 96, BufferedImage.TYPE_INT_ARGB);
             try {
-                imgGz = ImageIO.read(new File(path + "gunzip.png"));
+                imgGz = ImageHelper.toBufferedImage(ImageHelper.getJarImage(path + "gunzip.png"), 80, 96);
             } catch (Exception exImageGunzip) {
                 DbgWriter.msgex(exImageGunzip, true);
             }
@@ -1043,6 +1043,5 @@ public class CipherPipe {
         // ImageIO.write(combined, "PNG", new File(path, "combined.png"));
         return combined;
     }
-
 
 }

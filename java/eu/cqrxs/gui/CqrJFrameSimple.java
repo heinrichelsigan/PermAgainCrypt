@@ -9,14 +9,15 @@
 package eu.cqrxs.gui;
 
 import eu.cqrxs.crypt.cipher.CipherPipe;
-import eu.cqrxs.util.Constants;
 import eu.cqrxs.crypt.cipher.CipherMode2;
 import eu.cqrxs.crypt.hash.KeyHash;
 import eu.cqrxs.crypt.cipher.CipherEnum;
 import eu.cqrxs.crypt.cipher.SecureCipherPipe;
 import eu.cqrxs.crypt.encoding.EncodeEnum;
+import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
 import eu.cqrxs.util.Fortune;
+import eu.cqrxs.gui.ImageHelper;
 import eu.cqrxs.zip.ZipType;
 
 import java.awt.Color;
@@ -91,7 +92,6 @@ public class CqrJFrameSimple extends JFrame {
 	JScrollPane scrollSource, scrollDestination;
 	eu.cqrxs.gui.CqrJDialog cqrJDialog;
 	eu.cqrxs.gui.DropPanel dropPanel;
-	BufferedImage imgKey, imgHash, imgAddAlgo, imgX;
 
 	Font menuFont, cryptFont, monoSpaceFont, monoSpaced = new Font("Monospaced", Font.PLAIN, 10);
 	static Color defaultMenuItemBg, selectionBg;
@@ -576,12 +576,7 @@ public class CqrJFrameSimple extends JFrame {
 			}
 		});
 
-		imgKey = addImages(new String[] { "eu/cqrxs/gui/img/key_ring.gif", "img/key_ring.gif" });
-		imgHash = addImages(new String[] { "eu/cqrxs/gui/img/a_hash.png", "img/a_hash.png" });
-		imgAddAlgo = addImages(new String[] { "eu/cqrxs/gui/img/AddAesArrowHover.gif", "img/AddAesArrowHover.gif" });
-		imgX = addImages(new String[] { "eu/cqrxs/gui/img/close_delete.gif", "img/close_delete.gif" });
-
-		jLabelImgKey = new JLabel(new ImageIcon(imgKey));
+		jLabelImgKey = new JLabel(ImageHelper.getKeyRing());
 		jLabelImgKey.setBounds(12,26,30,30);
 		jLabelImgKey.setText("[Key]");
 		jLabelImgKey.setFont(cryptFont);
@@ -626,7 +621,7 @@ public class CqrJFrameSimple extends JFrame {
 		jComboBox_Algo.addItemListener(new CipherChangeListener());
 		getContentPane().add(jComboBox_Algo);
 
-		jLabelImgAddAlgo = new JLabel(new ImageIcon(imgAddAlgo));
+		jLabelImgAddAlgo = new JLabel(ImageHelper.getAesArrowHover());
 		jLabelImgAddAlgo.setBounds(230, 63, 32, 27);
 		jLabelImgAddAlgo.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgAddAlgo);
@@ -640,7 +635,7 @@ public class CqrJFrameSimple extends JFrame {
 		jTextField_Pipe.setFont(cryptFont);
 		getContentPane().add(jTextField_Pipe);
 
-		jLabelImgX = new JLabel(new ImageIcon(imgX));
+		jLabelImgX = new JLabel(ImageHelper.getCloseDelete());
 		jLabelImgX.setBounds(844, 64, 27, 27);
 		jLabelImgX.addMouseListener(aSymMouse);
 		getContentPane().add(jLabelImgX);
@@ -745,26 +740,6 @@ public class CqrJFrameSimple extends JFrame {
 	}
 
 
-	/**
-	 * addImages
-	 * @param imagePaths Array {@link String[]} with possible image paths
-	 * @return {@link BufferedImage}
-	 */
-	private BufferedImage addImages(String[] imagePaths) {
-		File file;
-		BufferedImage bimg = null;
-		for (int fx = 0; fx < imagePaths.length; fx++) {
-			try {
-				file = new File(imagePaths[fx]);
-				bimg = ImageIO.read(file);
-				fx = imagePaths.length - 1;
-				break;
-			} catch (IOException ex) {
-				DbgWriter.msgex(ex, true);
-			}
-		}
-		return bimg;
-	}
 
 	protected class ZipChangeListener implements ItemListener {
 		@Override
@@ -1349,22 +1324,8 @@ public class CqrJFrameSimple extends JFrame {
 			DbgWriter.dbgmsg(s, level, ignoreDbg);
         }
     }
-	
-	protected Image setJarIncludedImage(String imgstr) {
-		Image img = null;
-		try {
-			InputStream is = getClass().getResourceAsStream(imgstr);
-			BufferedInputStream bis = new BufferedInputStream(is);
-			// a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
-			byte[] byBuf = new byte[10000];  // is.read(byBuf);  or something like that...
-			int byteRead = bis.read(byBuf, 0, 10000);
-			img = Toolkit.getDefaultToolkit().createImage(byBuf);
- 	 	} catch(Exception e) {
-			DbgWriter.msgex(e, true);
- 		}
-		return img;
-	}
-	
+
+
 	protected void MakeWebRequest() {
 		
 		HttpClient client = HttpClient.newBuilder()         

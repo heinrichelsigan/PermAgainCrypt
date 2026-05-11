@@ -73,8 +73,8 @@ set MYCLASSPATH=%CLASSPATH%;.\;.\%BCJAR%;.\eu\cqrxs\;.\eu\cqrxs\gui\;.\eu\cqrxs\
 
 echo "compiling CqrXs.Eu.* now with javac"
 
-echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\util\CException.java eu\cqrxs\util\NotImplementedError.java eu\cqrxs\util\Constants.java eu\cqrxs\util\DbgWriter.java "
-javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\util\CException.java eu\cqrxs\util\NotImplementedError.java eu\cqrxs\util\Constants.java eu\cqrxs\util\DbgWriter.java 
+echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\util\CException.java eu\cqrxs\util\NotImplementedError.java eu\cqrxs\util\Constants.java eu\cqrxs\util\DbgWriter.java eu\cqrxs\gui\ImageHelper.java "
+javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\util\CException.java eu\cqrxs\util\NotImplementedError.java eu\cqrxs\util\Constants.java eu\cqrxs\util\DbgWriter.java eu\cqrxs\gui\ImageHelper.java
 
 echo "javac.exe -classpath %MYCLASSPATH% -Xlint:deprecation eu\cqrxs\net\addr\NetworkAddresses.java eu\cqrxs\net\server6\EchoInputStream.java eu\cqrxs\net\server6\EchoServer.java eu\cqrxs\net\server6\EchoClient.java "
 javac.exe -classpath %MYCLASSPATH% -Xlint:unchecked -Xlint:deprecation  eu\cqrxs\net\addr\NetworkAddresses.java eu\cqrxs\net\server6\EchoInputStream.java eu\cqrxs\net\server6\EchoServer.java eu\cqrxs\net\server6\EchoClient.java

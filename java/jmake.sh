@@ -26,8 +26,9 @@ for fj in $(find -iname '*.java' -ipath './eu/cqrxs*') ; do
 done
 
 
-echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/util/CException.java eu/cqrxs/util/NotImplementedError.java eu/cqrxs/util/Constants.java eu/cqrxs/util/Fortune.java eu/cqrxs/util/DbgWriter.java "
-javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/util/CException.java eu/cqrxs/util/NotImplementedError.java eu/cqrxs/util/Constants.java eu/cqrxs/util/Fortune.java eu/cqrxs/util/DbgWriter.java
+echo "$0: javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/util/Constants.java eu/cqrxs/util/DbgWriter.java eu/cqrxs/gui/ImageHelper.java eu/cqrxs/util/Fortune.java CException.java  eu/cqrxs/util/NotImplementedError.java"
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/util/Constants.java eu/cqrxs/util/DbgWriter.java eu/cqrxs/gui/ImageHelper.java eu/cqrxs/util/Fortune.java CException.java eu/cqrxs/util/NotImplementedError.java 
+
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/net/NetworkAddresses.java eu/cqrxs/net/server6/EchoInputStream.java eu/cqrxs/net/server6/EchoServer.java eu/cqrxs/net/server6/EchoClient.java "
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/net/NetworkAddresses.java eu/cqrxs/net/server6/EchoInputStream.java eu/cqrxs/net/server6/EchoServer.java eu/cqrxs/net/server6/EchoClient.java
@@ -47,8 +48,8 @@ echo "javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/zip/GZ.java  eu/
 javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/zip/GZ.java  eu/cqrxs/zip/ZipType.java
 
 
-echo "$0: javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/util/Fortune.java eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java "
-javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/util/Fortune.java eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java
+echo "$0: javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java "
+javac -classpath $MYCLASSPATH -Xlint:unchecked -Xlint:deprecation eu/cqrxs/gui/DropPanel.java eu/cqrxs/gui/CqrJDialog.java eu/cqrxs/gui/CqrJdFrame.java eu/cqrxs/gui/CqrJFrameSimple.java
 
 
 echo "$0: javac -classpath $MYCLASSPATH -Xlint:deprecation eu/cqrxs/console/*.java "

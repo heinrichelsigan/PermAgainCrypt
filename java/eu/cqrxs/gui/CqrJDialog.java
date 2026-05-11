@@ -12,6 +12,7 @@ package eu.cqrxs.gui;
 
 import eu.cqrxs.util.Constants;
 import eu.cqrxs.util.DbgWriter;
+import eu.cqrxs.gui.ImageHelper;
 
 import java.awt.Window;
 import java.awt.Color;
@@ -38,11 +39,10 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 	static final String NEWLINE = System.getProperty("line.separator");
 	
 	public CqrJDialog() throws IOException {
-		
-		String filename = "eu/cqrxs/gui/img/cqrxs-eu.jpg";
-		file = new File(filename);
-		img = ImageIO.read(file);
-		
+
+		img = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/cqrxs-eu.png"), 712, 312);
+
+
 		setModal(true);
         Init();
 	}
@@ -50,9 +50,8 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
  	public CqrJDialog(String filename) throws IOException {
 		
 		if (filename == null || filename.length() == 0)			
-			filename = "eu/cqrxs/gui/img/cqrxs-eu.jpg";
-		file = new File(filename);
-		img = ImageIO.read(file);
+			filename = "eu/cqrxs/gui/img/cqrxs-eu.png";
+		img = ImageHelper.toBufferedImage(ImageHelper.getJarImage(filename));
 		
 		setModal(true);
         Init();
@@ -81,8 +80,9 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		backColor = Color.decode("#04339d");
 		bgColor = Color.BLUE;
 		getContentPane().setBackground(backColor);
-			
-        icon = new ImageIcon(img);
+
+
+		icon = ImageHelper.getJarImageIcon(	"eu/cqrxs/gui/img/cqrxs-eu.png");
 		jPanelCenter.setBounds(12, 8, 772, 332);
 		jPanelCenter.setLayout(new FlowLayout());
 		jPanelCenter.setBackground(backColor);

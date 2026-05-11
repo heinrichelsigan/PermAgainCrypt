@@ -1,7 +1,15 @@
-/*
-	soucre: EchoInputStream.java
-	class: EchoInputStream 
-*/
+/**
+ *
+ * @author           Heinrich Elsigan
+ * @version          V 2.26.512
+ * @since            JDK 8
+ *
+ * Coded 2000-2040 by
+ * <a href="mailto:he@area23.at">Heinrich.Elsigan</a><a href="https://heinrichelsigan.area23.at">heinrichelsigan.area23.at</a>
+ *
+ * soucre: EchoInputStream.java
+ * class: EchoInputStream 
+ */
 package eu.cqrxs.net.server6;
 
 
