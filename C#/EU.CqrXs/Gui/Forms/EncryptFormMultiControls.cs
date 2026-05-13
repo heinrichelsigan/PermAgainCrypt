@@ -92,7 +92,7 @@ namespace EU.CqrXs.Gui.Forms
 
             this.comboBoxCipherModes.Items.Clear();
             foreach (var chmode in mCipherModes)
-                this.comboBoxCipherModes.Items.Add(chmode.Name.ToString());
+                this.comboBoxCipherModes.Items.Add(chmode.Text.ToString());
             this.comboBoxCipherModes.SelectedValue = "CFB";
             comboBoxCipherModes.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboCipherMode_Changed(sender, e));
 
@@ -432,10 +432,17 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal async Task comboCipherMode_Changed(object sender, EventArgs e)
         {
+            switch (comboBoxCipherModes.SelectedValue)
+            {
+                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
+                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
+                case "CFB": await menuCipherMode_Click(menuCipherModeItemCFB, e); return;
+                default: 
+            }
             switch (comboBoxCipherModes.SelectedText)
             {
-                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); break;
-                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); break;
+                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
+                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
                 case "CFB":
                 default: await menuCipherMode_Click(menuCipherModeItemCFB, e); break;
             }
