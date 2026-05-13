@@ -82,8 +82,8 @@ public class CqrJDialog extends JDialog { /* implements MouseListener  { */
 		getContentPane().setBackground(backColor);
 
 
-		icon = ImageHelper.getJarImageIcon(	"eu/cqrxs/gui/img/cqrxs-eu.png");
-		jPanelCenter.setBounds(12, 8, 772, 332);
+		icon = ImageHelper.getJarImageIcon("eu/cqrxs/gui/img/cqrxs-eu.png");
+		jPanelCenter.setBounds(12, 8, 712, 332);
 		jPanelCenter.setLayout(new FlowLayout());
 		jPanelCenter.setBackground(backColor);
 		JLabel jLabel = new JLabel();

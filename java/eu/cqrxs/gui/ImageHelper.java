@@ -20,6 +20,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.io.ByteArrayInputStream;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.File;
@@ -93,26 +94,47 @@ public class ImageHelper {
     }
 
 
+	public BufferedImage setJarIncludedImage(String imageJar) {  
+		return setJarIncludedImages(new String[] { imageJar });
+	}
+
     /*
-     * setJarIncludedImage from Richard S. alias JJ Mr. Data
-     * @param imgstr image String
-     * @return {@link java.awt.Image}
+     * setJarIncludedImages from Richard S. alias JJ Mr. Data
+     * @param imagesJar String[] with different trys
+     * @return {@link java.awt.image.BufferedImage}
      */
-    public Image setJarIncludedImage(String imgstr) {
-        Image img = null;
-        try {
-            InputStream is = getClass().getResourceAsStream(imgstr);
-            BufferedInputStream bis = new BufferedInputStream(is);
-            // a buffer large enough for our image can be byte[] byBuf = = new byte[is.available()];
-            byte[] byBuf = new byte[262144];  // is.read(byBuf);  or something like that...
-            int byteRead = bis.read(byBuf, 0, 262144);
-            img = Toolkit.getDefaultToolkit().createImage(byBuf);
-        } catch(Exception e) {
-            DbgWriter.msg("setJarIncludedImage(String imgstr = " + imgstr + ") throwed Exception:", true);
-            DbgWriter.msgex(e, true);
-        }
-        return img;
+    public BufferedImage setJarIncludedImages(String[] imagesJar) {        
+		int i = 0, j = 0, idx = -1;
+		String[] imagesJarWithSPath = new String[imagesJar.length * 2];
+		BufferedImage bufimg = null;
+		
+		for (i = 0; i < imagesJar.length; i++) {
+			imagesJarWithSPath[j++] = imagesJar[i]; // assign element of param array
+			if (((idx = imagesJar[i].indexOf("img")) > -1) && (imagesJar[i].length() > idx)) {                
+				imagesJarWithSPath[j++] = imagesJar[i].substring(idx, imagesJar[i].length()); // assign relative path form img
+            }			
+		}
+		for (j = 0; (j < imagesJarWithSPath.length && bufimg == null); j++) {			
+			try {
+				InputStream is = getClass().getResourceAsStream(imagesJarWithSPath[j]);				
+				BufferedInputStream bis = new BufferedInputStream(is);
+				// a buffer large enough for our image can be byte[] byteBuffer = = new byte[is.available()];
+				byte[] byteBuffer = new byte[262144];  // is.read(byteBuffer);  or something like that...
+				int byteRead = bis.read(byteBuffer, 0, 262144);
+				ByteArrayInputStream bais = new ByteArrayInputStream(byteBuffer);
+				bufimg = ImageIO.read(bais);
+				// bufimg = new BufferedImage(byteBuffer);
+			} catch(Exception e) {
+				DbgWriter.msg("imagesJarWithSPath[" + j + "] = " + imagesJarWithSPath[j] + " throwed Exception:", true);
+				DbgWriter.msgex(e, true);
+			}
+			if (bufimg != null) 
+				break;
+		}
+        return bufimg;
     }
+
+
 
 
     /**
@@ -189,6 +211,21 @@ public class ImageHelper {
         return getHelper().getImageByFileNames(imagePaths);
     }
 
+
+
+	public static BufferedImage getJarIncludedImage(String imageJar) {  
+		BufferedImage bufimg = getHelper().setJarIncludedImage(imageJar);
+		if (bufimg == null)
+			bufimg = getHelper().getImageByFileNames(new String[] { imageJar });
+		return bufimg;
+	}
+
+	public static  BufferedImage getJarIncludedImages(String[] imagesJar) {  
+		BufferedImage bufimg = getHelper().setJarIncludedImages(imagesJar);
+		if (bufimg == null)
+			bufimg = getHelper().getImageByFileNames(imagesJar);
+		return bufimg;
+	}
 
     /*
 	 * toBufferedImage converts {@link java.awt.Image} to {@link BufferedImage}

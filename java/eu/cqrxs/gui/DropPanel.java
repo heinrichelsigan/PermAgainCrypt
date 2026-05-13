@@ -124,10 +124,10 @@ public class DropPanel extends JPanel {
 		
 		try {
 
-            target = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
-            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
-            imgFileOut = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/encrypted.png"), 66, 66);
-			imgCipherPipe = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/cipherpipeblank.png"), 640, 96);
+            target = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
+            imgFileIn  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
+            imgFileOut = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/encrypted.png"); 
+	    imgCipherPipe = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/cipherpipeblank.png");
 			
             message = new JLabel();
             message.setBounds(0, 0, 742, 96);
@@ -191,7 +191,7 @@ public class DropPanel extends JPanel {
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+            imgFileIn  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
             imgIconIn = new ImageIcon(imgFileIn);
         }
 		
@@ -238,7 +238,7 @@ public class DropPanel extends JPanel {
             imgIconOut = new ImageIcon(getThumbnail(imgFileOut));
         }
         else {
-            imgFileOut  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
+            imgFileOut  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
             imgIconOut = ImageHelper.getFileIcon();
         }
 
@@ -263,8 +263,8 @@ public class DropPanel extends JPanel {
      */
 	public void resetFileLabels() {
 		
-		imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/file.png"), 66, 66);
-		imgFileOut = ImageHelper.toBufferedImage(ImageHelper.getJarImage("eu/cqrxs/gui/img/encrypted.png"), 66, 66);
+		imgFileIn  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
+		imgFileOut = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/encrypted.png");
 			
 		remove(jLabelImgIn);
 		remove(jLabelFileIn);					
@@ -341,7 +341,7 @@ public class DropPanel extends JPanel {
             imgIconIn = new ImageIcon(getThumbnail(imgFileIn));
         }
         else {
-            imgFileIn  = ImageHelper.toBufferedImage(ImageHelper.getFileIcon().getImage(), 66, 66);
+            imgFileIn  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
             imgIconIn =  ImageHelper.getFileIcon();
         }
         remove(jLabelImgIn);
