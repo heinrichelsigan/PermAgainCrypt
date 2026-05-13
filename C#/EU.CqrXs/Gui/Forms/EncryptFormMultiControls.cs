@@ -92,9 +92,8 @@ namespace EU.CqrXs.Gui.Forms
 
             this.comboBoxCipherModes.Items.Clear();
             foreach (var chmode in mCipherModes)
-                this.comboBoxCipherModes.Items.Add(chmode.Text.ToString());
-            this.comboBoxCipherModes.SelectedValue = "CFB";
-            comboBoxCipherModes.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboCipherMode_Changed(sender, e));
+                this.comboBoxCipherModes.Items.Add(chmode.Text.ToString());            
+            comboBoxCipherModes.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboCipherMode_Changed(sender, e));            
 
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
@@ -121,7 +120,8 @@ namespace EU.CqrXs.Gui.Forms
             this.textBoxKey.Text = GetEmailFromRegistry();
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
-            
+
+            await menuCipherMode_Click(menuCipherModeItemCFB, e);
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(Resources.BlankEncrypt_640x108, "", true);
             await SetInfoMessageAsync($"{this.Name} started...", ToolTipIcon.Info, 2000);
 
@@ -403,6 +403,8 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal async Task menuCipherMode_Click(object sender, EventArgs e)
         {
+            int ix = 0;
+
             foreach (var cipherModeItem in mCipherModes)
                 cipherModeItem.Checked = false;
 
@@ -411,13 +413,14 @@ namespace EU.CqrXs.Gui.Forms
             {
                 mi.Checked = true;
                 string cipherModeString = mi.Name.Replace("menuCipherModeItem", "").Replace("menuMode", "");
-                int ix = 0;
+                                
                 for (ix = 0; ix < comboBoxCipherModes.Items.Count; ix++)
                 {
                     if (comboBoxCipherModes.Items[ix].ToString() == cipherModeString)
                         break;                        
                 }
                 comboBoxCipherModes.SelectedIndex = ix;
+
                 CipherMode2 cmode2 = CipherModeExtensions.ParseText(cipherModeString);
                 CipherMode cmode = cmode2.ToCipherMode();                
                 if (cPipe != null)
