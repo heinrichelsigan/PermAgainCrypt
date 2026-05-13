@@ -139,7 +139,6 @@ namespace EU.CqrXs.Gui.Forms
             progressBar = new ProgressBar();
             groupBoxFiles = new EU.CqrXs.Gui.Controls.GroupBoxFiles();
             panelPipe = new Panel();
-            comboBox1 = new ComboBox();
             panelButtonsMessage = new Panel();
             tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
@@ -1063,7 +1062,6 @@ namespace EU.CqrXs.Gui.Forms
             // 
             panelPipe.BackColor = SystemColors.GradientActiveCaption;
             panelPipe.BorderStyle = BorderStyle.Fixed3D;
-            panelPipe.Controls.Add(comboBox1);
             panelPipe.Controls.Add(comboBoxAlgo);
             panelPipe.Controls.Add(pictureBoxAddAlgo);
             panelPipe.Controls.Add(textBoxPipe);
@@ -1076,21 +1074,6 @@ namespace EU.CqrXs.Gui.Forms
             panelPipe.Padding = new Padding(1);
             panelPipe.Size = new Size(1008, 36);
             panelPipe.TabIndex = 10;
-            // 
-            // comboBox1
-            // 
-            comboBox1.BackColor = SystemColors.Control;
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.DropDownWidth = 144;
-            comboBox1.Font = new Font("Lucida Sans Typewriter", 10F);
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBox1.Location = new Point(439, 5);
-            comboBox1.Margin = new Padding(1);
-            comboBox1.MaxDropDownItems = 32;
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(126, 23);
-            comboBox1.TabIndex = 17;
             // 
             // panelButtonsMessage
             // 
@@ -1307,7 +1290,6 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuCipherModeItemECB;
         private ToolStripMenuItem menuCipherModeItemGOFB;
         protected internal ToolStripMenuItem menuMainItemSimple;
-        protected internal ComboBox comboBox1;
         protected internal ComboBox comboBoxCipherModes;
     }
 
