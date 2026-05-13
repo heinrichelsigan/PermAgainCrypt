@@ -125,8 +125,8 @@ public class ImageHelper {
 				bufimg = ImageIO.read(bais);
 				// bufimg = new BufferedImage(byteBuffer);
 			} catch(Exception e) {
-				DbgWriter.msg("imagesJarWithSPath[" + j + "] = " + imagesJarWithSPath[j] + " throwed Exception:", true);
-				DbgWriter.msgex(e, true);
+				DbgWriter.msg("imagesJarWithSPath[" + j + "] = " + imagesJarWithSPath[j] + " throwed Exception:", false);
+				DbgWriter.msgex(e, false);
 			}
 			if (bufimg != null) 
 				break;
