@@ -1549,7 +1549,7 @@ namespace EU.CqrXs.Util
         /// <summary>
         /// Extension <see cref="string"/>.StripCiphersInFileName() 
         /// strips all <see cref="CipherEnum"/> and 
-        /// <seealso cref="SymmCipherEnum"/> characters
+        /// <seealso cref="CipherEnum"/> characters
         /// from current string.       
         /// </summary>
         /// <param name="fileName"><see cref="string"/> with extension</param>

@@ -112,7 +112,7 @@
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.PipeString">
             <summary>
-            PipeString will always be generated on the fly from <see cref="!:InPipe"/>
+            PipeString will always be generated on the fly from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipes"/>
             </summary>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.#ctor">
@@ -137,7 +137,7 @@
             </summary>
             <param name="cipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
             <param name="maxpipe">maximum lentgh <see cref="F:EU.CqrXs.Util.Constants.MAX_PIPE_LEN"/></param>
-            <param name="encType"><see cref="!:EncodeType"/></param>
+            <param name="encType"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
             <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
@@ -148,7 +148,7 @@
             </summary>
             <param name="keyBytes">user key bytes</param>
             <param name="maxpipe">maximum lentgh <see cref="F:EU.CqrXs.Util.Constants.MAX_PIPE_LEN"/></param>
-            <param name="encType"><see cref="!:EncodeType"/></param>
+            <param name="encType"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/></param>
             <param name="zpType"><see cref="T:EU.CqrXs.Zip.ZipType"/></param>
             <param name="kh"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
             <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
@@ -376,7 +376,7 @@
             <param name="decoding"><see cref="T:EU.CqrXs.Crypt.EnDeCoding.EncodingType"/> type for encoding encrypted bytes back in plain text></param>
             <param name="unzipAfter"><see cref="T:EU.CqrXs.Zip.ZipType"/> and <see cref="M:EU.CqrXs.Zip.ZipTypeExtensions.Unzip(EU.CqrXs.Zip.ZipType,System.Byte[])"/></param>
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/> hashing key algorithm</param>
-            <param name="mode2"></param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
             <returns>Decrypted generic TRet</returns>
             <exception cref="T:EU.CqrXs.Crypt.CException">is thrown on unknown type</exception>
         </member>
@@ -2730,7 +2730,7 @@
             <summary>
             Extension <see cref="T:System.String"/>.StripCiphersInFileName() 
             strips all <see cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> and 
-            <seealso cref="!:SymmCipherEnum"/> characters
+            <seealso cref="T:EU.CqrXs.Crypt.Cipher.CipherEnum"/> characters
             from current string.       
             </summary>
             <param name="fileName"><see cref="T:System.String"/> with extension</param>

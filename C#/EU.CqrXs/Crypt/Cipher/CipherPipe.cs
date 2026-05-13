@@ -536,25 +536,25 @@
                 return result;
             }
 
-            /// <summary>
-            ///  DecrpytT generic decryption method
-            /// </summary>
-            /// <typeparam name="TRet">return type 
-            ///     <see cref="T:string"/>
-            ///     <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
-            ///     <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
-            /// </typeparam>
-            /// <typeparam name="TIn"></typeparam>
-            /// <param name="tinSource">encrypted message</param>
-            /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
-            /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
-            /// <param name="decoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
-            /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
-            /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
-            /// <param name="mode2"></param>
-            /// <returns>Decrypted generic TRet</returns>
-            /// <exception cref="CException">is thrown on unknown type</exception>
-            public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
+        /// <summary>
+        ///  DecrpytT generic decryption method
+        /// </summary>
+        /// <typeparam name="TRet">return type 
+        ///     <see cref="T:string"/>
+        ///     <see cref="T:char[]"/>  <see cref="T:IEnumerable{char}"/>
+        ///     <see cref="T:bytes[]"/> <see cref="T:IEnumerable{byte}"/>
+        /// </typeparam>
+        /// <typeparam name="TIn"></typeparam>
+        /// <param name="tinSource">encrypted message</param>
+        /// <param name="cryptKey">Unique deterministic key for either generating the mix of symmetric cipher algorithms in the crypt pipeline 
+        /// and unique crypt key for each symmetric cipher algorithm in each stage of the pipe</param>
+        /// <param name="decoding"><see cref="EncodingType"/> type for encoding encrypted bytes back in plain text></param>
+        /// <param name="unzipAfter"><see cref="ZipType"/> and <see cref="ZipTypeExtensions.Unzip(ZipType, byte[])"/></param>
+        /// <param name="keyHash"><see cref="KeyHash"/> hashing key algorithm</param>
+        /// <param name="cmode2"><see cref="CipherMode2"/></param>
+        /// <returns>Decrypted generic TRet</returns>
+        /// <exception cref="CException">is thrown on unknown type</exception>
+        public static TRet DecrpytT<TRet, TIn>(TIn tinSource, string cryptKey, string hashIv,
                 EncodingType decoding = EncodingType.Base64, ZipType unzipAfter = ZipType.None,
                 KeyHash keyHash = KeyHash.Hex, CipherMode2 cmode2 = CipherMode2.CFB)
             {

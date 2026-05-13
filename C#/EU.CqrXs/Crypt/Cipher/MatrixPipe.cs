@@ -51,7 +51,7 @@ namespace EU.CqrXs.Crypt.Cipher
         public CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
 
         /// <summary>
-        /// PipeString will always be generated on the fly from <see cref="InPipe"/>
+        /// PipeString will always be generated on the fly from <see cref="InPipes"/>
         /// </summary>
         public new string PipeString
         {
@@ -136,7 +136,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// </summary>
         /// <param name="cipherAlgos">array of <see cref="T:string[]"/> as inpipe</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        /// <param name="encType"><see cref="EncodeType"/></param>
+        /// <param name="encType"><see cref="EncodingType"/></param>
         /// <param name="zpType"><see cref="Zip.ZipType"/></param>
         /// <param name="kh"><see cref="KeyHash"/></param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>
@@ -193,7 +193,7 @@ namespace EU.CqrXs.Crypt.Cipher
         /// </summary>
         /// <param name="keyBytes">user key bytes</param>
         /// <param name="maxpipe">maximum lentgh <see cref="Constants.MAX_PIPE_LEN"/></param>
-        /// <param name="encType"><see cref="EncodeType"/></param>
+        /// <param name="encType"><see cref="EncodingType"/></param>
         /// <param name="zpType"><see cref="Zip.ZipType"/></param>
         /// <param name="kh"><see cref="KeyHash"/></param>
         /// <param name="cmode2"><see cref="CipherMode2"/></param>

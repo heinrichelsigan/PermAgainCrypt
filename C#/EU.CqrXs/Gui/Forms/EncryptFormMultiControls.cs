@@ -432,14 +432,14 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal async Task comboCipherMode_Changed(object sender, EventArgs e)
         {
-            switch (comboBoxCipherModes.SelectedValue)
+            switch (comboBoxCipherModes.SelectedItem)
             {
                 case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
                 case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
                 case "CFB": await menuCipherMode_Click(menuCipherModeItemCFB, e); return;
-                default: 
+                default: break;
             }
-            switch (comboBoxCipherModes.SelectedText)
+            switch (comboBoxCipherModes.Items[comboBoxCipherModes.SelectedIndex])
             {
                 case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
                 case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
