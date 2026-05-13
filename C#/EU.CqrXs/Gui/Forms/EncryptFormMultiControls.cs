@@ -90,6 +90,12 @@ namespace EU.CqrXs.Gui.Forms
                 this.comboBoxCompression.Items.Add(zipType.ToString());
             this.comboBoxCompression.SelectedItem = ZipType.None.ToString();
 
+            this.comboBoxCipherModes.Items.Clear();
+            foreach (var chmode in mCipherModes)
+                this.comboBoxCipherModes.Items.Add(chmode.Name.ToString());
+            this.comboBoxCipherModes.SelectedValue = "CFB";
+            comboBoxCipherModes.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboCipherMode_Changed(sender, e));
+
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
                 this.comboBoxAlgo.Items.Add(cipher.ToString());
@@ -97,7 +103,7 @@ namespace EU.CqrXs.Gui.Forms
             this.comboBoxEncoding.Items.Clear();
             foreach (EncodingType encodingType in EncodingTypesExtensions.GetEncodingTypes())
                 this.comboBoxEncoding.Items.Add(encodingType.ToString());
-            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
+            
 
             this.Load += new System.EventHandler(async (sender, e)
                 => await EncryptFormMultiControls_LoadAsync(sender, e));
@@ -113,8 +119,9 @@ namespace EU.CqrXs.Gui.Forms
         {
             this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
+            comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             radioButtonListHash.SelectedItem = KeyHash.Hex.ToString();
-
+            
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(Resources.BlankEncrypt_640x108, "", true);
             await SetInfoMessageAsync($"{this.Name} started...", ToolTipIcon.Info, 2000);
 
@@ -392,6 +399,8 @@ namespace EU.CqrXs.Gui.Forms
             return KeyHash.Hex;
         }
 
+        
+
         protected internal async Task menuCipherMode_Click(object sender, EventArgs e)
         {
             foreach (var cipherModeItem in mCipherModes)
@@ -401,7 +410,14 @@ namespace EU.CqrXs.Gui.Forms
                 (mi.Name.StartsWith("menuCipherModeItem") || mi.Name.StartsWith("menuMode")))
             {
                 mi.Checked = true;
-                string cipherModeString = mi.Name.Replace("menuCipherModeItem", "").Replace("menuMode", "");                
+                string cipherModeString = mi.Name.Replace("menuCipherModeItem", "").Replace("menuMode", "");
+                int ix = 0;
+                for (ix = 0; ix < comboBoxCipherModes.Items.Count; ix++)
+                {
+                    if (comboBoxCipherModes.Items[ix].ToString() == cipherModeString)
+                        break;                        
+                }
+                comboBoxCipherModes.SelectedIndex = ix;
                 CipherMode2 cmode2 = CipherModeExtensions.ParseText(cipherModeString);
                 CipherMode cmode = cmode2.ToCipherMode();                
                 if (cPipe != null)
@@ -412,6 +428,19 @@ namespace EU.CqrXs.Gui.Forms
                 await SetInfoMessageAsync($"CipherMode {cmode2.ToString()} set.", ToolTipIcon.Info, 2000);
             }
         }
+
+
+        protected internal async Task comboCipherMode_Changed(object sender, EventArgs e)
+        {
+            switch (comboBoxCipherModes.SelectedText)
+            {
+                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); break;
+                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); break;
+                case "CFB":
+                default: await menuCipherMode_Click(menuCipherModeItemCFB, e); break;
+            }
+        }
+
 
         public CipherMode2 GetCipherMode2()
         {

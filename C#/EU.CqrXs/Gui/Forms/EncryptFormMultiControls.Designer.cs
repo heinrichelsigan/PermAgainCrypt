@@ -138,9 +138,11 @@ namespace EU.CqrXs.Gui.Forms
             progressBar = new ProgressBar();
             groupBoxFiles = new EU.CqrXs.Gui.Controls.GroupBoxFiles();
             panelPipe = new Panel();
+            comboBox1 = new ComboBox();
             panelButtonsMessage = new Panel();
             tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
+            comboBoxCipherModes = new ComboBox();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -705,7 +707,7 @@ namespace EU.CqrXs.Gui.Forms
             menuJson.Enabled = false;
             menuJson.Name = "menuJson";
             menuJson.ShortcutKeys = Keys.Control | Keys.J;
-            menuJson.Size = new Size(180, 22);
+            menuJson.Size = new Size(161, 22);
             menuJson.Text = "Json";
             // 
             // menuXml
@@ -714,7 +716,7 @@ namespace EU.CqrXs.Gui.Forms
             menuXml.Enabled = false;
             menuXml.Name = "menuXml";
             menuXml.ShortcutKeys = Keys.Control | Keys.X;
-            menuXml.Size = new Size(180, 22);
+            menuXml.Size = new Size(161, 22);
             menuXml.Text = "Xml";
             // 
             // menuRaw
@@ -723,13 +725,13 @@ namespace EU.CqrXs.Gui.Forms
             menuRaw.Enabled = false;
             menuRaw.Name = "menuRaw";
             menuRaw.ShortcutKeys = Keys.Control | Keys.R;
-            menuRaw.Size = new Size(180, 22);
+            menuRaw.Size = new Size(161, 22);
             menuRaw.Text = "Raw";
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(180, 22);
+            toolStripMenuItem1.Size = new Size(161, 22);
             toolStripMenuItem1.Text = "?";
             // 
             // menuHelp
@@ -744,7 +746,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuAbout.BackColor = SystemColors.MenuBar;
             menuAbout.Name = "menuAbout";
-            menuAbout.Size = new Size(180, 22);
+            menuAbout.Size = new Size(161, 22);
             menuAbout.Text = "About";
             // 
             // menuHelpHelp
@@ -752,7 +754,7 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.BackColor = SystemColors.MenuBar;
             menuHelpHelp.Name = "menuHelpHelp";
             menuHelpHelp.ShortcutKeys = Keys.Alt | Keys.F3;
-            menuHelpHelp.Size = new Size(180, 22);
+            menuHelpHelp.Size = new Size(161, 22);
             menuHelpHelp.Text = "Help";
             // 
             // menuHelpUrlFetch
@@ -829,7 +831,7 @@ namespace EU.CqrXs.Gui.Forms
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(948, 22);
+            textBoxHash.Size = new Size(823, 22);
             textBoxHash.TabIndex = 9;
             // 
             // buttonSetPipeline
@@ -1060,6 +1062,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             panelPipe.BackColor = SystemColors.GradientActiveCaption;
             panelPipe.BorderStyle = BorderStyle.Fixed3D;
+            panelPipe.Controls.Add(comboBox1);
             panelPipe.Controls.Add(comboBoxAlgo);
             panelPipe.Controls.Add(pictureBoxAddAlgo);
             panelPipe.Controls.Add(textBoxPipe);
@@ -1072,6 +1075,21 @@ namespace EU.CqrXs.Gui.Forms
             panelPipe.Padding = new Padding(1);
             panelPipe.Size = new Size(1008, 36);
             panelPipe.TabIndex = 10;
+            // 
+            // comboBox1
+            // 
+            comboBox1.BackColor = SystemColors.Control;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox1.DropDownWidth = 144;
+            comboBox1.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
+            comboBox1.Location = new Point(439, 5);
+            comboBox1.Margin = new Padding(1);
+            comboBox1.MaxDropDownItems = 32;
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(126, 23);
+            comboBox1.TabIndex = 17;
             // 
             // panelButtonsMessage
             // 
@@ -1113,12 +1131,28 @@ namespace EU.CqrXs.Gui.Forms
             tabControlWithHexDest.Size = new Size(502, 306);
             tabControlWithHexDest.TabIndex = 46;
             // 
+            // comboBoxCipherModes
+            // 
+            comboBoxCipherModes.BackColor = SystemColors.Control;
+            comboBoxCipherModes.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxCipherModes.DropDownWidth = 144;
+            comboBoxCipherModes.Font = new Font("Lucida Sans Typewriter", 10F);
+            comboBoxCipherModes.FormattingEnabled = true;
+            comboBoxCipherModes.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
+            comboBoxCipherModes.Location = new Point(876, 104);
+            comboBoxCipherModes.Margin = new Padding(1);
+            comboBoxCipherModes.MaxDropDownItems = 32;
+            comboBoxCipherModes.Name = "comboBoxCipherModes";
+            comboBoxCipherModes.Size = new Size(107, 23);
+            comboBoxCipherModes.TabIndex = 47;
+            // 
             // EncryptFormMultiControls
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1008, 729);
+            Controls.Add(comboBoxCipherModes);
             Controls.Add(tabControlWithHexDest);
             Controls.Add(tabControlWithHexSrc);
             Controls.Add(panelButtonsMessage);
@@ -1272,6 +1306,8 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuCipherModeItemECB;
         private ToolStripMenuItem menuCipherModeItemGOFB;
         protected internal ToolStripMenuItem menuMainItemSimple;
+        protected internal ComboBox comboBox1;
+        protected internal ComboBox comboBoxCipherModes;
     }
 
 

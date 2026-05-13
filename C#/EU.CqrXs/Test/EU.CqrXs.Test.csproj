@@ -19,8 +19,8 @@ for EncodingType CipherPipe en-/decoding
 for ZipType CipherPipe un-/zipping
 </Description>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.420</AssemblyVersion>
-    <FileVersion>2.26.420</FileVersion>
+    <AssemblyVersion>2.26.513</AssemblyVersion>
+    <FileVersion>2.26.513</FileVersion>
     <StartupObject></StartupObject>
     <PackageReadmeFile>README.MD</PackageReadmeFile>
   </PropertyGroup>

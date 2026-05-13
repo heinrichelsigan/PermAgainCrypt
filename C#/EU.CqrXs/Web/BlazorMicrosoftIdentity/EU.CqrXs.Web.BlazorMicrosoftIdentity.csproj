@@ -11,8 +11,8 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     <AssemblyTitle>EU.CqrXs.Web.BlazorMicrosoftIdentity</AssemblyTitle>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.23.423</AssemblyVersion>
-    <FileVersion>2.23.423</FileVersion>
+    <AssemblyVersion>2.23.513</AssemblyVersion>
+    <FileVersion>2.23.513</FileVersion>
     <StartupObject>EU.CqrXs.Web.BlazorMicrosoftIdentity.Program</StartupObject>	    
   </PropertyGroup>
 
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\Users\heinrich.elsigan\source\PermAgainCrypt\C#\EU.CqrXs\EU.CqrXs.csproj" />
+    <ProjectReference Include="..\..\EU.CqrXs.csproj" />
   </ItemGroup>
 
 </Project>
