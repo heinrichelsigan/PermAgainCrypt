@@ -7,7 +7,7 @@ namespace EU.CqrXs.Gui.Controls
     /// <summary>
     /// GroupBoxFiles - handles drag and drop events and show cipherpipe image
     /// </summary>
-    public class TabControlWithHex : TabControl
+    public class TabControlWithHex : Control
     {
 
         #region fields
@@ -17,10 +17,8 @@ namespace EU.CqrXs.Gui.Controls
         /// </summary>
         private System.ComponentModel.IContainer components = null;
         private readonly Lock _Lock = new Lock();
-        protected TabPage tabPageAscii;
         protected TextBox textBoxAsciiText;
-        protected TabPage tabPageHex;
-        protected TextBox textBoxViewHex;
+        
 
         #endregion fields
 
@@ -34,13 +32,11 @@ namespace EU.CqrXs.Gui.Controls
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this.textBoxViewHex.Clear();
                     this.textBoxAsciiText.Clear();
                 }
                 else
                 {
                     this.textBoxAsciiText.Text = value;
-                    SelectedChanged("AsciiText", new EventArgs());
                 }                
             }
         }
@@ -92,28 +88,9 @@ namespace EU.CqrXs.Gui.Controls
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GroupBoxFiles));
-            tabPageAscii = new TabPage();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GroupBoxFiles));            
             textBoxAsciiText = new TextBox();
-            tabPageHex = new TabPage();
-            textBoxViewHex = new TextBox();
-            tabPageAscii.SuspendLayout();
-            tabPageHex.SuspendLayout();
-            SuspendLayout();
-            // 
-            // tabPageAscii
-            // 
-            tabPageAscii.Controls.Add(textBoxAsciiText);
-            tabPageAscii.Cursor = Cursors.Cross;
-            tabPageAscii.Font = new Font("Lucida Console", 8.5F);
-            tabPageAscii.Location = new Point(4, 23);
-            tabPageAscii.Margin = new Padding(2);
-            tabPageAscii.Name = "tabPageAscii";
-            tabPageAscii.Padding = new Padding(2);
-            tabPageAscii.Size = new Size(484, 277);
-            tabPageAscii.TabIndex = 0;
-            tabPageAscii.Text = " Ascii Text ";
-            tabPageAscii.UseVisualStyleBackColor = true;
+            SuspendLayout();            
             // 
             // textBoxAsciiText
             // 
@@ -127,56 +104,19 @@ namespace EU.CqrXs.Gui.Controls
             textBoxAsciiText.Name = "textBoxAsciiText";
             textBoxAsciiText.ScrollBars = ScrollBars.Vertical;
             textBoxAsciiText.Size = new Size(480, 273);
-            textBoxAsciiText.TabIndex = 43;
-            // 
-            // tabPageHex
-            // 
-            tabPageHex.Controls.Add(textBoxViewHex);
-            tabPageHex.Font = new Font("Lucida Console", 8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tabPageHex.Location = new Point(4, 23);
-            tabPageHex.Margin = new Padding(2);
-            tabPageHex.Name = "tabPageHex";
-            tabPageHex.Padding = new Padding(2);
-            tabPageHex.Size = new Size(484, 277);
-            tabPageHex.TabIndex = 1;
-            tabPageHex.Text = " Hex View ";
-            tabPageHex.UseVisualStyleBackColor = true;
-            // 
-            // textBoxViewHex
-            // 
-            textBoxViewHex.BackColor = SystemColors.Control;
-            textBoxViewHex.BorderStyle = BorderStyle.FixedSingle;
-            textBoxViewHex.Dock = DockStyle.Fill;
-            textBoxViewHex.Font = new Font("Lucida Console", 8F);
-            textBoxViewHex.Location = new Point(1, 1);
-            textBoxViewHex.Margin = new Padding(1);
-            textBoxViewHex.MaxLength = 1048576;
-            textBoxViewHex.Multiline = true;
-            textBoxViewHex.Name = "textBoxViewHex";
-            textBoxViewHex.ReadOnly = true;
-            textBoxViewHex.ScrollBars = ScrollBars.Vertical;
-            textBoxViewHex.Size = new Size(480, 273);
-            textBoxViewHex.TabIndex = 33;
+            textBoxAsciiText.TabIndex = 43;            
             // 
             // 
             // 
-            this.Controls.Add(tabPageAscii);
-            this.Controls.Add(tabPageHex);
-            this.ItemSize = new Size(72, 19);
+            this.Controls.Add(textBoxAsciiText);
             this.Location = new Point(1, 1);
             this.Margin = new Padding(1);
-            this.Name = "tabControlWithHex";
-            this.Padding = new Point(1, 1);
-            this.SelectedIndex = 0;
+            this.Name = "controlAsciiText";
+            this.Padding = new Padding(1);
             this.Size = new Size(492, 304);
             this.TabIndex = 40;
-            this.SelectedIndexChanged += SelectedChanged;
             this.BackColor = SystemColors.Control;
             this.Font = new Font("Lucida Console", 8F);
-            this.tabPageAscii.ResumeLayout(false);
-            this.tabPageAscii.PerformLayout();
-            this.tabPageHex.ResumeLayout(false);
-            this.tabPageHex.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -192,38 +132,7 @@ namespace EU.CqrXs.Gui.Controls
             base.OnPaint(pe);
         }
 
-        /// <summary>
-        /// SelectedChanged is fired, when selected tab is changed
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void SelectedChanged(object sender, EventArgs e)
-        {
-            this.textBoxViewHex.BackColor = SystemColors.Control;
-            if (sender != null &&
-                this.SelectedTab.Name.EndsWith("Hex", StringComparison.InvariantCultureIgnoreCase) &&
-                !string.IsNullOrEmpty(this.textBoxAsciiText.Text))
-            {
-                lock (_Lock)
-                {                    
-                    this.textBoxViewHex.Clear();
-                    BackColor = SystemColors.Control;
-                    String ascii = this.textBoxAsciiText.Text;
-                    if (ascii.Length >= 8000)
-                    {
-                        this.tabPageHex.Text = "Hex: 1st & last 2kb";
-                        ascii = ascii.Substring(0, 4000) +
-                                Environment.NewLine + "--- file too long, showing first & last 4k lines --" + Environment.NewLine +
-                                ascii.Substring(ascii.Length - 4000);
-                        this.textBoxViewHex.BackColor = SystemColors.ButtonHighlight;
-                    }
-                    string hexString = Hex16.ToHex16(System.Text.Encoding.UTF8.GetBytes(ascii));
-                    this.textBoxViewHex.Text = hexString;
-
-                }
-                // this.textBoxSrcHex.Focus();
-            }
-        }
+       
 
 
         /// <summary>

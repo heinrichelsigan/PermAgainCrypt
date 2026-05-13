@@ -815,7 +815,7 @@ namespace EU.CqrXs.Gui.Forms
             pictureBoxHash.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pictureBoxHash.BackColor = SystemColors.Control;
             pictureBoxHash.Image = Properties.Resources.a_hash1;
-            pictureBoxHash.Location = new Point(8, 105);
+            pictureBoxHash.Location = new Point(8, 104);
             pictureBoxHash.Margin = new Padding(1);
             pictureBoxHash.Name = "pictureBoxHash";
             pictureBoxHash.Size = new Size(32, 30);
@@ -831,7 +831,7 @@ namespace EU.CqrXs.Gui.Forms
             textBoxHash.Margin = new Padding(1);
             textBoxHash.Name = "textBoxHash";
             textBoxHash.ReadOnly = true;
-            textBoxHash.Size = new Size(823, 22);
+            textBoxHash.Size = new Size(789, 22);
             textBoxHash.TabIndex = 9;
             // 
             // buttonSetPipeline
@@ -911,7 +911,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             pictureBoxDelete.BackColor = SystemColors.Control;
             pictureBoxDelete.Image = Properties.Resources.image_delete;
-            pictureBoxDelete.Location = new Point(837, 2);
+            pictureBoxDelete.Location = new Point(842, 2);
             pictureBoxDelete.Margin = new Padding(1);
             pictureBoxDelete.Name = "pictureBoxDelete";
             pictureBoxDelete.Size = new Size(27, 27);
@@ -941,11 +941,11 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxEncoding.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxEncoding.FormattingEnabled = true;
             comboBoxEncoding.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxEncoding.Location = new Point(868, 4);
+            comboBoxEncoding.Location = new Point(874, 4);
             comboBoxEncoding.Margin = new Padding(1);
             comboBoxEncoding.MaxDropDownItems = 32;
             comboBoxEncoding.Name = "comboBoxEncoding";
-            comboBoxEncoding.Size = new Size(126, 23);
+            comboBoxEncoding.Size = new Size(120, 23);
             comboBoxEncoding.TabIndex = 16;
             // 
             // buttonRandomText
@@ -1094,24 +1094,20 @@ namespace EU.CqrXs.Gui.Forms
             // tabControlWithHexSrc
             // 
             tabControlWithHexSrc.Font = new Font("Lucida Sans Typewriter", 9F);
-            tabControlWithHexSrc.ItemSize = new Size(72, 19);
             tabControlWithHexSrc.Location = new Point(0, 380);
             tabControlWithHexSrc.Margin = new Padding(1);
             tabControlWithHexSrc.Name = "tabControlWithHexSrc";
-            tabControlWithHexSrc.Padding = new Point(1, 1);
-            tabControlWithHexSrc.SelectedIndex = 0;
+            tabControlWithHexSrc.Padding = new Padding(1);
             tabControlWithHexSrc.Size = new Size(504, 306);
             tabControlWithHexSrc.TabIndex = 40;
             // 
             // tabControlWithHexDest
             // 
             tabControlWithHexDest.Font = new Font("Lucida Console", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            tabControlWithHexDest.ItemSize = new Size(72, 19);
             tabControlWithHexDest.Location = new Point(506, 380);
             tabControlWithHexDest.Margin = new Padding(1);
             tabControlWithHexDest.Name = "tabControlWithHexDest";
-            tabControlWithHexDest.Padding = new Point(1, 1);
-            tabControlWithHexDest.SelectedIndex = 0;
+            tabControlWithHexDest.Padding = new Padding(1);
             tabControlWithHexDest.Size = new Size(502, 306);
             tabControlWithHexDest.TabIndex = 46;
             // 
@@ -1123,11 +1119,11 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxCipherModes.Font = new Font("Lucida Sans Typewriter", 10F);
             comboBoxCipherModes.FormattingEnabled = true;
             comboBoxCipherModes.Items.AddRange(new object[] { "None", "Base16", "Hex16", "Base32", "Hex32", "Base64", "Uu", "Xx" });
-            comboBoxCipherModes.Location = new Point(876, 104);
+            comboBoxCipherModes.Location = new Point(876, 105);
             comboBoxCipherModes.Margin = new Padding(1);
             comboBoxCipherModes.MaxDropDownItems = 32;
             comboBoxCipherModes.Name = "comboBoxCipherModes";
-            comboBoxCipherModes.Size = new Size(107, 23);
+            comboBoxCipherModes.Size = new Size(120, 23);
             comboBoxCipherModes.TabIndex = 47;
             // 
             // EncryptFormMultiControls

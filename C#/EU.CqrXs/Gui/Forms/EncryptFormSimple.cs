@@ -66,6 +66,12 @@ namespace EU.CqrXs.Gui.Forms
             foreach (var cipherModeItem in mCipherModes)
                 cipherModeItem.Click += new System.EventHandler(async (sender, e) => await menuCipherMode_Click(sender, e));
 
+            this.comboBoxCipherModes.Items.Clear();
+            foreach (var chmode in mCipherModes)
+                this.comboBoxCipherModes.Items.Add(chmode.Text.ToString());
+            comboBoxCipherModes.SelectedIndexChanged += new System.EventHandler(async (sender, e) => await comboCipherMode_Changed(sender, e));
+
+
             this.comboBoxAlgo.Items.Clear();
             foreach (string cipher in GetCipherEnums())
                 this.comboBoxAlgo.Items.Add(cipher.ToString());
@@ -85,6 +91,7 @@ namespace EU.CqrXs.Gui.Forms
             this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
 
+            await menuCipherMode_Click(menuCipherModeItemCFB, e);
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(Resources.BlankEncrypt_640x108, "", true);
             await SetInfoMessageAsync($"{this.Name} started...", ToolTipIcon.Info, 2000);            
         }
@@ -120,6 +127,28 @@ namespace EU.CqrXs.Gui.Forms
                 await SetInfoMessageAsync($"CipherMode {cmode2.ToString()} set.", ToolTipIcon.Info, 2000);
             }
         }
+
+
+        protected internal async Task comboCipherMode_Changed(object sender, EventArgs e)
+        {
+            switch (comboBoxCipherModes.SelectedItem)
+            {
+                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
+                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
+                case "CFB": await menuCipherMode_Click(menuCipherModeItemCFB, e); return;
+                default: break;
+            }
+            switch (comboBoxCipherModes.Items[comboBoxCipherModes.SelectedIndex])
+            {
+                case "CBC": await menuCipherMode_Click(menuCipherModeItemCBC, e); return;
+                case "ECB": await menuCipherMode_Click(menuCipherModeItemECB, e); return;
+                case "CFB":
+                default: await menuCipherMode_Click(menuCipherModeItemCFB, e); break;
+            }
+        }
+
+
+
 
         public CipherMode2 GetCipherMode2()
         {

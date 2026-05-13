@@ -841,24 +841,20 @@ namespace EU.CqrXs.Gui.Forms
             // tabControlWithHexSrc
             // 
             tabControlWithHexSrc.Font = new Font("Lucida Sans Typewriter", 9F);
-            tabControlWithHexSrc.ItemSize = new Size(72, 19);
             tabControlWithHexSrc.Location = new Point(4, 358);
             tabControlWithHexSrc.Margin = new Padding(1);
             tabControlWithHexSrc.Name = "tabControlWithHexSrc";
-            tabControlWithHexSrc.Padding = new Point(1, 1);
-            tabControlWithHexSrc.SelectedIndex = 0;
+            tabControlWithHexSrc.Padding = new Padding(1);
             tabControlWithHexSrc.Size = new Size(490, 348);
             tabControlWithHexSrc.TabIndex = 40;
             // 
             // tabControlWithHexDest
             // 
             tabControlWithHexDest.Font = new Font("Lucida Sans Typewriter", 9F);
-            tabControlWithHexDest.ItemSize = new Size(72, 19);
             tabControlWithHexDest.Location = new Point(518, 358);
             tabControlWithHexDest.Margin = new Padding(1);
             tabControlWithHexDest.Name = "tabControlWithHexDest";
-            tabControlWithHexDest.Padding = new Point(1, 1);
-            tabControlWithHexDest.SelectedIndex = 0;
+            tabControlWithHexDest.Padding = new Padding(1);
             tabControlWithHexDest.Size = new Size(478, 348);
             tabControlWithHexDest.TabIndex = 46;
             // 
