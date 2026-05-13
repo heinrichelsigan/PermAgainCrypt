@@ -137,3 +137,4 @@ U:\source\PermAgainCrypt\Deploy\console\x86>
 
 <img width="720" height="1600" alt="Screenshot_20260202-081909" src="https://github.com/user-attachments/assets/69402018-f67e-40ad-987c-61a6ca925361" />
 
+
