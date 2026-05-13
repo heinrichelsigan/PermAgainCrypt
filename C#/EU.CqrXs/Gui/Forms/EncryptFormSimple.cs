@@ -109,6 +109,8 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal async Task menuCipherMode_Click(object sender, EventArgs e)
         {
+            int ix = 0;
+
             foreach (var cipherModeItem in mCipherModes)
                 cipherModeItem.Checked = false;
 
@@ -116,9 +118,18 @@ namespace EU.CqrXs.Gui.Forms
                 (mi.Name.StartsWith("menuCipherModeItem") || mi.Name.StartsWith("menuMode")))
             {
                 mi.Checked = true;
-                string cipherModeString = mi.Name.Replace("menuCipherModeItem", "").Replace("menuMode", "");                
+                string cipherModeString = mi.Name.Replace("menuCipherModeItem", "").Replace("menuMode", "");
+
+                for (ix = 0; ix < comboBoxCipherModes.Items.Count; ix++)
+                {
+                    if (comboBoxCipherModes.Items[ix].ToString() == cipherModeString)
+                        break;
+                }
+                comboBoxCipherModes.SelectedIndex = ix;
+
                 CipherMode2 cmode2 = CipherModeExtensions.ParseText(cipherModeString);
-                CipherMode cmode = cmode2.ToCipherMode();                
+                CipherMode cmode = cmode2.ToCipherMode();                 
+
                 if (cPipe != null)
                 {
                     cPipe.CMode2 = cmode2;
