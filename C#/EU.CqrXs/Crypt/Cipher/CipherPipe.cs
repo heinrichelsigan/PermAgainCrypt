@@ -60,21 +60,21 @@
             /// <summary>
             /// InPipe is current encryption pipe
             /// </summary>
-            public CipherEnum[] InPipe { get => inPipe; set => inPipe = value; }
+            public virtual CipherEnum[] InPipe { get => inPipe; set => inPipe = value; }
 
             /// <summary>
             /// OutPipe will always be generated from <see cref="InPipe"/>
             /// </summary>
-            public CipherEnum[] OutPipe { get => inPipe.ToList().Reverse<CipherEnum>().ToArray(); }
+            public virtual CipherEnum[] OutPipe { get => inPipe.ToList().Reverse<CipherEnum>().ToArray(); }
 
-            public CipherMode2 CMode2 { get; set; } = CipherMode2.CFB;
+            public virtual CipherMode2 CMode2 { get; set; } = CipherMode2.CFB;
 
-            public CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
+            public virtual CipherMode CMode { get => CMode2.ToCipherMode(); set => CMode2 = value.FromCipherMode(); }
 
             /// <summary>
             /// PipeString will always be generated on the fly from <see cref="InPipe"/>
             /// </summary>
-            public string PipeString
+            public virtual string PipeString
             {
                 get
                 {
@@ -85,7 +85,7 @@
                 }
             }
 
-            public string PipeFullExtension 
+            public virtual string PipeFullExtension 
             { 
                 get
                 {

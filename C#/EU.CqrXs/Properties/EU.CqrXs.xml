@@ -110,6 +110,16 @@
             OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipes"/>
             </summary>
         </member>
+        <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipe">
+            <summary>
+            InPipe is current encryption pipe
+            </summary>
+        </member>
+        <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.OutPipe">
+            <summary>
+            OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipe"/>
+            </summary>
+        </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.PipeString">
             <summary>
             PipeString will always be generated on the fly from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipes"/>
@@ -187,6 +197,27 @@
             </summary>
             <param name="json">serialized json</param>
             <returns><see cref="T:EU.CqrXs.Crypt.Cipher.CipherPipe"/></returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.MerryGoRoundEncrpyt(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+            <summary>
+            MerryGoRoundEncrpyt starts merry to go arround from left to right in clock hour cycle
+            </summary>
+            <param name="inBytes">plain <see cref="T:byte[]"/> to encrypt</param>
+            <param name="secretKey">user secret key to use for all symmetric cipher algorithms in the pipe</param>
+            <param name="hashIv">hash key iv relational to secret key</param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
+            <returns>encrypted byte[]</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.DecrpytRoundGoMerry(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+            <summary>
+            DecrpytRoundGoMerry against clock turn -
+            starts merry to turn arround from right to left against clock hour cycle 
+            </summary>
+            <param name="cipherBytes">encrypted byte array</param>
+            <param name="secretKey">user secret key, normally email address</param>
+            <param name="hashIv">hash relational to secret kay</param>
+            <param name="cmode2"><see cref="T:EU.CqrXs.Crypt.Cipher.CipherMode2"/></param>
+            <returns><see cref="T:byte[]"/> plain bytes</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.Cipher.CipherPipe">
             <summary>
