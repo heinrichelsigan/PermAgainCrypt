@@ -21,6 +21,7 @@ namespace EU.CqrXs.Gui.Forms
 
         protected internal CipherPipe? cPipe = null;
         protected internal string simg = "";
+        protected internal ToolStripMenuItem[] menuEncodings;
 
         #region ctor and load
 
@@ -58,8 +59,8 @@ namespace EU.CqrXs.Gui.Forms
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
             menuMainComplex.Click += menuMainComplex_Click;
-
-            ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
+            
+            menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx, menuEncAscii85 };
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
 
@@ -204,18 +205,12 @@ namespace EU.CqrXs.Gui.Forms
                 return;
             }
 
-            menuEncNone.Checked = false;
-            menuEncBase16.Checked = false;
-            menuEncHex16.Checked = false;
-            menuEncBase32.Checked = false;
-            menuEncHex32.Checked = false;
-            menuEncBase64.Checked = false;
-            menuEncUu.Checked = false;
-            menuEncXx.Checked = false;
-
+            foreach (ToolStripMenuItem item in menuEncodings)
+                item.Checked = false;
+            
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("menuEncBase") || mi.Name.StartsWith("menuEncHex") || mi.Name.StartsWith("menuEncUu") ||
-                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx")))
+                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx") || mi.Name.StartsWith("menuEncAscii")))
             {
                 mi.Checked = true;
                 for (int i = 0; i < comboBoxEncoding.Items.Count; i++)
@@ -231,6 +226,15 @@ namespace EU.CqrXs.Gui.Forms
             if (mi == null && comboItem != null && !string.IsNullOrEmpty(comboItem.ToString()))
             {
                 encodingType = EncodingTypesExtensions.GetEncodingTypeFromString(comboItem.ToString() ?? "None");
+                bool wasChecked = false;
+                //foreach (ToolStripMenuItem item in menuEncodings)
+                //    if (item.Name.Contains(encodingType.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                //    {                       
+                //        item.Checked = true; wasChecked = true; break;                       
+                //    }
+                //if (!wasChecked)
+                //    menuEncBase64.Checked = true;
+
                 switch (encodingType)
                 {
                     case EncodingType.Base16: menuEncBase16.Checked = true; break;
@@ -239,6 +243,7 @@ namespace EU.CqrXs.Gui.Forms
                     case EncodingType.Hex32: menuEncHex32.Checked = true; break;
                     case EncodingType.Uu: menuEncUu.Checked = true; break;
                     case EncodingType.Xx: menuEncXx.Checked = true; break;
+                    case EncodingType.Ascii85: menuEncAscii85.Checked = true; break;
                     case EncodingType.None: menuEncNone.Checked = true; break;
                     case EncodingType.Base64:
                     default: menuEncBase64.Checked = true; break;
@@ -258,6 +263,10 @@ namespace EU.CqrXs.Gui.Forms
         /// <returns></returns>
         protected internal EncodingType GetEncoding()
         {
+            //foreach (ToolStripMenuItem item in menuEncodings)
+            //    if (item.Checked)
+            //        return EncodingTypesExtensions.GetEncodingTypeFromString(item.Name.Replace("menuEnc", ""));
+                            
             if (menuEncNone.Checked) return EncodingType.None;
             if (menuEncBase16.Checked) return EncodingType.Base16;
             if (menuEncHex16.Checked) return EncodingType.Hex16;
@@ -265,6 +274,7 @@ namespace EU.CqrXs.Gui.Forms
             if (menuEncHex32.Checked) return EncodingType.Hex32;
             if (menuEncUu.Checked) return EncodingType.Uu;
             if (menuEncXx.Checked) return EncodingType.Xx;
+            if (menuEncAscii85.Checked) return EncodingType.Ascii85;
             menuEncBase64.Checked = true;
             comboBoxEncoding.SelectedItem = EncodingType.Base64.ToString();
             return EncodingType.Base64;
@@ -842,7 +852,7 @@ namespace EU.CqrXs.Gui.Forms
                     if (cPipe != null)
                     {                       
                         ToolStripMenuItem[] menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
-                        ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncXx };
+                        ToolStripMenuItem[] menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncBase64, menuEncUu, menuEncAscii85 };
 
                         foreach (var miEnc in menuEncodings)
                         {

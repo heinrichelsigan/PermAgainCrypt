@@ -37,9 +37,9 @@ namespace EU.CqrXs.Gui.Forms
         public EncryptFormMultiControls()
         {
             InitializeComponent();
-            menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
+            menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx, menuEncAscii85 };
             menuZips = new ToolStripMenuItem[] { zmenu7z, zmenuBZip2, zmenuGZip, zmenuZip, zmenuNone };
-            mHashes = new ToolStripMenuItem[] { menuHashBCrypt, menuHashBlake2xs, menuHashCShake, menuHashDstu7564, menuHashHex, menuHashMD5, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSCrypt, menuHashSha1, menuHashSha256, menuHashSha384, menuHashSha512, menuHashTupleHash, menuHashWhirlpool };
+            mHashes = new ToolStripMenuItem[] { menuHashBCrypt, menuHashBlake2xs, menuHashCShake, menuHashDstu7564, menuHashHex, menuHashMD5, menuHashOct, menuHashOpenBSDCrypt, menuHashRipeMD256, menuHashSCrypt, menuHashSha1, menuHashSha256, menuHashSha384, menuHashSha512, menuHashTupleHash, menuHashWhirlpool };
             // mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCCM, menuCipherModeItemCFB, menuCipherModeItemCTS, menuCipherModeItemEAX, menuCipherModeItemECB, menuCipherModeItemGOFB };
             mCipherModes = new ToolStripMenuItem[] { menuCipherModeItemCBC, menuCipherModeItemCFB, menuCipherModeItemECB };
 
@@ -239,7 +239,7 @@ namespace EU.CqrXs.Gui.Forms
 
             if (mi != null && mi.Name != null &&
                 (mi.Name.StartsWith("menuEncBase") || mi.Name.StartsWith("menuEncHex") || mi.Name.StartsWith("menuEncUu") ||
-                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx")))
+                    mi.Name.StartsWith("menuEncNone") || mi.Name.StartsWith("menuEncXx") || mi.Name.StartsWith("menuEncAscii")))
             {
                 mi.Checked = true;
                 for (int i = 0; i < comboBoxEncoding.Items.Count; i++)
@@ -266,6 +266,7 @@ namespace EU.CqrXs.Gui.Forms
                     case EncodingType.Xx: menuEncXx.Checked = true; break;
                     case EncodingType.Hex64: menuEncHex64.Checked = true; break;
                     case EncodingType.None: menuEncNone.Checked = true; break;
+                    case EncodingType.Ascii85: menuEncAscii85.Checked = true; break;
                     case EncodingType.Base64:
                     default: menuEncBase64.Checked = true; break;
                 }
@@ -291,6 +292,7 @@ namespace EU.CqrXs.Gui.Forms
             if (menuEncBase32.Checked) return EncodingType.Base32;
             if (menuEncHex32.Checked) return EncodingType.Hex32;
             if (menuEncHex64.Checked) return EncodingType.Hex64;
+            if (menuEncAscii85.Checked) return EncodingType.Ascii85;
             if (menuEncUu.Checked) return EncodingType.Uu;
             if (menuEncXx.Checked) return EncodingType.Xx;
             menuEncBase64.Checked = true;
@@ -352,7 +354,7 @@ namespace EU.CqrXs.Gui.Forms
                     case KeyHash.Sha384: menuHashSha384.Checked = true; break;
                     case KeyHash.Sha512: menuHashSha512.Checked = true; break;
                     case KeyHash.Whirlpool: menuHashWhirlpool.Checked = true; break;
-                    case KeyHash.Oct: menuHashSha384.Checked = true; break;
+                    case KeyHash.Oct: menuHashOct.Checked = true; break;
                     case KeyHash.Blake2xs: menuHashBlake2xs.Checked = true; break;
                     case KeyHash.CShake: menuHashCShake.Checked = true; break;
                     case KeyHash.Dstu7564: menuHashDstu7564.Checked = true; break;
@@ -385,6 +387,7 @@ namespace EU.CqrXs.Gui.Forms
             if (menuHashBlake2xs.Checked) return KeyHash.Blake2xs;
             if (menuHashHex.Checked) return KeyHash.Hex;
             if (menuHashMD5.Checked) return KeyHash.MD5;
+            if (menuHashOct.Checked) return KeyHash.Oct;
             if (menuHashOpenBSDCrypt.Checked) return KeyHash.OpenBSDCrypt;
             if (menuHashSCrypt.Checked) return KeyHash.SCrypt;
             if (menuHashSha1.Checked) return KeyHash.Sha1;

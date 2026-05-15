@@ -74,6 +74,7 @@
     <Compile Include="Crypt\Cipher\ZenMatrix2.cs" />
     <Compile Include="Crypt\EnDeCoding\Base16.cs" />
     <Compile Include="Crypt\EnDeCoding\Base32.cs" />
+    <Compile Include="Crypt\EnDeCoding\Ascii85.cs" />
     <Compile Include="Crypt\EnDeCoding\Hex64.cs" />
     <Compile Include="Crypt\EnDeCoding\Base64.cs" />
     <Compile Include="Crypt\EnDeCoding\EncodingType.cs" />

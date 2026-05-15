@@ -185,7 +185,7 @@ public enum KeyHash {
 				case KeyHash.Oct:
 					String hexString = hex.formatHex(inBytes);
 					for (int wco = 0; wco < inBytes.length; wco++)
-						hexs +=  eu.cqrxs.util.Constants.decimalToOctal(inBytes[wco]);
+						hexs +=  eu.cqrxs.util.Constants.decimalToOctal((inBytes[wco] - 32) % 64);
 					return hexs;
 				
 				case KeyHash.OpenBSDCrypt:

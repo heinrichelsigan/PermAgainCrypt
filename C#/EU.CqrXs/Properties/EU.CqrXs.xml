@@ -117,7 +117,7 @@
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.GetOutPipe(System.Int32)">
             <summary>
-            OutPipe will always be generated from <see cref="!:InPipe"/>
+            OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipe"/>
             </summary>
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.PipeString">
@@ -1473,6 +1473,43 @@
             <param name="padOutput">block padding with =</param>
             <returns>Base32 encoded string</returns>
         </member>
+        <member name="T:EU.CqrXs.Crypt.EnDeCoding.Hex32">
+            <summary>
+            Hex32 encoding is a mapping for double hex from 0-9A-V (32 chiffers per digit), padding char is =
+            <see href="https://datatracker.ietf.org/doc/html/rfc4648#section-7" />
+            </summary>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.Encode(System.Byte[])">
+            <summary>
+            Encodes byte[] to valid encode formatted string
+            </summary>
+            <param name="inBytes">byte array to encode</param>
+            <returns>encoded string</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.Decode(System.String)">
+            <summary>
+            Decodes an encoded string to byte[]
+            </summary>
+            <param name="encodedString">encoded string</param>
+            <returns>byte array</returns>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.FromHex32(System.String)">
+            <summary>
+            FromHex32 converts a base32 string to a binary byte array
+            </summary>
+            <param name="encoded">base32 encoded string</param>
+            <returns>byte array</returns>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.FormatException"></exception>
+        </member>
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.ToHex32(System.Byte[],System.Boolean)">
+            <summary>
+            ToHex32
+            </summary>
+            <param name="data">binary data in byte array to convert</param>
+            <param name="padOutput">block padding with =</param>
+            <returns>Base32 encoded string</returns>
+        </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.Hex64">
             <summary>
             Base64 mime standard encoding
@@ -1678,48 +1715,50 @@
             <returns>binary byte array</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
         </member>
-        <member name="T:EU.CqrXs.Crypt.EnDeCoding.Hex32">
+        <member name="T:EU.CqrXs.Crypt.EnDeCoding.Ascii85">
             <summary>
-            Hex32 encoding is a mapping for double hex from 0-9A-V (32 chiffers per digit), padding char is =
-            <see href="https://datatracker.ietf.org/doc/html/rfc4648#section-7" />
+            Ascii85 encoding is a mapping to characters <see cref="F:EU.CqrXs.Crypt.EnDeCoding.Ascii85.VALID_CHARS"/>
+            <see href="https://en.wikipedia.org/wiki/Ascii85" />
+            <see cref="!:https://github.com/coding-horror/ascii85"/>
+            <seealso cref="!:https://github.com/coding-horror/ascii85/blob/master/Ascii85ConsoleSolution/Ascii85.cs" />
             </summary>
         </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.Encode(System.Byte[])">
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Ascii85.Encode(System.Byte[])">
             <summary>
             Encodes byte[] to valid encode formatted string
             </summary>
             <param name="inBytes">byte array to encode</param>
             <returns>encoded string</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.Decode(System.String)">
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Ascii85.Decode(System.String)">
             <summary>
             Decodes an encoded string to byte[]
             </summary>
             <param name="encodedString">encoded string</param>
             <returns>byte array</returns>
         </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.FromHex32(System.String)">
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Ascii85.FromAscii85(System.String)">
             <summary>
-            FromHex32 converts a base32 string to a binary byte array
+            FromAscii85 converts a ascii85 string to a binary byte array
             </summary>
-            <param name="encoded">base32 encoded string</param>
+            <param name="s">ascii85 encoded string</param>
             <returns>byte array</returns>
             <exception cref="T:System.ArgumentNullException"></exception>
             <exception cref="T:System.FormatException"></exception>
         </member>
-        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Hex32.ToHex32(System.Byte[],System.Boolean)">
+        <member name="M:EU.CqrXs.Crypt.EnDeCoding.Ascii85.ToAscii85(System.Byte[],System.Boolean)">
             <summary>
-            ToHex32
+            ToAscii85
             </summary>
             <param name="data">binary data in byte array to convert</param>
             <param name="padOutput">block padding with =</param>
-            <returns>Base32 encoded string</returns>
+            <returns>Ascii85 encoded string</returns>
         </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.IDecodable">
             <summary>
             IDecodable is an common interface for <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base32"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Base64"/>, 
             <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex16"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex32"/>, <see cref="T:EU.CqrXs.Crypt.EnDeCoding.Hex64"/>
-            <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Uu"/> and <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Xx"/> Encoding / Decoding
+            <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Uu"/>, <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Xx"/> and <seealso cref="T:EU.CqrXs.Crypt.EnDeCoding.Ascii85"/> Encoding / Decoding
             </summary>
         </member>
         <member name="T:EU.CqrXs.Crypt.EnDeCoding.RawString">

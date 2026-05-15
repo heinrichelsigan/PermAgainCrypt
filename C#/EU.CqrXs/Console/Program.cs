@@ -263,7 +263,7 @@ namespace EU.CqrXs.Console
             System.Console.Out.WriteLine("Usage:\t" + Path.GetFileName(progName) + @"
     -i  | --inFile= | --inText={string|EnviromentVariable} | --inStd    
     -k  | --key=passKey encrypt    
-    -H  | --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hex|MD5|RipeMD256|SCrypt|Sha256|Sha512|Whirlpool|...}
+    -H  | --Hash={Blake2xs|BCrypt|CShake|Dstu7564|Hex|MD5|Oct|RipeMD256|SCrypt|Sha256|Sha512|Whirlpool|...}
         |   default: Hex
     -z  | --zip={gzip|bzip2|zip|none} 
         |   default: none
@@ -277,7 +277,7 @@ namespace EU.CqrXs.Console
         |       Seed,SkipJack,Serpent,SM4,
         |       Tea,Tnepres,XTea,
         |       ZenMatrix,ZenMatrix2
-    -e  | --encode={raw|hex16|base16|hex32|base32|hex64|base64|uu|xx}
+    -e  | --encode={raw|hex16|base16|hex32|base32|hex64|base64|uu|xx|ascii85}
         |   default: base64
     -D  | --Decrypt [ = Inverse_Pipe_Direction ]  
     -S  | --secureCipher (uses SecureCipherPipe with always GZip, Base64 and different hashes in every pipe stage)
