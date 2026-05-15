@@ -83,6 +83,9 @@
         <Compile Update="Controls\TabConrolWithHex.cs">
           <SubType>Component</SubType>
         </Compile>
+        <Compile Update="Forms\EncryptFormExperimental.cs">
+          <SubType>Form</SubType>
+        </Compile>
         <Compile Update="Forms\EncryptFormSimple.cs">
           <SubType>Form</SubType>
         </Compile>
@@ -101,6 +104,9 @@
     </ItemGroup>
     
 	<ItemGroup>
+	  <EmbeddedResource Update="Forms\EncryptFormExperimental.resx">
+	    <SubType>Designer</SubType>
+	  </EmbeddedResource>
 	  <EmbeddedResource Update="Forms\EncryptFormSimple.resx">
 	    <SubType>Designer</SubType>
 	  </EmbeddedResource>

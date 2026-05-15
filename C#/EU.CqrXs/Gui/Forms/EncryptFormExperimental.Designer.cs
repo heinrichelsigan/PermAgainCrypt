@@ -3,7 +3,7 @@
 namespace EU.CqrXs.Gui.Forms
 {
 
-    partial class EncryptFormMultiControls
+    partial class EncryptFormExperimental
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@ namespace EU.CqrXs.Gui.Forms
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EncryptFormMultiControls));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EncryptFormExperimental));
             menuStripEncrypt = new MenuStrip();
             toolMenuMain = new ToolStripMenuItem();
             menuFileOpen = new ToolStripMenuItem();
@@ -48,8 +48,7 @@ namespace EU.CqrXs.Gui.Forms
             menuMainRandomText = new ToolStripMenuItem();
             menuMainReset = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
-            menuMainItemSimple = new ToolStripMenuItem();
-            menuMainItemOneTwoThreeFish = new ToolStripMenuItem();
+            menuMainItemComplex = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             menuFileExit = new ToolStripMenuItem();
             menuCompression = new ToolStripMenuItem();
@@ -143,7 +142,6 @@ namespace EU.CqrXs.Gui.Forms
             tabControlWithHexSrc = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             tabControlWithHexDest = new EU.CqrXs.Gui.Controls.TabControlWithHex();
             comboBoxCipherModes = new ComboBox();
-            menuMainItemExperimental = new ToolStripMenuItem();
             menuStripEncrypt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)enumOptionsBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxKey).BeginInit();
@@ -170,7 +168,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             // toolMenuMain
             // 
-            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileOpen, menuMainSave, toolStripSeparator2, menuMainSetPipe, menuMainHashKey, menuMainHashPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainDownloadImage, menuMainRandomText, menuMainReset, toolStripSeparator1, menuMainItemSimple, menuMainItemExperimental, menuMainItemOneTwoThreeFish, toolStripSeparator4, menuFileExit });
+            toolMenuMain.DropDownItems.AddRange(new ToolStripItem[] { menuFileOpen, menuMainSave, toolStripSeparator2, menuMainSetPipe, menuMainHashKey, menuMainHashPipe, toolStripSeparator3, menuMainEncrypt, menuMainDecrypt, menuMainDownloadImage, menuMainRandomText, menuMainReset, toolStripSeparator1, menuMainItemComplex, toolStripSeparator4, menuFileExit });
             toolMenuMain.Font = new Font("Lucida Sans Typewriter", 10F);
             toolMenuMain.Name = "toolMenuMain";
             toolMenuMain.Size = new Size(51, 20);
@@ -181,7 +179,7 @@ namespace EU.CqrXs.Gui.Forms
             menuFileOpen.BackColor = SystemColors.Menu;
             menuFileOpen.Name = "menuFileOpen";
             menuFileOpen.ShortcutKeys = Keys.Control | Keys.O;
-            menuFileOpen.Size = new Size(210, 22);
+            menuFileOpen.Size = new Size(202, 22);
             menuFileOpen.Text = "Open";
             menuFileOpen.Click += menuFileOpen_Click;
             // 
@@ -190,20 +188,20 @@ namespace EU.CqrXs.Gui.Forms
             menuMainSave.BackColor = SystemColors.Menu;
             menuMainSave.Name = "menuMainSave";
             menuMainSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuMainSave.Size = new Size(210, 22);
+            menuMainSave.Size = new Size(202, 22);
             menuMainSave.Text = "Save";
             menuMainSave.Click += menuMainSave_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(207, 6);
+            toolStripSeparator2.Size = new Size(199, 6);
             // 
             // menuMainSetPipe
             // 
             menuMainSetPipe.BackColor = SystemColors.Menu;
             menuMainSetPipe.Name = "menuMainSetPipe";
-            menuMainSetPipe.Size = new Size(210, 22);
+            menuMainSetPipe.Size = new Size(202, 22);
             menuMainSetPipe.Text = "Set Pipe";
             menuMainSetPipe.Click += SetPipeline_Click;
             // 
@@ -211,7 +209,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainHashKey.BackColor = SystemColors.Menu;
             menuMainHashKey.Name = "menuMainHashKey";
-            menuMainHashKey.Size = new Size(210, 22);
+            menuMainHashKey.Size = new Size(202, 22);
             menuMainHashKey.Text = "Hash Key";
             menuMainHashKey.Click += Hash_Click;
             // 
@@ -219,34 +217,34 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainHashPipe.BackColor = SystemColors.Menu;
             menuMainHashPipe.Name = "menuMainHashPipe";
-            menuMainHashPipe.Size = new Size(210, 22);
+            menuMainHashPipe.Size = new Size(202, 22);
             menuMainHashPipe.Text = "Hash Pipe";
             menuMainHashPipe.Click += Hash_Pipe_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(207, 6);
+            toolStripSeparator3.Size = new Size(199, 6);
             // 
             // menuMainEncrypt
             // 
             menuMainEncrypt.BackColor = SystemColors.Menu;
             menuMainEncrypt.Name = "menuMainEncrypt";
-            menuMainEncrypt.Size = new Size(210, 22);
+            menuMainEncrypt.Size = new Size(202, 22);
             menuMainEncrypt.Text = "Encrypt";
             // 
             // menuMainDecrypt
             // 
             menuMainDecrypt.BackColor = SystemColors.Menu;
             menuMainDecrypt.Name = "menuMainDecrypt";
-            menuMainDecrypt.Size = new Size(210, 22);
+            menuMainDecrypt.Size = new Size(202, 22);
             menuMainDecrypt.Text = "Decrypt";
             // 
             // menuMainDownloadImage
             // 
             menuMainDownloadImage.BackColor = SystemColors.Menu;
             menuMainDownloadImage.Name = "menuMainDownloadImage";
-            menuMainDownloadImage.Size = new Size(210, 22);
+            menuMainDownloadImage.Size = new Size(202, 22);
             menuMainDownloadImage.Text = "Ramdom Image";
             menuMainDownloadImage.Click += LoadImage_Click;
             // 
@@ -254,7 +252,7 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainRandomText.BackColor = SystemColors.Menu;
             menuMainRandomText.Name = "menuMainRandomText";
-            menuMainRandomText.Size = new Size(210, 22);
+            menuMainRandomText.Size = new Size(202, 22);
             menuMainRandomText.Text = "Random Text";
             menuMainRandomText.Click += RandomText_Click;
             // 
@@ -262,39 +260,32 @@ namespace EU.CqrXs.Gui.Forms
             // 
             menuMainReset.BackColor = SystemColors.Menu;
             menuMainReset.Name = "menuMainReset";
-            menuMainReset.Size = new Size(210, 22);
+            menuMainReset.Size = new Size(202, 22);
             menuMainReset.Text = "Reset";
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(207, 6);
+            toolStripSeparator1.Size = new Size(199, 6);
             // 
-            // menuMainItemSimple
+            // menuMainItemComplex
             // 
-            menuMainItemSimple.BackColor = SystemColors.Menu;
-            menuMainItemSimple.Name = "menuMainItemSimple";
-            menuMainItemSimple.Size = new Size(210, 22);
-            menuMainItemSimple.Text = "Simple mode";
-            // 
-            // menuMainItemOneTwoThreeFish
-            // 
-            menuMainItemOneTwoThreeFish.BackColor = SystemColors.Menu;
-            menuMainItemOneTwoThreeFish.Name = "menuMainItemOneTwoThreeFish";
-            menuMainItemOneTwoThreeFish.Size = new Size(210, 22);
-            menuMainItemOneTwoThreeFish.Text = "OneTwoThreeFish";
+            menuMainItemComplex.BackColor = SystemColors.Menu;
+            menuMainItemComplex.Name = "menuMainItemComplex";
+            menuMainItemComplex.Size = new Size(202, 22);
+            menuMainItemComplex.Text = "MainForm Complex";
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(207, 6);
+            toolStripSeparator4.Size = new Size(199, 6);
             // 
             // menuFileExit
             // 
             menuFileExit.BackColor = SystemColors.Menu;
             menuFileExit.Name = "menuFileExit";
             menuFileExit.ShortcutKeys = Keys.Alt | Keys.F4;
-            menuFileExit.Size = new Size(210, 22);
+            menuFileExit.Size = new Size(202, 22);
             menuFileExit.Text = "Exit";
             menuFileExit.Click += menuFileExit_Click;
             // 
@@ -1129,14 +1120,7 @@ namespace EU.CqrXs.Gui.Forms
             comboBoxCipherModes.Size = new Size(120, 23);
             comboBoxCipherModes.TabIndex = 47;
             // 
-            // menuMainItemExperimental
-            // 
-            menuMainItemExperimental.BackColor = SystemColors.Menu;
-            menuMainItemExperimental.Name = "menuMainItemExperimental";
-            menuMainItemExperimental.Size = new Size(210, 22);
-            menuMainItemExperimental.Text = "Experimental mode";
-            // 
-            // EncryptFormMultiControls
+            // EncryptFormExperimental
             // 
             AutoScaleDimensions = new SizeF(7F, 16F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -1166,9 +1150,9 @@ namespace EU.CqrXs.Gui.Forms
             MaximizeBox = false;
             MaximumSize = new Size(1024, 768);
             MinimizeBox = false;
-            Name = "EncryptFormMultiControls";
+            Name = "EncryptFormExperimental";
             Opacity = 0.96D;
-            Text = "EncryptFormMultiControls";
+            Text = "EncryptFormExperimental";
             FormClosed += menuFileExit_Close;
             menuStripEncrypt.ResumeLayout(false);
             menuStripEncrypt.PerformLayout();
@@ -1279,7 +1263,6 @@ namespace EU.CqrXs.Gui.Forms
         private Panel panelButtonsMessage;
         private Controls.TabControlWithHex tabControlWithHexSrc;
         private Controls.TabControlWithHex tabControlWithHexDest;
-        protected internal ToolStripMenuItem menuMainItemOneTwoThreeFish;
         internal ToolStripMenuItem menuOptionsMenuWindowsCharHexDecOctBin;
         internal ToolStripMenuItem menuOptionsMenuWindowsitemAbout;
         protected internal ToolStripMenuItem menuMainDownloadImage;
@@ -1295,9 +1278,8 @@ namespace EU.CqrXs.Gui.Forms
         private ToolStripMenuItem menuCipherModeItemEAX;
         private ToolStripMenuItem menuCipherModeItemECB;
         private ToolStripMenuItem menuCipherModeItemGOFB;
-        protected internal ToolStripMenuItem menuMainItemSimple;
+        protected internal ToolStripMenuItem menuMainItemComplex;
         protected internal ComboBox comboBoxCipherModes;
-        protected internal ToolStripMenuItem menuMainItemExperimental;
     }
 
 

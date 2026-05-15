@@ -51,45 +51,36 @@ namespace EU.CqrXs.Crypt.Cipher
             }
         }
 
-        protected internal int pipeRingBufIdx = 0;
+        // protected internal int pipeRingBufIdx = 0;
 
         /// <summary>
         /// InPipe is current encryption pipe
         /// </summary>
-        public override CipherEnum[] InPipe
-        {
-            get
+        public virtual CipherEnum[] GetInPipe(int pipeRingBufIdx)
+        {           
+            List<CipherEnum> inPipeList = new List<CipherEnum>();
+            lock (_lock)
             {
-                List<CipherEnum> inPipeList = new List<CipherEnum>();
-                lock (_lock)
-                {
-                    inPipeList = InPipes.ElementAt(pipeRingBufIdx).ToList();
-                    pipeRingBufIdx = (++pipeRingBufIdx % inPipes.Count);
-                }
-
-                return (inPipeList != null && inPipeList.Count > 0) ? inPipeList.ToArray() :
-                        new List<CipherEnum>().ToArray();
-                
+                inPipeList = InPipes.ElementAt(pipeRingBufIdx).ToList();                
             }
+
+            return (inPipeList != null && inPipeList.Count > 0) ? inPipeList.ToArray() :
+                    new List<CipherEnum>().ToArray();                
         }
 
         /// <summary>
         /// OutPipe will always be generated from <see cref="InPipe"/>
         /// </summary>
-        public override CipherEnum[] OutPipe
+        public virtual CipherEnum[] GetOutPipe(int pipeRingBufIdx)
         {
-            get
+            List<CipherEnum> outPipeList = new List<CipherEnum>();
+            lock (_lock)
             {
-                List<CipherEnum> outPipeList = new List<CipherEnum>();
-                lock (_lock)
-                {
-                    outPipeList = OutPipes.ElementAt(pipeRingBufIdx).ToList();
-                    pipeRingBufIdx = (++pipeRingBufIdx % inPipes.Count);
-                }
-
-                return (outPipeList != null && outPipeList.Count > 0) ? outPipeList.ToArray() :
-                        new List<CipherEnum>().ToArray();
+                outPipeList = OutPipes.ElementAt(pipeRingBufIdx).ToList();
             }
+
+            return (outPipeList != null && outPipeList.Count > 0) ? outPipeList.ToArray() :
+                    new List<CipherEnum>().ToArray();
         }
 
 
@@ -111,6 +102,30 @@ namespace EU.CqrXs.Crypt.Cipher
 
         #endregion fields and properties
 
+        #region ctor Helpers 
+        protected void BuildInPipes(CipherEnum[] inPipe)
+        {
+            if (inPipe == null || inPipes.Count == 0)
+                return; 
+
+            lock (_lock)
+            {
+                int l = inPipe.Length;
+                for (int i = 0; i < l; i++)
+                {
+                    List<CipherEnum> iInPipeList = new List<CipherEnum>();
+                    for (int j = 0; j < l; j++)
+                    {
+                        iInPipeList.Add(inPipe[i % l]);
+                    }
+                    inPipes.Add(iInPipeList.ToArray());
+                }
+            }
+        }
+
+        #endregion ctor Helpers
+
+
         #region ctor CipherPipe
 
         /// <summary>
@@ -125,7 +140,6 @@ namespace EU.CqrXs.Crypt.Cipher
             zType = ZipType.None;
             kHash = KeyHash.Hex;
             CMode2 = CipherMode2.CFB;
-            pipeRingBufIdx = 0;
         }
 
 
@@ -148,29 +162,12 @@ namespace EU.CqrXs.Crypt.Cipher
             int isize = Math.Min(((int)cipherEnums.Length), ((int)maxpipe));
             _inPipe = new CipherEnum[8];
             Array.Copy(cipherEnums, _inPipe, isize);
-
-            CipherEnum[] inPipe0 = new CipherEnum[] { _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7] };
-            CipherEnum[] inPipe1 = new CipherEnum[] { _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0] };
-            CipherEnum[] inPipe2 = new CipherEnum[] { _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1] };
-            CipherEnum[] inPipe3 = new CipherEnum[] { _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2] };
-            CipherEnum[] inPipe4 = new CipherEnum[] { _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3] };
-            CipherEnum[] inPipe5 = new CipherEnum[] { _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4] };
-            CipherEnum[] inPipe6 = new CipherEnum[] { _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5] };
-            CipherEnum[] inPipe7 = new CipherEnum[] { _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6] };
-            inPipes.Add(inPipe0);
-            inPipes.Add(inPipe1);
-            inPipes.Add(inPipe2);
-            inPipes.Add(inPipe3);
-            inPipes.Add(inPipe4);
-            inPipes.Add(inPipe5);
-            inPipes.Add(inPipe6);
-            inPipes.Add(inPipe7);
+            BuildInPipes(_inPipe);
 
             encodeType = encType;
             zType = zpType;
             kHash = kh;
             CMode2 = cmode2;
-            pipeRingBufIdx = 0;
         }
 
         /// <summary>
@@ -207,28 +204,12 @@ namespace EU.CqrXs.Crypt.Cipher
             }
 
             _inPipe = cipherEnums.ToArray();
-            CipherEnum[] inPipe0 = new CipherEnum[] { _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7] };
-            CipherEnum[] inPipe1 = new CipherEnum[] { _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0] };
-            CipherEnum[] inPipe2 = new CipherEnum[] { _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1] };
-            CipherEnum[] inPipe3 = new CipherEnum[] { _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2] };
-            CipherEnum[] inPipe4 = new CipherEnum[] { _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3] };
-            CipherEnum[] inPipe5 = new CipherEnum[] { _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4] };
-            CipherEnum[] inPipe6 = new CipherEnum[] { _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5] };
-            CipherEnum[] inPipe7 = new CipherEnum[] { _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6] };
-            inPipes.Add(inPipe0);
-            inPipes.Add(inPipe1);
-            inPipes.Add(inPipe2);
-            inPipes.Add(inPipe3);
-            inPipes.Add(inPipe4);
-            inPipes.Add(inPipe5);
-            inPipes.Add(inPipe6);
-            inPipes.Add(inPipe7);
+            BuildInPipes(_inPipe);
 
             encodeType = encType;
             kHash = kh;
             zType = zpType;
             CMode2 = cmode2;
-            pipeRingBufIdx = 0;
         }
 
         /// <summary>
@@ -270,28 +251,12 @@ namespace EU.CqrXs.Crypt.Cipher
             }
 
             _inPipe = pipeList.ToArray();
-            CipherEnum[] inPipe0 = new CipherEnum[] { _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7] };
-            CipherEnum[] inPipe1 = new CipherEnum[] { _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0] };
-            CipherEnum[] inPipe2 = new CipherEnum[] { _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1] };
-            CipherEnum[] inPipe3 = new CipherEnum[] { _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2] };
-            CipherEnum[] inPipe4 = new CipherEnum[] { _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3] };
-            CipherEnum[] inPipe5 = new CipherEnum[] { _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4] };
-            CipherEnum[] inPipe6 = new CipherEnum[] { _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5] };
-            CipherEnum[] inPipe7 = new CipherEnum[] { _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6] };
-            inPipes.Add(inPipe0);
-            inPipes.Add(inPipe1);
-            inPipes.Add(inPipe2);
-            inPipes.Add(inPipe3);
-            inPipes.Add(inPipe4);
-            inPipes.Add(inPipe5);
-            inPipes.Add(inPipe6);
-            inPipes.Add(inPipe7);
+            BuildInPipes(_inPipe);
 
             zType = zpType;
             encodeType = encType;
             kHash = kh;
             CMode2 = cmode2;
-            pipeRingBufIdx = 0;
 
         }
 
@@ -306,23 +271,7 @@ namespace EU.CqrXs.Crypt.Cipher
             this.CMode = pipe.CMode;
             this.CMode2 = pipe.CMode2;
             _inPipe = pipe.InPipe;
-            CipherEnum[] inPipe0 = new CipherEnum[] { _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7] };
-            CipherEnum[] inPipe1 = new CipherEnum[] { _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0] };
-            CipherEnum[] inPipe2 = new CipherEnum[] { _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1] };
-            CipherEnum[] inPipe3 = new CipherEnum[] { _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2] };
-            CipherEnum[] inPipe4 = new CipherEnum[] { _inPipe[4], _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3] };
-            CipherEnum[] inPipe5 = new CipherEnum[] { _inPipe[5], _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4] };
-            CipherEnum[] inPipe6 = new CipherEnum[] { _inPipe[6], _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5] };
-            CipherEnum[] inPipe7 = new CipherEnum[] { _inPipe[7], _inPipe[0], _inPipe[1], _inPipe[2], _inPipe[3], _inPipe[4], _inPipe[5], _inPipe[6] };
-            inPipes.Add(inPipe0);
-            inPipes.Add(inPipe1);
-            inPipes.Add(inPipe2);
-            inPipes.Add(inPipe3);
-            inPipes.Add(inPipe4);
-            inPipes.Add(inPipe5);
-            inPipes.Add(inPipe6);
-            inPipes.Add(inPipe7);
-            pipeRingBufIdx = 0;
+            BuildInPipes(_inPipe);
         }
 
         /// <summary>
@@ -343,7 +292,6 @@ namespace EU.CqrXs.Crypt.Cipher
         {
             cipherKey = key;
             cipherHash = hash;
-            pipeRingBufIdx = 0;
         }
 
         /// <summary>
@@ -356,7 +304,6 @@ namespace EU.CqrXs.Crypt.Cipher
                   CipherMode2.CFB, verbose)
         {
             cipherKey = key;
-            pipeRingBufIdx = 0;
         }
 
         #endregion ctor CipherPipe
@@ -405,10 +352,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns>encrypted byte[]</returns>
         public override byte[] MerryGoRoundEncrpyt(byte[] inBytes, string secretKey, string hashIv, CipherMode2 cmode2)
         {
-            if (InPipe == null || inPipe.Length == 0)   // return immideate, when zero round cipher merry go round
+            if (_inPipe == null || _inPipe.Length == 0)   // return immideate, when zero round cipher merry go round
                 return inBytes;
-
-            pipeRingBufIdx = 0;
 
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -419,39 +364,53 @@ namespace EU.CqrXs.Crypt.Cipher
             cipherHash = hash;
             CMode2 = cmode2;
 
-            //#if DEBUG
-            //      stageDictionary = new Dictionary<CipherEnum, byte[]>();
-            //#endif
-            int complLen = (256 - (inBytes.Length % 256));
-            int finalLen = inBytes.Length + complLen;
+            int suplement256 = (256 - (inBytes.Length % 256));
+            int finalLen = (inBytes.Length + suplement256);
+            int byteQuater = finalLen / 8;
             byte[] encryptedBytes = new byte[finalLen];
-            
-            int byteSegLdx = 0;
-            while (inBytes.Length > byteSegLdx)
+            // TODO: parallel processing
+            //Task[] taskArray = new Task[8];
+            //for (int i = 0; i < 8; i++)
+            //{
+            //    taskArray[i] = Task.Factory.StartNew((object obj) =>
+            //    {
+            //        byte[] outEightPart = new byte[byteQuater];
+            //        Array.Copy(inBytes, i * byteQuater, inEightPart, 0, byteQuater);
+            //        Array.Copy(inEightPart, 0, outEightPart, 0, byteQuater);
+
+            //        foreach (CipherEnum cipher in GetInPipe(i))
+            //        {
+            //            outEightPart = EncryptBytesFast(inEightPart, cipher, cipherKey, cipherHash, CMode2);
+            //            inEightPart = outEightPart;
+            //        }
+
+            //        Array.Copy(outEightPart, 0, encryptedBytes, i * byteQuater, byteQuater);
+            //    });
+            //}
+            //Task.WaitAll(taskArray);
+
+            for (int i = 0; i < 8; i++)
             {
-                byte[] inBytesSegment = new byte[256];
-                byte[] encryptedBytesSegment = new byte[256];
+                byte[] inEightPart = new byte[byteQuater];
+                byte[] outEightPart = new byte[byteQuater];
+                Array.Copy(inBytes, i * byteQuater, inEightPart, 0, byteQuater);
+                Array.Copy(inEightPart, 0, outEightPart, 0, byteQuater);
 
-                int byteSize = 256;
-                if ((inBytes.Length - byteSegLdx) < 256)
-                    byteSize = (inBytes.Length - byteSegLdx);
-
-                Array.Copy(inBytes, byteSegLdx, inBytesSegment, 0, byteSize);
-                Array.Copy(inBytesSegment, 0, encryptedBytesSegment, 0, 256);
-
-                foreach (CipherEnum cipher in InPipe)
+                foreach (CipherEnum cipher in GetInPipe(i))
                 {
-                    encryptedBytesSegment = EncryptBytesFast(inBytesSegment, cipher, cipherKey, cipherHash, CMode2);
-                    inBytesSegment = encryptedBytesSegment;
+                    outEightPart = EncryptBytesFast(inEightPart, cipher, cipherKey, cipherHash, CMode2);
+                    inEightPart = outEightPart;
                 }
-                Array.Copy(encryptedBytesSegment, 0, encryptedBytes, byteSegLdx, 256);
-                byteSegLdx += 256;
-                    
-                    //#if DEBUG
-                    //      stageDictionary.Add(cipher, encryptedBytes);
-                    //#endif
+                
+                Array.Copy(outEightPart, 0, encryptedBytes, i * byteQuater, byteQuater);
             }
+           
+#if STAGE_DICT_PIPE_DBG
+            stageDictionary.Add(cipher, encryptedBytes);
+#endif
+
             return encryptedBytes;
+
         }
 
         /// <summary>
@@ -465,10 +424,8 @@ namespace EU.CqrXs.Crypt.Cipher
         /// <returns><see cref="T:byte[]"/> plain bytes</returns>
         public override byte[] DecrpytRoundGoMerry(byte[] cipherBytes, string secretKey, string hashIv, CipherMode2 cmode2)
         {
-            if (OutPipe == null || OutPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
+            if (_inPipe == null || _inPipe.Length == 0) // when 0 rounds carusell, return immideate inBytes
                 return cipherBytes;
-
-            pipeRingBufIdx = 0;
 
             if (string.IsNullOrEmpty(secretKey) && string.IsNullOrEmpty(cipherKey))
                 secretKey = "";
@@ -479,44 +436,33 @@ namespace EU.CqrXs.Crypt.Cipher
             cipherHash = hash;
             CMode2 = cmode2;
 
-            /*  #if DEBUG
-             *      stageDictionary = new Dictionary<CipherEnum, byte[]>();
-             *  #endif  */
-            int complLen = (256 - (cipherBytes.Length % 256));
-            int finalLen = cipherBytes.Length + complLen;
+            int suplement256 = (256 - (cipherBytes.Length % 256));
+            int finalLen = (cipherBytes.Length + suplement256);
+            int byteQuater = finalLen / 8;
             byte[] decryptedBytes = new byte[finalLen];
+            Array.Copy(cipherBytes, 0, decryptedBytes, 0, cipherBytes.Length);
 
-            int byteSegLdx = 0;
-            while (cipherBytes.Length > byteSegLdx)
+            for (int i = 0; i < 8; i++)
             {
-                byte[] cipherBytesSegment = new byte[256];
-                byte[] outBytesSegment = new byte[256];
+                byte[] cipherEightPart = new byte[byteQuater];
+                byte[] outEightPart = new byte[byteQuater];
+                Array.Copy(cipherBytes, i * byteQuater, cipherEightPart, 0, byteQuater);
+                Array.Copy(cipherEightPart, 0, outEightPart, 0, byteQuater);
 
-                int byteSize = 256;
-                if ((cipherBytes.Length - byteSegLdx) < 256)
-                    byteSize = (cipherBytes.Length - byteSegLdx);
-
-                Array.Copy(cipherBytes, byteSegLdx, cipherBytesSegment, 0, byteSize);
-                Array.Copy(cipherBytesSegment, 0, outBytesSegment, 0, 256);
-
-                foreach (CipherEnum cipher in OutPipe)
+                foreach (CipherEnum cipher in GetOutPipe(i))
                 {
-                    outBytesSegment = DecryptBytesFast(cipherBytesSegment, cipher, cipherKey, cipherHash, cmode2);
-                    cipherBytesSegment = outBytesSegment;
+                    outEightPart = DecryptBytesFast(cipherEightPart, cipher, cipherKey, cipherHash, cmode2);
+                    cipherEightPart = outEightPart;
                 }
 
-                Array.Copy(outBytesSegment, 0, decryptedBytes, byteSegLdx, 256);
-                byteSegLdx += 256;
-
+                Array.Copy(outEightPart, 0, decryptedBytes, i * byteQuater, byteQuater);
             }
-            /*  #if DEBUG
-                 *      stageDictionary.Add(cipher, cipherBytes);
-                 *  #endif */
-
+            
             return decryptedBytes;
+
         }
 
-        #endregion multiple rounds en-de-cryption
+#endregion multiple rounds en-de-cryption
 
 
 

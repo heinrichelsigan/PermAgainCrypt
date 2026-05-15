@@ -110,14 +110,14 @@
             OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipes"/>
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipe">
+        <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.GetInPipe(System.Int32)">
             <summary>
             InPipe is current encryption pipe
             </summary>
         </member>
-        <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.OutPipe">
+        <member name="M:EU.CqrXs.Crypt.Cipher.MatrixPipe.GetOutPipe(System.Int32)">
             <summary>
-            OutPipe will always be generated from <see cref="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.InPipe"/>
+            OutPipe will always be generated from <see cref="!:InPipe"/>
             </summary>
         </member>
         <member name="P:EU.CqrXs.Crypt.Cipher.MatrixPipe.PipeString">
@@ -457,6 +457,20 @@
             <param name="keyHash"><see cref="T:EU.CqrXs.Crypt.Hash.KeyHash"/></param>
             <param name="cmode2"></param>
             <returns>decrypted UTF8 string, containing no binary data</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:EU.CqrXs.Crypt.Cipher.CipherPipe.EncryptEncodeBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)" -->
+        <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.DecodeDecrpytBytes(System.Byte[],System.String,System.String,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
+            <summary>
+            DecodeDecrpytBytes, decodes and decryptes a byte[] array
+            </summary>
+            <param name="encodedBytes">encoded encrypted bytes</param>
+            <param name="secretKey">user private key</param>
+            <param name="hashIV">hashed secret key</param>
+            <param name="encType">encoding ascii type, e.g. base64, uu, xx</param>
+            <param name="unzipAfter">compression method to unzip after pipe processed</param>
+            <param name="keyHash">hashing type of hashing method to hash key</param>
+            <param name="cmode2"></param>
+            <returns>decrypted and decoded byte[] array</returns>
         </member>
         <member name="M:EU.CqrXs.Crypt.Cipher.CipherPipe.CryptCodeBytes(System.Byte[],System.String,System.String,System.Boolean,EU.CqrXs.Crypt.EnDeCoding.EncodingType,EU.CqrXs.Zip.ZipType,EU.CqrXs.Crypt.Hash.KeyHash,EU.CqrXs.Crypt.Cipher.CipherMode2)">
             <summary>

@@ -17,10 +17,10 @@ namespace EU.CqrXs.Gui.Forms
     /// <summary>
     /// EncryptForm
     /// </summary>
-    public partial class EncryptFormMultiControls : EncryptFormBase
+    public partial class EncryptFormExperimental : EncryptFormBase
     {
 
-        protected internal CipherPipe? cPipe = null;
+        protected internal MatrixPipe? cPipe = null;
         protected internal string simg = "";
         protected internal ToolStripMenuItem[] menuEncodings;
         protected internal ToolStripMenuItem[] menuZips;
@@ -30,11 +30,11 @@ namespace EU.CqrXs.Gui.Forms
         #region ctor and load
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncryptFormMultiControls"/> class.
+        /// Initializes a new instance of the <see cref="EncryptFormExperimental"/> class.
         /// </summary>
         /// <remarks>This constructor sets up the form and initializes its components.  It should be
-        /// called when creating a new instance of the <see cref="EncryptFormMultiControls"/> form.</remarks>
-        public EncryptFormMultiControls()
+        /// called when creating a new instance of the <see cref="EncryptFormExperimental"/> form.</remarks>
+        public EncryptFormExperimental()
         {
             InitializeComponent();
             menuEncodings = new ToolStripMenuItem[] { menuEncNone, menuEncBase16, menuEncHex16, menuEncHex32, menuEncBase32, menuEncHex64, menuEncBase64, menuEncUu, menuEncXx };
@@ -69,12 +69,8 @@ namespace EU.CqrXs.Gui.Forms
                 => await menuAbout_Click(sender, e));
             menuHelpHelp.Click += new System.EventHandler(async (sender, e)
                 => await menuHelp_Click(sender, e));
-            menuMainItemOneTwoThreeFish.Click += new System.EventHandler(async (sender, e)
-                 => await menuMainItemOneTwoThreeFish_Click(sender, e));
-            menuMainItemExperimental.Click += new System.EventHandler(async (sender, e)
-                 => await menuMainFormExperimental_Click(sender, e));
-
-            menuMainItemSimple.Click += menuMainFormSimple_Click;
+            
+            menuMainItemComplex.Click += menuMainFormComplex_Click;            
 
             foreach (ToolStripMenuItem encodingMenu in menuEncodings)
                 encodingMenu.Click += new System.EventHandler(async (sender, e) => await menuEncodingKind_Click(sender, e));
@@ -107,16 +103,16 @@ namespace EU.CqrXs.Gui.Forms
             
 
             this.Load += new System.EventHandler(async (sender, e)
-                => await EncryptFormMultiControls_LoadAsync(sender, e));
+                => await EncryptFormExperimental_LoadAsync(sender, e));
         }
 
 
         /// <summary>
-        /// EncryptFormMultiControls_LoadAsync - form load event
+        /// EncryptFormExperimental_LoadAsync - form load event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal async Task EncryptFormMultiControls_LoadAsync(object sender, EventArgs e)
+        internal async Task EncryptFormExperimental_LoadAsync(object sender, EventArgs e)
         {
             this.labelInfoMessage.Visible = false;
             this.textBoxKey.Text = GetEmailFromRegistry();
@@ -562,7 +558,7 @@ namespace EU.CqrXs.Gui.Forms
                     }
                     this.textBoxPipe.Text += cipherEnum.ToString() + ";";
                     cipherAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-                    cPipe = new CipherPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+                    cPipe = new MatrixPipe(cipherAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
                     SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateEncryptPipeImage(), "", true);
                     System.Timers.Timer setInfoMessageTimer = new System.Timers.Timer { Interval = 3000 };
                     setInfoMessageTimer.Elapsed += (s, en) =>
@@ -617,7 +613,7 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            cPipe = new CipherPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new MatrixPipe(this.textBoxHash.Text, this.textBoxKey.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -642,7 +638,7 @@ namespace EU.CqrXs.Gui.Forms
             if (string.IsNullOrEmpty(this.textBoxHash.Text))
                 Hash_Click(sender, e);
 
-            cPipe = new CipherPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new MatrixPipe(this.textBoxKey.Text, this.textBoxHash.Text, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
             foreach (CipherEnum cipher in cPipe.InPipe)
             {
                 this.textBoxPipe.Text += cipher.ToString() + ";";
@@ -724,7 +720,7 @@ namespace EU.CqrXs.Gui.Forms
                     return;
             }
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new MatrixPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
 
             await groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateEncryptPipeImage());
 
@@ -873,7 +869,7 @@ namespace EU.CqrXs.Gui.Forms
             Icon iconSandClock = new Icon(Properties.Resources.icon_sandclock, new Size(60, 60));
 
             CipherEnum[] pipeAlgos = CipherEnumExtensions.ParsePipeText(this.textBoxPipe.Text);
-            cPipe = new CipherPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
+            cPipe = new MatrixPipe(pipeAlgos, 8, GetEncoding(), GetZip(), GetHash(), GetCipherMode2());
             // SetPictureBoxImage(groupBoxFiles.pictureBoxRunningPipe, cPipe.GenerateDecryptPipeImage());
             await this.groupBoxFiles.pictureBoxRunningPipe.SetImageTagVisibleAsync(cPipe.GenerateDecryptPipeImage());
 
@@ -1049,7 +1045,7 @@ namespace EU.CqrXs.Gui.Forms
 
                 if (menuItemCreatePipeSettingsFromFileName.Checked)
                 {
-                    cPipe = GetCPipeFromFileName(fileName);
+                    cPipe = new MatrixPipe(GetCPipeFromFileName(fileName));
                     if (cPipe != null)
                     {
                         foreach (var miHash in mHashes)
@@ -1103,50 +1099,29 @@ namespace EU.CqrXs.Gui.Forms
         }
 
 
-        /// <summary>
-        /// Shows OneTwoThreeFish Demo form 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <returns><see cref="T:Task"</returns>
-        protected internal virtual async Task menuMainItemOneTwoThreeFish_Click(object sender, EventArgs e)
+        internal void menuMainFormComplex_Click(object sender, EventArgs e)
         {
-            OneTwoThreeFish oneTwoThreeFish = new OneTwoThreeFish();
-            this.Hide();
-            Program.formComplex.Hide();
-            DialogResult result = await oneTwoThreeFish.ShowDialogAsync();
-            if (result == DialogResult.Cancel || result == DialogResult.No || result == DialogResult.Abort ||
-                result == DialogResult.Ignore)
+            if (Program.formComplex != null && !Program.formComplex.Disposing)
             {
-                try { oneTwoThreeFish.Close(); } catch { }
+                try
+                {
+                    Program.formComplex.Show();
+                    Program.formComplex.Focus();
+                }
+                catch (Exception exShow)
+                {
+                    Area23Log.LogOriginMsgEx("EncryptFormExperimental", "menuMainFormComplex_Click", exShow);
+                }
             }
-        }
-
-        internal async Task menuMainFormExperimental_Click(object sender, EventArgs e)
-        {
-            EncryptFormExperimental encryptFormExperimental = new EncryptFormExperimental();
-            this.Hide();
-            Program.formComplex.Hide();
-            await encryptFormExperimental.ShowAsync(this);
-            
-        }
-
-        internal void menuMainFormSimple_Click(object sender, EventArgs e)
-        {
-            if (Program.formSimple == null || Program.formSimple.Disposing)
-                Program.formSimple = new EncryptFormSimple();
             try
             {
-                Program.formSimple.Show();
-            } 
-            catch (Exception exShow)
-            {
-                Program.formSimple = new EncryptFormSimple();
-                Program.formSimple.Show();
+                this.Hide();
+                // this.Close();
             }
-            this.Hide();
-            Program.formComplex.Hide();
-            Program.formSimple.Focus();
+            catch (Exception exHide)
+            {
+                Area23Log.LogOriginMsgEx("EncryptFormExperimental", "menuMainFormComplex_Click", exHide);
+            }            
         }
 
         /// <summary>
@@ -1415,7 +1390,6 @@ namespace EU.CqrXs.Gui.Forms
         }
 
         #endregion Media Methods
-
 
         
     }
