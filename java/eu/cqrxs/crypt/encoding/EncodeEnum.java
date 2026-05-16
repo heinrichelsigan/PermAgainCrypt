@@ -29,14 +29,15 @@ import java.util.Set;
  */
 public enum EncodeEnum  {
     None(0),
-    Base16(0x200),
-    Hex16(0x300),
-    Base32(0x400),
-    Hex32(0x500),
-    Uu(0x600),
-    Hex64(0x700),
-    Base64(0x800),
-    Xx(0x900);
+    Base16(0x100),
+    Hex16(0x101),
+    Base32(0x200),
+    Hex32(0x201),
+    Uu(0x400),
+    Base64(0x401),
+    Hex64(0x402),
+    Xx(0x403),
+    Ascii85(0x550);
 
 
     /**
@@ -64,22 +65,24 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return "None";
-            case 0x200:
+            case 0x100:
                 return "Base16";
-            case 0x300:
+            case 0x101:
                 return "Hex16";
-            case 0x400:
+            case 0x200:
                 return "Base32";
-            case 0x500:
+            case 0x201:
                 return "Hex32";
-            case 0x600:
+            case 0x400:
                 return "Uu";
-            case 0x700:
-                return "Hex64";
-            case 0x800:
+            case 0x401:
                 return "Base64";
-            case 0x900:
+            case 0x402:
+                return "Hex64";
+            case 0x403:
                 return "Xx";
+            case 0x550:
+                return "Ascii85";
             default:
                 break;
         }
@@ -92,24 +95,26 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return inString;
-            case 0x200:
+            case 0x100:
                 return new Base16Coder().encode(inString);
-            case 0x300:
+            case 0x101:
                 return new Hex16Coder().encode(inString);
-            case 0x400:
+            case 0x200:
 				byte[] inBytes = inString.getBytes(Charset.forName("UTF-8"));
 				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                 				
-            case 0x500:
+            case 0x201:
                 return new Hex32Coder().encode(inString);
-            case 0x600:
+            case 0x400:
                 return new UuCoder().encode(inString);
-            case 0x700:
+            case 0x401: // Base64
+                return new Base64Coder().encode(inString);
+            case 0x402:
                 return new Hex64Coder().encode(inString);
                 // throw new NotImplementedError("base58 not implemented");
-            case 0x800: // Base64
-                return new Base64Coder().encode(inString);
-            case 0x900: // Xx
+            case 0x403: // Xx
                 return new XxEncoder().encode(inString);
+            case 0x550: // Ascii85
+                return new Ascii85Coder().encode(inString);
             default:
                 break;
         }
@@ -128,27 +133,29 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return encodedString;
-            case 0x200:
+            case 0x100:
                 return new Base16Coder().decode(encodedString);
-            case 0x300:
+            case 0x101:
                 return new Hex16Coder().decode(encodedString);
-            case 0x400:
+            case 0x200:
                 // throw new NotImplementedError("base32 not implemented");
 				byte[] outBytes = org.bouncycastle.util.encoders.Base32.decode(encodedString);
 				return new String(outBytes, StandardCharsets.UTF_8);
-            case 0x500:
+            case 0x201:
                 return new Hex32Coder().decode(encodedString);
-            case 0x600:
+            case 0x400:
                 return new UuCoder().decode(encodedString);
-            case 0x700:
+            case 0x401:
+                return new Base64Coder().decode(encodedString);
+            case 0x402:
                 return new Hex64Coder().decode(encodedString);
                 // throw new NotImplementedError("base58 not implemented");
-            case 0x800:
-                return new Base64Coder().decode(encodedString);
-            case 0x900:
+            case 0x403:
                 return new XxEncoder().decode(encodedString);
                 // throw new NotImplementedError("xx not implemented");
-			default:
+            case 0x550: // Ascii85
+                return new Ascii85Coder().decode(encodedString);
+            default:
                 break;
         }
         return encodedString;
@@ -169,24 +176,26 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return new String(inBytes, StandardCharsets.UTF_8);
-            case 0x200:
+            case 0x100:
                 return new Base16Coder().encodeBytesToString(inBytes);
-            case 0x300:
+            case 0x101:
                 return new Hex16Coder().encodeBytesToString(inBytes);
-            case 0x400:
+            case 0x200:
 				return org.bouncycastle.util.encoders.Base32.toBase32String(inBytes);                
-            case 0x500:
+            case 0x201:
                 return new Hex32Coder().encodeBytesToString(inBytes);
-            case 0x600:
+            case 0x400:
                 return new UuCoder().encodeBytesToString(inBytes);
-            case 0x700:
+            case 0x401:
+                return new Base64Coder().encodeBytesToString(inBytes);
+            case 0x402:
                 return new Hex64Coder().encodeBytesToString(inBytes);
                 // throw new NotImplementedError("base58 not implemented");
-            case 0x800:
-                return new Base64Coder().encodeBytesToString(inBytes);
-            case 0x900:
+            case 0x403:
                 return new XxEncoder().encodeBytesToString(inBytes);
                 // throw new NotImplementedError("xx not implemented");
+            case 0x550: // Ascii85
+                return new Ascii85Coder().encodeBytesToString(inBytes);
             default:
                 break;
         }
@@ -208,16 +217,16 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return encodedString.getBytes(Charset.forName("UTF-8"));
-            case 0x200:
+            case 0x100:
                 return new Base16Coder().decodeStringToBytes(encodedString);
-            case 0x300:
+            case 0x101:
                 return new Hex16Coder().decodeStringToBytes(encodedString);
-            case 0x400:
+            case 0x200:
 				// throw new NotImplementedError("base32 not implemented");
 				return org.bouncycastle.util.encoders.Base32.decode(encodedString);
-            case 0x500:
+            case 0x201:
                 return new Hex32Coder().decodeStringToBytes(encodedString);
-            case 0x600:
+            case 0x400:
                 byte[] plainBytes = new byte[0];
                 try {
                     plainBytes = (new UuCoder()).decodeStringToBytes(encodedString);
@@ -225,14 +234,16 @@ public enum EncodeEnum  {
                     throw ioEx;
                 }
                 return plainBytes;
-            case 0x700:
+            case 0x401:
+                return new Base64Coder().decodeStringToBytes(encodedString);
+            case 0x402:
                 return new Hex64Coder().decodeStringToBytes(encodedString);
                 // throw new NotImplementedError("base58 not implemented");
-            case 0x800:
-                return new Base64Coder().decodeStringToBytes(encodedString);
-            case 0x900:
+            case 0x403:
 				return new XxEncoder().decodeStringToBytes(encodedString);
                 // throw new NotImplementedError("xx not implemented");				
+            case 0x550: // Ascii85
+                return  new  Ascii85Coder().decodeStringToBytes(encodedString);
             default:
                 break;
         }
@@ -261,22 +272,24 @@ public enum EncodeEnum  {
         switch (xvalue) {
             case 0:
                 return "";
-            case 0x200:
+            case 0x100:
                 return ".base16";
-            case 0x300:
+            case 0x101:
                 return ".hex16";
-            case 0x400:
+            case 0x200:
                 return ".base32";
-            case 0x500:
+            case 0x201:
                 return ".hex32";
-            case 0x600:
+            case 0x400:
                 return ".uu";
-            case 0x700:
-                return ".hex64";
-            case 0x800:
+            case 0x401:
                 return ".base64";
-            case 0x900:
+            case 0x402:
+                return ".hex64";
+            case 0x403:
                 return ".xx";
+            case 0x550:
+                return ".ascii85";
             default:
                 break;
         }
@@ -298,8 +311,7 @@ public enum EncodeEnum  {
 
                 return EncodeEnum.Base64;
             } else if (enCodingString.charAt(0) == 'H' ||
-                    enCodingString.charAt(0) == 'h') {
-
+                        enCodingString.charAt(0) == 'h') {
                 if (enCodingString.contains("16"))
                     return EncodeEnum.Hex16;
                 if (enCodingString.contains("32"))
@@ -308,21 +320,20 @@ public enum EncodeEnum  {
                     return EncodeEnum.Hex64;
             } else if (enCodingString.charAt(0) == 'X' ||
                     enCodingString.charAt(0) == 'x') {
-
                 return EncodeEnum.Xx;
             } else if (enCodingString.charAt(0) == 'U' ||
                     enCodingString.charAt(0) == 'u') {
-
                 return EncodeEnum.Uu;
+            } else if (enCodingString.charAt(0) == 'A' ||
+                    enCodingString.charAt(0) == 'a') {
+                return EncodeEnum.Ascii85;
             } else if (enCodingString.charAt(0) == 'N' ||
                     enCodingString.charAt(0) == 'n' ||
                     enCodingString.charAt(0) == '0' ||
                     enCodingString.charAt(0) == 'R' ||
                     enCodingString.charAt(0) == 'r') {
-
                 return EncodeEnum.None;
             }
-
         }
         return EncodeEnum.None;
     }

@@ -941,6 +941,7 @@ public class CipherPipe {
                     case EncodeEnum.Base64:  encodeFileName += "base64.png"; break;
                     case EncodeEnum.Uu:  encodeFileName += "uu.png"; break;
                     case EncodeEnum.Xx:  encodeFileName += "xx.png"; break;
+                    case EncodeEnum.Ascii85:  encodeFileName += "ascii85.png"; break;
                     default: encodeFileName += "0.png"; break;
                 }
                 imgEncoding = ImageHelper.getJarIncludedImage(path + encodeFileName);

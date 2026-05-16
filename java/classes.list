@@ -534,6 +534,7 @@ eu/cqrxs/crypt/encoding/IEncodable.class
 eu/cqrxs/crypt/encoding/Hex16Coder.class
 eu/cqrxs/crypt/encoding/EnDeCodeHelper.class
 eu/cqrxs/crypt/encoding/Base64Coder.class
+eu/cqrxs/crypt/encoding/Ascii85Coder.class
 eu/cqrxs/crypt/encoding/uu/CharacterEncoder.class
 eu/cqrxs/crypt/encoding/uu/UUDecoder.class
 eu/cqrxs/crypt/encoding/uu/CEFormatException.class

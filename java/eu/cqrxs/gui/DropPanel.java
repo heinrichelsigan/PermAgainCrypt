@@ -127,7 +127,7 @@ public class DropPanel extends JPanel {
             target = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
             imgFileIn  = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/file.png");
             imgFileOut = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/encrypted.png"); 
-	    imgCipherPipe = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/cipherpipeblank.png");
+	        imgCipherPipe = ImageHelper.getJarIncludedImage("eu/cqrxs/gui/img/cipherpipeblank.png");
 			
             message = new JLabel();
             message.setBounds(0, 0, 742, 96);

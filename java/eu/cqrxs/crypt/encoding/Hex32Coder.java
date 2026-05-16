@@ -14,6 +14,7 @@ package eu.cqrxs.crypt.encoding;
 
 import eu.cqrxs.util.CException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Hex32Coder encoding is a mapping for double hex from 0-9A-V (32 chiffers per digit), padding char is =
@@ -106,9 +107,9 @@ public class Hex32Coder implements IEncodable {
      * @return {@link String}
      */
     public String decode(String hex32String) {
-        byte[] outBytes = decodeStringToBytes(hex32String);
-        String outString = outBytes.toString();
-        return outString;
+        byte[] decodedBytes = decodeStringToBytes(hex32String);
+        String decodedString = new String(decodedBytes, StandardCharsets.UTF_8);
+        return decodedString;
     }
 
 

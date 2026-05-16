@@ -121,7 +121,7 @@ public class CqrJdFrame extends JFrame {
 	
 	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16,
 			menuEncoding_itemBase32, menuEncoding_itemUu, menuEncoding_itemXx,
-			menuEncoding_itemHex64, menuEncoding_itemBase64;
+			menuEncoding_itemHex64, menuEncoding_itemBase64, menuEncoding_itemAscii85;
 	
 	JMenuItem menuHash_Dstu7564, menuHash_Blake2xs, menuHash_BCrypt, menuHash_CShake, menuHash_MD5, menuHash_Hex, menuHash_OpenBSDCrypt,
 				menuHash_RipeMD256, menuHash_Sha1, menuHash_Sha256, menuHash_Sha512, menuHash_SCrypt, menuHash_Whirlpool, menuHash_TupleHash;
@@ -429,7 +429,15 @@ public class CqrJdFrame extends JFrame {
 		menuEncoding_itemBase64.setFont(menuFont);		
 		menuEncoding_itemBase64.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemBase64);
-		
+
+		menuEncoding_itemAscii85 = new JMenuItem();
+		menuEncoding_itemAscii85.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemAscii85.setText("Ascii85");
+		menuEncoding_itemAscii85.setActionCommand("Ascii85");
+		menuEncoding_itemAscii85.setFont(menuFont);
+		menuEncoding_itemAscii85.addActionListener(aSymAction);
+		menuEncoding.add(menuEncoding_itemAscii85);
+
 		
 		menuHash = new JMenu();
 		menuHash.setFont(menuFont);
@@ -1016,7 +1024,9 @@ public class CqrJdFrame extends JFrame {
 			else if (object == menuEncoding_itemHex64)
 				selectItemByString(jComboBox_Encoding, menuEncoding, "Hex64");
 			else if (object == menuEncoding_itemBase64)
-				selectItemByString(jComboBox_Encoding, menuEncoding, "Base64"); 
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
+			else if (object == menuEncoding_itemAscii85)
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Ascii85");
 			
 			else if (object == menuHash_BCrypt) 
 				selectItemByString(jComboBox_Hash, menuHash, "BCrypt"); 

@@ -110,7 +110,7 @@ public class CqrJFrameSimple extends JFrame {
 	
 	JMenuItem menuEncoding_itemNone, menuEncoding_itemBase16, menuEncoding_itemHex16,
 			menuEncoding_itemBase32, menuEncoding_itemUu, menuEncoding_itemXx,
-			menuEncoding_itemHex64, menuEncoding_itemBase64;
+			menuEncoding_itemHex64, menuEncoding_itemBase64, menuEncoding_itemAscii85;
 
 	JMenuItem menuCMode2_ECB, menuCMode2_CBC, menuCMode2_CFB, menuCMode2_CCM, menuCMode2_CTS, menuCMode2_EAX, menuCMode2_GOFB;
 
@@ -422,7 +422,16 @@ public class CqrJFrameSimple extends JFrame {
 		menuEncoding_itemBase64.setFont(menuFont);		
 		menuEncoding_itemBase64.addActionListener(aSymAction);
 		menuEncoding.add(menuEncoding_itemBase64);
-		
+
+		menuEncoding_itemAscii85 = new JMenuItem();
+		menuEncoding_itemAscii85.setHorizontalTextPosition(SwingConstants.RIGHT);
+		menuEncoding_itemAscii85.setText("Ascii85");
+		menuEncoding_itemAscii85.setActionCommand("Ascii85");
+		menuEncoding_itemAscii85.setEnabled(true);
+		menuEncoding_itemAscii85.setFont(menuFont);
+		menuEncoding_itemAscii85.addActionListener(aSymAction);
+		menuEncoding.add(menuEncoding_itemAscii85);
+
 		menuCMode2 = new JMenu();
 		menuCMode2.setFont(menuFont);
 		menuCMode2.setText("CMode2");
@@ -845,7 +854,9 @@ public class CqrJFrameSimple extends JFrame {
 			else if (object == menuEncoding_itemHex64)
 				selectItemByString(jComboBox_Encoding, menuEncoding, "Hex64");
 			else if (object == menuEncoding_itemBase64)
-				selectItemByString(jComboBox_Encoding, menuEncoding, "Base64"); 
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Base64");
+			else if (object == menuEncoding_itemAscii85)
+				selectItemByString(jComboBox_Encoding, menuEncoding, "Ascii85");
 			
 			else if (object == menuCMode2_ECB)
 				selectCipherMode2MenuItem(menuCMode2, CipherMode2.ECB);
