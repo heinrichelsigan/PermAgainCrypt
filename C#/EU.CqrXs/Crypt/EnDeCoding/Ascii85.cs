@@ -17,7 +17,7 @@ namespace EU.CqrXs.Crypt.EnDeCoding
         public string PrefixMark = "<~";
         public string SuffixMark = "~>";
         public int LineLength = 75;
-        public bool EnforceMarks = true;
+        public bool EnforceMarks = false;
         private const int _asciiOffset = 33;
         private byte[] _encodedBlock = new byte[5];
         private byte[] _decodedBlock = new byte[4];
