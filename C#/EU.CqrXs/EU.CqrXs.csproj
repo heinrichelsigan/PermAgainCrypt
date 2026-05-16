@@ -9,8 +9,8 @@
     <Copyright>Copyleft © 2000-2040</Copyright>
 	<PackageProjectUrl>https://github.com/heinrichelsigan/PermAgainCrypt</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.26.515</AssemblyVersion>
-    <FileVersion>2.26.515</FileVersion>
+    <AssemblyVersion>2.26.517</AssemblyVersion>
+    <FileVersion>2.26.517</FileVersion>
     <IncludeSymbols>true</IncludeSymbols>
     <Title>EU.CqrXs [minimalistic]</Title>
     <Description>EU.CqrXs is a reduced Area23.At.Framework.Core framework with minimalistic helper methods</Description>

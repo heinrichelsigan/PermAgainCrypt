@@ -11,8 +11,8 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     <AssemblyTitle>EU.CqrXs.Web.BlazorMicrosoftIdentity</AssemblyTitle>
     <RepositoryUrl>https://github.com/heinrichelsigan/PermAgainCrypt</RepositoryUrl>
-    <AssemblyVersion>2.23.515</AssemblyVersion>
-    <FileVersion>2.23.515</FileVersion>
+    <AssemblyVersion>2.23.517</AssemblyVersion>
+    <FileVersion>2.23.517</FileVersion>
     <StartupObject>EU.CqrXs.Web.BlazorMicrosoftIdentity.Program</StartupObject>	    
   </PropertyGroup>
 
