@@ -1,3 +1,10 @@
+/*
+ * @Author: Farid Zakaria  fzakaria  https://github.com/fzakaria
+ * https://github.com/fzakaria/ascii85/blob/master/src/main/java/com/github/fzakaria/ascii85/Ascii85.java
+ * https://github.com/fzakaria/ascii85/blob/master/src/main/java/com/github/fzakaria/ascii85/Ascii85.java
+}* 
+ */
+
 package eu.cqrxs.crypt.encoding;
 
 import java.math.BigDecimal;
